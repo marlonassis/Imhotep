@@ -33,19 +33,14 @@
 						 title="Informe o apelido de acesso"/> 
 		</h:panelGroup>
 		
-		<h:panelGroup id="trocaSenhaPanelGroup" >
+		<h:panelGroup id="trocaSenhaPanelGroup" rendered="#{usuarioHome.edicao}" >
 			<h:outputLabel value="Deseja alterar a senha?"  /><br />
-			<p:selectBooleanButton value="#{usuarioHome.trocaSenha}" 
-								   onLabel="Sim" 
-								   offLabel="Não" 
-								   onIcon="ui-icon-check" 
-								   offIcon="ui-icon-close">
-				<p:ajax update="trocaSenhaPanelGroup senhaConfirmaPanelGroup senhaPanelGroup"/> 
-			</p:selectBooleanButton>  
+			<p:selectBooleanCheckbox value="#{usuarioHome.trocaSenha}">  
+            	<p:ajax update="trocaSenhaPanelGroup senhaConfirmaPanelGroup senhaPanelGroup"/>  
+        	</p:selectBooleanCheckbox>  
 		</h:panelGroup>
 		
 		<h:panelGroup id="senhaPanelGroup" >
-		#{usuarioHome.trocaSenha}
 			<font color="red" >*</font><h:outputLabel for="senha" value="Senha:"  /><br />
 			<p:inputText id="senha"
 						 value="#{usuarioHome.instancia.senha}" 
