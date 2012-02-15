@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.prime.com.tr/ui">
+    	
+		<p:fieldset legend="Menu" 
+					collapsed="false"
+					toggleable="true"
+					toggleSpeed="500">
+			<h:form >
+				<p:menu >
+				
+					<p:menuitem value="Home" 
+								url="/PaginasWeb/home.jsf" />
+								
+					<p:menuitem value="Usuário" 
+								url="/PaginasWeb/Usuario/usuario.jsf" />
+					
+					<p:menuitem value="Sair" 
+								action="#{usuarioHome.logout()}" 
+								oncomplete="window.location.reload();"/>
+				</p:menu>  
+		</h:form>
+	</p:fieldset>
+</html>

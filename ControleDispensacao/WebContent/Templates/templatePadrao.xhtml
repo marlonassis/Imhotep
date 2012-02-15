@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+<f:view contentType="text/html">
+
+	<h:head>
+		<title>Controle de Dispensação</title>
+		<ui:insert name="head"></ui:insert>
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript" src="#{request.contextPath}/js/jquery-1.7.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/jquery.price_format.1.6.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/jquery.maskMoney1.4.1.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/moeda.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/basico.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/concentrador.js"></script>
+		
+	</h:head>
+
+	<h:body id="body" >
+		<div class="ui-widget ui-widget-header">
+			<div id="logo">
+				<h1>Controle de Dispensação</h1>
+			</div>
+		</div>
+		
+		<br/>
+		<div id="geral" 
+			 align="center" >
+			<table width="100%" >
+				<tr>
+					<h:panelGroup rendered="#{usuarioHome.usuarioAtivo}" >
+						<td width="10%" valign="top" >
+							<ui:include src="menu.xhtml" />
+						</td>
+					</h:panelGroup>
+					<td width="#{usuarioHome.usuarioAtivo ? '90%' : '100%'}" >
+						<div id="conteudoPadrao" align="center" >
+							<p:growl></p:growl>
+							
+							<p:dialog header="#{header}"
+									  widgetVar="padraoDialog" 
+									  modal="false" >  
+							    <ui:insert name="dialogGeneric"/>
+							</p:dialog> 
+							
+							<p:tabView id="padraoTabView" 
+									   effect="opacity" 
+									   effectDuration="normal" 
+									   cache="true" >
+								<ui:insert name="conteudoPadrao"/>
+							</p:tabView>
+						</div>
+					</td>
+				</tr>
+			</table>
+	
+			<p:dialog id="genericDialog" 
+					  widgetVar="genericoDialog" 
+					  height="300" 
+					  width="600" 
+					  resizable="true" 
+					  modal="true" 
+					  showEffect="clip" >
+				<ui:insert name="modal"></ui:insert>
+			</p:dialog>
+	
+			<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
+				<p class="copyright">&copy;&nbsp;&nbsp;2010-2011 &nbsp;&bull;&nbsp;</p>
+				<p style="float:right">Rodando com PrimeFaces 3 no JSF2.0</p>
+			</div>
+		</div>			
+
+        <ui:insert name="status">
+            <p:ajaxStatus style="width:32px;height:32px;display:block;position:fixed;right:0;top:0;">
+                <f:facet name="start">
+                    <p:graphicImage value="/Imagens/loading.gif" />
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+        </ui:insert>
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Controle de acesso" >
+				<p:panel>
+					<p:fieldset legend="Login" collapsed="false" toggleable="true" toggleSpeed="500">
+						<h:form id="loginForm" >
+							<p:growl/>
+							<h:panelGrid columns="3" >
+								<font color="red" >*</font><h:outputText value="Usuário: " />
+								<p:inputText value="#{usuarioHome.usuario.nome}" label="Usuário" required="true" />
+								<font color="red" >*</font><h:outputText value="Senha: " />
+								<p:inputText value="#{usuarioHome.usuario.senha}" label="Senha" required="true" type="password" />  
+			                </h:panelGrid>
+			                <p:commandButton value="Login" action="#{usuarioHome.logarUsuario}" update="loginForm" image="ui-icon ui-icon-locked" title="Click para entrar na sua conta" />
+			                <p:commandButton value="Limpar" image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos" type="reset" />
+			                <br/>
+			                <br/>
+			            </h:form>
+		            </p:fieldset>
+				</p:panel>
+		</p:tab>
+	</ui:define>
+</ui:composition>

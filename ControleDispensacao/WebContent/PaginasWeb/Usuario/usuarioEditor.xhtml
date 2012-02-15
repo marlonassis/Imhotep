@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="usuarioPanelGrid"
+				 columns="3" 
+				 width="100%" >
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="nome" value="Nome:"  /><br />
+			<p:inputText id="nome" 
+						 value="#{usuarioHome.instancia.nome}" 
+						 required="true"
+						 title="Informe o nome do usuário" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="matricula" value="Matrícula:"  /><br />
+			<p:inputText id="matricula" 
+						 value="#{usuarioHome.instancia.matricula}" 
+						 required="true"
+						 title="Informe a matrícula do usuário" 
+						 onkeyup="apenasNumero(this);"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="login" value="Login:"  /><br />
+			<p:inputText id="login" 
+						 value="#{usuarioHome.instancia.login}" 
+						 required="true"
+						 disabled="#{usuarioHome.edicao}"
+						 title="Informe o apelido de acesso"/> 
+		</h:panelGroup>
+		
+		<h:panelGroup id="trocaSenhaPanelGroup" >
+			<h:outputLabel value="Deseja alterar a senha?"  /><br />
+			<p:selectBooleanButton value="#{usuarioHome.trocaSenha}" 
+								   onLabel="Sim" 
+								   offLabel="Não" 
+								   onIcon="ui-icon-check" 
+								   offIcon="ui-icon-close">
+				<p:ajax update="trocaSenhaPanelGroup senhaConfirmaPanelGroup senhaPanelGroup"/> 
+			</p:selectBooleanButton>  
+		</h:panelGroup>
+		
+		<h:panelGroup id="senhaPanelGroup" >
+		#{usuarioHome.trocaSenha}
+			<font color="red" >*</font><h:outputLabel for="senha" value="Senha:"  /><br />
+			<p:inputText id="senha"
+						 value="#{usuarioHome.instancia.senha}" 
+						 label="Senha" 
+						 required="true" 
+						 disabled="#{!usuarioHome.trocaSenha and usuarioHome.edicao}"
+						 type="password" />  
+		</h:panelGroup>
+		
+		<h:panelGroup id="senhaConfirmaPanelGroup" >
+			<h:outputLabel for="senhaConfirmacai" value="Informe novamente a senha:"  /><br />
+			<p:inputText id="senhaConfirmacai"
+						 value="#{usuarioHome.senhaConfirmacao}" 
+						 label="Senha"
+						 disabled="#{!usuarioHome.trocaSenha and usuarioHome.edicao}" 
+						 type="password" />  
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
+			<h:selectOneRadio id="situacao"
+							  value="#{usuarioHome.instancia.situacao}" 
+							  required="true"
+							  title="Informe se o usuário está ativo ou inativo" >
+				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+	</h:panelGrid>
+</ui:composition>

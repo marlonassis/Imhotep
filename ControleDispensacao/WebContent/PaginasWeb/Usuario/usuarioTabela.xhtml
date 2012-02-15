@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dataTable 	id="tabelaUsuario" 
+					value="#{usuarioConsulta.list}" 
+					var="linha"
+					emptyMessage="Não foi encontrado registros" 
+					rows="10" 
+					paginator="true"
+					selectionMode="single" 
+					rowKey="#{linha.idUsuario}">
+					
+		<p:column>
+			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+			<h:outputText value="#{linha.nome}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Matrícula" /></f:facet>
+			<h:outputText value="#{linha.matricula}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Login" /></f:facet>
+			<h:outputText value="#{linha.login}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Situação" /></f:facet>
+			<h:outputText value="#{linha.situacao.label}" />
+		</p:column>
+		<p:column style="width:60px; text-align: center;" >
+			<p:commandLink update="padraoTabView:usuarioForm" 
+						   title="Editar" 
+						   style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{usuarioHome.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink  action="#{usuarioHome.apagar()}"
+							update="tabelaUsuario padraoTabView:usuarioForm" 
+							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+							title="Apagar" 
+							style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{usuarioHome.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>  
+	</p:dataTable>
+	
+</ui:composition>

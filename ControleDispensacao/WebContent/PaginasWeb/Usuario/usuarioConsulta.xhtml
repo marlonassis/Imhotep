@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="usuarioPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
+			<p:inputText id="nomeConsulta" 
+						 value="#{usuarioConsulta.instancia.nome}" 
+						 title="Informe o nome do usuário" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="matriculaConsulta" value="Matrícula:"  /><br />
+			<p:inputText id="matriculaConsulta" 
+						 value="#{usuarioConsulta.instancia.matricula}" 
+						 title="Informe a matrícula do usuário" 
+						 onkeyup="apenasNumero(this);"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="loginConsulta" value="Login:"  /><br />
+			<p:inputText id="loginConsulta" 
+						 value="#{usuarioConsulta.instancia.login}" 
+						 title="Informe o apelido de acesso"/> 
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="situacaoConsulta" value="Situação:"  /><br />
+			<h:selectOneRadio id="situacaoConsulta"
+							  value="#{usuarioConsulta.instancia.situacao}" 
+							  title="Informe se o usuário está ativo ou inativo" >
+				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>
