@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="grupoPanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
+			<p:inputText id="descricao" 
+						 value="#{grupoHome.instancia.descricao}" 
+						 required="true"
+						 title="Informe a descrição do grupo" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
+			<h:selectOneRadio id="situacao"
+							  value="#{grupoHome.instancia.status}" 
+							  required="true"
+							  title="Informe se o grupo está ativo ou inativo" >
+				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="obrigatorio" value="Obrigatório:"  /><br />
+			<h:selectOneRadio id="obrigatorio"
+							  value="#{grupoHome.instancia.tipoObrigatorio}" 
+							  required="true"
+							  title="Informe se o grupo é obrigatório ou não" >
+				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+
+	</h:panelGrid>
+</ui:composition>
