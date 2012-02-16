@@ -5,8 +5,8 @@ package br.com.ControleDispensacao.enums;
  */
 
 public enum TipoStatusEnum {
-	S("Ativo"), 
-	N("Inativo"); 
+	S("Sim"), 
+	N("Não"); 
 	
 	TipoStatusEnum(String papel){
 		label = papel;
