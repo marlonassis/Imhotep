@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dataTable 	id="tabelaListaEspecial" 
+					value="#{listaEspecialConsulta.list}" 
+					var="linha"
+					emptyMessage="Não foi encontrado registros" 
+					rows="10" 
+					paginator="true"
+					selectionMode="single" 
+					rowKey="#{linha.idListaEspecial}">
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Livro" /></f:facet>
+			<h:outputText value="#{linha.livro}" />
+		</p:column>			
+		<p:column>
+			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
+			<h:outputText value="#{linha.descricao}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Medicamento Controlado" /></f:facet>
+			<h:outputText value="#{linha.medicamentoControlado.label}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Receita Controlada" /></f:facet>
+			<h:outputText value="#{linha.receitaControlada.label}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Status" /></f:facet>
+			<h:outputText value="#{linha.status.label}" />
+		</p:column>
+		<p:column style="width:60px; text-align: center;" >
+			<p:commandLink update="padraoTabView:listaEspecialForm" 
+						   title="Editar" 
+						   style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{listaEspecialHome.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink  action="#{listaEspecialHome.apagar()}"
+							update="tabelaListaEspecial padraoTabView:listaEspecialForm" 
+							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+							title="Apagar" 
+							style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{listaEspecialHome.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>  
+	</p:dataTable>
+	
+</ui:composition>

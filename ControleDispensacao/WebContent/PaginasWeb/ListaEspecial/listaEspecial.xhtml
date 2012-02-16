@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabListaEspecial" title="Lista de Controle Especial" >
+			<h:form id="listaEspecialForm" prependId="false" >
+				<p:fieldset legend="Nova Lista de controle especial"
+							collapsed="#{!listaEspecialHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" />
+						<ui:include src="listaEspecialEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!listaEspecialHome.edicao}"
+			            					update="padraoTabView:tabelaListaEspecial listaEspecialForm"
+											action="#{listaEspecialHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{listaEspecialHome.edicao}"
+			            					update="padraoTabView:tabelaListaEspecial listaEspecialForm"
+											action="#{listaEspecialHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{listaEspecialHome.edicao}"
+											update="@parent" 
+											action="#{listaEspecialHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaListaEspecialForm" prependId="false" >
+				<p:fieldset id="pesquisaListaEspecialFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="listaEspecialConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaListaEspecial" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{listaEspecialConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaListaEspecialForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="listaEspecialTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>
