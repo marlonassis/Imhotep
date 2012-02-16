@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabSubGrupo" title="Sub Grupo" >
+			<h:form id="subGrupoForm" prependId="false" >
+				<p:fieldset legend="Novo Sub Grupo"
+							collapsed="#{!subGrupoHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" />
+						<ui:include src="subGrupoEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!subGrupoHome.edicao}"
+			            					update="padraoTabView:tabelaSubGrupo subGrupoForm"
+											action="#{subGrupoHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{subGrupoHome.edicao}"
+			            					update="padraoTabView:tabelaSubGrupo subGrupoForm"
+											action="#{subGrupoHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{subGrupoHome.edicao}"
+											update="@parent" 
+											action="#{subGrupoHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaSubGrupoForm" prependId="false" >
+				<p:fieldset id="pesquisaSubGrupoFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="subGrupoConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaSubGrupo" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{subGrupoConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaSubGrupoForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="subGrupoTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>
