@@ -8,8 +8,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import br.com.ControleDispensacao.enums.TipoBooleanEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 
 
@@ -37,4 +39,19 @@ public class ItensPadrao{
 		return situacaoEnumItens;
 	}
 	
+	public List<SelectItem> getBooleanEnumItens(){
+		List<SelectItem> booleanEnumItens = new ArrayList<SelectItem>();
+		for(TipoBooleanEnum item : TipoBooleanEnum.values()){
+			booleanEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return booleanEnumItens;
+	}
+
+	public List<SelectItem> getStatusEnumItens(){
+		List<SelectItem> statusEnumItens = new ArrayList<SelectItem>();
+		for(TipoStatusEnum item : TipoStatusEnum.values()){
+			statusEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return statusEnumItens;
+	}
 }
