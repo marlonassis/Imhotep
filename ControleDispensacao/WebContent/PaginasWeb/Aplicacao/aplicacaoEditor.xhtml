@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="aplicacaoPanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
+			<p:inputText id="descricao" 
+						 value="#{aplicacaoHome.instancia.descricao}" 
+						 required="true"
+						 title="Informe a descrição do executável" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="executavel" value="Executável:"  /><br />
+			<p:inputText id="executavel" 
+						 value="#{aplicacaoHome.instancia.executavel}" 
+						 required="true"
+						 title="Informe o executável do menu" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
+			<h:selectOneRadio id="situacao"
+							  value="#{aplicacaoHome.instancia.status}" 
+							  required="true"
+							  title="Informe se o item está ativo ou inativo" >
+				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+
+	</h:panelGrid>
+</ui:composition>

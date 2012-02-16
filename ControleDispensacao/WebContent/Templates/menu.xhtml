@@ -10,6 +10,11 @@
 					toggleable="true"
 					toggleSpeed="500">
 			<h:form >
+			
+				<p:menu type="tiered" model="#{menuHome.menuModel}" style="width:180px"/>
+			
+			
+			
 				<p:menu >
 				
 					<p:menuitem value="Home" 
@@ -17,6 +22,12 @@
 								
 					<p:menuitem value="Usuário" 
 								url="/PaginasWeb/Usuario/usuario.jsf" />
+					
+					<p:menuitem value="Aplicação" 
+								url="/PaginasWeb/Aplicacao/aplicacao.jsf" />
+					
+					<p:menuitem value="Menu" 
+								url="/PaginasWeb/Menu/menu.jsf" />
 					
 					<p:menuitem value="Sair" 
 								action="#{usuarioHome.logout()}" 

@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="aplicacaoPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<h:outputLabel for="executavelConsulta" value="Executável:"  /><br />
+			<p:inputText id="executavelConsulta" 
+						 value="#{aplicacaoConsulta.instancia.executavel}" 
+						 title="Informe o execultável do sistema" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
+			<p:inputText id="descricaoConsulta" 
+						 value="#{aplicacaoConsulta.instancia.descricao}" 
+						 title="Informe descrição do executável" />
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>

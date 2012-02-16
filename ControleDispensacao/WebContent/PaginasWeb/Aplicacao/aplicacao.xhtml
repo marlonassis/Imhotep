@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabAplicacao" title="Aplicação" >
+			<h:form id="aplicacaoForm" prependId="false" >
+				<p:fieldset legend="Nova Aplicação"
+							collapsed="#{!aplicacaoHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" />
+						<ui:include src="aplicacaoEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!aplicacaoHome.edicao}"
+			            					update="padraoTabView:tabelaAplicacao aplicacaoForm"
+											action="#{aplicacaoHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{aplicacaoHome.edicao}"
+			            					update="padraoTabView:tabelaAplicacao aplicacaoForm"
+											action="#{aplicacaoHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{aplicacaoHome.edicao}"
+											update="@parent" 
+											action="#{aplicacaoHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaAplicacaoForm" prependId="false" >
+				<p:fieldset id="pesquisaAplicacaoFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="aplicacaoConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaAplicacao" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{aplicacaoConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaAplicacaoForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="aplicacaoTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>

@@ -28,7 +28,7 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	public boolean atualizar() {
 		//procura se existe algum usuário com o mesmo login
 		//se o usuário informou a senha de confirmação então devemos validar a senha
-		if(!getSenhaConfirmacao().equals("") && getSenhaConfirmacao() != null){
+		if(trocaSenha && !getSenhaConfirmacao().equals("") && getSenhaConfirmacao() != null){
 			if (getInstancia().getSenha().equals(getSenhaConfirmacao())){
 				getInstancia().setSenha(Utilities.md5(getInstancia().getSenha()));
 				return super.atualizar();

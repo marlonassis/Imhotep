@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="menuPanelGrid"
+				 columns="3" 
+				 width="100%" >
+
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
+			<p:inputText id="descricao" 
+						 value="#{menuHome.instancia.descricao}"
+						 required="true" 
+						 title="Informe a descrição do menu" />
+		</h:panelGroup>
+				 
+		<h:panelGroup style="align:left;" >
+			<font color="red" >*</font><h:outputLabel for="aplicacao" value="Aplicação:"  /><br />
+	  		<p:autoComplete id="aplicacao" 
+	  						value="#{menuHome.instancia.aplicacao}"
+							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
+							var="aplicacao"
+							required="true"
+							title="Informe a aplicação do menu"
+							itemLabel="#{aplicacao.descricao}" 
+							itemValue="#{aplicacao}"
+							converter="aplicacaoConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="menuPai" value="Menu pai:"  /><br />
+	  		<p:autoComplete id="menuPai" 
+	  						value="#{menuHome.instancia.menuPai}"
+							completeMethod="#{menuHome.getListaMenuSuggest}" 
+							var="menu"
+							title="Informe o menu pai"
+							itemLabel="#{menu.descricao}" 
+							itemValue="#{menu}"
+							converter="menuConversor" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
+			<h:selectOneRadio id="situacao"
+							  value="#{menuHome.instancia.status}" 
+							  required="true"
+							  title="Informe se o usuário está ativo ou inativo" >
+				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+	</h:panelGrid>
+</ui:composition>

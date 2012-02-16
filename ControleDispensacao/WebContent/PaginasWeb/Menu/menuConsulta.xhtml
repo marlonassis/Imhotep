@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="aplicacaoPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
+			<p:inputText id="descricaoConsulta" 
+						 value="#{menuConsulta.instancia.descricao}" 
+						 title="Informe a descrição do menu" />
+		</h:panelGroup>
+				 
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="aplicacaoConsulta" value="Aplicação:"  /><br />
+	  		<p:autoComplete id="aplicacaoConsulta" 
+	  						value="#{menuConsulta.instancia.aplicacao}"
+							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
+							var="aplicacao"
+							title="Informe a aplicação do menu"
+							itemLabel="#{aplicacao.descricao}" 
+							itemValue="#{aplicacao}"
+							converter="aplicacaoConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="menuPaiConsulta" value="Menu pai:"  /><br />
+	  		<p:autoComplete id="menuPaiConsulta" 
+	  						value="#{menuConsulta.instancia.menuPai}"
+							completeMethod="#{menuHome.getListaMenuSuggest}" 
+							var="menu"
+							title="Informe o menu pai"
+							itemLabel="#{menu.descricao}" 
+							itemValue="#{menu}"
+							converter="menuConversor" />
+		</h:panelGroup>
+	</h:panelGrid>
+</ui:composition>
