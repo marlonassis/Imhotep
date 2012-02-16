@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabFamilia" title="Família" >
+			<h:form id="familiaForm" prependId="false" >
+				<p:fieldset legend="Nova Família"
+							collapsed="#{!familiaHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" />
+						<ui:include src="familiaEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!familiaHome.edicao}"
+			            					update="padraoTabView:tabelaFamilia familiaForm"
+											action="#{familiaHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{familiaHome.edicao}"
+			            					update="padraoTabView:tabelaFamilia familiaForm"
+											action="#{familiaHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{familiaHome.edicao}"
+											update="@parent" 
+											action="#{familiaHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaFamiliaForm" prependId="false" >
+				<p:fieldset id="pesquisaFamiliaFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="familiaConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaFamilia" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{familiaConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaFamiliaForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="familiaTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>

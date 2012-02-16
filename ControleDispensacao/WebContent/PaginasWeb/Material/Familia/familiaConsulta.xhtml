@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="familiaPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
+			<p:inputText id="descricaoConsulta" 
+						 value="#{familiaConsulta.instancia.descricao}" 
+						 title="Informe descrição do fabricante" />
+		</h:panelGroup>
+		
+		<h:panelGroup id="grupoPanelGroupConsulta" >
+			<h:panelGrid columns="2"
+						 width="100%" >
+				<h:panelGroup>
+					<h:outputLabel for="grupoConsulta" value="Grupo:"  /><br />
+					<p:selectOneMenu id="grupoConsulta"
+									 value="#{familiaHome.grupo}" 
+									 effect="fade" 
+									 converter="grupoConversor">
+						<f:ajax event="change" 
+								listener="#{familiaHome.carregaSubgGrupoList()}" 
+								render="grupoPanelGroupConsulta" />
+						<f:selectItem itemLabel="Selecione..." 
+									  itemValue="" /> 
+			            <f:selectItems value="#{grupoConsulta.list}" 
+			            			   var="grupo" 
+			            			   itemLabel="#{grupo.descricao}" 
+			            			   itemValue="#{grupo}"/>  
+			        </p:selectOneMenu>
+		        </h:panelGroup>
+		        <h:panelGroup> 
+					<h:outputLabel for="subGrupoConsulta" value="Sub-grupo:"  /><br />
+					<p:selectOneMenu id="subGrupoConsulta"
+									 value="#{familiaHome.instancia.subGrupo}" 
+									 effect="fade" 
+									 converter="subGrupoConversor">  
+			            <f:selectItem itemLabel="Selecione..." itemValue="" /> 
+			            <f:selectItems value="#{familiaHome.sugGrupoList}" var="subGrupo" itemLabel="#{subGrupo.descricao}" itemValue="#{subGrupo}"/>  
+		        	</p:selectOneMenu>
+		        </h:panelGroup>
+			</h:panelGrid> 
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>
