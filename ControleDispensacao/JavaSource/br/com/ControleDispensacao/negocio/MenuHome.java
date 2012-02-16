@@ -50,15 +50,23 @@ public class MenuHome extends PadraoHome<Menu>{
 		submenu.getChildren().add(mi);
 		menuModel.addSubmenu(submenu);
 		
-		List<Menu> listaMenu = getBusca("select o from Menu o where o.idMenu = 7 or o.idMenu = 41 or o.idMenu = 8 or o.idMenu = 43");   //new AplicacaoConsulta().getList();
+		List<Menu> listaMenu = getBusca("select o from Menu o where o.idMenu = 18 or o.idMenu = 85 or o.idMenu = 7 or o.idMenu = 41 or o.idMenu = 8 or o.idMenu = 43");   //new AplicacaoConsulta().getList();
 		for (Menu menu : listaMenu) {
 			submenu = new Submenu();
 			submenu.setLabel(menu.getDescricao());
-			for (Menu m : getBusca("select o from Menu o where o.menuPai.idMenu = " + menu.getIdMenu())) {
-					mi = new MenuItem();
-					mi.setValue(m.getDescricao());
-					mi.setUrl(m.getAplicacao().getExecutavel());
-					submenu.getChildren().add(mi);
+			List<Menu> busca = getBusca("select o from Menu o where o.menuPai.idMenu = " + menu.getIdMenu());
+			if(busca.size() > 0){
+				for (Menu m : busca) {
+						mi = new MenuItem();
+						mi.setValue(m.getDescricao());
+						mi.setUrl(m.getAplicacao().getExecutavel());
+						submenu.getChildren().add(mi);
+				}
+			}else{
+				mi = new MenuItem();
+				mi.setValue(menu.getAplicacao().getDescricao());
+				mi.setUrl(menu.getAplicacao().getExecutavel());
+				submenu.getChildren().add(mi);
 			}
 			menuModel.addSubmenu(submenu);
 		}

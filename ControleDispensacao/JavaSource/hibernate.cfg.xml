@@ -12,5 +12,14 @@
         <mapping class="br.com.ControleDispensacao.entidade.Usuario"/>
         <mapping class="br.com.ControleDispensacao.entidade.Aplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.Menu"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Fabricante"/>
+        <mapping class="br.com.ControleDispensacao.entidade.TipoMaterial"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Grupo"/>
+        <mapping class="br.com.ControleDispensacao.entidade.SubGrupo"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Familia"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Material"/>
+        <mapping class="br.com.ControleDispensacao.entidade.UnidadeMaterial"/>
+        <mapping class="br.com.ControleDispensacao.entidade.ListaEspecial"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Livro"/>
     </session-factory>
 </hibernate-configuration>
