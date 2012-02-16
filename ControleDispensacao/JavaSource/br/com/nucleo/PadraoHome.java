@@ -1,13 +1,18 @@
 package br.com.nucleo;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 
 import br.com.nucleo.gerenciador.GerenciadorConexao;
 import br.com.nucleo.interfaces.IPadraoHome;
@@ -18,9 +23,33 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	
 	@SuppressWarnings("unchecked")
 	public void setId(Object o){
-		EntityManager em = getEntityManager();
-		instancia = (T) em.find(instancia.getClass(), o);
-		em.close();
+		
+		
+		Session session=null;
+		boolean ret = false;
+		try{
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+			//Cria uma transação
+			Transaction tx = session.beginTransaction();
+			// Cria objeto Aluno
+			session.get(instancia.getClass(), (Serializable) o);
+			tx.commit(); // Finaliza transação
+			ret = true;
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}finally{
+			session.close(); // Fecha sessão
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -49,60 +78,67 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+    
 	@Override
 	public boolean enviar() {
-		EntityManager em = getEntityManager();
-		boolean result = false;
-        try{
-	        //inicia o processo de transacao
-	        em.getTransaction().begin();
-	        //faz a persistencia
-	        em.persist(instancia);
-	        //manda bala para o BD
-	        em.getTransaction().commit();
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro bem sucedido!", "O cadastro foi efetuado com sucesso!"));
-	        result = true;
-		}
-        catch (Exception e) {
+		Session session=null;
+		boolean ret = false;
+		try{
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+			//Cria uma transação
+			Transaction tx = session.beginTransaction();
+			// Cria objeto Aluno
+			session.save(instancia); // Realiza persistência
+			tx.commit(); // Finaliza transação
+			ret = true;
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
 			e.printStackTrace();
-			if(e.getCause().toString().contains("org.hibernate.exception.ConstraintViolationException"))
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro de constraint", "Cadastro não realizado!"));
-			else
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Cadastro não realizado!"));
-        }finally{
-        	em.close();
-        }
-		return result;
+		}finally{
+			session.close(); // Fecha sessão
+		}
+		
+		return ret;
 	}
 
 	@Override
 	public boolean apagar() {
-		EntityManager em = getEntityManager();
-		boolean result = false;
-        try{
-	        //inicia o processo de transacao
-	        em.getTransaction().begin();
-	        //faz a persistencia
-	        Object obj = em.merge(instancia);
-	        em.remove(obj);
-	        //manda bala para o BD
-	        em.getTransaction().commit();
-	
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro apagado!", "O registro removido com sucesso!"));
-	        result = true;
-	        novaInstancia();
-        }catch (Exception e) {
+		Session session=null;
+		boolean ret = false;
+		try{
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+			//Cria uma transação
+			Transaction tx = session.beginTransaction();
+			// Cria objeto Aluno
+			session.delete(instancia); // Realiza persistência
+			tx.commit(); // Finaliza transação
+			ret = true;
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
 			e.printStackTrace();
-	        //se der algo de errado vem parar aqui, onde eh cancelado
-	        em.getTransaction().rollback();
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Exclusão não realizada!"));  
-        }finally{
-        	em.close();
-        }
-		return result;
+		}finally{
+			session.close(); // Fecha sessão
+		}
+		
+		return ret;
 	}
 	
 	@Override
@@ -112,25 +148,33 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	
 	@Override
 	public Object atualizarGenerico(Object obj) {
-		EntityManager em = getEntityManager();
-        try{
-	        //inicia o processo de transacao
-	        em.getTransaction().begin();
-	        //faz a persistencia
-	        em.merge(obj);
-	        //manda bala para o BD
-	        em.getTransaction().commit();
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro atualizado com sucesso!", "O cadastro efetuado com sucesso!"));
-	        em.close();
-	        return obj;
-        }catch (Exception e) {
+		Session session=null;
+		boolean ret = false;
+		try{
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+			//Cria uma transação
+			Transaction tx = session.beginTransaction();
+			// Cria objeto Aluno
+			session.merge(instancia); // Realiza persistência
+			tx.commit(); // Finaliza transação
+			ret = true;
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
 			e.printStackTrace();
-	        //se der algo de errado vem parar aqui, onde eh cancelado
-	        em.getTransaction().rollback();
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Registro não atualizado!"));
-	        em.close();
-	        return null;
-        }
+		}finally{
+			session.close(); // Fecha sessão
+		}
+		
+		return ret;	
 	}
 	
 	/**
@@ -140,37 +184,56 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getBusca(String sql) {
-		EntityManager em = getEntityManager();
 		List<T> lista = null;
+		Session session=null;
         try{
-            //inicia o processo de transacao
-            em.getTransaction().begin();
-            lista = em.createQuery(sql).getResultList();     
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+			Query query = session.createQuery(sql);
+            lista = query.list();     
         }catch (Exception e) {
+        	if(session != null){
+        		session.getTransaction().rollback();
+        	}
         	e.printStackTrace();
-            //se der algo de errado vem parar aqui, onde eh cancelado
-            em.getTransaction().rollback();
         }finally{
-        	em.close();
+        	if(session != null){
+        		session.close();
+        	}
         }
         return lista;
 	}
 	
 	@Override
 	public Integer executa(String sql) {
-		EntityManager em = getEntityManager();
 		Integer res = null; 
+		Session session=null;
         try{
-            //inicia o processo de transacao
-            em.getTransaction().begin();
-            res = em.createQuery(sql).executeUpdate();
-            em.getTransaction().commit();
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+            res = session.createQuery(sql).executeUpdate();
         }catch (Exception e) {
+        	//se der algo de errado vem parar aqui, onde eh cancelado
+        	if(session != null){
+        		session.getTransaction().rollback();
+        	}
         	e.printStackTrace();
-            //se der algo de errado vem parar aqui, onde eh cancelado
-            em.getTransaction().rollback();
         }finally{
-        	em.close();
+        	if(session != null){
+        		session.close();
+        	}
         }
         return res;
 	}
@@ -196,18 +259,30 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getBusca(){
-		EntityManager em = getEntityManager();
 		List<T> lista = null;
-        try{
-            //inicia o processo de transacao
-            em.getTransaction().begin();
-            lista = em.createQuery("from "+nomeClasse()+" u").getResultList();
+		Session session=null;
+		try{
+			Configuration cfg = new AnnotationConfiguration();
+			//Informe o arquivo XML que contém a configurações
+			cfg.configure("hibernate.cfg.xml");
+			//Cria uma fábrica de sessões.
+			//Deve existir apenas uma instância na aplicação
+			SessionFactory sf = cfg.buildSessionFactory();
+			// Abre sessão com o Hibernate
+			session = sf.openSession();
+			
+			Query query = session.createQuery("from "+nomeClasse()+" u");
+			lista = query.list();
         }catch (Exception e) {
-                //se der algo de errado vem parar aqui, onde eh cancelado
-                em.getTransaction().rollback();
-                e.printStackTrace();
+            //se der algo de errado vem parar aqui, onde eh cancelado
+        	if(session != null){
+        		session.getTransaction().rollback();
+        	}
+            e.printStackTrace();
         }finally{
-        	em.close();
+        	if(session != null){
+        		session.close();
+        	}
         }
 		return lista;
 	}

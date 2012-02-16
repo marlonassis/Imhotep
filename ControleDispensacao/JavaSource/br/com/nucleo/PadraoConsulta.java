@@ -78,7 +78,6 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	
 	
 	public List<T> getList(){
-		EntityManager em = getEntityManager();
 		List<T> resultadoBuscaList = null;
         try{
         	boolean adicionadoWhere=false;
@@ -138,9 +137,6 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         }catch (Exception e) {
         	e.printStackTrace();
             //se der algo de errado vem parar aqui, onde eh cancelado
-            em.getTransaction().rollback();
-        }finally{
-        	em.close();
         }
         return resultadoBuscaList;
 	}
