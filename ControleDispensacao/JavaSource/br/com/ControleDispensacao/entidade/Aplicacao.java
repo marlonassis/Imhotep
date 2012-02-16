@@ -132,12 +132,12 @@ public class Aplicacao {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + executavel.hashCode();
+	    return hash * 31 + descricao.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return executavel;
+		return descricao;
 	}
 	
 }

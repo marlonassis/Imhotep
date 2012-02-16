@@ -13,14 +13,20 @@
 					paginator="true"
 					selectionMode="single" 
 					rowKey="#{linha.idMenu}">
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
+			<h:outputText value="#{linha.idMenu}" />
+		</p:column>
 					
 		<p:column>
 			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
+		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Menu pai" /></f:facet>
-			<h:outputText value="#{linha.menuPai.descricao}" />
+			<f:facet name="header"><h:outputText value="Aplicação" /></f:facet>
+			<h:outputText value="#{linha.aplicacao.descricao}" />
 		</p:column>
 		
 		<p:column>

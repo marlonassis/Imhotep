@@ -46,7 +46,7 @@ public class Menu {
 		this.idMenu = idMenu;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "item_menu_id_item_menu ")
 	public Menu getMenuPai() {
 		return this.menuPai;
@@ -56,7 +56,7 @@ public class Menu {
 		this.menuPai = menuPai;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "aplicacao_id_aplicacao")
 	public Aplicacao getAplicacao(){
 		return aplicacao;

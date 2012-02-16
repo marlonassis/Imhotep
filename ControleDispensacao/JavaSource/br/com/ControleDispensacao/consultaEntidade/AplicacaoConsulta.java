@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoConsulta;
 @SessionScoped
 public class AplicacaoConsulta extends PadraoConsulta<Aplicacao> {
 	public AplicacaoConsulta(){
-		getCamposConsulta().put("o.executavel", IGUAL);
+		getCamposConsulta().put("o.executavel", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		setOrderBy("o.descricao");
 	}
