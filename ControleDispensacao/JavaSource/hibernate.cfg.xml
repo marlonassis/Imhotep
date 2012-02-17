@@ -21,5 +21,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.UnidadeMaterial"/>
         <mapping class="br.com.ControleDispensacao.entidade.ListaEspecial"/>
         <mapping class="br.com.ControleDispensacao.entidade.Livro"/>
+        <mapping class="br.com.ControleDispensacao.entidade.AutorizaAplicacao"/>
     </session-factory>
 </hibernate-configuration>
