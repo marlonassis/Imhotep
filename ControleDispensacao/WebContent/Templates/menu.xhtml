@@ -5,22 +5,7 @@
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:p="http://primefaces.prime.com.tr/ui">
     	
-		<p:fieldset legend="Menu" 
-					collapsed="false"
-					toggleable="true"
-					toggleSpeed="500">
-			<h:form >
-			
-				<p:menu >
-					<p:menuitem value="Aplicação" 
-								url="/PaginasWeb/Aplicacao/aplicacao.jsf" />
-					<p:menuitem value="Menu" 
-								url="/PaginasWeb/Menu/menu.jsf" />
-				</p:menu>  
-				<p:menu type="tiered" style="width:180px;" model="#{menuHome.menuModel}"/>
-			
-			
-			
-		</h:form>
-	</p:fieldset>
+	<h:form >
+		<p:menubar type="tiered" autoSubmenuDisplay="true" model="#{menuHome.toolBarMenuModel}" />
+	</h:form>
 </html>

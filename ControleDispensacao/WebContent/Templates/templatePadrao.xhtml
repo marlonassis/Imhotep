@@ -31,33 +31,26 @@
 		<br/>
 		<div id="geral" 
 			 align="center" >
-			<table width="100%" >
-				<tr>
-					<h:panelGroup rendered="#{usuarioHome.usuarioAtivo}" >
-						<td width="10%" valign="top" >
-							<ui:include src="menu.xhtml" />
-						</td>
-					</h:panelGroup>
-					<td width="#{usuarioHome.usuarioAtivo ? '90%' : '100%'}" >
-						<div id="conteudoPadrao" align="center" >
-							<p:growl></p:growl>
-							
-							<p:dialog header="#{header}"
-									  widgetVar="padraoDialog" 
-									  modal="false" >  
-							    <ui:insert name="dialogGeneric"/>
-							</p:dialog> 
-							
-							<p:tabView id="padraoTabView" 
-									   effect="opacity" 
-									   effectDuration="normal" 
-									   cache="true" >
-								<ui:insert name="conteudoPadrao"/>
-							</p:tabView>
-						</div>
-					</td>
-				</tr>
-			</table>
+			<h:panelGroup rendered="#{usuarioHome.usuarioAtivo}" >
+				<ui:include src="menu.xhtml" />
+			</h:panelGroup>
+			<br/>
+			<div id="conteudoPadrao" align="center" >
+				<p:growl></p:growl>
+				
+				<p:dialog header="#{header}"
+						  widgetVar="padraoDialog" 
+						  modal="false" >  
+				    <ui:insert name="dialogGeneric"/>
+				</p:dialog> 
+				
+				<p:tabView id="padraoTabView" 
+						   effect="opacity" 
+						   effectDuration="normal" 
+						   cache="true" >
+					<ui:insert name="conteudoPadrao"/>
+				</p:tabView>
+			</div>
 	
 			<p:dialog id="genericDialog" 
 					  widgetVar="genericoDialog" 
