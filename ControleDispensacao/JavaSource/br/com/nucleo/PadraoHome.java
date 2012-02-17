@@ -23,25 +23,15 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	
 	@SuppressWarnings("unchecked")
 	public void setId(Object o){
-		
-		
 		Session session=null;
-		boolean ret = false;
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
 		try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
-			//Cria uma transação
-			Transaction tx = session.beginTransaction();
-			// Cria objeto Aluno
+			Transaction tx = session.beginTransaction();  
 			session.get(instancia.getClass(), (Serializable) o);
-			tx.commit(); // Finaliza transação
-			ret = true;
 		}catch (Exception e) {
 			if(session != null){
 				session.getTransaction().rollback();
@@ -49,6 +39,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			e.printStackTrace();
 		}finally{
 			session.close(); // Fecha sessão
+			factory.close();
 		}
 	}
 	
@@ -81,22 +72,18 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
     
 	@Override
 	public boolean enviar() {
-		Session session=null;
 		boolean ret = false;
+		Session session=null;
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
 		try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
-			//Cria uma transação
-			Transaction tx = session.beginTransaction();
-			// Cria objeto Aluno
-			session.save(instancia); // Realiza persistência
-			tx.commit(); // Finaliza transação
+			Transaction tx = session.beginTransaction();  
+			session.save(instancia);  
+			session.flush();  
+			tx.commit();  
 			ret = true;
 		}catch (Exception e) {
 			if(session != null){
@@ -105,27 +92,22 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			e.printStackTrace();
 		}finally{
 			session.close(); // Fecha sessão
+			factory.close();
 		}
-		
 		return ret;
 	}
 
 	@Override
 	public boolean apagar() {
-		Session session=null;
 		boolean ret = false;
+		Session session=null;
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
 		try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
-			//Cria uma transação
-			Transaction tx = session.beginTransaction();
-			// Cria objeto Aluno
+			Transaction tx = session.beginTransaction();  
 			session.delete(instancia); // Realiza persistência
 			tx.commit(); // Finaliza transação
 			novaInstancia();
@@ -137,8 +119,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			e.printStackTrace();
 		}finally{
 			session.close(); // Fecha sessão
+			factory.close();
 		}
-		
 		return ret;
 	}
 	
@@ -149,23 +131,18 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	
 	@Override
 	public Object atualizarGenerico(Object obj) {
+		Object o = null;
 		Session session=null;
-		boolean ret = false;
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
 		try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
-			//Cria uma transação
-			Transaction tx = session.beginTransaction();
-			// Cria objeto Aluno
-			session.merge(instancia); // Realiza persistência
+			Transaction tx = session.beginTransaction();  
+			session.merge(obj); // Realiza persistência
 			tx.commit(); // Finaliza transação
-			ret = true;
+			o = obj;
 		}catch (Exception e) {
 			if(session != null){
 				session.getTransaction().rollback();
@@ -173,11 +150,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			e.printStackTrace();
 		}finally{
 			session.close(); // Fecha sessão
+			factory.close();
 		}
-		
-		return ret;	
+		return o;
 	}
-	
+		
 	/**
 	 * Método que retorna todos os registros do tipo genérico a partir de uma consulta guiada
 	 * @param String arg0
@@ -187,27 +164,24 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	public List<T> getBusca(String sql) {
 		List<T> lista = null;
 		Session session=null;
-        try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
+		try{
+			Transaction tx = session.beginTransaction();  
 			Query query = session.createQuery(sql);
-            lista = query.list();     
-        }catch (Exception e) {
-        	if(session != null){
-        		session.getTransaction().rollback();
-        	}
-        	e.printStackTrace();
-        }finally{
-        	if(session != null){
-        		session.close();
-        	}
-        }
+            lista = query.list();    
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}finally{
+			session.close(); // Fecha sessão
+			factory.close();
+		}
         return lista;
 	}
 	
@@ -215,28 +189,26 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	public Integer executa(String sql) {
 		Integer res = null; 
 		Session session=null;
-        try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
-            res = session.createQuery(sql).executeUpdate();
-        }catch (Exception e) {
-        	//se der algo de errado vem parar aqui, onde eh cancelado
-        	if(session != null){
-        		session.getTransaction().rollback();
-        	}
-        	e.printStackTrace();
-        }finally{
-        	if(session != null){
-        		session.close();
-        	}
-        }
-        return res;
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
+		try{
+			Transaction tx = session.beginTransaction();  
+			res = session.createQuery(sql).executeUpdate();
+			novaInstancia();
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}finally{
+			session.close(); // Fecha sessão
+			factory.close();
+		}
+		
+		return res;
 	}
 	
 	private String nomeCompletoClasse(){
@@ -262,29 +234,24 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	public List<T> getBusca(){
 		List<T> lista = null;
 		Session session=null;
+		Configuration cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory factory = cfg.buildSessionFactory();
+		session = factory.openSession();  
 		try{
-			Configuration cfg = new AnnotationConfiguration();
-			//Informe o arquivo XML que contém a configurações
-			cfg.configure("hibernate.cfg.xml");
-			//Cria uma fábrica de sessões.
-			//Deve existir apenas uma instância na aplicação
-			SessionFactory sf = cfg.buildSessionFactory();
-			// Abre sessão com o Hibernate
-			session = sf.openSession();
-			
+			Transaction tx = session.beginTransaction();  
 			Query query = session.createQuery("from "+nomeClasse()+" u");
-			lista = query.list();
-        }catch (Exception e) {
-            //se der algo de errado vem parar aqui, onde eh cancelado
-        	if(session != null){
-        		session.getTransaction().rollback();
-        	}
-            e.printStackTrace();
-        }finally{
-        	if(session != null){
-        		session.close();
-        	}
-        }
+			lista = query.list(); 
+		}catch (Exception e) {
+			if(session != null){
+				session.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}finally{
+			session.close(); // Fecha sessão
+			factory.close();
+		}
 		return lista;
 	}
 	
