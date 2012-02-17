@@ -14,6 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class UnidadeMaterialConsulta extends PadraoConsulta<UnidadeMaterial> {
 	public UnidadeMaterialConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.sigla", IGUAL);
 		setOrderBy("o.descricao");
 	}
 	

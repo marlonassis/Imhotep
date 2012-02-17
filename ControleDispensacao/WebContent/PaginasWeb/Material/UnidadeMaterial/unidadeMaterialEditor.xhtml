@@ -8,14 +8,23 @@
 				 columns="3" 
 				 width="100%" >
 				 
+				 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
+			<font color="red" >*</font><h:outputLabel for="z" value="Descrição:"  /><br />
 			<p:inputText id="descricao" 
 						 value="#{unidadeMaterialHome.instancia.descricao}" 
 						 required="true"
+						 title="Informe a descrição da unidade material" />
+		</h:panelGroup>
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="sigla" value="Sigla:"  /><br />
+			<p:inputText id="sigla" 
+						 value="#{unidadeMaterialHome.instancia.sigla}" 
+						 required="true"
 						 size="2"
 						 maxlength="2"
-						 title="Informe a descrição da unidade material" />
+						 title="Informe a sigla da unidade material" />
 		</h:panelGroup>
 
 	</h:panelGrid>

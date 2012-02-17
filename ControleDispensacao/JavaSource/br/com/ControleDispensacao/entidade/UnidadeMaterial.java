@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "unidade_material")
 public class UnidadeMaterial {
 	private int idUnidadeMaterial;
 	private String descricao;
+	private String sigla;
 	
 	@Id
 	@GeneratedValue
@@ -22,14 +24,24 @@ public class UnidadeMaterial {
 	public void setIdUnidadeMaterial(int idUnidadeMaterial){
 		this.idUnidadeMaterial = idUnidadeMaterial;
 	}
-	
-	@Column(name = "unidade", length = 2)
+
+	@Column(name = "unidade")
 	public String getDescricao() {
 		return this.descricao;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+//	@Column(name = "sigla", length = 2)
+	@Transient
+	public String getSigla() {
+		return this.sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 	
 	@Override
