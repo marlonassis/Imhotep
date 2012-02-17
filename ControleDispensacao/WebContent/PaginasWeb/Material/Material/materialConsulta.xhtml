@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="materialPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
+			<p:inputText id="descricaoConsulta" 
+						 value="#{materialConsulta.instancia.descricao}" 
+						 title="Informe descrição do material" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="codigoConsulta" value="Código:"  /><br />
+			<p:inputText id="codigoConsulta" 
+						 value="#{materialConsulta.instancia.codigoMaterial}" 
+						 title="Informe o código do material" />
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>

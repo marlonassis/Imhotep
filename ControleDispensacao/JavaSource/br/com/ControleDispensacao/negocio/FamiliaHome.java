@@ -21,18 +21,26 @@ public class FamiliaHome extends PadraoHome<Familia>{
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();
 	
 	public void carregaSubgGrupoList(){
-		SubGrupoHome sgh = new SubGrupoHome();
 		if(grupo != null){
-			sugGrupoList = (List<SubGrupo>) sgh.getListaSubGrupoGrupoSuggest(grupo.getIdGrupo());
+			sugGrupoList = (List<SubGrupo>) new SubGrupoHome().getListaSubGrupoGrupo(grupo.getIdGrupo());
 		}
 	}
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
-	 * @param String sql
-	 * @return Collection Menu
+	 * Método que retorna uma lista de famílias de acordo com o subgrupo informado
+	 * @param id
+	 * @return Collection de família
 	 */
-	public Collection<Familia> getListaFabricanteSuggest(String sql){
+	public Collection<Familia> getListaFamiliaSubGrupo(Integer id){
+		return super.getBusca("select o from Familia as o where o.subGrupo.idSubGrupo = "+id+" ");
+	}
+	
+	/**
+	 * Método que retorna uma lista de Famílias de acordo com a descrição informada
+	 * @param String sql
+	 * @return Collection Familia
+	 */
+	public Collection<Familia> getListaFamiliaSuggest(String sql){
 		return super.getBusca("select o from Familia as o where o.descricao like '%"+sql+"%' ");
 	}
 	

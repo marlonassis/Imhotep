@@ -32,7 +32,12 @@ public class SubGrupoHome extends PadraoHome<SubGrupo>{
 		return cg.consultaUnica(new StringBuilder("select o from SubGrupo as o where o.grupo.idGrupo = :idGrupo"), hm);
 	}
 	
-	public Collection<SubGrupo> getListaSubGrupoGrupoSuggest(Integer id){
+	/**
+	 * Retorna uma lista de subgrupos de acordo com o grupo
+	 * @param id
+	 * @return collection de SubGrupo
+	 */
+	public Collection<SubGrupo> getListaSubGrupoGrupo(Integer id){
 		return super.getBusca("select o from SubGrupo as o where o.grupo.idGrupo = "+id+" ");
 	}
 	
