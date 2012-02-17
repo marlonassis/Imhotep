@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.negocio;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.ControleDispensacao.entidade.Familia;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.nucleo.PadraoHome;
 import br.com.nucleo.utilidades.Utilities;
@@ -23,6 +25,17 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	private String senhaConfirmacao;
 	private boolean trocaSenha;
 	private static Usuario usuarioAtual = new Usuario();
+	
+	
+	/**
+	 * Método que retorna uma lista de Usuarios de acordo com o nome informado
+	 * @param String sql
+	 * @return Collection Usuario
+	 */
+	public Collection<Usuario> getListaUsuarioSuggest(String sql){
+		return super.getBusca("select o from Usuario as o where o.nome like '%"+sql+"%' ");
+	}
+
 	
 	@Override
 	public boolean atualizar() {

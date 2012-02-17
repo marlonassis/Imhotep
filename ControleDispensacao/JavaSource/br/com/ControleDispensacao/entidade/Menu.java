@@ -123,7 +123,7 @@ public class Menu {
 		this.dataInclusao = dataInclusao;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usua_incl")
 	public Usuario getUsuarioInclusao() {
 		return this.usuarioInclusao;
@@ -143,7 +143,7 @@ public class Menu {
 		this.dataAlteracao = dataAlteracao;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usua_alt")
 	public Usuario getUsuarioAlteracao() {
 		return this.usuarioAlteracao;
