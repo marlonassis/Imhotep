@@ -49,19 +49,14 @@ public class MenuHome extends PadraoHome<Menu>{
 		//TODO tornar o menu recursivo
 		menuModel = new DefaultMenuModel();
 		
-		MenuItem mi = new MenuItem();
-		mi.setValue("Home");
-		mi.setUrl("/PaginasWeb/home.jsf");
-		menuModel.addMenuItem(mi);
-		
-		List<Menu> listaPrimeiroNivel = getBusca("select o from Menu o where o.menuPai is null and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+")");
+		List<Menu> listaPrimeiroNivel = getBusca("select o from Menu o where o.menuPai is null and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
 		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
 			Submenu primeiroNivel = new Submenu();
 			primeiroNivel.setLabel(menuPrimeiroNivel.getDescricao());
 			
-			List<Menu> listaSegundoNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuPrimeiroNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+")");
+			List<Menu> listaSegundoNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuPrimeiroNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
 			for (Menu menuSegundoNivel : listaSegundoNivel) {
-				List<Menu> listaTerceiroNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuSegundoNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+")");
+				List<Menu> listaTerceiroNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuSegundoNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
 				if(listaTerceiroNivel.size() > 0){
 					Submenu segundoNivel = new Submenu();
 					segundoNivel.setLabel(menuSegundoNivel.getDescricao());
@@ -83,7 +78,7 @@ public class MenuHome extends PadraoHome<Menu>{
 			menuModel.addSubmenu(primeiroNivel);
 		}
 		
-		mi = new MenuItem();
+		MenuItem mi = new MenuItem();
 		mi.setValue("Sair");
 
 		String action = "#{usuarioHome.logout()}";
