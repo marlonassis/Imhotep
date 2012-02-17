@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="livroPanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="usuario" value="Usuario:" /><br />
+	  		<p:autoComplete id="usuario" 
+	  						required="true"
+	  						value="#{autorizaAplicacaoHome.instancia.usuario}"
+							completeMethod="#{usuarioHome.getListaUsuarioSuggest}" 
+							var="usuario" 
+							itemLabel="#{usuario.nome}" 
+							itemValue="#{usuario}" 
+							converter="usuarioConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="aplicacao" value="Aplicação:" /><br />
+	  		<p:autoComplete id="aplicacao" 
+	  						required="true"
+	  						value="#{autorizaAplicacaoHome.instancia.aplicacao}"
+							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
+							var="aplicacao" 
+							itemLabel="#{aplicacao.descricao}" 
+							itemValue="#{aplicacao}" 
+							converter="aplicacaoConversor" />
+		</h:panelGroup>
+
+	</h:panelGrid>
+</ui:composition>
