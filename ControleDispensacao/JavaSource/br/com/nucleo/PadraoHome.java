@@ -128,6 +128,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			// Cria objeto Aluno
 			session.delete(instancia); // Realiza persistência
 			tx.commit(); // Finaliza transação
+			novaInstancia();
 			ret = true;
 		}catch (Exception e) {
 			if(session != null){
