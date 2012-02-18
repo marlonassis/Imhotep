@@ -94,6 +94,11 @@ public class TipoConselho {
 		this.usuarioAlteracao = usuarioAlteracao;
 	}
 	
+	@Transient
+	public String getDescricaoSigla(){
+		return descricao.concat("sigla");
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
