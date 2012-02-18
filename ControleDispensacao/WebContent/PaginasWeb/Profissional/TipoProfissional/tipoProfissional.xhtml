@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabTipoProfissional" title="Sub Grupo" >
+			<h:form id="tipoProfissionalForm" prependId="false" >
+				<p:fieldset legend="Novo Sub Grupo"
+							collapsed="#{!tipoProfissionalHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" />
+						<ui:include src="tipoProfissionalEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!tipoProfissionalHome.edicao}"
+			            					update="padraoTabView:tabelaTipoProfissional tipoProfissionalForm"
+											action="#{tipoProfissionalHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{tipoProfissionalHome.edicao}"
+			            					update="padraoTabView:tabelaTipoProfissional tipoProfissionalForm"
+											action="#{tipoProfissionalHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{tipoProfissionalHome.edicao}"
+											update="@parent" 
+											action="#{tipoProfissionalHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaTipoProfissionalForm" prependId="false" >
+				<p:fieldset id="pesquisaTipoProfissionalFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="tipoProfissionalConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaTipoProfissional" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{tipoProfissionalConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaTipoProfissionalForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="tipoProfissionalTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>

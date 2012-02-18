@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="tipoProfissionalPanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
+			<p:inputText id="descricao" 
+						 value="#{tipoProfissionalHome.instancia.descricao}" 
+						 required="true"
+						 title="Informe a descrição do tipoProfissional" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo Conselho:"  /><br />
+	  		<p:autoComplete id="tipoConselho" 
+	  						value="#{tipoProfissionalHome.instancia.tipoConselho}"
+							completeMethod="#{tipoConselhoHome.getListaTipoConselhoSuggest}" 
+							var="tipoConselho"
+							required="true"
+							title="Informe o tipoConselho"
+							itemLabel="#{tipoConselho.descricaoSigla}" 
+							itemValue="#{tipoConselho}"
+							converter="tipoConselhoConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
+			<h:selectOneRadio id="situacao"
+							  value="#{tipoProfissionalHome.instancia.status}" 
+							  required="true"
+							  title="Informe se o tipoProfissional está ativo ou inativo" >
+				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+
+
+	</h:panelGrid>
+</ui:composition>

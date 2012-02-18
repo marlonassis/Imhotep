@@ -23,5 +23,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.Livro"/>
         <mapping class="br.com.ControleDispensacao.entidade.AutorizaAplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoConselho"/>
+        <mapping class="br.com.ControleDispensacao.entidade.TipoProfissional"/>
     </session-factory>
 </hibernate-configuration>
