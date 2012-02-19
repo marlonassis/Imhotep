@@ -45,7 +45,7 @@ public class TipoConselho {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "sigla", length=60)
+	@Column(name = "sigla", length=10)
 	public String getSigla() {
 		return this.sigla;
 	}
