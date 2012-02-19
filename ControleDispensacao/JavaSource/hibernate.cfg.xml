@@ -24,5 +24,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.AutorizaAplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoConselho"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoProfissional"/>
+        <mapping class="br.com.ControleDispensacao.entidade.LiberaMaterialTipoProfissional"/>
     </session-factory>
 </hibernate-configuration>

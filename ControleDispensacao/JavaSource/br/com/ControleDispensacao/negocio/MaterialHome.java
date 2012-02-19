@@ -49,11 +49,11 @@ public class MaterialHome extends PadraoHome<Material>{
 	}
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de Material
 	 * @param String sql
-	 * @return Collection Menu
+	 * @return Collection Material
 	 */
-	public Collection<Material> getListaFabricanteSuggest(String sql){
+	public Collection<Material> getListaMaterialAutoComplete(String sql){
 		return super.getBusca("select o from Material as o where o.descricao like '%"+sql+"%' ");
 	}
 	

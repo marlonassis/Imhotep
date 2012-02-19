@@ -14,11 +14,11 @@ import br.com.nucleo.PadraoHome;
 public class TipoProfissionalHome extends PadraoHome<TipoProfissional>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de TipoProfissional
 	 * @param String sql
-	 * @return Collection Menu
+	 * @return Collection TipoProfissional
 	 */
-	public Collection<TipoProfissional> getListaFabricanteSuggest(String sql){
+	public Collection<TipoProfissional> getListaTipoProfissionalAutoComplete(String sql){
 		return super.getBusca("select o from TipoProfissional as o where o.descricao like '%"+sql+"%' ");
 	}
 	

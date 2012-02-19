@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="liberaMaterialTipoProfissionalPanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup style="align:left;" >
+			<font color="red" >*</font><h:outputLabel for="tipoProfissional" value="Tipo do Profissional:"  /><br />
+	  		<p:autoComplete id="tipoProfissional" 
+	  						value="#{liberaMaterialTipoProfissionalHome.instancia.tipoProfissional}"
+							completeMethod="#{tipoProfissionalHome.getListaTipoProfissionalAutoComplete}" 
+							var="tipoProfissional"
+							required="true"
+							title="Informe o grupo do sub-grupo"
+							itemLabel="#{tipoProfissional.descricao}" 
+							itemValue="#{tipoProfissional}"
+							converter="tipoProfissionalConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
+	  		<p:autoComplete id="material" 
+	  						value="#{liberaMaterialTipoProfissionalHome.instancia.material}"
+							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
+							var="material"
+							required="true"
+							title="Informe o grupo do sub-grupo"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+</ui:composition>
