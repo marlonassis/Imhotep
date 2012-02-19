@@ -29,5 +29,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.Estado"/>
         <mapping class="br.com.ControleDispensacao.entidade.Cidade"/>
         <mapping class="br.com.ControleDispensacao.entidade.Unidade"/>
+        <mapping class="br.com.ControleDispensacao.entidade.AutorizaUnidadeProfissional"/>
     </session-factory>
 </hibernate-configuration>
