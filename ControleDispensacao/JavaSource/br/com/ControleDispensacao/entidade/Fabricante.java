@@ -98,4 +98,25 @@ public class Fabricante {
 		this.usuarioAlteracao = usuarioAlteracao;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if(!(obj instanceof Fabricante))
+			return false;
+		
+		return ((Fabricante)obj).getIdFabricante() == this.idFabricante;
+	}
+
+	@Override
+	public int hashCode() {
+	    int hash = 1;
+	    return hash * 31 + descricao.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return descricao;
+	}
+	
 }
