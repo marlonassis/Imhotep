@@ -25,7 +25,7 @@ public class UnidadeMaterial {
 		this.idUnidadeMaterial = idUnidadeMaterial;
 	}
 
-	@Transient
+	@Column(name = "unidade")
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -34,7 +34,7 @@ public class UnidadeMaterial {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "unidade")
+	@Column(name = "sigla")
 	public String getSigla() {
 		return this.sigla;
 	}
