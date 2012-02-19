@@ -20,7 +20,7 @@
 			<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo Conselho:"  /><br />
 	  		<p:autoComplete id="tipoConselho" 
 	  						value="#{tipoProfissionalHome.instancia.tipoConselho}"
-							completeMethod="#{tipoConselhoHome.getListaTipoConselhoSuggest}" 
+							completeMethod="#{tipoConselhoHome.getListaTipoConselhoAutoComplete}" 
 							var="tipoConselho"
 							required="true"
 							title="Informe o tipoConselho"

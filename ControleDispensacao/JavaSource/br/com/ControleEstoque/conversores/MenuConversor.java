@@ -33,7 +33,7 @@ public class MenuConversor implements Converter {
     }
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
-    	if (value != null || !value.equals("")) {
+    	if (value != null && !value.equals("")) {
     		return String.valueOf(((Menu) value).getIdMenu());
         }
     	

@@ -22,6 +22,15 @@ public class TipoProfissionalHome extends PadraoHome<TipoProfissional>{
 		return super.getBusca("select o from TipoProfissional as o where o.descricao like '%"+sql+"%' ");
 	}
 	
+	/**
+	 * Método que retorna uma lista de TipoProfissional de acordo com o conselho do profissional
+	 * @param String sql
+	 * @return Collection TipoProfissional
+	 */
+	public Collection<TipoProfissional> getListaTipoProfissionalConselho(Integer id){
+		return super.getBusca("select o from TipoProfissional as o where o.tipoConselho.idTipoConselho = "+id);
+	}
+	
 	@Override
 	public boolean atualizar() {
 		getInstancia().setUsuarioAlteracao(UsuarioHome.getUsuarioAtual());

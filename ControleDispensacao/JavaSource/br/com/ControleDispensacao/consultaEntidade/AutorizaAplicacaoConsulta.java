@@ -15,7 +15,7 @@ public class AutorizaAplicacaoConsulta extends PadraoConsulta<AutorizaAplicacao>
 	public AutorizaAplicacaoConsulta(){
 		getCamposConsulta().put("o.usuario", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.aplicacao", INCLUINDO_TUDO);
-		setOrderBy("o.usuario.nome");
+		setOrderBy("o.usuario.nome, o.aplicacao.descricao");
 	}
 	
 	@Override

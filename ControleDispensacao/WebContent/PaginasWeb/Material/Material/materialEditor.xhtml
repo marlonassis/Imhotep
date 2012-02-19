@@ -104,9 +104,6 @@
 									 value="#{materialHome.instancia.familia}" 
 									 effect="fade" 
 									 converter="familiaConversor">
-						<f:ajax event="change" 
-								listener="#{materialHome.carregaFamiliaList()}" 
-								render="grupoPanelGroup" />
 			            <f:selectItem itemLabel="Selecione..." 
 			            			  itemValue="" /> 
 			            <f:selectItems value="#{materialHome.familiaList}" 

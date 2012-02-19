@@ -5,21 +5,29 @@
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 	
 	
-	<h:panelGrid id="tipoProfissionalPanelGridConsulta"
+	<h:panelGrid id="profissionalPanelGridConsulta"
 				 columns="3" 
 				 width="100%" >
 				 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
-			<p:inputText id="descricaoConsulta" 
-						 value="#{tipoProfissionalConsulta.instancia.descricao}" 
-						 title="Informe a descrição do tipoProfissional" />
+			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
+			<p:inputText id="nomeConsulta" 
+						 value="#{profissionalConsulta.instancia.nome}"
+						 title="Informe o nome do profissional" />
+		</h:panelGroup>
+	
+		<h:panelGroup>
+			<h:outputLabel for="inscricaoConsulta" value="Inscrição:"  /><br />
+			<p:inputText id="inscricaoConsulta" 
+						 value="#{profissionalConsulta.instancia.inscricao}"
+						 onkeyup="apenasNumeros(this);"
+						 title="Informe a inscrição do profissional" />
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="tipoConselhoConsulta" value="Tipo Conselho:"  /><br />
 	  		<p:autoComplete id="tipoConselhoConsulta" 
-	  						value="#{tipoProfissionalConsulta.instancia.tipoConselho}"
+	  						value="#{profissionalConsulta.instancia.tipoConselho}"
 							completeMethod="#{tipoConselhoHome.getListaTipoConselhoAutoComplete}" 
 							var="tipoConselho"
 							title="Informe o tipoConselho"
@@ -27,5 +35,6 @@
 							itemValue="#{tipoConselho}"
 							converter="tipoConselhoConversor" />
 		</h:panelGroup>
+		
 	</h:panelGrid>
 </ui:composition>

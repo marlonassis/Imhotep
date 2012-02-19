@@ -45,7 +45,7 @@ public class TipoConselho {
 		this.descricao = descricao;
 	}
 	
-	@Transient
+	@Column(name = "sigla", length=60)
 	public String getSigla() {
 		return this.sigla;
 	}

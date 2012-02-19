@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Aplicacao;
+import br.com.ControleDispensacao.entidade.Estado;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="aplicacaoConversor")
-public class AplicacaoConversor implements Converter {
+@FacesConverter(value="estadoConversor")
+public class EstadoConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Aplicacao> cg = new ConsultaGeral<Aplicacao>();
+                ConsultaGeral<Estado> cg = new ConsultaGeral<Estado>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idAplicacao", id);
-                Aplicacao aplicacao = cg.consultaUnica(new StringBuilder("select o from Aplicacao o where o.idAplicacao = :idAplicacao"), hashMap);
-                return aplicacao;
+                hashMap.put("idEstado", id);
+                Estado estado = cg.consultaUnica(new StringBuilder("select o from Estado o where o.idEstado = :idEstado"), hashMap);
+                return estado;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class AplicacaoConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Aplicacao) value).getIdAplicacao());
+    		return String.valueOf(((Estado) value).getIdEstado());
         }
     	
     	return "";

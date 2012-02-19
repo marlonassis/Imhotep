@@ -14,12 +14,12 @@ import br.com.nucleo.PadraoHome;
 public class TipoConselhoHome extends PadraoHome<TipoConselho>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
-	 * @param String sql
+	 * Método que retorna uma lista de TipoConselho de acordo com a sigla do conselho ou com a descricao
+	 * @param String expressao
 	 * @return Collection Menu
 	 */
-	public Collection<TipoConselho> getListaTipoConselhoSuggest(String sql){
-		return super.getBusca("select o from TipoConselho as o where o.descricao like '%"+sql+"%' ");
+	public Collection<TipoConselho> getListaTipoConselhoAutoComplete(String expressao){
+		return super.getBusca("select o from TipoConselho as o where o.descricao like lower('%"+expressao+"%') or o.sigla like lower('%"+expressao+"%') ");
 	}
 	
 	@Override
