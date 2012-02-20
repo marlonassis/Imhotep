@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.AutorizaUnidadeProfissional;
+import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="autorizaUnidadeProfissionalHome")
@@ -14,7 +15,7 @@ public class AutorizaUnidadeProfissionalHome extends PadraoHome<AutorizaUnidadeP
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(UsuarioHome.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

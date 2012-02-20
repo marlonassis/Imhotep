@@ -10,7 +10,7 @@ import br.com.ControleDispensacao.negocio.UsuarioHome;
 @ManagedBean(name="gerenciadorAcesso")
 @RequestScoped
 public class GerenciadorAcesso {
-	Usuario usuarioAtual = UsuarioHome.getUsuarioAtual();
+	Usuario usuarioAtual = null;//UsuarioHome.getUsuarioAtual();
 	
 	public boolean isAdministrador(){
 		return procuraPapel(UsuarioPapeisEnum.ADMINISTRADOR);

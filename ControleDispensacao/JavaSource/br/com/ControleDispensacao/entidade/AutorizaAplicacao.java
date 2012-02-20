@@ -66,7 +66,7 @@ public class AutorizaAplicacao {
 
 	@Override
 	public String toString() {
-		return usuario.getNome().concat(" - ").concat(aplicacao.getDescricao());
+		return usuario.getLogin().concat(" - ").concat(aplicacao.getDescricao());
 	}
 	
 }

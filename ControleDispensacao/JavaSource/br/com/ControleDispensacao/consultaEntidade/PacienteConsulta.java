@@ -14,6 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class PacienteConsulta extends PadraoConsulta<Paciente> {
 	public PacienteConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.cpf", IGUAL);
 		setOrderBy("o.nome");
 	}
 	

@@ -13,11 +13,10 @@ import br.com.nucleo.PadraoConsulta;
 @SessionScoped
 public class UsuarioConsulta extends PadraoConsulta<Usuario> {
 	public UsuarioConsulta(){
-		getCamposConsulta().put("o.nome", IGUAL);
 		getCamposConsulta().put("o.matricula", IGUAL);
 		getCamposConsulta().put("o.login", IGUAL);
 		getCamposConsulta().put("o.situacao", IGUAL);
-		setOrderBy("o.nome");
+		setOrderBy("o.login");
 	}
 	
 	@Override

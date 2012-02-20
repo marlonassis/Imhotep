@@ -9,12 +9,20 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.TipoProfissional;
+import br.com.ControleDispensacao.entidade.Usuario;
+import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
+import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
+import br.com.nucleo.utilidades.Utilities;
 
 @ManagedBean(name="profissionalHome")
 @SessionScoped
 public class ProfissionalHome extends PadraoHome<Profissional>{
 	private List<TipoProfissional> tipoProfissionalList;
+	
+	public ProfissionalHome() {
+		getInstancia().setUsuario(new Usuario());
+	}
 	
 	/**
 	 * Método usando para carregar o tipo do profissional informado pelo usuário de acordo com o conselho
@@ -42,16 +50,27 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	
 	@Override
 	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(UsuarioHome.getUsuarioAtual());
+		getInstancia().setUsuarioAlteracao(Autenticador.getUsuarioAtual());
 		getInstancia().setDataAlteracao(new Date());
 		return super.atualizar();
 	}
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(UsuarioHome.getUsuarioAtual());
-		getInstancia().setDataInclusao(new Date());
-		return super.enviar();
+		carregaDadosUsuario();
+		if(new UsuarioHome().procurarUsuario(getInstancia().getUsuario().getLogin()) == null){
+			getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+			getInstancia().setDataInclusao(new Date());
+			return super.enviar();
+		}
+		return false;
+	}
+
+	private void carregaDadosUsuario() {
+		getInstancia().getUsuario().setDataInclusao(new Date());
+		getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().getUsuario().setSituacao(TipoSituacaoEnum.A);
+		getInstancia().getUsuario().setSenha(Utilities.md5(getInstancia().getUsuario().getMatricula()));
 	}
 
 	public List<TipoProfissional> getTipoProfissionalList() {

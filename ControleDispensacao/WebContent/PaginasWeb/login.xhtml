@@ -13,11 +13,11 @@
 							<p:growl/>
 							<h:panelGrid columns="3" >
 								<font color="red" >*</font><h:outputText value="Usuário: " />
-								<p:inputText value="#{usuarioHome.usuario.nome}" label="Usuário" required="true" />
+								<p:inputText value="#{autenticador.usuario.login}" label="Usuário" required="true" />
 								<font color="red" >*</font><h:outputText value="Senha: " />
-								<p:inputText value="#{usuarioHome.usuario.senha}" label="Senha" required="true" type="password" />  
+								<p:inputText value="#{autenticador.usuario.senha}" label="Senha" required="true" type="password" />  
 			                </h:panelGrid>
-			                <p:commandButton value="Login" action="#{usuarioHome.logarUsuario}" update="loginForm" image="ui-icon ui-icon-locked" title="Click para entrar na sua conta" />
+			                <p:commandButton value="Login" action="#{autenticador.logarUsuario}" update="loginForm" image="ui-icon ui-icon-locked" title="Click para entrar na sua conta" />
 			                <p:commandButton value="Limpar" image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos" type="reset" />
 			                <br/>
 			                <br/>

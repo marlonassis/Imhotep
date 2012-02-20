@@ -31,7 +31,19 @@
 		<br/>
 		<div id="geral" 
 			 align="center" >
-			<h:panelGroup rendered="#{usuarioHome.usuarioAtivo}" >
+				<h:panelGroup rendered="#{autenticador.usuarioAtivo}" >
+					
+					<p:selectOneMenu value="#{autenticador.unidadeAtual}" 
+								 effect="fade" 
+								 converter="unidadeConversor"
+								 required="true">  
+					<f:selectItem itemLabel="Selecione sua unidade..." 
+								  itemValue="" /> 
+		            <f:selectItems value="#{autenticador.unidades}" 
+		            			   var="unidade" 
+		            			   itemLabel="#{unidade.nome}" 
+		            			   itemValue="#{unidade}"/>  
+		        </p:selectOneMenu>
 				<ui:include src="menu.xhtml" />
 			</h:panelGroup>
 			<br/>

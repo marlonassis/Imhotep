@@ -2,6 +2,7 @@ package br.com.ControleDispensacao.entidade;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,6 +35,7 @@ public class Profissional {
 	private Date dataInclusao;
 	private Usuario usuarioAlteracao;
 	private Date dataAlteracao;
+	private Usuario usuario;
 	
 	
 	@Id
@@ -165,7 +167,15 @@ public class Profissional {
 		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
-	
+	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+	@JoinColumn(name = "id_usuario")
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {

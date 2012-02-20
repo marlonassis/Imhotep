@@ -23,7 +23,6 @@ public class Usuario {
 	
 	private static final long serialVersionUID = 1L;
 	private int idUsuario;
-	private String nome;
 	private String matricula;
 	private String login;
 	private String senha;
@@ -52,15 +51,6 @@ public class Usuario {
 
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
-	}
-
-	@Column(name = "nome", length = 60)
-	public String getNome() {
-		return this.nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	@Column(name = "matricula", length = 10)
@@ -172,12 +162,12 @@ public class Usuario {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + nome.hashCode();
+	    return hash * 31 + login.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return nome;
+		return login;
 	}
 
 }

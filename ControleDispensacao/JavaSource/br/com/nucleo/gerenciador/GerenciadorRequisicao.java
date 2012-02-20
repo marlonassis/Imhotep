@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.negocio.UsuarioHome;
+import br.com.ControleDispensacao.seguranca.Autenticador;
 
 @ManagedBean(name="gerenciadorRequisicao")
 @RequestScoped
@@ -33,7 +34,7 @@ public class GerenciadorRequisicao implements PhaseListener{
 		try {
 			FacesContext facesContext = event.getFacesContext(); 
 			
-			if(UsuarioHome.getUsuarioAtual() == null || UsuarioHome.getUsuarioAtual().getIdUsuario() == 0){
+			if(Autenticador.getUsuarioAtual() == null || Autenticador.getUsuarioAtual().getIdUsuario() == 0){
 				facesContext.getExternalContext().getSessionMap().put("usuario", null);
 			}
 			

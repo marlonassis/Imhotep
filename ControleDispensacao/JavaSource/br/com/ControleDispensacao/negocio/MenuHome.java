@@ -18,6 +18,7 @@ import br.com.ControleDispensacao.consultaEntidade.AplicacaoConsulta;
 import br.com.ControleDispensacao.consultaEntidade.UsuarioConsulta;
 import br.com.ControleDispensacao.entidade.Aplicacao;
 import br.com.ControleDispensacao.entidade.Menu;
+import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="menuHome")
@@ -39,7 +40,7 @@ public class MenuHome extends PadraoHome<Menu>{
 	public boolean enviar() {
 		getInstancia().setOrdem(1);
 		getInstancia().setDataInclusao(new Date());
-		getInstancia().setUsuarioInclusao(UsuarioHome.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
 		return super.enviar();
 	}
 
@@ -49,14 +50,14 @@ public class MenuHome extends PadraoHome<Menu>{
 		//TODO tornar o menu recursivo
 		menuModel = new DefaultMenuModel();
 		
-		List<Menu> listaPrimeiroNivel = getBusca("select o from Menu o where o.menuPai is null and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
+		List<Menu> listaPrimeiroNivel = getBusca("select o from Menu o where o.menuPai is null and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+Autenticador.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
 		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
 			Submenu primeiroNivel = new Submenu();
 			primeiroNivel.setLabel(menuPrimeiroNivel.getDescricao());
 			
-			List<Menu> listaSegundoNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuPrimeiroNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
+			List<Menu> listaSegundoNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuPrimeiroNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+Autenticador.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
 			for (Menu menuSegundoNivel : listaSegundoNivel) {
-				List<Menu> listaTerceiroNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuSegundoNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+UsuarioHome.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
+				List<Menu> listaTerceiroNivel = getBusca("select o from Menu o where o.menuPai.idMenu = "+menuSegundoNivel.getIdMenu()+" and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where a.usuario.idUsuario = "+Autenticador.getUsuarioAtual().getIdUsuario()+") order by o.descricao");
 				if(listaTerceiroNivel.size() > 0){
 					Submenu segundoNivel = new Submenu();
 					segundoNivel.setLabel(menuSegundoNivel.getDescricao());
@@ -81,7 +82,7 @@ public class MenuHome extends PadraoHome<Menu>{
 		MenuItem mi = new MenuItem();
 		mi.setValue("Sair");
 
-		String action = "#{usuarioHome.logout()}";
+		String action = "#{autenticador.logout()}";
 		MethodExpression methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
 		createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class<?>[0]);
 		
