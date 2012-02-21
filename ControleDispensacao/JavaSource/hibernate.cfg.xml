@@ -34,5 +34,10 @@
         <mapping class="br.com.ControleDispensacao.entidade.GrupoAtencaoContinuada"/>
         <mapping class="br.com.ControleDispensacao.entidade.Paciente"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoMovimento"/>
+        <mapping class="br.com.ControleDispensacao.entidade.GrupoOrigemPrescricao"/>
+        <mapping class="br.com.ControleDispensacao.entidade.MotivoFimReceita"/>
+        <mapping class="br.com.ControleDispensacao.entidade.MovimentoGeral"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Receita"/>
+        <mapping class="br.com.ControleDispensacao.entidade.SubGrupoOrigemPrescricao"/>
     </session-factory>
 </hibernate-configuration>
