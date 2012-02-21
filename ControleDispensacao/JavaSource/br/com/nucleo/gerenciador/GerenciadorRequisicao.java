@@ -40,10 +40,10 @@ public class GerenciadorRequisicao implements PhaseListener{
 			
 			Boolean usuarioSemAcesso = facesContext.getExternalContext().getSessionMap().get("usuario") == null && ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(PAGINA_LOGIN) != 0;
 			if(usuarioSemAcesso){
-				facesContext.getExternalContext().redirect(PAGINA_LOGIN);
-			}else{
 				Autenticador.setUsuarioAtual(null);
+				facesContext.getExternalContext().redirect(PAGINA_LOGIN);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}  
