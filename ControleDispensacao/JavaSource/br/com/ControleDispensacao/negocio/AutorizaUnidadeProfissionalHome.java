@@ -15,7 +15,7 @@ public class AutorizaUnidadeProfissionalHome extends PadraoHome<AutorizaUnidadeP
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

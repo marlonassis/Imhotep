@@ -92,7 +92,7 @@ public class Usuario {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl", length = 13)
+	@Column(name = "data_incl")
 	public Date getDataInclusao() {
 		return this.dataInclusao;
 	}
@@ -112,7 +112,7 @@ public class Usuario {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt", length = 13)
+	@Column(name = "data_alt")
 	public Date getDataAlteracao() {
 		return this.dataAlteracao;
 	}

@@ -15,7 +15,7 @@ public class MovimentoGeralHome extends PadraoHome<MovimentoGeral>{
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

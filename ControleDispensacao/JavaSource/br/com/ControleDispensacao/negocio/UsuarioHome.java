@@ -72,7 +72,7 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 				if(procurarUsuario(getInstancia().getLogin()) == null){
 					getInstancia().setSenha(Utilities.md5(getInstancia().getSenha()));
 					getInstancia().setDataInclusao(new Date());
-					getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+					getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 					if(super.enviar()){
 						novaInstancia();
 						return true;

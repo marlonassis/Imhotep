@@ -25,7 +25,7 @@ public class AplicacaoHome extends PadraoHome<Aplicacao>{
 	
 	@Override
 	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataAlteracao(new Date());
 		return super.atualizar();
 	}
@@ -33,7 +33,7 @@ public class AplicacaoHome extends PadraoHome<Aplicacao>{
 	@Override
 	public boolean enviar() {
 		getInstancia().setMostrarRespostaOperacao(true);
-		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

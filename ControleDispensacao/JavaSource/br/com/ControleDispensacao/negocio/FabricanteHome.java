@@ -15,24 +15,24 @@ import br.com.nucleo.PadraoHome;
 public class FabricanteHome extends PadraoHome<Fabricante>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de Fabricante
 	 * @param String sql
-	 * @return Collection Menu
+	 * @return Collection Fabricante
 	 */
-	public Collection<Fabricante> getListaFabricanteSuggest(String sql){
-		return super.getBusca("select o from Fabricante as o where o.descricao like '%"+sql+"%' ");
+	public Collection<Fabricante> getListaFabricanteAutoComplete(String expressaoConsulta){
+		return super.getBusca("select o from Fabricante as o where o.descricao like '%"+expressaoConsulta+"%' ");
 	}
 	
 	@Override
 	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataAlteracao(new Date());
 		return super.atualizar();
 	}
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

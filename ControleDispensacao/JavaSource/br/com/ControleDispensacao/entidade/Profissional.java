@@ -167,7 +167,7 @@ public class Profissional {
 		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "id_usuario")
 	public Usuario getUsuario() {
 		return usuario;

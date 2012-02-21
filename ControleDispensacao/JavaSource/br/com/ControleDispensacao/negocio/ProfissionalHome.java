@@ -50,7 +50,7 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	
 	@Override
 	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataAlteracao(new Date());
 		return super.atualizar();
 	}
@@ -59,7 +59,7 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	public boolean enviar() {
 		carregaDadosUsuario();
 		if(new UsuarioHome().procurarUsuario(getInstancia().getUsuario().getLogin()) == null){
-			getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			getInstancia().setDataInclusao(new Date());
 			return super.enviar();
 		}
@@ -68,7 +68,7 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 
 	private void carregaDadosUsuario() {
 		getInstancia().getUsuario().setDataInclusao(new Date());
-		getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().getUsuario().setSituacao(TipoSituacaoEnum.A);
 		getInstancia().getUsuario().setSenha(Utilities.md5(getInstancia().getUsuario().getMatricula()));
 	}

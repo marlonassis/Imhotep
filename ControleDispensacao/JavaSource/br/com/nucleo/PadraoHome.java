@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,6 +15,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
+import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.gerenciador.GerenciadorConexao;
 import br.com.nucleo.interfaces.IPadraoHome;
 
@@ -289,6 +291,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	 */
 	@SuppressWarnings({ "unchecked", "hiding" })
 	public <T> T instanciaAtual(){
-		return (T) FacesContext.getCurrentInstance().getApplication().evaluateExpressionGet(FacesContext.getCurrentInstance(), "#{"+nomeClasse()+"}", instancia.getClass());
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
+		return (T) session.getAttribute(nomeClasse());
 	}
 }

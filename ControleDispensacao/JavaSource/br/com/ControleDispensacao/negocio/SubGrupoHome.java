@@ -44,14 +44,14 @@ public class SubGrupoHome extends PadraoHome<SubGrupo>{
 	
 	@Override
 	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataAlteracao(new Date());
 		return super.atualizar();
 	}
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getUsuarioAtual());
+		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

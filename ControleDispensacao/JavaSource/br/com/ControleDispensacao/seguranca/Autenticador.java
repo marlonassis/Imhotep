@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
@@ -17,13 +18,23 @@ import br.com.nucleo.utilidades.Utilities;
 @ManagedBean(name="autenticador")
 @SessionScoped
 public class Autenticador {
-	private static Usuario usuarioAtual = new Usuario();
+	
+	private Usuario usuarioAtual;
 	private Usuario usuario = new Usuario();
 	private Unidade unidadeAtual;
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
 
+	public static Autenticador getInstancia(){
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
+		if(session != null){
+			return (Autenticador) session.getAttribute("autenticador");
+		}else{
+			return null;
+		}
+	}
+	
 	private void carregaUnidadesUsuario(){
 		ConsultaGeral<Unidade> cg = new ConsultaGeral<Unidade>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
@@ -35,21 +46,22 @@ public class Autenticador {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		try{
 			setUsuarioAtual(new Usuario());
-			facesContext.getExternalContext().getSessionMap().put("usuario", null);
-			Autenticador.setUsuarioAtual(null);
+			HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);  
+			session.invalidate();
+			setUsuarioAtual(null);
 			setUnidadeAtual(null);
 			unidades = null;
 			facesContext.getExternalContext().redirect(PAGINA_LOGIN);
 		}catch (Exception e) {
 			e.printStackTrace();
-			if(((Usuario) facesContext.getExternalContext().getSessionMap().get("usuario")) != null){
+			if(getUsuarioAtual() != null){
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Login não realizado!"));
 			}
 		}
 	}
 	
 	public boolean isUsuarioAtivo(){
-		return Autenticador.getUsuarioAtual() != null && Autenticador.getUsuarioAtual().getIdUsuario() != 0 ? true : false;
+		return getUsuarioAtual() != null && getUsuarioAtual().getIdUsuario() != 0 ? true : false;
 	}
 	
 	public Usuario procurarUsuario(String nome){
@@ -72,7 +84,7 @@ public class Autenticador {
 	    			if(usuarioLogado.getSenha().equals(Utilities.md5(getUsuario().getSenha()))){
 	    				setUsuarioAtual(usuarioLogado);
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
-	    				Autenticador.setUsuarioAtual(usuarioLogado);
+	    				setUsuarioAtual(usuarioLogado);
 	    				carregaUnidadesUsuario();
 	    				facesContext.getExternalContext().redirect(PAGINA_HOME);
 	    			}else{
@@ -101,12 +113,12 @@ public class Autenticador {
 	
 	
 	
-	public static Usuario getUsuarioAtual() {
+	public Usuario getUsuarioAtual() {
 		return usuarioAtual;
 	}
 
-	public static void setUsuarioAtual(Usuario usuarioAtual) {
-		Autenticador.usuarioAtual = usuarioAtual;
+	public void setUsuarioAtual(Usuario usuarioAtual) {
+		this.usuarioAtual = usuarioAtual;
 	}
 
 	public Unidade getUnidadeAtual() {
