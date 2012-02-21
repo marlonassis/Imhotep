@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabTipoMovimento" title="Tipo de movimento" >
+			<h:form id="tipoMovimentoForm" prependId="false" >
+				<p:fieldset legend="Novo tipo de movimento"
+							collapsed="#{!tipoMovimentoHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" />
+						<ui:include src="tipoMovimentoEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!tipoMovimentoHome.edicao}"
+			            					update="padraoTabView:tabelaTipoMovimento tipoMovimentoForm"
+											action="#{tipoMovimentoHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{tipoMovimentoHome.edicao}"
+			            					update="padraoTabView:tabelaTipoMovimento tipoMovimentoForm"
+											action="#{tipoMovimentoHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{tipoMovimentoHome.edicao}"
+											update="@parent" 
+											action="#{tipoMovimentoHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaTipoMovimentoForm" prependId="false" >
+				<p:fieldset id="pesquisaTipoMovimentoFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="tipoMovimentoConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaTipoMovimento" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{tipoMovimentoConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaTipoMovimentoForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="tipoMovimentoTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>

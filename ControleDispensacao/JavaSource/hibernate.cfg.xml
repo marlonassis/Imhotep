@@ -33,5 +33,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.SituacaoPaciente"/>
         <mapping class="br.com.ControleDispensacao.entidade.GrupoAtencaoContinuada"/>
         <mapping class="br.com.ControleDispensacao.entidade.Paciente"/>
+        <mapping class="br.com.ControleDispensacao.entidade.TipoMovimento"/>
     </session-factory>
 </hibernate-configuration>
