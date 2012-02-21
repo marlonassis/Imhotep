@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 
 import br.com.ControleDispensacao.enums.TipoBooleanEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
+import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
@@ -62,5 +63,13 @@ public class ItensPadrao{
 			logradouroEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return logradouroEnumItens;
+	}
+	
+	public List<SelectItem> getOperacaoEnumItens(){
+		List<SelectItem> tipoOperacaoEnumItens = new ArrayList<SelectItem>();
+		for(TipoOperacaoEnum item : TipoOperacaoEnum.values()){
+			tipoOperacaoEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoOperacaoEnumItens;
 	}
 }

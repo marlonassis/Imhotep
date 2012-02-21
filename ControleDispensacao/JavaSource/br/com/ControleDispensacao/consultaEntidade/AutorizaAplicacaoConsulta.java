@@ -14,8 +14,8 @@ import br.com.nucleo.PadraoConsulta;
 public class AutorizaAplicacaoConsulta extends PadraoConsulta<AutorizaAplicacao> {
 	public AutorizaAplicacaoConsulta(){
 		getCamposConsulta().put("o.usuario", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.aplicacao", INCLUINDO_TUDO);
-		setOrderBy("o.usuario.nome, o.aplicacao.descricao");
+		getCamposConsulta().put("o.aplicacao.descricao", INCLUINDO_TUDO);
+		setOrderBy("o.usuario.login, o.aplicacao.descricao");
 	}
 	
 	@Override

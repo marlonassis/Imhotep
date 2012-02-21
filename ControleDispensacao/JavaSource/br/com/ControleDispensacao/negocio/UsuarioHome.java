@@ -31,8 +31,8 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	 * @param String sql
 	 * @return Collection Usuario
 	 */
-	public Collection<Usuario> getListaUsuarioSuggest(String sql){
-		return super.getBusca("select o from Usuario as o where o.nome like '%"+sql+"%' ");
+	public Collection<Usuario> getListaUsuarioAutoComplete(String sql){
+		return super.getBusca("select o from Usuario as o where o.login like '%"+sql+"%' ");
 	}
 
 	

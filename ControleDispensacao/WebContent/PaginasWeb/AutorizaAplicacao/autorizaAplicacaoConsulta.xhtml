@@ -13,9 +13,9 @@
 			<h:outputLabel for="usuarioConsulta" value="Usuario:" /><br />
 	  		<p:autoComplete id="usuarioConsulta" 
 	  						value="#{autorizaAplicacaoConsulta.instancia.usuario}"
-							completeMethod="#{usuarioHome.getListaUsuarioSuggest}" 
+							completeMethod="#{usuarioHome.getListaUsuarioAutoComplete}" 
 							var="usuario" 
-							itemLabel="#{usuario.nome}" 
+							itemLabel="#{usuario.login}" 
 							itemValue="#{usuario}" 
 							converter="usuarioConversor" />
 		</h:panelGroup>
