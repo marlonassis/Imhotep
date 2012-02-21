@@ -19,7 +19,7 @@ public class GrupoHome extends PadraoHome<Grupo>{
 	 * @param String sql
 	 * @return Collection Menu
 	 */
-	public Collection<Grupo> getListaFabricanteSuggest(String sql){
+	public Collection<Grupo> getListaGrupoAutoComplete(String sql){
 		return super.getBusca("select o from Grupo as o where o.descricao like '%"+sql+"%' ");
 	}
 	

@@ -20,7 +20,7 @@
 			<font color="red" >*</font><h:outputLabel for="grupo" value="Grupo:"  /><br />
 	  		<p:autoComplete id="grupo" 
 	  						value="#{subGrupoHome.instancia.grupo}"
-							completeMethod="#{grupoHome.getListaFabricanteSuggest}" 
+							completeMethod="#{grupoHome.getListaGrupoAutoComplete}" 
 							var="grupo"
 							required="true"
 							title="Informe o grupo do sub-grupo"
