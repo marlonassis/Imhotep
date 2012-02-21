@@ -19,7 +19,7 @@ public class GrupoOrigemPrescricaoHome extends PadraoHome<GrupoOrigemPrescricao>
 	 * @param String sql
 	 * @return Collection GrupoOrigemPrescricao
 	 */
-	public Collection<GrupoOrigemPrescricao> getListaFabricanteAutoComplete(String sql){
+	public Collection<GrupoOrigemPrescricao> getListaGrupoOrigemPrescricaoAutoComplete(String sql){
 		return super.getBusca("select o from GrupoOrigemPrescricao as o where o.descricao like '%"+sql+"%' ");
 	}
 	
