@@ -1,23 +1,24 @@
 package br.com.nucleo.gerenciador;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 
 public class GerenciadorConexao {
-    private EntityManagerFactory emf; 
-
-    public EntityManager CreateEntityManager2() {
-    	return Persistence.createEntityManagerFactory("ControleDispensacao").createEntityManager();
-    }
-    
-    
-    public EntityManager getEntityManager2(){
-    	if(emf == null){
-    		emf = CreateEntityManager2().getEntityManagerFactory();
-    		return emf.createEntityManager();
-    	}else{
-    		return emf.createEntityManager();
-    	}
-    }
+	protected Session session;
+	protected Configuration cfg;
+	protected Transaction tx;
+	protected SessionFactory factory;
+	
+	public void iniciarTransacao(){
+		cfg = new AnnotationConfiguration();
+		//Informe o arquivo XML que contém a configurações
+		cfg.configure("hibernate.cfg.xml");
+		factory = cfg.buildSessionFactory();
+		session = factory.openSession();
+		tx = session.beginTransaction();  
+	}
+	
 }

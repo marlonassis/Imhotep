@@ -34,6 +34,13 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
+			<h:outputLabel for="numeroDocumentoConsulta" value="Número do Documento:"  /><br />
+			<p:inputText id="numeroDocumentoConsulta" 
+						 value="#{entradaMaterialConsulta.instancia.movimentoGeral.numeroDocument}" 
+						 title="Informe o número do documento" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
 			<h:outputLabel for="loteConsulta" value="Lote:"  /><br />
 			<p:inputText id="loteConsulta" 
 						 value="#{entradaMaterialConsulta.instancia.lote}" 

@@ -23,6 +23,10 @@
 			<h:outputText value="#{linha.fabricante}" />
 		</p:column>
 		<p:column>
+			<f:facet name="header"><h:outputText value="Número do documento" /></f:facet>
+			<h:outputText value="#{linha.movimentoGeral.numeroDocumento}" />
+		</p:column>
+		<p:column>
 			<f:facet name="header"><h:outputText value="Lote" /></f:facet>
 			<h:outputText value="#{linha.lote}" />
 		</p:column>

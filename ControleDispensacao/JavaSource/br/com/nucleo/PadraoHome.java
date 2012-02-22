@@ -79,14 +79,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	@Override
 	public boolean enviar() {
 		boolean ret = false;
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			session.save(instancia);  
 			session.flush();  
 			tx.commit();  

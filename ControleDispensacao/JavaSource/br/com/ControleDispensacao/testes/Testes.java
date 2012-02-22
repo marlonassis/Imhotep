@@ -3,6 +3,8 @@ package br.com.ControleDispensacao.testes;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.com.ControleDispensacao.negocio.UsuarioHome;
 import br.com.nucleo.utilidades.Utilities;
@@ -13,13 +15,8 @@ public class Testes {
 	
 	public static void main(String args[]) {
 		
-			try {
-				System.out.println(Testes.md5("123456"));
-				
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd-hh-MM-ss");
+		sdf.format(new Date());
 		
     }
 
