@@ -13,11 +13,11 @@ import br.com.nucleo.PadraoConsulta;
 @SessionScoped
 public class EntradaMaterialConsulta extends PadraoConsulta<ItensMovimentoGeral> {
 	public EntradaMaterialConsulta(){
-		getCamposConsulta().put("o.material", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.material", IGUAL);
 		getCamposConsulta().put("o.lote", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.fabricante", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.fabricante", IGUAL);
 		getCamposConsulta().put("o.dataValidade", IGUAL);
-		setOrderBy("o.material.descricao");
+		setOrderBy("o.material.descricao, o.lote");
 	}
 	
 	@Override

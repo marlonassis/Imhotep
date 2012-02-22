@@ -29,9 +29,34 @@ public class EntradaMaterialGeralHome extends PadraoHome<ItensMovimentoGeral>{
 	}
 
 	@Override
+	public boolean apagar() {
+		if(Autenticador.getInstancia().getUnidadeAtual() != null){
+			MovimentoGeral movimentoGeral = getInstancia().getMovimentoGeral();
+			if(movimentoGeral.getUnidade().equals(Autenticador.getInstancia().getUnidadeAtual())){
+				return super.apagar();
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esse documento já existe e você não é da unidade que o cadastrou.", "Apenas quem pode inserir estoque nesse documento é o usuário que for da unidade "+movimentoGeral.getUnidade().getNome()+"!"));
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Você não está alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean atualizar() {
-		getInstancia().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-		return super.atualizar();
+		if(Autenticador.getInstancia().getUnidadeAtual() != null){
+			MovimentoGeral movimentoGeral = getInstancia().getMovimentoGeral();
+			if(movimentoGeral.getUnidade().equals(Autenticador.getInstancia().getUnidadeAtual())){
+				getInstancia().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+				return super.atualizar();
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esse documento já existe e você não é da unidade que o cadastrou.", "Apenas quem pode inserir estoque nesse documento é o usuário que for da unidade "+movimentoGeral.getUnidade().getNome()+"!"));
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Você não está alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
+		}
+		return false;
 	}
 	
 	@Override
@@ -104,15 +129,15 @@ public class EntradaMaterialGeralHome extends PadraoHome<ItensMovimentoGeral>{
 	}
 
 	private Integer saldoAnterior(){
-		ConsultaGeral<Integer> cg = new ConsultaGeral<Integer>();
+		ConsultaGeral<Long> cg = new ConsultaGeral<Long>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("idMaterial", getInstancia().getMaterial().getIdMaterial());
 		hashMap.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
 		StringBuilder sb = new StringBuilder("select sum(o.quantidade) from Estoque o where");
 		sb.append(" o.material.idMaterial = :idMaterial");
 		sb.append(" and o.unidade.idUnidade = :idUnidade");
-		Integer quantidadeAtual = cg.consultaUnica(sb, hashMap);
-		return quantidadeAtual;
+		Long quantidadeAtual = cg.consultaUnica(sb, hashMap);
+		return quantidadeAtual == null ? null : quantidadeAtual.intValue();
 	}
 	
 	private boolean geraEstoque() {
