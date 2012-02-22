@@ -48,6 +48,7 @@
 							update="tabelaEntradaMaterial padraoTabView:entradaMaterialForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 							title="Apagar" 
+							rendered="false"
 							style="padding-right:10px;" >
 				<f:setPropertyActionListener value="#{linha}" target="#{entradaMaterialHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
