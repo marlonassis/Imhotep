@@ -61,15 +61,9 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 	 */
 	public Collection<E> consulta(StringBuilder stringB, HashMap<Object, Object> hashMap ){
 		List<E> objects = null;
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		StringBuilder hql = new StringBuilder(stringB);
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			Query query = session.createQuery(hql.toString());
 			Set<Object> set = hashMap.keySet();
 			for(Object obj : set)

@@ -29,14 +29,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	
 	@SuppressWarnings("unchecked")
 	public void setId(Object o){
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			session.get(instancia.getClass(), (Serializable) o);
 		}catch (Exception e) {
 			if(session != null){
@@ -100,14 +94,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	@Override
 	public boolean apagar() {
 		boolean ret = false;
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			session.delete(instancia); // Realiza persistência
 			tx.commit(); // Finaliza transação
 			novaInstancia();
@@ -132,14 +120,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	@Override
 	public Object atualizarGenerico(Object obj) {
 		Object o = null;
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			session.merge(obj); // Realiza persistência
 			tx.commit(); // Finaliza transação
 			o = obj;
@@ -163,14 +145,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	@SuppressWarnings("unchecked")
 	public List<T> getBusca(String sql) {
 		List<T> lista = null;
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			Query query = session.createQuery(sql);
             lista = query.list();    
 		}catch (Exception e) {
@@ -188,14 +164,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	@Override
 	public Integer executa(String sql) {
 		Integer res = null; 
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			res = session.createQuery(sql).executeUpdate();
 			novaInstancia();
 		}catch (Exception e) {
@@ -233,14 +203,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	@SuppressWarnings("unchecked")
 	public List<T> getBusca(){
 		List<T> lista = null;
-		Session session=null;
-		Configuration cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
-		SessionFactory factory = cfg.buildSessionFactory();
-		session = factory.openSession();  
 		try{
-			Transaction tx = session.beginTransaction();  
+			iniciarTransacao();
 			Query query = session.createQuery("from "+nomeClasse()+" u");
 			lista = query.list(); 
 		}catch (Exception e) {
