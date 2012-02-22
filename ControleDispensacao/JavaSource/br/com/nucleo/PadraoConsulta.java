@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-
 import br.com.ControleDispensacao.auxiliar.IPadraoConsulta;
 import br.com.nucleo.gerenciador.GerenciadorConexao;
 

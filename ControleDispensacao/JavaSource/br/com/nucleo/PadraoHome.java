@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -37,6 +38,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao setar o id", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -79,11 +81,13 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			session.flush();  
 			tx.commit();  
 			ret = true;
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro realizado com sucesso", "Registro cadastrado!"));
 		}catch (Exception e) {
 			if(session != null){
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao cadastrar", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -100,11 +104,13 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			tx.commit(); // Finaliza transação
 			novaInstancia();
 			ret = true;
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Deleção realizada com sucesso", "Registro apagado!"));
 		}catch (Exception e) {
 			if(session != null){
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao apagar", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -125,11 +131,13 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			session.merge(obj); // Realiza persistência
 			tx.commit(); // Finaliza transação
 			o = obj;
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualização realizada com sucesso", "Registro atualizado!"));
 		}catch (Exception e) {
 			if(session != null){
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao atualizar", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -154,6 +162,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu ao reallizar a busca", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -173,6 +182,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao executar o comando", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -212,6 +222,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 				session.getTransaction().rollback();
 			}
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao efetuar a busca", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
