@@ -18,13 +18,13 @@ import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoHome;
 
-@ManagedBean(name="itensMovimentoGeralHome")
+@ManagedBean(name="entradaMaterialHome")
 @SessionScoped
-public class ItensMovimentoGeralHome extends PadraoHome<ItensMovimentoGeral>{
+public class EntradaMaterialGeralHome extends PadraoHome<ItensMovimentoGeral>{
 	private Integer saldoAnterior;
 	private Integer quantidadeEntrada;
 	
-	public ItensMovimentoGeralHome() {
+	public EntradaMaterialGeralHome() {
 		getInstancia().setMovimentoGeral(new MovimentoGeral());
 	}
 
@@ -38,8 +38,8 @@ public class ItensMovimentoGeralHome extends PadraoHome<ItensMovimentoGeral>{
 	public void novaInstancia() {
 		String numeroDocumento = getInstancia().getMovimentoGeral().getNumeroDocumento();
 		super.novaInstancia();
-		getInstancia().getMovimentoGeral().setNumeroDocumento(numeroDocumento);
 		getInstancia().setMovimentoGeral(new MovimentoGeral());
+		getInstancia().getMovimentoGeral().setNumeroDocumento(numeroDocumento);
 	}
 	
 	

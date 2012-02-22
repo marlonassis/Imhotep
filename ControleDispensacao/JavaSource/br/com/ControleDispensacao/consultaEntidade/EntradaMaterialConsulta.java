@@ -9,10 +9,10 @@ import br.com.ControleDispensacao.entidade.ItensMovimentoGeral;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoConsulta;
 
-@ManagedBean(name="itensMovimentoGeralConsulta")
+@ManagedBean(name="entradaMaterialConsulta")
 @SessionScoped
-public class ItensMovimentoGeralConsulta extends PadraoConsulta<ItensMovimentoGeral> {
-	public ItensMovimentoGeralConsulta(){
+public class EntradaMaterialConsulta extends PadraoConsulta<ItensMovimentoGeral> {
+	public EntradaMaterialConsulta(){
 		getCamposConsulta().put("o.material", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.lote", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.fabricante", INCLUINDO_TUDO);

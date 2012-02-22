@@ -11,7 +11,7 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="numeroDocumento" value="Número do documento:"  /><br />
 			<p:inputText id="numeroDocumento" 
-						 value="#{itensMovimentoGeralHome.instancia.movimentoGeral.numeroDocumento}" 
+						 value="#{entradaMaterialHome.instancia.movimentoGeral.numeroDocumento}" 
 						 required="true"
 						 onkeyup="apenasNumero(this);"
 						 title="Informe a descrição do entradaMaterial" />
@@ -20,7 +20,7 @@
 		<h:panelGroup style="align:left;" >
 			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
 	  		<p:autoComplete id="material" 
-	  						value="#{itensMovimentoGeralHome.instancia.material}"
+	  						value="#{entradaMaterialHome.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
 							required="true"
@@ -33,7 +33,7 @@
 		<h:panelGroup style="align:left;" >
 			<font color="red" >*</font><h:outputLabel for="fabricante" value="Fabricante:"  /><br />
 	  		<p:autoComplete id="fabricante" 
-	  						value="#{itensMovimentoGeralHome.instancia.fabricante}"
+	  						value="#{entradaMaterialHome.instancia.fabricante}"
 							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
 							var="fabricante"
 							required="true"
@@ -46,7 +46,7 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
 			<p:inputText id="lote" 
-						 value="#{itensMovimentoGeralHome.instancia.lote}" 
+						 value="#{entradaMaterialHome.instancia.lote}" 
 						 required="true"
 						 title="Informe o lote" />
 		</h:panelGroup>
@@ -55,7 +55,7 @@
 			<font color="red" >*</font><h:outputLabel for="dataValidade" value="Data de validade:"  /><br />
 			<p:inputMask id="dataValidade"
 						 mask="99/99/9999"
-						 value="#{itensMovimentoGeralHome.instancia.dataValidade}"
+						 value="#{entradaMaterialHome.instancia.dataValidade}"
 						 title="Data de validade do lote"
 						 required="true">
 				<f:convertDateTime pattern="dd/MM/yyyy"  />
@@ -65,7 +65,7 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
 			<p:inputText id="quantidade" 
-						 value="#{itensMovimentoGeralHome.instancia.quantidade}" 
+						 value="#{entradaMaterialHome.instancia.quantidade}" 
 						 required="true"
 						 onkeyup="apenasNumero(this);"
 						 title="Informe a quantidade" />

@@ -13,23 +13,23 @@
 		<p:tab id="tabEntradaMaterial" title="Entrada de Material" >
 			<h:form id="entradaMaterialForm" prependId="false" >
 				<p:fieldset legend="Nova entrada de material"
-							collapsed="#{!itensMovimentoGeralHome.edicao}"
+							collapsed="#{!entradaMaterialHome.edicao}"
 							toggleable="true"
 							toggleSpeed="500">
 						<p:growl id="formGrowl" />
 						<ui:include src="entradaMaterialEditor.xhtml"/>
 			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!itensMovimentoGeralHome.edicao}"
+			            					rendered="#{!entradaMaterialHome.edicao}"
 			            					update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
-											action="#{itensMovimentoGeralHome.enviar}" />
+											action="#{entradaMaterialHome.enviar}" />
 			            <p:commandButton	value="Gravar" 
-			            					rendered="#{itensMovimentoGeralHome.edicao}"
+			            					rendered="#{entradaMaterialHome.edicao}"
 			            					update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
-											action="#{itensMovimentoGeralHome.atualizar}"/> 
+											action="#{entradaMaterialHome.atualizar}"/> 
 						<p:commandButton	value="Novo"
-											rendered="#{itensMovimentoGeralHome.edicao}"
+											rendered="#{entradaMaterialHome.edicao}"
 											update="@parent" 
-											action="#{itensMovimentoGeralHome.novaInstancia()}"/> 
+											action="#{entradaMaterialHome.novaInstancia()}"/> 
 				</p:fieldset>
             </h:form>
 			
@@ -46,7 +46,7 @@
 										image="ui-icon ui-icon-search" />
 					
 					<p:commandButton 	value="Limpar" 
-										action="#{itensMovimentoGeralConsulta.novaInstancia()}"
+										action="#{entradaMaterialConsulta.novaInstancia()}"
 										image="ui-icon ui-icon-arrowrefresh-1-s" 
 										title="Limpar os campos" 
 										update="pesquisaEntradaMaterialForm " />
