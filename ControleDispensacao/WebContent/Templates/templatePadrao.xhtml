@@ -31,21 +31,24 @@
 		<br/>
 		<div id="geral" 
 			 align="center" >
-				<h:panelGroup rendered="#{autenticador.usuarioAtivo}" >
+			 <h:form id="menuForm" >
+			 	<h:panelGroup rendered="#{autenticador.usuarioAtivo}" >
 					
 					<p:selectOneMenu value="#{autenticador.unidadeAtual}" 
 								 effect="fade" 
-								 converter="unidadeConversor"
-								 required="true">  
+								 converter="unidadeConversor">  
+					<f:ajax event="change" 
+							render="menuForm" />
 					<f:selectItem itemLabel="Selecione sua unidade..." 
 								  itemValue="" /> 
 		            <f:selectItems value="#{autenticador.unidades}" 
 		            			   var="unidade" 
 		            			   itemLabel="#{unidade.nome}" 
 		            			   itemValue="#{unidade}"/>  
-		        </p:selectOneMenu>
-				<ui:include src="menu.xhtml" />
-			</h:panelGroup>
+		        	</p:selectOneMenu>
+					<ui:include src="menu.xhtml" />
+				</h:panelGroup>
+			</h:form>
 			<br/>
 			<div id="conteudoPadrao" align="center" >
 				<p:growl></p:growl>

@@ -88,7 +88,8 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 	}
 
 	public E consultaUnica(StringBuilder stringB, HashMap<Object, Object> hashMap ){
-		return consulta(stringB, hashMap).iterator().next();
+		Collection<E> consulta = consulta(stringB, hashMap);
+		return consulta == null || consulta.size() == 0 ? null : consulta.iterator().next();
 	}
 	
 	public void setAddValorConsulta(HashMap<Object, Object> addValorConsulta) {

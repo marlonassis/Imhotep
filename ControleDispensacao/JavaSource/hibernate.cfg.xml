@@ -39,5 +39,11 @@
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoGeral"/>
         <mapping class="br.com.ControleDispensacao.entidade.Receita"/>
         <mapping class="br.com.ControleDispensacao.entidade.SubGrupoOrigemPrescricao"/>
+        <mapping class="br.com.ControleDispensacao.entidade.ItensMovimentoGeral"/>
+        <mapping class="br.com.ControleDispensacao.entidade.ItensReceita"/>
+        <mapping class="br.com.ControleDispensacao.entidade.ItemSolicitaRemanejamento"/>
+        <mapping class="br.com.ControleDispensacao.entidade.SolicitaRemanejamento"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Estoque"/>
+        <mapping class="br.com.ControleDispensacao.entidade.MovimentoLivro"/>
     </session-factory>
 </hibernate-configuration>

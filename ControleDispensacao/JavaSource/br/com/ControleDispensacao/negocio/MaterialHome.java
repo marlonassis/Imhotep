@@ -21,8 +21,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();
 	private List<Familia> familiaList = new ArrayList<Familia>();
-	
-	
+
 	/**
 	 * Método usando para carregar o subgrupo do grupo informado pelo usuário
 	 */

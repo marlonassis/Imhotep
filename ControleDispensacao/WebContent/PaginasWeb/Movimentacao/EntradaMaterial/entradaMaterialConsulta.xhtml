@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="entradaMaterialPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="materialConsulta" value="Material:"  /><br />
+	  		<p:autoComplete id="materialConsulta" 
+	  						value="#{itensMovimentoGeralConsulta.instancia.material}"
+							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
+							var="material"
+							title="Informe o grupo do sub-grupo"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="fabricanteConsulta" value="Fabricante:"  /><br />
+	  		<p:autoComplete id="fabricanteConsulta" 
+	  						value="#{itensMovimentoGeralConsulta.instancia.fabricante}"
+							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
+							var="fabricante"
+							title="Informe o fabricante"
+							itemLabel="#{fabricante.descricao}" 
+							itemValue="#{fabricante}"
+							converter="fabricanteConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="loteConsulta" value="Lote:"  /><br />
+			<p:inputText id="loteConsulta" 
+						 value="#{itensMovimentoGeralConsulta.instancia.lote}" 
+						 title="Informe o lote do material" />
+		</h:panelGroup>
+		
+		<h:panelGroup >
+			<h:outputLabel for="dataValidadeConsulta" value="Data de validade:"  /><br />
+			<p:inputMask id="dataValidadeConsulta"
+						 mask="99/99/9999"
+						 value="#{itensMovimentoGeralConsulta.instancia.dataValidade}"
+						 title="Data de validade do lote"
+						 required="false">
+				<f:convertDateTime pattern="dd/MM/yyyy"  />
+			</p:inputMask>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>

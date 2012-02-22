@@ -15,13 +15,17 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
-import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.gerenciador.GerenciadorConexao;
 import br.com.nucleo.interfaces.IPadraoHome;
 
 public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadraoHome {
 
 	private T instancia;
+	
+	public Object getInstanciaHome(String nome){
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
+		return session.getAttribute(nome);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void setId(Object o){
@@ -213,7 +217,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		return res;
 	}
 	
-	private String nomeCompletoClasse(){
+	private  String nomeCompletoClasse(){
 		ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();  
         String s = ((ParameterizedType) superclass).getActualTypeArguments()[0].toString();
         int fim = s.length();  
