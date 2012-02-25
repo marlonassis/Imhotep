@@ -14,9 +14,9 @@ import br.com.nucleo.PadraoConsulta;
 public class ProfissionalConsulta extends PadraoConsulta<Profissional> {
 	public ProfissionalConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.tipoConselho", IGUAL);
+		getCamposConsulta().put("o.especialidade", IGUAL);
 		getCamposConsulta().put("o.inscricao", INCLUINDO_TUDO);
-		setOrderBy("o.tipoConselho.descricao, o.nome");
+		setOrderBy("o.especialidade.descricao, o.nome");
 	}
 	
 	@Override

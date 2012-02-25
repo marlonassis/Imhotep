@@ -25,15 +25,15 @@
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="tipoConselhoConsulta" value="Tipo Conselho:"  /><br />
-	  		<p:autoComplete id="tipoConselhoConsulta" 
-	  						value="#{profissionalConsulta.instancia.tipoConselho}"
-							completeMethod="#{tipoConselhoHome.getListaTipoConselhoAutoComplete}" 
-							var="tipoConselho"
-							title="Informe o tipoConselho"
-							itemLabel="#{tipoConselho.descricaoSigla}" 
-							itemValue="#{tipoConselho}"
-							converter="tipoConselhoConversor" />
+			<h:outputLabel for="especialidadeConsulta" value="Especialidade:"  /><br />
+	  		<p:autoComplete id="especialidadeConsulta" 
+	  						value="#{profissionalConsulta.instancia.especialidade}"
+							completeMethod="#{especialidadeHome.getListaEspecialidadeTipoConselho}" 
+							var="especialidade"
+							title="Informe a especialidade"
+							itemLabel="#{especialidade.descricao}" 
+							itemValue="#{especialidade}"
+							converter="especialidadeConversor" />
 		</h:panelGroup>
 		
 	</h:panelGrid>

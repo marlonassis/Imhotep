@@ -24,13 +24,11 @@ public class Profissional {
 	private int idProfissional;
 	private Cidade cidade;
 	private Estado estado; 
-	private TipoConselho tipoConselho;
-	private TipoProfissional tipoProfissional;
+	private Especialidade especialidade;
 	private String nome;
 	private TipoSituacaoEnum status;
 	private Long inscricao;
 	private Date dataInscricao;
-	private String especialidade;
 	private Usuario usuarioInclusao;
 	private Date dataInclusao;
 	private Usuario usuarioAlteracao;
@@ -70,23 +68,13 @@ public class Profissional {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tipo_conselho_id_tipo_conselho")
-	public TipoConselho getTipoConselho() {
-		return tipoConselho;
+	@JoinColumn(name = "id_especialidade")
+	public Especialidade getEspecialidade() {
+		return especialidade;
 	}
 	
-	public void setTipoConselho(TipoConselho tipoConselho) {
-		this.tipoConselho = tipoConselho;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tipo_prescritor_id_tipo_prescritor")
-	public TipoProfissional getTipoProfissional() {
-		return tipoProfissional;
-	}
-	
-	public void setTipoProfissional(TipoProfissional tipoProfissional) {
-		this.tipoProfissional = tipoProfissional;
+	public void setEspecialidade(Especialidade especialidade) {
+		this.especialidade = especialidade;
 	}
 	
 	@Column(name = "nome", length = 60)
@@ -118,15 +106,6 @@ public class Profissional {
 		this.inscricao = inscricao;
 	}
 
-	@Column(name = "especialidade", length = 40)
-	public String getEspecialidade() {
-		return especialidade;
-	}
-	
-	public void setEspecialidade(String especialidade) {
-		this.especialidade = especialidade;
-	}
-	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_incl", length = 13)
 	public Date getDataInclusao() {
@@ -167,7 +146,7 @@ public class Profissional {
 		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
 	@JoinColumn(name = "id_usuario")
 	public Usuario getUsuario() {
 		return usuario;

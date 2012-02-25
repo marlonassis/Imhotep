@@ -5,18 +5,16 @@
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 	
 	
-	<h:panelGrid id="pacientePanelGridConsulta"
+	<h:panelGrid id="especialidadePanelGridConsulta"
 				 columns="3" 
 				 width="100%" >
-		
+				 
 		<h:panelGroup>
-			<h:outputLabel for="cpfConsulta" value="CPF:"  /><br />
-			<p:inputMask id="cpfConsulta"
-						 mask="999.999.999-99"
-						 value="#{pacienteConsulta.instancia.cpf}"
-						 title="Informe o CPF do paciente"
-						 onblur="validaCPF(this);"/>
+			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
+			<p:inputText id="nomeConsulta" 
+						 value="#{especialidadeConsulta.instancia.descricao}"
+						 title="Informe o nome do especialidade" />
 		</h:panelGroup>
-		
+	
 	</h:panelGrid>
 </ui:composition>

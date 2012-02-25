@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 
-	<h:panelGrid id="tipoConselhoPanelGrid"
+	<h:panelGrid id="profissionalPanelGrid"
 				 columns="3" 
 				 width="100%" >
 	
@@ -13,7 +13,7 @@
 			<p:inputText id="inscricao" 
 						 value="#{profissionalHome.instancia.inscricao}"
 						 required="true"
-						 onkeyup="apenasNumeros(this);"
+						 onkeyup="apenasNumero(this);"
 						 title="Informe a inscrição do profissional" />
 		</h:panelGroup>
 		
@@ -25,57 +25,65 @@
 						 title="Informe o nome do profissional" />
 		</h:panelGroup>
 		
-		<h:panelGroup id="tipoConselhoPanelGroup" >
-			<h:panelGrid width="100%" columns="2" >
-			
-				<h:panelGroup>
-					<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
-					<p:selectOneMenu value="#{profissionalHome.instancia.tipoConselho}" 
-									 effect="fade" 
-									 required="true"
-									 converter="tipoConselhoConversor">  
-						<f:ajax event="change" 
-								listener="#{profissionalHome.carregaTipoConselhoList()}" 
-								render="tipoConselhoPanelGroup" />
-						<f:selectItem itemLabel="Selecione..." 
-									  itemValue="" /> 
-			            <f:selectItems value="#{tipoConselhoConsulta.list}" 
-			            			   var="tipoConselho" 
-			            			   itemLabel="#{tipoConselho.descricaoSigla}" 
-			            			   itemValue="#{tipoConselho}"/>  
-			        </p:selectOneMenu>
-		        </h:panelGroup>
-			
-				<h:panelGroup> 
-					<font color="red" >*</font><h:outputLabel for="tipoProfissional" value="Tipo do Profissional:"  /><br />
-					<p:selectOneMenu id="tipoProfissional"
-									 value="#{profissionalHome.instancia.tipoProfissional}" 
-									 effect="fade"
-									 required="true"
-									 converter="tipoProfissionalConversor">
-			            <f:selectItem itemLabel="Selecione..." 
-			            			  itemValue="" /> 
-			            <f:selectItems value="#{profissionalHome.tipoProfissionalList}" 
-			            			   var="tipoProfissional" 
-			            			   itemLabel="#{tipoProfissional.descricao}" 
-			            			   itemValue="#{tipoProfissional}"/>  
-		        	</p:selectOneMenu>
-		        </h:panelGroup>
-			</h:panelGrid>
-		</h:panelGroup>
-		
 		<h:panelGroup>
-			<h:outputLabel for="especialidade" value="Especialidade:"  /><br />
-			<p:inputText id="especialidade" 
-						 value="#{profissionalHome.instancia.especialidade}"
-						 title="Informe a especialidade do profissional" />
-		</h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
+			<p:selectOneMenu value="#{profissionalHome.instancia.especialidade.tipoProfissional.tipoConselho}" 
+							 effect="fade" 
+							 required="true"
+							 converter="tipoConselhoConversor">  
+				<f:ajax event="change" 
+						listener="#{profissionalHome.carregaTipoConselhoList()}" 
+						render="tipoProfissionalPanelGroup" />
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{tipoConselhoConsulta.list}" 
+	            			   var="tipoConselho" 
+	            			   itemLabel="#{tipoConselho.descricaoSigla}" 
+	            			   itemValue="#{tipoConselho}"/>  
+	        </p:selectOneMenu>
+        </h:panelGroup>
+			
+		<h:panelGroup id="tipoProfissionalPanelGroup" > 
+			<font color="red" >*</font><h:outputLabel for="tipoProfissional" value="Tipo do Profissional:"  /><br />
+			<p:selectOneMenu id="tipoProfissional"
+							 value="#{profissionalHome.instancia.especialidade.tipoProfissional}" 
+							 effect="fade"
+							 required="true"
+							 converter="tipoProfissionalConversor">
+				<f:ajax event="change" 
+						listener="#{profissionalHome.carregaEspecialidadeList()}" 
+						render="especialidadePanelGroup" />
+	            <f:selectItem itemLabel="Selecione..." 
+	            			  itemValue="" /> 
+	            <f:selectItems value="#{profissionalHome.tipoProfissionalList}" 
+	            			   var="tipoProfissional" 
+	            			   itemLabel="#{tipoProfissional.descricao}" 
+	            			   itemValue="#{tipoProfissional}"/>  
+        	</p:selectOneMenu>
+        </h:panelGroup>
+        
+        <h:panelGroup id="especialidadePanelGroup" > 
+			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:"  /><br />
+			<p:selectOneMenu id="especialidade"
+							 value="#{profissionalHome.instancia.especialidade}" 
+							 effect="fade"
+							 required="true"
+							 converter="especialidadeConversor">
+	            <f:selectItem itemLabel="Selecione..." 
+	            			  itemValue="" /> 
+	            <f:selectItems value="#{profissionalHome.especialidadeList}" 
+	            			   var="especialidade" 
+	            			   itemLabel="#{especialidade.descricao}" 
+	            			   itemValue="#{especialidade}"/>  
+        	</p:selectOneMenu>
+        </h:panelGroup>
 		
 		<h:panelGroup> 
-			<h:outputLabel for="estado" value="Estado:"  /><br />
+			<font color="red" >*</font><h:outputLabel for="estado" value="Estado:"  /><br />
 			<p:selectOneMenu id="estado"
 							 value="#{profissionalHome.instancia.estado}" 
 							 effect="fade"
+							 required="true"
 							 converter="estadoConversor">
 	            <f:selectItem itemLabel="Selecione..." 
 	            			  itemValue="" /> 
@@ -96,10 +104,18 @@
 			</h:selectOneRadio>
 		</h:panelGroup>
 		
+		<h:panelGroup rendered="#{profissionalHome.edicao}" >
+			<h:outputLabel for="loginDescricao" value="Login:"  /><br />
+			<h:outputText id="loginDescricao"
+						  value="#{profissionalHome.instancia.usuario.login}" 
+						  title="Usuário do profissional" />
+		</h:panelGroup>
+		
 	</h:panelGrid>
 	
 	<p:fieldset collapsed="false" 
-				legend="Usuário" >
+				legend="Usuário" 
+				rendered="#{!profissionalHome.edicao}">
 		<h:panelGrid width="100%" columns="3" >
 			<h:panelGroup>
 				<font color="red" >*</font><h:outputLabel for="matricula" value="Matrícula:"  /><br />

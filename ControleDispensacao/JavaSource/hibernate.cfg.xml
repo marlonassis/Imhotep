@@ -45,5 +45,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.SolicitaRemanejamento"/>
         <mapping class="br.com.ControleDispensacao.entidade.Estoque"/>
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoLivro"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Especialidade"/>
     </session-factory>
 </hibernate-configuration>

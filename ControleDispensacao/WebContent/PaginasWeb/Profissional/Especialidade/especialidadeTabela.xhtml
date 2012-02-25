@@ -5,44 +5,39 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaProfissional" 
-					value="#{profissionalConsulta.list}" 
+	<p:dataTable 	id="tabelaEspecialidade" 
+					value="#{especialidadeConsulta.list}" 
 					var="linha"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idProfissional}">
+					rowKey="#{linha.idEspecialidade}">
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Inscrição" /></f:facet>
-			<h:outputText value="#{linha.inscricao}" />
+			<f:facet name="header"><h:outputText value="Descricao" /></f:facet>
+			<h:outputText value="#{linha.descricao}" />
 		</p:column>
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Especialidade" /></f:facet>
-			<h:outputText value="#{linha.especialidade.descricao}" />
+			<f:facet name="header"><h:outputText value="Tipo do Profissional" /></f:facet>
+			<h:outputText value="#{linha.tipoProfissional}" />
 		</p:column>
 					
-		<p:column>
-			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-			<h:outputText value="#{linha.nome}" />
-		</p:column>
-		
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:profissionalForm" 
+			<p:commandLink update="padraoTabView:especialidadeForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{profissionalHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{profissionalHome.apagar()}"
-							update="tabelaProfissional padraoTabView:profissionalForm" 
+			<p:commandLink  action="#{especialidadeHome.apagar()}"
+							update="tabelaEspecialidade padraoTabView:especialidadeForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 							title="Apagar" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{profissionalHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  
