@@ -4,12 +4,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.submenu.Submenu;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+
+import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.nucleo.ConsultaGeral;
@@ -22,6 +29,7 @@ public class Autenticador {
 	private Usuario usuarioAtual;
 	private Usuario usuario = new Usuario();
 	private Unidade unidadeAtual;
+	private MenuModel menuModel;
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
@@ -86,6 +94,7 @@ public class Autenticador {
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
 	    				setUsuarioAtual(usuarioLogado);
 	    				carregaUnidadesUsuario();
+	    				carregaToolBarMenu();
 	    				facesContext.getExternalContext().redirect(PAGINA_HOME);
 	    			}else{
 	    				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
@@ -110,7 +119,65 @@ public class Autenticador {
 		setUsuario(new Usuario());
 	}
 	
-	
+	/**
+	 * Monta o menu de acordo com as permissões de cada usuário
+	 */
+	private void carregaToolBarMenu() {
+		//TODO tornar o menu recursivo
+		menuModel = new DefaultMenuModel();
+		
+		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("idUsuario", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
+		StringBuilder sb = new StringBuilder("select o from Menu o where o.menuPai is null and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where ");
+		sb.append("a.usuario.idUsuario = :idUsuario) order by o.descricao");
+		
+		Collection<Menu> listaPrimeiroNivel = cg.consulta(sb, hashMap);
+		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
+			Submenu primeiroNivel = new Submenu();
+			primeiroNivel.setLabel(menuPrimeiroNivel.getDescricao());
+			
+			hashMap.put("idMenuPai", menuPrimeiroNivel.getIdMenu());
+			sb = new StringBuilder("select o from Menu o where ");
+			sb.append(" o.menuPai.idMenu = :idMenuPai ");
+			sb.append(" and o.aplicacao.idAplicacao in (select a.aplicacao.idAplicacao from AutorizaAplicacao a where a.usuario.idUsuario = :idUsuario ) order by o.descricao ");
+			Collection<Menu> listaSegundoNivel = cg.consulta(sb, hashMap);
+			for (Menu menuSegundoNivel : listaSegundoNivel) {
+				hashMap.put("idMenuPai", menuSegundoNivel.getIdMenu());
+				Collection<Menu> listaTerceiroNivel = cg.consulta(sb, hashMap);
+				if(listaTerceiroNivel.size() > 0){
+					Submenu segundoNivel = new Submenu();
+					segundoNivel.setLabel(menuSegundoNivel.getDescricao());
+					for (Menu menuTerceiroNivel : listaTerceiroNivel) {
+						MenuItem mm = new MenuItem();
+						mm.setValue(menuTerceiroNivel.getDescricao());
+						mm.setUrl(menuTerceiroNivel.getAplicacao().getExecutavel());
+						segundoNivel.getChildren().add(mm);
+					}
+					primeiroNivel.getChildren().add(segundoNivel);
+				}else{
+					MenuItem mm = new MenuItem();
+					mm.setValue(menuSegundoNivel.getDescricao());
+					mm.setUrl(menuSegundoNivel.getAplicacao().getExecutavel());
+					primeiroNivel.getChildren().add(mm);
+				}
+			}
+			
+			menuModel.addSubmenu(primeiroNivel);
+		}
+		
+		MenuItem mi = new MenuItem();
+		mi.setValue("Sair");
+
+		String action = "#{autenticador.logout()}";
+		MethodExpression methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
+		createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class<?>[0]);
+		
+		mi.setActionExpression(methodExpression);
+		mi.setOncomplete("window.location.reload();");
+		menuModel.addMenuItem(mi);
+	}
+
 	
 	
 	public Usuario getUsuarioAtual() {
@@ -141,4 +208,8 @@ public class Autenticador {
 		return unidades;
 	}
 
+	public MenuModel getMenuModel(){
+		return menuModel;
+	}
+	
 }

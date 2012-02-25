@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.entidade;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -173,7 +174,7 @@ public class Estoque {
 	public boolean equals(Object obj) {
 		if(obj == null)
 			return false;
-		if(!(obj instanceof Paciente))
+		if(!(obj instanceof Estoque))
 			return false;
 		
 		return ((Estoque)obj).getIdEstoque() == this.idEstoque;
@@ -187,7 +188,7 @@ public class Estoque {
 
 	@Override
 	public String toString() {
-		return material.getDescricao().concat(" - ").concat(lote);
+		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(quantidade.toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
 	}
 	
 }

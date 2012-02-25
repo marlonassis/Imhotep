@@ -57,6 +57,14 @@ public class MaterialHome extends PadraoHome<Material>{
 		return super.getBusca("select o from Material as o where o.descricao like '%"+sql+"%' ");
 	}
 	
+	public Collection<Material> getListaMaterialEstoque(){
+		return super.getBusca("select distinct o.material from Estoque o order by o.material.descricao ");
+	}
+	
+	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
+		return super.getBusca("select distinct o.material from Estoque o where o.material.descricao like '%"+sql+"%' ");
+	}
+	
 	@Override
 	public boolean atualizar() {
 		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());

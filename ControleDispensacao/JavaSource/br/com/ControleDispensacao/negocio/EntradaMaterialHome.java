@@ -8,7 +8,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 import br.com.ControleDispensacao.entidade.Estoque;
 import br.com.ControleDispensacao.entidade.ItensMovimentoGeral;
@@ -101,8 +100,8 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 		if(movimentoLivroAtual != null){
 			movimentoLivroAtual.setDataMovimento(new Date());
 			movimentoLivroAtual.setQuantidadeEntrada(quantidadeEntrada);
-			movimentoLivroAtual.setSaldoAnterior(saldoAnterior == null ? 0 : saldoAnterior);
-			movimentoLivroAtual.setSaldoAtual(quantidadeEntrada + (saldoAnterior == null ? 0 : saldoAnterior));
+			movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
+			movimentoLivroAtual.setSaldoAtual(quantidadeEntrada + saldoAnterior);
 			session.merge(movimentoLivroAtual);
 		}else{
 			movimentoLivroAtual = new MovimentoLivro();
@@ -127,7 +126,7 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 		sb.append(" o.material.idMaterial = :idMaterial");
 		sb.append(" and o.unidade.idUnidade = :idUnidade");
 		Long quantidadeAtual = cg.consultaUnica(sb, hashMap);
-		return quantidadeAtual == null ? null : quantidadeAtual.intValue();
+		return quantidadeAtual == null ? 0 : quantidadeAtual.intValue();
 	}
 	
 	private void geraEstoque() {
@@ -162,11 +161,6 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 			session.save(estoqueAtual);
 		}
 	}
-
-	private String getIdSessao(){
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-		return session.getId();
-	}
 	
 	private boolean carregaMovimentoGeral() {
 		//procura algum movimento no banco de dados para associar ao item
@@ -177,7 +171,7 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 		getInstancia().getMovimentoGeral().setIdMovimentoGeral(0);
 		if(movimentoGeral == null){
 			//caso não encontre um movimento geral será gerado um novo
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd-hh-MM-ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 			String chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(getIdSessao());
 			getInstancia().getMovimentoGeral().setNumeroControle(chaveUnica);
 			getInstancia().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());

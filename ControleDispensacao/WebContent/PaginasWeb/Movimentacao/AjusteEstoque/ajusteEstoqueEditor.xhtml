@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="ajusteEstoquePanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="tipoMovimento" value="Tipo do movimento:"  /><br />
+			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.movimentoGeral.tipoMovimento}" 
+							 effect="fade" 
+							 converter="tipoMovimentoConversor"
+							 required="true">  
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{tipoMovimentoConsulta.list}" 
+	            			   var="tipoMovimento" 
+	            			   itemLabel="#{tipoMovimento.descricao}" 
+	            			   itemValue="#{tipoMovimento}"/>  
+	        </p:selectOneMenu>
+        </h:panelGroup>
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="motivo" value="Motivo:"  /><br />
+			<p:inputText id="motivo" 
+						 value="#{ajusteEstoqueHome.instancia.movimentoGeral.motivo}" 
+						 required="true"
+						 title="Informe o motivo do ajuste" />
+		</h:panelGroup>
+		
+		<h:panelGroup id="materialPanelGroup" >
+			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
+			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.material}" 
+							 effect="fade" 
+							 converter="materialConversor"
+							 required="true">
+				<f:ajax event="change" 
+						listener="#{ajusteEstoqueHome.carregaEstoqueMaterial()}" 
+						render="estoquePanelGroup" />  
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{materialHome.listaMaterialEstoque}" 
+	            			   var="material" 
+	            			   itemLabel="#{material.toString()}" 
+	            			   itemValue="#{material}"/> 
+	        </p:selectOneMenu>
+		</h:panelGroup>
+		
+		<h:panelGroup id="estoquePanelGroup" >
+			<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
+			<p:selectOneMenu value="#{ajusteEstoqueHome.estoque}" 
+							 effect="fade" 
+							 converter="estoqueConversor"
+							 required="true">  
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{ajusteEstoqueHome.estoqueList}" 
+	            			   var="estoque" 
+	            			   itemLabel="#{estoque.toString()}" 
+	            			   itemValue="#{estoque}"/> 
+	        </p:selectOneMenu>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
+			<p:inputText id="quantidade" 
+						 value="#{ajusteEstoqueHome.instancia.quantidade}" 
+						 required="true"
+						 onkeyup="apenasNumero(this);"
+						 title="Informe a quantidade do ajuste" />
+		</h:panelGroup>
+	</h:panelGrid>
+</ui:composition>

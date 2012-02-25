@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabAjusteEstoque" title="Ajuste de Estoque" >
+			<h:form id="ajusteEstoqueForm" prependId="false" >
+				<p:fieldset legend="Novo ajuste de estoque"
+							collapsed="false"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" showDetail="true" />
+						<ui:include src="ajusteEstoqueEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!ajusteEstoqueHome.edicao}"
+			            					update="padraoTabView:tabelaAjusteEstoque ajusteEstoqueForm"
+											action="#{ajusteEstoqueHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="false"
+			            					update="padraoTabView:tabelaAjusteEstoque ajusteEstoqueForm"
+											action="#{ajusteEstoqueHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{ajusteEstoqueHome.edicao}"
+											update="@parent" 
+											action="#{ajusteEstoqueHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>
