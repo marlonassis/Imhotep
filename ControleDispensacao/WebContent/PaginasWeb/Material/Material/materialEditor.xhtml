@@ -67,7 +67,7 @@
 						 width="100%" >
 				<h:panelGroup>
 					<h:outputLabel for="grupo" value="Grupo:"  /><br />
-					<p:selectOneMenu value="#{materialHome.instancia.grupo}" 
+					<p:selectOneMenu value="#{materialHome.instancia.familia.subGrupo.grupo}" 
 									 effect="fade" 
 									 converter="grupoConversor">  
 						<f:ajax event="change" 
@@ -83,7 +83,7 @@
 		        </h:panelGroup>
 		        <h:panelGroup> 
 					<h:outputLabel for="subGrupo" value="Subgrupo:"  /><br />
-					<p:selectOneMenu value="#{materialHome.instancia.subGrupo}" 
+					<p:selectOneMenu value="#{materialHome.instancia.familia.subGrupo}" 
 									 effect="fade" 
 									 converter="subGrupoConversor">
 						<f:ajax event="change" 
@@ -148,16 +148,6 @@
 							  required="true"
 							  title="Informe se medicamento precisa de autorização" >
 				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
-			<h:selectOneRadio id="situacao"
-							  value="#{materialHome.instancia.status}" 
-							  required="true"
-							  title="Informe se o o medicamento está ativo ou inativo" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
 			</h:selectOneRadio>
 		</h:panelGroup>
 

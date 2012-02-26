@@ -35,11 +35,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			iniciarTransacao();
 			session.get(instancia.getClass(), (Serializable) o);
 		}catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao setar o id", e.getCause().getMessage()));
 			if(session != null){
 				session.getTransaction().rollback();
 			}
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao setar o id", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -107,11 +107,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			ret = true;
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Deleção realizada com sucesso", "Registro apagado!"));
 		}catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao apagar", e.getCause().getMessage()));
 			if(session != null){
 				session.getTransaction().rollback();
 			}
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao apagar", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -159,11 +159,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			Query query = session.createQuery(sql);
             lista = query.list();    
 		}catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu ao reallizar a busca", e.getCause().getMessage()));
 			if(session != null){
 				session.getTransaction().rollback();
 			}
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu ao reallizar a busca", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -219,11 +219,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			Query query = session.createQuery("from "+nomeClasse()+" u");
 			lista = query.list(); 
 		}catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao efetuar a busca", e.getCause().getMessage()));
 			if(session != null){
 				session.getTransaction().rollback();
 			}
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao efetuar a busca", e.getCause().getMessage()));
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();

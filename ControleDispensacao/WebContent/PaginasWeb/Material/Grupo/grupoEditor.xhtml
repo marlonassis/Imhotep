@@ -16,25 +16,5 @@
 						 title="Informe a descrição do grupo" />
 		</h:panelGroup>
 		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
-			<h:selectOneRadio id="situacao"
-							  value="#{grupoHome.instancia.status}" 
-							  required="true"
-							  title="Informe se o grupo está ativo ou inativo" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="obrigatorio" value="Obrigatório:"  /><br />
-			<h:selectOneRadio id="obrigatorio"
-							  value="#{grupoHome.instancia.tipoObrigatorio}" 
-							  required="true"
-							  title="Informe se o grupo é obrigatório ou não" >
-				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
 	</h:panelGrid>
 </ui:composition>

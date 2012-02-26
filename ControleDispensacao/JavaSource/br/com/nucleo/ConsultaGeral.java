@@ -70,10 +70,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 				query.setParameter((String) obj, hashMap.get(obj));
 			objects = (List<E>) query.list();
 		}catch (Exception e) {
+			e.printStackTrace();
 			if(session != null){
 				session.getTransaction().rollback();
 			}
-			e.printStackTrace();
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();

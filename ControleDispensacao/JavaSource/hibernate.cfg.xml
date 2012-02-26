@@ -5,15 +5,13 @@
 <hibernate-configuration>
     <session-factory name="ControleDispensacao">
     
-	    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-	    <property name="javax.persistence.jdbc.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia</property>
-	    <property name="javax.persistence.jdbc.driver">org.postgresql.Driver</property>
-	    <property name="javax.persistence.jdbc.password">postgres</property>
-	    <property name="javax.persistence.jdbc.user">postgres</property>
-	    <property name="hibernate.hbm2ddl.auto">update</property>
-	    <property name="hibernate.show_sql">true</property>
-	    <property name="hibernate.format_sql">true</property>         
-        
+    		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>  
+            <property name="hibernate.connection.show_sql">true</property>  
+            <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>  
+            <property name="hibernate.connection.username">postgres</property>  
+            <property name="hibernate.connection.password">postgres</property>  
+            <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia</property>  
+    
         <mapping class="br.com.ControleDispensacao.entidade.Usuario"/>
         <mapping class="br.com.ControleDispensacao.entidade.Aplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.Menu"/>
@@ -29,7 +27,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.AutorizaAplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoConselho"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoProfissional"/>
-        <mapping class="br.com.ControleDispensacao.entidade.LiberaMaterialTipoProfissional"/>
+        <mapping class="br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade"/>
         <mapping class="br.com.ControleDispensacao.entidade.Profissional"/>
         <mapping class="br.com.ControleDispensacao.entidade.Estado"/>
         <mapping class="br.com.ControleDispensacao.entidade.Cidade"/>
@@ -42,10 +40,8 @@
         <mapping class="br.com.ControleDispensacao.entidade.GrupoOrigemPrescricao"/>
         <mapping class="br.com.ControleDispensacao.entidade.MotivoFimReceita"/>
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoGeral"/>
-        <mapping class="br.com.ControleDispensacao.entidade.Receita"/>
         <mapping class="br.com.ControleDispensacao.entidade.SubGrupoOrigemPrescricao"/>
         <mapping class="br.com.ControleDispensacao.entidade.ItensMovimentoGeral"/>
-        <mapping class="br.com.ControleDispensacao.entidade.ItensReceita"/>
         <mapping class="br.com.ControleDispensacao.entidade.ItemSolicitaRemanejamento"/>
         <mapping class="br.com.ControleDispensacao.entidade.SolicitaRemanejamento"/>
         <mapping class="br.com.ControleDispensacao.entidade.Estoque"/>

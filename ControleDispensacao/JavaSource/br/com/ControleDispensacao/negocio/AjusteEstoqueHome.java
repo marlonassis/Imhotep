@@ -88,9 +88,9 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Ajuste de estoque realizada com sucesso!", ""));
 				}catch (Exception e) {
 					e.printStackTrace();
-					session.getTransaction().rollback();
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao cadastrar a entrada do material", e.getMessage()));
 					getInstancia().setIdItensMovimentoGeral(0);
+					session.getTransaction().rollback();
 				}finally{
 					session.close(); // Fecha sessão
 					factory.close();

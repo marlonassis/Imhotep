@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
@@ -23,9 +24,10 @@ public class ListaEspecial {
 	private TipoStatusEnum receitaControlada;
 	private TipoStatusEnum medicamentoControlado;
 
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_lista_especial_id_lista_especial_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_lista_especial")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_lista_especial", unique = true, nullable = false)
 	public int getIdListaEspecial() {
 		return this.idListaEspecial;
 	}

@@ -15,16 +15,5 @@
 						 required="true"
 						 title="Informe a descrição do tipoMaterial" />
 		</h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
-			<h:selectOneRadio id="situacao"
-							  value="#{tipoMaterialHome.instancia.status}" 
-							  required="true"
-							  title="Informe se o tipoMaterial está ativo ou inativo" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
 	</h:panelGrid>
 </ui:composition>
