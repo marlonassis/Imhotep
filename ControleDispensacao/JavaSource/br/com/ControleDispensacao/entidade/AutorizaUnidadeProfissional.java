@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "unidade_has_profissional")
+@Table(name = "tb_autoriza_unidade_profissional")
 public class AutorizaUnidadeProfissional {
 	private int idAutorizaUnidadeProfissional;
 	private Unidade unidade;
@@ -24,7 +24,7 @@ public class AutorizaUnidadeProfissional {
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_unidade_has_profissional")
+	@Column(name = "id_autoriza_unidade_profissional")
 	public int getIdAutorizaUnidadeProfissional() {
 		return idAutorizaUnidadeProfissional;
 	}
@@ -34,7 +34,7 @@ public class AutorizaUnidadeProfissional {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_id_unidade")
+	@JoinColumn(name = "id_unidade")
 	public Unidade getUnidade() {
 		return unidade;
 	}
@@ -43,7 +43,7 @@ public class AutorizaUnidadeProfissional {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "profissional_id_profissional")
+	@JoinColumn(name = "id_profissional")
 	public Profissional getProfissional() {
 		return profissional;
 	}
@@ -52,7 +52,7 @@ public class AutorizaUnidadeProfissional {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "date_incl", length = 13)
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;
 	}
@@ -61,7 +61,7 @@ public class AutorizaUnidadeProfissional {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return usuarioInclusao;
 	}

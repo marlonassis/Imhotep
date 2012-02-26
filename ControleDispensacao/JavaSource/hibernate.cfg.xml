@@ -4,11 +4,16 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory name="ControleDispensacao">
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/DBFarmacia</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+    
+	    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+	    <property name="javax.persistence.jdbc.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia</property>
+	    <property name="javax.persistence.jdbc.driver">org.postgresql.Driver</property>
+	    <property name="javax.persistence.jdbc.password">postgres</property>
+	    <property name="javax.persistence.jdbc.user">postgres</property>
+	    <property name="hibernate.hbm2ddl.auto">update</property>
+	    <property name="hibernate.show_sql">true</property>
+	    <property name="hibernate.format_sql">true</property>         
+        
         <mapping class="br.com.ControleDispensacao.entidade.Usuario"/>
         <mapping class="br.com.ControleDispensacao.entidade.Aplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.Menu"/>
@@ -46,5 +51,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.Estoque"/>
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoLivro"/>
         <mapping class="br.com.ControleDispensacao.entidade.Especialidade"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Prescricao"/>
+        <mapping class="br.com.ControleDispensacao.entidade.PrescricaoItem"/>
     </session-factory>
 </hibernate-configuration>

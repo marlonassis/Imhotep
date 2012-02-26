@@ -144,8 +144,6 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 		
 		if(estoqueAtual != null){
 			estoqueAtual.setQuantidade(getInstancia().getQuantidade() + estoqueAtual.getQuantidade());
-			estoqueAtual.setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
-			estoqueAtual.setDataAlteracao(new Date());
 			session.merge(estoqueAtual);
 		}else{
 			estoqueAtual = new Estoque();

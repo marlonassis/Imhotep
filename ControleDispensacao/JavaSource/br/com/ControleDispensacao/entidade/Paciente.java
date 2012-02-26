@@ -17,15 +17,14 @@ import javax.persistence.TemporalType;
 
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 
 @Entity
-@Table(name = "paciente")
+@Table(name = "tb_paciente")
 public class Paciente {
 	private int idPaciente;
 	private SituacaoPaciente situacaoPaciente;
 	private Unidade unidadeCadastro;
-	private Unidade unidadeReferida;
+	private Unidade unidadeAlocacao;
 	private Cidade cidade;
 	private String nome;
 	private TipoLogradouroEnum tipoLogradouro;
@@ -36,13 +35,10 @@ public class Paciente {
 	private String nomeMae;
 	private TipoSexoEnum sexo;
 	private Date dataNascimento;
-	private TipoSituacaoEnum status;
-	private Date dataInclusao;
-	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
 	private String telefone;
 	private String cpf;
+	private Date dataInclusao;
+	private Usuario usuarioInclusao;
 	
 	@Id
 	@GeneratedValue
@@ -55,7 +51,7 @@ public class Paciente {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_status_paciente")
+	@JoinColumn(name = "id_situacao_paciente")
 	public SituacaoPaciente getSituacaoPaciente() {
 		return situacaoPaciente;
 	}
@@ -64,7 +60,7 @@ public class Paciente {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_cadastro")
+	@JoinColumn(name = "id_unidade_cadastro")
 	public Unidade getUnidadeCadastro() {
 		return unidadeCadastro;
 	}
@@ -73,16 +69,16 @@ public class Paciente {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_referida")
-	public Unidade getUnidadeReferida() {
-		return unidadeReferida;
+	@JoinColumn(name = "id_unidade_alocacao")
+	public Unidade getUnidadeAlocacao() {
+		return unidadeAlocacao;
 	}
-	public void setUnidadeReferida(Unidade unidadeReferida) {
-		this.unidadeReferida = unidadeReferida;
+	public void setUnidadeAlocacao(Unidade unidadeAlocacao) {
+		this.unidadeAlocacao = unidadeAlocacao;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "cidade_id_cidade")
+	@JoinColumn(name = "id_cidade")
 	public Cidade getCidade() {
 		return cidade;
 	}
@@ -90,7 +86,7 @@ public class Paciente {
 		this.cidade = cidade;
 	}
 	
-	@Column(name = "nome", length = 70)
+	@Column(name = "ds_nome", length = 70)
 	public String getNome() {
 		return nome;
 	}
@@ -98,7 +94,7 @@ public class Paciente {
 		this.nome = nome;
 	}
 	
-	@Column(name = "tipo_logradouro")
+	@Column(name = "tp_tipo_logradouro")
 	@Enumerated(EnumType.STRING)
 	public TipoLogradouroEnum getTipoLogradouro() {
 		return tipoLogradouro;
@@ -107,7 +103,7 @@ public class Paciente {
 		this.tipoLogradouro = tipoLogradouro;
 	}
 	
-	@Column(name = "nome_logradouro", length = 50)
+	@Column(name = "ds_logradouro", length = 50)
 	public String getNomeLogradouro() {
 		return nomeLogradouro;
 	}
@@ -115,7 +111,7 @@ public class Paciente {
 		this.nomeLogradouro = nomeLogradouro;
 	}
 	
-	@Column(name = "numero", length = 7)
+	@Column(name = "ds_numero", length = 7)
 	public String getNumero() {
 		return numero;
 	}
@@ -123,7 +119,7 @@ public class Paciente {
 		this.numero = numero;
 	}
 	
-	@Column(name = "complemento", length = 15)
+	@Column(name = "ds_complemento", length = 15)
 	public String getComplemento() {
 		return complemento;
 	}
@@ -131,7 +127,7 @@ public class Paciente {
 		this.complemento = complemento;
 	}
 	
-	@Column(name = "bairro", length = 30)
+	@Column(name = "ds_bairro", length = 30)
 	public String getBairro() {
 		return bairro;
 	}
@@ -139,7 +135,7 @@ public class Paciente {
 		this.bairro = bairro;
 	}
 	
-	@Column(name = "nome_mae", length = 70)
+	@Column(name = "ds_nome_mae", length = 70)
 	public String getNomeMae() {
 		return nomeMae;
 	}
@@ -147,7 +143,7 @@ public class Paciente {
 		this.nomeMae = nomeMae;
 	}
 	
-	@Column(name = "sexo")
+	@Column(name = "tp_sexo")
 	@Enumerated(EnumType.STRING)
 	public TipoSexoEnum getSexo() {
 		return sexo;
@@ -157,7 +153,7 @@ public class Paciente {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_nasc")
+	@Column(name = "dt_data_nascimento")
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
@@ -165,17 +161,24 @@ public class Paciente {
 		this.dataNascimento = dataNascimento;
 	}
 	
-	@Column(name = "status_2")
-	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getStatus() {
-		return status;
+	@Column(name = "ds_telefone", length = 14)
+	public String getTelefone() {
+		return telefone;
 	}
-	public void setStatus(TipoSituacaoEnum status) {
-		this.status = status;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	
+	@Column(name = "ds_cpf", length = 14)
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl")
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;
 	}
@@ -184,46 +187,12 @@ public class Paciente {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return usuarioInclusao;
 	}
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt")
-	public Date getDataAlteracao() {
-		return dataAlteracao;
-	}
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return usuarioAlteracao;
-	}
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
-	}
-	
-	@Column(name = "telefone", length = 14)
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-	
-	@Column(name = "cpf", length = 14)
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 	
 	@Override

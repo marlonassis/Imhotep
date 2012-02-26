@@ -28,7 +28,7 @@ public class Cidade {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "estado_id_estado")
+	@JoinColumn(name = "id_estado")
 	public Estado getEstado() {
 		return estado;
 	}
@@ -37,7 +37,7 @@ public class Cidade {
 		this.estado = estado;
 	}
 	
-	@Column(name = "nome", length = 60)
+	@Column(name = "ds_nome", length = 60)
 	public String getNome() {
 		return nome;
 	}

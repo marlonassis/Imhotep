@@ -26,8 +26,8 @@ public class MaterialHome extends PadraoHome<Material>{
 	 * Método usando para carregar o subgrupo do grupo informado pelo usuário
 	 */
 	public void carregaSubGrupoList(){
-		if(getInstancia().getGrupo() != null){
-			setSugGrupoList((List<SubGrupo>) new SubGrupoHome().getListaSubGrupoGrupo(getInstancia().getGrupo().getIdGrupo()));
+		if(getInstancia().getFamilia().getSubGrupo().getGrupo() != null){
+			setSugGrupoList((List<SubGrupo>) new SubGrupoHome().getListaSubGrupoGrupo(getInstancia().getFamilia().getSubGrupo().getGrupo().getIdGrupo()));
 		}
 	}
 	
@@ -35,8 +35,8 @@ public class MaterialHome extends PadraoHome<Material>{
 	 * Método usando para carregar as familias do subgrupo informado pelo usuário
 	 */
 	public void carregaFamiliaList(){
-		if(getInstancia().getSubGrupo() != null){
-			setFamiliaList((List<Familia>) new FamiliaHome().getListaFamiliaSubGrupo(getInstancia().getGrupo().getIdGrupo()));
+		if(getInstancia().getFamilia().getSubGrupo() != null){
+			setFamiliaList((List<Familia>) new FamiliaHome().getListaFamiliaSubGrupo(getInstancia().getFamilia().getSubGrupo().getGrupo().getIdGrupo()));
 		}
 	}
 	
@@ -63,13 +63,6 @@ public class MaterialHome extends PadraoHome<Material>{
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
 		return super.getBusca("select distinct o.material from Estoque o where o.material.descricao like '%"+sql+"%' ");
-	}
-	
-	@Override
-	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataAlteracao(new Date());
-		return super.atualizar();
 	}
 	
 	@Override

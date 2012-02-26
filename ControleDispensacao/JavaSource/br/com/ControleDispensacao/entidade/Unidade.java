@@ -1,24 +1,16 @@
 package br.com.ControleDispensacao.entidade;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 
 @Entity
-@Table(name = "unidade")
+@Table(name = "tb_unidade")
 public class Unidade {
 	private int idUnidade;
 	private Unidade unidadePai;
@@ -27,11 +19,6 @@ public class Unidade {
 	private Profissional coordenador;
 	private String telefone;
 	private String email;
-	private TipoSituacaoEnum status;
-	private Date dataInclusao;
-	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
 	
 	@Id
 	@GeneratedValue
@@ -44,7 +31,7 @@ public class Unidade {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_id_unidade")
+	@JoinColumn(name = "id_unidade_pai")
 	public Unidade getUnidadePai() {
 		return unidadePai;
 	}
@@ -52,7 +39,7 @@ public class Unidade {
 		this.unidadePai = unidadePai;
 	}
 	
-	@Column(name = "sigla")
+	@Column(name = "ds_sigla")
 	public String getSigla() {
 		return sigla;
 	}
@@ -60,7 +47,7 @@ public class Unidade {
 		this.sigla = sigla;
 	}
 	
-	@Column(name = "nome")
+	@Column(name = "ds_nome")
 	public String getNome() {
 		return nome;
 	}
@@ -69,7 +56,7 @@ public class Unidade {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "profissional_id_coordenador")
+	@JoinColumn(name = "id_coordenador")
 	public Profissional getCoordenador() {
 		return coordenador;
 	}
@@ -77,7 +64,7 @@ public class Unidade {
 		this.coordenador = coordenador;
 	}
 	
-	@Column(name = "telefone", unique = true, length = 9)
+	@Column(name = "ds_telefone", unique = true, length = 13)
 	public String getTelefone() {
 		return telefone;
 	}
@@ -85,62 +72,12 @@ public class Unidade {
 		this.telefone = telefone;
 	}
 	
-	@Column(name = "e_mail", unique = true, length = 100)
+	@Column(name = "ds_email", unique = true, length = 100)
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	@Column(name = "status_2")
-	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getStatus() {
-		return status;
-	}
-	public void setStatus(TipoSituacaoEnum status) {
-		this.status = status;
-	}
-	
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl")
-	public Date getDataInclusao() {
-		return this.dataInclusao;
-	}
-
-	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
-	public Usuario getUsuarioInclusao() {
-		return this.usuarioInclusao;
-	}
-
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt")
-	public Date getDataAlteracao() {
-		return this.dataAlteracao;
-	}
-
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return this.usuarioAlteracao;
-	}
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
 	}
 	
 	@Override

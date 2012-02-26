@@ -1,26 +1,18 @@
 package br.com.ControleDispensacao.entidade;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
-@Table(name = "tipo_movto")
+@Table(name = "tb_tipo_movimento")
 public class TipoMovimento {
 	private int idTipoMovimento;
 	private String descricao;
@@ -28,15 +20,10 @@ public class TipoMovimento {
 	private TipoStatusEnum movimentoAdminstrativo;
 	private TipoStatusEnum movimentoBloqueado;
 	private TipoStatusEnum movimentoVencido;
-	private TipoSituacaoEnum status;
-	private Date dataInclusao;
-	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_tipo_movto")
+	@Column(name = "id_tipo_movimento")
 	public int getIdTipoMovimento() {
 		return idTipoMovimento;
 	}
@@ -44,7 +31,7 @@ public class TipoMovimento {
 		this.idTipoMovimento = idTipoMovimento;
 	}
 	
-	@Column(name = "descricao", length = 40)
+	@Column(name = "ds_descricao", length = 40)
 	public String getDescricao() {
 		return descricao;
 	}
@@ -52,7 +39,7 @@ public class TipoMovimento {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "operacao")
+	@Column(name = "tp_operacao")
 	@Enumerated(EnumType.STRING)
 	public TipoOperacaoEnum getTipoOperacao() {
 		return tipoOperacao;
@@ -61,7 +48,7 @@ public class TipoMovimento {
 		this.tipoOperacao = tipoOperacao;
 	}
 	
-	@Column(name = "flg_movto")
+	@Column(name = "tp_movimento_administrativo")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getMovimentoAdminstrativo() {
 		return movimentoAdminstrativo;
@@ -70,7 +57,7 @@ public class TipoMovimento {
 		this.movimentoAdminstrativo = movimentoAdminstrativo;
 	}
 	
-	@Column(name = "flg_movto_bloqueado")
+	@Column(name = "tp_movimento_bloqueado")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getMovimentoBloqueado() {
 		return movimentoBloqueado;
@@ -79,63 +66,13 @@ public class TipoMovimento {
 		this.movimentoBloqueado = movimentoBloqueado;
 	}
 	
-	@Column(name = "flg_movto_vencido")
+	@Column(name = "tp_movimento_vencido")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getMovimentoVencido() {
 		return movimentoVencido;
 	}
 	public void setMovimentoVencido(TipoStatusEnum movimentoVencido) {
 		this.movimentoVencido = movimentoVencido;
-	}
-	
-	@Column(name = "status_2")
-	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getStatus() {
-		return status;
-	}
-	public void setStatus(TipoSituacaoEnum status) {
-		this.status = status;
-	}
-	
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl", length = 13)
-	public Date getDataInclusao() {
-		return this.dataInclusao;
-	}
-
-	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
-	public Usuario getUsuarioInclusao() {
-		return this.usuarioInclusao;
-	}
-
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt", length = 13)
-	public Date getDataAlteracao() {
-		return this.dataAlteracao;
-	}
-
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return this.usuarioAlteracao;
-	}
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
 	}
 	
 	@Override

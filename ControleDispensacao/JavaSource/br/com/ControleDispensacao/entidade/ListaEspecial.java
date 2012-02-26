@@ -1,7 +1,5 @@
 package br.com.ControleDispensacao.entidade;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,24 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
-@Table(name = "lista_especial")
+@Table(name = "tb_lista_especial")
 public class ListaEspecial {
 	private int idListaEspecial;
 	private Livro livro;
 	private String lista;
 	private String descricao;
-	private TipoSituacaoEnum status;
-	private Date dataInclusao;
-	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
 	private TipoStatusEnum receitaControlada;
 	private TipoStatusEnum medicamentoControlado;
 
@@ -45,7 +35,7 @@ public class ListaEspecial {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "livro_id_livro")
+	@JoinColumn(name = "id_livro")
 	public Livro getLivro() {
 		return this.livro;
 	}
@@ -54,7 +44,7 @@ public class ListaEspecial {
 		this.livro = livro;
 	}
 	
-	@Column(name = "lista", length = 10)
+	@Column(name = "ds_lista", length = 10)
 	public String getLista() {
 		return this.lista;
 	}
@@ -63,7 +53,7 @@ public class ListaEspecial {
 		this.lista = lista;
 	}
 	
-	@Column(name = "descricao", length = 60)
+	@Column(name = "ds_descricao", length = 60)
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -72,57 +62,7 @@ public class ListaEspecial {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "status_2")
-	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(TipoSituacaoEnum status) {
-		this.status = status;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "date_incl", length = 13)
-	public Date getDataInclusao() {
-		return this.dataInclusao;
-	}
-
-	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
-	public Usuario getUsuarioInclusao() {
-		return this.usuarioInclusao;
-	}
-
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "date_alt", length = 13)
-	public Date getDataAlteracao() {
-		return this.dataAlteracao;
-	}
-
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return this.usuarioAlteracao;
-	}
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
-	}
-	
-	@Column(name = "flg_receita_controlada")
+	@Column(name = "tp_receita_controlada")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getReceitaControlada() {
 		return this.receitaControlada;
@@ -132,7 +72,7 @@ public class ListaEspecial {
 		this.receitaControlada = receitaControlada;
 	}
 	
-	@Column(name = "flg_medicamento_controlado")
+	@Column(name = "tp_medicamento_controlado")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getMedicamentoControlado() {
 		return this.medicamentoControlado;

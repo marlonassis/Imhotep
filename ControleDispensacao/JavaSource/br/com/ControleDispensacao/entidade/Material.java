@@ -15,16 +15,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
-@Table(name = "material")
+@Table(name = "tb_material")
 public class Material {
 	private int idMaterial;
 	private UnidadeMaterial unidadeMaterial;
-	private Grupo grupo;
-	private SubGrupo subGrupo;
 	private TipoMaterial tipoMaterial;
 	private Familia familia;
 	private ListaEspecial listaEspecial;
@@ -32,11 +29,8 @@ public class Material {
 	private String descricao;
 	private TipoStatusEnum dispensavel;
 	private Integer diasLimiteDisponivel;
-	private TipoSituacaoEnum status;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
 	private TipoStatusEnum autorizadoDispensacao;
 
 	@Id
@@ -50,7 +44,7 @@ public class Material {
 		this.idMaterial = idMaterial;
 	}
 
-	@Column(name = "descricao", length = 120)
+	@Column(name = "ds_descricao", length = 120)
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -60,7 +54,7 @@ public class Material {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_material_id_unidade_material")
+	@JoinColumn(name = "id_unidade_material")
 	public UnidadeMaterial getUnidadeMaterial() {
 		return this.unidadeMaterial;
 	}
@@ -70,27 +64,7 @@ public class Material {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "grupo_id_grupo")
-	public Grupo getGrupo() {
-		return this.grupo;
-	}
-
-	public void setGrupo(Grupo grupo) {
-		this.grupo = grupo;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "subgrupo_id_subgrupo")
-	public SubGrupo getSubGrupo() {
-		return this.subGrupo;
-	}
-	
-	public void setSubGrupo(SubGrupo subGrupo) {
-		this.subGrupo = subGrupo;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tipo_material_id_tipo_material")
+	@JoinColumn(name = "id_tipo_material")
 	public TipoMaterial getTipoMaterial() {
 		return this.tipoMaterial;
 	}
@@ -100,7 +74,7 @@ public class Material {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "familia_id_familia")
+	@JoinColumn(name = "id_familia")
 	public Familia getFamilia() {
 		return this.familia;
 	}
@@ -110,7 +84,7 @@ public class Material {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "lista_especial_id_lista_especial")
+	@JoinColumn(name = "id_lista_especial")
 	public ListaEspecial getListaEspecial() {
 		return this.listaEspecial;
 	}
@@ -119,7 +93,7 @@ public class Material {
 		this.listaEspecial = listaEspecial;
 	}
 	
-	@Column(name = "codigo_material")
+	@Column(name = "in_codigo_material")
 	public Integer getCodigoMaterial() {
 		return this.codigoMaterial;
 	}
@@ -128,7 +102,7 @@ public class Material {
 		this.codigoMaterial = codigoMaterial;
 	}
 	
-	@Column(name = "dias_limite_disp")
+	@Column(name = "in_dias_limite_disponivel")
 	public Integer getDiasLimiteDisponivel() {
 		return this.diasLimiteDisponivel;
 	}
@@ -137,7 +111,7 @@ public class Material {
 		this.diasLimiteDisponivel = diasLimiteDisponivel;
 	}
 
-	@Column(name = "flg_dispensavel")
+	@Column(name = "tp_dispensavel")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getDispensavel() {
 		return this.dispensavel;
@@ -147,7 +121,7 @@ public class Material {
 		this.dispensavel = dispensavel;
 	}
 	
-	@Column(name = "flg_autorizacao_disp")
+	@Column(name = "tp_autoriza_dispensacao")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getAutorizadoDispensacao() {
 		return this.autorizadoDispensacao;
@@ -157,18 +131,8 @@ public class Material {
 		this.autorizadoDispensacao = autorizadoDispensacao;
 	}
 	
-	@Column(name = "status_2")
-	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(TipoSituacaoEnum status) {
-		this.status = status;
-	}
-	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl", length = 13)
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return this.dataInclusao;
 	}
@@ -178,33 +142,13 @@ public class Material {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return this.usuarioInclusao;
 	}
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt", length = 13)
-	public Date getDataAlteracao() {
-		return this.dataAlteracao;
-	}
-
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return this.usuarioAlteracao;
-	}
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
 	}
 	
 	@Override

@@ -27,7 +27,7 @@ public class Especialidade {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_tipo_prescritor")
+	@JoinColumn(name = "id_tipo_profissional")
 	public TipoProfissional getTipoProfissional() {
 		return tipoProfissional;
 	}
@@ -35,7 +35,7 @@ public class Especialidade {
 		this.tipoProfissional = tipoProfissional;
 	}
 	
-	@Column(name = "descricao", length = 50)
+	@Column(name = "ds_descricao", length = 50)
 	public String getDescricao() {
 		return descricao;
 	}

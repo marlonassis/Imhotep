@@ -14,7 +14,6 @@ import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.TipoConselho;
 import br.com.ControleDispensacao.entidade.TipoProfissional;
 import br.com.ControleDispensacao.entidade.Usuario;
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 import br.com.nucleo.utilidades.Utilities;
@@ -73,13 +72,6 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	}
 	
 	@Override
-	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataAlteracao(new Date());
-		return super.atualizar();
-	}
-	
-	@Override
 	public boolean enviar() {
 		carregaDadosUsuario();
 		if(new UsuarioHome().procurarUsuario(getInstancia().getUsuario().getLogin()) == null){
@@ -95,7 +87,6 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	private void carregaDadosUsuario() {
 		getInstancia().getUsuario().setDataInclusao(new Date());
 		getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().getUsuario().setSituacao(TipoSituacaoEnum.A);
 		getInstancia().getUsuario().setSenha(Utilities.md5(getInstancia().getUsuario().getMatricula()));
 	}
 

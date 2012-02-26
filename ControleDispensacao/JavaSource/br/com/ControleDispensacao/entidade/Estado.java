@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "estado")
+@Table(name = "tb_estado")
 public class Estado {
 	private int idEstado;
 	private String uf;
@@ -24,7 +24,7 @@ public class Estado {
 		this.idEstado = idEstado;
 	}
 	
-	@Column(name = "uf", length = 2)
+	@Column(name = "ds_unidade_federativa", length = 2)
 	public String getUf() {
 		return uf;
 	}
@@ -33,7 +33,7 @@ public class Estado {
 		this.uf = uf;
 	}
 	
-	@Column(name = "nome", length = 40)
+	@Column(name = "ds_nome", length = 40)
 	public String getNome() {
 		return nome;
 	}

@@ -5,10 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "unidade_material")
+@Table(name = "tb_unidade_material")
 public class UnidadeMaterial {
 	private int idUnidadeMaterial;
 	private String descricao;
@@ -25,7 +24,7 @@ public class UnidadeMaterial {
 		this.idUnidadeMaterial = idUnidadeMaterial;
 	}
 
-	@Column(name = "unidade")
+	@Column(name = "ds_unidade")
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -34,7 +33,7 @@ public class UnidadeMaterial {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "sigla")
+	@Column(name = "ds_sigla")
 	public String getSigla() {
 		return this.sigla;
 	}

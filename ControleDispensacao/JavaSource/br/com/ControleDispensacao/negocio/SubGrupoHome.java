@@ -1,7 +1,6 @@
 package br.com.ControleDispensacao.negocio;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.faces.bean.ManagedBean;
@@ -9,7 +8,6 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.SubGrupo;
-import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoHome;
 
@@ -40,20 +38,6 @@ public class SubGrupoHome extends PadraoHome<SubGrupo>{
 	 */
 	public Collection<SubGrupo> getListaSubGrupoGrupo(Integer id){
 		return super.getBusca("select o from SubGrupo as o where o.grupo.idGrupo = "+id+" ");
-	}
-	
-	@Override
-	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataAlteracao(new Date());
-		return super.atualizar();
-	}
-	
-	@Override
-	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataInclusao(new Date());
-		return super.enviar();
 	}
 	
 }

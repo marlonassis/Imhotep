@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,10 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
-
 @Entity
-@Table(name = "usuario")
+@Table(name = "tb_usuario")
 public class Usuario {
 	
 	private static final long serialVersionUID = 1L;
@@ -26,13 +22,8 @@ public class Usuario {
 	private String matricula;
 	private String login;
 	private String senha;
-	private TipoSituacaoEnum situacao;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
-//	private Set<Papel> papeis = new HashSet<Papel>(0);
-//	private Set<Titulo> titulos = new HashSet<Titulo>(0);
 
 	public Usuario() {
 	}
@@ -53,7 +44,7 @@ public class Usuario {
 		this.idUsuario = idUsuario;
 	}
 
-	@Column(name = "matricula", length = 10)
+	@Column(name = "ds_matricula", length = 10)
 	public String getMatricula() {
 		return this.matricula;
 	}
@@ -62,7 +53,7 @@ public class Usuario {
 		this.matricula = matricula;
 	}
 
-	@Column(name = "login", length = 200)
+	@Column(name = "ds_login", length = 50)
 	public String getLogin() {
 		return this.login;
 	}
@@ -71,7 +62,7 @@ public class Usuario {
 		this.login = login;
 	}
 	
-	@Column(name = "senha", length = 200)
+	@Column(name = "ds_senha", length = 200)
 	public String getSenha() {
 		return this.senha;
 	}
@@ -81,18 +72,8 @@ public class Usuario {
 	}
 
 	
-	@Column(name = "situacao")
-	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getSituacao() {
-		return this.situacao;
-	}
-
-	public void setSituacao(TipoSituacaoEnum situacao) {
-		this.situacao = situacao;
-	}
-	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl")
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return this.dataInclusao;
 	}
@@ -102,7 +83,7 @@ public class Usuario {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return this.usuarioInclusao;
 	}
@@ -110,44 +91,6 @@ public class Usuario {
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
 	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt")
-	public Date getDataAlteracao() {
-		return this.dataAlteracao;
-	}
-
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return this.usuarioAlteracao;
-	}
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
-	}
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-//	public Set<Papel> getPapeis() {
-//		return this.papeis;
-//	}
-//
-//	public void setPapeis(Set<Papel> papeis) {
-//		this.papeis = papeis;
-//	}
-//
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-//	public Set<Titulo> getTitulos() {
-//		return this.titulos;
-//	}
-//
-//	public void setTitulos(Set<Titulo> titulos) {
-//		this.titulos = titulos;
-//	}
-
 	
 	@Override
 	public boolean equals(Object obj) {

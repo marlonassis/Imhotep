@@ -152,8 +152,6 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 		}else{
 			estoque.setQuantidade(estoque.getQuantidade() - getInstancia().getQuantidade());
 		}
-		estoque.setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
-		estoque.setDataAlteracao(new Date());
 		session.merge(estoque);
 	}
 	

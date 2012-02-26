@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "itens_movto_geral")
+@Table(name = "tb_itens_movimento_geral")
 public class ItensMovimentoGeral {
 	private int idItensMovimentoGeral;
 	private MovimentoGeral movimentoGeral;
@@ -24,10 +24,9 @@ public class ItensMovimentoGeral {
 	private String lote;
 	private Date dataValidade;
 	private Integer quantidade;
-	private ItensReceita itensReceita;
+	private PrescricaoItem prescricaoItem;
 	private Usuario usuarioAutorizador;
 	private ItemSolicitaRemanejamento itemSolicitaRemanejamento;
-	private Integer quantidadeDispensadaAnteriormente;
 	
 	
 	@Id
@@ -41,7 +40,7 @@ public class ItensMovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
-	@JoinColumn(name = "movto_geral_id_movto_geral")
+	@JoinColumn(name = "id_movimento_geral")
 	public MovimentoGeral getMovimentoGeral() {
 		return movimentoGeral;
 	}
@@ -50,7 +49,7 @@ public class ItensMovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "material_id_material")
+	@JoinColumn(name = "id_material")
 	public Material getMaterial() {
 		return material;
 	}
@@ -59,7 +58,7 @@ public class ItensMovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "fabricante_id_fabricante")
+	@JoinColumn(name = "id_fabricante")
 	public Fabricante getFabricante() {
 		return fabricante;
 	}
@@ -67,7 +66,7 @@ public class ItensMovimentoGeral {
 		this.fabricante = fabricante;
 	}
 	
-	@Column(name = "lote", length = 30)
+	@Column(name = "ds_lote", length = 30)
 	public String getLote() {
 		return lote;
 	}
@@ -76,7 +75,7 @@ public class ItensMovimentoGeral {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "validade")
+	@Column(name = "dt_data_validade")
 	public Date getDataValidade() {
 		return dataValidade;
 	}
@@ -84,7 +83,7 @@ public class ItensMovimentoGeral {
 		this.dataValidade = dataValidade;
 	}
 	
-	@Column(name = "qtde")
+	@Column(name = "in_quantidade")
 	public Integer getQuantidade() {
 		return quantidade;
 	}
@@ -93,16 +92,16 @@ public class ItensMovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "itens_receita_id_itens_receita")
-	public ItensReceita getItensReceita() {
-		return itensReceita;
+	@JoinColumn(name = "id_prescricao_item")
+	public PrescricaoItem getPrescricaoItem() {
+		return prescricaoItem;
 	}
-	public void setItensReceita(ItensReceita itensReceita) {
-		this.itensReceita = itensReceita;
+	public void setPrescricaoItem(PrescricaoItem prescricaoItem) {
+		this.prescricaoItem = prescricaoItem;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usuario_autorizador")
+	@JoinColumn(name = "id_usuario_autorizador")
 	public Usuario getUsuarioAutorizador() {
 		return usuarioAutorizador;
 	}
@@ -111,21 +110,12 @@ public class ItensMovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "item_solicita_remanej")
+	@JoinColumn(name = "id_item_solicita_remanejamento")
 	public ItemSolicitaRemanejamento getItemSolicitaRemanejamento() {
 		return itemSolicitaRemanejamento;
 	}
 	public void setItemSolicitaRemanejamento(ItemSolicitaRemanejamento itemSolicitaRemanejamento) {
 		this.itemSolicitaRemanejamento = itemSolicitaRemanejamento;
-	}
-	
-	@Column(name = "qtde_disp_anterior")
-	public Integer getQuantidadeDispensadaAnteriormente() {
-		return quantidadeDispensadaAnteriormente;
-	}
-	public void setQuantidadeDispensadaAnteriormente(
-			Integer quantidadeDispensadaAnteriormente) {
-		this.quantidadeDispensadaAnteriormente = quantidadeDispensadaAnteriormente;
 	}
 
 	@Override

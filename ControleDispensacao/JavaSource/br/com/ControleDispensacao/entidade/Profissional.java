@@ -19,20 +19,16 @@ import javax.persistence.TemporalType;
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 
 @Entity
-@Table(name = "profissional")
+@Table(name = "tb_profissional")
 public class Profissional {
 	private int idProfissional;
-	private Cidade cidade;
 	private Estado estado; 
 	private Especialidade especialidade;
 	private String nome;
 	private TipoSituacaoEnum status;
 	private Long inscricao;
-	private Date dataInscricao;
 	private Usuario usuarioInclusao;
 	private Date dataInclusao;
-	private Usuario usuarioAlteracao;
-	private Date dataAlteracao;
 	private Usuario usuario;
 	
 	
@@ -48,17 +44,7 @@ public class Profissional {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "cidade_id_cidade")
-	public Cidade getCidade() {
-		return cidade;
-	}
-	
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "estado_id_estado")
+	@JoinColumn(name = "id_estado")
 	public Estado getEstado() {
 		return estado;
 	}
@@ -77,7 +63,7 @@ public class Profissional {
 		this.especialidade = especialidade;
 	}
 	
-	@Column(name = "nome", length = 60)
+	@Column(name = "ds_nome", length = 60)
 	public String getNome() {
 		return nome;
 	}
@@ -86,8 +72,7 @@ public class Profissional {
 		this.nome = nome;
 	}
 	
-	
-	@Column(name = "status_2")
+	@Column(name = "tp_status")
 	@Enumerated(EnumType.STRING)
 	public TipoSituacaoEnum getStatus() {
 		return this.status;
@@ -97,7 +82,7 @@ public class Profissional {
 		this.status = status;
 	}
 	
-	@Column(name = "inscricao")
+	@Column(name = "bg_inscricao")
 	public Long getInscricao() {
 		return inscricao;
 	}
@@ -107,7 +92,7 @@ public class Profissional {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl", length = 13)
+	@Column(name = "dt_data_inclusao", length = 13)
 	public Date getDataInclusao() {
 		return this.dataInclusao;
 	}
@@ -117,33 +102,13 @@ public class Profissional {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return this.usuarioInclusao;
 	}
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt", length = 13)
-	public Date getDataAlteracao() {
-		return this.dataAlteracao;
-	}
-
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return this.usuarioAlteracao;
-	}
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})

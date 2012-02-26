@@ -14,25 +14,22 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "movto_geral")
+@Table(name = "tb_movimento_geral")
 public class MovimentoGeral {
 	private int idMovimentoGeral;
 	private TipoMovimento tipoMovimento;
-	private TipoMovimento tipoMovimentoEstornado;
-	private Usuario usuarioInclusao;
 	private Unidade unidade;
-	private Receita receita;
-	private Paciente paciente;
+	private Prescricao prescricao;
 	private String numeroDocumento;
-	private Date dataMovimento;
-	private Date dataInclusao;
 	private String motivo;
+	private String controle;
+	private Date dataInclusao;
+	private Usuario usuarioInclusao;
 	private String numeroControle;
-	
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_movto_geral")
+	@Column(name = "id_movimento_geral")
 	public int getIdMovimentoGeral() {
 		return idMovimentoGeral;
 	}
@@ -41,7 +38,7 @@ public class MovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tipo_movto_id_tipo_movto")
+	@JoinColumn(name = "id_tipo_movimento")
 	public TipoMovimento getTipoMovimento() {
 		return tipoMovimento;
 	}
@@ -50,16 +47,7 @@ public class MovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_movto_estornado")
-	public TipoMovimento getTipoMovimentoEstornado() {
-		return tipoMovimentoEstornado;
-	}
-	public void setTipoMovimentoEstornado(TipoMovimento tipoMovimentoEstornado) {
-		this.tipoMovimentoEstornado = tipoMovimentoEstornado;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usuario_id_usuario")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return usuarioInclusao;
 	}
@@ -68,7 +56,7 @@ public class MovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_id_unidade")
+	@JoinColumn(name = "id_unidade")
 	public Unidade getUnidade() {
 		return unidade;
 	}
@@ -77,24 +65,23 @@ public class MovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "receita_id_receita")
-	public Receita getReceita() {
-		return receita;
+	@JoinColumn(name = "id_prescricao")
+	public Prescricao getPrescricao() {
+		return prescricao;
 	}
-	public void setReceita(Receita receita) {
-		this.receita = receita;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "paciente_id_paciente")
-	public Paciente getPaciente() {
-		return paciente;
-	}
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	public void setPrescricao(Prescricao prescricao) {
+		this.prescricao = prescricao;
 	}
 	
-	@Column(name = "num_documento", length = 15)
+	@Column(name = "ds_numero_controle")
+	public String getNumeroControle() {
+		return numeroControle;
+	}
+	public void setNumeroControle(String numeroControle) {
+		this.numeroControle = numeroControle;
+	}
+	
+	@Column(name = "ds_numero_documento", length = 15)
 	public String getNumeroDocumento() {
 		return numeroDocumento;
 	}
@@ -103,16 +90,7 @@ public class MovimentoGeral {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_movto")
-	public Date getDataMovimento() {
-		return dataMovimento;
-	}
-	public void setDataMovimento(Date dataMovimento) {
-		this.dataMovimento = dataMovimento;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl")
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;
 	}
@@ -120,7 +98,7 @@ public class MovimentoGeral {
 		this.dataInclusao = dataInclusao;
 	}
 	
-	@Column(name = "motivo", length = 120)
+	@Column(name = "ds_motivo", length = 120)
 	public String getMotivo() {
 		return motivo;
 	}
@@ -128,12 +106,12 @@ public class MovimentoGeral {
 		this.motivo = motivo;
 	}
 	
-	@Column(name = "num_controle", length = 128)
-	public String getNumeroControle() {
-		return numeroControle;
+	@Column(name = "ds_controle", length = 128)
+	public String getControle() {
+		return controle;
 	}
-	public void setNumeroControle(String numeroControle) {
-		this.numeroControle = numeroControle;
+	public void setControle(String controle) {
+		this.controle = controle;
 	}
 
 	
@@ -141,7 +119,7 @@ public class MovimentoGeral {
 	public boolean equals(Object obj) {
 		if(obj == null)
 			return false;
-		if(!(obj instanceof Paciente))
+		if(!(obj instanceof MovimentoGeral))
 			return false;
 		
 		return ((MovimentoGeral)obj).getIdMovimentoGeral() == this.idMovimentoGeral;

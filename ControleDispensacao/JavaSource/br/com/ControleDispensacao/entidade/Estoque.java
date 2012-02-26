@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
-@Table(name = "estoque")
+@Table(name = "tb_estoque")
 public class Estoque {
 	private int idEstoque;
 	private Fabricante fabricante; 
@@ -32,8 +32,6 @@ public class Estoque {
 	private String motivoBloqueio;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
-	private Date dataAlteracao;
-	private Usuario usuarioAlteracao;
 	private Date dataBloqueio;
 	private Usuario usuarioBloqueio;
 	
@@ -48,7 +46,7 @@ public class Estoque {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "fabricante_id_fabricante")
+	@JoinColumn(name = "id_fabricante")
 	public Fabricante getFabricante() {
 		return fabricante;
 	}
@@ -57,7 +55,7 @@ public class Estoque {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "material_id_material")
+	@JoinColumn(name = "id_material")
 	public Material getMaterial() {
 		return material;
 	}
@@ -66,7 +64,7 @@ public class Estoque {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_id_unidade")
+	@JoinColumn(name = "id_unidade")
 	public Unidade getUnidade() {
 		return unidade;
 	}
@@ -74,7 +72,7 @@ public class Estoque {
 		this.unidade = unidade;
 	}
 	
-	@Column(name = "lote")
+	@Column(name = "ds_lote")
 	public String getLote() {
 		return lote;
 	}
@@ -83,7 +81,7 @@ public class Estoque {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "validade")
+	@Column(name = "dt_data_validade")
 	public Date getDataValidade() {
 		return dataValidade;
 	}
@@ -91,7 +89,7 @@ public class Estoque {
 		this.dataValidade = dataValidade;
 	}
 	
-	@Column(name = "quantidade")
+	@Column(name = "in_quantidade")
 	public Integer getQuantidade() {
 		return quantidade;
 	}
@@ -99,7 +97,7 @@ public class Estoque {
 		this.quantidade = quantidade;
 	}
 	
-	@Column(name = "flg_bloqueado")
+	@Column(name = "tp_bloqueado")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getBloqueado() {
 		return bloqueado;
@@ -108,7 +106,7 @@ public class Estoque {
 		this.bloqueado = bloqueado;
 	}
 	
-	@Column(name = "motivo_bloqueio")
+	@Column(name = "ds_motivo_bloqueio")
 	public String getMotivoBloqueio() {
 		return motivoBloqueio;
 	}
@@ -117,7 +115,7 @@ public class Estoque {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl")
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;
 	}
@@ -126,7 +124,7 @@ public class Estoque {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_incl")
+	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
 		return usuarioInclusao;
 	}
@@ -135,25 +133,7 @@ public class Estoque {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt")
-	public Date getDataAlteracao() {
-		return dataAlteracao;
-	}
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_alt")
-	public Usuario getUsuarioAlteracao() {
-		return usuarioAlteracao;
-	}
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_bloqueio")
+	@Column(name = "dt_data_bloqueio")
 	public Date getDataBloqueio() {
 		return dataBloqueio;
 	}
@@ -162,7 +142,7 @@ public class Estoque {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usua_bloqueio")
+	@JoinColumn(name = "id_usuario_bloqueio")
 	public Usuario getUsuarioBloqueio() {
 		return usuarioBloqueio;
 	}

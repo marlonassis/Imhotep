@@ -2,7 +2,6 @@ package br.com.ControleDispensacao.negocio;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,7 +10,6 @@ import javax.faces.bean.SessionScoped;
 import br.com.ControleDispensacao.entidade.Familia;
 import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.SubGrupo;
-import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="familiaHome")
@@ -51,20 +49,6 @@ public class FamiliaHome extends PadraoHome<Familia>{
 		super.novaInstancia();
 	}
 	
-	@Override
-	public boolean atualizar() {
-		getInstancia().setUsuarioAlteracao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataAlteracao(new Date());
-		return super.atualizar();
-	}
-	
-	@Override
-	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataInclusao(new Date());
-		return super.enviar();
-	}
-
 	@Override
 	public void setInstancia(Familia instancia) {
 		//ao editar um registro o grupo deve ser setado e os subgrupos devem ser carregados

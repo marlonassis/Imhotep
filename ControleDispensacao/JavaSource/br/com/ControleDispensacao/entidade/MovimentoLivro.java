@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "movto_livro")
+@Table(name = "tb_movimento_livro")
 public class MovimentoLivro {
 	private int idMovimentoLivro;
 	private MovimentoGeral movimentoGeral;
@@ -31,7 +31,7 @@ public class MovimentoLivro {
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_movto_livro")
+	@Column(name = "id_movimento_livro")
 	public int getIdMovimentoLivro() {
 		return idMovimentoLivro;
 	}
@@ -40,7 +40,7 @@ public class MovimentoLivro {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "movto_geral_id_movto_geral")
+	@JoinColumn(name = "id_movimento_geral")
 	public MovimentoGeral getMovimentoGeral() {
 		return movimentoGeral;
 	}
@@ -49,7 +49,7 @@ public class MovimentoLivro {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "unidade_id_unidade")
+	@JoinColumn(name = "id_unidade")
 	public Unidade getUnidade() {
 		return unidade;
 	}
@@ -58,7 +58,7 @@ public class MovimentoLivro {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "material_id_material")
+	@JoinColumn(name = "id_material")
 	public Material getMaterial() {
 		return material;
 	}
@@ -67,7 +67,7 @@ public class MovimentoLivro {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tipo_movto_id_tipo_movto")
+	@JoinColumn(name = "id_tipo_movimento")
 	public TipoMovimento getTipoMovimento() {
 		return tipoMovimento;
 	}
@@ -75,7 +75,7 @@ public class MovimentoLivro {
 		this.tipoMovimento = tipoMovimento;
 	}
 	
-	@Column(name = "saldo_anterior")
+	@Column(name = "in_saldo_anterior")
 	public Integer getSaldoAnterior() {
 		return saldoAnterior;
 	}
@@ -83,7 +83,7 @@ public class MovimentoLivro {
 		this.saldoAnterior = saldoAnterior;
 	}
 	
-	@Column(name = "qtde_entrada")
+	@Column(name = "in_quantidade_entrada")
 	public Integer getQuantidadeEntrada() {
 		return quantidadeEntrada;
 	}
@@ -91,7 +91,7 @@ public class MovimentoLivro {
 		this.quantidadeEntrada = quantidadeEntrada;
 	}
 	
-	@Column(name = "qtde_saida")
+	@Column(name = "in_quantidade_saida")
 	public Integer getQuantidadeSaida() {
 		return quantidadeSaida;
 	}
@@ -99,7 +99,7 @@ public class MovimentoLivro {
 		this.quantidadeSaida = quantidadeSaida;
 	}
 	
-	@Column(name = "qtde_perda")
+	@Column(name = "in_quantidade_perda")
 	public Integer getQuantidadePerda() {
 		return quantidadePerda;
 	}
@@ -107,7 +107,7 @@ public class MovimentoLivro {
 		this.quantidadePerda = quantidadePerda;
 	}
 	
-	@Column(name = "saldo_atual")
+	@Column(name = "in_saldo_atual")
 	public Integer getSaldoAtual() {
 		return saldoAtual;
 	}
@@ -116,7 +116,7 @@ public class MovimentoLivro {
 	}
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_movto")
+	@Column(name = "dt_data_movimento")
 	public Date getDataMovimento() {
 		return dataMovimento;
 	}
@@ -124,7 +124,7 @@ public class MovimentoLivro {
 		this.dataMovimento = dataMovimento;
 	}
 	
-	@Column(name = "historico", length = 200)
+	@Column(name = "ds_historico", length = 200)
 	public String getHistorico() {
 		return historico;
 	}
