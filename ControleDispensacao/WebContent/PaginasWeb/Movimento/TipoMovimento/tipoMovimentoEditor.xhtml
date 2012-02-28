@@ -57,15 +57,5 @@
 			</h:selectOneRadio>
 		</h:panelGroup>
 
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
-			<h:selectOneRadio id="situacao"
-							  value="#{tipoMovimentoHome.instancia.status}" 
-							  required="true"
-							  title="Informe se o item está ativo ou inativo" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
 	</h:panelGrid>
 </ui:composition>

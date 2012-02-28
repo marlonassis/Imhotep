@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,9 +36,10 @@ public class Estoque {
 	private Date dataBloqueio;
 	private Usuario usuarioBloqueio;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_id_estoque_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_estoque")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_estoque", unique = true, nullable = false)
 	public int getIdEstoque() {
 		return idEstoque;
 	}

@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,9 +17,10 @@ public class Especialidade {
 	private TipoProfissional tipoProfissional;
 	private String descricao;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_especialidade_id_especialidade_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_especialidade")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_especialidade", unique = true, nullable = false)
 	public int getIdEspecialidade() {
 		return idEspecialidade;
 	}

@@ -24,14 +24,5 @@
 						 title="Informe o apelido de acesso"/> 
 		</h:panelGroup>
 		
-		<h:panelGroup>
-			<h:outputLabel for="situacaoConsulta" value="Situação:"  /><br />
-			<h:selectOneRadio id="situacaoConsulta"
-							  value="#{usuarioConsulta.instancia.situacao}" 
-							  title="Informe se o usuário está ativo ou inativo" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-		
 	</h:panelGrid>
 </ui:composition>

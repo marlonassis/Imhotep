@@ -21,4 +21,12 @@ public class EspecialidadeHome extends PadraoHome<Especialidade>{
 		return super.getBusca("select o from Especialidade as o where o.tipoProfissional.idTipoProfissional = "+id);
 	}
 	
+	/**
+	 * Método que retorna uma lista de Especialidade
+	 * @param String sql
+	 * @return Collection Especialidade
+	 */
+	public Collection<Especialidade> getListaEspecialidadeAutoComplete(String sql){
+		return super.getBusca("select o from Especialidade as o where lower(o.descricao) like lower('%"+sql+"%') ");
+	}
 }

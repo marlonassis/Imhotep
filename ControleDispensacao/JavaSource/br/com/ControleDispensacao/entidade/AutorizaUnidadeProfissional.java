@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,9 +23,10 @@ public class AutorizaUnidadeProfissional {
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_autoriza_unidade_profissio_id_autoriza_unidade_profissio_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_autoriza_unidade_profissional")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_autoriza_unidade_profissional", unique = true, nullable = false)
 	public int getIdAutorizaUnidadeProfissional() {
 		return idAutorizaUnidadeProfissional;
 	}

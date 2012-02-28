@@ -27,10 +27,9 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="nomeMae" value="Nome da mãe:"  /><br />
+			<h:outputLabel for="nomeMae" value="Nome da mãe:"  /><br />
 			<p:inputText id="nomeMae" 
 						 value="#{pacienteHome.instancia.nomeMae}" 
-						 required="true"
 						 title="Informe o nome da mãe" />
 		</h:panelGroup>
 		
@@ -54,10 +53,9 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="tipoLogradouro" value="Tipo do Logradouro:"  /><br />
+			<h:outputLabel for="tipoLogradouro" value="Tipo do Logradouro:"  /><br />
 			<p:selectOneMenu value="#{pacienteHome.instancia.tipoLogradouro}" 
-							 effect="fade" 
-							 required="true">  
+							 effect="fade" >  
 				<f:selectItem itemLabel="Selecione..." 
 							  itemValue="#{null}" /> 
 	        	<f:selectItems value="#{itensPadrao.logradouroEnumItens}"/> 
@@ -66,18 +64,16 @@
         </h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="logradouro" value="Logradouro:"  /><br />
+			<h:outputLabel for="logradouro" value="Logradouro:"  /><br />
 			<p:inputText id="logradouro" 
 						 value="#{pacienteHome.instancia.nomeLogradouro}" 
-						 required="true"
 						 title="Informe o logradouro" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="numero" value="Numero:"  /><br />
+			<h:outputLabel for="numero" value="Numero:"  /><br />
 			<p:inputText id="numero" 
 						 value="#{pacienteHome.instancia.numero}" 
-						 required="true"
 						 title="Informe o número da casa" />
 		</h:panelGroup>
 		
@@ -89,32 +85,31 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="bairro" value="Bairro:"  /><br />
+			<h:outputLabel for="bairro" value="Bairro:"  /><br />
 			<p:inputText id="bairro" 
 						 value="#{pacienteHome.instancia.bairro}" 
-						 required="true"
 						 title="Informe o bairro da casa" />
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;" >
-			<font color="red" >*</font><h:outputLabel for="cidade" value="Cidade:"  /><br />
+			<h:outputLabel for="cidade" value="Cidade:"  /><br />
 	  		<p:autoComplete id="cidade" 
 	  						value="#{pacienteHome.instancia.cidade}"
 							completeMethod="#{cidadeHome.getListaCidadeAutoComplete}" 
 							var="cidade"
-							required="true"
 							title="Informe a cidade à qual o paciente veio"
-							itemLabel="#{cidade.nome}" 
+							itemLabel="#{cidade.nomeCidadeEstado}" 
 							itemValue="#{cidade}"
 							converter="cidadeConversor" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<h:outputLabel for="unidadeConsulta" value="Unidade de Alocação:" /><br />
+			<font color="red" >*</font><h:outputLabel for="unidadeConsulta" value="Unidade de Alocação:" /><br />
 	  		<p:autoComplete id="unidadeConsulta" 
-	  						value="#{pacienteConsulta.instancia.unidadeReferida}"
+	  						value="#{pacienteHome.instancia.unidadeAlocacao}"
 							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 							var="unidade" 
+							required="true"
 							itemLabel="#{unidade.nome}" 
 							itemValue="#{unidade}" 
 							converter="unidadeConversor" />
@@ -131,10 +126,11 @@
 		</h:panelGroup>
 		
 		<h:panelGroup> 
-			<h:outputLabel for="situacao" value="Situação:"  /><br />
+			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
 			<p:selectOneMenu id="situacao"
 							 value="#{pacienteHome.instancia.situacaoPaciente}" 
 							 effect="fade" 
+							 required="true"
 							 converter="situacaoPacienteConversor">
 	            <f:selectItem itemLabel="Selecione..." 
 	            			  itemValue="" /> 
@@ -144,16 +140,6 @@
 	            			   itemValue="#{situacaoPaciente}"/>  
         	</p:selectOneMenu>
         </h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="status" value="Status:"  /><br />
-			<h:selectOneRadio id="status"
-							  value="#{pacienteHome.instancia.status}" 
-							  required="true"
-							  title="Informe se o grupo é obrigatório ou não" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
 		
 	</h:panelGrid>
 </ui:composition>

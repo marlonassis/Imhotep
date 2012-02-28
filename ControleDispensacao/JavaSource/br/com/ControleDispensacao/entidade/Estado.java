@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -13,9 +14,10 @@ public class Estado {
 	private String uf;
 	private String nome;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estado_id_estado_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_estado")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_estado", unique = true, nullable = false)
 	public int getIdEstado() {
 		return idEstado;
 	}

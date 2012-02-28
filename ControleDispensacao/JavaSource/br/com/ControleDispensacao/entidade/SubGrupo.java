@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,9 +17,10 @@ public class SubGrupo {
 	private Grupo grupo;
 	private String descricao;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_sub_grupo_id_sub_grupo_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_sub_grupo")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_sub_grupo", unique = true, nullable = false)
 	public int getIdSubGrupo() {
 		return this.idSubGrupo;
 	}

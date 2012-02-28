@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,9 +17,10 @@ public class LiberaMaterialEspecialidade {
 	private Especialidade especialidade;
 	private Material material;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_libera_material_especialidade_id_libera_material_especialidade_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_libera_material_especialidade")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_libera_material_especialidade", unique = true, nullable = false)
 	public int getIdLiberaMaterialEspecialidade() {
 		return this.idLiberaMaterialEspecialidade;
 	}

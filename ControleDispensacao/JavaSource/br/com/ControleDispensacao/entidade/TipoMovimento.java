@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
@@ -21,9 +22,10 @@ public class TipoMovimento {
 	private TipoStatusEnum movimentoBloqueado;
 	private TipoStatusEnum movimentoVencido;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_tipo_movimento_id_tipo_movimento_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_tipo_movimento")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_tipo_movimento", unique = true, nullable = false)
 	public int getIdTipoMovimento() {
 		return idTipoMovimento;
 	}

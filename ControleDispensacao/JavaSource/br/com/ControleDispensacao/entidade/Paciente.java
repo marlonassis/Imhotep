@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,9 +41,10 @@ public class Paciente {
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_id_paciente_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_paciente")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_paciente", unique = true, nullable = false)
 	public int getIdPaciente() {
 		return idPaciente;
 	}

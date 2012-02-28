@@ -32,7 +32,7 @@
 			<h:outputLabel for="menuPaiConsulta" value="Menu pai:"  /><br />
 	  		<p:autoComplete id="menuPaiConsulta" 
 	  						value="#{menuConsulta.instancia.menuPai}"
-							completeMethod="#{menuHome.getListaMenuSuggest}" 
+							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
 							var="menu"
 							title="Informe o menu pai"
 							itemLabel="#{menu.descricao}" 

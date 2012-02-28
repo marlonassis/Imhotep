@@ -111,6 +111,7 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 			movimentoLivroAtual.setMovimentoGeral(getInstancia().getMovimentoGeral());
 			movimentoLivroAtual.setQuantidadeEntrada(getInstancia().getQuantidade());
 			movimentoLivroAtual.setSaldoAtual(getInstancia().getQuantidade());
+			movimentoLivroAtual.setSaldoAnterior(0);
 			movimentoLivroAtual.setTipoMovimento(getInstancia().getMovimentoGeral().getTipoMovimento());
 			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 			session.save(movimentoLivroAtual);

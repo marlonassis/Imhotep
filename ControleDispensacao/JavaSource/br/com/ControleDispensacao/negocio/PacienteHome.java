@@ -3,10 +3,13 @@ package br.com.ControleDispensacao.negocio;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.ControleDispensacao.entidade.Paciente;
+import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 
@@ -25,9 +28,15 @@ public class PacienteHome extends PadraoHome<Paciente>{
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setDataInclusao(new Date());
-		return super.enviar();
+		Unidade unidadeAtual = Autenticador.getInstancia().getUnidadeAtual();
+		if(unidadeAtual != null){
+			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			getInstancia().setDataInclusao(new Date());
+			getInstancia().setUnidadeCadastro(unidadeAtual);
+			return super.enviar();
+		}
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Você não está alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
+		return false;
 	}
 	
 }

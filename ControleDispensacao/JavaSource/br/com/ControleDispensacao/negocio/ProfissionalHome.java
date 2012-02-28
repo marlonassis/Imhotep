@@ -68,7 +68,7 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	 * @return Collection Profissional
 	 */
 	public Collection<Profissional> getListaProfissionalAutoComplete(String consulta){
-		return super.getBusca("select o from Profissional as o where o.nome like '%"+consulta+"%' ");
+		return super.getBusca("select o from Profissional as o where lower(o.nome) like lower('%"+consulta+"%') ");
 	}
 	
 	@Override

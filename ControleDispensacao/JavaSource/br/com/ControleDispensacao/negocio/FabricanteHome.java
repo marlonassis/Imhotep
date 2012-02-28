@@ -18,7 +18,7 @@ public class FabricanteHome extends PadraoHome<Fabricante>{
 	 * @return Collection Fabricante
 	 */
 	public Collection<Fabricante> getListaFabricanteAutoComplete(String expressaoConsulta){
-		return super.getBusca("select o from Fabricante as o where o.descricao like '%"+expressaoConsulta+"%' ");
+		return super.getBusca("select o from Fabricante as o where lower(o.descricao) like lower('%"+expressaoConsulta+"%') ");
 	}
 	
 }

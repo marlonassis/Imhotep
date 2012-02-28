@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.Familia;
+import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.SubGrupo;
 import br.com.ControleDispensacao.seguranca.Autenticador;
@@ -22,6 +23,16 @@ public class MaterialHome extends PadraoHome<Material>{
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();
 	private List<Familia> familiaList = new ArrayList<Familia>();
 
+	public MaterialHome() {
+		inicializaVariaveis();
+	}
+	
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
+		inicializaVariaveis();
+	}
+	
 	/**
 	 * Método usando para carregar o subgrupo do grupo informado pelo usuário
 	 */
@@ -40,12 +51,21 @@ public class MaterialHome extends PadraoHome<Material>{
 		}
 	}
 	
+	public void inicializaVariaveis(){
+		getInstancia().setFamilia(new Familia());
+		getInstancia().getFamilia().setSubGrupo(new SubGrupo());
+		getInstancia().getFamilia().getSubGrupo().setGrupo(new Grupo());
+		sugGrupoList = new ArrayList<SubGrupo>();
+		familiaList = new ArrayList<Familia>();
+	}
+	
 	@Override
 	public void setInstancia(Material instancia) {
 		//carregando os valores ao entrar em edição
+		inicializaVariaveis();
 		super.setInstancia(instancia);
 		carregaSubGrupoList();
-		carregaFamiliaList();
+		familiaList.add(getInstancia().getFamilia());
 	}
 	
 	/**
@@ -54,7 +74,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	 * @return Collection Material
 	 */
 	public Collection<Material> getListaMaterialAutoComplete(String sql){
-		return super.getBusca("select o from Material as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from Material as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
 	
 	public Collection<Material> getListaMaterialEstoque(){
@@ -62,7 +82,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	}
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
-		return super.getBusca("select distinct o.material from Estoque o where o.material.descricao like '%"+sql+"%' ");
+		return super.getBusca("select distinct o.material from Estoque o where lower(o.material.descricao) like lower('%"+sql+"%') ");
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,7 +19,7 @@ import javax.persistence.TemporalType;
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 
 @Entity
-@Table(name = "atencao_continuada")
+@Table(name = "tb_atencao_continuada")
 public class GrupoAtencaoContinuada {
 	private int idGrupoAtencaoContinuada;
 	private String descricao;
@@ -28,9 +29,10 @@ public class GrupoAtencaoContinuada {
 	private Date dataAlteracao;
 	private Usuario usuarioAlteracao;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_atencao_continuada_id_atencao_continuada_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_atencao_continuada")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_atencao_continuada", unique = true, nullable = false)
 	public int getIdGrupoAtencaoContinuada() {
 		return this.idGrupoAtencaoContinuada;
 	}

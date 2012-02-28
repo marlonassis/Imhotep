@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,9 +28,10 @@ public class MovimentoGeral {
 	private Usuario usuarioInclusao;
 	private String numeroControle;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_geral_id_movimento_geral_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_movimento_geral")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_movimento_geral", unique = true, nullable = false)
 	public int getIdMovimentoGeral() {
 		return idMovimentoGeral;
 	}

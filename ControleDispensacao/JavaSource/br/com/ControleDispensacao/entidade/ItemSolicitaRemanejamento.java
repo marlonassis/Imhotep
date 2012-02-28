@@ -9,12 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 
 @Entity
-@Table(name = "item_solicita_remanej")
+@Table(name = "tb_item_solicita_remanejamento")
 public class ItemSolicitaRemanejamento {
 	private int idItemSolicitaRemanejamento;
 	private SolicitaRemanejamento solicitaRemanejamento;
@@ -23,9 +24,10 @@ public class ItemSolicitaRemanejamento {
 	private Integer quantidadeAtendida;
 	private TipoSituacaoEnum status;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_item_solicita_remanejamento_id_item_solicita_remanejamento_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_item_solicita_remanej")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_item_solicita_remanejamento", unique = true, nullable = false)
 	public int getIdItemSolicitaRemanejamento() {
 		return idItemSolicitaRemanejamento;
 	}

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -13,9 +14,11 @@ public class Aplicacao {
 	private String executavel;
 	private String descricao;
 	
+	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_aplicacao_id_aplicacao_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_aplicacao")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_aplicacao", unique = true, nullable = false)
 	public int getIdAplicacao() {
 		return this.idAplicacao;
 	}

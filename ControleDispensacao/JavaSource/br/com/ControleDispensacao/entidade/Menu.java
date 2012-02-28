@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
@@ -22,9 +23,10 @@ public class Menu {
 	private String descricao;
 	private TipoStatusEnum bloqueado;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_menu_id_menu_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_menu ")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_menu", unique = true, nullable = false)
 	public int getIdMenu() {
 		return this.idMenu;
 	}

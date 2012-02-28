@@ -1,6 +1,7 @@
 package br.com.nucleo;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -83,10 +84,15 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			tx.commit();  
 			ret = true;
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro realizado com sucesso", "Registro cadastrado!"));
-		}catch (Exception e) {
-			if(session != null){
-				session.getTransaction().rollback();
-			}
+		}
+		catch (org.hibernate.exception.ConstraintViolationException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Ocorreu uma tentativa de duplicação!"));
+			zeraId();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao cadastrar", e.getCause().getMessage()));
 		}finally{
@@ -94,6 +100,37 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			factory.close();
 		}
 		return ret;
+	}
+
+	/**
+	 * Método que seta 0 ao ID da entidade para evitar que o registro entre em edição ao tentar gravar o registro sem sucesso
+	 */
+	private void zeraId(){
+		try {
+			Class partypes[] = new Class[1];  
+            partypes[0] = Integer.TYPE;  
+  
+            Class cls = Class.forName(nomeCompletoClasse());  
+            Method meth = cls.getMethod("setId"+nomeClasse(), partypes);  
+  
+            Object arglist[] = new Object[1];  
+            arglist[0] = new Integer(0);  
+  
+            meth.invoke(instancia, arglist);  
+            
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -133,10 +170,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			tx.commit(); // Finaliza transação
 			o = obj;
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualização realizada com sucesso", "Registro atualizado!"));
+		}catch (org.hibernate.exception.ConstraintViolationException e) {
+			session.getTransaction().rollback();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Ocorreu uma tentativa de duplicação!"));
 		}catch (Exception e) {
-			if(session != null){
-				session.getTransaction().rollback();
-			}
+			session.getTransaction().rollback();
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao atualizar", e.getCause().getMessage()));
 		}finally{

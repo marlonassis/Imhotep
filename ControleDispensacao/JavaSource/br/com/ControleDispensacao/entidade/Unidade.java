@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +21,10 @@ public class Unidade {
 	private String telefone;
 	private String email;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_unidade_id_unidade_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_unidade")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_unidade", unique = true, nullable = false)
 	public int getIdUnidade() {
 		return idUnidade;
 	}

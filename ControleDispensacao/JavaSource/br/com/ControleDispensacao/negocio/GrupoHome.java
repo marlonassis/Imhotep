@@ -18,7 +18,7 @@ public class GrupoHome extends PadraoHome<Grupo>{
 	 * @return Collection Menu
 	 */
 	public Collection<Grupo> getListaGrupoAutoComplete(String sql){
-		return super.getBusca("select o from Grupo as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from Grupo as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
 	
 }

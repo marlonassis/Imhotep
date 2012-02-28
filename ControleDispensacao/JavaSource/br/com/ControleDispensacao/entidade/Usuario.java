@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,7 +18,6 @@ import javax.persistence.TemporalType;
 @Table(name = "tb_usuario")
 public class Usuario {
 	
-	private static final long serialVersionUID = 1L;
 	private int idUsuario;
 	private String matricula;
 	private String login;
@@ -33,9 +33,10 @@ public class Usuario {
 	}
 
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_usuario_id_usuario_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_usuario")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_usuario", unique = true, nullable = false)
 	public int getIdUsuario() {
 		return this.idUsuario;
 	}

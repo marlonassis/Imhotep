@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,9 +30,10 @@ public class ItensMovimentoGeral {
 	private ItemSolicitaRemanejamento itemSolicitaRemanejamento;
 	
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_itens_movimento_geral_id_itens_movimento_geral_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_itens_movto_geral")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_itens_movimento_geral", unique = true, nullable = false)
 	public int getIdItensMovimentoGeral() {
 		return idItensMovimentoGeral;
 	}

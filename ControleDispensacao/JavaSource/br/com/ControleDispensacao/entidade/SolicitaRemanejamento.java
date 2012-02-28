@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,7 +19,7 @@ import javax.persistence.TemporalType;
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 
 @Entity
-@Table(name = "solicita_remanej")
+@Table(name = "tb_solicita_remanejamento")
 public class SolicitaRemanejamento {
 	private int idSolicitaRemanejamento;
 	private Unidade unidadeSolicitada;
@@ -27,9 +28,10 @@ public class SolicitaRemanejamento {
 	private Usuario usuarioInclusao;
 	private TipoSituacaoEnum status;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicita_remanejamento_id_solicita_remanejamento_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_solicita_remanej")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_solicita_remanejamento", unique = true, nullable = false)
 	public int getIdSolicitaRemanejamento() {
 		return idSolicitaRemanejamento;
 	}

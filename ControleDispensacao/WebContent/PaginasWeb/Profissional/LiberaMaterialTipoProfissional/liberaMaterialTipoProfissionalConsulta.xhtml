@@ -10,15 +10,15 @@
 				 width="100%" >
 				 
 		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="tipoProfissionalConsulta" value="Tipo do Profissional:"  /><br />
-	  		<p:autoComplete id="tipoProfissionalConsulta" 
-	  						value="#{liberaMaterialTipoProfissionalConsulta.instancia.tipoProfissional}"
-							completeMethod="#{tipoProfissionalHome.getListaTipoProfissionalAutoComplete}" 
-							var="tipoProfissional"
-							title="Informe o grupo do sub-grupo"
-							itemLabel="#{tipoProfissional.descricao}" 
-							itemValue="#{tipoProfissional}"
-							converter="tipoProfissionalConversor" />
+			<h:outputLabel for="especialidadeConsulta" value="Especialidade:"  /><br />
+	  		<p:autoComplete id="especialidadeConsulta" 
+	  						value="#{liberaMaterialTipoProfissionalConsulta.instancia.especialidade}"
+							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
+							var="especialidade"
+							title="Informe especialidade"
+							itemLabel="#{especialidade.descricao}" 
+							itemValue="#{especialidade}"
+							converter="especialidadeConversor" />
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;" >

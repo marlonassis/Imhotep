@@ -66,9 +66,10 @@
 			<h:panelGrid columns="3"
 						 width="100%" >
 				<h:panelGroup>
-					<h:outputLabel for="grupo" value="Grupo:"  /><br />
+					<font color="red" >*</font><h:outputLabel for="grupo" value="Grupo:"  /><br />
 					<p:selectOneMenu value="#{materialHome.instancia.familia.subGrupo.grupo}" 
 									 effect="fade" 
+									 required="true"
 									 converter="grupoConversor">  
 						<f:ajax event="change" 
 								listener="#{materialHome.carregaSubGrupoList()}" 
@@ -82,9 +83,10 @@
 			        </p:selectOneMenu>
 		        </h:panelGroup>
 		        <h:panelGroup> 
-					<h:outputLabel for="subGrupo" value="Subgrupo:"  /><br />
+					<font color="red" >*</font><h:outputLabel for="subGrupo" value="Subgrupo:"  /><br />
 					<p:selectOneMenu value="#{materialHome.instancia.familia.subGrupo}" 
 									 effect="fade" 
+									 required="true"
 									 converter="subGrupoConversor">
 						<f:ajax event="change" 
 							listener="#{materialHome.carregaFamiliaList()}" 
@@ -99,10 +101,11 @@
 		        	</p:selectOneMenu>
 		        </h:panelGroup>
 		        <h:panelGroup> 
-					<h:outputLabel for="familia" value="Família:"  /><br />
+					<font color="red" >*</font><h:outputLabel for="familia" value="Família:"  /><br />
 					<p:selectOneMenu id="familia"
 									 value="#{materialHome.instancia.familia}" 
 									 effect="fade" 
+									 required="true"
 									 converter="familiaConversor">
 			            <f:selectItem itemLabel="Selecione..." 
 			            			  itemValue="" /> 

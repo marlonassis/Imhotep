@@ -68,15 +68,5 @@
 							converter="profissionalConversor" />
 		</h:panelGroup>
 		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
-			<h:selectOneRadio id="situacao"
-							  value="#{unidadeHome.instancia.status}" 
-							  required="true"
-							  title="Informe se o unidade está ativo ou inativo" >
-				 <f:selectItems value="#{itensPadrao.situacaoEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
 	</h:panelGrid>
 </ui:composition>

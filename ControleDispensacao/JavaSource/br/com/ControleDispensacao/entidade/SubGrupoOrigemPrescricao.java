@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +20,7 @@ import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
-@Table(name = "subgrupo_origem")
+@Table(name = "tb_sub_grupo_origem")
 public class SubGrupoOrigemPrescricao {
 	private int idSubGrupoOrigemPrescricao;
 	private GrupoOrigemPrescricao grupoOrigemPrescricao;
@@ -31,9 +32,10 @@ public class SubGrupoOrigemPrescricao {
 	private Usuario usuarioAlteracao;
 	private TipoStatusEnum exibirCidade;
 	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_sub_grupo_origem_id_subgrupo_origem_seq")
 	@Id
-	@GeneratedValue
-	@Column(name = "id_subgrupo_origem")
+	@GeneratedValue(generator = "generator")
+	@Column(name = "id_sub_grupo_origem", unique = true, nullable = false)
 	public int getIdSubGrupoOrigemPrescricao() {
 		return this.idSubGrupoOrigemPrescricao;
 	}

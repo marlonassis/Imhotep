@@ -18,7 +18,7 @@ public class ListaEspecialHome extends PadraoHome<ListaEspecial>{
 	 * @return Collection Menu
 	 */
 	public Collection<ListaEspecial> getListaFabricanteSuggest(String sql){
-		return super.getBusca("select o from ListaEspecial as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from ListaEspecial as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
 	
 }
