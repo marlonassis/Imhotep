@@ -78,7 +78,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	}
 	
 	public Collection<Material> getListaMaterialEstoque(){
-		return super.getBusca("select distinct o.material from Estoque o order by o.material.descricao ");
+		return super.getBusca("select o.material from Estoque o inner join o.material order by o.material.descricao");
 	}
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
