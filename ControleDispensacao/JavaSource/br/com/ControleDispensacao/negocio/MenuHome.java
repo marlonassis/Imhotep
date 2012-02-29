@@ -18,7 +18,7 @@ public class MenuHome extends PadraoHome<Menu>{
 	 * @return Collection Menu
 	 */
 	public Collection<Menu> getListaMenuAutoComplete(String sql){
-		return super.getBusca("select o from Menu as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from Menu as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
 	
 }

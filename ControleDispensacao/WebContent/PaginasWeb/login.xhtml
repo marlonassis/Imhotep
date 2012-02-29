@@ -7,23 +7,21 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Controle de acesso" >
-				<p:panel>
-					<p:fieldset legend="Login" collapsed="false" toggleable="true" toggleSpeed="500">
-						<h:form id="loginForm" >
-							<p:growl/>
-							<h:panelGrid columns="3" >
-								<font color="red" >*</font><h:outputText value="Usuário: " />
-								<p:inputText value="#{autenticador.usuario.login}" label="Usuário" required="true" />
-								<font color="red" >*</font><h:outputText value="Senha: " />
-								<p:inputText value="#{autenticador.usuario.senha}" label="Senha" required="true" type="password" />  
-			                </h:panelGrid>
-			                <p:commandButton value="Login" action="#{autenticador.logarUsuario}" update="loginForm" image="ui-icon ui-icon-locked" title="Click para entrar na sua conta" />
-			                <p:commandButton value="Limpar" image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos" type="reset" />
-			                <br/>
-			                <br/>
-			            </h:form>
-		            </p:fieldset>
-				</p:panel>
+			<p:fieldset legend="Login" collapsed="false" toggleable="true" toggleSpeed="500">
+				<h:form id="loginForm" >
+					<p:growl/>
+					<h:panelGrid columns="3" >
+						<font color="red" >*</font><h:outputText value="Usuário: " />
+						<p:inputText value="#{autenticador.usuario.login}" label="Usuário" required="true" />
+						<font color="red" >*</font><h:outputText value="Senha: " />
+						<p:inputText value="#{autenticador.usuario.senha}" label="Senha" required="true" type="password" />  
+	                </h:panelGrid>
+	                <p:commandButton value="Login" action="#{autenticador.logarUsuario}" update="loginForm" image="ui-icon ui-icon-locked" title="Click para entrar na sua conta" />
+	                <p:commandButton value="Limpar" image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos" type="reset" />
+	                <br/>
+	                <br/>
+	            </h:form>
+            </p:fieldset>
 		</p:tab>
 	</ui:define>
 </ui:composition>
