@@ -17,7 +17,7 @@ public class LiberaMaterialEspecialidade {
 	private Especialidade especialidade;
 	private Material material;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_libera_material_especialidade_id_libera_material_especialidade_seq")
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_libera_material_especialid_id_libera_material_especialid_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_libera_material_especialidade", unique = true, nullable = false)

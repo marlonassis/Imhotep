@@ -3,30 +3,31 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="liberaMaterialTipoProfissionalPanelGridConsulta"
+
+	<h:panelGrid id="liberaMaterialEspecialidadePanelGrid"
 				 columns="3" 
 				 width="100%" >
 				 
 		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="especialidadeConsulta" value="Especialidade:"  /><br />
-	  		<p:autoComplete id="especialidadeConsulta" 
-	  						value="#{liberaMaterialTipoProfissionalConsulta.instancia.especialidade}"
+			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:"  /><br />
+	  		<p:autoComplete id="especialidade" 
+	  						value="#{liberaMaterialEspecialidadeHome.instancia.especialidade}"
 							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
 							var="especialidade"
 							title="Informe especialidade"
+							required="true"
 							itemLabel="#{especialidade.descricao}" 
 							itemValue="#{especialidade}"
 							converter="especialidadeConversor" />
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="materialConsulta" value="Material:"  /><br />
-	  		<p:autoComplete id="materialConsulta" 
-	  						value="#{liberaMaterialTipoProfissionalConsulta.instancia.material}"
+			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
+	  		<p:autoComplete id="material" 
+	  						value="#{liberaMaterialEspecialidadeHome.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
+							required="true"
 							title="Informe o grupo do sub-grupo"
 							itemLabel="#{material.descricao}" 
 							itemValue="#{material}"

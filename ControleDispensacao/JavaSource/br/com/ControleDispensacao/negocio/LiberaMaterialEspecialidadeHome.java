@@ -9,9 +9,9 @@ import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade;
 import br.com.nucleo.PadraoHome;
 
-@ManagedBean(name="liberaMaterialTipoProfissionalHome")
+@ManagedBean(name="liberaMaterialEspecialidadeHome")
 @SessionScoped
-public class LiberaMaterialTipoProfissionalHome extends PadraoHome<LiberaMaterialEspecialidade>{
+public class LiberaMaterialEspecialidadeHome extends PadraoHome<LiberaMaterialEspecialidade>{
 	
 	/**
 	 * Método que retorna uma lista de LiberaMaterialTipoPrescritor de acordo com a string informada pelo usuário

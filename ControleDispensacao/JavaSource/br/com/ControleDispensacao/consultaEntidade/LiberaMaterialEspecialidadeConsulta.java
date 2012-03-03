@@ -11,11 +11,11 @@ import br.com.nucleo.PadraoConsulta;
 
 @ManagedBean(name="liberaMaterialTipoProfissionalConsulta")
 @SessionScoped
-public class LiberaMaterialTipoProfissionalConsulta extends PadraoConsulta<LiberaMaterialEspecialidade> {
-	public LiberaMaterialTipoProfissionalConsulta(){
+public class LiberaMaterialEspecialidadeConsulta extends PadraoConsulta<LiberaMaterialEspecialidade> {
+	public LiberaMaterialEspecialidadeConsulta(){
 		getCamposConsulta().put("o.material", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.tipoProfissional", INCLUINDO_TUDO);
-		setOrderBy("o.tipoProfissional.descricao, o.material.descricao");
+		getCamposConsulta().put("o.especialidade", IGUAL);
+		setOrderBy("o.especialidade.descricao, o.material.descricao");
 	}
 	
 	@Override

@@ -5,14 +5,14 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaLiberaMaterialTipoProfissional" 
-					value="#{liberaMaterialTipoProfissionalConsulta.list}" 
+	<p:dataTable 	id="tabelaLiberaMaterialEspecialidade" 
+					value="#{liberaMaterialEspecialidadeConsulta.list}" 
 					var="linha"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idLiberaMaterialTipoProfissional}">
+					rowKey="#{linha.idLiberaMaterialEspecialidade}">
 		
 		<p:column>
 			<f:facet name="header"><h:outputText value="Tipo do profissional" /></f:facet>
@@ -25,19 +25,19 @@
 		</p:column>
 		
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:liberaMaterialTipoProfissionalForm" 
+			<p:commandLink update="padraoTabView:liberaMaterialEspecialidadeForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{liberaMaterialTipoProfissionalHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{liberaMaterialEspecialidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{liberaMaterialTipoProfissionalHome.apagar()}"
-							update="tabelaLiberaMaterialTipoProfissional padraoTabView:liberaMaterialTipoProfissionalForm" 
+			<p:commandLink  action="#{liberaMaterialEspecialidadeHome.apagar()}"
+							update="tabelaLiberaMaterialEspecialidade padraoTabView:liberaMaterialEspecialidadeForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 							title="Apagar" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{liberaMaterialTipoProfissionalHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{liberaMaterialEspecialidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  

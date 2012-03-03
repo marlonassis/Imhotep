@@ -32,19 +32,21 @@
 		<div id="geral" 
 			 align="center" >
 			 <h:form id="menuForm" >
-			 	<h:panelGroup rendered="#{autenticador.usuarioAtivo}" >
+			 	<h:panelGroup id="menuPanelGroup"
+			 				  rendered="#{autenticador.usuarioAtivo}" >
 					
-					<p:selectOneMenu value="#{autenticador.unidadeAtual}" 
-								 effect="fade" 
-								 converter="unidadeConversor">  
-					<f:ajax event="change" 
-							render="menuForm" />
-					<f:selectItem itemLabel="Selecione sua unidade..." 
-								  itemValue="" /> 
-		            <f:selectItems value="#{autenticador.unidades}" 
-		            			   var="unidade" 
-		            			   itemLabel="#{unidade.nome}" 
-		            			   itemValue="#{unidade}"/>  
+					<p:selectOneMenu id="unidadeSelectOneMenu"
+									 value="#{autenticador.unidadeAtual}"
+								 	 effect="fade" 
+								 	 converter="unidadeConversor">  
+						<f:ajax event="change" 
+								render="menuForm" />
+						<f:selectItem itemLabel="Selecione sua unidade..." 
+									  itemValue="" /> 
+			            <f:selectItems value="#{autenticador.unidades}" 
+			            			   var="unidade" 
+			            			   itemLabel="#{unidade.nome}" 
+			            			   itemValue="#{unidade}"/>  
 		        	</p:selectOneMenu>
 					<ui:include src="menu.xhtml" />
 				</h:panelGroup>

@@ -136,6 +136,7 @@ public class Autenticador {
 		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
 			Submenu primeiroNivel = new Submenu();
 			primeiroNivel.setLabel(menuPrimeiroNivel.getDescricao());
+			primeiroNivel.setId(menuPrimeiroNivel.getDescricao().trim().substring(0, 2).concat(String.valueOf(menuPrimeiroNivel.getIdMenu())));
 			
 			hashMap.put("idMenuPai", menuPrimeiroNivel.getIdMenu());
 			sb = new StringBuilder("select o from Menu o where ");
