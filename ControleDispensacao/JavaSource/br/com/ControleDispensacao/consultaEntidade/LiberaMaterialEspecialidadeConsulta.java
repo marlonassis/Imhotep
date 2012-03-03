@@ -9,7 +9,7 @@ import br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoConsulta;
 
-@ManagedBean(name="liberaMaterialTipoProfissionalConsulta")
+@ManagedBean(name="liberaMaterialEspecialidadeConsulta")
 @SessionScoped
 public class LiberaMaterialEspecialidadeConsulta extends PadraoConsulta<LiberaMaterialEspecialidade> {
 	public LiberaMaterialEspecialidadeConsulta(){
@@ -21,7 +21,7 @@ public class LiberaMaterialEspecialidadeConsulta extends PadraoConsulta<LiberaMa
 	@Override
 	public List<LiberaMaterialEspecialidade> getList() {
 		setConsultaGeral(new ConsultaGeral<LiberaMaterialEspecialidade>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from LiberaMaterialTipoProfissional o where 1=1"));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from LiberaMaterialEspecialidade o where 1=1"));
 		return super.getList();
 	}
 }
