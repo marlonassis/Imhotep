@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabGrupoAtencaoContinuada" title="Prescrição" >
+			<h:form id="prescricaoForm" >
+				<p:growl showDetail="true" />
+				<h:panelGrid id="prescricaoPanelGrid"
+							 columns="3" 
+							 width="100%" >
+					<h:panelGroup>
+						<font color="red" >*</font><h:outputLabel for="paciente" value="Paciente:" /><br />
+				  		<p:autoComplete id="paciente" 
+				  						required="true"
+				  						value="#{prescricaoHome.instancia.paciente}"
+										completeMethod="#{pacienteHome.getListaPacienteAutoComplete}" 
+										var="paciente" 
+										itemLabel="#{paciente.nome}" 
+										itemValue="#{paciente}" 
+										converter="pacienteConversor" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<font color="red" >*</font><h:outputLabel for="massa" value="Massa:"  /><br />
+						<p:inputText  id="massa"
+									  value="#{prescricaoHome.instancia.massa}"
+									  onkeyup="apenasNumeroComVirgula(this);" 
+									  converter="monetarioConversor"
+									  title="Massa do paciente" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<font color="red" >*</font><h:outputLabel for="leito" value="Leito:"  /><br />
+						<p:inputText  id="leito"
+									  value="#{prescricaoHome.instancia.leito}"
+									  title="Leito ao qual o paciente está em repouso" />
+					</h:panelGroup>
+					<h:panelGroup style="align:left;" >
+						<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
+				  		<p:autoComplete id="material" 
+				  						value="#{prescricaoHome.prescricaoItem.material}"
+										completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
+										var="material"
+										required="true"
+										title="Informe o medicamento a ser prescrito"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel for="observacao" value="Observação:"  /><br />
+						<p:inputTextarea value="#{prescricaoHome.prescricaoItem.observacao}" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<p:commandButton onclick="dosagemDialog.show();"
+										 value="Indicar dosagem" 
+										 update="itemDosePanelGrid itemDosePanelGrid" />
+					</h:panelGroup>
+				</h:panelGrid>
+				
+				<p:dialog id="doseDialog" 
+						  header="Informe a dosagem do medicamento" 
+						  widgetVar="dosagemDialog" 
+						  modal="true" 
+						  closable="false">
+					<h:panelGrid id="itemDosePanelGrid" >
+						<h:panelGroup>
+							<h:outputLabel for="materialDose" value="Material:"  /><br />
+							<h:outputText id="materialDose"
+										  value="#{prescricaoHome.prescricaoItem.material.descricao}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<font color="red" >*</font><h:outputLabel for="periodo" value="Período:"  /><br />
+							<p:inputText id="periodo"
+									  	 value="#{prescricaoHome.prescricaoItemDose.periodo}"
+									  	 title="Período em horas" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
+							<p:inputText id="quantidade"
+									  	 value="#{prescricaoHome.prescricaoItemDose.quantidade}"
+									  	 title="Quantidade do remédio" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<p:commandButton action="#{prescricaoHome.addPrescricaoItemDoses()}"
+											 value="Adicionar dose" 
+											 update="doseGrid itemDosePanelGrid" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<p:separator id="limiteGridSeparator1" style="height:8px" /> 
+					<p:dataGrid id="doseGrid"
+							var="itemDose" 
+							value="#{prescricaoHome.prescricaoItem.prescricaoItemDoses}" 
+							columns="3"
+					        paginator="false">  
+				        <p:column>  
+				        
+				            <p:panel style="text-align:center">
+				                <h:panelGrid columns="1" style="width:100%">  
+				                	<h:panelGroup>
+				                		<h:outputText value="Preríodo: "/>
+				                    	<h:outputText value="#{itemDose.periodo}" />h
+				                    </h:panelGroup>
+				                    <h:panelGroup>
+				                    	<h:outputText value="Quantidade: " />
+				                    	<h:outputText value="#{itemDose.quantidade}" />
+				                    </h:panelGroup>
+				                    <p:commandLink title="Remover a dose" 
+				                    			   action="#{prescricaoHome.removePrescricaoItemDose(itemDose)}"
+				                    			   update="doseGrid">
+				                        <p:graphicImage value="/Imagens/delete16.gif"/>
+				                    </p:commandLink>
+				                </h:panelGrid>
+				            </p:panel>  
+				        </p:column>  
+					</p:dataGrid>
+					<p:separator id="limiteGridSeparator2" style="height:8px" />
+					<h:panelGroup>
+						<p:commandButton action="#{prescricaoHome.addPrescricaoItens}"
+										 value="Concluir" 
+										 onclick="dosagemDialog.close();"
+										 update="prescricaoPanelGrid prescricaoItensGrid" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:commandButton action="#{prescricaoHome.cancelarDosagem}"
+										 value="Cancelar" 
+										 onclick="dosagemDialog.close();"
+										 update="prescricaoPanelGrid prescricaoItensGrid doseDialog" />
+					</h:panelGroup>	
+				</p:dialog>
+				
+				<p:dataGrid id="prescricaoItensGrid"
+							var="item" 
+							value="#{prescricaoHome.prescricaoItens}" 
+							columns="3"
+					        paginator="false">  
+			        <p:column>  
+			            <p:panel header="#{item.material.descricao}" style="text-align:center">  
+			                <h:panelGrid columns="1" style="width:100%">  
+			                    <h:outputText value="#{item.prescricaoItemDoses.size()} dose(s)" />
+			                    <p:commandLink title="Mostrar as doses">
+			                        <p:graphicImage value="/Imagens/pills32px.png"/>
+			                    </p:commandLink>  
+			                    <p:commandLink title="Remover a dispensação" 
+			                    			   action="#{prescricaoHome.removePrescricaoItem(item)}" 
+			                    			   update="prescricaoItensGrid" >
+			                        <p:graphicImage value="/Imagens/delete16.gif"/>
+			                    </p:commandLink>
+			                </h:panelGrid>  
+			            </p:panel>  
+			        </p:column>  
+				</p:dataGrid>
+			</h:form>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>
