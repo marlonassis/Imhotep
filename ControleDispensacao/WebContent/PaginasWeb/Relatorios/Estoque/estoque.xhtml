@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios" title="Relatórios" >
+			<h:form id="relatoriosForm" >
+			    <p:commandLink id="downloadLink" 
+			    			   value="Relatório Geral do estoque" 
+			    			   ajax="false"
+			    			   action="#{relatorioEstoque.relatorioEstoqueGeral}">  
+			    </p:commandLink>  
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

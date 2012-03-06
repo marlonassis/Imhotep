@@ -6,15 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.cfg.Configuration;
 
 import br.com.nucleo.gerenciador.GerenciadorConexao;
 
@@ -65,9 +57,11 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 		try{
 			iniciarTransacao();
 			Query query = session.createQuery(hql.toString());
-			Set<Object> set = hashMap.keySet();
-			for(Object obj : set)
-				query.setParameter((String) obj, hashMap.get(obj));
+			if(hashMap != null){
+				Set<Object> set = hashMap.keySet();
+				for(Object obj : set)
+					query.setParameter((String) obj, hashMap.get(obj));
+			}
 			objects = (List<E>) query.list();
 		}catch (Exception e) {
 			e.printStackTrace();
