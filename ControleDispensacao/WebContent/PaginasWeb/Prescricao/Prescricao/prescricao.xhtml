@@ -60,37 +60,113 @@
 					<h:panelGroup>
 						<p:commandButton onclick="dosagemDialog.show();"
 										 value="Indicar dosagem" 
-										 update="itemDosePanelGrid itemDosePanelGrid" />
+										 update="padraoTabView:itemDosePanelGrid" />
 					</h:panelGroup>
 				</h:panelGrid>
 				
-				<p:dialog id="doseDialog" 
-						  header="Informe a dosagem do medicamento" 
-						  widgetVar="dosagemDialog" 
-						  modal="true" 
-						  closable="false">
+				<p:dataGrid id="prescricaoItensGrid"
+							var="item" 
+							value="#{prescricaoHome.prescricaoItens}" 
+							columns="3"
+					        paginator="false">  
+			        <p:column>  
+			            <p:panel header="#{item.material.descricao}" style="text-align:center">  
+			                <h:panelGrid columns="1" style="width:100%">  
+			                    <h:outputText value="#{item.prescricaoItemDoses.size()} dose(s)" />
+			                    <p:commandLink title="Mostrar as doses">
+			                        <p:graphicImage value="/Imagens/pills32px.png"/>
+			                    </p:commandLink>  
+			                    <p:commandLink title="Remover a dispensação" 
+			                    			   action="#{prescricaoHome.removePrescricaoItem(item)}" 
+			                    			   update="prescricaoItensGrid" >
+			                        <p:graphicImage value="/Imagens/delete16.gif"/>
+			                    </p:commandLink>
+			                </h:panelGrid>  
+			            </p:panel>  
+			        </p:column>  
+				</p:dataGrid>
+			</h:form>
+
+			<p:dialog id="doseDialog" 
+					  header="Informe a dosagem do medicamento" 
+					  widgetVar="dosagemDialog" 
+					  modal="true" 
+					  closable="false">
+				<h:form prependId="false" >
 					<h:panelGrid id="itemDosePanelGrid" >
 						<h:panelGroup>
 							<h:outputLabel for="materialDose" value="Material:"  /><br />
 							<h:outputText id="materialDose"
 										  value="#{prescricaoHome.prescricaoItem.material.descricao}" />
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup rendered="false" >
 							<font color="red" >*</font><h:outputLabel for="periodo" value="Período:"  /><br />
 							<p:inputText id="periodo"
 									  	 value="#{prescricaoHome.prescricaoItemDose.periodo}"
 									  	 title="Período em horas" />
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup rendered="false" >
 							<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
 							<p:inputText id="quantidade"
 									  	 value="#{prescricaoHome.prescricaoItemDose.quantidade}"
 									  	 title="Quantidade do remédio" />
 						</h:panelGroup>
+						
+						
+						
+						
+						<h:panelGroup >
+							<font color="red" >*</font><h:outputLabel for="quantidadeDoses" value="Quantidade de doses:"  /><br />
+							<p:inputText id="quantidadeDoses"
+									  	 value="#{prescricaoHome.quantidadeDoses}"
+									  	 onkeyup="apenasNumeroComVirgula(this);"
+									  	 title="Período em horas" />
+						</h:panelGroup>
+						
+						<h:panelGroup >
+							<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento" value="Quantidade do medicamento por dose:"  /><br />
+							<p:inputText id="quantidadeMedicamento"
+									  	 value="#{prescricaoHome.quantidadeMedicamento}"
+									  	 title="Quantidade a ser ministrado ao paciente" />
+						</h:panelGroup>
+						
+						<h:panelGroup >
+							<font color="red" >*</font><h:outputLabel for="intervaloDoses" value="Intervalo entre as doses:"  /><br />
+							<p:inputText id="intervaloDoses"
+									  	 value="#{prescricaoHome.intervaloDoses}"
+									  	 onkeyup="apenasNumeroComVirgula(this);"
+									  	 title="Intervalo de uma dose para a outra" />h
+						</h:panelGroup>
+						
+						<h:panelGroup >
+						
+							<font color="red" >*</font><h:outputLabel for="horaInicial" value="Início da dosagem:"  /><br />
+							<p:inputText id="horaInicial"
+									  	 value="#{prescricaoHome.horaInicial}"
+									  	 onkeyup="validaHoras(this);"
+									  	 title="Intervalo de uma dose para a outra" />
+						
+							<a class="ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only">
+								<span class="ui-button-text">
+									<span class="ui-icon ui-icon-triangle-1-s"></span>
+								</span>
+							</a>
+						
+							<a class="ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only">
+								<span class="ui-button-text">
+									<span class="ui-icon ui-icon-triangle-1-s"></span>
+								</span>
+							</a>
+						</h:panelGroup>
+						
+						
+						
+						
+						
 						<h:panelGroup>
 							<p:commandButton action="#{prescricaoHome.addPrescricaoItemDoses()}"
 											 value="Adicionar dose" 
-											 update="doseGrid itemDosePanelGrid" />
+											 update="doseGrid padraoTabView:itemDosePanelGrid" />
 						</h:panelGroup>
 					</h:panelGrid>
 					<p:separator id="limiteGridSeparator1" style="height:8px" /> 
@@ -133,32 +209,9 @@
 										 value="Cancelar" 
 										 onclick="dosagemDialog.close();"
 										 update="prescricaoPanelGrid prescricaoItensGrid doseDialog" />
-					</h:panelGroup>	
-				</p:dialog>
-				
-				<p:dataGrid id="prescricaoItensGrid"
-							var="item" 
-							value="#{prescricaoHome.prescricaoItens}" 
-							columns="3"
-					        paginator="false">  
-			        <p:column>  
-			            <p:panel header="#{item.material.descricao}" style="text-align:center">  
-			                <h:panelGrid columns="1" style="width:100%">  
-			                    <h:outputText value="#{item.prescricaoItemDoses.size()} dose(s)" />
-			                    <p:commandLink title="Mostrar as doses">
-			                        <p:graphicImage value="/Imagens/pills32px.png"/>
-			                    </p:commandLink>  
-			                    <p:commandLink title="Remover a dispensação" 
-			                    			   action="#{prescricaoHome.removePrescricaoItem(item)}" 
-			                    			   update="prescricaoItensGrid" >
-			                        <p:graphicImage value="/Imagens/delete16.gif"/>
-			                    </p:commandLink>
-			                </h:panelGrid>  
-			            </p:panel>  
-			        </p:column>  
-				</p:dataGrid>
-			</h:form>
-			
+					</h:panelGroup>
+				</h:form>	
+			</p:dialog>
 		</p:tab>
 	</ui:define>
 </ui:composition>

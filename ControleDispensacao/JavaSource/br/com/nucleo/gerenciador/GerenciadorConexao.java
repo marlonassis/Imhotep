@@ -18,7 +18,7 @@ public class GerenciadorConexao {
 		cfg.configure("hibernate.cfg.xml");
 		factory = cfg.buildSessionFactory();
 		session = factory.openSession();
-		tx = session.beginTransaction();  
+		tx = session.beginTransaction();
 	}
 	
 }

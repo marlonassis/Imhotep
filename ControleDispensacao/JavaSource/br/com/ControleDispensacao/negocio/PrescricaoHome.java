@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.negocio;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
 	private List<PrescricaoItem> prescricaoItens = new ArrayList<PrescricaoItem>();
 	private PrescricaoItemDose prescricaoItemDose = new PrescricaoItemDose(); 
+	private Integer quantidadeDoses;
+	private Integer intervaloDoses;
+	private Integer quantidadeMedicamento;
+	private Time horaInicial;
 	
 	
 	@Override
@@ -84,5 +89,37 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 
 	public void setPrescricaoItemDose(PrescricaoItemDose prescricaoItemDose) {
 		this.prescricaoItemDose = prescricaoItemDose;
+	}
+
+	public Integer getQuantidadeDoses() {
+		return quantidadeDoses;
+	}
+
+	public void setQuantidadeDoses(Integer quantidadeDoses) {
+		this.quantidadeDoses = quantidadeDoses;
+	}
+
+	public Integer getIntervaloDoses() {
+		return intervaloDoses;
+	}
+
+	public void setIntervaloDoses(Integer intervaloDoses) {
+		this.intervaloDoses = intervaloDoses;
+	}
+
+	public Integer getQuantidadeMedicamento() {
+		return quantidadeMedicamento;
+	}
+
+	public void setQuantidadeMedicamento(Integer quantidadeMedicamento) {
+		this.quantidadeMedicamento = quantidadeMedicamento;
+	}
+
+	public Time getHoraInicial() {
+		return horaInicial;
+	}
+
+	public void setHoraInicial(Time horaInicial) {
+		this.horaInicial = horaInicial;
 	}
 }

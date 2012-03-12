@@ -7,15 +7,13 @@
 
 	<ui:define name="head">
 	</ui:define>
-
-
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRelatorios" title="Relatórios" >
-			<h:form id="relatoriosForm" >
-			    <p:commandLink id="downloadLink" 
+			<h:form id="relatoriosForm" style="text-align: left;" >
+			    <p:commandLink id="downloadRelatorioGeral" 
 			    			   value="Relatório Geral do estoque" 
 			    			   ajax="false"
-			    			   action="#{relatorioEstoque.relatorioEstoqueGeral}">  
+			    			   action="#{relatorioEstoque.relatorioGeralEstoque}">  
 			    </p:commandLink>  
 			</h:form>
 		</p:tab>
