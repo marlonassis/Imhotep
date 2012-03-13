@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Paciente;
+import br.com.ControleDispensacao.entidade.Estoque;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="pacienteConversor")
-public class PacienteConversor implements Converter {
+@FacesConverter(value="estoqueConversor")
+public class EstoqueConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Paciente> cg = new ConsultaGeral<Paciente>();
+                ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idPaciente", id);
-                Paciente paciente = cg.consultaUnica(new StringBuilder("select o from Paciente o where o.idPaciente = :idPaciente"), hashMap);
-                return paciente;
+                hashMap.put("idEstoque", id);
+                Estoque estoque = cg.consultaUnica(new StringBuilder("select o from Estoque o where o.idEstoque = :idEstoque"), hashMap);
+                return estoque;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class PacienteConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Paciente) value).getIdPaciente());
+    		return String.valueOf(((Estoque) value).getIdEstoque());
         }
     	
     	return "";

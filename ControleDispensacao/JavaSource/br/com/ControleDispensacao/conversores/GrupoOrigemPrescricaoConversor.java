@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.TipoMovimento;
+import br.com.ControleDispensacao.entidade.GrupoOrigemPrescricao;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="tipoMovimentoConversor")
-public class TipoMovimentoConversor implements Converter {
+@FacesConverter(value="grupoOrigemPrescricaoConversor")
+public class GrupoOrigemPrescricaoConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
+                ConsultaGeral<GrupoOrigemPrescricao> cg = new ConsultaGeral<GrupoOrigemPrescricao>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idTipoMovimento", id);
-                TipoMovimento tipoMovimento = cg.consultaUnica(new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = :idTipoMovimento"), hashMap);
-                return tipoMovimento;
+                hashMap.put("idGrupoOrigemPrescricao", id);
+                GrupoOrigemPrescricao grupoOrigemPrescricao = cg.consultaUnica(new StringBuilder("select o from GrupoOrigemPrescricao o where o.idGrupoOrigemPrescricao = :idGrupoOrigemPrescricao"), hashMap);
+                return grupoOrigemPrescricao;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class TipoMovimentoConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((TipoMovimento) value).getIdTipoMovimento());
+    		return String.valueOf(((GrupoOrigemPrescricao) value).getIdGrupoOrigemPrescricao());
         }
     	
     	return "";

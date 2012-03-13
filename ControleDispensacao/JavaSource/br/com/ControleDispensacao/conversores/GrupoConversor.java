@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,22 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Livro;
-import br.com.ControleDispensacao.entidade.Unidade;
+import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="unidadeConversor")
-public class UnidadeConversor implements Converter {
+@FacesConverter(value="grupoConversor")
+public class GrupoConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Unidade> cg = new ConsultaGeral<Unidade>();
+                ConsultaGeral<Grupo> cg = new ConsultaGeral<Grupo>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idUnidade", id);
-                Unidade unidade = cg.consultaUnica(new StringBuilder("select o from Unidade o where o.idUnidade = :idUnidade"), hashMap);
-                return unidade;
+                hashMap.put("idGrupo", id);
+                Grupo grupo = cg.consultaUnica(new StringBuilder("select o from Grupo o where o.idGrupo = :idGrupo"), hashMap);
+                return grupo;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -32,10 +31,10 @@ public class UnidadeConversor implements Converter {
 
         return null;
     }
-    
+
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Unidade) value).getIdUnidade());
+    		return String.valueOf(((Grupo) value).getIdGrupo());
         }
     	
     	return "";

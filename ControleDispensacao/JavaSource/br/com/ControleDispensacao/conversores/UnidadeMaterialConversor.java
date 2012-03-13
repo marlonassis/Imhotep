@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Cidade;
+import br.com.ControleDispensacao.entidade.UnidadeMaterial;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="cidadeConversor")
-public class CidadeConversor implements Converter {
+@FacesConverter(value="unidadeMaterialConversor")
+public class UnidadeMaterialConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Cidade> cg = new ConsultaGeral<Cidade>();
+                ConsultaGeral<UnidadeMaterial> cg = new ConsultaGeral<UnidadeMaterial>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idCidade", id);
-                Cidade cidade = cg.consultaUnica(new StringBuilder("select o from Cidade o where o.idCidade = :idCidade"), hashMap);
-                return cidade;
+                hashMap.put("idUnidadeMaterial", id);
+                UnidadeMaterial unidadeMaterial = cg.consultaUnica(new StringBuilder("select o from UnidadeMaterial o where o.idUnidadeMaterial = :idUnidadeMaterial"), hashMap);
+                return unidadeMaterial;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class CidadeConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Cidade) value).getIdCidade());
+    		return String.valueOf(((UnidadeMaterial) value).getIdUnidadeMaterial());
         }
     	
     	return "";

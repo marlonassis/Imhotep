@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Profissional;
+import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="profissionalConversor")
-public class ProfissionalConversor implements Converter {
+@FacesConverter(value="pacienteConversor")
+public class PacienteConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
+                ConsultaGeral<Paciente> cg = new ConsultaGeral<Paciente>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idProfissional", id);
-                Profissional profissional = cg.consultaUnica(new StringBuilder("select o from Profissional o where o.idProfissional = :idProfissional"), hashMap);
-                return profissional;
+                hashMap.put("idPaciente", id);
+                Paciente paciente = cg.consultaUnica(new StringBuilder("select o from Paciente o where o.idPaciente = :idPaciente"), hashMap);
+                return paciente;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -31,10 +31,10 @@ public class ProfissionalConversor implements Converter {
 
         return null;
     }
-    
+
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Profissional) value).getIdProfissional());
+    		return String.valueOf(((Paciente) value).getIdPaciente());
         }
     	
     	return "";

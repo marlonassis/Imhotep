@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Usuario;
+import br.com.ControleDispensacao.entidade.SituacaoPaciente;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="usuarioConversor")
-public class UsuarioConversor implements Converter {
+@FacesConverter(value="situacaoPacienteConversor")
+public class SituacaoPacienteConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Usuario> cg = new ConsultaGeral<Usuario>();
+                ConsultaGeral<SituacaoPaciente> cg = new ConsultaGeral<SituacaoPaciente>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idUsuario", id);
-                Usuario usuario = cg.consultaUnica(new StringBuilder("select o from Usuario o where o.idUsuario = :idUsuario"), hashMap);
-                return usuario;
+                hashMap.put("idSituacaoPaciente", id);
+                SituacaoPaciente situacaoPaciente = cg.consultaUnica(new StringBuilder("select o from SituacaoPaciente o where o.idSituacaoPaciente = :idSituacaoPaciente"), hashMap);
+                return situacaoPaciente;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class UsuarioConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Usuario) value).getIdUsuario());
+    		return String.valueOf(((SituacaoPaciente) value).getIdSituacaoPaciente());
         }
     	
     	return "";

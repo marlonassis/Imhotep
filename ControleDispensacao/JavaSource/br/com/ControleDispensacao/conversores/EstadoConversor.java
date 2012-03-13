@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.SituacaoPaciente;
+import br.com.ControleDispensacao.entidade.Estado;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="situacaoPacienteConversor")
-public class SituacaoPacienteConversor implements Converter {
+@FacesConverter(value="estadoConversor")
+public class EstadoConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<SituacaoPaciente> cg = new ConsultaGeral<SituacaoPaciente>();
+                ConsultaGeral<Estado> cg = new ConsultaGeral<Estado>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idSituacaoPaciente", id);
-                SituacaoPaciente situacaoPaciente = cg.consultaUnica(new StringBuilder("select o from SituacaoPaciente o where o.idSituacaoPaciente = :idSituacaoPaciente"), hashMap);
-                return situacaoPaciente;
+                hashMap.put("idEstado", id);
+                Estado estado = cg.consultaUnica(new StringBuilder("select o from Estado o where o.idEstado = :idEstado"), hashMap);
+                return estado;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class SituacaoPacienteConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((SituacaoPaciente) value).getIdSituacaoPaciente());
+    		return String.valueOf(((Estado) value).getIdEstado());
         }
     	
     	return "";

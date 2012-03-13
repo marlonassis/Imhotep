@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,23 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Familia;
-import br.com.ControleDispensacao.entidade.ListaEspecial;
-import br.com.ControleDispensacao.entidade.TipoMaterial;
+import br.com.ControleDispensacao.entidade.TipoMovimento;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="tipoMaterialConversor")
-public class TipoMaterialConversor implements Converter {
+@FacesConverter(value="tipoMovimentoConversor")
+public class TipoMovimentoConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<TipoMaterial> cg = new ConsultaGeral<TipoMaterial>();
+                ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idTipoMaterial", id);
-                TipoMaterial tipoMaterial = cg.consultaUnica(new StringBuilder("select o from TipoMaterial o where o.idTipoMaterial = :idTipoMaterial"), hashMap);
-                return tipoMaterial;
+                hashMap.put("idTipoMovimento", id);
+                TipoMovimento tipoMovimento = cg.consultaUnica(new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = :idTipoMovimento"), hashMap);
+                return tipoMovimento;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -36,7 +34,7 @@ public class TipoMaterialConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((TipoMaterial) value).getIdTipoMaterial());
+    		return String.valueOf(((TipoMovimento) value).getIdTipoMovimento());
         }
     	
     	return "";

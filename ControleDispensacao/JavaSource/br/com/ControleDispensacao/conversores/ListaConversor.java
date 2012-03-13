@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Especialidade;
+import br.com.ControleDispensacao.entidade.Familia;
+import br.com.ControleDispensacao.entidade.ListaEspecial;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="especialidadeConversor")
-public class EspecialidadeConversor implements Converter {
+@FacesConverter(value="listaEspecialConversor")
+public class ListaConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Especialidade> cg = new ConsultaGeral<Especialidade>();
+                ConsultaGeral<ListaEspecial> cg = new ConsultaGeral<ListaEspecial>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idEspecialidade", id);
-                Especialidade especialidade = cg.consultaUnica(new StringBuilder("select o from Especialidade o where o.idEspecialidade = :idEspecialidade"), hashMap);
-                return especialidade;
+                hashMap.put("idListaEspecial", id);
+                ListaEspecial listaEspecial = cg.consultaUnica(new StringBuilder("select o from ListaEspecial o where o.idListaEspecial = :idListaEspecial"), hashMap);
+                return listaEspecial;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +35,7 @@ public class EspecialidadeConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Especialidade) value).getIdEspecialidade());
+    		return String.valueOf(((ListaEspecial) value).getIdListaEspecial());
         }
     	
     	return "";

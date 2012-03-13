@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Menu;
+import br.com.ControleDispensacao.entidade.Livro;
+import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="menuConversor")
-public class MenuConversor implements Converter {
+@FacesConverter(value="unidadeConversor")
+public class UnidadeConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
+                ConsultaGeral<Unidade> cg = new ConsultaGeral<Unidade>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idMenu", id);
-                Menu menu = cg.consultaUnica(new StringBuilder("select o from Menu o where o.idMenu = :idMenu"), hashMap);
-                return menu;
+                hashMap.put("idUnidade", id);
+                Unidade unidade = cg.consultaUnica(new StringBuilder("select o from Unidade o where o.idUnidade = :idUnidade"), hashMap);
+                return unidade;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -31,10 +32,10 @@ public class MenuConversor implements Converter {
 
         return null;
     }
-
+    
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Menu) value).getIdMenu());
+    		return String.valueOf(((Unidade) value).getIdUnidade());
         }
     	
     	return "";

@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.GrupoOrigemPrescricao;
+import br.com.ControleDispensacao.entidade.Fabricante;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="grupoOrigemPrescricaoConversor")
-public class GrupoOrigemPrescricaoConversor implements Converter {
+@FacesConverter(value="fabricanteConversor")
+public class FabricanteConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<GrupoOrigemPrescricao> cg = new ConsultaGeral<GrupoOrigemPrescricao>();
+                ConsultaGeral<Fabricante> cg = new ConsultaGeral<Fabricante>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idGrupoOrigemPrescricao", id);
-                GrupoOrigemPrescricao grupoOrigemPrescricao = cg.consultaUnica(new StringBuilder("select o from GrupoOrigemPrescricao o where o.idGrupoOrigemPrescricao = :idGrupoOrigemPrescricao"), hashMap);
-                return grupoOrigemPrescricao;
+                hashMap.put("idFabricante", id);
+                Fabricante fabricante = cg.consultaUnica(new StringBuilder("select o from Fabricante o where o.idFabricante = :idFabricante"), hashMap);
+                return fabricante;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class GrupoOrigemPrescricaoConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((GrupoOrigemPrescricao) value).getIdGrupoOrigemPrescricao());
+    		return String.valueOf(((Fabricante) value).getIdFabricante());
         }
     	
     	return "";

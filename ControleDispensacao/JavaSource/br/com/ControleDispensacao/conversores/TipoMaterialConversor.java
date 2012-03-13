@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -10,20 +10,22 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.ControleDispensacao.entidade.Familia;
+import br.com.ControleDispensacao.entidade.ListaEspecial;
+import br.com.ControleDispensacao.entidade.TipoMaterial;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="familiaConversor")
-public class FamiliaConversor implements Converter {
+@FacesConverter(value="tipoMaterialConversor")
+public class TipoMaterialConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<Familia> cg = new ConsultaGeral<Familia>();
+                ConsultaGeral<TipoMaterial> cg = new ConsultaGeral<TipoMaterial>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idFamilia", id);
-                Familia familia = cg.consultaUnica(new StringBuilder("select o from Familia o where o.idFamilia = :idFamilia"), hashMap);
-                return familia;
+                hashMap.put("idTipoMaterial", id);
+                TipoMaterial tipoMaterial = cg.consultaUnica(new StringBuilder("select o from TipoMaterial o where o.idTipoMaterial = :idTipoMaterial"), hashMap);
+                return tipoMaterial;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +36,7 @@ public class FamiliaConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((Familia) value).getIdFamilia());
+    		return String.valueOf(((TipoMaterial) value).getIdTipoMaterial());
         }
     	
     	return "";

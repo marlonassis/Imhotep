@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,22 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Familia;
-import br.com.ControleDispensacao.entidade.ListaEspecial;
+import br.com.ControleDispensacao.entidade.Menu;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="listaEspecialConversor")
-public class ListaConversor implements Converter {
+@FacesConverter(value="menuConversor")
+public class MenuConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<ListaEspecial> cg = new ConsultaGeral<ListaEspecial>();
+                ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idListaEspecial", id);
-                ListaEspecial listaEspecial = cg.consultaUnica(new StringBuilder("select o from ListaEspecial o where o.idListaEspecial = :idListaEspecial"), hashMap);
-                return listaEspecial;
+                hashMap.put("idMenu", id);
+                Menu menu = cg.consultaUnica(new StringBuilder("select o from Menu o where o.idMenu = :idMenu"), hashMap);
+                return menu;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -35,7 +34,7 @@ public class ListaConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((ListaEspecial) value).getIdListaEspecial());
+    		return String.valueOf(((Menu) value).getIdMenu());
         }
     	
     	return "";

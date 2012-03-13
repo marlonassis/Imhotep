@@ -1,4 +1,4 @@
-package br.com.ControleEstoque.conversores;
+package br.com.ControleDispensacao.conversores;
 
 
 
@@ -9,21 +9,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.UnidadeMaterial;
+import br.com.ControleDispensacao.entidade.SubGrupo;
 import br.com.nucleo.ConsultaGeral;
 
-@FacesConverter(value="unidadeMaterialConversor")
-public class UnidadeMaterialConversor implements Converter {
+@FacesConverter(value="subGrupoConversor")
+public class SubGrupoConversor implements Converter {
 
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
             try {
                 int id = Integer.parseInt(submittedValue);
-                ConsultaGeral<UnidadeMaterial> cg = new ConsultaGeral<UnidadeMaterial>();
+                ConsultaGeral<SubGrupo> cg = new ConsultaGeral<SubGrupo>();
                 HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-                hashMap.put("idUnidadeMaterial", id);
-                UnidadeMaterial unidadeMaterial = cg.consultaUnica(new StringBuilder("select o from UnidadeMaterial o where o.idUnidadeMaterial = :idUnidadeMaterial"), hashMap);
-                return unidadeMaterial;
+                hashMap.put("idSubGrupo", id);
+                SubGrupo subgrupo = cg.consultaUnica(new StringBuilder("select o from SubGrupo o where o.idSubGrupo = :idSubGrupo"), hashMap);
+                return subgrupo;
             } catch(NumberFormatException exception) {
                 exception.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class UnidadeMaterialConversor implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-    		return String.valueOf(((UnidadeMaterial) value).getIdUnidadeMaterial());
+    		return String.valueOf(((SubGrupo) value).getIdSubGrupo());
         }
     	
     	return "";
