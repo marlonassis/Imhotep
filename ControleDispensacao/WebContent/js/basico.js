@@ -8,6 +8,7 @@ function apenasNumero(obj){
 }  
 
 function validaHoras(edit){
+	alert(edit);
 	li = new Array(':');
 	liE = new Array(58);
 	//somenteNumero(edit,ev,li,liE);
@@ -29,6 +30,97 @@ function verifica_horas(obj){
 	}
 }
 	
+function validaHora(obj){
+	if(obj.value.lastIndexOf(":") == -1 && obj.value != ""){
+		alert("Hora no formato inválido.");
+		obj.value = "";
+		return null;
+	}
+	var horaArray = obj.value.split(":");
+	if(horaArray.size > 3 && obj.value != ""){
+		alert("Hora no formato inválido." && obj.value != "");
+		obj.value = "";
+		return null;
+	}
+	var hora = horaArray[0];
+	var minuto = horaArray[1];
+	if((hora > 23 || hora < 0 || minuto > 59 || minuto < 0) && obj.value != ""){
+		alert("Hora no formato inválido.");
+		obj.value = "";
+		return null;
+	}
+
+	if(minuto >= 0 && minuto <= 9 && minuto.toString().length == 1){
+		operador = ":0";
+	}else{
+		operador = ":";
+	}
+	
+	obj.value = hora.toString() + operador + minuto.toString();
+}
+
+function spinnerAdd(idComponente){
+	var horaInicial = document.getElementById(idComponente).value;
+	if(horaInicial == "" || horaInicial == null){
+		horaInicial = "00:00";
+	}
+	var array = horaInicial.split(":");
+	var hora = array[0];
+	var minuto = array[1];
+	minuto++;
+	if(hora == 23 && minuto == 60){
+		hora = 0;
+		minuto = 0;
+	}
+	
+	if(minuto == 60){
+		minuto = 0;
+		hora++;
+	}
+
+	var operador;
+	
+	if(minuto >= 0 && minuto <= 9 && minuto.toString().length == 1){
+		operador = ":0";
+	}else{
+		operador = ":";
+	}
+	
+	horaInicial = hora.toString() + operador + minuto.toString();
+	document.getElementById(idComponente).value = horaInicial;
+}
+
+function spinnerRem(idComponente){
+	var horaInicial = document.getElementById(idComponente).value;
+	if(horaInicial == "" || horaInicial == null){
+		horaInicial = "00:00";
+	}
+	var array = horaInicial.split(":");
+	var hora = array[0];
+	var minuto = array[1];
+	minuto--;
+	if(hora == 00 && minuto < 0){
+		hora = 23;
+		minuto = 59;
+	}
+	
+	if(minuto == -1){
+		minuto = 59;
+		hora--;
+	}
+
+	var operador;
+	
+	if(minuto >= 0 && minuto <= 9 && minuto.toString().length == 1){
+		operador = ":0";
+	}else{
+		operador = ":";
+	}
+	
+	horaInicial = hora.toString() + operador + minuto.toString();
+	document.getElementById(idComponente).value = horaInicial;
+}
+
 /**
  * Máscara para campo hora
  */
@@ -58,7 +150,7 @@ function apenasNumeroComVirgula(obj){
     if(a.length == 2){
       a = '0,'.concat(a);
     }else{
-      a=a.replace(/(\d)(\d{2})$/,"$1,$2") //adiciona a vírgula nos dois últimos caracteres
+      a=a.replace(/(\d)(\d{2})$/,"$1,$2"); //adiciona a vírgula nos dois últimos caracteres
     }
   }
   obj.value = a;
@@ -113,7 +205,7 @@ function validaCPF(obj){
     if(cpf == ''){
 	  return false;
     }
-    var numeros, digitos, soma, i, resultado, digitos_iguais;
+    var numeros, digitos, soma, i, resultado;
     if (cpf.length < 11){
       alert('CPF inválido');
       obj.focus();
@@ -157,7 +249,7 @@ function validaCNPJ(obj){
 
     digitos_iguais = 1;
     if (cnpj.length < 14 && cnpj.length < 15){
-      alert('CNPJ inválido')
+      alert('CNPJ inválido');
       obj.focus();
       return false;
     }
@@ -167,7 +259,7 @@ function validaCNPJ(obj){
         break;
       }
     if (!digitos_iguais){
-      tamanho = cnpj.length - 2
+      tamanho = cnpj.length - 2;
       numeros = cnpj.substring(0,tamanho);
       digitos = cnpj.substring(tamanho);
       soma = 0;
@@ -179,7 +271,7 @@ function validaCNPJ(obj){
       }
       resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
       if (resultado != digitos.charAt(0)){
-    	alert('CNPJ inválido')
+    	alert('CNPJ inválido');
         obj.focus();
         return false;
       }
@@ -194,14 +286,14 @@ function validaCNPJ(obj){
         }
         resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
         if (resultado != digitos.charAt(1)){
-          alert('CNPJ inválido')
+          alert('CNPJ inválido');
           obj.focus();
           return false;
         }
         return true;
       }
       else{
-    	  alert('CNPJ inválido')
+    	  alert('CNPJ inválido');
           obj.focus();
     	  return false;
       }
@@ -216,3 +308,30 @@ function validaEmail(obj)
 	obj.focus();
   }
 }
+
+PrimeFaces.locales['pt_BR'] = {
+	    closeText: 'Fechar',
+	    prevText: 'Anterior',
+	    nextText: 'Próximo',
+	    currentText: 'Começo',
+	    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+	    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Dez'],
+	    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+	    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+	    dayNamesMin: ['D','S','T','Q','Q','S','S'],
+	    weekHeader: 'Semana',
+	    firstDay: 0,
+	    isRTL: false,
+	    showMonthAfterYear: false,
+	    yearSuffix: '',
+	    timeOnlyTitle: 'Só Horas',
+	    timeText: 'Tempo',
+	    hourText: 'Hora',
+	    minuteText: 'Minuto',
+	    secondText: 'Segundo',
+	    ampm: false,
+	    month: 'Mês',
+	    week: 'Semana',
+	    day: 'Dia',
+	    allDayText : 'Todo o Dia'
+	};

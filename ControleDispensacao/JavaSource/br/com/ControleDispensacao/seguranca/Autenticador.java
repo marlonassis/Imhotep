@@ -17,6 +17,7 @@ import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
 import br.com.ControleDispensacao.entidade.Menu;
+import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.nucleo.ConsultaGeral;
@@ -29,6 +30,7 @@ public class Autenticador {
 	private Usuario usuarioAtual;
 	private Usuario usuario = new Usuario();
 	private Unidade unidadeAtual;
+	private Profissional profissionalAtual;
 	private MenuModel menuModel;
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
@@ -48,6 +50,13 @@ public class Autenticador {
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idUsuario", usuarioAtual.getIdUsuario());
 		unidades = cg.consulta(new StringBuilder("select a.unidade from AutorizaUnidadeProfissional a where a.profissional.usuario.idUsuario = :idUsuario"), hm);
+	}
+
+	private void carregaFuncionario(){
+		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idUsuario", usuarioAtual.getIdUsuario());
+		profissionalAtual = cg.consultaUnica(new StringBuilder("select o from Profissional o where o.usuario.idUsuario = :idUsuario"), hm);
 	}
 	
 	public void logout(){
@@ -95,6 +104,7 @@ public class Autenticador {
 	    				setUsuarioAtual(usuarioLogado);
 	    				carregaUnidadesUsuario();
 	    				carregaToolBarMenu();
+	    				carregaFuncionario();
 	    				facesContext.getExternalContext().redirect(PAGINA_HOME);
 	    			}else{
 	    				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
@@ -212,5 +222,14 @@ public class Autenticador {
 	public MenuModel getMenuModel(){
 		return menuModel;
 	}
+
+	public Profissional getProfissionalAtual() {
+		return profissionalAtual;
+	}
+
+	public void setProfissionalAtual(Profissional profissionalAtual) {
+		this.profissionalAtual = profissionalAtual;
+	}
+
 	
 }

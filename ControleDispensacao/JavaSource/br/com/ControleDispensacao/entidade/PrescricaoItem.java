@@ -1,8 +1,7 @@
 package br.com.ControleDispensacao.entidade;
 
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +20,7 @@ public class PrescricaoItem {
 	private Material material;
 	private Prescricao prescricao;
 	private String observacao;
-	private List<PrescricaoItemDose> prescricaoItemDoses;
+	private Set<PrescricaoItemDose> prescricaoItemDoses;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -60,12 +59,11 @@ public class PrescricaoItem {
 		this.observacao = observacao;
 	}
 
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH}, fetch = FetchType.EAGER, mappedBy = "prescricaoItem")
-	public List<PrescricaoItemDose> getPrescricaoItemDoses() {
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricaoItem")
+	public Set<PrescricaoItemDose> getPrescricaoItemDoses() {
 		return prescricaoItemDoses;
 	}
-	public void setPrescricaoItemDoses(List<PrescricaoItemDose> prescricaoItemDoses) {
+	public void setPrescricaoItemDoses(Set<PrescricaoItemDose> prescricaoItemDoses) {
 		this.prescricaoItemDoses = prescricaoItemDoses;
 	}
 	
@@ -76,13 +74,13 @@ public class PrescricaoItem {
 		if(!(obj instanceof PrescricaoItem))
 			return false;
 		
-		return ((PrescricaoItem)obj).getIdPrescricaoItem() == this.idPrescricaoItem;
+		return ((PrescricaoItem)obj).hashCode() == this.hashCode();
 	}
 
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + observacao.hashCode();
+	    return hash * 31 + material.hashCode() + prescricaoItemDoses.hashCode();
 	}
 
 	@Override

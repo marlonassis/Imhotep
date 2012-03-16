@@ -1,5 +1,7 @@
 package br.com.ControleDispensacao.entidade;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_prescricao_item_dose")
@@ -17,6 +21,7 @@ public class PrescricaoItemDose {
 	private PrescricaoItem prescricaoItem;
 	private Integer periodo;
 	private Integer quantidade;
+	private Date dataDose;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_dose_id_prescricao_item_dose_seq")
 	@Id
@@ -54,6 +59,16 @@ public class PrescricaoItemDose {
 		this.quantidade = quantidade;
 	}
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_dose")
+	public Date getDataDose() {
+		return dataDose;
+	}
+	
+	public void setDataDose(Date dataDose) {
+		this.dataDose = dataDose;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -63,11 +78,11 @@ public class PrescricaoItemDose {
 		
 		return ((PrescricaoItemDose)obj).getIdPrescricaoItemDose() == this.idPrescricaoItemDose;
 	}
-
+	
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + periodo.hashCode();
+	    return hash * 31 + dataDose.hashCode();
 	}
 
 	@Override
