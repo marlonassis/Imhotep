@@ -7,10 +7,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import br.com.ControleDispensacao.entidade.Usuario;
-import br.com.ControleDispensacao.negocio.UsuarioHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 
 @ManagedBean(name="gerenciadorRequisicao")

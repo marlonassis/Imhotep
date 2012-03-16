@@ -1,21 +1,6 @@
 package br.com.ControleDispensacao.relatorio;
 
-	import java.io.Serializable;
-	import java.util.Date;
-	import java.util.HashMap;
-	import java.util.List;
-	import java.util.TimeZone;
-	import javax.annotation.PostConstruct;
-	import javax.annotation.PreDestroy;
-	import javax.faces.bean.ManagedBean;
-	import javax.faces.bean.ViewScoped;
-	import javax.faces.context.FacesContext;
-	import javax.servlet.ServletContext;
-	import javax.servlet.http.HttpServletResponse;
-//	import net.sf.jasperreports.engine.JasperExportManager;
-//	import net.sf.jasperreports.engine.JasperFillManager;
-//	import net.sf.jasperreports.engine.JasperPrint;
-
+	
 	public class SegundoPDF {
 
 //	    private TimeZone timeZone = TimeZone.getDefault();

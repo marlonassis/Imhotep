@@ -51,6 +51,7 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 	 * @param hashMap com os valores as serem setados
 	 * @return Coleção de objetos encontrados
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection<E> consulta(StringBuilder stringB, HashMap<Object, Object> hashMap ){
 		List<E> objects = null;
 		StringBuilder hql = new StringBuilder(stringB);

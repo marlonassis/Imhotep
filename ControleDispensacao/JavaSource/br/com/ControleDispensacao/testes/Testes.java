@@ -6,9 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.com.ControleDispensacao.negocio.UsuarioHome;
-import br.com.nucleo.utilidades.Utilities;
-
 
 public class Testes {
 
@@ -36,7 +33,8 @@ public class Testes {
 	} 
 	
 	
-	 private static char[] hexCodes(byte[] text) {  
+	 @SuppressWarnings("unused")
+	private static char[] hexCodes(byte[] text) {  
 		 char[] hexOutput = new char[text.length * 2];  
 		 String hexString;  
 		 for (int i = 0; i < text.length; i++) {  

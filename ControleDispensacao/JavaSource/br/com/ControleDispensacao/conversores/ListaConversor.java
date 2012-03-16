@@ -9,7 +9,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Familia;
 import br.com.ControleDispensacao.entidade.ListaEspecial;
 import br.com.nucleo.ConsultaGeral;
 

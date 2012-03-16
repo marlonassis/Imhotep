@@ -9,7 +9,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.TipoConselho;
 import br.com.nucleo.ConsultaGeral;
 

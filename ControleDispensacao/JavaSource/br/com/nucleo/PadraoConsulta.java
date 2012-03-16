@@ -24,8 +24,6 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	public static final String MENOR_IGUAL = " <= ";
 	public static final String CONTENDO = "between valor and valor2";
 	public static final String NAO_CONTENDO = "not between valor and valor2";
-//	public static final String INCLUINDO_INICIO = "like valor %";
-//	public static final String INCLUINDO_FIM = "like % valor ";
 	public static final String INCLUINDO_TUDO = " like ";
 	private String orderBy;
 	private String groupBy;
@@ -67,13 +65,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 			return " cast(:" + campo + " as float)";
 		}
 		return ":"+campo;
-	}
-	
-	private String quebraCampoContendo(final String campo, final int pos){
-		String[] quebra = campo.split(",") ;
-		return quebra[pos].trim();
-	}
-	
+	}	
 	
 	public List<T> getList(){
 		List<T> resultadoBuscaList = null;
@@ -98,9 +90,8 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	    				String campoConsulta = campoConsultaDesmembrado[i];
     					campoSubS = "get".concat(campoConsulta.substring(0,1).toUpperCase().trim().concat(campoConsulta.substring(1).trim()));
     					if(obj != null){
-				            Class cls = Class.forName(obj.getClass().getName());  
-				            Method meth = cls.getMethod(campoSubS, null);  
-			            	obj = meth.invoke(obj, null);
+				            Method meth = Class.forName(obj.getClass().getName()).getMethod(campoSubS, (Class<?>[]) null);  
+			            	obj = meth.invoke(obj, (Object) null);
     					}
 	    			}
 	    			
@@ -158,13 +149,6 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         String s = ((ParameterizedType) superclass).getActualTypeArguments()[0].toString();
         int fim = s.length();  
         return s.substring(6,fim);
-	}
-	
-	private String nomeClasse(){
-		String s = nomeCompletoClasse();
-        int inicio = s.lastIndexOf(".") + 1;  
-        int fim = s.length();  
-        return s.substring(inicio,fim);
 	}
 	
 	public void setInstancia(T instancia) {

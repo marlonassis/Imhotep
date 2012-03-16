@@ -5,7 +5,6 @@ import javax.faces.bean.RequestScoped;
 
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.enums.UsuarioPapeisEnum;
-import br.com.ControleDispensacao.negocio.UsuarioHome;
 
 @ManagedBean(name="gerenciadorAcesso")
 @RequestScoped
