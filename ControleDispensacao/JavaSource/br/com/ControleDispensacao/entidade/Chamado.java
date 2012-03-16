@@ -65,7 +65,7 @@ public class Chamado {
 		this.usuario = usuario;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_chamado")
 	public Date getDataChamado() {
 		return dataChamado;

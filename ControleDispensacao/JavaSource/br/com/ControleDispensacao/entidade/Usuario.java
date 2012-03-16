@@ -73,7 +73,7 @@ public class Usuario {
 	}
 
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return this.dataInclusao;

@@ -92,7 +92,7 @@ public class Prescricao {
 		this.usuarioInclusao = usuarioInclusao;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;

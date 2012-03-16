@@ -117,7 +117,7 @@ public class MovimentoLivro {
 		this.saldoAtual = saldoAtual;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_movimento")
 	public Date getDataMovimento() {
 		return dataMovimento;

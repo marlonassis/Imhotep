@@ -57,7 +57,7 @@ public class SolicitaRemanejamento {
 		this.unidadeSolicitante = unidadeSolicitante;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_incl")
 	public Date getDataInclusao() {
 		return dataInclusao;

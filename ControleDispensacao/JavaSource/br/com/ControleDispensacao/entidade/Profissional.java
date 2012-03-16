@@ -93,8 +93,8 @@ public class Profissional {
 		this.inscricao = inscricao;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "dt_data_inclusao", length = 13)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return this.dataInclusao;
 	}

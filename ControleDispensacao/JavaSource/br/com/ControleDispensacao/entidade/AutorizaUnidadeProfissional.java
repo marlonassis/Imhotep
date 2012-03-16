@@ -53,7 +53,7 @@ public class AutorizaUnidadeProfissional {
 		this.profissional = profissional;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;

@@ -133,7 +133,7 @@ public class Material {
 		this.autorizadoDispensacao = autorizadoDispensacao;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return this.dataInclusao;

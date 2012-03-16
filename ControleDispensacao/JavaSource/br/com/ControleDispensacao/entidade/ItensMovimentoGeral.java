@@ -76,7 +76,7 @@ public class ItensMovimentoGeral {
 		this.lote = lote;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_validade")
 	public Date getDataValidade() {
 		return dataValidade;

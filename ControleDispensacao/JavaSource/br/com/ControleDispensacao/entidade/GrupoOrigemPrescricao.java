@@ -60,8 +60,8 @@ public class GrupoOrigemPrescricao {
 		this.status = status;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_incl", length = 13)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_incl")
 	public Date getDataInclusao() {
 		return this.dataInclusao;
 	}
@@ -80,8 +80,8 @@ public class GrupoOrigemPrescricao {
 		this.usuarioInclusao = usuarioInclusao;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_alt", length = 13)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_alt")
 	public Date getDataAlteracao() {
 		return this.dataAlteracao;
 	}

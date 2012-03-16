@@ -82,7 +82,7 @@ public class Estoque {
 		this.lote = lote;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_validade")
 	public Date getDataValidade() {
 		return dataValidade;
@@ -116,7 +116,7 @@ public class Estoque {
 		this.motivoBloqueio = motivoBloqueio;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;
@@ -134,7 +134,7 @@ public class Estoque {
 		this.usuarioInclusao = usuarioInclusao;
 	}
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_bloqueio")
 	public Date getDataBloqueio() {
 		return dataBloqueio;
