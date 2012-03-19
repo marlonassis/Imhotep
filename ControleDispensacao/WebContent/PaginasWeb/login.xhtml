@@ -10,14 +10,55 @@
 			<p:fieldset legend="Login" collapsed="false" toggleable="true" toggleSpeed="500">
 				<h:form id="loginForm" >
 					<p:growl/>
-					<h:panelGrid columns="3" >
-						<font color="red" >*</font><h:outputText value="Usuário: " />
-						<p:inputText value="#{autenticador.usuario.login}" label="Usuário" required="true" />
-						<font color="red" >*</font><h:outputText value="Senha: " />
-						<p:inputText value="#{autenticador.usuario.senha}" label="Senha" required="true" type="password" />  
+					<h:panelGrid columns="1" >
+						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}">
+							<font color="red" >*</font><h:outputText value="Usuário: " /><br />
+							<p:inputText value="#{autenticador.usuario.login}" 
+										 label="Usuário" 
+										 required="true" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}" >
+							<font color="red" >*</font><h:outputText value="Senha: " /><br />
+							<p:inputText value="#{autenticador.usuario.senha}" 
+										 label="Senha" 
+										 required="true" 
+										 type="password" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{autenticador.mostraComboUnidade}" >  
+							<font color="red" >*</font><h:outputText for="unidadeParaLogar" 
+																	 value="Informe uma unidade:" /><br />
+							<p:selectOneMenu id="unidadeParaLogar"
+											 value="#{autenticador.unidadeAtual}"
+										 	 effect="fade" 
+										 	 converter="unidadeConversor">  
+								<f:selectItem itemLabel="Selecione..."
+											  value="#{null}"/>
+					            <f:selectItems value="#{autenticador.unidades}" 
+					            			   var="unidade" 
+					            			   itemLabel="#{unidade.nome}" 
+					            			   itemValue="#{unidade}"/>  
+				        	</p:selectOneMenu>
+				        </h:panelGroup>
 	                </h:panelGrid>
-	                <p:commandButton value="Login" action="#{autenticador.logarUsuario}" update="loginForm" image="ui-icon ui-icon-locked" title="Click para entrar na sua conta" />
-	                <p:commandButton value="Limpar" image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos" type="reset" />
+	                <p:commandButton value="Login" 
+	                				 action="#{autenticador.logarUsuario}" 
+	                				 update="loginForm"
+	                				 rendered="#{!autenticador.mostraComboUnidade}" 
+	                				 image="ui-icon ui-icon-locked" 
+	                				 title="Click para entrar na sua conta" />
+	                				 
+	                <p:commandButton value="Limpar" 
+	                				 image="ui-icon ui-icon-arrowrefresh-1-s"
+	                				 rendered="#{!autenticador.mostraComboUnidade}" 
+	                				 title="Limpar os campos" 
+	                				 type="reset" />
+	                				 
+	                <p:commandButton value="Continuar" 
+	                				 action="#{autenticador.continuaLogin()}"
+	                				 rendered="#{autenticador.mostraComboUnidade}" 
+	                				 update="loginForm" 
+	                				 image="ui-icon ui-icon-arrowreturnthick-1-n" 
+	                				 title="Click para continuar seu Login" />
 	                <br/>
 	                <br/>
 	            </h:form>

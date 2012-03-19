@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.seguranca;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Autenticador {
 	private Unidade unidadeAtual;
 	private Profissional profissionalAtual;
 	private MenuModel menuModel;
+	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
@@ -50,7 +52,20 @@ public class Autenticador {
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idUsuario", usuarioAtual.getIdUsuario());
 		unidades = cg.consulta(new StringBuilder("select a.unidade from AutorizaUnidadeProfissional a where a.profissional.usuario.idUsuario = :idUsuario"), hm);
-		unidadeAtual = unidades.iterator().next();
+		carregaUnidadeAtual();
+	}
+
+	private void carregaUnidadeAtual() {
+		if(unidades.size() == 1){
+			unidadeAtual = unidades.iterator().next();
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			mostraComboUnidade = true;
+		}
 	}
 
 	private void carregaFuncionario(){
@@ -92,6 +107,19 @@ public class Autenticador {
 		}
 		return null;
 	}
+
+	public void continuaLogin(){
+		if(unidadeAtual != null){
+			try {
+				mostraComboUnidade = false;
+				FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe uma unidade.", ""));
+		}
+	}
 	
 	public void logarUsuario(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -106,7 +134,6 @@ public class Autenticador {
 	    				carregaUnidadesUsuario();
 	    				carregaToolBarMenu();
 	    				carregaFuncionario();
-	    				facesContext.getExternalContext().redirect(PAGINA_HOME);
 	    			}else{
 	    				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
 	    			}
@@ -230,6 +257,14 @@ public class Autenticador {
 
 	public void setProfissionalAtual(Profissional profissionalAtual) {
 		this.profissionalAtual = profissionalAtual;
+	}
+
+	public boolean isMostraComboUnidade() {
+		return mostraComboUnidade;
+	}
+
+	public void setMostraComboUnidade(boolean mostraComboUnidade) {
+		this.mostraComboUnidade = mostraComboUnidade;
 	}
 
 	
