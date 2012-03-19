@@ -106,10 +106,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	 */
 	private void zeraId(){
 		try {
-			Class<?> partypes[] = new Class[1];  
+			Class partypes[] = new Class[1];  
             partypes[0] = Integer.TYPE;  
   
-            Method meth = Class.forName(nomeCompletoClasse()).getMethod("setId"+nomeClasse(), partypes);  
+            Class cls = Class.forName(nomeCompletoClasse());  
+            Method meth = cls.getMethod("setId"+nomeClasse(), partypes);  
   
             Object arglist[] = new Object[1];  
             arglist[0] = new Integer(0);  
@@ -213,7 +214,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		try{
 			iniciarTransacao();
 			res = session.createQuery(sql).executeUpdate();
-			novaInstancia();
+//			novaInstancia();
 		}catch (Exception e) {
 			if(session != null){
 				session.getTransaction().rollback();

@@ -90,8 +90,9 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	    				String campoConsulta = campoConsultaDesmembrado[i];
     					campoSubS = "get".concat(campoConsulta.substring(0,1).toUpperCase().trim().concat(campoConsulta.substring(1).trim()));
     					if(obj != null){
-				            Method meth = Class.forName(obj.getClass().getName()).getMethod(campoSubS, (Class<?>[]) null);  
-			            	obj = meth.invoke(obj, (Object) null);
+				            Class cls = Class.forName(obj.getClass().getName());  
+				            Method meth = cls.getMethod(campoSubS, null);  
+			            	obj = meth.invoke(obj, null);
     					}
 	    			}
 	    			

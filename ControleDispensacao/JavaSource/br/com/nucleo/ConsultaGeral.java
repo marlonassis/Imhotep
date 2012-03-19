@@ -76,6 +76,11 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 		return objects;
 	}
 
+	public E consultaUnica(){
+		Collection<E> consulta = consulta(sqlConsultaSB, addValorConsulta);
+		return consulta == null || consulta.size() == 0 ? null : consulta.iterator().next();
+	}	
+	
 	public E consultaUnica(StringBuilder stringB, HashMap<Object, Object> hashMap ){
 		Collection<E> consulta = consulta(stringB, hashMap);
 		return consulta == null || consulta.size() == 0 ? null : consulta.iterator().next();
