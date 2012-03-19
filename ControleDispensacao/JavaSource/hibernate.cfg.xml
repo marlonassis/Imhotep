@@ -51,5 +51,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.PrescricaoItem"/>
         <mapping class="br.com.ControleDispensacao.entidade.PrescricaoItemDose"/>
         <mapping class="br.com.ControleDispensacao.entidade.Chamado"/>
+        <mapping class="br.com.ControleDispensacao.entidade.ReservaMaterialPrescricao"/>
     </session-factory>
 </hibernate-configuration>
