@@ -18,6 +18,7 @@ import javax.persistence.Table;
 public class PrescricaoItem {
 	private int idPrescricaoItem;
 	private Material material;
+	private String referenciaUnica;
 	private Prescricao prescricao;
 	private String observacao;
 	private Set<PrescricaoItemDose> prescricaoItemDoses;
@@ -59,28 +60,20 @@ public class PrescricaoItem {
 		this.observacao = observacao;
 	}
 
+	@Column(name = "ds_referencia_unica")
+	public String getReferenciaUnica() {
+		return referenciaUnica;
+	}
+	public void setReferenciaUnica(String referenciaUnica) {
+		this.referenciaUnica = referenciaUnica;
+	}
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricaoItem")
 	public Set<PrescricaoItemDose> getPrescricaoItemDoses() {
 		return prescricaoItemDoses;
 	}
 	public void setPrescricaoItemDoses(Set<PrescricaoItemDose> prescricaoItemDoses) {
 		this.prescricaoItemDoses = prescricaoItemDoses;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof PrescricaoItem))
-			return false;
-		
-		return ((PrescricaoItem)obj).hashCode() == this.hashCode();
-	}
-
-	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + material.hashCode() + prescricaoItemDoses.hashCode();
 	}
 
 	@Override

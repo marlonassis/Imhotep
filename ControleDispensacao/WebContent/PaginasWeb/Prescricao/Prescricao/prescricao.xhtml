@@ -14,7 +14,7 @@
 			<h:form id="prescricaoForm" prependId="false" >
 				<p:growl showDetail="true" />
 				<h:panelGrid id="prescricaoPanelGrid"
-							 columns="3" 
+							 columns="3"
 							 width="100%" >
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="paciente" value="Paciente:" /><br />
@@ -65,7 +65,7 @@
 			                    <h:outputText value="#{item.observacao}" />
 			                    <p:commandLink title="Mostrar as doses"
 			                    			   oncomplete="dosagemDialog.show();"
-			                    			   update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid"
+			                    			   update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid prescricaoForm"
 			                    			   rendered="false"
 			                    			   >
 			                        <p:graphicImage value="/Imagens/pills32px.png"/>
@@ -99,6 +99,7 @@
 								prependId="false" >
 							<h:panelGrid id="itemDosePanelGrid" 
 										 columns="2"
+										 width="100%"
 										 cellpadding="5px">
 								<h:panelGroup style="align:left;" >
 								<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
@@ -119,7 +120,7 @@
 							</h:panelGroup>
 							
 							<h:panelGroup >
-								<font color="red" >*</font><h:outputLabel for="quantidadeDoses" value="Quantidade de doses:"  /><br />
+								<font color="red" >*</font><h:outputLabel for="quantidadeDoses" value="Quantidade de doses diárias:"  /><br />
 								<p:inputText id="quantidadeDoses"
 										  	 value="#{prescricaoHome.quantidadeDoses}"
 										  	 title="Período em horas" />
@@ -156,7 +157,7 @@
 							</h:panelGroup>
 						</h:panelGrid>
 						<p:separator id="limiteGridSeparator1" style="height:8px" /> 
-						
+						<p:growl showDetail="true" />
 						<p:dataGrid id="doseGrid"
 								var="itemDose" 
 								value="#{prescricaoHome.prescricaoItemDoseList}" 
@@ -192,8 +193,7 @@
 						<h:panelGroup>
 							<p:commandButton action="#{prescricaoHome.finalizaDosagem()}"
 											 value="Concluir" 
-											 oncomplete="window.location.reload();"
-											 update="padraoTabView:prescricaoPanelGrid padraoTabView:prescricaoItensGrid"/> 
+											 update="doseDialogForm"/> 
 						</h:panelGroup>
 						
 						<h:panelGroup>

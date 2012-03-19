@@ -1,9 +1,11 @@
 package br.com.ControleDispensacao.negocio;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +19,10 @@ import br.com.ControleDispensacao.comparador.DoseDataComparador;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
+import br.com.ControleDispensacao.entidade.ReservaMaterialPrescricao;
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
+import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="prescricaoHome")
@@ -41,6 +46,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public void iniciaDosagem(){
+		limpaVariaveis();
 		setPrescricaoItem(new PrescricaoItem());
 		getPrescricaoItem().setPrescricaoItemDoses(new HashSet<PrescricaoItemDose>());
 	}
@@ -50,42 +56,134 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public void removePrescricaoItem(PrescricaoItem linha){
+		removeReserva(linha.getReferenciaUnica());
 		prescricaoItens.remove(linha);
 	}
 	
+	private void removeReserva(String referencia) {
+		ReservaMaterialPrescricao obj = new ConsultaGeral<ReservaMaterialPrescricao>(new StringBuilder("select o from ReservaMaterialPrescricao o where o.referenciaUnica = '"+referencia+"'"), null).consultaUnica();
+		ReservaMaterialPrescricaoHome rh = new ReservaMaterialPrescricaoHome();
+		rh.setInstancia(obj);
+		rh.apagar();
+	}
+	
 	public void adicionaDoses(){
-		Calendar dataReferencia = Calendar.getInstance();
-		dataReferencia.setTime(getDataInicio());
+		if(liberaDose()){
+			inicializaPrescricaoItemDoses();
+			Calendar dataReferencia = Calendar.getInstance();
+			dataReferencia.setTime(getDataInicio());
+			for(int i = 0; i < getQuantidadeDoses(); i++){
+				PrescricaoItemDose temp = new PrescricaoItemDose();
+				temp.setDataDose(dataReferencia.getTime());
+				temp.setPeriodo(getPeriodoDosagem());
+				temp.setQuantidade(getQuantidadePorDose());
+				dataReferencia.add(Calendar.HOUR, getIntervaloEntreDoses());
+				getPrescricaoItem().getPrescricaoItemDoses().add(temp);
+			}
+			limpaVariaveis();
+		}
+	}
+
+	private boolean liberaDose() {
+		Object[] totais = consultaEstoque();
+		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
+		return !estoqueVazio(estoqueAtual) && !estoqueInsuficiente(estoqueAtual);
+	}
+
+	private boolean estoqueInsuficiente(Integer quantidade) {
+		int quantidadeReserva = getQuantidadeDoses() * getQuantidadePorDose();
+		if(quantidadeReserva > quantidade){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não há quantidade suficiente no estoque. O máximo disponível é de " + String.valueOf(quantidade), ""));
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	private boolean estoqueVazio(Integer quantidade) {
+		if(quantidade > 0){
+			return false;
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este medicamento está em falta.", ""));
+			return true;
+		}
+	}
+
+	private Object[] consultaEstoque() {
+		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidade) = null THEN 0 ELSE sum(o.quantidade)END, ");
+		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
+		sb.append("from ReservaMaterialPrescricao a where a.dispensado = 'N' and a.material.idMaterial = :idMaterial) ");
+		sb.append("from Estoque o where o.material.idMaterial = :idMaterial");
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("idMaterial", getPrescricaoItem().getMaterial().getIdMaterial());
 		
+		ConsultaGeral<Object[]> cg = new ConsultaGeral<Object[]>();
+		return cg.consultaUnica(sb, map);
+	}
+
+	private String geraReferenciaUnica() {
+		//a string da referência tem o seguinte formato <idPaciente>-<idMaterial>-<idUnidade>-<idProfissional>-<hash da lista de doses>
+		String numeroReceita; 
+		numeroReceita = String.valueOf(getInstancia().getPaciente().getIdPaciente()).concat("-");
+		numeroReceita = numeroReceita.concat(String.valueOf(prescricaoItem.getMaterial().getIdMaterial())).concat("-");
+		numeroReceita = numeroReceita.concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat("-");
+		numeroReceita = numeroReceita.concat(String.valueOf(Autenticador.getInstancia().getProfissionalAtual().getIdProfissional())).concat("-");
+		numeroReceita = numeroReceita.concat(String.valueOf(getPrescricaoItem().getPrescricaoItemDoses().hashCode()));
+		return numeroReceita;
+	}
+
+	private void inicializaPrescricaoItemDoses() {
 		if(getPrescricaoItem().getPrescricaoItemDoses() == null){
 			getPrescricaoItem().setPrescricaoItemDoses(new HashSet<PrescricaoItemDose>());
 		}
-		
-		for(int i = 0; i < getQuantidadeDoses(); i++){
-			PrescricaoItemDose temp = new PrescricaoItemDose();
-			temp.setDataDose(dataReferencia.getTime());
-			temp.setPeriodo(getPeriodoDosagem());
-			temp.setQuantidade(getQuantidadePorDose());
-			dataReferencia.add(Calendar.HOUR, getIntervaloEntreDoses());
-			getPrescricaoItem().getPrescricaoItemDoses().add(temp);
-		}
-		limpaVariaveis();
 	}
 	
+	private int quantidadeReserva(){
+		int total=0;
+		for(PrescricaoItemDose pid : getPrescricaoItem().getPrescricaoItemDoses()){
+			total += pid.getQuantidade();
+		}
+		return total;
+	}
+	
+	private void gerarReserva() {
+		ReservaMaterialPrescricao rmp = new ReservaMaterialPrescricao();
+		rmp.setReferenciaUnica(geraReferenciaUnica());
+		rmp.setDispensado(TipoStatusEnum.N);
+		rmp.setMaterial(getPrescricaoItem().getMaterial());
+		rmp.setDataReserva(new Date());
+		rmp.setQuantidade(quantidadeReserva());
+		ReservaMaterialPrescricaoHome rh = new ReservaMaterialPrescricaoHome();
+		rh.setInstancia(rmp);
+		rh.enviar();
+	}
+
 	public void cancelaDosagem(){
 		limpaVariaveis();
 		getPrescricaoItem().setPrescricaoItemDoses(new HashSet<PrescricaoItemDose>());
 	}
 	
 	public void finalizaDosagem(){
-		getPrescricaoItens().add(getPrescricaoItem());
-		limpaVariaveis();
-		setPrescricaoItem(new PrescricaoItem());
+		if(getPrescricaoItem().getPrescricaoItemDoses().size() > 0){
+			try {
+				gerarReserva();
+				getPrescricaoItem().setReferenciaUnica(geraReferenciaUnica());
+				
+				getPrescricaoItens().add(getPrescricaoItem());
+				limpaVariaveis();
+				setPrescricaoItem(new PrescricaoItem());
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/ControleDispensacao/PaginasWeb/Prescricao/Prescricao/prescricao.jsf");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe as doses da prescrição.", ""));
+		}
 	}
 	
 	public void finalizarPrescricao(){
-		if(Autenticador.getInstancia().getUnidadeAtual() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Você não está alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
+		if(prescricaoItens.size() == 0){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não há itens prescritos para finalizar prescrição.", ""));
 			return;
 		}
 		try{
@@ -127,10 +225,15 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		getInstancia().setProfissional(Autenticador.getInstancia().getProfissionalAtual());
 		getInstancia().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setNumero(1);
+		getInstancia().setNumero("1");
 	}
 
 	public void cancelarPrescricao(){
+		
+		for(PrescricaoItem pi : prescricaoItens){
+			removeReserva(pi.getReferenciaUnica());
+		}
+		
 		novaInstancia();
 		prescricaoItens = new HashSet<PrescricaoItem>();
 	}

@@ -50,6 +50,7 @@ public class Autenticador {
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idUsuario", usuarioAtual.getIdUsuario());
 		unidades = cg.consulta(new StringBuilder("select a.unidade from AutorizaUnidadeProfissional a where a.profissional.usuario.idUsuario = :idUsuario"), hm);
+		unidadeAtual = unidades.iterator().next();
 	}
 
 	private void carregaFuncionario(){
@@ -182,7 +183,7 @@ public class Autenticador {
 
 		String action = "#{autenticador.logout()}";
 		MethodExpression methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
-		createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class<?>[0]);
+		createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
 		
 		mi.setActionExpression(methodExpression);
 		mi.setOncomplete("window.location.reload();");

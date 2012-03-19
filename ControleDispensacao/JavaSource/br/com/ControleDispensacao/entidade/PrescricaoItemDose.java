@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_prescricao_item_dose")
@@ -69,6 +70,14 @@ public class PrescricaoItemDose {
 		this.dataDose = dataDose;
 	}
 	
+	@Transient
+	public String getNumeroReferencia(){
+		String referencia = String.valueOf(periodo).concat("-");
+		referencia.concat(String.valueOf(quantidade)).concat("-");
+		referencia.concat(String.valueOf(dataDose.getTime()));
+		return referencia;
+	}
+		
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

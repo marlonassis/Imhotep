@@ -22,7 +22,7 @@ public class Prescricao {
 	private Profissional profissional;
 	private Paciente paciente;
 	private Integer ano;
-	private Integer numero;
+	private String numero;
 	private Usuario usuarioInclusao;
 	private Date dataInclusao;
 	private String leito;
@@ -75,11 +75,11 @@ public class Prescricao {
 		this.ano = ano;
 	}
 	
-	@Column(name = "in_numero")
-	public Integer getNumero() {
+	@Column(name = "ds_numero")
+	public String getNumero() {
 		return numero;
 	}
-	public void setNumero(Integer numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 	

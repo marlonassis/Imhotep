@@ -27,6 +27,7 @@ public class ReservaMaterialPrescricao {
 	private String referenciaUnica;
 	private TipoStatusEnum dispensado;
 	private Date dataReserva;
+	private Integer quantidade;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_reserva_material_prescrica_id_reserva_material_prescrica_seq")
 	@Id
@@ -54,6 +55,14 @@ public class ReservaMaterialPrescricao {
 	}
 	public void setReferenciaUnica(String referenciaUnica) {
 		this.referenciaUnica = referenciaUnica;
+	}
+	
+	@Column(name = "in_quantidade")
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 	
 	@Column(name = "tp_dispensado")
