@@ -3,24 +3,25 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
-
-	<h:panelGrid id="hospitalPanelGrid"
+	
+	
+	<h:panelGrid id="hospitalPanelGridConsulta"
 				 columns="3" 
 				 width="100%" >
 				 
 		<h:panelGroup>
-			<h:outputLabel for="nome" value="Nome:"  /><br />
-			<p:inputText id="nome" 
-						 value="#{hospitalHome.instancia.nome}" 
+			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
+			<p:inputText id="nomeConsulta" 
+						 value="#{hospitalConsulta.instancia.nome}" 
 						 title="Informe o nome do hospital" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<h:outputLabel for="descricao" value="Descrição:"  /><br />
-			<p:inputText id="descricao" 
-						 value="#{hospitalHome.instancia.descricao}" 
+			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
+			<p:inputText id="descricaoConsulta" 
+						 value="#{hospitalConsulta.instancia.descricao}" 
 						 title="Informe descrição do hospital" />
 		</h:panelGroup>
-
+		
 	</h:panelGrid>
 </ui:composition>

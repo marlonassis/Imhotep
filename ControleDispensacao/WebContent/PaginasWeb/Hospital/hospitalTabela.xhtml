@@ -5,33 +5,38 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaLivro" 
-					value="#{livroConsulta.list}" 
+	<p:dataTable 	id="tabelaHospital" 
+					value="#{hospitalConsulta.list}" 
 					var="linha"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idLivro}">
+					rowKey="#{linha.idHospital}">
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+			<h:outputText value="#{linha.nome}" />
+		</p:column>
 					
 		<p:column>
 			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:livroForm" 
+			<p:commandLink update="padraoTabView:hospitalForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{livroHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{hospitalHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{livroHome.apagar()}"
-							update="tabelaLivro padraoTabView:livroForm" 
+			<p:commandLink  action="#{hospitalHome.apagar()}"
+							update="tabelaHospital padraoTabView:hospitalForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 							title="Apagar" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{livroHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{hospitalHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  
