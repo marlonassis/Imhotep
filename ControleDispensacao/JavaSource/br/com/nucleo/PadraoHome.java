@@ -83,6 +83,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			tx.commit();  
 			ret = true;
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro realizado com sucesso", "Registro cadastrado!"));
+			aposEnviar();
 		}
 		catch (org.hibernate.exception.ConstraintViolationException e) {
 			session.getTransaction().rollback();
@@ -100,6 +101,11 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		}
 		return ret;
 	}
+
+	public void aposEnviar() {
+		
+	}
+
 
 	/**
 	 * Método que seta 0 ao ID da entidade para evitar que o registro entre em edição ao tentar gravar o registro sem sucesso
