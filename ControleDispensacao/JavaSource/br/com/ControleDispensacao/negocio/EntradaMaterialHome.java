@@ -9,11 +9,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.ControleDispensacao.entidade.Doacao;
 import br.com.ControleDispensacao.entidade.Estoque;
+import br.com.ControleDispensacao.entidade.Hospital;
 import br.com.ControleDispensacao.entidade.ItensMovimentoGeral;
+import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.MovimentoGeral;
 import br.com.ControleDispensacao.entidade.MovimentoLivro;
 import br.com.ControleDispensacao.entidade.TipoMovimento;
+import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
@@ -66,6 +70,7 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 					geraEstoque();
 					//SÉTIMO
 					geraMovimentoLivro();
+					gerarDoacao();
 					session.flush();  
 					tx.commit(); 
 					ret = true;
@@ -84,6 +89,17 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Você não está alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
 		}
 		return ret;
+	}
+	
+	private void gerarDoacao() {
+		Hospital hospital = getInstancia().getHospital();
+		if(hospital != null){
+			Date dataDoacao = getInstancia().getDataDoacao();
+			Material material = getInstancia().getMaterial();
+			Integer quantidade = getInstancia().getQuantidade();
+			Doacao instancia = new DoacaoHome(dataDoacao, hospital, material, quantidade, TipoOperacaoEnum.Entrada).getInstancia();
+			session.save(instancia);
+		}
 	}
 	
 	private void geraMovimentoLivro(){

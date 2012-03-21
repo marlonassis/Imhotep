@@ -13,7 +13,7 @@
 			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.movimentoGeral.tipoMovimento}" 
 							 effect="fade" 
 							 converter="tipoMovimentoConversor"
-							 required="true">  
+							 required="true">
 				<f:selectItem itemLabel="Selecione..." 
 							  itemValue="" /> 
 	            <f:selectItems value="#{tipoMovimentoConsulta.list}" 
@@ -22,7 +22,30 @@
 	            			   itemValue="#{tipoMovimento}"/>  
 	        </p:selectOneMenu>
         </h:panelGroup>
-				 
+		
+		<h:panelGroup>
+			<h:outputLabel for="hospital" value="Hospital:"  /><br />
+			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.hospital}" 
+							 effect="fade" 
+							 converter="hospitalConversor"
+							 required="false">  
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{hospitalConsulta.list}" 
+	            			   var="hospital" 
+	            			   itemLabel="#{hospital.descricao}" 
+	            			   itemValue="#{hospital}"/>
+	        </p:selectOneMenu>
+        </h:panelGroup>
+		
+		<h:panelGroup id="dataDoacaoPanelGroup"
+					  >
+			<h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
+			<p:calendar id="dataDoacao"
+						pattern="dd/MM/yyyy"
+						value="#{ajusteEstoqueHome.instancia.dataDoacao}" />
+		</h:panelGroup>
+		
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="motivo" value="Motivo:"  /><br />
 			<p:inputText id="motivo" 

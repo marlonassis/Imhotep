@@ -7,7 +7,30 @@
 	<h:panelGrid id="entradaMaterialPanelGrid"
 				 columns="3" 
 				 width="100%" >
-				 
+		
+		<h:panelGroup>
+			<h:outputLabel for="hospital" value="Hospital:"  /><br />
+			<p:selectOneMenu value="#{entradaMaterialHome.instancia.hospital}" 
+							 effect="fade" 
+							 converter="hospitalConversor"
+							 required="false">
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{hospitalConsulta.list}" 
+	            			   var="hospital" 
+	            			   itemLabel="#{hospital.descricao}" 
+	            			   itemValue="#{hospital}"/>  
+	        </p:selectOneMenu>
+        </h:panelGroup>
+		
+		<h:panelGroup id="dataDoacaoPanelGroup"
+					  >
+			<h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
+			<p:calendar id="dataDoacao"
+						pattern="dd/MM/yyyy"
+						value="#{entradaMaterialHome.instancia.dataDoacao}" />
+		</h:panelGroup>
+		
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="numeroDocumento" value="Número do documento:"  /><br />
 			<p:inputText id="numeroDocumento" 

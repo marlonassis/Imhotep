@@ -53,5 +53,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.Chamado"/>
         <mapping class="br.com.ControleDispensacao.entidade.ReservaMaterialPrescricao"/>
         <mapping class="br.com.ControleDispensacao.entidade.Hospital"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Doacao"/>
     </session-factory>
 </hibernate-configuration>

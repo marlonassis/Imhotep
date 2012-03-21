@@ -28,6 +28,8 @@ public class ItensMovimentoGeral {
 	private PrescricaoItem prescricaoItem;
 	private Usuario usuarioAutorizador;
 	private ItemSolicitaRemanejamento itemSolicitaRemanejamento;
+	private Hospital hospital;
+	private Date dataDoacao;
 	
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_itens_movimento_geral_id_itens_movimento_geral_seq")
@@ -120,6 +122,24 @@ public class ItensMovimentoGeral {
 		this.itemSolicitaRemanejamento = itemSolicitaRemanejamento;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_hospital")
+	public Hospital getHospital() {
+		return hospital;
+	}
+	public void setHospital(Hospital hospital) {
+		this.hospital = hospital;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_doacao")
+	public Date getDataDoacao() {
+		return dataDoacao;
+	}
+	public void setDataDoacao(Date dataDoacao) {
+		this.dataDoacao = dataDoacao;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -140,4 +160,5 @@ public class ItensMovimentoGeral {
 	public String toString() {
 		return lote.concat(" - ").concat(material.getDescricao());
 	}
+
 }
