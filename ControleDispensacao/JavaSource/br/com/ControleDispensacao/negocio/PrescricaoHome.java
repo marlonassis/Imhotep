@@ -45,6 +45,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		setIntervaloEntreDoses(null);
 	}
 	
+	public List<Prescricao> getListaPrescricaoPendente(){
+		return getBusca("select o from Prescricao o where o.dispensado = 'N'");
+	}
+	
 	public void iniciaDosagem(){
 		limpaVariaveis();
 		setPrescricaoItem(new PrescricaoItem());
@@ -189,6 +193,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		try{
 			iniciarTransacao();
 			carregaPrescricao();
+			getInstancia().setDispensado(TipoStatusEnum.N);
 			session.save(getInstancia());
 			for(PrescricaoItem item : prescricaoItens){
 				item.setPrescricao(getInstancia());

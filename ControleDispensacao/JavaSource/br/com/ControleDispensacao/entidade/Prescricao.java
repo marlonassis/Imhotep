@@ -1,18 +1,24 @@
 package br.com.ControleDispensacao.entidade;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
 @Table(name = "tb_prescricao")
@@ -28,6 +34,8 @@ public class Prescricao {
 	private String leito;
 	private Float massa;
 	private MotivoFimReceita motivoFimReceita;
+	private TipoStatusEnum dispensado;
+	private List<PrescricaoItem> prescricaoItens;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_id_prescricao_seq")
 	@Id
@@ -126,6 +134,23 @@ public class Prescricao {
 		this.motivoFimReceita = motivoFimReceita;
 	}
 
+	@Column(name = "tp_dispensado")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusEnum getDispensado() {
+		return dispensado;
+	}
+	public void setDispensado(TipoStatusEnum dispensado) {
+		this.dispensado = dispensado;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prescricao")
+	public List<PrescricaoItem> getPrescricaoItens() {
+		return prescricaoItens;
+	}
+	public void setPrescricaoItens(List<PrescricaoItem> prescricaoItens) {
+		this.prescricaoItens = prescricaoItens;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
