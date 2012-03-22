@@ -9,16 +9,18 @@
 				 width="100%" >
 				 
 		<h:panelGroup>
-			<h:outputLabel for="nome" value="Nome:"  /><br />
+			<font color="red" >*</font><h:outputLabel for="nome" value="Nome:"  /><br />
 			<p:inputText id="nome" 
 						 value="#{hospitalHome.instancia.nome}" 
-						 title="Informe o nome do hospital" />
+						 title="Informe o nome do hospital" 
+						 required="true"/>
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<h:outputLabel for="descricao" value="Descrição:"  /><br />
+			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
 			<p:inputText id="descricao" 
-						 value="#{hospitalHome.instancia.descricao}" 
+						 value="#{hospitalHome.instancia.descricao}"
+						 required="true" 
 						 title="Informe descrição do hospital" />
 		</h:panelGroup>
 

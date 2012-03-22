@@ -23,27 +23,35 @@
 	        </p:selectOneMenu>
         </h:panelGroup>
 		
-		<h:panelGroup>
-			<h:outputLabel for="hospital" value="Hospital:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.hospital}" 
-							 effect="fade" 
-							 converter="hospitalConversor"
-							 required="false">  
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="" /> 
-	            <f:selectItems value="#{hospitalConsulta.list}" 
-	            			   var="hospital" 
-	            			   itemLabel="#{hospital.descricao}" 
-	            			   itemValue="#{hospital}"/>
-	        </p:selectOneMenu>
-        </h:panelGroup>
+		<h:panelGroup id="hospitalPanelGroup" >
+			<h:panelGrid columns="2" 
+				 width="100%" >
+				<h:panelGroup>
+					<h:outputLabel for="hospital" value="Hospital:"  /><br />
+					<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.hospital}" 
+									 effect="fade" 
+									 converter="hospitalConversor"
+									 required="false">
+						<f:ajax event="change" 
+								render="hospitalPanelGroup" /> 
+						<f:selectItem itemLabel="Selecione..." 
+									  itemValue="#{null}" /> 
+			            <f:selectItems value="#{hospitalConsulta.list}" 
+			            			   var="hospital" 
+			            			   itemLabel="#{hospital.nome}" 
+			            			   itemValue="#{hospital}"/>  
+			        </p:selectOneMenu>
+		        </h:panelGroup>
 		
-		<h:panelGroup id="dataDoacaoPanelGroup"
-					  >
-			<h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
-			<p:calendar id="dataDoacao"
-						pattern="dd/MM/yyyy"
-						value="#{ajusteEstoqueHome.instancia.dataDoacao}" />
+				<h:panelGroup id="dataDoacaoPanelGroup"
+							  rendered="#{ajusteEstoqueHome.instancia.hospital != null}">
+					<font color="red" >*</font><h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
+					<p:calendar id="dataDoacao"
+								pattern="dd/MM/yyyy"
+								required="true"
+								value="#{ajusteEstoqueHome.instancia.dataDoacao}" />
+				</h:panelGroup>
+			</h:panelGrid>
 		</h:panelGroup>
 		
 		<h:panelGroup>
