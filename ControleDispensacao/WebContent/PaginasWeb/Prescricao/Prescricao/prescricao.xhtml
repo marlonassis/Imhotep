@@ -45,11 +45,10 @@
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<p:commandButton onclick="dosagemDialog.show();"
-										 value="Indicar dosagem"
+						<p:commandButton value="Indicar dosagem"
 										 ajax="true"
 										 action="#{prescricaoHome.iniciaDosagem()}" 
-										 update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid" />
+										 update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid padraoTabView:doseDialog" />
 					</h:panelGroup>
 				</h:panelGrid>
 				
@@ -61,7 +60,7 @@
 			        <p:column>  
 			            <p:panel header="#{item.material.descricao}" style="text-align:center">  
 			                <h:panelGrid columns="1" style="width:100%">  
-			                    <h:outputText value="#{item.prescricaoItemDoses.size()} dose(s)" />
+			                    <h:outputText value="#{prescricaoHome.quantidadeDosesPrescricaoItem(item)} dose(s)" />
 			                    <h:outputText value="#{item.observacao}" />
 			                    <p:commandLink title="Mostrar as doses"
 			                    			   oncomplete="dosagemDialog.show();"
@@ -71,7 +70,7 @@
 			                        <p:graphicImage value="/Imagens/pills32px.png"/>
 			                        <f:setPropertyActionListener value="#{item}" target="#{prescricaoHome.prescricaoItem}" />
 			                    </p:commandLink>  
-			                    <p:commandLink title="Remover a dispensação" 
+			                    <p:commandLink title="Remover a prescrição" 
 			                    			   immediate="true"
 			                    			   action="#{prescricaoHome.removePrescricaoItem(item)}" 
 			                    			   update="prescricaoItensGrid" >
@@ -84,13 +83,14 @@
 				
 				<p:commandButton value="Prescrever"
 								 action="#{prescricaoHome.finalizarPrescricao()}" 
-								 update="prescricaoForm" />
+								 update="prescricaoForm padraoTabView:doseDialog" />
 				
 				<p:commandButton value="Cancelar Prescrição"
 								 action="#{prescricaoHome.cancelarPrescricao()}" 
-								 update="prescricaoForm" />
+								 update="prescricaoForm padraoTabView:doseDialog" />
 			</h:form>
-			<p:dialog id="doseDialog" 
+			<p:dialog id="doseDialog"
+					  visible="#{prescricaoHome.iniciaDosagem}"
 					  header="Informe a dosagem do medicamento" 
 					  widgetVar="dosagemDialog" 
 					  modal="true" 
@@ -116,7 +116,9 @@
 							
 							<h:panelGroup>
 								<h:outputLabel for="observacao" value="Observação:"  /><br />
-								<p:inputTextarea value="#{prescricaoHome.prescricaoItem.observacao}" />
+								<p:inputTextarea value="#{prescricaoHome.prescricaoItem.observacao}"
+												 autoResize="false" 
+												 cols="30"/>
 							</h:panelGroup>
 							
 							<h:panelGroup >

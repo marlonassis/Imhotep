@@ -68,7 +68,7 @@ public class PrescricaoItem {
 		this.referenciaUnica = referenciaUnica;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricaoItem")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prescricaoItem")
 	public Set<PrescricaoItemDose> getPrescricaoItemDoses() {
 		return prescricaoItemDoses;
 	}

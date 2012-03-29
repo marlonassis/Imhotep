@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
+
 @Entity
 @Table(name = "tb_prescricao_item_dose")
 public class PrescricaoItemDose {
@@ -23,6 +27,7 @@ public class PrescricaoItemDose {
 	private Integer periodo;
 	private Integer quantidade;
 	private Date dataDose;
+	private TipoStatusEnum dispensado;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_dose_id_prescricao_item_dose_seq")
 	@Id
@@ -68,6 +73,15 @@ public class PrescricaoItemDose {
 	
 	public void setDataDose(Date dataDose) {
 		this.dataDose = dataDose;
+	}
+	
+	@Column(name = "tp_dispensado")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusEnum getDispensado() {
+		return dispensado;
+	}
+	public void setDispensado(TipoStatusEnum dispensado) {
+		this.dispensado = dispensado;
 	}
 	
 	@Transient

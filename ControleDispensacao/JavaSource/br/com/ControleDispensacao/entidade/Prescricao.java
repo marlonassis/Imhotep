@@ -34,7 +34,7 @@ public class Prescricao {
 	private String leito;
 	private Float massa;
 	private MotivoFimReceita motivoFimReceita;
-	private TipoStatusEnum dispensado;
+	private TipoStatusEnum dispensavel;
 	private List<PrescricaoItem> prescricaoItens;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_id_prescricao_seq")
@@ -134,13 +134,13 @@ public class Prescricao {
 		this.motivoFimReceita = motivoFimReceita;
 	}
 
-	@Column(name = "tp_dispensado")
+	@Column(name = "tp_dispensavel")
 	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getDispensado() {
-		return dispensado;
+	public TipoStatusEnum getDispensavel() {
+		return dispensavel;
 	}
-	public void setDispensado(TipoStatusEnum dispensado) {
-		this.dispensado = dispensado;
+	public void setDispensavel(TipoStatusEnum dispensavel) {
+		this.dispensavel = dispensavel;
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prescricao")
