@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabDispensacao" title="Prescrição" >
+			<h:form id="dispensacaoForm" prependId="false" >
+			
+			
+				<p:dataTable 	id="dispensacaoItensGrid" 
+								value="#{prescricaoHome.listaPrescricaoPendente}" 
+								var="itemPendente"
+								emptyMessage="Não foi encontrado registros" 
+								rows="10" 
+								paginator="true"
+								selectionMode="single" 
+								rowKey="#{itemPendente.idPrescricao}">
+			   		<p:column>
+						<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
+						<h:outputText value="#{itemPendente.paciente}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Prescritor" /></f:facet>
+						<h:outputText value="#{itemPendente.profissional}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Data da prescrição" /></f:facet>
+						<h:outputText value="#{itemPendente.dataInclusao}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Quantidade de Itens" /></f:facet>
+						<h:outputText value="#{itemPendente.prescricaoItens.size()}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>
