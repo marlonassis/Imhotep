@@ -77,6 +77,18 @@ public class MaterialHome extends PadraoHome<Material>{
 		return super.getBusca("select o from Material as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
 	
+//	/**
+//	 * Método que retorna uma lista de Material caso exista estoque para ele
+//	 * @param String sql
+//	 * @return Collection Material
+//	 */
+//	public Collection<Material> getListaMaterialComEstoqueAutoComplete(String sql){
+//		String sql2 = "select o.material from Estoque as o where lower(o.descricao) like lower('%"+sql+"%') and ";
+//		sql2 += " o.quantidade > 0 and (o.quantidade - (select sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ";
+//		sql2 += "from PrescricaoItemDose a where a.dispensado = 'N' and a.material.idMaterial = o.material.idMaterial)) > 0";
+//		return super.getBusca(sql2);
+//	}
+	
 	public Collection<Material> getListaMaterialEstoque(){
 		return super.getBusca("select o.material from Estoque o inner join o.material order by o.material.descricao");
 	}

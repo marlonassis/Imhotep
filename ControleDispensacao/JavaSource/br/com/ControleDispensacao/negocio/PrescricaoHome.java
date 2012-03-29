@@ -48,18 +48,24 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	public void iniciaDosagem(){
 		limpaVariaveis();
-		gravaPrescricao();
-		setPrescricaoItem(new PrescricaoItem());
-		getPrescricaoItem().setPrescricaoItemDoses(new HashSet<PrescricaoItemDose>());
-		iniciaDosagem = true;
+		if(getInstancia().getIdPrescricao() != 0 || gravaPrescricao()){
+			limpaVariaveis();
+			setPrescricaoItem(new PrescricaoItem());
+			getPrescricaoItem().setPrescricaoItemDoses(new HashSet<PrescricaoItemDose>());
+			iniciaDosagem = true;
+		}
 	}
 	
 	public void removeDose(PrescricaoItemDose linha){
-		executa("delete from PrescricaoItemDose o where o.idPrescricaoItemDose = " + linha.getIdPrescricaoItemDose());
+		PrescricaoItemDoseHome pidh = new PrescricaoItemDoseHome();
+		pidh.setInstancia(linha);
+		pidh.apagar();
 	}
 	
 	public void removePrescricaoItem(PrescricaoItem linha){
-		executa("delete from PrescricaoItem o where o.idPrescricaoItem = " + linha.getIdPrescricaoItem());
+		PrescricaoItemHome pih = new PrescricaoItemHome();
+		pih.setInstancia(linha);
+		pih.apagar();
 	}
 	
 	private boolean removePrescricaoItem(){
@@ -102,6 +108,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 				temp.setDataDose(dataReferencia.getTime());
 				temp.setPeriodo(getIntervaloEntreDoses());
 				temp.setQuantidade(getQuantidadePorDose());
+				temp.setDispensado(TipoStatusEnum.N);
 				dataReferencia.add(Calendar.HOUR, getIntervaloEntreDoses());
 				temp.setPrescricaoItem(getPrescricaoItem());
 				session.save(temp);
@@ -111,9 +118,9 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			limpaVariaveis();
 		}catch (Exception e) {
 			e.printStackTrace();
-			session.getTransaction().rollback();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricaoItemDose()");
+			session.getTransaction().rollback();
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -148,7 +155,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private Object[] consultaEstoque() {
 		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidade) = null THEN 0 ELSE sum(o.quantidade)END, ");
 		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
-		sb.append("from ReservaMaterialPrescricao a where a.dispensado = 'N' and a.material.idMaterial = :idMaterial) ");
+		sb.append("from PrescricaoItemDose a where a.dispensado = 'N' and a.prescricaoItem.material.idMaterial = :idMaterial) ");
 		sb.append("from Estoque o where o.material.idMaterial = :idMaterial");
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("idMaterial", getPrescricaoItem().getMaterial().getIdMaterial());
@@ -218,9 +225,9 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			session.getTransaction().rollback();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricaoItem()");
+			session.getTransaction().rollback();
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -228,7 +235,8 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return ret;
 	}
 
-	private void gravaPrescricao() {
+	private boolean gravaPrescricao() {
+		boolean ret = false;
 		try{
 			iniciarTransacao();
 			carregaPrescricao();
@@ -237,16 +245,18 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			session.flush();  
 			tx.commit();
 			iniciaDosagem = true;
+			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			session.getTransaction().rollback();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao iniciar a prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
 			iniciaDosagem = false;
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricao()");
+			session.getTransaction().rollback();
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
 		}
+		return ret;
 	}
 	
 	protected void gravaErroAplicacao(Date date, String message, StackTraceElement[] stackTrace, String metodo) {
