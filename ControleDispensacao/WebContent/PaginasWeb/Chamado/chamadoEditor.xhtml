@@ -16,11 +16,11 @@
 		</h:panelGroup>
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
-			<p:inputTextarea id="descricao"
-						 	 value="#{chamadoHome.instancia.descricao}"
-						 	 autoResize="false"
-						 	 title="Descreva o problema"
-						 	 required="true"/>
+			<p:editor id="descricao"
+				 	  value="#{chamadoHome.instancia.descricao}"
+				 	  autoResize="false"
+				 	  title="Descreva o problema"
+				 	  required="true" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

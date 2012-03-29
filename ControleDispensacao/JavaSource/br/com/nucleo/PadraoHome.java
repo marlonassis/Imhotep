@@ -4,14 +4,19 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
 
+import br.com.ControleDispensacao.entidade.ErroAplicacao;
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
+import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.gerenciador.GerenciadorConexao;
 import br.com.nucleo.interfaces.IPadraoHome;
 
@@ -24,7 +29,6 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		return session.getAttribute(nome);
 	}
 	
-
 	protected String getIdSessao(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		return session.getId();

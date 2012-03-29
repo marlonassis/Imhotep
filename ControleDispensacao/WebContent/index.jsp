@@ -1,1 +1,0 @@
-<% response.sendRedirect("PaginasWeb/home.jsf"); %>
