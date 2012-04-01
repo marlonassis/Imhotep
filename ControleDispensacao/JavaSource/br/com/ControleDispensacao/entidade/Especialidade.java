@@ -14,8 +14,9 @@ import javax.persistence.Table;
 @Table(name = "tb_especialidade")
 public class Especialidade {
 	private int idEspecialidade;
-	private TipoProfissional tipoProfissional;
+	private TipoConselho tipoConselho;
 	private String descricao;
+	private Especialidade especialidadePai;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_especialidade_id_especialidade_seq")
 	@Id
@@ -29,12 +30,21 @@ public class Especialidade {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_tipo_profissional")
-	public TipoProfissional getTipoProfissional() {
-		return tipoProfissional;
+	@JoinColumn(name = "id_tipo_conselho")
+	public TipoConselho getTipoConselho() {
+		return tipoConselho;
 	}
-	public void setTipoProfissional(TipoProfissional tipoProfissional) {
-		this.tipoProfissional = tipoProfissional;
+	public void setTipoConselho(TipoConselho tipoConselho) {
+		this.tipoConselho = tipoConselho;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_especialidade_pai")
+	public Especialidade getEspecialidadePai() {
+		return especialidadePai;
+	}
+	public void setEspecialidadePai(Especialidade especialidadePai) {
+		this.especialidadePai = especialidadePai;
 	}
 	
 	@Column(name = "ds_descricao", length = 50)

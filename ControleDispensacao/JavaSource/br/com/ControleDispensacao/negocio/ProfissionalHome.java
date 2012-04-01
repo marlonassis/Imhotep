@@ -9,6 +9,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
+
 import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.TipoConselho;
@@ -23,35 +26,35 @@ import br.com.nucleo.utilidades.Utilities;
 public class ProfissionalHome extends PadraoHome<Profissional>{
 	private List<TipoProfissional> tipoProfissionalList;
 	private List<Especialidade> especialidadeList;
+	private TreeNode especialidadeNode;
 	
 	public ProfissionalHome() {
 		getInstancia().setUsuario(new Usuario());
 		getInstancia().setEspecialidade(new Especialidade());
-		getInstancia().getEspecialidade().setTipoProfissional(new TipoProfissional());
 	}
+	
+    public TreeNode getRootEspecialidade() {
+    	if(getInstancia().getEspecialidade() != null && getInstancia().getEspecialidade().getTipoConselho() != null){
+	    	EspecialidadeHome eh = new EspecialidadeHome();
+	        return eh.montarTreeEspecialidadeTipoConselho(getInstancia().getEspecialidade().getTipoConselho().getIdTipoConselho());
+    	}
+    	return null;
+    }	
 	
 	@Override
 	public void novaInstancia() {
 		super.novaInstancia();
 		getInstancia().setUsuario(new Usuario());
 		getInstancia().setEspecialidade(new Especialidade());
-		getInstancia().getEspecialidade().setTipoProfissional(new TipoProfissional());
 	}
 	
 	/**
 	 * Método usando para carregar o tipo do profissional informado pelo usuário de acordo com o conselho
 	 */
 	public void carregaTipoConselhoList(){
-		TipoConselho tipoConselho = getInstancia().getEspecialidade().getTipoProfissional().getTipoConselho();
+		TipoConselho tipoConselho = getInstancia().getEspecialidade().getTipoConselho();
 		if(tipoConselho != null){
 			setTipoProfissionalList((List<TipoProfissional>) new TipoProfissionalHome().getListaTipoProfissionalConselho(tipoConselho.getIdTipoConselho()));
-		}
-	}
-	
-	public void carregaEspecialidadeList(){
-		TipoProfissional tipoProfissional = getInstancia().getEspecialidade().getTipoProfissional();
-		if(tipoProfissional != null ){
-			setEspecialidadeList((List<Especialidade>) new EspecialidadeHome().getListaEspecialidadeTipoConselho(tipoProfissional.getIdTipoProfissional()));
 		}
 	}
 	
@@ -59,7 +62,7 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	public void setInstancia(Profissional instancia) {
 		super.setInstancia(instancia);
 		carregaTipoConselhoList();
-		carregaEspecialidadeList();
+		converterEspecialidadeNo();
 	}
 	
 	/**
@@ -71,15 +74,37 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 		return super.getBusca("select o from Profissional as o where lower(o.nome) like lower('%"+consulta+"%') ");
 	}
 	
+	private void converterEspecialidadeNo(){
+		if(getInstancia().getEspecialidade() == null || getInstancia().getEspecialidade().getIdEspecialidade() == 0){
+			getInstancia().setEspecialidade(especialidadeInformadaNo());
+		}else{
+			TreeNode arg0 = new DefaultTreeNode(getInstancia().getEspecialidade(), null);
+			setEspecialidadeNode(arg0);
+		}
+	}
+
+	private Especialidade especialidadeInformadaNo() {
+		if(getEspecialidadeNode() != null){
+			return (Especialidade) getEspecialidadeNode().getData();
+		}else{
+			return null;
+		}
+	}
+	
 	@Override
 	public boolean enviar() {
-		carregaDadosUsuario();
-		if(new UsuarioHome().procurarUsuario(getInstancia().getUsuario().getLogin()) == null){
-			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-			getInstancia().setDataInclusao(new Date());
-			return super.enviar();
+		if(especialidadeInformadaNo() != null){
+			converterEspecialidadeNo();
+			carregaDadosUsuario();
+			if(new UsuarioHome().procurarUsuario(getInstancia().getUsuario().getLogin()) == null){
+				getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+				getInstancia().setDataInclusao(new Date());
+				return super.enviar();
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este usuário já foi escolhido. informe outro login.", "Inserção não efetuada."));
+			}
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este usuário já foi escolhido. informe outro login.", "Inserção não efetuada."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe uma especialidade.", "Inserção não efetuada."));
 		}
 		return false;
 	}
@@ -105,5 +130,14 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	public void setEspecialidadeList(List<Especialidade> especialidadeList) {
 		this.especialidadeList = especialidadeList;
 	}
+
+	public TreeNode getEspecialidadeNode() {
+		return especialidadeNode;
+	}
+
+	public void setEspecialidadeNode(TreeNode especialidadeNode) {
+		this.especialidadeNode = especialidadeNode;
+	}
+
 	
 }
