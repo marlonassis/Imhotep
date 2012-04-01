@@ -21,6 +21,7 @@
 			<font color="red" >*</font><h:outputLabel for="aplicacao" value="Aplicação:"  /><br />
 	  		<p:autoComplete id="aplicacao" 
 	  						value="#{menuHome.instancia.aplicacao}"
+	  						forceSelection="true"
 							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
 							var="aplicacao"
 							required="true"
@@ -34,6 +35,7 @@
 			<h:outputLabel for="menuPai" value="Menu pai:"  /><br />
 	  		<p:autoComplete id="menuPai" 
 	  						value="#{menuHome.instancia.menuPai}"
+	  						forceSelection="true"
 							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
 							var="menu"
 							title="Informe o menu pai"

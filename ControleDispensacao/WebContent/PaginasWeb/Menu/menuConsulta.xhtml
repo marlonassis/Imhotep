@@ -19,6 +19,7 @@
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="aplicacaoConsulta" value="Aplicação:"  /><br />
 	  		<p:autoComplete id="aplicacaoConsulta" 
+	  						forceSelection="true"
 	  						value="#{menuConsulta.instancia.aplicacao}"
 							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
 							var="aplicacao"
@@ -31,6 +32,7 @@
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="menuPaiConsulta" value="Menu pai:"  /><br />
 	  		<p:autoComplete id="menuPaiConsulta" 
+	  						forceSelection="true"
 	  						value="#{menuConsulta.instancia.menuPai}"
 							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
 							var="menu"

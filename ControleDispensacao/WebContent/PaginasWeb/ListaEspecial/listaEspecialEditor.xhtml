@@ -12,6 +12,7 @@
 			<font color="red" >*</font><h:outputLabel for="livro" value="Livro:" /><br />
 	  		<p:autoComplete id="livro" 
 	  						required="true"
+	  						forceSelection="true"
 	  						value="#{listaEspecialHome.instancia.livro}"
 							completeMethod="#{livroHome.getListaLivroSuggest}" 
 							var="livro" 

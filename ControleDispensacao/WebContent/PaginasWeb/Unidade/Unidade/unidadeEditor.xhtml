@@ -47,6 +47,7 @@
 			<h:outputLabel for="unidadePai" value="Unidade Superior:"  /><br />
 	  		<p:autoComplete id="unidadePai" 
 	  						value="#{unidadeHome.instancia.unidadePai}"
+	  						forceSelection="true"
 							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 							var="unidade"
 							title="Informe o grupo do sub-grupo"
@@ -58,6 +59,7 @@
 		<h:panelGroup style="align:left;" >
 			<font color="red" >*</font><h:outputLabel for="coordenador" value="Coordenador:"  /><br />
 	  		<p:autoComplete id="coordenador" 
+	  						forceSelection="true"
 	  						value="#{unidadeHome.instancia.coordenador}"
 							completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}" 
 							var="profissional"

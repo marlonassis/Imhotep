@@ -12,6 +12,7 @@
 		<h:panelGroup>
 			<h:outputLabel for="profissionalConsulta" value="Profissional:" /><br />
 	  		<p:autoComplete id="profissionalConsulta" 
+	  						forceSelection="true"
 	  						value="#{autorizaUnidadeProfissionalConsulta.instancia.profissional}"
 							completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}" 
 							var="profissional" 
@@ -24,6 +25,7 @@
 			<h:outputLabel for="unidadeConsulta" value="Unidade:" /><br />
 	  		<p:autoComplete id="unidadeConsulta" 
 	  						value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}"
+	  						forceSelection="true"
 							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 							var="unidade" 
 							itemLabel="#{unidade.nome}" 

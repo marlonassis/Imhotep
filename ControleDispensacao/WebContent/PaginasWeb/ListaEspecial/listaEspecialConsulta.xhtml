@@ -15,6 +15,7 @@
 	  						value="#{listaEspecialConsulta.instancia.livro}"
 							completeMethod="#{livroHome.getListaLivroSuggest}" 
 							var="livro" 
+							forceSelection="true"
 							itemLabel="#{livro.descricao}" 
 							itemValue="#{livro}" 
 							converter="livroConversor" />

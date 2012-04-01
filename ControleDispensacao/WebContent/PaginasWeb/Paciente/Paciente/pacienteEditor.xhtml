@@ -95,6 +95,7 @@
 			<h:outputLabel for="cidade" value="Cidade:"  /><br />
 	  		<p:autoComplete id="cidade" 
 	  						value="#{pacienteHome.instancia.cidade}"
+	  						forceSelection="true"
 							completeMethod="#{cidadeHome.getListaCidadeAutoComplete}" 
 							var="cidade"
 							title="Informe a cidade à qual o paciente veio"
@@ -106,6 +107,7 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="unidadeConsulta" value="Unidade de Alocação:" /><br />
 	  		<p:autoComplete id="unidadeConsulta" 
+	  						forceSelection="true"
 	  						value="#{pacienteHome.instancia.unidadeAlocacao}"
 							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 							var="unidade" 

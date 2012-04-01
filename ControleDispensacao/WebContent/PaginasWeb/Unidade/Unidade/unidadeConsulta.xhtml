@@ -20,6 +20,7 @@
 			<h:outputLabel for="subGrupo" value="Sub-grupo:"  /><br />
 	  		<p:autoComplete id="subGrupo" 
 	  						value="#{subGrupoHome.instancia.grupo}"
+	  						forceSelection="true"
 							completeMethod="#{grupoHome.getListaGrupoAutoComplete}" 
 							var="grupo"
 							rendered="false"

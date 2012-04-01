@@ -11,6 +11,7 @@
 		<h:panelGroup style="align:left;" >
 			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:"  /><br />
 	  		<p:autoComplete id="especialidade" 
+	  						forceSelection="true"
 	  						value="#{liberaMaterialEspecialidadeHome.instancia.especialidade}"
 							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
 							var="especialidade"
@@ -27,6 +28,7 @@
 	  						value="#{liberaMaterialEspecialidadeHome.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
+							forceSelection="true"
 							required="true"
 							title="Informe o grupo do sub-grupo"
 							itemLabel="#{material.descricao}" 

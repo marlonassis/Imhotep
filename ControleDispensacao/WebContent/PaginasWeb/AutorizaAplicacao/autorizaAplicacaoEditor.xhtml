@@ -12,6 +12,7 @@
 			<font color="red" >*</font><h:outputLabel for="usuario" value="Usuario:" /><br />
 	  		<p:autoComplete id="usuario" 
 	  						required="true"
+	  						forceSelection="true"
 	  						value="#{autorizaAplicacaoHome.instancia.usuario}"
 							completeMethod="#{usuarioHome.getListaUsuarioAutoComplete}" 
 							var="usuario" 
@@ -23,6 +24,7 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="aplicacao" value="Aplicação:" /><br />
 	  		<p:autoComplete id="aplicacao" 
+	  						forceSelection="true"
 	  						required="true"
 	  						value="#{autorizaAplicacaoHome.instancia.aplicacao}"
 							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 

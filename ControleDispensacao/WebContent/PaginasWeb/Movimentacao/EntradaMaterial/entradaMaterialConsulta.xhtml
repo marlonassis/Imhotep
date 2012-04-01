@@ -12,6 +12,7 @@
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="materialConsulta" value="Material:"  /><br />
 	  		<p:autoComplete id="materialConsulta" 
+	  						forceSelection="true"
 	  						value="#{entradaMaterialConsulta.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
@@ -27,6 +28,7 @@
 	  						value="#{entradaMaterialConsulta.instancia.fabricante}"
 							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
 							var="fabricante"
+							forceSelection="true"
 							title="Informe o fabricante"
 							itemLabel="#{fabricante.descricao}" 
 							itemValue="#{fabricante}"
