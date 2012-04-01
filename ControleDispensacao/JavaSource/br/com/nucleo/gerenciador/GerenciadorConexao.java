@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
+import br.com.ControleDispensacao.auxiliar.Parametro;
+
 public class GerenciadorConexao {
 	protected Session session;
 	protected Configuration cfg;
@@ -14,8 +16,12 @@ public class GerenciadorConexao {
 	
 	public void iniciarTransacao(){
 		cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém a configurações
-		cfg.configure("hibernate.cfg.xml");
+		//Informe o arquivo XML que contém as configurações
+		if(Parametro.isUsuarioTeste()){
+			cfg.configure("hibernateTeste.cfg.xml");
+		}else{
+			cfg.configure("hibernate.cfg.xml");
+		}
 		factory = cfg.buildSessionFactory();
 		session = factory.openSession();
 		tx = session.beginTransaction();
