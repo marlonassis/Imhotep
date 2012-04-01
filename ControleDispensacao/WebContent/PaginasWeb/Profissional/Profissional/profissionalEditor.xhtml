@@ -27,13 +27,12 @@
 		
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
-			<p:selectOneMenu value="#{profissionalHome.instancia.especialidade.tipoProfissional.tipoConselho}" 
+			<p:selectOneMenu value="#{profissionalHome.instancia.especialidade.tipoConselho}" 
 							 effect="fade" 
-							 required="true"
 							 converter="tipoConselhoConversor">  
 				<f:ajax event="change" 
 						listener="#{profissionalHome.carregaTipoConselhoList()}" 
-						render="tipoProfissionalPanelGroup" />
+						render="especialidadePanelGroup" />
 				<f:selectItem itemLabel="Selecione..." 
 							  itemValue="" /> 
 	            <f:selectItems value="#{tipoConselhoConsulta.list}" 
@@ -43,40 +42,18 @@
 	        </p:selectOneMenu>
         </h:panelGroup>
 			
-		<h:panelGroup id="tipoProfissionalPanelGroup" > 
-			<font color="red" >*</font><h:outputLabel for="tipoProfissional" value="Tipo do Profissional:"  /><br />
-			<p:selectOneMenu id="tipoProfissional"
-							 value="#{profissionalHome.instancia.especialidade.tipoProfissional}" 
-							 effect="fade"
-							 required="true"
-							 converter="tipoProfissionalConversor">
-				<f:ajax event="change" 
-						listener="#{profissionalHome.carregaEspecialidadeList()}" 
-						render="especialidadePanelGroup" />
-	            <f:selectItem itemLabel="Selecione..." 
-	            			  itemValue="" /> 
-	            <f:selectItems value="#{profissionalHome.tipoProfissionalList}" 
-	            			   var="tipoProfissional" 
-	            			   itemLabel="#{tipoProfissional.descricao}" 
-	            			   itemValue="#{tipoProfissional}"/>  
-        	</p:selectOneMenu>
-        </h:panelGroup>
-        
-        <h:panelGroup id="especialidadePanelGroup" > 
+		<h:panelGroup id="especialidadePanelGroup" >
 			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:"  /><br />
-			<p:selectOneMenu id="especialidade"
-							 value="#{profissionalHome.instancia.especialidade}" 
-							 effect="fade"
-							 required="true"
-							 converter="especialidadeConversor">
-	            <f:selectItem itemLabel="Selecione..." 
-	            			  itemValue="" /> 
-	            <f:selectItems value="#{profissionalHome.especialidadeList}" 
-	            			   var="especialidade" 
-	            			   itemLabel="#{especialidade.descricao}" 
-	            			   itemValue="#{especialidade}"/>  
-        	</p:selectOneMenu>
-        </h:panelGroup>
+			<p:tree id="treeSingle" 
+					value="#{profissionalHome.rootEspecialidade}" 
+					var="node"  
+					selectionMode="single"  
+					selection="#{profissionalHome.especialidadeNode}">  
+				<p:treeNode>  
+					<h:outputText value="#{node}" />  
+				</p:treeNode>  
+			</p:tree>
+		</h:panelGroup>
 		
 		<h:panelGroup> 
 			<font color="red" >*</font><h:outputLabel for="estado" value="Estado:"  /><br />
@@ -134,6 +111,7 @@
 							 disabled="#{usuarioHome.edicao}"
 							 title="Informe o apelido de acesso"/> 
 			</h:panelGroup>
+			
 		</h:panelGrid>
 	</p:fieldset>
 	
