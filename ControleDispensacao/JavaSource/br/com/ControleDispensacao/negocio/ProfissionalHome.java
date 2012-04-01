@@ -62,7 +62,6 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	public void setInstancia(Profissional instancia) {
 		super.setInstancia(instancia);
 		carregaTipoConselhoList();
-		converterEspecialidadeNo();
 	}
 	
 	/**
@@ -78,6 +77,7 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 		if(getInstancia().getEspecialidade() == null || getInstancia().getEspecialidade().getIdEspecialidade() == 0){
 			getInstancia().setEspecialidade(especialidadeInformadaNo());
 		}else{
+			//deve setar na variável da tree um valor correspondente
 			TreeNode arg0 = new DefaultTreeNode(getInstancia().getEspecialidade(), null);
 			setEspecialidadeNode(arg0);
 		}
@@ -89,6 +89,16 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 		}else{
 			return null;
 		}
+	}
+	
+	@Override
+	public boolean atualizar() {
+		if(especialidadeInformadaNo() != null){
+			return super.atualizar();
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe uma especialidade.", "Inserção não efetuada."));
+		}
+		return false;
 	}
 	
 	@Override

@@ -44,6 +44,7 @@
 			
 		<h:panelGroup id="especialidadePanelGroup" >
 			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:"  /><br />
+			<h:outputText value="#{profissionalHome.instancia.especialidade}" />
 			<p:tree id="treeSingle" 
 					value="#{profissionalHome.rootEspecialidade}" 
 					var="node"  
