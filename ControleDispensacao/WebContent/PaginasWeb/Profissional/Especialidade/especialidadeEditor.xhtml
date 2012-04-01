@@ -18,20 +18,32 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
-			<p:selectOneMenu value="#{especialidadeHome.instancia.tipoProfissional}" 
+			<h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
+			<p:selectOneMenu value="#{especialidadeHome.instancia.tipoConselho}" 
 							 effect="fade" 
-							 required="true"
-							 converter="tipoProfissionalConversor">  
+							 converter="tipoConselhoConversor">  
 				<f:selectItem itemLabel="Selecione..." 
 							  itemValue="" /> 
-	            <f:selectItems value="#{tipoProfissionalConsulta.list}" 
-	            			   var="tipoProfissional" 
-	            			   itemLabel="#{tipoProfissional.descricao}" 
-	            			   itemValue="#{tipoProfissional}"/>  
+	            <f:selectItems value="#{tipoConselhoConsulta.list}" 
+	            			   var="tipoConselho" 
+	            			   itemLabel="#{tipoConselho.descricaoSigla}" 
+	            			   itemValue="#{tipoConselho}"/>  
 	        </p:selectOneMenu>
         </h:panelGroup>
-			
+		
+		<h:panelGroup>
+			<h:outputLabel for="especialidadePai" value="Especialidade Pai:" /><br />
+	  		<p:autoComplete id="especialidadePai" 
+	  						forceSelection="true"
+	  						value="#{especialidadeHome.instancia.especialidadePai}"
+							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
+							var="especialidade" 
+							itemLabel="#{especialidade.descricao}"
+							itemValue="#{especialidade}"
+							converter="especialidadeConversor" />
+		</h:panelGroup>
+
+		
 	</h:panelGrid>
 	
 </ui:composition>

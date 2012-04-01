@@ -70,4 +70,12 @@ public class EspecialidadeHome extends PadraoHome<Especialidade>{
 	public Collection<Especialidade> getListaEspecialidadeAutoComplete(String sql){
 		return super.getBusca("select o from Especialidade as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
+	
+	@Override
+	public boolean enviar() {
+		if(getInstancia().getTipoConselho() == null && getInstancia().getEspecialidadePai() != null){
+			getInstancia().setTipoConselho(getInstancia().getEspecialidadePai().getTipoConselho());
+		}
+		return super.enviar();
+	}
 }
