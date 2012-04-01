@@ -24,7 +24,7 @@ public class Usuario {
 	private String senha;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
-
+	
 	public Usuario() {
 	}
 
@@ -82,7 +82,7 @@ public class Usuario {
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = dataInclusao;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_usuario_inclusao")
 	public Usuario getUsuarioInclusao() {
