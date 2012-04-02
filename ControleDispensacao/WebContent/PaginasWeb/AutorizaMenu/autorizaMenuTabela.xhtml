@@ -15,8 +15,8 @@
 					rowKey="#{linha.idAutorizaMenu}">
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Usuário" /></f:facet>
-			<h:outputText value="#{linha.usuario}" />
+			<f:facet name="header"><h:outputText value="Especialidade" /></f:facet>
+			<h:outputText value="#{linha.especialidade}" />
 		</p:column>			
 		<p:column>
 			<f:facet name="header"><h:outputText value="Menu" /></f:facet>
@@ -24,7 +24,7 @@
 		</p:column>
 		<p:column>
 			<f:facet name="header"><h:outputText value="URL" /></f:facet>
-			<h:outputText value="#{linha.menu.executavel}" />
+			<h:outputText value="#{linha.menu.url}" />
 		</p:column>
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:autorizaMenuForm" 

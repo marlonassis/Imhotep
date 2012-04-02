@@ -77,6 +77,8 @@
 			            			   itemLabel="#{unidade.nome}" 
 			            			   itemValue="#{unidade}"/>  
 		        	</p:selectOneMenu>
+		        	<br/>
+		        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" />
 					<ui:include src="menu.xhtml" />
 				</h:panelGroup>
 			</h:form>

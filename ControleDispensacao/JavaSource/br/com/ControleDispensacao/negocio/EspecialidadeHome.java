@@ -15,6 +15,10 @@ import br.com.nucleo.PadraoHome;
 @SessionScoped
 public class EspecialidadeHome extends PadraoHome<Especialidade>{
 
+	private Collection<Especialidade> getListaEspecialidadeSemConselho(){
+		return getBusca("select o from Especialidade o where o.tipoConselho.idTipoConselho is null");
+	}
+	
 	private Collection<Especialidade> getListaEspecialidadePai(){
 		return getBusca("select o from Especialidade o where o.especialidadePai is null");
 	}
@@ -54,8 +58,22 @@ public class EspecialidadeHome extends PadraoHome<Especialidade>{
         return root;
 	}
 	
+	private TreeNode montarTreeSemTipoConselho() {
+		TreeNode root = new DefaultTreeNode("root", null);  
+    	Collection<Especialidade> listaEspecialidadeTipoConselho = getListaEspecialidadeSemConselho();
+		for(Especialidade tu : listaEspecialidadeTipoConselho){
+    		montaTree(root, tu);
+    	}
+    	
+        return root;
+	}
+	
     public TreeNode montarTreeEspecialidadeTipoConselho(int idTipoConselho) {
     	return montarTree(idTipoConselho);
+    }  
+	
+    public TreeNode montarTreeEspecialidadeSemTipoConselho() {
+    	return montarTreeSemTipoConselho();
     }  
   
     public TreeNode montarTreeEspecialidade() {

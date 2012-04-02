@@ -9,16 +9,16 @@
 				 width="100%" >
 				 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="usuario" value="Usuario:" /><br />
-	  		<p:autoComplete id="usuario" 
+			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:" /><br />
+	  		<p:autoComplete id="especialidade" 
 	  						required="true"
 	  						forceSelection="true"
-	  						value="#{autorizaMenuHome.instancia.usuario}"
-							completeMethod="#{usuarioHome.getListaUsuarioAutoComplete}" 
-							var="usuario" 
-							itemLabel="#{usuario.login}" 
-							itemValue="#{usuario}" 
-							converter="usuarioConversor" />
+	  						value="#{autorizaMenuHome.instancia.especialidade}"
+							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
+							var="especialidade" 
+							itemLabel="#{especialidade.login}" 
+							itemValue="#{especialidade}" 
+							converter="especialidadeConversor" />
 		</h:panelGroup>
 		
 		<h:panelGroup>

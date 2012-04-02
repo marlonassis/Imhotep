@@ -26,7 +26,7 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
+			<h:outputLabel for="tipoConselho" value="Tipo do conselho:"  /><br />
 			<p:selectOneMenu value="#{profissionalHome.instancia.especialidade.tipoConselho}" 
 							 effect="fade" 
 							 converter="tipoConselhoConversor">  
@@ -57,11 +57,10 @@
 		</h:panelGroup>
 		
 		<h:panelGroup> 
-			<font color="red" >*</font><h:outputLabel for="estado" value="Estado:"  /><br />
+			<h:outputLabel for="estado" value="Estado:"  /><br />
 			<p:selectOneMenu id="estado"
 							 value="#{profissionalHome.instancia.estado}" 
 							 effect="fade"
-							 required="true"
 							 converter="estadoConversor">
 	            <f:selectItem itemLabel="Selecione..." 
 	            			  itemValue="" /> 

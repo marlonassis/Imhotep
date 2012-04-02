@@ -14,7 +14,6 @@ import br.com.nucleo.PadraoConsulta;
 public class MenuConsulta extends PadraoConsulta<Menu> {
 	public MenuConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.aplicacao", IGUAL);
 		getCamposConsulta().put("o.menuPai", IGUAL);
 		setOrderBy("o.descricao");
 	}

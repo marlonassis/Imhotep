@@ -35,10 +35,14 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	
     public TreeNode getRootEspecialidade() {
     	if(getInstancia().getEspecialidade() != null && getInstancia().getEspecialidade().getTipoConselho() != null){
+    		//monta a tree quando tem um tipoConselho
 	    	EspecialidadeHome eh = new EspecialidadeHome();
 	        return eh.montarTreeEspecialidadeTipoConselho(getInstancia().getEspecialidade().getTipoConselho().getIdTipoConselho());
+    	}else{
+    		//monta a tree quando não tem um tipoConselho
+    		EspecialidadeHome eh = new EspecialidadeHome();
+	        return eh.montarTreeEspecialidadeSemTipoConselho();
     	}
-    	return null;
     }	
 	
 	@Override

@@ -15,7 +15,7 @@ public class UsuarioConsulta extends PadraoConsulta<Usuario> {
 	public UsuarioConsulta(){
 		getCamposConsulta().put("o.matricula", IGUAL);
 		getCamposConsulta().put("o.login", IGUAL);
-		getCamposConsulta().put("o.situacao", IGUAL);
+//		getCamposConsulta().put("o.situacao", IGUAL);
 		setOrderBy("o.login");
 	}
 	

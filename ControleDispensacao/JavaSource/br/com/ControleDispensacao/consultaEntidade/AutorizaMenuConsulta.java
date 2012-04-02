@@ -13,9 +13,9 @@ import br.com.nucleo.PadraoConsulta;
 @SessionScoped
 public class AutorizaMenuConsulta extends PadraoConsulta<AutorizaMenu> {
 	public AutorizaMenuConsulta(){
-		getCamposConsulta().put("o.usuario", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.menu.descricao", INCLUINDO_TUDO);
-		setOrderBy("o.usuario.login, o.menu.descricao");
+		getCamposConsulta().put("o.especialidade.descricao", INCLUINDO_TUDO);
+		setOrderBy("o.especialidade.descricao, o.menu.descricao");
 	}
 	
 	@Override

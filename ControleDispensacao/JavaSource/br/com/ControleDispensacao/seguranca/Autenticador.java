@@ -100,7 +100,7 @@ public class Autenticador {
 	public Usuario procurarUsuario(String nome){
 		ConsultaGeral<Usuario> cg = new ConsultaGeral<Usuario>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("login", nome);
+		hm.put("login", nome.trim());
 		List<Usuario> resultado = (List<Usuario>) cg.consulta(new StringBuilder("select o from Usuario o where o.login = :login"), hm);
 		if(resultado.size() > 0){
 			return resultado.get(0);
@@ -132,8 +132,8 @@ public class Autenticador {
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
 	    				setUsuarioAtual(usuarioLogado);
 	    				carregaUnidadesUsuario();
-	    				carregaToolBarMenu();
 	    				carregaFuncionario();
+	    				carregaToolBarMenu();
 	    			}else{
 	    				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
 	    			}
@@ -166,8 +166,8 @@ public class Autenticador {
 		
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("idUsuario", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
-		StringBuilder sb = new StringBuilder("select o.menu from AutorizaMenu o where o.menu.menuPai is null and o.usuario.idUsuario = :idUsuario) order by o.menu.descricao");
+		hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+		StringBuilder sb = new StringBuilder("select o.menu from AutorizaMenu o where o.menu.menuPai is null and o.especialidade.idEspecialidade = :idEspecialidade) order by o.menu.descricao");
 		
 		Collection<Menu> listaPrimeiroNivel = cg.consulta(sb, hashMap);
 		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
@@ -178,7 +178,7 @@ public class Autenticador {
 			hashMap.put("idMenuPai", menuPrimeiroNivel.getIdMenu());
 			sb = new StringBuilder("select o.menu from AutorizaMenu o where ");
 			sb.append(" o.menu.menuPai.idMenu = :idMenuPai ");
-			sb.append(" and o.usuario.idUsuario = :idUsuario order by o.menu.descricao ");
+			sb.append(" and o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao ");
 			Collection<Menu> listaSegundoNivel = cg.consulta(sb, hashMap);
 			for (Menu menuSegundoNivel : listaSegundoNivel) {
 				hashMap.put("idMenuPai", menuSegundoNivel.getIdMenu());

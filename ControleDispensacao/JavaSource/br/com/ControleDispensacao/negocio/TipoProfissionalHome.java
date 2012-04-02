@@ -29,5 +29,14 @@ public class TipoProfissionalHome extends PadraoHome<TipoProfissional>{
 	public Collection<TipoProfissional> getListaTipoProfissionalConselho(Integer id){
 		return super.getBusca("select o from TipoProfissional as o where o.tipoConselho.idTipoConselho = "+id);
 	}
+
+	/**
+	 * Método que retorna uma lista de TipoProfissional para os profissionais que não possuem conselho
+	 * @param String sql
+	 * @return Collection TipoProfissional
+	 */
+	public Collection<TipoProfissional> getListaTipoProfissionalConselho(){
+		return super.getBusca("select o from TipoProfissional as o where o.tipoConselho is null ");
+	}
 	
 }

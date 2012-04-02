@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "tb_autoriza_menu")
 public class AutorizaMenu {
 	private int idAutorizaMenu;
-	private Usuario usuario;
+	private Especialidade especialidade;
 	private Menu menu;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_autoriza_menu_id_autoriza_menu_seq")
@@ -40,13 +40,13 @@ public class AutorizaMenu {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario")
-	public Usuario getUsuario() {
-		return this.usuario;
+	@JoinColumn(name = "id_especialidade")
+	public Especialidade getEspecialidade(){
+		return especialidade;
 	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	
+	public void setEspecialidade(Especialidade especialidade){
+		this.especialidade = especialidade;
 	}
 	
 	
@@ -63,12 +63,12 @@ public class AutorizaMenu {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + usuario.hashCode() + menu.hashCode();
+	    return hash * 31 + especialidade.hashCode() + menu.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return usuario.getLogin().concat(" - ").concat(menu.getDescricao());
+		return especialidade.getDescricao().concat(" - ").concat(menu.getDescricao());
 	}
 	
 }
