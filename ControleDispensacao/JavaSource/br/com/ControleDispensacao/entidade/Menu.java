@@ -19,9 +19,9 @@ import br.com.ControleDispensacao.enums.TipoStatusEnum;
 public class Menu {
 	private int idMenu;
 	private Menu menuPai;
-	private Aplicacao aplicacao;
 	private String descricao;
 	private TipoStatusEnum bloqueado;
+	private String url;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_menu_id_menu_seq")
 	@Id
@@ -45,23 +45,22 @@ public class Menu {
 		this.menuPai = menuPai;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_aplicacao")
-	public Aplicacao getAplicacao(){
-		return aplicacao;
-	}
-	
-	public void setAplicacao(Aplicacao aplicacao){
-		this.aplicacao = aplicacao;
-	}
-	
-	@Column(name = "ds_descricao", length = 120)
+	@Column(name = "ds_descricao")
 	public String getDescricao() {
 		return this.descricao;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	@Column(name = "ds_url")
+	public String getUrl() {
+		return this.url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	@Column(name = "tp_bloqueado")

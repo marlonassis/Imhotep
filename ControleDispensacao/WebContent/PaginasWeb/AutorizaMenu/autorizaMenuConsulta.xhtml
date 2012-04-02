@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 	
 	
-	<h:panelGrid id="autorizaAplicacaoGridConsulta"
+	<h:panelGrid id="autorizaMenuGridConsulta"
 				 columns="3" 
 				 width="100%" >
 				 
@@ -13,7 +13,7 @@
 			<h:outputLabel for="usuarioConsulta" value="Usuario:" /><br />
 	  		<p:autoComplete id="usuarioConsulta" 
 	  						forceSelection="true"
-	  						value="#{autorizaAplicacaoConsulta.instancia.usuario}"
+	  						value="#{autorizaMenuConsulta.instancia.usuario}"
 							completeMethod="#{usuarioHome.getListaUsuarioAutoComplete}" 
 							var="usuario" 
 							itemLabel="#{usuario.login}" 
@@ -22,15 +22,15 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<h:outputLabel for="aplicacaoConsulta" value="Aplicação:" /><br />
-	  		<p:autoComplete id="aplicacaoConsulta" 
+			<h:outputLabel for="menuConsulta" value="Menu:" /><br />
+	  		<p:autoComplete id="menuConsulta" 
 	  						forceSelection="true"
-	  						value="#{autorizaAplicacaoConsulta.instancia.aplicacao}"
-							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
-							var="aplicacao" 
-							itemLabel="#{aplicacao.descricao}" 
-							itemValue="#{aplicacao}" 
-							converter="aplicacaoConversor" />
+	  						value="#{autorizaMenuConsulta.instancia.menu}"
+							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
+							var="menu" 
+							itemLabel="#{menu.descricao}" 
+							itemValue="#{menu}" 
+							converter="menuConversor" />
 		</h:panelGroup>
 
 	</h:panelGrid>

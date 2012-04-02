@@ -5,42 +5,41 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaAplicacao" 
-					value="#{aplicacaoConsulta.list}" 
+	<p:dataTable 	id="tabelaAutorizaMenu" 
+					value="#{autorizaMenuConsulta.list}" 
 					var="linha"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idAplicacao}">
-					
+					rowKey="#{linha.idAutorizaMenu}">
+		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
-			<h:outputText value="#{linha.idAplicacao}" />
+			<f:facet name="header"><h:outputText value="Usuário" /></f:facet>
+			<h:outputText value="#{linha.usuario}" />
+		</p:column>			
+		<p:column>
+			<f:facet name="header"><h:outputText value="Menu" /></f:facet>
+			<h:outputText value="#{linha.menu}" />
 		</p:column>
-					
 		<p:column>
-			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
-			<h:outputText value="#{linha.descricao}" />
-		</p:column>
-		<p:column>
-			<f:facet name="header"><h:outputText value="Executável" /></f:facet>
-			<h:outputText value="#{linha.executavel}" />
+			<f:facet name="header"><h:outputText value="URL" /></f:facet>
+			<h:outputText value="#{linha.menu.executavel}" />
 		</p:column>
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:aplicacaoForm" 
+			<p:commandLink update="padraoTabView:autorizaMenuForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{aplicacaoHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{autorizaMenuHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{aplicacaoHome.apagar()}"
-							update="tabelaAplicacao padraoTabView:aplicacaoForm" 
+			<p:commandLink  action="#{autorizaMenuHome.apagar()}"
+							update="tabelaAutorizaMenu padraoTabView:autorizaMenuForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 							title="Apagar" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{aplicacaoHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{autorizaMenuHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  

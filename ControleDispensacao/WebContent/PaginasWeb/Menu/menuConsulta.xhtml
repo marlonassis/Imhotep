@@ -16,19 +16,14 @@
 						 title="Informe a descrição do menu" />
 		</h:panelGroup>
 				 
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="aplicacaoConsulta" value="Aplicação:"  /><br />
-	  		<p:autoComplete id="aplicacaoConsulta" 
-	  						forceSelection="true"
-	  						value="#{menuConsulta.instancia.aplicacao}"
-							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
-							var="aplicacao"
-							title="Informe a aplicação do menu"
-							itemLabel="#{aplicacao.descricao}" 
-							itemValue="#{aplicacao}"
-							converter="aplicacaoConversor" />
+		<h:panelGroup>
+			<h:outputLabel for="url" value="Url:"  /><br />
+			<p:inputText id="url" 
+						 value="#{menuConsulta.instancia.url}"
+						 title="Informe a url do menu" />
 		</h:panelGroup>
 		
+				
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="menuPaiConsulta" value="Menu pai:"  /><br />
 	  		<p:autoComplete id="menuPaiConsulta" 

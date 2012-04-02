@@ -16,23 +16,19 @@
 		
 		<p:column>
 			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
-			<h:outputText value="#{linha.idMenu}" />
-		</p:column>
-					
-		<p:column>
-			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Aplicação" /></f:facet>
-			<h:outputText value="#{linha.aplicacao.descricao}" />
+			<f:facet name="header"><h:outputText value="Url" /></f:facet>
+			<h:outputText value="#{linha.url}" />
 		</p:column>
 		
 		<p:column>
 			<f:facet name="header"><h:outputText value="Menu Pai" /></f:facet>
 			<h:outputText value="#{linha.menuPai}" />
 		</p:column>
+		
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:menuForm" 
 						   title="Editar" 
@@ -49,7 +45,8 @@
 				<f:setPropertyActionListener value="#{linha}" target="#{menuHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
-		</p:column>  
+		</p:column>
+		
 	</p:dataTable>
 	
 </ui:composition>

@@ -167,8 +167,7 @@ public class Autenticador {
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("idUsuario", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
-		StringBuilder sb = new StringBuilder("select o from Menu o where o.menuPai is null and o.aplicacao in (select a.aplicacao from AutorizaAplicacao a where ");
-		sb.append("a.usuario.idUsuario = :idUsuario) order by o.descricao");
+		StringBuilder sb = new StringBuilder("select o.menu from AutorizaMenu o where o.menu.menuPai is null and o.usuario.idUsuario = :idUsuario) order by o.menu.descricao");
 		
 		Collection<Menu> listaPrimeiroNivel = cg.consulta(sb, hashMap);
 		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
@@ -177,9 +176,9 @@ public class Autenticador {
 			primeiroNivel.setId(menuPrimeiroNivel.getDescricao().trim().substring(0, 2).concat(String.valueOf(menuPrimeiroNivel.getIdMenu())));
 			
 			hashMap.put("idMenuPai", menuPrimeiroNivel.getIdMenu());
-			sb = new StringBuilder("select o from Menu o where ");
-			sb.append(" o.menuPai.idMenu = :idMenuPai ");
-			sb.append(" and o.aplicacao.idAplicacao in (select a.aplicacao.idAplicacao from AutorizaAplicacao a where a.usuario.idUsuario = :idUsuario ) order by o.descricao ");
+			sb = new StringBuilder("select o.menu from AutorizaMenu o where ");
+			sb.append(" o.menu.menuPai.idMenu = :idMenuPai ");
+			sb.append(" and o.usuario.idUsuario = :idUsuario order by o.menu.descricao ");
 			Collection<Menu> listaSegundoNivel = cg.consulta(sb, hashMap);
 			for (Menu menuSegundoNivel : listaSegundoNivel) {
 				hashMap.put("idMenuPai", menuSegundoNivel.getIdMenu());
@@ -190,14 +189,14 @@ public class Autenticador {
 					for (Menu menuTerceiroNivel : listaTerceiroNivel) {
 						MenuItem mm = new MenuItem();
 						mm.setValue(menuTerceiroNivel.getDescricao());
-						mm.setUrl(menuTerceiroNivel.getAplicacao().getExecutavel());
+						mm.setUrl(menuTerceiroNivel.getUrl());
 						segundoNivel.getChildren().add(mm);
 					}
 					primeiroNivel.getChildren().add(segundoNivel);
 				}else{
 					MenuItem mm = new MenuItem();
 					mm.setValue(menuSegundoNivel.getDescricao());
-					mm.setUrl(menuSegundoNivel.getAplicacao().getExecutavel());
+					mm.setUrl(menuSegundoNivel.getUrl());
 					primeiroNivel.getChildren().add(mm);
 				}
 			}

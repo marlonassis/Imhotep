@@ -13,7 +13,6 @@
             <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia_testes</property>  
     
         <mapping class="br.com.ControleDispensacao.entidade.Usuario"/>
-        <mapping class="br.com.ControleDispensacao.entidade.Aplicacao"/>
         <mapping class="br.com.ControleDispensacao.entidade.Menu"/>
         <mapping class="br.com.ControleDispensacao.entidade.Fabricante"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoMaterial"/>
@@ -24,7 +23,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.UnidadeMaterial"/>
         <mapping class="br.com.ControleDispensacao.entidade.ListaEspecial"/>
         <mapping class="br.com.ControleDispensacao.entidade.Livro"/>
-        <mapping class="br.com.ControleDispensacao.entidade.AutorizaAplicacao"/>
+        <mapping class="br.com.ControleDispensacao.entidade.AutorizaMenu"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoConselho"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoProfissional"/>
         <mapping class="br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade"/>

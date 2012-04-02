@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 
-	<h:panelGrid id="autorizaAplicacaoPanelGrid"
+	<h:panelGrid id="autorizaMenuPanelGrid"
 				 columns="3" 
 				 width="100%" >
 				 
@@ -13,7 +13,7 @@
 	  		<p:autoComplete id="usuario" 
 	  						required="true"
 	  						forceSelection="true"
-	  						value="#{autorizaAplicacaoHome.instancia.usuario}"
+	  						value="#{autorizaMenuHome.instancia.usuario}"
 							completeMethod="#{usuarioHome.getListaUsuarioAutoComplete}" 
 							var="usuario" 
 							itemLabel="#{usuario.login}" 
@@ -22,16 +22,16 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="aplicacao" value="Aplicação:" /><br />
-	  		<p:autoComplete id="aplicacao" 
+			<font color="red" >*</font><h:outputLabel for="menu" value="Menu:" /><br />
+	  		<p:autoComplete id="menu" 
 	  						forceSelection="true"
 	  						required="true"
-	  						value="#{autorizaAplicacaoHome.instancia.aplicacao}"
-							completeMethod="#{aplicacaoHome.getListaAplicacaoSuggest}" 
-							var="aplicacao" 
-							itemLabel="#{aplicacao.descricao}" 
-							itemValue="#{aplicacao}" 
-							converter="aplicacaoConversor" />
+	  						value="#{autorizaMenuHome.instancia.menu}"
+							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
+							var="menu" 
+							itemLabel="#{menu.descricao}" 
+							itemValue="#{menu}" 
+							converter="menuConversor" />
 		</h:panelGroup>
 
 	</h:panelGrid>
