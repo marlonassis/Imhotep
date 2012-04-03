@@ -23,6 +23,13 @@
 			<h:outputText value="#{linha.assunto}" />
 		</p:column>
 		<p:column>
+			<f:facet name="header"><h:outputText value="Data da abertura" /></f:facet>
+			<h:outputText value="#{linha.dataChamado}" >
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
 			<f:facet name="header"><h:outputText value="Atendido" /></f:facet>
 			<h:outputText value="#{linha.atendido.label}" />
 		</p:column>

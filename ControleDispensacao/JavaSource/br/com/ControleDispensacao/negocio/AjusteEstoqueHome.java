@@ -176,7 +176,6 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 		getInstancia().getMovimentoGeral().setNumeroControle(chaveUnica);
 		getInstancia().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().getMovimentoGeral().setDataInclusao(new Date());
-		getInstancia().getMovimentoGeral().setDataInclusao(new Date());
 		getInstancia().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 	}
 

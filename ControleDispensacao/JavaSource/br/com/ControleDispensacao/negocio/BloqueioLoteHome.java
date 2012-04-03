@@ -30,7 +30,8 @@ public class BloqueioLoteHome extends PadraoHome<Estoque>{
 	
 	@Override
 	public boolean atualizar() {
-		if(getInstancia().getBloqueado().equals(TipoStatusEnum.S)){
+		boolean bloqueado = getInstancia().getBloqueado().equals(TipoStatusEnum.S);
+		if(bloqueado){
 			if(!getInstancia().getMotivoBloqueio().isEmpty()){
 				getInstancia().setDataBloqueio(new Date());
 				getInstancia().setUsuarioBloqueio(Autenticador.getInstancia().getUsuarioAtual());

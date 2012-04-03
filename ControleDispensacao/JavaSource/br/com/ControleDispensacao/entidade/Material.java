@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
@@ -151,6 +152,11 @@ public class Material {
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
+	}
+	
+	@Transient
+	public String getDescricaoUnidadeMaterial(){
+		return getDescricao().concat(" - ").concat(getUnidadeMaterial().getSigla());
 	}
 	
 	@Override

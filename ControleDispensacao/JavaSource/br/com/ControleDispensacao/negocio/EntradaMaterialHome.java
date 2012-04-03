@@ -197,13 +197,7 @@ public class EntradaMaterialHome extends PadraoHome<ItensMovimentoGeral>{
 			getInstancia().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		}else{
 			//como foi encontrado um movimento geral então a operacao é de atualização do movimento geral
-			//somente é permitido inserir um lote se o usuário cadastrante é da mesma unidade do usuário que cadastrou o lote da primeira vez
-			if(movimentoGeral.getUnidade().equals(Autenticador.getInstancia().getUnidadeAtual())){
-				getInstancia().setMovimentoGeral(movimentoGeral);
-			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esse documento já existe e você não é da unidade que o cadastrou.", "Apenas quem pode inserir estoque nesse documento é o usuário que for da unidade "+movimentoGeral.getUnidade().getNome()+"!"));
-				return false;
-			}
+			getInstancia().setMovimentoGeral(movimentoGeral);
 		}
 		return true;
 	}

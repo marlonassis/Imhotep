@@ -13,10 +13,17 @@
 				 paginator="true"
 				 selectionMode="single" 
 				 rowKey="#{linha.idItensMovimentoGeral}">
-					
+		<p:column>
+			<f:facet name="header"><h:outputText value="Código do material" /></f:facet>
+			<h:outputText value="#{linha.material.codigoMaterial}" />
+		</p:column>
 		<p:column>
 			<f:facet name="header"><h:outputText value="Material" /></f:facet>
 			<h:outputText value="#{linha.material}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Unidade do material" /></f:facet>
+			<h:outputText value="#{linha.material.unidadeMaterial}" />
 		</p:column>
 		<p:column>
 			<f:facet name="header"><h:outputText value="Fabricante" /></f:facet>
