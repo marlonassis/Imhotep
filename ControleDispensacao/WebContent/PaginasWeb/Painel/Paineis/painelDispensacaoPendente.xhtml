@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset legend="Prescrição Pendente" collapsed="false" toggleable="false">
+			<p:dataTable 	id="tabelaPrescricaoPendente" 
+							value="#{prescricaoHome.listaPrescricaoPendente}" 
+							var="linha"
+							emptyMessage="Não foi encontrado registros" 
+							rows="5" 
+							paginator="true"
+							selectionMode="single" 
+							rowKey="#{linha.idPrescricao}">
+							
+				<p:column>
+					<f:facet name="header"><h:outputText value="Data de inclusão" /></f:facet>
+					<h:outputText value="#{linha.dataInclusao}" >
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
+					<h:outputText value="#{linha.paciente.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Leito" /></f:facet>
+					<h:outputText value="#{linha.leito}" />
+				</p:column>
+				<p:column style="width:60px; text-align: center;" >
+					<p:commandLink  action="#{bloqueioLoteHome.bloqueioAutomáticoEstoque()}"
+									oncomplete="location.href='Prescricao/Prescricao/prescricao.jsf'"
+									title="Continuar prescrição" 
+									style="padding-right:10px;" >
+						<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.instancia}" />
+						<h:graphicImage value="/Imagens/next.png" />
+					</p:commandLink>
+				</p:column>  
+			</p:dataTable>
+		</p:fieldset>
+	</ui:define>
+</ui:composition>
