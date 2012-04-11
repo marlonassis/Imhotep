@@ -9,12 +9,17 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import br.com.ControleDispensacao.entidade.Especialidade;
+import br.com.ControleDispensacao.entidade.Material;
 import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="especialidadeHome")
 @SessionScoped
 public class EspecialidadeHome extends PadraoHome<Especialidade>{
 
+	public Collection<Especialidade> getListaEspecialidadeMaterial(Material material){
+		return getBusca("select o.especialidade from LiberaMaterialEspecialidade o where o.material.idMaterial = "+material.getIdMaterial());
+	}
+	
 	private Collection<Especialidade> getListaEspecialidadeSemConselho(){
 		return getBusca("select o from Especialidade o where o.tipoConselho.idTipoConselho is null");
 	}
