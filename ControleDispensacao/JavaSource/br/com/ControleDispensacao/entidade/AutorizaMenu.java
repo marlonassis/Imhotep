@@ -48,8 +48,7 @@ public class AutorizaMenu {
 	public void setEspecialidade(Especialidade especialidade){
 		this.especialidade = especialidade;
 	}
-	
-	
+		
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
