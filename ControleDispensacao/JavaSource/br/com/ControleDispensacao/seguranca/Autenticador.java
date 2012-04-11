@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.seguranca;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
 import br.com.ControleDispensacao.entidade.Menu;
+import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
@@ -37,6 +39,7 @@ public class Autenticador {
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
+	private Collection<Painel> paineisUsuario;
 
 	public static Autenticador getInstancia(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
@@ -68,7 +71,7 @@ public class Autenticador {
 		}
 	}
 
-	private void carregaFuncionario(){
+	private void carregaProfissional(){
 		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idUsuario", usuarioAtual.getIdUsuario());
@@ -101,11 +104,13 @@ public class Autenticador {
 		ConsultaGeral<Usuario> cg = new ConsultaGeral<Usuario>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("login", nome.trim());
-		List<Usuario> resultado = (List<Usuario>) cg.consulta(new StringBuilder("select o from Usuario o where o.login = :login"), hm);
-		if(resultado.size() > 0){
-			return resultado.get(0);
+		Usuario resultado = cg.consultaUnica(new StringBuilder("select o from Usuario o where o.login = :login"), hm);
+		if(resultado != null){
+			return resultado;
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Usuário não encontrado!"));
+			return null;
 		}
-		return null;
 	}
 
 	public void continuaLogin(){
@@ -121,24 +126,30 @@ public class Autenticador {
 		}
 	}
 	
+	public boolean verificaSenha(Usuario usuarioLogado, String senha){
+		if(usuarioLogado.getSenha().equals(Utilities.md5(senha))){
+			return true;
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
+			return false;
+		}
+	}
+	
 	public void logarUsuario(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		try{
 			if(!getUsuario().getLogin().isEmpty()){
 	    		Usuario usuarioLogado = procurarUsuario(getUsuario().getLogin());
 	    		if(usuarioLogado != null && usuarioLogado.getIdUsuario() != 0){
-	    			if(usuarioLogado.getSenha().equals(Utilities.md5(getUsuario().getSenha()))){
+	    			if(verificaSenha(usuarioLogado, getUsuario().getSenha())){
 	    				setUsuarioAtual(usuarioLogado);
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
 	    				setUsuarioAtual(usuarioLogado);
 	    				carregaUnidadesUsuario();
-	    				carregaFuncionario();
+	    				carregaProfissional();
 	    				carregaToolBarMenu();
-	    			}else{
-	    				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
+	    				carregaPaineis();
 	    			}
-	    		}else{
-	    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
 	    		}
 	    	}
 		}catch (Exception e) {
@@ -157,6 +168,15 @@ public class Autenticador {
 		setUsuario(new Usuario());
 	}
 	
+	private void carregaPaineis() {
+		ConsultaGeral<Painel> cg = new ConsultaGeral<Painel>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+		StringBuilder sb = new StringBuilder("select o.painel from AutorizaPainel o where o.especialidade.idEspecialidade = :idEspecialidade)");
+		
+		paineisUsuario = cg.consulta(sb, hashMap);
+	}
+
 	/**
 	 * Monta o menu de acordo com as permissões de cada usuário
 	 */
@@ -266,5 +286,8 @@ public class Autenticador {
 		this.mostraComboUnidade = mostraComboUnidade;
 	}
 
+	public List<Painel> getListaPaineisUsuario(){
+		return paineisUsuario == null ? null : new ArrayList<Painel>(paineisUsuario);
+	}
 	
 }
