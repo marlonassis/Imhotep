@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabAutorizaMenu" title="Autorização para painel" >
+			<h:form id="autorizaPainelForm" prependId="false" >
+				<p:fieldset legend="Nova Autorização"
+							collapsed="#{!autorizaPainelHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" showDetail="true" />
+						<ui:include src="autorizaPainelEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!autorizaPainelHome.edicao}"
+			            					update="padraoTabView:tabelaAutorizaPainel autorizaPainelForm"
+											action="#{autorizaPainelHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{autorizaPainelHome.edicao}"
+			            					update="padraoTabView:tabelaAutorizaPainel autorizaPainelForm"
+											action="#{autorizaPainelHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{autorizaPainelHome.edicao}"
+											update="@parent" 
+											action="#{autorizaPainelHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaAutorizaMenuForm" prependId="false" >
+				<p:fieldset id="pesquisaAutorizaMenuFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="autorizaPainelConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaAutorizaPainel" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{autorizaPainelConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaAutorizaPainelForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="autorizaPainelTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>
