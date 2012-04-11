@@ -22,6 +22,7 @@ public class PrescricaoItem {
 	private Prescricao prescricao;
 	private String observacao;
 	private Set<PrescricaoItemDose> prescricaoItemDoses;
+	private Profissional profissionalLiberacao;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -50,6 +51,15 @@ public class PrescricaoItem {
 	}
 	public void setPrescricao(Prescricao prescricao) {
 		this.prescricao = prescricao;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_liberacao")
+	public Profissional getProfissionalLiberacao() {
+		return profissionalLiberacao;
+	}
+	public void setProfissionalLiberacao(Profissional profissionalLiberacao) {
+		this.profissionalLiberacao = profissionalLiberacao;
 	}
 	
 	@Column(name = "ds_observacao")

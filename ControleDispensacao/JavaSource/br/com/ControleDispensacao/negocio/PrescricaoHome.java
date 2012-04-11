@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.negocio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -16,9 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
+import br.com.ControleDispensacao.entidade.Especialidade;
+import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
+import br.com.ControleDispensacao.entidade.Profissional;
+import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
@@ -34,6 +39,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private Integer quantidadePorDose;
 	private Integer intervaloEntreDoses;
 	private boolean iniciaDosagem;
+	private boolean mostraModalLiberacaoMedicamento;
+	private Profissional profissionalLiberacao;
+	private String usuario;
+	private String senha;
 	
 	private void limpaVariaveis(){
 		setDataInicio(null);
@@ -43,7 +52,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public List<Prescricao> getListaPrescricaoPendente(){
-		return getBusca("select o from Prescricao o where o.dispensado = 'N'");
+		return getBusca("select o from Prescricao o where o.dispensavel = 'N' order by o.dataInclusao");
 	}
 	
 	public void iniciaDosagem(){
@@ -89,15 +98,82 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return ret;
 	}
 	
-	public void adicionaDoses(){
+	public void primeiraLiberacaoDose(){
+		adicionaDoses(Autenticador.getInstancia().getProfissionalAtual());
+	}
+	
+	private Profissional carregaProfissional(Usuario usuario){
+		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idUsuario", usuario.getIdUsuario());
+		return cg.consultaUnica(new StringBuilder("select o from Profissional o where o.usuario.idUsuario = :idUsuario"), hm);
+	}
+	
+	public void segundaLiberacaoDose(){
+		Autenticador a = new Autenticador();
+		Usuario usuarioLiberacao = a.procurarUsuario(usuario);
+		if(usuarioLiberacao != null && a.verificaSenha(usuarioLiberacao, senha)){
+			adicionaDoses(carregaProfissional(usuarioLiberacao));
+		}
+	}
+	
+	private void adicionaDoses(Profissional profissionalLiberacao){
 		if(liberaDose()){
-			inicializaPrescricaoItemDoses();
-			if(getPrescricaoItem().getIdPrescricaoItem() != 0 || gravaPrescricaoItem()){
-				gravaPrescricaoItemDose();
+			if(liberaMedicamentoEspecialidade(profissionalLiberacao)){
+				inicializaPrescricaoItemDoses();
+				if(getPrescricaoItem().getIdPrescricaoItem() != 0 || gravaPrescricaoItem()){
+					gravaPrescricaoItemDose();
+				}
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"O usuário não tem autorização para liberar o material.", "Peça autorização para um " + getListaEspecialidadeString() + "."));
 			}
 		}
 	}
 
+	private String getListaEspecialidadeString(){
+		String especialidades = "";
+		List<Especialidade> especialidadesMedicamento = getEspecialidadeMedicamento(getPrescricaoItem().getMaterial());
+		for(int i = 0; i < especialidadesMedicamento.size(); i++){
+			Especialidade e = especialidadesMedicamento.get(i);
+			especialidades = especialidades.concat(e.getDescricao());
+			if(i <= especialidadesMedicamento.size() - 3){
+				especialidades = especialidades.concat(", ");
+			}else{
+				if(i == especialidadesMedicamento.size() - 2){
+					especialidades = especialidades.concat(" ou ");
+				}
+			}
+		}
+		return especialidades;
+	}
+	
+	private List<Especialidade> getEspecialidadeMedicamento(Material material){
+		return new ArrayList<Especialidade>(new EspecialidadeHome().getListaEspecialidadeMaterial(material));
+	}
+	
+	public void cancelaAutorizacaoMaterial(){
+		usuario = null;
+		senha = null;
+		mostraModalLiberacaoMedicamento = false;
+	}
+	
+	/**
+	 * Verifica se o medicamento pode ser prescrito pelo profissional logado usando sua especialidade
+	 */
+	public boolean liberaMedicamentoEspecialidade(Profissional profissionalVerificacao){
+		List<Especialidade> especialidadeMedicamentos = getEspecialidadeMedicamento(getPrescricaoItem().getMaterial());
+		if(especialidadeMedicamentos.contains(profissionalVerificacao.getEspecialidade())){
+			profissionalLiberacao = profissionalVerificacao;
+			mostraModalLiberacaoMedicamento = false;
+			return true;
+		}else{
+			usuario = null;
+			senha = null;
+			mostraModalLiberacaoMedicamento = true;
+			return false;
+		}
+	}
+	
 	private void gravaPrescricaoItemDose() {
 		try{
 			iniciarTransacao();
@@ -184,8 +260,12 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void cancelaDosagem(){
 		if(removePrescricaoItem()){
 			limpaVariaveis();
-			getPrescricaoItem().setPrescricaoItemDoses(new HashSet<PrescricaoItemDose>());
-			iniciaDosagem = false;
+			PrescricaoItemHome ph = new PrescricaoItemHome();
+			ph.setInstancia(getPrescricaoItem());
+			if(ph.apagar()){
+				iniciaDosagem = false;
+				setPrescricaoItem(new PrescricaoItem());
+			}
 		}
 	}
 	
@@ -219,6 +299,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			iniciarTransacao();
 			getPrescricaoItem().setPrescricao(getInstancia());
 			getPrescricaoItem().setReferenciaUnica(geraReferenciaUnica());
+			getPrescricaoItem().setProfissionalLiberacao(profissionalLiberacao);
 			session.save(getPrescricaoItem());
 			session.flush();  
 			tx.commit();
@@ -370,5 +451,30 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 
 	public void setIniciaDosagem(boolean iniciaDosagem) {
 		this.iniciaDosagem = iniciaDosagem;
+	}
+
+	public boolean isMostraModalLiberacaoMedicamento() {
+		return mostraModalLiberacaoMedicamento;
+	}
+
+	public void setMostraModalLiberacaoMedicamento(
+			boolean mostraModalLiberacaoMedicamento) {
+		this.mostraModalLiberacaoMedicamento = mostraModalLiberacaoMedicamento;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 }
