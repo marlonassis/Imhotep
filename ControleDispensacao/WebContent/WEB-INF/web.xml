@@ -96,4 +96,8 @@
 		<param-value>blueSky</param-value>
 	</context-param>
 
+    <listener>  
+        <listener-class>br.com.ControleDispensacao.quartz.RunQuartz</listener-class>  
+    </listener>  
+
 </web-app>
