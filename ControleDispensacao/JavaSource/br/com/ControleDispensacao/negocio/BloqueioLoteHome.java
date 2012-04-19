@@ -37,7 +37,7 @@ public class BloqueioLoteHome extends PadraoHome<Estoque>{
 		return false;
 	}
 	
-	public void bloqueioAutomáticoEstoque(){
+	public void bloqueioAutomaticoEstoque(){
 		getInstancia().setBloqueado(TipoStatusEnum.S);
 		getInstancia().setMotivoBloqueio("Bloqueio automático. Lote vencido.");
 		atualizar();

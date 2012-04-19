@@ -20,17 +20,12 @@ import javax.persistence.TemporalType;
 public class ItensMovimentoGeral {
 	private int idItensMovimentoGeral;
 	private MovimentoGeral movimentoGeral;
-	private Material material;
-	private Fabricante fabricante;
-	private String lote;
-	private Date dataValidade;
 	private Integer quantidade;
 	private PrescricaoItem prescricaoItem;
-	private Usuario usuarioAutorizador;
-	private ItemSolicitaRemanejamento itemSolicitaRemanejamento;
 	private Hospital hospital;
 	private Date dataDoacao;
-	
+	private Date dataCriacao;
+	private Estoque estoque;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_itens_movimento_geral_id_itens_movimento_geral_seq")
 	@Id
@@ -51,41 +46,16 @@ public class ItensMovimentoGeral {
 	public void setMovimentoGeral(MovimentoGeral movimentoGeral) {
 		this.movimentoGeral = movimentoGeral;
 	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_material")
-	public Material getMaterial() {
-		return material;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+	@JoinColumn(name = "id_estoque")
+	public Estoque getEstoque() {
+		return estoque;
 	}
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_fabricante")
-	public Fabricante getFabricante() {
-		return fabricante;
-	}
-	public void setFabricante(Fabricante fabricante) {
-		this.fabricante = fabricante;
+	public void setEstoque(Estoque estoque) {
+		this.estoque = estoque;
 	}
 	
-	@Column(name = "ds_lote", length = 30)
-	public String getLote() {
-		return lote;
-	}
-	public void setLote(String lote) {
-		this.lote = lote;
-	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_data_validade")
-	public Date getDataValidade() {
-		return dataValidade;
-	}
-	public void setDataValidade(Date dataValidade) {
-		this.dataValidade = dataValidade;
-	}
 	
 	@Column(name = "in_quantidade")
 	public Integer getQuantidade() {
@@ -105,24 +75,6 @@ public class ItensMovimentoGeral {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario_autorizador")
-	public Usuario getUsuarioAutorizador() {
-		return usuarioAutorizador;
-	}
-	public void setUsuarioAutorizador(Usuario usuarioAutorizador) {
-		this.usuarioAutorizador = usuarioAutorizador;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_item_solicita_remanejamento")
-	public ItemSolicitaRemanejamento getItemSolicitaRemanejamento() {
-		return itemSolicitaRemanejamento;
-	}
-	public void setItemSolicitaRemanejamento(ItemSolicitaRemanejamento itemSolicitaRemanejamento) {
-		this.itemSolicitaRemanejamento = itemSolicitaRemanejamento;
-	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_hospital")
 	public Hospital getHospital() {
 		return hospital;
@@ -140,6 +92,15 @@ public class ItensMovimentoGeral {
 		this.dataDoacao = dataDoacao;
 	}
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_criacao")
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -153,12 +114,12 @@ public class ItensMovimentoGeral {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + material.getDescricao().concat(lote).hashCode();
+	    return hash * 31 + getEstoque().getMaterial().getDescricao().concat(getEstoque().getLote()).hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return lote.concat(" - ").concat(material.getDescricao());
+		return getEstoque().getLote().concat(" - ").concat(getEstoque().getMaterial().getDescricao());
 	}
 
 }

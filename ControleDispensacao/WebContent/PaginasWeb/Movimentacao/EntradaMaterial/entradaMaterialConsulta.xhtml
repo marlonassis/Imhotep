@@ -13,7 +13,7 @@
 			<h:outputLabel for="materialConsulta" value="Material:"  /><br />
 	  		<p:autoComplete id="materialConsulta" 
 	  						forceSelection="true"
-	  						value="#{entradaMaterialConsulta.instancia.material}"
+	  						value="#{estoqueDesbloqueadoConsulta.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
 							title="Informe o grupo do sub-grupo"
@@ -25,7 +25,7 @@
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="fabricanteConsulta" value="Fabricante:"  /><br />
 	  		<p:autoComplete id="fabricanteConsulta" 
-	  						value="#{entradaMaterialConsulta.instancia.fabricante}"
+	  						value="#{estoqueDesbloqueadoConsulta.instancia.fabricante}"
 							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
 							var="fabricante"
 							forceSelection="true"
@@ -38,7 +38,7 @@
 		<h:panelGroup>
 			<h:outputLabel for="loteConsulta" value="Lote:"  /><br />
 			<p:inputText id="loteConsulta" 
-						 value="#{entradaMaterialConsulta.instancia.lote}" 
+						 value="#{estoqueDesbloqueadoConsulta.instancia.lote}" 
 						 title="Informe o lote do material" />
 		</h:panelGroup>
 		
@@ -46,7 +46,7 @@
 			<h:outputLabel for="dataValidadeConsulta" value="Data de validade:"  /><br />
 			<p:inputMask id="dataValidadeConsulta"
 						 mask="99/99/9999"
-						 value="#{entradaMaterialConsulta.instancia.dataValidade}"
+						 value="#{estoqueDesbloqueadoConsulta.instancia.dataValidade}"
 						 title="Data de validade do lote"
 						 required="false">
 				<f:convertDateTime pattern="dd/MM/yyyy"  />

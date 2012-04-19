@@ -26,33 +26,78 @@ import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="ajusteEstoqueHome")
 @SessionScoped
-public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
+public class AjusteEstoqueHome extends PadraoHome<Estoque>{
+	static final String AJUSTE_ESTOQUE_HOME = "ajusteEstoqueHome";
 	//variáveis internas
 	private Integer saldoAnterior;
 	//
 	//variáveis usadas no cadastro de ajuste
-	private Estoque estoque;
+	private ItensMovimentoGeral itensMovimentoGeral;
 	private List<Estoque> estoqueList;
+	private Material material;
 	//
+	
+	private Estoque carregaEstoqueLote(String lote) {
+		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("lote", lote);
+		StringBuilder sb = new StringBuilder("select o from Estoque o where o.lote = :lote");
+		Estoque estoqueAtual = cg.consultaUnica(sb, hashMap);
+		
+		if(estoqueAtual != null){
+			return estoqueAtual;
+		}
+		return null;
+	}
+	
+	public void carregaEstoqueString(String lote){
+		if(!lote.isEmpty()){
+			carregaAjusteAutomatico(carregaEstoqueLote(lote));
+		}
+	}
+	
+	public void carregaAjusteAutomatico(Estoque estoque){
+		setInstancia(estoque);
+		material = getInstancia().getMaterial();
+		getItensMovimentoGeral().setEstoque(getInstancia());
+		carregaEstoqueMaterial();
+	}
+	
+	public static AjusteEstoqueHome getInstanciaHome() {
+		try {
+			return (AjusteEstoqueHome) getInstanciaHome(AjusteEstoqueHome.class);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@Override
 	public void novaInstancia() {
 		saldoAnterior = 0;
-		estoque = null;
+		itensMovimentoGeral = new ItensMovimentoGeral();
 		setEstoqueList(null);
 		super.novaInstancia();
-		getInstancia().setMovimentoGeral(new MovimentoGeral());
+		itensMovimentoGeral.setMovimentoGeral(new MovimentoGeral());
+		material = null;
 	}
 	
 	public void carregaEstoqueMaterial(){
-		Material material = getInstancia().getMaterial();
 		if(material != null){
 			setEstoqueList(new ArrayList<Estoque>(new EstoqueHome().listaEstoqueMaterial(material)));
 		}
 	}
 	
 	public AjusteEstoqueHome() {
-		getInstancia().setMovimentoGeral(new MovimentoGeral());
+		itensMovimentoGeral = new ItensMovimentoGeral();
+		itensMovimentoGeral.setMovimentoGeral(new MovimentoGeral());
 	}
 
 	@Override
@@ -67,70 +112,73 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 		return false;
 	}
 	
+	private boolean verificaQuantidadeTipoOperacao(){
+		TipoOperacaoEnum tipoOperacao = itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getTipoOperacao();
+		if(!tipoOperacao.equals(TipoOperacaoEnum.Entrada) && itensMovimentoGeral.getQuantidade() > getInstancia().getQuantidade()){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esta é uma operação de saída ou perda. Informe uma quantidade que esteja no estoque.", "Ajuste não efetuado!"));
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	@Override
 	public boolean enviar() {
 		boolean ret=false;
-		//verifica se o usuario está em uma unidade
-		if(Autenticador.getInstancia().getUnidadeAtual() != null){
-			//verifica se existe quantidade suficiente em estoque para uma perda ou saída 
-			if(!getInstancia().getMovimentoGeral().getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada) && estoque.getQuantidade() < getInstancia().getQuantidade()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esta é uma operação de saída ou perda. Informe uma quantidade que esteja no estoque.", "Ajuste não efetuado!"));
-			}else{
-				try{
-					iniciarTransacao();
-					geraMovimentoGeral();
-					saldoAnterior = saldoAnterior();
-					atualizarEstoque();
-					carregaItem();
-					session.persist(getInstancia());
-					geraMovimentoLivro();
-					gerarDoacao();
-					session.flush();  
-					tx.commit(); 
-					ret = true;
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Ajuste de estoque realizada com sucesso!", ""));
-				}catch (Exception e) {
-					e.printStackTrace();
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao cadastrar a entrada do material", e.getMessage()));
-					getInstancia().setIdItensMovimentoGeral(0);
-					session.getTransaction().rollback();
-				}finally{
-					session.close(); // Fecha sessão
-					factory.close();
-				}
+		//verifica se existe quantidade suficiente em estoque para uma perda ou saída 
+		if(verificaQuantidadeTipoOperacao()){
+			try{
+				iniciarTransacao();
+				geraMovimentoGeral();
+				saldoAnterior = saldoAnterior();
+				atualizarEstoque();
+				carregaItem();
+				session.merge(getInstancia());
+				session.merge(itensMovimentoGeral);
+				geraMovimentoLivro();
+				gerarDoacao();
+				session.flush();  
+				tx.commit(); 
+				ret = true;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Ajuste de estoque realizada com sucesso!", ""));
+				novaInstancia();
+			}catch (Exception e) {
+				e.printStackTrace();
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao cadastrar a entrada do material", e.getMessage()));
+				getInstancia().setIdEstoque(0);
+				session.getTransaction().rollback();
+			}finally{
+				session.close(); // Fecha sessão
+				factory.close();
 			}
-		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Você não está alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
 		}
 		return ret;
 	}
 
 	private void gerarDoacao() {
-		Hospital hospital = getInstancia().getHospital();
+		Hospital hospital = itensMovimentoGeral.getHospital();
 		if(hospital != null){
-			Date dataDoacao = getInstancia().getDataDoacao();
+			Date dataDoacao = itensMovimentoGeral.getDataDoacao();
 			Material material = getInstancia().getMaterial();
-			Integer quantidade = getInstancia().getQuantidade();
-			TipoOperacaoEnum tipoOperacao = getInstancia().getMovimentoGeral().getTipoMovimento().getTipoOperacao();
+			Integer quantidade = itensMovimentoGeral.getQuantidade();
+			TipoOperacaoEnum tipoOperacao = itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getTipoOperacao();
 			Doacao instancia = new DoacaoHome(dataDoacao, hospital, material, quantidade, tipoOperacao).getInstancia();
 			session.save(instancia);
 		}
 	}
 
 	private void carregaItem() {
-		getInstancia().setDataValidade(estoque.getDataValidade());
-		getInstancia().setQuantidade(getInstancia().getQuantidade());
-		getInstancia().setFabricante(estoque.getFabricante());
-		getInstancia().setLote(estoque.getLote());
+		itensMovimentoGeral.setDataCriacao(new Date());
+		itensMovimentoGeral.setEstoque(getInstancia());
 	}
 	
 	private void geraMovimentoLivro(){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(new Date());
-		movimentoLivroAtual.setHistorico(getInstancia().getMovimentoGeral().getTipoMovimento().getDescricao());
+		movimentoLivroAtual.setHistorico(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getDescricao());
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
-		movimentoLivroAtual.setMovimentoGeral(getInstancia().getMovimentoGeral());
-		movimentoLivroAtual.setTipoMovimento(getInstancia().getMovimentoGeral().getTipoMovimento());
+		movimentoLivroAtual.setMovimentoGeral(itensMovimentoGeral.getMovimentoGeral());
+		movimentoLivroAtual.setTipoMovimento(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento());
 		movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		
@@ -139,11 +187,11 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 			movimentoLivroAtual.setSaldoAtual(getInstancia().getQuantidade() + saldoAnterior);
 		}else{
 			if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Perda)){
-				movimentoLivroAtual.setQuantidadePerda(getInstancia().getQuantidade());
+				movimentoLivroAtual.setQuantidadePerda(itensMovimentoGeral.getQuantidade());
 			}else{
-				movimentoLivroAtual.setQuantidadeSaida(getInstancia().getQuantidade());
+				movimentoLivroAtual.setQuantidadeSaida(itensMovimentoGeral.getQuantidade());
 			}
-			movimentoLivroAtual.setSaldoAtual(saldoAnterior - getInstancia().getQuantidade());
+			movimentoLivroAtual.setSaldoAtual(saldoAnterior - itensMovimentoGeral.getQuantidade());
 		}
 		
 		session.save(movimentoLivroAtual);
@@ -162,29 +210,22 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 	}
 	
 	private void atualizarEstoque() {
-		if(getInstancia().getMovimentoGeral().getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
-			estoque.setQuantidade(estoque.getQuantidade() + getInstancia().getQuantidade());
+		TipoOperacaoEnum tipoOperacao = itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getTipoOperacao();
+		if(tipoOperacao.equals(TipoOperacaoEnum.Entrada)){
+			getInstancia().setQuantidade(getInstancia().getQuantidade() + itensMovimentoGeral.getQuantidade());
 		}else{
-			estoque.setQuantidade(estoque.getQuantidade() - getInstancia().getQuantidade());
+			getInstancia().setQuantidade(getInstancia().getQuantidade() - itensMovimentoGeral.getQuantidade());
 		}
-		session.merge(estoque);
 	}
 	
 	private void geraMovimentoGeral() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		String chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
-		getInstancia().getMovimentoGeral().setNumeroControle(chaveUnica);
-		getInstancia().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().getMovimentoGeral().setDataInclusao(new Date());
-		getInstancia().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-	}
-
-	public Estoque getEstoque() {
-		return estoque;
-	}
-
-	public void setEstoque(Estoque estoque) {
-		this.estoque = estoque;
+		itensMovimentoGeral.getMovimentoGeral().setNumeroControle(chaveUnica);
+		itensMovimentoGeral.getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+		itensMovimentoGeral.getMovimentoGeral().setDataInclusao(new Date());
+		itensMovimentoGeral.getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		session.save(itensMovimentoGeral.getMovimentoGeral());
 	}
 
 	public Collection<Estoque> getEstoqueList() {
@@ -193,6 +234,22 @@ public class AjusteEstoqueHome extends PadraoHome<ItensMovimentoGeral>{
 
 	public void setEstoqueList(List<Estoque> estoqueList) {
 		this.estoqueList = estoqueList;
+	}
+
+	public ItensMovimentoGeral getItensMovimentoGeral() {
+		return itensMovimentoGeral;
+	}
+
+	public void setItensMovimentoGeral(ItensMovimentoGeral itensMovimentoGeral) {
+		this.itensMovimentoGeral = itensMovimentoGeral;
+	}
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 
 }

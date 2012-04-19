@@ -19,9 +19,22 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 
 	private T instancia;
 	
-	public Object getInstanciaHome(String nome){
+	private static String primeiraLetraMinuscula(String palavra) {    
+	      return palavra.substring(0,1).toLowerCase().concat(palavra.substring(1));    
+	} 
+	
+	protected static Object getInstanciaHome(Class<?> classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
-		return session.getAttribute(nome);
+		if(session != null){
+			Object attribute = session.getAttribute(primeiraLetraMinuscula(classe.getSimpleName()));
+			if (attribute == null){
+				session.setAttribute(classe.getSimpleName(), classe.newInstance());
+				attribute = session.getAttribute(classe.getSimpleName());
+			}
+			return attribute;
+		}else{
+			return null;
+		}
 	}
 	
 	protected String getIdSessao(){
@@ -271,6 +284,24 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			factory.close();
 		}
 		return lista;
+	}
+
+	public boolean isEdicaoGenerico(Object obj){
+		Object retId = null;
+		try{
+	        Method meth = Class.forName(obj.getClass().getName()).getMethod("getId".concat(obj.getClass().getSimpleName()));
+	        retId = meth.invoke(obj);
+		}
+        catch (Throwable e) {
+           e.printStackTrace();
+        }
+		
+		if( ((Integer) retId) != null && ((Integer) retId).intValue() != 0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	public boolean isEdicao(){

@@ -11,6 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabAjusteEstoque" title="Ajuste de Estoque" >
+	#{ajusteEstoqueHome.carregaEstoqueString(param.lote)}
 			<h:form id="ajusteEstoqueForm" prependId="false" >
 				<p:fieldset legend="Novo ajuste de estoque"
 							collapsed="false"

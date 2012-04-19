@@ -10,7 +10,7 @@
 				 
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="tipoMovimento" value="Tipo do movimento:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.movimentoGeral.tipoMovimento}" 
+			<p:selectOneMenu value="#{ajusteEstoqueHome.itensMovimentoGeral.movimentoGeral.tipoMovimento}" 
 							 effect="fade" 
 							 converter="tipoMovimentoConversor"
 							 required="true">
@@ -28,7 +28,7 @@
 				 width="100%" >
 				<h:panelGroup>
 					<h:outputLabel for="hospital" value="Hospital:"  /><br />
-					<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.hospital}" 
+					<p:selectOneMenu value="#{ajusteEstoqueHome.itensMovimentoGeral.hospital}" 
 									 effect="fade" 
 									 converter="hospitalConversor"
 									 required="false">
@@ -44,12 +44,12 @@
 		        </h:panelGroup>
 		
 				<h:panelGroup id="dataDoacaoPanelGroup"
-							  rendered="#{ajusteEstoqueHome.instancia.hospital != null}">
+							  rendered="#{ajusteEstoqueHome.itensMovimentoGeral.hospital != null}">
 					<font color="red" >*</font><h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
 					<p:calendar id="dataDoacao"
 								pattern="dd/MM/yyyy"
 								required="true"
-								value="#{ajusteEstoqueHome.instancia.dataDoacao}" />
+								value="#{ajusteEstoqueHome.itensMovimentoGeral.dataDoacao}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>
@@ -57,14 +57,14 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="motivo" value="Motivo:"  /><br />
 			<p:inputText id="motivo" 
-						 value="#{ajusteEstoqueHome.instancia.movimentoGeral.motivo}" 
+						 value="#{ajusteEstoqueHome.itensMovimentoGeral.movimentoGeral.motivo}" 
 						 required="true"
 						 title="Informe o motivo do ajuste" />
 		</h:panelGroup>
 		
 		<h:panelGroup id="materialPanelGroup" >
 			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia.material}" 
+			<p:selectOneMenu value="#{ajusteEstoqueHome.material}" 
 							 effect="fade" 
 							 converter="materialConversor"
 							 required="true">
@@ -75,14 +75,14 @@
 							  itemValue="" /> 
 	            <f:selectItems value="#{materialHome.listaMaterialEstoque}" 
 	            			   var="material" 
-	            			   itemLabel="#{material.toString()}" 
+	            			   itemLabel="#{material.descricaoUnidadeMaterial}" 
 	            			   itemValue="#{material}"/> 
 	        </p:selectOneMenu>
 		</h:panelGroup>
 		
 		<h:panelGroup id="estoquePanelGroup" >
 			<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.estoque}" 
+			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia}" 
 							 effect="fade" 
 							 converter="estoqueConversor"
 							 required="true">  
@@ -98,7 +98,7 @@
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
 			<p:inputText id="quantidade" 
-						 value="#{ajusteEstoqueHome.instancia.quantidade}" 
+						 value="#{ajusteEstoqueHome.itensMovimentoGeral.quantidade}" 
 						 required="true"
 						 onkeyup="apenasNumero(this);"
 						 title="Informe a quantidade do ajuste" />
