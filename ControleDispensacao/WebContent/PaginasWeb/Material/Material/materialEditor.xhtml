@@ -16,15 +16,20 @@
 						 value="#{materialHome.instancia.codigoMaterial}" 
 						 title="Informe o código do material" />
 		</h:panelGroup>
-				 
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
-			<p:inputText id="descricao"
-						 required="true" 
-						 value="#{materialHome.instancia.descricao}" 
-						 title="Informe descrição do material" />
+			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:" /><br />
+	  		<p:autoComplete id="descricao" 
+	  						required="true"
+	  						title="Informe descrição do material"
+	  						immediate="true"
+	  						value="#{materialHome.instancia.descricao}"
+							completeMethod="#{materialHome.getListaMaterialDescricaoAutoComplete}" 
+							var="material" 
+							itemLabel="#{material}"
+							itemValue="#{material}"/>
 		</h:panelGroup>
-		
+				 
 		<h:panelGroup>
 			<h:outputLabel for="periodoDispensavel" value="Período dispensável:"  /><br />
 			<p:inputText id="periodoDispensavel"

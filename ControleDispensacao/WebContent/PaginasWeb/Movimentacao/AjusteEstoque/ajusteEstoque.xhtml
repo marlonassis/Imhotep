@@ -20,7 +20,7 @@
 						<p:growl id="formGrowl" showDetail="true" />
 						<ui:include src="ajusteEstoqueEditor.xhtml"/>
 			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!ajusteEstoqueHome.edicao}"
+			            					rendered="true"
 			            					update="padraoTabView:tabelaAjusteEstoque ajusteEstoqueForm"
 											action="#{ajusteEstoqueHome.enviar}" />
 			            <p:commandButton	value="Gravar" 
@@ -28,7 +28,7 @@
 			            					update="padraoTabView:tabelaAjusteEstoque ajusteEstoqueForm"
 											action="#{ajusteEstoqueHome.atualizar}"/> 
 						<p:commandButton	value="Novo"
-											rendered="#{ajusteEstoqueHome.edicao}"
+											rendered="false"
 											update="@parent" 
 											action="#{ajusteEstoqueHome.novaInstancia()}"/> 
 				</p:fieldset>

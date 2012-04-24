@@ -17,8 +17,6 @@
 								 value="#{entradaMaterialHome.instancia.lote}"
 								 title="Informe o lote" />
 					<p:commandButton value="Procurar lote"
-									 immediate="true"
-									 ajax="true"
 									 action="#{entradaMaterialHome.procurarLote}" />
 				</h:panelGroup>
 			</h:panelGrid>
@@ -57,7 +55,6 @@
 			<font color="red" >*</font><h:outputLabel for="numeroDocumento" value="Número do documento:"  /><br />
 			<p:inputText id="numeroDocumento" 
 						 value="#{entradaMaterialHome.itensMovimentoGeral.movimentoGeral.numeroDocumento}"
-						 required="true"
 						 onkeyup="apenasNumero(this);"
 						 title="Informe o múmero do documento" />
 		</h:panelGroup>
@@ -68,7 +65,6 @@
 	  						value="#{entradaMaterialHome.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
-							required="true"
 							forceSelection="true"
 							title="Informe o material"
 							itemLabel="#{material.descricaoUnidadeMaterial}" 
@@ -82,7 +78,6 @@
 	  						value="#{entradaMaterialHome.instancia.fabricante}"
 							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
 							var="fabricante"
-							required="true"
 							forceSelection="true"
 							title="Informe o fabricante"
 							itemLabel="#{fabricante.descricao}" 
@@ -94,7 +89,6 @@
 			<font color="red" >*</font><h:outputLabel for="dataValidade" value="Data de validade:"  /><br />
 			<p:inputMask id="dataValidade"
 						 mask="99/99/9999"
-						 required="true"
 						 value="#{entradaMaterialHome.instancia.dataValidade}"
 						 title="Data de validade do lote">
 				<f:convertDateTime pattern="dd/MM/yyyy"  />
@@ -105,7 +99,6 @@
 			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
 			<p:inputText id="quantidade" 
 						 value="#{entradaMaterialHome.itensMovimentoGeral.quantidade}"
-						 required="true" 
 						 onkeyup="apenasNumero(this);"
 						 title="Informe a quantidade" />
 		</h:panelGroup>

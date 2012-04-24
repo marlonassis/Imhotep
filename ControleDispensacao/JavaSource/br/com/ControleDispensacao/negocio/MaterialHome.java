@@ -3,7 +3,9 @@ package br.com.ControleDispensacao.negocio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -13,6 +15,7 @@ import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.SubGrupo;
 import br.com.ControleDispensacao.seguranca.Autenticador;
+import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="materialHome")
@@ -77,17 +80,10 @@ public class MaterialHome extends PadraoHome<Material>{
 		return super.getBusca("select o from Material as o where lower(o.descricao) like lower('%"+sql+"%') ");
 	}
 	
-//	/**
-//	 * Método que retorna uma lista de Material caso exista estoque para ele
-//	 * @param String sql
-//	 * @return Collection Material
-//	 */
-//	public Collection<Material> getListaMaterialComEstoqueAutoComplete(String sql){
-//		String sql2 = "select o.material from Estoque as o where lower(o.descricao) like lower('%"+sql+"%') and ";
-//		sql2 += " o.quantidade > 0 and (o.quantidade - (select sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ";
-//		sql2 += "from PrescricaoItemDose a where a.dispensado = 'N' and a.material.idMaterial = o.material.idMaterial)) > 0";
-//		return super.getBusca(sql2);
-//	}
+	public Collection<String> getListaMaterialDescricaoAutoComplete(String sql){
+		ConsultaGeral<String> cg = new ConsultaGeral<String>();
+		return cg.consulta(new StringBuilder("select o.descricao from Material as o where lower(o.descricao) like lower('%"+sql.toLowerCase()+"%') "), null);
+	}
 	
 	public Collection<Material> getListaMaterialEstoque(){
 		return super.getBusca("select o from Material o where o.idMaterial in (select e.material.idMaterial from Estoque e) order by o.descricao");

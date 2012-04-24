@@ -80,7 +80,7 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 	@Override
 	public boolean enviar() {
 		boolean ret=false;
-		if(carregaMovimentoGeral()){
+		if(camposPreechidos() && carregaMovimentoGeral()){
 			try{
 				iniciarTransacao();
 				if(!existeEstoque()){
@@ -106,6 +106,43 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 		return ret;
 	}
 	
+	private boolean camposPreechidos() {
+		if(itensMovimentoGeral.getHospital() != null && itensMovimentoGeral.getDataDoacao() == null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe a data da doação.", null));
+			return false;
+		}
+		if(getInstancia().getLote().isEmpty()){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o lote.", null));
+			return false;
+		}else{
+			if(itensMovimentoGeral.getMovimentoGeral().getNumeroDocumento().isEmpty()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o número do documento.", null));
+				return false;
+			}else{
+				if(getInstancia().getMaterial() == null){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o material.", null));
+					return false;
+				}else{
+					if(getInstancia().getFabricante() == null){
+						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o fabricante.", null));
+						return false;
+					}else{
+						if(getInstancia().getDataValidade() == null){
+							FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe a data de validade.", null));
+							return false;
+						}else{
+							if(itensMovimentoGeral.getQuantidade() == 0 || itensMovimentoGeral.getQuantidade() == null){
+								FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe a quantidade.", null));
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	private void geraItensMovimentoGeral() {
 		getItensMovimentoGeral().setDataCriacao(new Date());
 		getItensMovimentoGeral().setEstoque(getInstancia());
