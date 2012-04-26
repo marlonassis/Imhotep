@@ -9,7 +9,7 @@
 	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/jasperreports-4.5.1.jar"/>
 	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/myfaces-api-2.0.2.jar"/>
 	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/myfaces-impl-2.0.2.jar"/>
-	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/primefaces-3.0.M3.jar"/>
+	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/primefaces-3.1.1.jar"/>
 	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/richfaces-components-ui-4.1.0.Final.jar"/>
 	<buildpathentry external="true" kind="lib" path="/home/marlonassis2/git/ControleDispensacao/ControleDispensacao/WebContent/WEB-INF/lib/richfaces-core-impl-4.1.0.Final.jar"/>
 </buildpath>
