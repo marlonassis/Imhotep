@@ -55,6 +55,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return getBusca("select o from Prescricao o where o.dispensavel = 'N' order by o.dataInclusao");
 	}
 	
+	public List<Prescricao> getListaPrescricaoLiberada(){
+		return getBusca("select o from Prescricao o where o.dispensavel = 'S' order by o.dataInclusao");
+	}
+	
 	public void iniciaDosagem(){
 		limpaVariaveis();
 		if(getInstancia().getIdPrescricao() != 0 || gravaPrescricao()){
@@ -162,7 +166,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	 */
 	public boolean liberaMedicamentoEspecialidade(Profissional profissionalVerificacao){
 		List<Especialidade> especialidadeMedicamentos = getEspecialidadeMedicamento(getPrescricaoItem().getMaterial());
-		if(especialidadeMedicamentos.contains(profissionalVerificacao.getEspecialidade())){
+		if(especialidadeMedicamentos.contains(profissionalVerificacao.getEspecialidade()) || especialidadeMedicamentos.isEmpty()){
 			profissionalLiberacao = profissionalVerificacao;
 			mostraModalLiberacaoMedicamento = false;
 			return true;
@@ -184,7 +188,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 				temp.setDataDose(dataReferencia.getTime());
 				temp.setPeriodo(getIntervaloEntreDoses());
 				temp.setQuantidade(getQuantidadePorDose());
-				temp.setDispensado(TipoStatusEnum.N);
 				dataReferencia.add(Calendar.HOUR, getIntervaloEntreDoses());
 				temp.setPrescricaoItem(getPrescricaoItem());
 				session.save(temp);
@@ -300,6 +303,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			getPrescricaoItem().setPrescricao(getInstancia());
 			getPrescricaoItem().setReferenciaUnica(geraReferenciaUnica());
 			getPrescricaoItem().setProfissionalLiberacao(profissionalLiberacao);
+			getPrescricaoItem().setDispensado(TipoStatusEnum.N);
 			session.save(getPrescricaoItem());
 			session.flush();  
 			tx.commit();

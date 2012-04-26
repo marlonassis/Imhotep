@@ -143,7 +143,7 @@ public class Prescricao {
 		this.dispensavel = dispensavel;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prescricao")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricao")
 	public List<PrescricaoItem> getPrescricaoItens() {
 		return prescricaoItens;
 	}

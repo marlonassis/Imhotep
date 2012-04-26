@@ -29,6 +29,7 @@ public class MovimentoLivro {
 	private Integer saldoAtual;
 	private Date dataMovimento;
 	private String historico;
+	private Usuario usuarioMovimentacao;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
 	@Id
@@ -48,6 +49,15 @@ public class MovimentoLivro {
 	}
 	public void setMovimentoGeral(MovimentoGeral movimentoGeral) {
 		this.movimentoGeral = movimentoGeral;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_usuario_movimentacao")
+	public Usuario getUsuarioMovimentacao() {
+		return usuarioMovimentacao;
+	}
+	public void setUsuarioMovimentacao(Usuario usuarioMovimentacao) {
+		this.usuarioMovimentacao = usuarioMovimentacao;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

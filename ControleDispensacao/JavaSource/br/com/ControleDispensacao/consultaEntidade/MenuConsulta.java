@@ -15,6 +15,7 @@ public class MenuConsulta extends PadraoConsulta<Menu> {
 	public MenuConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.menuPai", IGUAL);
+		getCamposConsulta().put("o.url", INCLUINDO_TUDO);
 		setOrderBy("o.descricao");
 	}
 	

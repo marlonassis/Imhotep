@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.ControleDispensacao.auxiliar.Parametro;
 import br.com.ControleDispensacao.entidade.Doacao;
 import br.com.ControleDispensacao.entidade.Estoque;
 import br.com.ControleDispensacao.entidade.Hospital;
@@ -171,6 +172,7 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setSaldoAnterior(0);
 		movimentoLivroAtual.setTipoMovimento(getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento());
 		movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
 		session.save(movimentoLivroAtual);
 	}
 
@@ -221,8 +223,7 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 			getItensMovimentoGeral().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			getItensMovimentoGeral().getMovimentoGeral().setDataInclusao(new Date());
 			getItensMovimentoGeral().getMovimentoGeral().setDataInclusao(new Date());
-			getItensMovimentoGeral().getMovimentoGeral().setTipoMovimento(new TipoMovimento());
-			getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento().setIdTipoMovimento(1);
+			getItensMovimentoGeral().getMovimentoGeral().setTipoMovimento(Parametro.tipoMovimentoEntrada());
 			getItensMovimentoGeral().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		}else{
 			//como foi encontrado um movimento geral então a operacao é de atualização do movimento geral

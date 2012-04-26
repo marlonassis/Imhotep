@@ -137,19 +137,16 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 				session.merge(itensMovimentoGeral);
 				geraMovimentoLivro();
 				gerarDoacao();
-				session.flush();  
-				tx.commit(); 
-				ret = true;
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Ajuste de estoque realizada com sucesso!", ""));
+				String msg = "Ajuste de estoque realizada com sucesso!";
+				finalizaTransacao(msg);
 				novaInstancia();
+				ret = true;
 			}catch (Exception e) {
-				e.printStackTrace();
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao cadastrar a entrada do material", e.getMessage()));
 				getInstancia().setIdEstoque(0);
-				session.getTransaction().rollback();
+				String msg = "Ocorreu um erro ao ajustar o estoque.";
+				catchTransacao(msg, e);
 			}finally{
-				session.close(); // Fecha sessão
-				factory.close();
+				finallyTransacao();
 			}
 		}
 		return ret;
@@ -194,6 +191,8 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 			movimentoLivroAtual.setSaldoAtual(saldoAnterior - itensMovimentoGeral.getQuantidade());
 		}
 		
+		movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+		
 		session.save(movimentoLivroAtual);
 	}
 
@@ -201,10 +200,8 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 		ConsultaGeral<Long> cg = new ConsultaGeral<Long>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("idMaterial", getInstancia().getMaterial().getIdMaterial());
-		hashMap.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
 		StringBuilder sb = new StringBuilder("select sum(o.quantidade) from Estoque o where");
 		sb.append(" o.material.idMaterial = :idMaterial");
-		sb.append(" and o.unidade.idUnidade = :idUnidade");
 		Long quantidadeAtual = cg.consultaUnica(sb, hashMap);
 		return quantidadeAtual == null ? 0 : quantidadeAtual.intValue();
 	}

@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
 @Entity
 @Table(name = "tb_prescricao_item")
@@ -23,6 +27,8 @@ public class PrescricaoItem {
 	private String observacao;
 	private Set<PrescricaoItemDose> prescricaoItemDoses;
 	private Profissional profissionalLiberacao;
+	private Integer quantidadeLiberada;
+	private TipoStatusEnum dispensado;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -78,7 +84,7 @@ public class PrescricaoItem {
 		this.referenciaUnica = referenciaUnica;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prescricaoItem")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricaoItem")
 	public Set<PrescricaoItemDose> getPrescricaoItemDoses() {
 		return prescricaoItemDoses;
 	}
@@ -86,6 +92,23 @@ public class PrescricaoItem {
 		this.prescricaoItemDoses = prescricaoItemDoses;
 	}
 
+	@Column(name = "in_quantidade_liberada")
+	public Integer getQuantidadeLiberada() {
+		return quantidadeLiberada;
+	}
+	public void setQuantidadeLiberada(Integer quantidadeLiberada) {
+		this.quantidadeLiberada = quantidadeLiberada;
+	}
+	
+	@Column(name = "tp_dispensado")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusEnum getDispensado() {
+		return dispensado;
+	}
+	public void setDispensado(TipoStatusEnum dispensado) {
+		this.dispensado = dispensado;
+	}
+	
 	@Override
 	public String toString() {
 		return "Material: ".concat(material.getDescricao()).concat(" - Prescrição: ").concat(prescricao.getNumero().toString());

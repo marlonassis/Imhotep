@@ -1,5 +1,8 @@
 package br.com.nucleo.gerenciador;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -27,4 +30,20 @@ public class GerenciadorConexao {
 		tx = session.beginTransaction();
 	}
 	
+	public void finalizaTransacao(String msg){
+		session.flush();  
+		tx.commit(); 
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,msg, ""));
+	}
+	
+	public void catchTransacao(String msg, Exception e){
+		e.printStackTrace();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,msg, e.getMessage()));
+		session.getTransaction().rollback();
+	}
+	
+	public void finallyTransacao(){
+		session.close(); // Fecha sessão
+		factory.close();
+	}
 }

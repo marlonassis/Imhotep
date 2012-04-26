@@ -1,13 +1,16 @@
 package br.com.ControleDispensacao.auxiliar;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.Profissional;
+import br.com.ControleDispensacao.entidade.TipoMovimento;
 import br.com.ControleDispensacao.seguranca.Autenticador;
+import br.com.nucleo.ConsultaGeral;
 
 @ManagedBean(name="parametro")
 @ViewScoped
@@ -61,4 +64,21 @@ public class Parametro implements Serializable {
 		return isUsuarioMedico();
 	}
 
+	public static TipoMovimento tipoMovimentoDispensacao(){
+		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("dsTipoMovimento", "Dispensação".toLowerCase());
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
+		sb.append(" lower(o.descricao) = :dsTipoMovimento");
+		return cg.consultaUnica(sb, hashMap);
+	}
+	
+	public static TipoMovimento tipoMovimentoEntrada(){
+		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("dsTipoMovimento", "Entrada".toLowerCase());
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
+		sb.append(" lower(o.descricao) = :dsTipoMovimento");
+		return cg.consultaUnica(sb, hashMap);
+	}
 }

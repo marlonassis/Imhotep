@@ -30,7 +30,7 @@
 										converter="pacienteConversor" />
 					</h:panelGroup>
 					<h:panelGroup>
-						<font color="red" >*</font><h:outputLabel for="massa" value="Massa:"  /><br />
+						<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
 						<p:inputText  id="massa"
 									  value="#{prescricaoHome.instancia.massa}"
 									  onkeyup="apenasNumeroComVirgula(this);" 
@@ -135,6 +135,7 @@
 									<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento" value="Quantidade do medicamento por dose:"  /><br />
 									<p:inputText id="quantidadeMedicamento"
 											  	 value="#{prescricaoHome.quantidadePorDose}"
+											  	 onkeyup="apenasNumero(this);"
 											  	 title="Quantidade a ser ministrado ao paciente" />
 									<h:outputText id="unidadeMaterial"
 												  value="#{prescricaoHome.prescricaoItem.material.unidadeMaterial.sigla}" />
