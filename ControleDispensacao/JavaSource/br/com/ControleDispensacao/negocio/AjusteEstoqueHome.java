@@ -36,6 +36,7 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 	private List<Estoque> estoqueList;
 	private Material material;
 	//
+	private boolean ajusteDispensacao = false;
 	
 	private Estoque carregaEstoqueLote(String lote) {
 		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
@@ -121,7 +122,7 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 			return true;
 		}
 	}
-	
+
 	@Override
 	public boolean enviar() {
 		boolean ret=false;
@@ -247,6 +248,14 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	public boolean isAjusteDispensacao() {
+		return ajusteDispensacao;
+	}
+
+	public void setAjusteDispensacao(boolean ajusteDispensacao) {
+		this.ajusteDispensacao = ajusteDispensacao;
 	}
 
 }

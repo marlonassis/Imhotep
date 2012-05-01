@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -26,6 +27,10 @@ public class Utilities{
 	
 	public int converteString(String valor){
 		return  valor.isEmpty() ? 0 : Integer.parseInt(valor);
+	}
+	
+	public Date getDateAtual(){
+		return Calendar.getInstance().getTime();
 	}
 	
 	public String getDataAtual(){

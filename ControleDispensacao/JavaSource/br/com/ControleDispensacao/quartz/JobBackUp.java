@@ -46,11 +46,11 @@ public class JobBackUp implements Job{
 		sdf = new SimpleDateFormat("HH:mm:ss");
 		Process p = null; 
 		
-		String novoDiretorio = "mkdir /home/marlonassis2/banco_backup/"+diretorio;
+		String novoDiretorio = "mkdir /home/farmacia/banco_backup/"+diretorio;
 		r.exec(novoDiretorio);
 		exibeStake(p);
 		
-		String caminhoBackUp = "/home/marlonassis2/banco_backup/"+diretorio+"/bd_farmacia_"+sdf.format(new Date());
+		String caminhoBackUp = "/home/farmacia/banco_backup/"+diretorio+"/bd_farmacia_"+sdf.format(new Date());
 		p = r.exec("/opt/PostgreSQL/9.1/bin/pg_dump -U postgres -E latin1 -F custom -b -v -f "+caminhoBackUp+" db_farmacia");    
 		exibeStake(p);    
 	         

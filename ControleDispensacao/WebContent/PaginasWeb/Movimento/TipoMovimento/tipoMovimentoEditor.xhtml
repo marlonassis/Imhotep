@@ -27,35 +27,5 @@
         	</p:selectOneMenu>
         </h:panelGroup>
 
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="movimentoAdministrativo" value="Movimento Administrativo:"  /><br />
-			<h:selectOneRadio id="movimentoAdministrativo"
-							  value="#{tipoMovimentoHome.instancia.movimentoAdminstrativo}" 
-							  required="true"
-							  title="Informe se o movimento é administrativo ou não" >
-				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="movimentoBloqueado" value="Lote Bloqueado:"  /><br />
-			<h:selectOneRadio id="movimentoBloqueado"
-							  value="#{tipoMovimentoHome.instancia.movimentoBloqueado}" 
-							  required="true"
-							  title="Informe se o lote está bloqueado ou não" >
-				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="movimentoVencido" value="Lote Vencido:"  /><br />
-			<h:selectOneRadio id="movimentoVencido"
-							  value="#{tipoMovimentoHome.instancia.movimentoVencido}" 
-							  required="true"
-							  title="Informe se o lote está vencido ou não" >
-				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-
 	</h:panelGrid>
 </ui:composition>

@@ -10,20 +10,40 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabDispensacao" title="Prescrição" >
+		<p:tab id="tabDispensacao" 
+			   title="Dispensação" >
+			<h:form id="dispensacaoConsultaForm" >
+				<p:fieldset id="pesquisaMaterialFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:param name="consulta" value="#{dispensacaoConsulta}" />
+					<ui:include src="dispensacaoConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="padraoTabView:dispensacaoItensGrid" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{dispensacaoConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="dispensacaoConsultaForm padraoTabView:dispensacaoForm" />
+					
+			    </p:fieldset>  
+			</h:form>
 			<h:form id="dispensacaoForm" prependId="false" >
-			
-			
-				<p:dataTable 	id="dispensacaoItensGrid" 
-								value="#{prescricaoHome.listaPrescricaoLiberada}" 
-								var="itemPendente"
-								emptyMessage="Não foi encontrado registros" 
-								rows="10" 
-								dblClickSelect="true"
-								paginator="true"
-								selectionMode="single" 
-								rowKey="#{itemPendente.idPrescricao}">
-								
+				<p:dataTable id="dispensacaoItensGrid" 
+							 value="#{dispensacaoConsulta.list}" 
+							 var="itemPendente"
+							 emptyMessage="Não foi encontrado registros" 
+							 rows="10" 
+							 dblClickSelect="true"
+							 paginator="true"
+							 selectionMode="single" 
+							 rowKey="#{itemPendente.idPrescricao}">
+					
 			   		<p:column>
 						<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
 						<h:outputText value="#{itemPendente.paciente}" />
@@ -44,6 +64,16 @@
 					<p:column>
 						<f:facet name="header"><h:outputText value="Quantidade de Itens" /></f:facet>
 						<h:outputText value="#{itemPendente.prescricaoItens.size()}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header"><h:outputText value="Dispensado" /></f:facet>
+						<h:outputText value="#{itemPendente.dispensado.label}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header"><h:outputText value="Número" /></f:facet>
+						<h:outputText value="#{itemPendente.numero}" />
 					</p:column>
 					
 					<p:column>
@@ -92,7 +122,7 @@
 							<p:column headerText="Quantidade dispensada" >
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{(prescricaoItem.quantidadeLiberada == null || prescricaoItem.quantidadeLiberada == 0) ? 'Informe aqui a quantidade dispensada.' : prescricaoItem.quantidadeLiberada}" />
+										<h:outputText value="#{prescricaoItem.quantidadeLiberada == null ? 'Informe aqui a quantidade dispensada.' : prescricaoItem.quantidadeLiberada}" />
 									</f:facet>
 									<f:facet name="input">
 										
@@ -105,12 +135,22 @@
 					                </f:facet>
 								</p:cellEditor>
 							</p:column>
+							
+							<p:column>
+								<p:dataList value="#{dispensacaoHome.listaPrescricaoItemEstoqueSaida(prescricaoItem)}" var="item" type="ordered">  
+								    #{item.estoque.lote} - #{item.quantidadeSaida}
+								</p:dataList> 
+							</p:column>
+							
 							<p:column headerText="Editar" style="width:50px">  
-					            <p:rowEditor/>
+					            <p:rowEditor rendered="#{prescricaoItem.quantidadeLiberada == null ? true : false}" />
 							</p:column>
 						</p:dataTable>
           	
-				        
+				        <p:commandButton value="Dispensar"
+				        				 action="#{dispensacaoHome.dispensar()}" 
+				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid"
+				        				 oncomplete="itensDialog.hide()"/>
 					</h:panelGroup>
 			    </p:dialog>
 			</h:form>

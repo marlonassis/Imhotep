@@ -13,6 +13,7 @@
 							emptyMessage="Não foi encontrado registros" 
 							rows="5" 
 							paginator="true"
+							dblClickSelect="true"
 							selectionMode="single" 
 							rowKey="#{linha.idEstoque}">
 							
@@ -24,8 +25,7 @@
 					<f:facet name="header"><h:outputText value="Material" /></f:facet>
 					<h:outputText value="#{linha.material}" />
 				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Data da validade" /></f:facet>
+				<p:column headerText="Data da validade" style="#{util.dateAtual > linha.dataValidade ? 'background-color:#FFDAB9;' : ''}" >
 					<h:outputText value="#{linha.dataValidade}">
 						<f:convertDateTime pattern="dd/MM/yyyy"/>
 					</h:outputText>

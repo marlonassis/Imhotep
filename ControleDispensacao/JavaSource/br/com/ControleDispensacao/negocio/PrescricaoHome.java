@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.negocio;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -14,6 +15,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.Hibernate;
 
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
@@ -55,10 +58,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return getBusca("select o from Prescricao o where o.dispensavel = 'N' order by o.dataInclusao");
 	}
 	
-	public List<Prescricao> getListaPrescricaoLiberada(){
-		return getBusca("select o from Prescricao o where o.dispensavel = 'S' order by o.dataInclusao");
-	}
-	
 	public void iniciaDosagem(){
 		limpaVariaveis();
 		if(getInstancia().getIdPrescricao() != 0 || gravaPrescricao()){
@@ -79,6 +78,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		PrescricaoItemHome pih = new PrescricaoItemHome();
 		pih.setInstancia(linha);
 		pih.apagar();
+		setInstancia(getBusca("select o from Prescricao o where o.idPrescricao = " + getInstancia().getIdPrescricao()).get(0));
 	}
 	
 	private boolean removePrescricaoItem(){
@@ -207,40 +207,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 
 	private boolean liberaDose() {
-		Object[] totais = consultaEstoque();
+		EstoqueHome eh = new EstoqueHome();
+		Object[] totais = eh.consultaEstoque(getPrescricaoItem().getMaterial());
 		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
-		return !estoqueVazio(estoqueAtual) && !estoqueInsuficiente(estoqueAtual);
-	}
-
-	private boolean estoqueInsuficiente(Integer quantidade) {
-		int quantidadeReserva = getQuantidadeDoses() * getQuantidadePorDose();
-		if(quantidadeReserva > quantidade){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não há quantidade suficiente no estoque. O máximo disponível é de " + String.valueOf(quantidade), ""));
-			return true;
-		}else{
-			return false;
-		}
-	}
-
-	private boolean estoqueVazio(Integer quantidade) {
-		if(quantidade > 0){
-			return false;
-		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este medicamento está em falta.", ""));
-			return true;
-		}
-	}
-
-	private Object[] consultaEstoque() {
-		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidade) = null THEN 0 ELSE sum(o.quantidade)END, ");
-		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
-		sb.append("from PrescricaoItemDose a where a.dispensado = 'N' and a.prescricaoItem.material.idMaterial = :idMaterial) ");
-		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = 'N'");
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		map.put("idMaterial", getPrescricaoItem().getMaterial().getIdMaterial());
-		
-		ConsultaGeral<Object[]> cg = new ConsultaGeral<Object[]>();
-		return cg.consultaUnica(sb, map);
+		return !eh.estoqueVazio(estoqueAtual) && !eh.estoqueInsuficiente(estoqueAtual, getQuantidadeDoses(), getQuantidadePorDose());
 	}
 
 	private String geraReferenciaUnica() {
@@ -263,12 +233,8 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void cancelaDosagem(){
 		if(removePrescricaoItem()){
 			limpaVariaveis();
-			PrescricaoItemHome ph = new PrescricaoItemHome();
-			ph.setInstancia(getPrescricaoItem());
-			if(ph.apagar()){
-				iniciaDosagem = false;
-				setPrescricaoItem(new PrescricaoItem());
-			}
+			iniciaDosagem = false;
+			setPrescricaoItem(new PrescricaoItem());
 		}
 	}
 	
@@ -326,8 +292,12 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			iniciarTransacao();
 			carregaPrescricao();
 			getInstancia().setDispensavel(TipoStatusEnum.N);
+			getInstancia().setDispensado(TipoStatusEnum.N);
 			session.save(getInstancia());
-			session.flush();  
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm");
+			getInstancia().setNumero(sdf.format(getInstancia().getDataInclusao()).concat("-").concat(String.valueOf(getInstancia().getIdPrescricao())));
+			session.merge(getInstancia());
+			session.flush();
 			tx.commit();
 			iniciaDosagem = true;
 			ret = true;
@@ -425,10 +395,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	 * @return lista de prescricaoItemDose
 	 */
 	private List<PrescricaoItemDose> getListaPrescricaoItemDose(){
-		ConsultaGeral<PrescricaoItemDose> cg = new ConsultaGeral<PrescricaoItemDose>();
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idPrecricaoItem", getPrescricaoItem().getIdPrescricaoItem());
-		return (List<PrescricaoItemDose>) cg.consulta(new StringBuilder("select o from PrescricaoItemDose o where o.prescricaoItem.idPrescricaoItem = :idPrecricaoItem"), hm);
+		if(getPrescricaoItem() != null){
+			ConsultaGeral<PrescricaoItemDose> cg = new ConsultaGeral<PrescricaoItemDose>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrecricaoItem", getPrescricaoItem().getIdPrescricaoItem());
+			return (List<PrescricaoItemDose>) cg.consulta(new StringBuilder("select o from PrescricaoItemDose o where o.prescricaoItem.idPrescricaoItem = :idPrecricaoItem"), hm);
+		}
+		return null;
 	}
 	
 	public long quantidadeDosesPrescricaoItem(PrescricaoItem pi){

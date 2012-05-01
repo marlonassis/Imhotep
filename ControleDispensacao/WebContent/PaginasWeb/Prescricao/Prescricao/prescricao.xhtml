@@ -73,7 +73,7 @@
 			                    <p:commandLink title="Remover este item da prescrição" 
 			                    			   immediate="true"
 			                    			   action="#{prescricaoHome.removePrescricaoItem(item)}" 
-			                    			   update="prescricaoItensGrid" >
+			                    			   update="padraoTabView:prescricaoForm" >
 			                        <p:graphicImage value="/Imagens/delete16.gif"/>
 			                    </p:commandLink>
 			                </h:panelGrid>  
@@ -83,7 +83,8 @@
 				
 				<p:commandButton value="Prescrever"
 								 action="#{prescricaoHome.finalizarPrescricao()}" 
-								 update="prescricaoForm padraoTabView:doseDialog" />
+								 update="prescricaoForm padraoTabView:doseDialog" 
+								 rendered="#{prescricaoHome.prescricaoItensList.size() > 0}" />
 				
 				<p:commandButton value="Cancelar Prescrição"
 								 action="#{prescricaoHome.cancelarPrescricao()}" 
@@ -94,7 +95,7 @@
 					<p:growl showDetail="true" />
 				<p:dialog id="doseDialog"
 						  visible="#{prescricaoHome.iniciaDosagem}"
-						  header="Informe a dosagem do medicamento" 
+						  header="Informe a dosagem do medicamento"
 						  widgetVar="dosagemDialog" 
 						  modal="true" 
 						  closable="false">
@@ -164,6 +165,7 @@
 							</h:panelGrid>
 							<p:separator id="limiteGridSeparator1" style="height:8px" /> 
 							<p:growl showDetail="true" />
+						  <div style="overflow: auto; height: 300px;" >
 							<p:dataGrid id="doseGrid"
 									var="itemDose" 
 									value="#{prescricaoHome.prescricaoItemDoseList}" 
@@ -194,7 +196,7 @@
 						            </p:panel>  
 						        </p:column>  
 							</p:dataGrid>
-							
+							</div>
 							<p:separator id="limiteGridSeparator2" style="height:8px" />
 							<h:panelGroup>
 								<p:commandButton action="#{prescricaoHome.finalizaDosagem()}"

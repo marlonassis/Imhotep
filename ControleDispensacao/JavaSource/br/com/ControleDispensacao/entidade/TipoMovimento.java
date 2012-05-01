@@ -18,9 +18,6 @@ public class TipoMovimento {
 	private int idTipoMovimento;
 	private String descricao;
 	private TipoOperacaoEnum tipoOperacao;
-	private TipoStatusEnum movimentoAdminstrativo;
-	private TipoStatusEnum movimentoBloqueado;
-	private TipoStatusEnum movimentoVencido;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_tipo_movimento_id_tipo_movimento_seq")
 	@Id
@@ -48,33 +45,6 @@ public class TipoMovimento {
 	}
 	public void setTipoOperacao(TipoOperacaoEnum tipoOperacao) {
 		this.tipoOperacao = tipoOperacao;
-	}
-	
-	@Column(name = "tp_movimento_administrativo")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getMovimentoAdminstrativo() {
-		return movimentoAdminstrativo;
-	}
-	public void setMovimentoAdminstrativo(TipoStatusEnum movimentoAdminstrativo) {
-		this.movimentoAdminstrativo = movimentoAdminstrativo;
-	}
-	
-	@Column(name = "tp_movimento_bloqueado")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getMovimentoBloqueado() {
-		return movimentoBloqueado;
-	}
-	public void setMovimentoBloqueado(TipoStatusEnum movimentoBloqueado) {
-		this.movimentoBloqueado = movimentoBloqueado;
-	}
-	
-	@Column(name = "tp_movimento_vencido")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getMovimentoVencido() {
-		return movimentoVencido;
-	}
-	public void setMovimentoVencido(TipoStatusEnum movimentoVencido) {
-		this.movimentoVencido = movimentoVencido;
 	}
 	
 	@Override
