@@ -8,7 +8,7 @@
 	<ui:define name="conteudoPadrao">
 		<p:fieldset legend="Prescrição Pendente" collapsed="false" toggleable="false">
 			<p:dataTable 	id="tabelaPrescricaoPendente" 
-							value="#{prescricaoHome.listaPrescricaoPendente}" 
+							value="#{prescricaoPendenteUsuarioConsulta.list}" 
 							var="linha"
 							emptyMessage="Não foi encontrado registros" 
 							rows="5" 

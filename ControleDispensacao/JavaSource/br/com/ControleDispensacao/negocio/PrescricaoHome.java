@@ -16,8 +16,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.Hibernate;
-
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.ControleDispensacao.entidade.Especialidade;

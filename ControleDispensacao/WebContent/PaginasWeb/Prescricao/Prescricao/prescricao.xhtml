@@ -85,10 +85,15 @@
 								 action="#{prescricaoHome.finalizarPrescricao()}" 
 								 update="prescricaoForm padraoTabView:doseDialog" 
 								 rendered="#{prescricaoHome.prescricaoItensList.size() > 0}" />
-				
+
+				<p:commandButton value="Nova prescrição"
+								 action="#{prescricaoHome.novaInstancia()}" 
+								 update="prescricaoForm padraoTabView:doseDialog" />
+
 				<p:commandButton value="Cancelar Prescrição"
 								 action="#{prescricaoHome.cancelarPrescricao()}" 
-								 update="prescricaoForm padraoTabView:doseDialog" />
+								 update="prescricaoForm padraoTabView:doseDialog" 
+								 rendered="#{prescricaoHome.instancia.idPrescricao != 0}" />
 			</h:form>
 			<h:form id="doseDialogForm" 
 					prependId="false" >
@@ -246,6 +251,50 @@
 					</h:panelGrid>
 						  
 				</p:dialog>
+			</h:form>
+			<h:form rendered="false" >
+				<p:fieldset id="pesquisaMaterialFieldSet"
+								legend="Pesquisa de prescrição" 
+								collapsed="true" 
+								toggleable="true" 
+								toggleSpeed="500">
+					<p:dataTable id="tabelaPrescricaoPendente" 
+								 value="#{prescricaoUsuarioConsulta.list}" 
+								 var="linha"
+								 emptyMessage="Não foi encontrado registros" 
+								 rows="5" 
+								 paginator="true"
+								 selectionMode="single" 
+								 rowKey="#{linha.idPrescricao}">
+									
+						<p:column>
+							<f:facet name="header"><h:outputText value="Data de inclusão" /></f:facet>
+							<h:outputText value="#{linha.dataInclusao}" >
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
+							<h:outputText value="#{linha.paciente.nome}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header"><h:outputText value="Leito" /></f:facet>
+							<h:outputText value="#{linha.leito}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header"><h:outputText value="Leito" /></f:facet>
+							<h:outputText value="#{linha.numero}" />
+						</p:column>
+						<p:column style="width:60px; text-align: center;" >
+							<p:commandLink	oncomplete="location.reload()"
+											title="Editar prescrição" 
+											style="padding-right:10px;" >
+								<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.instancia}" />
+								<h:graphicImage value="/Imagens/edit.gif" />
+							</p:commandLink>
+						</p:column>  
+					</p:dataTable>	
+				</p:fieldset>
 			</h:form>
 		</p:tab>
 	</ui:define>

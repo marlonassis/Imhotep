@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="dispensacaoPanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<h:outputLabel for="numeroConsulta" value="Número:"  /><br />
+			<p:inputText id="numeroConsulta" 
+						 value="#{consulta.instancia.numero}" 
+						 title="Informe o número da prescrição" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="pacienteConsulta" value="Paciente:" /><br />
+	  		<p:autoComplete id="pacienteConsulta" 
+	  						forceSelection="true"
+	  						immediate="true"
+	  						value="#{consulta.instancia.paciente}"
+							completeMethod="#{pacienteHome.getListaPacienteAutoComplete}" 
+							var="paciente" 
+							itemLabel="#{paciente.nome}"
+							itemValue="#{paciente}"
+							converter="pacienteConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="profissionalConsulta" value="Prescritor:" /><br />
+	  		<p:autoComplete id="profissionalConsulta" 
+	  						forceSelection="true"
+	  						value="#{consulta.instancia.profissional}"
+							completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}" 
+							var="profissional" 
+							itemLabel="#{profissional.nome}" 
+							itemValue="#{profissional}" 
+							converter="profissionalConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="dataconsulta" value="Data da dispensação:"  /><br />
+			<p:inputMask id="dataAnotacoesConsulta"
+						 mask="99/99/9999"
+						 value="#{consulta.instancia.dataInclusao}"
+						 title="Data da dispensação">
+				<f:convertDateTime pattern="dd/MM/yyyy"  />
+			</p:inputMask>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>

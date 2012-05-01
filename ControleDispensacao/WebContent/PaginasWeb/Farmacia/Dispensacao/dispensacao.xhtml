@@ -143,13 +143,14 @@
 							</p:column>
 							
 							<p:column headerText="Editar" style="width:50px">  
-					            <p:rowEditor rendered="#{prescricaoItem.quantidadeLiberada == null ? true : false}" />
+					            <p:rowEditor rendered="#{(prescricaoItem.quantidadeLiberada == null || prescricaoItem.quantidadeLiberada == 0) ? true : false}" />
 							</p:column>
 						</p:dataTable>
           	
 				        <p:commandButton value="Dispensar"
 				        				 action="#{dispensacaoHome.dispensar()}" 
 				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid"
+				        				 rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
 				        				 oncomplete="itensDialog.hide()"/>
 					</h:panelGroup>
 			    </p:dialog>

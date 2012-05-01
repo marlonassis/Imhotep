@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabDispensacao" 
+			   title="Alteração de dispensação" >
+			<h:form id="dispensacaoAlteracaoForm" prependId="false" >
+				<p:growl id="growl" />
+				<h:panelGrid columns="1" 
+				 			 width="100%" >
+					<h:panelGroup>
+						<font color="red" >*</font><h:outputLabel for="numeroPrescricao" value="Número da prescrição:"  /><br />
+						<p:inputText id="numeroPrescricao"
+									 label="Número da prescrição"
+									 required="true"
+									 disabled="#{!(dispensacaoHome.listPrescricaoItemEstoqueSaida == null)}"
+									 value="#{dispensacaoHome.numeroPrescricao}"/>
+						<p:commandButton value="Pesquisar prescrição"
+										 action="#{dispensacaoHome.carregaEstoqueEdicao}"
+										 update="padraoTabView:dispensacaoAlteracaoForm"/>
+						<p:commandButton value="Nova pesquisa"
+										 action="#{dispensacaoHome.novaPesquisa}"
+										 update="padraoTabView:dispensacaoAlteracaoForm"/>
+			        </h:panelGroup>
+			        <h:panelGroup>
+		        		<p:dataTable id="tabelaEstoqueDispensado" 
+									 value="#{dispensacaoHome.listPrescricaoItemEstoqueSaida}" 
+									 var="linha"
+									 emptyMessage="Não foi encontrado registros" 
+									 rows="10" 
+									 dblClickSelect="true"
+									 paginator="true"
+									 selectionMode="single" 
+									 rowKey="#{linha.idPrescricaoItemEstoqueSaida}">
+								<p:column headerText="Material" >
+									<h:outputText value="#{linha.prescricaoItem.material.descricao}" />
+								</p:column>
+								<p:column headerText="Lote" >
+									<h:outputText value="#{linha.estoque.lote}" />
+								</p:column>
+								<p:column headerText="Quantidade" >
+									<h:outputText value="#{linha.quantidadeSaida}" />
+								</p:column>
+								<p:column style="width:60px; text-align: center;" >
+									<p:commandLink update="padraoTabView:display" 
+												   title="Editar"
+												   oncomplete="itensDialog.show();" 
+												   style="padding-right:10px;" >
+										<f:setPropertyActionListener value="#{linha}" target="#{dispensacaoHome.prescricaoItemEstoqueSaida}" />
+										<h:graphicImage value="/Imagens/edit.gif" />
+									</p:commandLink>
+								</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+			<h:form id="ajusteForm" 
+					prependId="false">
+				<p:dialog id="dialog" 
+						  header="Ajuste de dispensação" 
+						  widgetVar="itensDialog" 
+						  resizable="true"  
+						  showEffect="explode"
+						  hideEffect="explode">
+					<h:panelGroup id="display" > 
+						<p:growl id="growl2"
+								 showDetail="true" />
+						<h:panelGrid columns="2" 
+									 cellpadding="4px"
+									 width="100%" >
+							<h:panelGroup>
+								<h:outputLabel for="prescricao" value="Número da prescrição:"  /><br />
+								<h:outputText id="prescricao"
+											  value="#{dispensacaoHome.prescricaoItemEstoqueSaida.prescricaoItem.prescricao.numero}" />
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputLabel for="material" value="Material:"  /><br />
+								<h:outputText id="material"
+											  value="#{dispensacaoHome.prescricaoItemEstoqueSaida.prescricaoItem.material}" />
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputLabel for="lote" value="Lote:"  /><br />
+								<h:outputText id="lote"
+											  value="#{dispensacaoHome.prescricaoItemEstoqueSaida.estoque.lote}" />
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputLabel for="quantidadeSaida" value="Quantidade de saída:"  /><br />
+								<h:outputText id="quantidadeSaida"
+											  value="#{dispensacaoHome.prescricaoItemEstoqueSaida.quantidadeSaida}" />
+							</h:panelGroup>
+							<h:panelGroup>
+								<font color="red" >*</font><h:outputLabel for="tipoMovimento" value="Tipo de movimento:"  /><br />
+								<p:selectOneMenu id="tipoMovimento"
+												 value="#{dispensacaoHome.tipoMovimento}" 
+												 effect="fade" 
+												 converter="tipoMovimentoConversor"
+												 required="true">  
+									<f:selectItem itemLabel="Selecione..." 
+												  itemValue="" /> 
+						            <f:selectItems value="#{parametro.tiposMovimentoAjusteDispensacao()}" 
+						            			   var="tipoMovimento" 
+						            			   itemLabel="#{tipoMovimento.descricao}" 
+						            			   itemValue="#{tipoMovimento}"/>  
+						        </p:selectOneMenu>
+					        </h:panelGroup>
+							<h:panelGroup>
+								<h:outputLabel for="quantidadeAjuste" value="Quantidade de ajuste:"  /><br />
+								<p:inputText id="quantidadeAjuste"
+											 value="#{dispensacaoHome.quantidadeAjuste}" />
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:commandButton value="Ajustrar" 
+												 action="#{dispensacaoHome.ajustarEstoqueDispensado()}"
+												 update="padraoTabView:display padraoTabView:tabelaEstoqueDispensado"/> 
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGroup>
+			    </p:dialog>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

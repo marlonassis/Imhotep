@@ -105,10 +105,17 @@ public class DispensacaoHome extends PadraoHome<PrescricaoItem> {
 	public void dispensar(){
 		prescricao.setDispensado(TipoStatusEnum.S);
 		PrescricaoHome ph = new PrescricaoHome();
+		atualizaItens(prescricao);
 		ph.setInstancia(prescricao);
 		ph.atualizar();
 	}
 	
+	private void atualizaItens(Prescricao prescricao) {
+		for(PrescricaoItem prescricaoItem : prescricao.getPrescricaoItens()){
+			prescricaoItem.setDispensado(TipoStatusEnum.S);
+		}
+	}
+
 	public List<PrescricaoItemEstoqueSaida> listaPrescricaoItemEstoqueSaida(PrescricaoItem prescricaoItem){
 		ConsultaGeral<PrescricaoItemEstoqueSaida> cg = new ConsultaGeral<PrescricaoItemEstoqueSaida>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
