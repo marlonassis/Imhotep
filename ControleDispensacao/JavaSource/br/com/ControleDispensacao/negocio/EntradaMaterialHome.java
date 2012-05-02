@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.RowEditEvent;
+
 import br.com.ControleDispensacao.auxiliar.Parametro;
 import br.com.ControleDispensacao.entidade.Doacao;
 import br.com.ControleDispensacao.entidade.Estoque;
@@ -18,7 +20,7 @@ import br.com.ControleDispensacao.entidade.ItensMovimentoGeral;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.MovimentoGeral;
 import br.com.ControleDispensacao.entidade.MovimentoLivro;
-import br.com.ControleDispensacao.entidade.TipoMovimento;
+import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
@@ -30,7 +32,30 @@ import br.com.nucleo.PadraoHome;
 public class EntradaMaterialHome extends PadraoHome<Estoque>{
 	private ItensMovimentoGeral itensMovimentoGeral;
 	private boolean loteEncontrado;
+
 	
+	public void editRowEvent(RowEditEvent obj){
+		Estoque estoque = (Estoque) obj.getObject();
+		if(!achouEstoque(estoque.getLote())){
+			setInstancia(estoque);
+			super.atualizar();
+		}
+	}
+	
+	private boolean achouEstoque(String lote) {
+		ConsultaGeral<String> cg = new ConsultaGeral<String>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("lote", lote);
+		StringBuilder sb = new StringBuilder("select o.lote from Estoque o where o.lote = :lote");
+		String loteAchado = cg.consultaUnica(sb, hashMap);
+		
+		if(loteAchado != null && !loteAchado.isEmpty()){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esse lote já foi cadastrado", "Atualização não efetuada."));
+			return true;
+		}
+		return false;
+	}
+
 	public void procurarLote() throws IOException{
 		Estoque estoque = existeLote();
 		loteEncontrado = estoque != null;

@@ -8,11 +8,15 @@
 	<p:dataTable id="tabelaEntradaMaterial" 
 				 value="#{estoqueDesbloqueadoConsulta.list}" 
 				 var="linha"
+				 dblClickSelect="true"
 				 emptyMessage="Não foi encontrado registros" 
 				 rows="10" 
 				 paginator="true"
 				 selectionMode="single" 
 				 rowKey="#{linha.idEstoque}">
+		<p:ajax event="rowEdit" 
+				listener="#{entradaMaterialHome.editRowEvent}" 
+				update="padraoTabView:tabelaEntradaMaterial padraoTabView:entradaMaterialForm"/>
 		<p:column>
 			<f:facet name="header"><h:outputText value="Código do material" /></f:facet>
 			<h:outputText value="#{linha.material.codigoMaterial}" />
@@ -29,9 +33,19 @@
 			<f:facet name="header"><h:outputText value="Fabricante" /></f:facet>
 			<h:outputText value="#{linha.fabricante}" />
 		</p:column>
-		<p:column>
-			<f:facet name="header"><h:outputText value="Lote" /></f:facet>
-			<h:outputText value="#{linha.lote}" />
+		<p:column headerText="Lote" >
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{linha.lote}" />
+				</f:facet>
+				<f:facet name="input">
+                    <p:inputText id="lote"
+                    			 value="#{linha.lote}" 
+                    			 style="width:100%"
+                    			 immediate="true"
+                    			 label="Informe o lote"/>
+                </f:facet>
+			</p:cellEditor>
 		</p:column>
 		<p:column>
 			<f:facet name="header"><h:outputText value="Quantidade" /></f:facet>
@@ -44,6 +58,9 @@
 			</h:outputText>
 		</p:column>
 		<p:column style="width:60px; text-align: center;" >
+		
+			<p:rowEditor/>
+		
 			<p:commandLink update="padraoTabView:entradaMaterialForm" 
 						   title="Editar"
 						   rendered="false" 
