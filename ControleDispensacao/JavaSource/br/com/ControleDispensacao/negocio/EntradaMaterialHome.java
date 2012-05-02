@@ -20,7 +20,6 @@ import br.com.ControleDispensacao.entidade.ItensMovimentoGeral;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.MovimentoGeral;
 import br.com.ControleDispensacao.entidade.MovimentoLivro;
-import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
