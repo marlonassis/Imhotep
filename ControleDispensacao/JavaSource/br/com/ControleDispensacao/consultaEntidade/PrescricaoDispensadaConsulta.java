@@ -15,6 +15,9 @@ import br.com.nucleo.PadraoConsulta;
 @SessionScoped
 public class PrescricaoDispensadaConsulta extends PadraoConsulta<Prescricao> {
 	public PrescricaoDispensadaConsulta(){
+		getCamposConsulta().put("o.paciente", IGUAL);
+		getCamposConsulta().put("o.numero", IGUAL);
+		getCamposConsulta().put("o.leito", IGUAL);
 		setOrderBy("o.dataInclusao desc");
 	}
 	

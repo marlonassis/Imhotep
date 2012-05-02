@@ -5,16 +5,31 @@
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 	
 	
-	<h:panelGrid id="especialidadePanelGridConsulta"
+	<h:panelGrid id="dosagemPanelGridConsulta"
 				 columns="3" 
 				 width="100%" >
+	
+		<h:panelGroup>
+			<h:outputLabel for="paciente" value="Paciente:" /><br />
+			<p:autoComplete id="paciente" forceSelection="true"
+				value="#{prescricaoDispensadaConsulta.instancia.paciente}"
+				completeMethod="#{pacienteHome.getListaPacienteAutoComplete}"
+				var="paciente" itemLabel="#{paciente.nome}" itemValue="#{paciente}"
+				converter="pacienteConversor" />
+		</h:panelGroup>
 				 
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
-			<p:inputText id="nomeConsulta" 
-						 value="#{especialidadeConsulta.instancia.descricao}"
-						 title="Informe o nome do especialidade" />
+			<h:outputLabel for="numeroConsulta" value="Número:"  /><br />
+			<p:inputText id="numeroCosulta" 
+						 value="#{prescricaoDispensadaConsulta.instancia.numero}"
+						 title="Informe o número da prescrição" />
 		</h:panelGroup>
 	
+		<h:panelGroup>
+			<h:outputLabel for="leitoConsulta" value="Leito:"  /><br />
+			<p:inputText id="leitoCosulta" 
+						 value="#{prescricaoDispensadaConsulta.instancia.leito}"
+						 title="Informe o leito do paciente" />
+		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>
