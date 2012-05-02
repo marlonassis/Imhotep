@@ -11,9 +11,47 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabDosagem" title="Dosagem" >
-			<h:form id="dosagemForm" prependId="false" >
-				
-            </h:form>
+				<p:dialog id="dialog" 
+						  header="Dosagem" 
+						  widgetVar="dosagemDialog" 
+						  resizable="true"  
+						  showEffect="explode"
+						  hideEffect="explode">
+					<h:form id="dosagemForm" 
+							prependId="false" >
+						<p:dataTable id="playersTable" var="prescricaoItem" value="#{dosagemHome.instancia.prescricaoItens}">
+					        <f:facet name="header">
+					            Dosagem - Leito #{dosagemHome.instancia.leito}
+					        </f:facet>
+					
+					        <p:columnGroup type="header">
+					            <p:row>
+					                <p:column colspan="2" headerText="Material"/>
+					            </p:row>
+					
+					            <p:row>
+					                <p:column headerText="Hora da dose" />
+					                <p:column headerText="Quantidade" />
+					            </p:row>
+					        </p:columnGroup>
+					
+					        <p:subTable var="dose" value="#{dosagemHome.listaPrescricaoItemDose(prescricaoItem)}">
+					            <f:facet name="header">
+					              <h:outputText value="#{prescricaoItem.material.descricao}" /> 
+					            </f:facet>
+					            <p:column>
+					                <h:outputText value="#{dose.dataDose}">
+					                	<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+					                </h:outputText> 
+					            </p:column>
+					            <p:column>
+					                <h:outputText value="#{dose.quantidade}"/>
+					            </p:column>
+					
+					        </p:subTable>
+					    </p:dataTable>
+		            </h:form>
+				</p:dialog>
 			
 			<h:form id="pesquisaDosagemForm" prependId="false" >
 				<p:fieldset id="pesquisaDosagemFieldSet"

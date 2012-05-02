@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.entidade;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -29,6 +30,7 @@ public class PrescricaoItem {
 	private Profissional profissionalLiberacao;
 	private Integer quantidadeLiberada;
 	private TipoStatusEnum dispensado;
+//	private List<PrescricaoItemEstoqueSaida> prescricaoItemEstoqueSaidaList;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -108,6 +110,14 @@ public class PrescricaoItem {
 	public void setDispensado(TipoStatusEnum dispensado) {
 		this.dispensado = dispensado;
 	}
+	
+//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricaoItem")
+//	public List<PrescricaoItemEstoqueSaida> getPrescricaoItemEstoqueSaidaList() {
+//		return prescricaoItemEstoqueSaidaList;
+//	}
+//	public void setPrescricaoItemEstoqueSaidaList(List<PrescricaoItemEstoqueSaida> prescricaoItemEstoqueSaidaList) {
+//		this.prescricaoItemEstoqueSaidaList = prescricaoItemEstoqueSaidaList;
+//	}
 	
 	@Override
 	public String toString() {

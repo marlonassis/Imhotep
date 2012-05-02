@@ -5,44 +5,52 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaEspecialidade" 
-					value="#{especialidadeConsulta.list}" 
+	<p:dataTable 	id="tabelaDosagem" 
+					value="#{prescricaoDispensadaConsulta.list}" 
 					var="linha"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
+					dblClickSelect="true"
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idEspecialidade}">
+					rowKey="#{linha.idPrescricao}">
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Descricao" /></f:facet>
-			<h:outputText value="#{linha.descricao}" />
+			<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
+			<h:outputText value="#{linha.paciente}" />
 		</p:column>
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Tipo do Conselho" /></f:facet>
-			<h:outputText value="#{linha.tipoConselho}" />
+			<f:facet name="header"><h:outputText value="Peso" /></f:facet>
+			<h:outputText value="#{linha.massa}" />
 		</p:column>
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Especialidade Pai" /></f:facet>
-			<h:outputText value="#{linha.especialidadePai}" />
+			<f:facet name="header"><h:outputText value="Leito" /></f:facet>
+			<h:outputText value="#{linha.leito}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Número" /></f:facet>
+			<h:outputText value="#{linha.numero}" />
 		</p:column>
 					
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:especialidadeForm" 
+			<p:commandLink update="padraoTabView:dosagemForm" 
 						   title="Editar" 
+						   oncomplete="dosagemDialog.show();"
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{dosagemHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{especialidadeHome.apagar()}"
-							update="tabelaEspecialidade padraoTabView:especialidadeForm" 
+			<p:commandLink  action="#{dosagemHome.apagar()}"
+							update="tabelaDosagem padraoTabView:dosagemForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-							title="Apagar" 
+							title="Apagar"
+							rendered="false" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{dosagemHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  
