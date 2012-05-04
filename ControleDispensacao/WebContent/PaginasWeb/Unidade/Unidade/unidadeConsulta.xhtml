@@ -5,30 +5,14 @@
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 	
 	
-	<h:panelGrid id="subGrupoPanelGridConsulta"
+	<h:panelGrid id="unidadePanelGridConsulta"
 				 columns="3" 
 				 width="100%" >
-				 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
-			<p:inputText id="descricaoConsulta" 
-						 value="#{subGrupoConsulta.instancia.descricao}" 
-						 title="Informe descrição do fabricante" />
+			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
+			<p:inputText id="nomeConsulta" 
+						 value="#{unidadeConsulta.instancia.nome}" 
+						 title="Informe o nome da unidade" />
 		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="subGrupo" value="Sub-grupo:"  /><br />
-	  		<p:autoComplete id="subGrupo" 
-	  						value="#{subGrupoHome.instancia.grupo}"
-	  						forceSelection="true"
-							completeMethod="#{grupoHome.getListaGrupoAutoComplete}" 
-							var="grupo"
-							rendered="false"
-							title="Informe o grupo do sub-grupo"
-							itemLabel="#{grupo.descricao}" 
-							itemValue="#{grupo}"
-							converter="grupoConversor" />
-		</h:panelGroup>
-		
 	</h:panelGrid>
 </ui:composition>

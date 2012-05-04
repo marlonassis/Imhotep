@@ -15,7 +15,6 @@ public class MaterialConsulta extends PadraoConsulta<Material> {
 	public MaterialConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.codigoMaterial", IGUAL);
-		getCamposConsulta().put("o.autorizadoDispensacao", IGUAL);
 		setOrderBy("o.descricao");
 	}
 	

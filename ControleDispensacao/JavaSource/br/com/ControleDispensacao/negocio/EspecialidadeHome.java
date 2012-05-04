@@ -9,6 +9,7 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import br.com.ControleDispensacao.entidade.Especialidade;
+import br.com.ControleDispensacao.entidade.Estado;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.nucleo.PadraoHome;
 

@@ -10,6 +10,13 @@
 				 width="100%" >
 		
 		<h:panelGroup>
+			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
+			<p:inputText id="nomeConsulta" 
+						 value="#{pacienteConsulta.instancia.nome}" 
+						 title="Informe o nome do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
 			<h:outputLabel for="cpfConsulta" value="CPF:"  /><br />
 			<p:inputMask id="cpfConsulta"
 						 mask="999.999.999-99"

@@ -14,6 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class SubGrupoConsulta extends PadraoConsulta<SubGrupo> {
 	public SubGrupoConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.grupo", IGUAL);
 		setOrderBy("o.descricao");
 	}
 	

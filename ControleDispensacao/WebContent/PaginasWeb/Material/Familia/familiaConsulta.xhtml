@@ -16,13 +16,14 @@
 						 title="Informe descrição do fabricante" />
 		</h:panelGroup>
 		
-		<h:panelGroup id="grupoPanelGroupConsulta" >
+		<h:panelGroup id="grupoPanelGroupConsulta" 
+					  rendered="false">
 			<h:panelGrid columns="2"
 						 width="100%" >
 				<h:panelGroup>
 					<h:outputLabel for="grupoConsulta" value="Grupo:"  /><br />
 					<p:selectOneMenu id="grupoConsulta"
-									 value="#{familiaHome.grupo}" 
+									 value="#{familiaConsulta.instancia.subGrupo.grupo}" 
 									 effect="fade" 
 									 converter="grupoConversor">
 						<f:ajax event="change" 
@@ -37,13 +38,18 @@
 			        </p:selectOneMenu>
 		        </h:panelGroup>
 		        <h:panelGroup> 
-					<h:outputLabel for="subGrupoConsulta" value="Sub-grupo:"  /><br />
+					<h:outputLabel for="subGrupoConsulta" 
+								   value="Sub-grupo:"  /><br />
 					<p:selectOneMenu id="subGrupoConsulta"
-									 value="#{familiaHome.instancia.subGrupo}" 
+									 value="#{familiaConsulta.instancia.subGrupo}" 
 									 effect="fade" 
 									 converter="subGrupoConversor">  
-			            <f:selectItem itemLabel="Selecione..." itemValue="" /> 
-			            <f:selectItems value="#{familiaHome.sugGrupoList}" var="subGrupo" itemLabel="#{subGrupo.descricao}" itemValue="#{subGrupo}"/>  
+			            <f:selectItem itemLabel="Selecione..." 
+			            			  itemValue="" /> 
+			            <f:selectItems value="#{familiaConsulta.sugGrupoList}" 
+			            			   var="subGrupo" 
+			            			   itemLabel="#{subGrupo.descricao}" 
+			            			   itemValue="#{subGrupo}"/>  
 		        	</p:selectOneMenu>
 		        </h:panelGroup>
 			</h:panelGrid> 

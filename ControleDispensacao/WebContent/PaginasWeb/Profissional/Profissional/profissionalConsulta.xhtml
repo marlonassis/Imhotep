@@ -28,7 +28,7 @@
 			<h:outputLabel for="especialidadeConsulta" value="Especialidade:"  /><br />
 	  		<p:autoComplete id="especialidadeConsulta" 
 	  						value="#{profissionalConsulta.instancia.especialidade}"
-							completeMethod="#{especialidadeHome.getListaEspecialidadeTipoConselho}" 
+							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
 							var="especialidade"
 							forceSelection="true"
 							title="Informe a especialidade"

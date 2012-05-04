@@ -17,13 +17,13 @@
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="subGrupo" value="Sub-grupo:"  /><br />
-	  		<p:autoComplete id="subGrupo" 
-	  						value="#{subGrupoHome.instancia.grupo}"
+			<h:outputLabel for="grupoConsulta" value="Grupo:"  /><br />
+	  		<p:autoComplete id="grupoConsulta" 
+	  						value="#{subGrupoConsulta.instancia.grupo}"
 							completeMethod="#{grupoHome.getListaGrupoAutoComplete}" 
 							var="grupo"
 							forceSelection="true"
-							title="Informe o grupo do sub-grupo"
+							title="Informe o grupo"
 							itemLabel="#{grupo.descricao}" 
 							itemValue="#{grupo}"
 							converter="grupoConversor" />

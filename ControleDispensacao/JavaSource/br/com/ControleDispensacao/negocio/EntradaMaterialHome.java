@@ -32,7 +32,6 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 	private ItensMovimentoGeral itensMovimentoGeral;
 	private boolean loteEncontrado;
 
-	
 	public void editRowEvent(RowEditEvent obj){
 		Estoque estoque = (Estoque) obj.getObject();
 		if(!achouEstoque(estoque.getLote())){
