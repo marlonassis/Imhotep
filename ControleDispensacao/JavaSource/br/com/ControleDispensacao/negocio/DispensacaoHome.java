@@ -48,6 +48,16 @@ public class DispensacaoHome extends PadraoHome<PrescricaoItem> {
 	public void linhaSelecionada(SelectEvent selectEvent){
 		prescricao = (Prescricao) selectEvent.getObject();
 	}
+
+	public List<PrescricaoItemEstoqueSaida> listaReciboPrescricao(){
+		if(getPrescricao() != null){
+			ConsultaGeral<PrescricaoItemEstoqueSaida> cg = new ConsultaGeral<PrescricaoItemEstoqueSaida>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", getPrescricao().getIdPrescricao());
+			return new ArrayList<PrescricaoItemEstoqueSaida>(cg.consulta(new StringBuilder("select o from PrescricaoItemEstoqueSaida o where o.prescricaoItem.prescricao.idPrescricao = :idPrescricao"), hm));
+		}
+		return null;
+	}
 	
 	public void limpaInstancia(){
 		prescricao = new Prescricao();
@@ -104,6 +114,7 @@ public class DispensacaoHome extends PadraoHome<PrescricaoItem> {
 	
 	public void dispensar(){
 		prescricao.setDispensado(TipoStatusEnum.S);
+		prescricao.setDataDipensacao(new Date());
 		PrescricaoHome ph = new PrescricaoHome();
 		atualizaItens(prescricao);
 		ph.setInstancia(prescricao);

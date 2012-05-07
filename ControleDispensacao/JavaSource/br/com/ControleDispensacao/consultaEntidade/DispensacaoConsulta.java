@@ -17,7 +17,7 @@ public class DispensacaoConsulta extends PadraoConsulta<Prescricao> {
 		getCamposConsulta().put("o.profissional", IGUAL);
 		getCamposConsulta().put("o.dataInclusao", MENOR_IGUAL);
 		getCamposConsulta().put("o.numero", IGUAL);
-		setOrderBy("o.dataInclusao desc");
+		setOrderBy("o.dataPrescricao desc");
 	}
 	
 	@Override

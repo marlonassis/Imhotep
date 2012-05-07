@@ -56,7 +56,7 @@
 					
 					<p:column>
 						<f:facet name="header"><h:outputText value="Data da prescrição" /></f:facet>
-						<h:outputText value="#{itemPendente.dataInclusao}" >
+						<h:outputText value="#{itemPendente.dataPrescricao}" >
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
 						</h:outputText>
 					</p:column>
@@ -97,6 +97,12 @@
 					<h:panelGroup id="display" > 
 						<p:growl id="growl"
 								 showDetail="true" />
+						<p:commandLink id="iconeRecibo"
+									   rendered="#{dispensacaoHome.prescricao.dispensado == 'S'}"
+									   update="padraoTabView:recibo" 
+									   onclick="reciboDialog.show();" >
+							<h:graphicImage value="/Imagens/recibo.png" width="32" height="32" />
+						</p:commandLink>
 						<p:dataTable 	id="prescricaoItemGrid" 
 										value="#{dispensacaoHome.prescricao.prescricaoItens}" 
 										var="prescricaoItem"
@@ -149,11 +155,96 @@
           	
 				        <p:commandButton value="Dispensar"
 				        				 action="#{dispensacaoHome.dispensar()}" 
-				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid"
+				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:iconeRecibo"
 				        				 rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
-				        				 oncomplete="itensDialog.hide()"/>
+				        				 oncomplete="reciboDialog.show(); itensDialog.hide();" />
 					</h:panelGroup>
 			    </p:dialog>
+			    
+			    <p:dialog id="dialogRecibo" 
+						  header="Recibo" 
+						  widgetVar="reciboDialog" 
+						  resizable="true" 
+						  width="600"
+						  modal="true" 
+						  showEffect="explode"
+						  hideEffect="explode">
+				    <h:commandButton value="Imprimir" type="button" icon="ui-icon-print">  
+				        <p:printer target="recibo" />  
+				    </h:commandButton>  
+					<h:panelGroup id="recibo" >
+						<h2>Hospital Universitário</h2><br/>         
+						<h1>Recibo de liberação de material</h1><br/>
+						
+						<div align="left" >
+							<b>Prescrição:</b> <h:outputText value="#{dispensacaoHome.prescricao.numero}"/><br/>
+							<b>Prescritor:</b> <h:outputText value="#{dispensacaoHome.prescricao.profissional.nome}"/><br/>
+							<b>Data da Dispensação:</b> <h:outputText value="#{dispensacaoHome.prescricao.dataDipensacao}">
+															<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+														</h:outputText><br/>
+							<b>Data da Impressão:</b> #{util.dataAtual} #{util.horaAtual}<br/>
+							<b>Unidade:</b> <h:outputText value="#{dispensacaoHome.prescricao.unidade}"/><br/><br/>
+							<table border="1" 
+								   cellpadding="5px">
+								<thead>
+									<tr>
+								      <th><h:outputText value="Código"/></th>
+								      <th><h:outputText value="Material"/></th>
+								      <th><h:outputText value="Qtd"/></th>
+								      <th><h:outputText value="Validade"/></th>
+								      <th><h:outputText value="Lote"/></th>
+								      <th><h:outputText value="Observação"/></th>
+								    </tr>
+								</thead>
+								<ui:repeat value="#{dispensacaoHome.listaReciboPrescricao()}"
+										   var="item" >
+									<tr style="cellpadding:5px" >
+										<td>
+											<h:outputText value="#{item.prescricaoItem.material.codigoMaterial}"/>
+										</td>
+										<td >
+								        	<h:outputText value="#{item.prescricaoItem.material}"/>
+								        </td>
+								        <td>
+								        	<h:outputText value="#{item.quantidadeSaida}"/>
+								        </td>
+								        <td>
+								        	<h:outputText value="#{item.estoque.dataValidade}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+								        </td>
+								        <td>
+								        	<h:outputText value="#{item.estoque.lote}"/>
+								        </td>
+								        <td width="100px" >
+								        	<h:outputText value="#{item.prescricaoItem.observacao}"/>
+								        </td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+						<br/><br/><br/>
+						<center>
+							<table width="100%" >
+								<tr>
+									<td align="center" >
+										__________________________
+									</td>
+									<td align="center" >
+										__________________________
+									</td>
+								</tr>
+								<tr>
+									<td align="center" >
+										Despachante
+									</td>
+									<td align="center" >
+										Recebedor
+									</td>
+								</tr>
+							</table>
+						</center>
+					</h:panelGroup>
+				</p:dialog>
+			    
 			</h:form>
 		</p:tab>
 	</ui:define>

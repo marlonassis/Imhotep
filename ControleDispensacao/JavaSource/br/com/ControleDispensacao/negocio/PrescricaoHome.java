@@ -23,6 +23,7 @@ import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
+import br.com.ControleDispensacao.entidade.PrescricaoItemEstoqueSaida;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
@@ -254,6 +255,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	public void finalizarPrescricao(){
 		getInstancia().setDispensavel(TipoStatusEnum.S);
+		getInstancia().setDataPrescricao(new Date());
 		if(super.atualizar()){
 			novaInstancia();
 		}

@@ -37,6 +37,8 @@ public class Prescricao {
 	private TipoStatusEnum dispensavel;
 	private TipoStatusEnum dispensado;
 	private List<PrescricaoItem> prescricaoItens;
+	private Date dataPrescricao;
+	private Date dataDipensacao;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_id_prescricao_seq")
 	@Id
@@ -159,6 +161,26 @@ public class Prescricao {
 	}
 	public void setPrescricaoItens(List<PrescricaoItem> prescricaoItens) {
 		this.prescricaoItens = prescricaoItens;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_prescricao")
+	public Date getDataPrescricao() {
+		return dataPrescricao;
+	}
+	
+	public void setDataPrescricao(Date dataPrescricao) {
+		this.dataPrescricao = dataPrescricao;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_dispensacao")
+	public Date getDataDipensacao() {
+		return dataDipensacao;
+	}
+	
+	public void setDataDipensacao(Date dataDipensacao) {
+		this.dataDipensacao = dataDipensacao;
 	}
 	
 	@Override
