@@ -16,7 +16,7 @@ import net.sf.jasperreports.engine.JasperRunManager;
 
 public class PadraoRelatorio {
 
-    protected void geraRelatorio(String caminho) throws ClassNotFoundException, IOException, JRException, SQLException {
+    protected void geraRelatorio(String caminho, String nomeRelatorio) throws ClassNotFoundException, IOException, JRException, SQLException {
     	String url = "jdbc:postgresql://127.0.0.1:5432/db_farmacia";
 		String usuario = "postgres";
 		String senha = "postgres";
@@ -29,12 +29,13 @@ public class PadraoRelatorio {
         HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
 
 		InputStream reportStream = ctx.getExternalContext().getResourceAsStream(caminho);
-
+		
         ServletOutputStream servletOutputStream = response.getOutputStream();
-
+        
         ctx.responseComplete();
         response.setContentType("application/pdf");
-
+        response.addHeader("Content-disposition", "attachment; filename="+nomeRelatorio);
+        
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, new HashMap<String, Object>(), con);
 
         con.close();
