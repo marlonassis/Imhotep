@@ -23,7 +23,6 @@ import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
-import br.com.ControleDispensacao.entidade.PrescricaoItemEstoqueSaida;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
@@ -54,7 +53,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public List<Prescricao> getListaPrescricaoPendente(){
-		return getBusca("select o from Prescricao o where o.dispensavel = 'N' order by o.dataInclusao");
+		return getBusca("select o from Prescricao o where o.dispensavel = 'N' and o.usuarioInclusao.idUsuario = "+Autenticador.getInstancia().getUsuarioAtual().getIdUsuario()+" order by o.dataInclusao");
 	}
 	
 	public void iniciaDosagem(){

@@ -19,14 +19,14 @@
 				<table width="100%" >
 					<tr>
 						<td style="vertical-align: top" >
-							<h:panelGrid rendered="#{parametro.usuarioFarmaceutico or parametro.usuarioAdministrador}" columns="1" border="0">
+							<h:panelGrid rendered="#{parametro.usuarioFarmaceutico or parametro.usuarioAdministrador or parametro.usuarioTeste}" columns="1" border="0">
 								<h:panelGroup>
 									<ui:include src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
 								</h:panelGroup>
 							</h:panelGrid>
 						</td>
 						<td style="vertical-align: top" >
-							<h:panelGrid rendered="#{parametro.usuarioMedico or parametro.usuarioAdministrador}" width="100%" columns="1" border="0">
+							<h:panelGrid rendered="#{parametro.usuarioMedico or parametro.usuarioAdministrador or parametro.usuarioTeste}" width="100%" columns="1" border="0">
 								<h:panelGroup>
 									<ui:include src="/PaginasWeb/Painel/Paineis/painelPrescricaoPendente.xhtml" />
 								</h:panelGroup>

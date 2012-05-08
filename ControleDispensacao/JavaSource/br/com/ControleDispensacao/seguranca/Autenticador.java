@@ -183,6 +183,11 @@ public class Autenticador {
 	private void carregaToolBarMenu() {
 		//TODO tornar o menu recursivo
 		menuModel = new DefaultMenuModel();
+
+		MenuItem mi = new MenuItem();
+		mi.setValue("Home");
+		mi.setOnclick("location.href='home.jsf';");
+		menuModel.addMenuItem(mi);
 		
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
@@ -224,7 +229,7 @@ public class Autenticador {
 			menuModel.addSubmenu(primeiroNivel);
 		}
 		
-		MenuItem mi = new MenuItem();
+		mi = new MenuItem();
 		mi.setValue("Sair");
 
 		String action = "#{autenticador.logout()}";

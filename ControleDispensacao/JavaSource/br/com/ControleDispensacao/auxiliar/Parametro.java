@@ -50,6 +50,10 @@ public class Parametro implements Serializable {
 		return isUsuarioFarmaceutico();
 	}
 	
+	public boolean getUsuarioTeste(){
+		return isUsuarioTeste();
+	}
+	
 	public static boolean isUsuarioAdministrador(){
 		return getDescricaoEspecialidade().equalsIgnoreCase("Administrador");
 	}
