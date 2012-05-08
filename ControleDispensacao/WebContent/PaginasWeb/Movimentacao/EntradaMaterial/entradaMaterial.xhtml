@@ -46,10 +46,11 @@
 										image="ui-icon ui-icon-search" />
 					
 					<p:commandButton 	value="Limpar" 
-										action="#{entradaMaterialConsulta.novaInstancia()}"
+										action="#{estoqueDesbloqueadoConsulta.novaInstancia()}"
 										image="ui-icon ui-icon-arrowrefresh-1-s" 
 										title="Limpar os campos" 
-										update="pesquisaEntradaMaterialForm " />
+										immediate="true"
+										update="pesquisaEntradaMaterialForm" />
 					
 			    </p:fieldset>  
 				<p:growl/>

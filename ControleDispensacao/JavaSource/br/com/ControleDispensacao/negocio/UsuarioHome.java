@@ -38,10 +38,10 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	
 	public void trocaSenha(){
 		Usuario usuario = Autenticador.getInstancia().getUsuarioAtual();
-		String senhaCriptografada = Utilities.encripta(senhaAntiga);
+		String senhaCriptografada = Utilities.md5(senhaAntiga);
 		if(senhaNova.equals(senhaNovaConfirmacao)){
 			if(usuario.getSenha().equals(senhaCriptografada)){
-				String senha = Utilities.encripta(senhaNova);
+				String senha = Utilities.md5(senhaNova);
 				usuario.setSenha(senha);
 				setInstancia(usuario);
 				super.atualizar();
