@@ -24,7 +24,35 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	private Usuario usuario = new Usuario();
 	private String senhaConfirmacao;
 	private boolean trocaSenha;
+	private String senhaAntiga;
+	private String senhaNova;
+	private String senhaNovaConfirmacao;
 	
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
+		senhaAntiga = null;
+		senhaNova = null;
+		senhaNovaConfirmacao = null;
+	}
+	
+	public void trocaSenha(){
+		Usuario usuario = Autenticador.getInstancia().getUsuarioAtual();
+		String senhaCriptografada = Utilities.encripta(senhaAntiga);
+		if(senhaNova.equals(senhaNovaConfirmacao)){
+			if(usuario.getSenha().equals(senhaCriptografada)){
+				String senha = Utilities.encripta(senhaNova);
+				usuario.setSenha(senha);
+				setInstancia(usuario);
+				super.atualizar();
+				novaInstancia();
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"A senha antiga está errada!", ""));
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas não conferem!", "Informe duas senhas iguais."));
+		}
+	}
 	
 	/**
 	 * Método que retorna uma lista de Usuarios de acordo com o nome informado
@@ -118,6 +146,36 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 
 	public void setTrocaSenha(boolean trocaSenha) {
 		this.trocaSenha = trocaSenha;
+	}
+
+
+	public String getSenhaAntiga() {
+		return senhaAntiga;
+	}
+
+
+	public void setSenhaAntiga(String senhaAntiga) {
+		this.senhaAntiga = senhaAntiga;
+	}
+
+
+	public String getSenhaNova() {
+		return senhaNova;
+	}
+
+
+	public void setSenhaNova(String senhaNova) {
+		this.senhaNova = senhaNova;
+	}
+
+
+	public String getSenhaNovaConfirmacao() {
+		return senhaNovaConfirmacao;
+	}
+
+
+	public void setSenhaNovaConfirmacao(String senhaNovaConfirmacao) {
+		this.senhaNovaConfirmacao = senhaNovaConfirmacao;
 	}
 	
 
