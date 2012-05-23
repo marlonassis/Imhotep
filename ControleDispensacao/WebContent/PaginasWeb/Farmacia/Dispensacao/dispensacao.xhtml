@@ -121,7 +121,7 @@
 								<h:outputText value="#{prescricaoItem.material}" />
 							</p:column>
 							
-							<p:column headerText="Quantidade de doses" >
+							<p:column headerText="Quantidade solicitada" >
 								<h:outputText value="#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}" />
 							</p:column>
 							
@@ -155,7 +155,7 @@
           	
 				        <p:commandButton value="Dispensar"
 				        				 action="#{dispensacaoHome.dispensar()}" 
-				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:iconeRecibo"
+				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:recibo"
 				        				 rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
 				        				 oncomplete="reciboDialog.show(); itensDialog.hide();" />
 					</h:panelGroup>

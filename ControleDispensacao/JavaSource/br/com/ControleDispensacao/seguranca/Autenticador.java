@@ -18,6 +18,7 @@ import org.primefaces.component.submenu.Submenu;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
+import br.com.ControleDispensacao.auxiliar.Parametro;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
@@ -191,8 +192,13 @@ public class Autenticador {
 		
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
-		StringBuilder sb = new StringBuilder("select o.menu from AutorizaMenu o where o.menu.menuPai is null and o.especialidade.idEspecialidade = :idEspecialidade) order by o.menu.descricao");
+		StringBuilder sb;
+		if(Parametro.isUsuarioTeste() || Parametro.isUsuarioAdministrador()){
+			sb = new StringBuilder("select o from Menu o where o.menuPai is null order by o.descricao");
+		}else{
+			hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+			sb = new StringBuilder("select o.menu from AutorizaMenu o where o.menu.menuPai is null and o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao");
+		}
 		
 		Collection<Menu> listaPrimeiroNivel = cg.consulta(sb, hashMap);
 		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
@@ -201,9 +207,14 @@ public class Autenticador {
 			primeiroNivel.setId(menuPrimeiroNivel.getDescricao().trim().substring(0, 2).concat(String.valueOf(menuPrimeiroNivel.getIdMenu())));
 			
 			hashMap.put("idMenuPai", menuPrimeiroNivel.getIdMenu());
-			sb = new StringBuilder("select o.menu from AutorizaMenu o where ");
-			sb.append(" o.menu.menuPai.idMenu = :idMenuPai ");
-			sb.append(" and o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao ");
+			if(Parametro.isUsuarioTeste() || Parametro.isUsuarioAdministrador()){
+				sb = new StringBuilder("select o from Menu o where ");
+				sb.append(" o.menuPai.idMenu = :idMenuPai order by o.descricao ");
+			}else{
+				sb = new StringBuilder("select o.menu from AutorizaMenu o where ");
+				sb.append(" o.menu.menuPai.idMenu = :idMenuPai ");
+				sb.append(" and o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao ");
+			}
 			Collection<Menu> listaSegundoNivel = cg.consulta(sb, hashMap);
 			for (Menu menuSegundoNivel : listaSegundoNivel) {
 				hashMap.put("idMenuPai", menuSegundoNivel.getIdMenu());
