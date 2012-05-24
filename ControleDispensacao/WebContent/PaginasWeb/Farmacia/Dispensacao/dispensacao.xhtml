@@ -179,13 +179,13 @@
 						<div align="left" >
 							<b>Prescrição:</b> <h:outputText value="#{dispensacaoHome.prescricao.numero}"/><br/>
 							<b>Prescritor:</b> <h:outputText value="#{dispensacaoHome.prescricao.profissional.nome}"/><br/>
+							<b>Dispensante:</b> <h:outputText value="#{autenticador.profissionalAtual.nome}"/><br/>
 							<b>Data da Dispensação:</b> <h:outputText value="#{dispensacaoHome.prescricao.dataDipensacao}">
 															<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
 														</h:outputText><br/>
 							<b>Data da Impressão:</b> #{util.dataAtual} #{util.horaAtual}<br/>
 							<b>Unidade:</b> <h:outputText value="#{dispensacaoHome.prescricao.unidade}"/><br/><br/>
-							<table border="1" 
-								   cellpadding="5px">
+							<table border="1" >
 								<thead>
 									<tr>
 								      <th><h:outputText value="Código"/></th>
@@ -193,7 +193,6 @@
 								      <th><h:outputText value="Qtd"/></th>
 								      <th><h:outputText value="Validade"/></th>
 								      <th><h:outputText value="Lote"/></th>
-								      <th><h:outputText value="Observação"/></th>
 								    </tr>
 								</thead>
 								<ui:repeat value="#{dispensacaoHome.listaReciboPrescricao()}"
@@ -213,9 +212,6 @@
 								        </td>
 								        <td>
 								        	<h:outputText value="#{item.estoque.lote}"/>
-								        </td>
-								        <td width="100px" >
-								        	<h:outputText value="#{item.prescricaoItem.observacao}"/>
 								        </td>
 									</tr>
 								</ui:repeat>
