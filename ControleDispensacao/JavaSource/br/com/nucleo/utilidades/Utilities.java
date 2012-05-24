@@ -24,6 +24,24 @@ import sun.misc.BASE64Encoder;
 @RequestScoped
 public class Utilities{
 	
+	public static float getDifDia(java.util.Date dtMenor, java.util.Date dtMaior){  
+        return (dtMaior.getTime() - dtMenor.getTime()) / (1000*60*60*24);
+    }  
+	
+	public static float getDifAno(java.util.Date dtMenor, java.util.Date dtMaior){  
+        return getDifDia(dtMenor, dtMaior) /365;
+    }  
+	
+	public static String getIdadeAtual(Date nascimento){
+		if(nascimento != null){
+			float difAno = getDifAno(nascimento, Calendar.getInstance().getTime());
+			int floor = (int) Math.floor(difAno);
+			String idadeDes = floor + " anos e ";
+			idadeDes = idadeDes.concat((int)Math.floor(12 * (difAno - floor)) + " meses");
+			return idadeDes;
+		}
+		return "NI";
+	}
 	
 	public int converteString(String valor){
 		return  valor.isEmpty() ? 0 : Integer.parseInt(valor);

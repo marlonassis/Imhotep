@@ -1,5 +1,7 @@
 package br.com.ControleDispensacao.entidade;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,9 +17,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
+import br.com.nucleo.utilidades.Utilities;
 
 @Entity
 @Table(name = "tb_paciente")
@@ -197,6 +201,11 @@ public class Paciente {
 		this.usuarioInclusao = usuarioInclusao;
 	}
 	
+	@Transient
+	public String getNomeIdade(){
+		return nome.concat(" - ").concat(Utilities.getIdadeAtual(dataNascimento));
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -210,7 +219,7 @@ public class Paciente {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + nome.hashCode();
+	    return hash * 31 + nome.hashCode() + dataInclusao.hashCode();
 	}
 
 	@Override
