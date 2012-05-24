@@ -1,7 +1,6 @@
 package br.com.ControleDispensacao.negocio;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -293,8 +292,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			getInstancia().setDispensavel(TipoStatusEnum.N);
 			getInstancia().setDispensado(TipoStatusEnum.N);
 			session.save(getInstancia());
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm");
-			getInstancia().setNumero(sdf.format(getInstancia().getDataInclusao()).concat("-").concat(String.valueOf(getInstancia().getIdPrescricao())));
+			getInstancia().setNumero(String.valueOf(getInstancia().getIdPrescricao()));
 			session.merge(getInstancia());
 			session.flush();
 			tx.commit();
