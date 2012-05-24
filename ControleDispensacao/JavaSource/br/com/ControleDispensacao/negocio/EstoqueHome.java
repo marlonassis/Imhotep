@@ -26,7 +26,7 @@ public class EstoqueHome extends PadraoHome<Estoque>{
 	}
 
 	public List<Estoque> listaEstoqueMaterialDispensacao(Material material){
-		return getBusca("select o from Estoque o where o.quantidade > 0 and o.bloqueado = 'N' and o.material.idMaterial = " + material.getIdMaterial()); 
+		return getBusca("select o from Estoque o where o.dataValidade >= now() and o.quantidade > 0 and o.bloqueado = 'N' and o.material.idMaterial = " + material.getIdMaterial() + " order by o.dataValidade"); 
 	}
 	
 	public List<Estoque> listaEstoqueMaterial(Material material){
