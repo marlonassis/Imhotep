@@ -70,7 +70,7 @@ public class MaterialHome extends PadraoHome<Material>{
 		carregaSubGrupoList();
 		familiaList.add(getInstancia().getFamilia());
 	}
-	
+
 	/**
 	 * Método que retorna uma lista de Material
 	 * @param String sql
@@ -90,7 +90,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	}
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
-		return super.getBusca("select distinct o.material from Estoque o where lower(o.material.descricao) like lower('%"+sql+"%') ");
+		return super.getBusca("select distinct o.material from Estoque o where o.quantidade > 0 and lower(o.material.descricao) like lower('%"+sql+"%') ");
 	}
 	
 	@Override
