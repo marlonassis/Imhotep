@@ -1,8 +1,7 @@
 package br.com.ControleDispensacao.testes;
 
-import static org.quartz.JobBuilder.*;
-import static org.quartz.TriggerBuilder.*;
-import static org.quartz.SimpleScheduleBuilder.*;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;

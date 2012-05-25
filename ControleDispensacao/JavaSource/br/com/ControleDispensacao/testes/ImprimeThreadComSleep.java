@@ -9,7 +9,8 @@ public class ImprimeThreadComSleep extends Thread{
 		int i=1;
 		int n=raiz;
 		while(true){
-			System.out.println(n= raiz*i);
+			n= raiz*i;
+			System.out.println(n);
 			i++;
 			if(Thread.interrupted()){
 				System.out.println("terminada");
