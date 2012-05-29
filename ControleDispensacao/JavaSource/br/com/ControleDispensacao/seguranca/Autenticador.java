@@ -79,6 +79,18 @@ public class Autenticador {
 		profissionalAtual = cg.consultaUnica(new StringBuilder("select o from Profissional o where o.usuario.idUsuario = :idUsuario"), hm);
 	}
 	
+	public void home(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		try{
+			facesContext.getExternalContext().redirect(PAGINA_HOME);
+		}catch (Exception e) {
+			e.printStackTrace();
+			if(getUsuarioAtual() != null){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Login não realizado!"));
+			}
+		}
+	}
+	
 	public void logout(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		try{
@@ -187,7 +199,11 @@ public class Autenticador {
 
 		MenuItem mi = new MenuItem();
 		mi.setValue("Home");
-		mi.setOnclick("location.href='home.jsf';");
+		String action = "#{autenticador.home()}";
+		MethodExpression methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
+													createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
+		mi.setActionExpression(methodExpression);
+		
 		menuModel.addMenuItem(mi);
 		
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
@@ -243,9 +259,9 @@ public class Autenticador {
 		mi = new MenuItem();
 		mi.setValue("Sair");
 
-		String action = "#{autenticador.logout()}";
-		MethodExpression methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
-		createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
+		action = "#{autenticador.logout()}";
+		methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
+									createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
 		
 		mi.setActionExpression(methodExpression);
 		mi.setOncomplete("window.location.reload();");
