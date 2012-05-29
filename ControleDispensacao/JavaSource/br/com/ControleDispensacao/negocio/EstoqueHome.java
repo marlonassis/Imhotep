@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.negocio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,20 @@ public class EstoqueHome extends PadraoHome<Estoque>{
 
 	public List<Estoque> listaEstoqueMaterialDispensacao(Material material){
 		return getBusca("select o from Estoque o where o.dataValidade >= now() and o.quantidade > 0 and o.bloqueado = 'N' and o.material.idMaterial = " + material.getIdMaterial() + " order by o.dataValidade"); 
+	}
+
+	//lista do estoque que contém os medicamentos que estão com a data de vencimento dentro do período
+	public List<Estoque> listaEstoqueRelatorioVencimentoPeriodo(Date dataIni, Date dataFim){
+		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("dataIni", dataIni);
+		map.put("dataFim", dataFim);
+		String sql = "select o from Estoque o where o.dataValidade >= :dataIni and o.dataValidade <= :dataFim";
+		return new ArrayList<Estoque>(cg.consulta(new StringBuilder(sql), map));
+	}
+	
+	public List<Estoque> listaEstoqueRelatorioGeral(){
+		return getBusca("select o from Estoque o where o.bloqueado = 'N'"); 
 	}
 	
 	public List<Estoque> listaEstoqueMaterial(Material material){
