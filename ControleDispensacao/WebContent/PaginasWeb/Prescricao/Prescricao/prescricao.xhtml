@@ -14,7 +14,7 @@
 			<h:form id="prescricaoForm" prependId="false" >
 				<p:growl showDetail="true" />
 				<h:panelGrid id="prescricaoPanelGrid"
-							 columns="3"
+							 columns="4"
 							 width="100%" >
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="paciente" value="Paciente:" /><br />
@@ -28,7 +28,9 @@
 										var="paciente" 
 										itemLabel="#{paciente.nomeIdade}"
 										itemValue="#{paciente}"
-										converter="pacienteConversor" />
+										converter="pacienteConversor">
+							<p:ajax event="itemSelect" update="padraoTabView:prescricaoPanelGrid" />
+						</p:autoComplete>
 					</h:panelGroup>
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
@@ -44,7 +46,19 @@
 									  value="#{prescricaoHome.instancia.leito}"
 									  title="Leito ao qual o paciente está em repouso" />
 					</h:panelGroup>
-					
+					<h:panelGroup>
+						<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
+				  		<p:autoComplete id="unidade" 
+				  						forceSelection="true"
+				  						value="#{prescricaoHome.instancia.paciente.unidadeAlocacao}"
+										completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
+										var="unidade"
+										title="Unidade onde está alocado o paciente" 
+										required="true"
+										itemLabel="#{unidade.nome}" 
+										itemValue="#{unidade}" 
+										converter="unidadeConversor" />
+					</h:panelGroup>
 					<h:panelGroup>
 						<p:commandButton value="Indicar dosagem"
 										 ajax="true"
