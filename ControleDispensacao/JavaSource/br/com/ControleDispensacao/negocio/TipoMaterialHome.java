@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoHome;
 public class TipoMaterialHome extends PadraoHome<TipoMaterial>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de TipoMaterial
 	 * @param String sql
 	 * @return Collection Menu
 	 */

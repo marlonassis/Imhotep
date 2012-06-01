@@ -15,7 +15,7 @@ import br.com.nucleo.PadraoHome;
 public class GrupoAtencaoContinuadaHome extends PadraoHome<GrupoAtencaoContinuada>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de GrupoAtencaoContinuada
 	 * @param String sql
 	 * @return Collection Menu
 	 */

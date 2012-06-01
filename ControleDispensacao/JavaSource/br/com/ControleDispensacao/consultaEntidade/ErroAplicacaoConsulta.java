@@ -5,13 +5,13 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.ControleDispensacao.entidade.Aplicacao;
+import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoConsulta;
 
 @ManagedBean(name="aplicacaoConsulta")
 @SessionScoped
-public class ErroAplicacaoConsulta extends PadraoConsulta<Aplicacao> {
+public class ErroAplicacaoConsulta extends PadraoConsulta<ErroAplicacao> {
 	public ErroAplicacaoConsulta(){
 		getCamposConsulta().put("o.dataOcorrencia", MAIOR_IGUAL);
 		getCamposConsulta().put("o.message", INCLUINDO_TUDO);
@@ -21,8 +21,8 @@ public class ErroAplicacaoConsulta extends PadraoConsulta<Aplicacao> {
 	}
 	
 	@Override
-	public List<Aplicacao> getList() {
-		setConsultaGeral(new ConsultaGeral<Aplicacao>());
+	public List<ErroAplicacao> getList() {
+		setConsultaGeral(new ConsultaGeral<ErroAplicacao>());
 		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from ErroAplicacao o where 1=1"));
 		return super.getList();
 	}

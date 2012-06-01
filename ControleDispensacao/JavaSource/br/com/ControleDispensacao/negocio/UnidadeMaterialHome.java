@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoHome;
 public class UnidadeMaterialHome extends PadraoHome<UnidadeMaterial>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de UnidadeMaterial
 	 * @param String sql
 	 * @return Collection Menu
 	 */

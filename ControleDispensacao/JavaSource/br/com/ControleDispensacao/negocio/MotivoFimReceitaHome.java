@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoHome;
 public class MotivoFimReceitaHome extends PadraoHome<MotivoFimReceita>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de MotivoFimReceita
 	 * @param String sql
 	 * @return Collection Menu
 	 */

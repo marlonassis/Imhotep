@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoHome;
 public class LivroHome extends PadraoHome<Livro>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de Livro
 	 * @param String sql
 	 * @return Collection Menu
 	 */

@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoHome;
 public class SituacaoPacienteHome extends PadraoHome<SituacaoPaciente>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de SituacaoPaciente
 	 * @param String sql
 	 * @return Collection Menu
 	 */

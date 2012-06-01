@@ -16,7 +16,7 @@ import br.com.nucleo.PadraoHome;
 public class SubGrupoHome extends PadraoHome<SubGrupo>{
 	
 	/**
-	 * Método que retorna uma lista de Aplicacao
+	 * Método que retorna uma lista de SubGrupo
 	 * @param String sql
 	 * @return Collection Menu
 	 */
