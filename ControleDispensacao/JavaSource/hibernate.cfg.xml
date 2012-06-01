@@ -25,7 +25,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.Livro"/>
         <mapping class="br.com.ControleDispensacao.entidade.AutorizaMenu"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoConselho"/>
-        <mapping class="br.com.ControleDispensacao.entidade.TipoProfissional"/>
         <mapping class="br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade"/>
         <mapping class="br.com.ControleDispensacao.entidade.Profissional"/>
         <mapping class="br.com.ControleDispensacao.entidade.Estado"/>
@@ -33,14 +32,11 @@
         <mapping class="br.com.ControleDispensacao.entidade.Unidade"/>
         <mapping class="br.com.ControleDispensacao.entidade.AutorizaUnidadeProfissional"/>
         <mapping class="br.com.ControleDispensacao.entidade.SituacaoPaciente"/>
-        <mapping class="br.com.ControleDispensacao.entidade.GrupoAtencaoContinuada"/>
         <mapping class="br.com.ControleDispensacao.entidade.Paciente"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoMovimento"/>
         <mapping class="br.com.ControleDispensacao.entidade.MotivoFimReceita"/>
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoGeral"/>
         <mapping class="br.com.ControleDispensacao.entidade.ItensMovimentoGeral"/>
-        <mapping class="br.com.ControleDispensacao.entidade.ItemSolicitaRemanejamento"/>
-        <mapping class="br.com.ControleDispensacao.entidade.SolicitaRemanejamento"/>
         <mapping class="br.com.ControleDispensacao.entidade.Estoque"/>
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoLivro"/>
         <mapping class="br.com.ControleDispensacao.entidade.Especialidade"/>

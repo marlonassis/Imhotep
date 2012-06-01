@@ -14,8 +14,6 @@ import org.primefaces.model.TreeNode;
 
 import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.Profissional;
-import br.com.ControleDispensacao.entidade.TipoConselho;
-import br.com.ControleDispensacao.entidade.TipoProfissional;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
@@ -24,7 +22,6 @@ import br.com.nucleo.utilidades.Utilities;
 @ManagedBean(name="profissionalHome")
 @SessionScoped
 public class ProfissionalHome extends PadraoHome<Profissional>{
-	private List<TipoProfissional> tipoProfissionalList;
 	private List<Especialidade> especialidadeList;
 	private TreeNode especialidadeNode;
 	
@@ -52,20 +49,9 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 		getInstancia().setEspecialidade(new Especialidade());
 	}
 	
-	/**
-	 * Método usando para carregar o tipo do profissional informado pelo usuário de acordo com o conselho
-	 */
-	public void carregaTipoConselhoList(){
-		TipoConselho tipoConselho = getInstancia().getEspecialidade().getTipoConselho();
-		if(tipoConselho != null){
-			setTipoProfissionalList((List<TipoProfissional>) new TipoProfissionalHome().getListaTipoProfissionalConselho(tipoConselho.getIdTipoConselho()));
-		}
-	}
-	
 	@Override
 	public void setInstancia(Profissional instancia) {
 		super.setInstancia(instancia);
-		carregaTipoConselhoList();
 	}
 	
 	/**
@@ -127,14 +113,6 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 		getInstancia().getUsuario().setDataInclusao(new Date());
 		getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().getUsuario().setSenha(Utilities.md5(getInstancia().getUsuario().getMatricula()));
-	}
-
-	public List<TipoProfissional> getTipoProfissionalList() {
-		return tipoProfissionalList;
-	}
-
-	public void setTipoProfissionalList(List<TipoProfissional> tipoProfissionalList) {
-		this.tipoProfissionalList = tipoProfissionalList;
 	}
 
 	public List<Especialidade> getEspecialidadeList() {
