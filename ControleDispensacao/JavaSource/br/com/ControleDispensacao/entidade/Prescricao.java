@@ -3,6 +3,7 @@ package br.com.ControleDispensacao.entidade;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -69,7 +70,7 @@ public class Prescricao {
 		this.profissional = profissional;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinColumn(name = "id_paciente")
 	public Paciente getPaciente() {
 		return paciente;
