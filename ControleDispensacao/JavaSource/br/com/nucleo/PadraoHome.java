@@ -18,6 +18,9 @@ import br.com.nucleo.interfaces.IPadraoHome;
 public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadraoHome {
 
 	private T instancia;
+	private boolean exibeMensagemAtualizacao = true;
+	private boolean exibeMensagemDelecao = true;
+	private boolean exibeMensagemInsercao = true;
 	
 	private static String primeiraLetraMinuscula(String palavra) {    
 	      return palavra.substring(0,1).toLowerCase().concat(palavra.substring(1));    
@@ -94,13 +97,17 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			session.flush();  
 			tx.commit();  
 			ret = true;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro realizado com sucesso", "Registro cadastrado!"));
+			if(isExibeMensagemInsercao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro realizado com sucesso", "Registro cadastrado!"));
+			}
 			aposEnviar();
 		}
 		catch (org.hibernate.exception.ConstraintViolationException e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Ocorreu uma tentativa de duplicação!"));
+			if(isExibeMensagemInsercao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Ocorreu uma tentativa de duplicação!"));
+			}
 			zeraId();
 		}
 		catch (Exception e) {
@@ -159,10 +166,14 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			tx.commit(); // Finaliza transação
 			novaInstancia();
 			ret = true;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Deleção realizada com sucesso", "Registro apagado!"));
+			if(isExibeMensagemDelecao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Deleção realizada com sucesso", "Registro apagado!"));
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao apagar", e.getCause().getMessage()));
+			if(isExibeMensagemDelecao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao apagar", e.getCause().getMessage()));
+			}
 			if(session != null){
 				session.getTransaction().rollback();
 			}
@@ -186,14 +197,20 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 			session.merge(obj); // Realiza persistência
 			tx.commit(); // Finaliza transação
 			o = obj;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualização realizada com sucesso", "Registro atualizado!"));
+			if(isExibeMensagemAtualizacao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualização realizada com sucesso", "Registro atualizado!"));
+			}
 		}catch (org.hibernate.exception.ConstraintViolationException e) {
 			session.getTransaction().rollback();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Ocorreu uma tentativa de duplicação!"));
+			if(isExibeMensagemAtualizacao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Ocorreu uma tentativa de duplicação!"));
+			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao atualizar", e.getCause().getMessage()));
+			if(isExibeMensagemAtualizacao()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao atualizar", e.getCause().getMessage()));
+			}
 		}finally{
 			session.close(); // Fecha sessão
 			factory.close();
@@ -340,5 +357,29 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	public <T> T instanciaAtual(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
 		return (T) session.getAttribute(nomeClasse());
+	}
+
+	public boolean isExibeMensagemAtualizacao() {
+		return exibeMensagemAtualizacao;
+	}
+
+	public void setExibeMensagemAtualizacao(boolean exibeMensagemAtualizacao) {
+		this.exibeMensagemAtualizacao = exibeMensagemAtualizacao;
+	}
+
+	public boolean isExibeMensagemDelecao() {
+		return exibeMensagemDelecao;
+	}
+
+	public void setExibeMensagemDelecao(boolean exibeMensagemDelecao) {
+		this.exibeMensagemDelecao = exibeMensagemDelecao;
+	}
+
+	public boolean isExibeMensagemInsercao() {
+		return exibeMensagemInsercao;
+	}
+
+	public void setExibeMensagemInsercao(boolean exibeMensagemInsercao) {
+		this.exibeMensagemInsercao = exibeMensagemInsercao;
 	}
 }
