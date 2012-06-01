@@ -12,7 +12,7 @@
 			<p:inputText id="nome" 
 						 value="#{pacienteHome.instancia.nome}" 
 						 required="true"
-						 title="Informe a descrição da unidade material" />
+						 title="Informe o nome do paciete" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
@@ -20,7 +20,7 @@
 			<p:inputMask id="dataNascimento"
 						 mask="99/99/9999"
 						 value="#{pacienteHome.instancia.dataNascimento}"
-						 title="Data de nascimento do cliente"
+						 title="Data de nascimento do paciente"
 						 required="false">
 				<f:convertDateTime pattern="dd/MM/yyyy"  />
 			</p:inputMask>
@@ -30,7 +30,7 @@
 			<h:outputLabel for="nomeMae" value="Nome da mãe:"  /><br />
 			<p:inputText id="nomeMae" 
 						 value="#{pacienteHome.instancia.nomeMae}" 
-						 title="Informe o nome da mãe" />
+						 title="Informe o nome da mãe do paciente" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
@@ -105,8 +105,8 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="unidadeConsulta" value="Unidade de Alocação:" /><br />
-	  		<p:autoComplete id="unidadeConsulta" 
+			<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
+	  		<p:autoComplete id="unidade" 
 	  						forceSelection="true"
 	  						value="#{pacienteHome.instancia.unidadeAlocacao}"
 							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
