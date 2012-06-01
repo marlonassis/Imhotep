@@ -16,12 +16,16 @@
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="dataIni" value="Início:"  /><br />
 						<p:calendar id="dataIni"
-									value="#{relatorioEstoqueVencido.dataIni}" />
+									value="#{relatorioEstoqueVencido.dataIni}" 
+									pattern="dd/MM/yyyy" 
+									locale="pt" />
 					</h:panelGroup>
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="dataFim" value="Fim:"  /><br />
 						<p:calendar id="dataFim"
-									value="#{relatorioEstoqueVencido.dataFim}" />
+									value="#{relatorioEstoqueVencido.dataFim}" 
+									pattern="dd/MM/yyyy" 
+									locale="pt" />
 					</h:panelGroup>
 					<h:panelGroup>
 					    <p:commandLink id="downloadRelatorio" 
