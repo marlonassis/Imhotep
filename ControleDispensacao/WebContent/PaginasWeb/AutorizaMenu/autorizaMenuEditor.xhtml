@@ -18,21 +18,22 @@
 							var="especialidade" 
 							itemLabel="#{especialidade.descricao}" 
 							itemValue="#{especialidade}" 
-							converter="especialidadeConversor" />
+							converter="especialidadeConversor">
+				<p:ajax event="itemSelect" update="padraoTabView:autorizaMenuPanelGrid" />
+			</p:autoComplete>
 		</h:panelGroup>
 		
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="menu" value="Menu:" /><br />
-	  		<p:autoComplete id="menu" 
-	  						forceSelection="true"
-	  						required="true"
-	  						value="#{autorizaMenuHome.instancia.menu}"
-							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
-							var="menu" 
-							itemLabel="#{menu.descricao}" 
-							itemValue="#{menu}" 
-							converter="menuConversor" />
+	  		<p:pickList id="pickList" value="#{autorizaMenuHome.menuDualList}"  
+                var="menu"  
+                addLabel="Adicionar"
+                addAllLabel="Adicionar todos"
+                removeLabel="Remover"
+                removeAllLabel="Remover todos"
+                itemLabel="#{menu}"  
+                itemValue="#{menu}" 
+                converter="menuConversor"/>  
 		</h:panelGroup>
-
 	</h:panelGrid>
 </ui:composition>

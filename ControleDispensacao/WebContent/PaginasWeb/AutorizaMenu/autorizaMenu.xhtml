@@ -10,30 +10,34 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabAutorizaMenu" title="Autorização para aplicação" >
-			<h:form id="autorizaMenuForm" prependId="false" >
+		<p:tab id="tabAutorizaMenu" 
+			   title="Autorização para aplicação" >
+			<h:form id="autorizaMenuForm" 
+					prependId="false" >
 				<p:fieldset legend="Nova Autorização"
-							collapsed="#{!autorizaMenuHome.edicao}"
+							collapsed="false"
 							toggleable="true"
 							toggleSpeed="500">
 						<p:growl id="formGrowl" showDetail="true" />
 						<ui:include src="autorizaMenuEditor.xhtml"/>
 			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!autorizaMenuHome.edicao}"
+			            					rendered="false"
 			            					update="padraoTabView:tabelaAutorizaMenu autorizaMenuForm"
 											action="#{autorizaMenuHome.enviar}" />
 			            <p:commandButton	value="Gravar" 
-			            					rendered="#{autorizaMenuHome.edicao}"
+			            					rendered="true"
 			            					update="padraoTabView:tabelaAutorizaMenu autorizaMenuForm"
 											action="#{autorizaMenuHome.atualizar}"/> 
 						<p:commandButton	value="Novo"
-											rendered="#{autorizaMenuHome.edicao}"
+											rendered="true"
 											update="@parent" 
 											action="#{autorizaMenuHome.novaInstancia()}"/> 
 				</p:fieldset>
             </h:form>
 			
-			<h:form id="pesquisaAutorizaMenuForm" prependId="false" >
+			<h:form id="pesquisaAutorizaMenuForm" 
+					prependId="false" 
+					rendered="false" >
 				<p:fieldset id="pesquisaAutorizaMenuFieldSet"
 							legend="Pesquisa" 
 							collapsed="true" 
