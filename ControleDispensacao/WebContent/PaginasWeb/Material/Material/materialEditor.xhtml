@@ -31,13 +31,6 @@
 		</h:panelGroup>
 				 
 		<h:panelGroup>
-			<h:outputLabel for="periodoDispensavel" value="Período dispensável:"  /><br />
-			<p:inputText id="periodoDispensavel"
-						 onkeyup="apenasNumero(this);"
-						 value="#{materialHome.instancia.diasLimiteDisponivel}" />
-		</h:panelGroup>
-
-		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="unidadeDispensada" value="Unidade dispensada:"  /><br />
 			<p:selectOneMenu value="#{materialHome.instancia.unidadeMaterial}" 
 							 effect="fade" 
@@ -138,16 +131,6 @@
 	            			   itemValue="#{tipoMaterial}"/>  
 	        </p:selectOneMenu>
         </h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="dispensavel" value="Dispensável:"  /><br />
-			<h:selectOneRadio id="dispensavel"
-							  value="#{materialHome.instancia.dispensavel}" 
-							  required="true"
-							  title="Informe se medicamento é dispensável" >
-				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="autorizacao" value="Necessita autorização?"  /><br />

@@ -29,8 +29,6 @@ public class Material {
 	private ListaEspecial listaEspecial;
 	private Integer codigoMaterial;
 	private String descricao;
-	private TipoStatusEnum dispensavel;
-	private Integer diasLimiteDisponivel;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	private TipoStatusEnum autorizadoDispensacao;
@@ -103,25 +101,6 @@ public class Material {
 
 	public void setCodigoMaterial(Integer codigoMaterial) {
 		this.codigoMaterial = codigoMaterial;
-	}
-	
-	@Column(name = "in_dias_limite_disponivel")
-	public Integer getDiasLimiteDisponivel() {
-		return this.diasLimiteDisponivel;
-	}
-
-	public void setDiasLimiteDisponivel(Integer diasLimiteDisponivel) {
-		this.diasLimiteDisponivel = diasLimiteDisponivel;
-	}
-
-	@Column(name = "tp_dispensavel")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getDispensavel() {
-		return this.dispensavel;
-	}
-
-	public void setDispensavel(TipoStatusEnum dispensavel) {
-		this.dispensavel = dispensavel;
 	}
 	
 	@Column(name = "tp_autoriza_dispensacao")
