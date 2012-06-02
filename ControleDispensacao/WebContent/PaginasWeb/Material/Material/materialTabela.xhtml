@@ -23,8 +23,8 @@
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Dispensável" /></f:facet>
-			<h:outputText value="#{linha.dispensavel.label}" />
+			<f:facet name="header"><h:outputText value="Necessita autorização" /></f:facet>
+			<h:outputText value="#{linha.autorizadoDispensacao.label}" />
 		</p:column>
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:materialForm" 
