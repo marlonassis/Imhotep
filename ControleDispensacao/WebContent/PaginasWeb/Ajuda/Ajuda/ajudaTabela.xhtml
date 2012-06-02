@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dataTable 	id="tabelaAjuda" 
+					value="#{ajudaHome.listaAjuda}" 
+					var="linha"
+					dblClickSelect="true"
+					emptyMessage="Não foi encontrado registros" 
+					rows="10" 
+					paginator="true"
+					selectionMode="single" 
+					rowKey="#{linha.idAjuda}">
+					
+		<p:column>
+			<f:facet name="header"><h:outputText value="Menu" /></f:facet>
+			<h:outputText value="#{linha.nomeMenu}" />
+		</p:column>
+
+		<p:column style="width:60px; text-align: center;" >
+			<p:commandLink onclick="window.open('#{linha.template}','janela', 'width=800, height=600, top=99, left=99, scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');" 
+						   style="padding-right:10px;" >
+				<h:graphicImage value="/Imagens/open.png" />
+			</p:commandLink>
+		</p:column>  
+	</p:dataTable>
+	
+</ui:composition>
