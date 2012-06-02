@@ -24,7 +24,9 @@ public class RelatorioEstoque extends PadraoRelatorio{
 		String caminho = "/WEB-INF/classes/br/com/ControleDispensacao/relatorio/EstoqueRelatorio.jasper";
 		String nomeRelatorio = "RelatorioDoEstoque-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<Estoque> listaEstoqueRelatorioGeral = new EstoqueHome().listaEstoqueRelatorioGeral();
-		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, new HashMap<String, Object>());
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("data", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
+		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, map);
 	}
 	
 }
