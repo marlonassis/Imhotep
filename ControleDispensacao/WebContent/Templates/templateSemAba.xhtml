@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+<f:view contentType="text/html"
+		locale="pt_BR">
+
+	<h:head>
+		<title>Controle de Dispensação</title>
+		<ui:insert name="head"></ui:insert>
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript" src="#{request.contextPath}/js/jquery-1.7.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/jquery.price_format.1.6.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/jquery.maskMoney1.4.1.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/moeda.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/basico.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/concentrador.js"></script>
+		
+		<script type="text/javascript">
+			PrimeFaces.locales['pt_BR'] = {
+			                closeText: 'Fechar',
+			                prevText: 'Anterior',
+			                nextText: 'Próximo',
+			                currentText: 'Começo',
+			                monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+			                monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Des'],
+			                dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+			                dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+			                dayNamesMin: ['D','S','T','Q','Q','S','S'],
+			                weekHeader: 'Semana',
+			                firstDay: 1,
+			                isRTL: false,
+			                showMonthAfterYear: false,
+			                yearSuffix: '',
+			                timeOnlyTitle: 'Só Horas',
+			                timeText: 'Tempo',
+			                hourText: 'Hora',
+			                minuteText: 'Minuto',
+			                secondText: 'Segundo',
+			                currentText: 'Data Atual',
+			                ampm: false,
+			                month: 'Mês',
+			                week: 'Semana',
+			                day: 'Dia',
+			                allDayText : 'Todo Dia'
+			            };
+</script>
+		
+	</h:head>
+
+	<h:body id="body" >
+	
+		<div id="geral" 
+			 align="center" >
+			<div id="conteudoPadrao" align="center" >
+				<p:growl></p:growl>
+				<ui:insert name="conteudoPadrao"/>
+			</div>
+		</div>			
+
+        <ui:insert name="status">
+            <p:ajaxStatus style="width:32px;height:32px;display:block;position:fixed;right:0;top:0;">
+                <f:facet name="start">
+                    <p:graphicImage value="/Imagens/loading.gif" />
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+        </ui:insert>
+	</h:body>
+</f:view>
+</html>
