@@ -21,7 +21,7 @@ public class AjudaHome{
 		Ajuda ajuda = new Ajuda();
 		ajuda.setIdAjuda(1);
 		ajuda.setNomeMenu("Cadastro de Material");
-		ajuda.setTemplate(URL_TEMPLATE + "cadastroMaterial.jsf");
+		ajuda.setTemplate(URL_TEMPLATE + "ajudaCadastroMaterial.jsf");
 		ajudaList.add(ajuda);
 		return ajudaList;
 	}
