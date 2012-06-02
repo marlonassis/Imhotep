@@ -16,19 +16,20 @@
 						 title="Informe a descrição do subGrupo" />
 		</h:panelGroup>
 		
-		<h:panelGroup style="align:left;" >
+		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="grupo" value="Grupo:"  /><br />
-	  		<p:autoComplete id="grupo" 
-	  						value="#{subGrupoHome.instancia.grupo}"
-							completeMethod="#{grupoHome.getListaGrupoAutoComplete}" 
-							var="grupo"
-							forceSelection="true"
-							required="true"
-							title="Informe o grupo do sub-grupo"
-							itemLabel="#{grupo.descricao}" 
-							itemValue="#{grupo}"
-							converter="grupoConversor" />
-		</h:panelGroup>
+			<p:selectOneMenu value="#{subGrupoHome.instancia.grupo}" 
+							 effect="fade" 
+							 required="true"
+							 converter="grupoConversor">  
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{grupoConsulta.list}" 
+	            			   var="grupo" 
+	            			   itemLabel="#{grupo.descricao}" 
+	            			   itemValue="#{grupo}"/>  
+	        </p:selectOneMenu>
+        </h:panelGroup>
 		
 	</h:panelGrid>
 </ui:composition>
