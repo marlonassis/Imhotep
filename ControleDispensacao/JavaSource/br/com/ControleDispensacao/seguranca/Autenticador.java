@@ -40,6 +40,7 @@ public class Autenticador {
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
+	private static final String PAGINA_AJUDA = "/ControleDispensacao/PaginasWeb/Ajuda/Ajuda/ajuda.jsf";
 	private Collection<Painel> paineisUsuario;
 
 	public static Autenticador getInstancia(){
@@ -204,6 +205,11 @@ public class Autenticador {
 													createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
 		mi.setActionExpression(methodExpression);
 		
+		menuModel.addMenuItem(mi);
+		
+		mi = new MenuItem();
+		mi.setValue("Ajuda");
+		mi.setOnclick("window.location.href = '"+PAGINA_AJUDA+"'");
 		menuModel.addMenuItem(mi);
 		
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
