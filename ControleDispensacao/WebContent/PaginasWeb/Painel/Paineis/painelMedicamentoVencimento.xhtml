@@ -10,10 +10,10 @@
 			<p:dataTable 	id="tabelaEstoqueVencido" 
 							value="#{bloqueioLoteHome.listaEstoqueVencido()}" 
 							var="linha"
+							dblClickSelect="true"
 							emptyMessage="Não foi encontrado registros" 
 							rows="5" 
 							paginator="true"
-							dblClickSelect="true"
 							selectionMode="single" 
 							rowKey="#{linha.idEstoque}">
 							

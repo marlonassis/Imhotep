@@ -19,7 +19,10 @@
 						  hideEffect="explode">
 					<h:form id="dosagemForm" 
 							prependId="false" >
-						<p:dataTable id="playersTable" var="prescricaoItem" value="#{dosagemHome.instancia.prescricaoItens}">
+						<p:dataTable id="playersTable" 
+									 var="prescricaoItem" 
+									 dblClickSelect="true"
+									 value="#{dosagemHome.instancia.prescricaoItens}">
 					        <f:facet name="header">
 					            Dosagem - Leito #{dosagemHome.instancia.leito}
 					        </f:facet>
