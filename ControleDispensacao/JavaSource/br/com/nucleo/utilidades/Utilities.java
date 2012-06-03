@@ -11,6 +11,8 @@ import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import sun.misc.BASE64Encoder;
 
@@ -42,6 +44,38 @@ public class Utilities{
 		}
 		return "NI";
 	}
+	
+	private static String primeiraLetraMinuscula(String palavra) {    
+	      return palavra.substring(0,1).toLowerCase().concat(palavra.substring(1));    
+	} 
+	
+	public static Object procuraInstancia(Class<?> classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
+		if(session != null){
+			Object attribute = criaInstancia(classe, session);
+			return attribute;
+		}else{
+			return null;
+		}
+	}
+
+	private static Object criaInstancia(Class<?> classe, HttpSession session) throws InstantiationException, IllegalAccessException {
+		Object attribute = session.getAttribute(primeiraLetraMinuscula(classe.getSimpleName()));
+		if (attribute == null){
+			session.setAttribute(classe.getSimpleName(), classe.newInstance());
+			attribute = session.getAttribute(primeiraLetraMinuscula(classe.getSimpleName()));
+		}
+		return attribute;
+	}
+	
+	public static void atualizaInstancia(Object classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
+		if(session != null){
+			criaInstancia(classe.getClass(), session);
+			session.setAttribute(primeiraLetraMinuscula(classe.getClass().getSimpleName()), classe);
+		}
+	}
+
 	
 	public int converteString(String valor){
 		return  valor.isEmpty() ? 0 : Integer.parseInt(valor);

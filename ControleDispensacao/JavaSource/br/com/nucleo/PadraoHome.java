@@ -22,24 +22,6 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	private boolean exibeMensagemDelecao = true;
 	private boolean exibeMensagemInsercao = true;
 	
-	private static String primeiraLetraMinuscula(String palavra) {    
-	      return palavra.substring(0,1).toLowerCase().concat(palavra.substring(1));    
-	} 
-	
-	protected static Object getInstanciaHome(Class<?> classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
-		if(session != null){
-			Object attribute = session.getAttribute(primeiraLetraMinuscula(classe.getSimpleName()));
-			if (attribute == null){
-				session.setAttribute(classe.getSimpleName(), classe.newInstance());
-				attribute = session.getAttribute(classe.getSimpleName());
-			}
-			return attribute;
-		}else{
-			return null;
-		}
-	}
-	
 	protected String getIdSessao(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		return session.getId();

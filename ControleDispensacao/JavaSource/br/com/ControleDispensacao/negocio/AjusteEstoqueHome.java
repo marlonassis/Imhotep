@@ -23,6 +23,7 @@ import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.PadraoHome;
+import br.com.nucleo.utilidades.Utilities;
 
 @ManagedBean(name="ajusteEstoqueHome")
 @SessionScoped
@@ -66,7 +67,7 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 	
 	public static AjusteEstoqueHome getInstanciaHome() {
 		try {
-			return (AjusteEstoqueHome) getInstanciaHome(AjusteEstoqueHome.class);
+			return (AjusteEstoqueHome) Utilities.procuraInstancia(AjusteEstoqueHome.class);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
