@@ -21,7 +21,7 @@
 		</p:column>
 
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink onclick="window.open('/ControleDispensacao/PaginasWeb/Ajuda/Template/#{linha.urlAjuda}','janela', 'width=800, height=600, top=99, left=99, scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');" 
+			<p:commandLink onclick="window.open('/ControleDispensacao/PaginasWeb/Ajuda/Template/#{linha.urlAjuda}?nomeMenu=#{linha.descricao}','janela', 'width=800, height=600, top=99, left=99, scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');" 
 						   style="padding-right:10px;" >
 				<h:graphicImage value="/Imagens/open.png" />
 			</p:commandLink>
