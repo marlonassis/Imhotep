@@ -31,7 +31,6 @@ public class Autenticador {
 	private Profissional profissionalAtual;
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
-	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
 	private Collection<Painel> paineisUsuario;
 
@@ -175,7 +174,7 @@ public class Autenticador {
 	private void carregaToolBarMenu() {
 		try {
 			//carrega o menu que pertence ao usuário
-			String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade";
+			String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao";
 			HashMap<Object, Object> hm = new HashMap<Object, Object>();
 			hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
 			ControleMenu controleMenu = new ControleMenu();
@@ -184,13 +183,10 @@ public class Autenticador {
 			controleMenu.converteMenuString();
 			Utilities.atualizaInstancia(controleMenu);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

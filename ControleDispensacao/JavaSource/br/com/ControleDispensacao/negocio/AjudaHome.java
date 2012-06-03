@@ -6,26 +6,39 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.ControleDispensacao.entidadeExtra.Ajuda;
+import br.com.ControleDispensacao.auxiliar.ControleMenu;
+import br.com.ControleDispensacao.entidade.Menu;
 
 @ManagedBean(name="ajudaHome")
 @SessionScoped
 public class AjudaHome{
 	
-	private List<Ajuda> ajudaList = new ArrayList<Ajuda>();
 	private String nomeMenuConsulta;
-	private final String URL_TEMPLATE = "/ControleDispensacao/PaginasWeb/Ajuda/Template/";
 	
-	public List<Ajuda> getListaAjuda(){
-		ajudaList = new ArrayList<Ajuda>();
-		Ajuda ajuda = new Ajuda();
-		ajuda.setIdAjuda(1);
-		ajuda.setNomeMenu("Cadastro de Material");
-		ajuda.setTemplate(URL_TEMPLATE + "ajudaCadastroMaterial.jsf");
-		ajudaList.add(ajuda);
-		return ajudaList;
+	public void limparPesquisa(){
+		nomeMenuConsulta = "";
 	}
 	
+	public List<Menu> getListaAjuda(){
+		ControleMenu controleMenu = ControleMenu.getInstancia();
+		if(nomeMenuConsulta != null && !nomeMenuConsulta.isEmpty()){
+			return procuraMenu(nomeMenuConsulta, controleMenu.getMenuAutorizadoList());
+		}else{
+			return controleMenu.getMenuAutorizadoList();
+		}
+	}
+	
+	private List<Menu> procuraMenu(String expressao, List<Menu> menuAutorizado) {
+		List<Menu> menuEncontrado = new ArrayList<Menu>();
+		for(Menu menu : menuAutorizado){
+			String descricao = menu.getDescricao().toLowerCase();
+			if(descricao.contains(expressao.toLowerCase())){
+				menuEncontrado.add(menu);
+			}
+		}
+		return menuEncontrado;
+	}
+
 	public String getNomeMenuConsulta() {
 		return nomeMenuConsulta;
 	}

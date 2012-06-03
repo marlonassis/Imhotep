@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.negocio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.faces.bean.SessionScoped;
 
 import org.primefaces.model.DualListModel;
 
+import br.com.ControleDispensacao.comparador.MenuComparador;
 import br.com.ControleDispensacao.entidade.AutorizaMenu;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.nucleo.ConsultaGeral;
@@ -115,7 +117,7 @@ public class AutorizaMenuHome extends PadraoHome<AutorizaMenu>{
 	
 	private List<Menu> getListaMenuAutorizado(){
 		List<Menu> menus = getListaMenuPelaEspecialidade("select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade) order by o.menu.descricao");
-//		Collections.sort(menus, new MenuComparador());
+		Collections.sort(menus, new MenuComparador());
 		return menus;
 	}
 	

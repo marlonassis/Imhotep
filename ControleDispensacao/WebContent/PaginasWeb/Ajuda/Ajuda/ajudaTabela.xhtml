@@ -13,15 +13,15 @@
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idAjuda}">
+					rowKey="#{linha.idMenu}">
 					
 		<p:column>
 			<f:facet name="header"><h:outputText value="Menu" /></f:facet>
-			<h:outputText value="#{linha.nomeMenu}" />
+			<h:outputText value="#{linha.descricao}" />
 		</p:column>
 
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink onclick="window.open('#{linha.template}','janela', 'width=800, height=600, top=99, left=99, scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');" 
+			<p:commandLink onclick="window.open('/ControleDispensacao/PaginasWeb/Ajuda/Template/#{linha.urlAjuda}','janela', 'width=800, height=600, top=99, left=99, scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');" 
 						   style="padding-right:10px;" >
 				<h:graphicImage value="/Imagens/open.png" />
 			</p:commandLink>
