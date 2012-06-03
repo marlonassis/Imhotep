@@ -5,7 +5,123 @@
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:p="http://primefaces.prime.com.tr/ui">
     	
-	<p:menubar  id="principalMenuBar"
-				autoSubmenuDisplay="true"
-				model="#{autenticador.menuModel}" />
+	<p:menubar  id="principalMenuBar2"
+				autoSubmenuDisplay="true">
+		<p:menuitem value="Home" url="/PaginasWeb/home.jsf" />
+		
+		<p:submenu label="Cadastro" rendered="#{controleMenu.menuAutorizadoStringList.contains('Cadastro')}" >
+			<p:menuitem value="Hospital" url="/PaginasWeb/Hospital/hospital.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Hospital')}"/>
+			<p:submenu label="Material" 
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Material')}">  
+				<p:menuitem value="Fabricante" url="/PaginasWeb/Material/Fabricante/fabricante.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Fabricante')}"/>
+				<p:menuitem value="Família" url="/PaginasWeb/Material/Familia/familia.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Família')}"/>
+				<p:menuitem value="Grupo" url="/PaginasWeb/Material/Grupo/grupo.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Grupo')}"/>
+				<p:menuitem value="Lista Especial" url="/PaginasWeb/ListaEspecial/listaEspecial.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Lista Especial')}"/>
+				<p:menuitem value="Materiais" url="/PaginasWeb/Material/Material/material.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Materiais')}"/>
+				<p:menuitem value="Subgrupo" url="/PaginasWeb/Material/SubGrupo/subGrupo.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Subgrupo')}"/>
+				<p:menuitem value="Tipo do Material" url="/PaginasWeb/Material/TipoMaterial/tipoMaterial.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo do Material')}"/>
+			</p:submenu>
+			<p:menuitem value="Motivo do Fim da Prescrição" url="/PaginasWeb/MotivoFimReceita/motivoFimReceita.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Motivo do Fim da Prescrição')}"/>
+			<p:submenu label="Movimento"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimento')}">
+				<p:menuitem value="Tipo de Movimento" url="/PaginasWeb/Movimento/TipoMovimento/tipoMovimento.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo de Movimento')}" />
+			</p:submenu>
+			<p:submenu label="Paciente"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Paciente')}">
+				<p:menuitem value="Pacientes" url="/PaginasWeb/Paciente/Paciente/paciente.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Pacientes')}" />
+				<p:menuitem value="Situação do Paciente" url="/PaginasWeb/Paciente/SituacaoPaciente/situacaoPaciente.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Situação do Paciente')}" />
+			</p:submenu>
+			
+			<p:submenu label="Profissional"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Profissional')}" >
+				<p:menuitem value="Profissionais" url="/PaginasWeb/Profissional/Profissional/profissional.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Profissionais')}" />
+				<p:menuitem value="Conselho" url="/PaginasWeb/Profissional/TipoConselho/tipoConselho.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Conselho')}" />
+				<p:menuitem value="Especialidade" url="/PaginasWeb/Profissional/Especialidade/especialidade.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Especialidade')}" />
+				<p:menuitem value="Liberação de Material" url="/PaginasWeb/Profissional/LiberaMaterialEspecialidade/liberaMaterialEspecialidade.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Liberação de Material')}" />
+			</p:submenu>
+			
+			<p:submenu label="Unidade"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade')}" >
+				<p:menuitem value="Unidades" url="/PaginasWeb/Unidade/Unidade/unidade.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidades')}"/>
+				<p:menuitem value="Unidade do Profissional" url="/PaginasWeb/Unidade/AutorizaUnidadeProfissional/autorizaUnidadeProfissional.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade do Profissional')}" />
+			</p:submenu>
+			
+			<p:menuitem value="Unidade do Material" url="/PaginasWeb/Material/UnidadeMaterial/unidadeMaterial.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade do Material')}" />
+		</p:submenu>
+		
+		<p:submenu label="Chamado"
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Chamado')}" >
+		 	<p:menuitem value="Abrir Chamado" url="/PaginasWeb/Chamado/chamado.jsf" 
+		 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Abrir Chamado')}" />
+		</p:submenu>
+		
+		<p:submenu label="Controle" 
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Controle')}" >  
+			<p:menuitem value="Autoriza Menu" url="/PaginasWeb/AutorizaMenu/autorizaMenu.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Autoriza Menu')}" />
+			<p:menuitem value="Menu" url="/PaginasWeb/Menu/menu.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Menu')}" />
+			<p:menuitem value="Troca de Senha" url="/PaginasWeb/Usuario/usuarioTrocaSenha.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Troca de Senha')}" />
+			<p:menuitem value="Usuários" url="/PaginasWeb/Usuario/usuario.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Usuários')}" />
+		</p:submenu>
+		
+		<p:submenu label="Dispensação"
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação')}" >  
+			<p:menuitem value="Dispensar" url="/PaginasWeb/Farmacia/Dispensacao/dispensacao.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensar')}" />
+			<p:menuitem value="Alteração de Dispensação" url="/PaginasWeb/Farmacia/Dispensacao/dispensacaoAlteracao.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Alteração de Dispensação')}" />
+		</p:submenu>
+		
+		<p:submenu label="Movimentação"
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação')}" >  
+			<p:menuitem value="Ajuste de Estoque" url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste de Estoque')}" />
+			<p:menuitem value="Bloqueio de Lote" url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Lote')}" />
+			<p:menuitem value="Entrada de Material" url="/PaginasWeb/Movimentacao/EntradaMaterial/entradaMaterial.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Material')}" />
+		</p:submenu>
+		
+		<p:submenu label="Prescrição Médica" 
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição Médica')}" >  
+			<p:menuitem value="Dosagem" url="/PaginasWeb/Prescricao/Dosagem/dosagem.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Dosagem')}" />
+			<p:menuitem value="Prescrever" url="/PaginasWeb/Prescricao/Prescricao/prescricao.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrever')}" />
+		</p:submenu>
+		
+		<p:submenu label="Relatório" 
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Relatório')}" >
+			<p:menuitem value="Estoque" url="/PaginasWeb/Relatorios/Estoque/estoque.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque')}" />
+			<p:menuitem value="Estoque por Data de Vencimento" url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
+		</p:submenu>
+		
+		<p:menuitem value="Ajuda" url="/PaginasWeb/Ajuda/Ajuda/ajuda.jsf"/>
+		<p:menuitem value="Sair" action="#{autenticador.logout()}" 
+					oncomplete="window.location.reload();"/>
+	</p:menubar>
 </html>

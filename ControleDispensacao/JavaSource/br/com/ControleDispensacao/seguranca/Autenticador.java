@@ -6,19 +6,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.submenu.Submenu;
-import org.primefaces.model.DefaultMenuModel;
-import org.primefaces.model.MenuModel;
-
-import br.com.ControleDispensacao.auxiliar.Parametro;
+import br.com.ControleDispensacao.auxiliar.ControleMenu;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
@@ -35,12 +29,10 @@ public class Autenticador {
 	private Usuario usuario = new Usuario();
 	private Unidade unidadeAtual;
 	private Profissional profissionalAtual;
-	private MenuModel menuModel;
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
-	private static final String PAGINA_AJUDA = "/ControleDispensacao/PaginasWeb/Ajuda/Ajuda/ajuda.jsf";
 	private Collection<Painel> paineisUsuario;
 
 	public static Autenticador getInstancia(){
@@ -80,28 +72,14 @@ public class Autenticador {
 		profissionalAtual = cg.consultaUnica(new StringBuilder("select o from Profissional o where o.usuario.idUsuario = :idUsuario"), hm);
 	}
 	
-	public void home(){
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		try{
-			facesContext.getExternalContext().redirect(PAGINA_HOME);
-		}catch (Exception e) {
-			e.printStackTrace();
-			if(getUsuarioAtual() != null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Login não realizado!"));
-			}
-		}
-	}
-	
 	public void logout(){
-		FacesContext facesContext = FacesContext.getCurrentInstance();
 		try{
 			setUsuarioAtual(new Usuario());
-			HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);  
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);  
 			session.invalidate();
 			setUsuarioAtual(null);
 			setUnidadeAtual(null);
 			unidades = null;
-			facesContext.getExternalContext().redirect(PAGINA_LOGIN);
 		}catch (Exception e) {
 			e.printStackTrace();
 			if(getUsuarioAtual() != null){
@@ -195,83 +173,26 @@ public class Autenticador {
 	 * Monta o menu de acordo com as permissões de cada usuário
 	 */
 	private void carregaToolBarMenu() {
-		//TODO tornar o menu recursivo
-		menuModel = new DefaultMenuModel();
-
-		MenuItem mi = new MenuItem();
-		mi.setValue("Home");
-		String action = "#{autenticador.home()}";
-		MethodExpression methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
-													createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
-		mi.setActionExpression(methodExpression);
-		
-		menuModel.addMenuItem(mi);
-		
-		mi = new MenuItem();
-		mi.setValue("Ajuda");
-		mi.setOnclick("window.location.href = '"+PAGINA_AJUDA+"'");
-		menuModel.addMenuItem(mi);
-		
-		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		StringBuilder sb;
-		if(Parametro.isUsuarioTeste() || Parametro.isUsuarioAdministrador()){
-			sb = new StringBuilder("select o from Menu o where o.menuPai is null order by o.descricao");
-		}else{
-			hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
-			sb = new StringBuilder("select o.menu from AutorizaMenu o where o.menu.menuPai is null and o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao");
+		try {
+			//carrega o menu que pertence ao usuário
+			String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade";
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+			ControleMenu controleMenu = new ControleMenu();
+			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm)));
+			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
+			controleMenu.converteMenuString();
+			Utilities.atualizaInstancia(controleMenu);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		Collection<Menu> listaPrimeiroNivel = cg.consulta(sb, hashMap);
-		for (Menu menuPrimeiroNivel : listaPrimeiroNivel) {
-			Submenu primeiroNivel = new Submenu();
-			primeiroNivel.setLabel(menuPrimeiroNivel.getDescricao());
-			primeiroNivel.setId(menuPrimeiroNivel.getDescricao().trim().substring(0, 2).concat(String.valueOf(menuPrimeiroNivel.getIdMenu())));
-			
-			hashMap.put("idMenuPai", menuPrimeiroNivel.getIdMenu());
-			if(Parametro.isUsuarioTeste() || Parametro.isUsuarioAdministrador()){
-				sb = new StringBuilder("select o from Menu o where ");
-				sb.append(" o.menuPai.idMenu = :idMenuPai order by o.descricao ");
-			}else{
-				sb = new StringBuilder("select o.menu from AutorizaMenu o where ");
-				sb.append(" o.menu.menuPai.idMenu = :idMenuPai ");
-				sb.append(" and o.especialidade.idEspecialidade = :idEspecialidade order by o.menu.descricao ");
-			}
-			Collection<Menu> listaSegundoNivel = cg.consulta(sb, hashMap);
-			for (Menu menuSegundoNivel : listaSegundoNivel) {
-				hashMap.put("idMenuPai", menuSegundoNivel.getIdMenu());
-				Collection<Menu> listaTerceiroNivel = cg.consulta(sb, hashMap);
-				if(listaTerceiroNivel.size() > 0){
-					Submenu segundoNivel = new Submenu();
-					segundoNivel.setLabel(menuSegundoNivel.getDescricao());
-					for (Menu menuTerceiroNivel : listaTerceiroNivel) {
-						MenuItem mm = new MenuItem();
-						mm.setValue(menuTerceiroNivel.getDescricao());
-						mm.setUrl(menuTerceiroNivel.getUrl());
-						segundoNivel.getChildren().add(mm);
-					}
-					primeiroNivel.getChildren().add(segundoNivel);
-				}else{
-					MenuItem mm = new MenuItem();
-					mm.setValue(menuSegundoNivel.getDescricao());
-					mm.setUrl(menuSegundoNivel.getUrl());
-					primeiroNivel.getChildren().add(mm);
-				}
-			}
-			
-			menuModel.addSubmenu(primeiroNivel);
-		}
-		
-		mi = new MenuItem();
-		mi.setValue("Sair");
-
-		action = "#{autenticador.logout()}";
-		methodExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory().
-									createMethodExpression(FacesContext.getCurrentInstance().getELContext(), action, null, new Class[0]);
-		
-		mi.setActionExpression(methodExpression);
-		mi.setOncomplete("window.location.reload();");
-		menuModel.addMenuItem(mi);
 	}
 
 	
@@ -302,10 +223,6 @@ public class Autenticador {
 
 	public Collection<Unidade> getUnidades() {
 		return unidades;
-	}
-
-	public MenuModel getMenuModel(){
-		return menuModel;
 	}
 
 	public Profissional getProfissionalAtual() {
