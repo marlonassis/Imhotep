@@ -70,7 +70,7 @@ public class Prescricao {
 		this.profissional = profissional;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "id_paciente")
 	public Paciente getPaciente() {
 		return paciente;
