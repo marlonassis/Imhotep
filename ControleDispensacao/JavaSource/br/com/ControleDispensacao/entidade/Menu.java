@@ -22,6 +22,7 @@ public class Menu {
 	private String descricao;
 	private TipoStatusEnum bloqueado;
 	private String url;
+	private String urlAjuda;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_menu_id_menu_seq")
 	@Id
@@ -61,6 +62,15 @@ public class Menu {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Column(name = "ds_url_ajuda")
+	public String getUrlAjuda() {
+		return this.urlAjuda;
+	}
+
+	public void setUrlAjuda(String urlAjuda) {
+		this.urlAjuda = urlAjuda;
 	}
 	
 	@Column(name = "tp_bloqueado")
