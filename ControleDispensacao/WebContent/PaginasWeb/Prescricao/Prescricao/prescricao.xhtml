@@ -19,6 +19,7 @@
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="paciente" value="Paciente:" /><br />
 				  		<p:autoComplete id="paciente" 
+				  						styleClass="autoCompletePesquisa"
 				  						required="true"
 				  						size="30"
 				  						forceSelection="true"
@@ -31,6 +32,9 @@
 										converter="pacienteConversor">
 							<p:ajax event="itemSelect" update="padraoTabView:prescricaoPanelGrid" />
 						</p:autoComplete>
+						<h:graphicImage value="/Imagens/list16.png"
+										title="Ao digitar aparecerá algumas sugestões" 
+										style="padding-top:8px"/>
 					</h:panelGroup>
 					<h:panelGroup>
 						<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
