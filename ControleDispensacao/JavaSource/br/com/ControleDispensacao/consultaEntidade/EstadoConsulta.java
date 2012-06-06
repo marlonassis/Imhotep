@@ -14,7 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class EstadoConsulta extends PadraoConsulta<Estado> {
 	public EstadoConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		setOrderBy("o.nome");
+		setOrderBy("to_ascii(o.nome)");
 	}
 	
 	@Override

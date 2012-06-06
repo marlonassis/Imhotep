@@ -18,7 +18,7 @@ public class TipoConselhoHome extends PadraoHome<TipoConselho>{
 	 * @return Collection Menu
 	 */
 	public Collection<TipoConselho> getListaTipoConselhoAutoComplete(String expressao){
-		return super.getBusca("select o from TipoConselho as o where o.descricao like lower('%"+expressao+"%') or o.sigla like lower('%"+expressao+"%') ");
+		return super.getBusca("select o from TipoConselho as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+expressao+"%')) or lower(o.sigla) like lower('%"+expressao+"%') ");
 	}
 	
 }

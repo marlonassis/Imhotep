@@ -21,7 +21,7 @@ public class SubGrupoHome extends PadraoHome<SubGrupo>{
 	 * @return Collection Menu
 	 */
 	public Collection<SubGrupo> getListaSubGrupoSuggest(String sql){
-		return super.getBusca("select o from SubGrupo as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from SubGrupo as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 	public SubGrupo subGrupoGrupo(Grupo grupo){

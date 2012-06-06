@@ -18,7 +18,7 @@ public class EstadoHome extends PadraoHome<Estado>{
 	 * @return Collection Estado
 	 */
 	public Collection<Estado> getListaCidadeAutoComplete(String busca){
-		return super.getBusca("select o from Estado as o where o.nome like '%"+busca+"%' ");
+		return super.getBusca("select o from Estado as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+busca+"%')) ");
 	}
 	
 }

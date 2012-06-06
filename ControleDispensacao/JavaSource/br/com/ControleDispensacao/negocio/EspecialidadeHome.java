@@ -91,7 +91,7 @@ public class EspecialidadeHome extends PadraoHome<Especialidade>{
 	 * @return Collection Especialidade
 	 */
 	public Collection<Especialidade> getListaEspecialidadeAutoComplete(String sql){
-		return super.getBusca("select o from Especialidade as o where lower(o.descricao) like lower('%"+sql+"%') ");
+		return super.getBusca("select o from Especialidade as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 	@Override

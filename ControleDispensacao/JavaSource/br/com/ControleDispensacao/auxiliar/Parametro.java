@@ -75,7 +75,7 @@ public class Parametro implements Serializable {
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("dsTipoMovimento", "Dispensação".toLowerCase());
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
-		sb.append(" lower(o.descricao) = :dsTipoMovimento");
+		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:dsTipoMovimento)");
 		return cg.consultaUnica(sb, hashMap);
 	}
 
@@ -84,7 +84,7 @@ public class Parametro implements Serializable {
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("dsTipoMovimento", movimento.toLowerCase());
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
-		sb.append(" lower(o.descricao) = :dsTipoMovimento");
+		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:dsTipoMovimento)");
 		return cg.consultaUnica(sb, hashMap);
 	}
 	
@@ -103,8 +103,8 @@ public class Parametro implements Serializable {
 	public static List<TipoMovimento> tiposMovimentoAjusteDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
-		sb.append(" lower(o.descricao) = lower('Devolução de medicamento dispensado')");
-		sb.append(" or lower(o.descricao) = lower('Saída de medicamento dispensado')");
+		sb.append(" lower(to_ascii(o.descricao)) = lower(to_ascii('Devolução de medicamento dispensado'))");
+		sb.append(" or lower(to_ascii(o.descricao)) = lower(to_ascii('Saída de medicamento dispensado'))");
 		return new ArrayList<TipoMovimento>(cg.consulta(sb, null));
 	}
 }

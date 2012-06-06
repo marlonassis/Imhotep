@@ -16,7 +16,7 @@ public class AjusteEstoqueConsulta extends PadraoConsulta<Estoque> {
 		getCamposConsulta().put("o.material", IGUAL);
 		getCamposConsulta().put("o.lote", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.fabricante", IGUAL);
-		setOrderBy("o.material.descricao, o.lote");
+		setOrderBy("to_ascii(o.material.descricao), o.lote");
 	}
 	
 	@Override

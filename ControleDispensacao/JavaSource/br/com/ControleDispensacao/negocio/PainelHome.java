@@ -13,7 +13,7 @@ import br.com.nucleo.PadraoHome;
 public class PainelHome extends PadraoHome<Painel>{
 	
 	public Collection<Painel> getListaPainelAutoComplete(String sql){
-		return super.getBusca("select o from Painel as o where lower(o.descricao) like lower('%"+sql+"%') ");
+		return super.getBusca("select o from Painel as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

@@ -23,7 +23,7 @@ public class PacienteHome extends PadraoHome<Paciente>{
 	 * @return Collection Estado
 	 */
 	public Collection<Paciente> getListaPacienteAutoComplete(String busca){
-		return super.getBusca("select o from Paciente as o where lower(o.nome) like lower('%"+busca+"%') ");
+		return super.getBusca("select o from Paciente as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+busca+"%')) ");
 	}
 	
 	@Override

@@ -99,7 +99,7 @@ public class AutorizaMenuHome extends PadraoHome<AutorizaMenu>{
 
 	private List<Menu> getListaMenu(){
 		ConsultaGeral<Menu> cg = new ConsultaGeral<Menu>();
-		return new ArrayList<Menu>(cg.consulta(new StringBuilder("select o from Menu o order by o.descricao"), null));
+		return new ArrayList<Menu>(cg.consulta(new StringBuilder("select o from Menu o order by to_ascii(o.descricao)"), null));
 	}
 
 	private List<Menu> getListaMenuPelaEspecialidade(String sql){
@@ -110,13 +110,13 @@ public class AutorizaMenuHome extends PadraoHome<AutorizaMenu>{
 	}
 	
 	private List<Menu> getListaMenuNaoAutorizado(){
-		List<Menu> menus = getListaMenuPelaEspecialidade("select o from Menu o where o not in (select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade) order by o.descricao");
+		List<Menu> menus = getListaMenuPelaEspecialidade("select o from Menu o where o not in (select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade) order by to_ascii(o.descricao)");
 //		Collections.sort(menus, new MenuComparador());
 		return menus;
 	}
 	
 	private List<Menu> getListaMenuAutorizado(){
-		List<Menu> menus = getListaMenuPelaEspecialidade("select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade) order by o.menu.descricao");
+		List<Menu> menus = getListaMenuPelaEspecialidade("select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade) order by to_ascii(o.menu.descricao)");
 		Collections.sort(menus, new MenuComparador());
 		return menus;
 	}

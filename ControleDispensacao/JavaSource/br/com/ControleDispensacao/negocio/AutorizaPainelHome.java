@@ -18,11 +18,11 @@ public class AutorizaPainelHome extends PadraoHome<AutorizaPainel>{
 	
 	public List<Usuario> getListaEspecialidadeAutoComplete(String nome){
 		ConsultaGeral<Usuario> cg = new ConsultaGeral<Usuario>();
-		return new ArrayList<Usuario>(cg.consulta(new StringBuilder("select distinct o.especialidade from AutorizaPainel o where lower(o.especialidade.descricao) like lower('%"+nome+"%')"), null));
+		return new ArrayList<Usuario>(cg.consulta(new StringBuilder("select distinct o.especialidade from AutorizaPainel o where lower(to_ascii(o.especialidade.descricao)) like lower(to_ascii('%"+nome+"%'))"), null));
 	}
 	
 	public List<Painel> getListaPainelAutoComplete(String nome){
 		ConsultaGeral<Painel> cg = new ConsultaGeral<Painel>();
-		return new ArrayList<Painel>(cg.consulta(new StringBuilder("select distinct o.painel from AutorizaPainel o where lower(o.painel.descricao) like lower('%"+nome+"%') "), null));
+		return new ArrayList<Painel>(cg.consulta(new StringBuilder("select distinct o.painel from AutorizaPainel o where lower(to_ascii(o.painel.descricao)) like lower(to_ascii('%"+nome+"%')) "), null));
 	}
 }

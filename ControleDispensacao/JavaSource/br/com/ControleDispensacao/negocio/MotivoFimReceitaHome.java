@@ -18,7 +18,7 @@ public class MotivoFimReceitaHome extends PadraoHome<MotivoFimReceita>{
 	 * @return Collection Menu
 	 */
 	public Collection<MotivoFimReceita> getListaFabricanteAutoComplete(String sql){
-		return super.getBusca("select o from MotivoFimReceita as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from MotivoFimReceita as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

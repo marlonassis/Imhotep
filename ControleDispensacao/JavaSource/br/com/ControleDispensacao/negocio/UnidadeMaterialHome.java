@@ -18,7 +18,7 @@ public class UnidadeMaterialHome extends PadraoHome<UnidadeMaterial>{
 	 * @return Collection Menu
 	 */
 	public Collection<UnidadeMaterial> getListaAplicacaoSuggest(String sql){
-		return super.getBusca("select o from UnidadeMaterial as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from UnidadeMaterial as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

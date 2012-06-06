@@ -60,7 +60,7 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	 * @return Collection Usuario
 	 */
 	public Collection<Usuario> getListaUsuarioAutoComplete(String sql){
-		return super.getBusca("select o from Usuario as o where o.login like '%"+sql+"%' ");
+		return super.getBusca("select o from Usuario as o where lower(to_ascii(o.login)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 
 	

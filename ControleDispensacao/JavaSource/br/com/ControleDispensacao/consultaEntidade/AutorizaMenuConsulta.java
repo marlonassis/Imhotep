@@ -15,7 +15,7 @@ public class AutorizaMenuConsulta extends PadraoConsulta<AutorizaMenu> {
 	public AutorizaMenuConsulta(){
 		getCamposConsulta().put("o.menu.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.especialidade.descricao", INCLUINDO_TUDO);
-		setOrderBy("o.especialidade.descricao, o.menu.descricao");
+		setOrderBy("to_ascii(o.especialidade.descricao), to_ascii(o.menu.descricao)");
 	}
 	
 	@Override

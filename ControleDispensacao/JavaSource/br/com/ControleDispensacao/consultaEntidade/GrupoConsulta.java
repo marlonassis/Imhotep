@@ -14,7 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class GrupoConsulta extends PadraoConsulta<Grupo> {
 	public GrupoConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
-		setOrderBy("o.descricao");
+		setOrderBy("to_ascii(o.descricao)");
 	}
 	
 	@Override

@@ -181,16 +181,17 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		
+		Integer quantidadeMovimentacao = getItensMovimentoGeral().getQuantidade();
 		if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
-			movimentoLivroAtual.setQuantidadeEntrada(getInstancia().getQuantidade());
-			movimentoLivroAtual.setSaldoAtual(getInstancia().getQuantidade() + saldoAnterior);
+			movimentoLivroAtual.setQuantidadeEntrada(quantidadeMovimentacao);
+			movimentoLivroAtual.setSaldoAtual(quantidadeMovimentacao + saldoAnterior);
 		}else{
 			if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Perda)){
-				movimentoLivroAtual.setQuantidadePerda(itensMovimentoGeral.getQuantidade());
+				movimentoLivroAtual.setQuantidadePerda(quantidadeMovimentacao);
 			}else{
-				movimentoLivroAtual.setQuantidadeSaida(itensMovimentoGeral.getQuantidade());
+				movimentoLivroAtual.setQuantidadeSaida(quantidadeMovimentacao);
 			}
-			movimentoLivroAtual.setSaldoAtual(saldoAnterior - itensMovimentoGeral.getQuantidade());
+			movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeMovimentacao);
 		}
 		
 		movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());

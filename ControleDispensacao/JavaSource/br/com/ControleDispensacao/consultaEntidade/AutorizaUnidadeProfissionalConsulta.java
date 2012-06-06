@@ -15,7 +15,7 @@ public class AutorizaUnidadeProfissionalConsulta extends PadraoConsulta<Autoriza
 	public AutorizaUnidadeProfissionalConsulta(){
 		getCamposConsulta().put("o.unidade", IGUAL);
 		getCamposConsulta().put("o.profissional", IGUAL);
-		setOrderBy("o.unidade.nome, o.profissional.nome");
+		setOrderBy("to_ascii(o.unidade.nome), to_ascii(o.profissional.nome)");
 	}
 	
 	@Override

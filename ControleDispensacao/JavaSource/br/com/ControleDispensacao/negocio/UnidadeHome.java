@@ -18,7 +18,7 @@ public class UnidadeHome extends PadraoHome<Unidade>{
 	 * @return Collection Unidade
 	 */
 	public Collection<Unidade> getListaUnidadeAutoComplete(String nomeSigla){
-		return super.getBusca("select o from Unidade as o where lower(o.nome) like lower('%"+nomeSigla+"%') or lower(o.sigla) like lower('%"+nomeSigla+"%')  ");
+		return super.getBusca("select o from Unidade as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+nomeSigla+"%')) or lower(o.sigla) like lower('%"+nomeSigla+"%')  ");
 	}
 	
 }

@@ -15,7 +15,7 @@ public class LiberaMaterialEspecialidadeConsulta extends PadraoConsulta<LiberaMa
 	public LiberaMaterialEspecialidadeConsulta(){
 		getCamposConsulta().put("o.material", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.especialidade", IGUAL);
-		setOrderBy("o.especialidade.descricao, o.material.descricao");
+		setOrderBy("to_ascii(o.especialidade.descricao), to_ascii(o.material.descricao)");
 	}
 	
 	@Override

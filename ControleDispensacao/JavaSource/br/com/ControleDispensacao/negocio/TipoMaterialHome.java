@@ -18,7 +18,7 @@ public class TipoMaterialHome extends PadraoHome<TipoMaterial>{
 	 * @return Collection Menu
 	 */
 	public Collection<TipoMaterial> getListaFabricanteSuggest(String sql){
-		return super.getBusca("select o from TipoMaterial as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from TipoMaterial as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

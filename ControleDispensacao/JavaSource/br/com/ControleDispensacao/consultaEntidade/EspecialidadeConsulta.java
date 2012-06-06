@@ -14,7 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class EspecialidadeConsulta extends PadraoConsulta<Especialidade> {
 	public EspecialidadeConsulta(){
 		getCamposConsulta().put("o.descricao", IGUAL);
-		setOrderBy("o.descricao");
+		setOrderBy("to_ascii(o.descricao)");
 	}
 	
 	@Override

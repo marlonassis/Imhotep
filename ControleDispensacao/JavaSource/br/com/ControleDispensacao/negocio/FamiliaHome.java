@@ -40,7 +40,7 @@ public class FamiliaHome extends PadraoHome<Familia>{
 	 * @return Collection Familia
 	 */
 	public Collection<Familia> getListaFamiliaSuggest(String sql){
-		return super.getBusca("select o from Familia as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from Familia as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 	@Override

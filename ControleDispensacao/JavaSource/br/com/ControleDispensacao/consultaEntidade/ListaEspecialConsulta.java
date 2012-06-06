@@ -18,7 +18,7 @@ public class ListaEspecialConsulta extends PadraoConsulta<ListaEspecial> {
 		getCamposConsulta().put("o.lista", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.receitaControlada", IGUAL);
 		getCamposConsulta().put("o.medicamentoControlado", IGUAL);
-		setOrderBy("o.livro.descricao, o.descricao");
+		setOrderBy("to_ascii(o.livro.descricao), to_ascii(o.descricao)");
 	}
 	
 	@Override

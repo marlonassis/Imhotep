@@ -15,7 +15,7 @@ public class AutorizaPainelConsulta extends PadraoConsulta<AutorizaPainel> {
 	public AutorizaPainelConsulta(){
 		getCamposConsulta().put("o.especialidade", IGUAL);
 		getCamposConsulta().put("o.painel", IGUAL);
-		setOrderBy("o.especialidade.descricao, o.painel.url");
+		setOrderBy("to_ascii(o.especialidade.descricao), o.painel.url");
 	}
 	
 	@Override

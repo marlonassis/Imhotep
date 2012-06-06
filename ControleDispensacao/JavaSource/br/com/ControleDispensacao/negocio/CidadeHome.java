@@ -18,7 +18,7 @@ public class CidadeHome extends PadraoHome<Cidade>{
 	 * @return Collection Cidade
 	 */
 	public Collection<Cidade> getListaCidadeAutoComplete(String busca){
-		return super.getBusca("select o from Cidade as o where lower(o.nome) like lower('%"+busca+"%') ");
+		return super.getBusca("select o from Cidade as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+busca+"%')) ");
 	}
 	
 }

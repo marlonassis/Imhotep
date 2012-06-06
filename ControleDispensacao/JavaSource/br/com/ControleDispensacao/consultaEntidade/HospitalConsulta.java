@@ -15,7 +15,7 @@ public class HospitalConsulta extends PadraoConsulta<Hospital> {
 	public HospitalConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		setOrderBy("o.nome");
+		setOrderBy("to_ascii(o.nome)");
 	}
 	
 	@Override

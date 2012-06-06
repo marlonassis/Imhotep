@@ -18,7 +18,7 @@ public class TipoMovimentoHome extends PadraoHome<TipoMovimento>{
 	 * @return Collection TipoMovimento
 	 */
 	public Collection<TipoMovimento> getListaTipoMovimentoAutoComplete(String sql){
-		return super.getBusca("select o from TipoMovimento as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from TipoMovimento as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

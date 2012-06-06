@@ -18,7 +18,7 @@ public class LivroHome extends PadraoHome<Livro>{
 	 * @return Collection Menu
 	 */
 	public Collection<Livro> getListaLivroSuggest(String sql){
-		return super.getBusca("select o from Livro as o where lower(o.descricao) like lower('%"+sql+"%') ");
+		return super.getBusca("select o from Livro as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

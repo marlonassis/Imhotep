@@ -18,7 +18,7 @@ public class SituacaoPacienteHome extends PadraoHome<SituacaoPaciente>{
 	 * @return Collection Menu
 	 */
 	public Collection<SituacaoPaciente> getListaSituacaoPacienteSuggest(String sql){
-		return super.getBusca("select o from SituacaoPaciente as o where o.descricao like '%"+sql+"%' ");
+		return super.getBusca("select o from SituacaoPaciente as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 }

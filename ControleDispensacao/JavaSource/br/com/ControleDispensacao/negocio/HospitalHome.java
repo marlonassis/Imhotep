@@ -18,7 +18,7 @@ public class HospitalHome extends PadraoHome<Hospital>{
 	 * @return Collection Hospital
 	 */
 	public Collection<Hospital> getListaHospitalAutoComplete(String expressaoConsulta){
-		return super.getBusca("select o from Hospital as o where lower(o.nome) like lower('%"+expressaoConsulta+"%') ");
+		return super.getBusca("select o from Hospital as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+expressaoConsulta+"%')) ");
 	}
 	
 }

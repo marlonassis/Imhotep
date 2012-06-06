@@ -75,12 +75,12 @@ public class MaterialHome extends PadraoHome<Material>{
 	 * @return Collection Material
 	 */
 	public Collection<Material> getListaMaterialAutoComplete(String sql){
-		return super.getBusca("select o from Material as o where lower(o.descricao) like lower('%"+sql+"%') ");
+		return super.getBusca("select o from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 	public Collection<String> getListaMaterialDescricaoAutoComplete(String sql){
 		ConsultaGeral<String> cg = new ConsultaGeral<String>();
-		return cg.consulta(new StringBuilder("select o.descricao from Material as o where lower(o.descricao) like lower('%"+sql.toLowerCase()+"%') "), null);
+		return cg.consulta(new StringBuilder("select o.descricao from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql.toLowerCase()+"%')) "), null);
 	}
 	
 	public Collection<Material> getListaMaterialEstoque(){
@@ -88,7 +88,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	}
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
-		return super.getBusca("select distinct o.material from Estoque o where o.quantidade > 0 and lower(o.material.descricao) like lower('%"+sql+"%') ");
+		return super.getBusca("select distinct o.material from Estoque o where o.quantidade > 0 and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 	@Override

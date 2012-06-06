@@ -14,7 +14,7 @@ import br.com.nucleo.PadraoConsulta;
 public class MovimentoGeralConsulta extends PadraoConsulta<MovimentoGeral> {
 	public MovimentoGeralConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		setOrderBy("o.nome");
+		setOrderBy("to_ascii(o.nome)");
 	}
 	
 	@Override
