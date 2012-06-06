@@ -63,6 +63,10 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	private String addCast(String campo, Object valor){
 		if(valor instanceof Float){
 			return " cast(:" + campo + " as float)";
+		}else{
+			if(valor instanceof String){
+				return " to_ascii(:" + campo + ")";
+			}
 		}
 		return ":"+campo;
 	}	
@@ -102,7 +106,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 		    			String campo2 = addCast(campoSubS, obj);
 		    			
 		    			//se o usuário já adicionou a cláusula 'where' apenas é adicionado o campo de pesquisa e é colocado false para a varíavel 'adicionaWhere' para que insira o operado a partir dos próximos campos
-		    			String clausula = " "+ (operador.contains("like") ? "lower(" + campo + ")" : campo) + " "+ operador + campo2;//.replaceAll("valor", campo2);
+		    			String clausula = " "+ (operador.contains("like") ? "lower(to_ascii(" + campo + "))" : campo) + " "+ operador + campo2;//.replaceAll("valor", campo2);
 		    			if(adicionadoWhere){
 		    				adicionadoWhere = false;
 	    					consultaGeral.getSqlConsultaSB().append(clausula);
