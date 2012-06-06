@@ -95,6 +95,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	public boolean enviar() {
 		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		getInstancia().setDataInclusao(new Date());
+		getInstancia().setDescricao(getInstancia().getDescricao().toUpperCase());
 		return super.enviar();
 	}
 

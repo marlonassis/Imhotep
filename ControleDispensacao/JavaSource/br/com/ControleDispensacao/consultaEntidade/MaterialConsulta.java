@@ -15,13 +15,13 @@ public class MaterialConsulta extends PadraoConsulta<Material> {
 	public MaterialConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.codigoMaterial", IGUAL);
-		setOrderBy("o.descricao");
+		setOrderBy("to_ascii(o.descricao)");
 	}
 	
 	@Override
 	public List<Material> getList() {
 		setConsultaGeral(new ConsultaGeral<Material>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Material o where 1=1"));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Material o where 1=1 "));
 		return super.getList();
 	}
 }
