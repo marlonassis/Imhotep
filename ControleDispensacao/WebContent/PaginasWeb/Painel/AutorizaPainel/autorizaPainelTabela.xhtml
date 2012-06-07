@@ -18,6 +18,11 @@
 		<p:column>
 			<f:facet name="header"><h:outputText value="Especialidade" /></f:facet>
 			<h:outputText value="#{linha.especialidade}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
+			<h:outputText value="#{linha.painel.descricao}"
+						  escape="false" />
 		</p:column>			
 		<p:column>
 			<f:facet name="header"><h:outputText value="Painel" /></f:facet>
