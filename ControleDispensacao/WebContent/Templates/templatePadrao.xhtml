@@ -78,7 +78,10 @@
 			            			   itemValue="#{unidade}"/>  
 		        	</p:selectOneMenu>
 		        	<br/>
-		        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" />
+		        	<h:outputText value="#{autenticador.profissionalAtual.nome}"/>
+		        	#{': '}
+		        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" 
+		        				  style="font-weight: bold;"/>
 					<ui:include src="menu.xhtml" />
 				</h:panelGroup>
 			</h:form>
