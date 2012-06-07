@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import br.com.ControleDispensacao.auxiliar.ControleMenu;
+import br.com.ControleDispensacao.auxiliar.ControlePainel;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
@@ -32,7 +32,6 @@ public class Autenticador {
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
 	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
-	private Collection<Painel> paineisUsuario;
 
 	public static Autenticador getInstancia(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
@@ -160,12 +159,24 @@ public class Autenticador {
 	}
 	
 	private void carregaPaineis() {
-		ConsultaGeral<Painel> cg = new ConsultaGeral<Painel>();
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
-		StringBuilder sb = new StringBuilder("select o.painel from AutorizaPainel o where o.especialidade.idEspecialidade = :idEspecialidade)");
+		try {
+			//carrega o menu que pertence ao usuário
+			HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+			hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+			StringBuilder hql = new StringBuilder("select o.painel from AutorizaPainel o where o.especialidade.idEspecialidade = :idEspecialidade)");
+			ControlePainel controlePainel = new ControlePainel();
+			controlePainel.setPainelAutorizadoList(new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap)));
+			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
+			controlePainel.convertePainelString();
+			Utilities.atualizaInstancia(controlePainel);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		
-		paineisUsuario = cg.consulta(sb, hashMap);
 	}
 
 	/**
@@ -237,8 +248,4 @@ public class Autenticador {
 		this.mostraComboUnidade = mostraComboUnidade;
 	}
 
-	public List<Painel> getListaPaineisUsuario(){
-		return paineisUsuario == null ? null : new ArrayList<Painel>(paineisUsuario);
-	}
-	
 }
