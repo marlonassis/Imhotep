@@ -8,6 +8,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ControleDispensacao.auxiliar.ControleSenha;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 
 @ManagedBean(name="gerenciadorRequisicao")
@@ -21,10 +22,6 @@ public class GerenciadorRequisicao implements PhaseListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public GerenciadorRequisicao() {
-		// TODO Auto-generated constructor stub
-	}
-	
 	@Override
 	public void afterPhase(PhaseEvent event) {
 		try {
@@ -33,6 +30,8 @@ public class GerenciadorRequisicao implements PhaseListener{
 			boolean paginaLogin = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(PAGINA_LOGIN) == 0;
 			if(!paginaLogin && (autenticador == null || autenticador.getUsuarioAtual() == null)){
 				facesContext.getExternalContext().redirect(PAGINA_LOGIN);
+			}else{
+				new ControleSenha().verificaSenhaPadrao();
 			}
 			
 		} catch (Exception e) {

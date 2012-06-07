@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.ControleDispensacao.auxiliar.ControleMenu;
 import br.com.ControleDispensacao.auxiliar.ControlePainel;
+import br.com.ControleDispensacao.auxiliar.ControleSenha;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
@@ -42,6 +43,15 @@ public class Autenticador {
 		}
 	}
 	
+	public boolean senhaIgualMatricula(){
+		String senha = getUsuarioAtual().getSenha();
+		String matriculaCriptografada = Utilities.md5(getUsuarioAtual().getMatricula());
+		if(senha.equals(matriculaCriptografada)){
+			return true;
+		}
+		return false;
+	}
+	
 	private void carregaUnidadesUsuario(){
 		ConsultaGeral<Unidade> cg = new ConsultaGeral<Unidade>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
@@ -54,7 +64,9 @@ public class Autenticador {
 		if(unidades.size() == 1){
 			unidadeAtual = unidades.iterator().next();
 			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
+				if(!senhaIgualMatricula()){
+					FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -107,7 +119,9 @@ public class Autenticador {
 		if(unidadeAtual != null){
 			try {
 				mostraComboUnidade = false;
-				FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
+				if(!senhaIgualMatricula()){
+					FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
