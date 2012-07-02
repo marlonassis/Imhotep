@@ -1,0 +1,283 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<ui:param name="controleBloqueado" value="#{controleMedicacaoRestritoSCHIHome.instancia.profissionalInfectologista != null}" />
+
+	<p:separator style="height:8px" />
+
+	<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid1"
+				 columns="3"
+				 width="100%">
+		<h:panelGroup>
+			<h:outputLabel value="Nome:" 
+						   style="font-weight: bold;" /><br />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.paciente.nome}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel value="Idade:" 
+						   style="font-weight: bold;" /><br />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.paciente.idade}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel value="Peso:" 
+						   style="font-weight: bold;" /><br />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.massa}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel value="Setor:" 
+						   style="font-weight: bold;" /><br />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.unidade.nome}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel value="Leito:" 
+						   style="font-weight: bold;" /><br />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.leito}"/>
+		</h:panelGroup>
+	</h:panelGrid>
+	
+	<p:separator style="height:8px" />
+	
+	<h:panelGrid 
+				 columns="1" 
+				 width="100%">
+		<h:panelGroup>
+			<h:outputLabel value="Medicamento:" 
+						   style="font-weight: bold;" /><br />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.materialLiberacao}"/>
+		</h:panelGroup>
+	</h:panelGrid>
+	 
+	<p:separator style="height:8px" />
+	 
+	<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid2"
+				 columns="3"
+				 width="100%">
+		<h:panelGroup id="tipoIndicacaoPanelGroup" >
+			<font color="red" >*</font><h:outputLabel for="tipoIndicacao" value="Tipo de indicação"  /><br />
+			<h:selectOneRadio id="tipoIndicacao"
+							  value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoIndicacao}" 
+							  required="true"
+							  rendered="#{!controleBloqueado}"
+							  title="Informe o tipo de indicação" >
+				 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid2" />
+				 <f:selectItems value="#{itensPadrao.tipoIndicacaoEnumItens}"/>
+			</h:selectOneRadio>
+			
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoIndicacao.label}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.tipoIndicacao == 'T'}" >
+			<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoTerapeutica" value="Subtipos"  /><br />
+			<h:selectOneRadio id="subTipoIndicacaoTerapeutica"
+							  value="#{controleMedicacaoRestritoSCHIHome.instancia.subIndicacaoTerapeutica}" 
+							  required="true"
+							  rendered="#{!controleBloqueado}"
+							  title="Informe o subtipo de indicação terapêutica" >
+				 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoTerapeuticaEnumItens}"/>
+			</h:selectOneRadio>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.subIndicacaoTerapeutica.label}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.tipoIndicacao == 'P'}" >
+			<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoProfilaxia" value="Subtipos"  /><br />
+			<h:selectOneRadio id="subTipoIndicacaoProfilaxia"
+							  value="#{controleMedicacaoRestritoSCHIHome.instancia.subIndicacaoProfilaxia}" 
+							  required="true"
+							  rendered="#{!controleBloqueado}"
+							  title="Informe o subtipo de indicação profilática" >
+				 <p:ajax event="change" update="padraoTabView:observacaoIndicacaoPanelGroup" />
+				 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoProfilaxiaEnumItens}"/>
+			</h:selectOneRadio>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.subIndicacaoProfilaxia.label}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup id="observacaoIndicacaoPanelGroup"
+					  rendered="#{controleMedicacaoRestritoSCHIHome.instancia.tipoIndicacao != null}" >
+			<font color="red" >*</font><h:outputLabel for="observacaoIndicacao" value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoIndicacao == 'T' ? 'Qual?' : (controleMedicacaoRestritoSCHIHome.instancia.subIndicacaoProfilaxia == 'CI' ? 'Cirurgia' : 'Justificativa') }"  /><br />
+			<p:inputTextarea id="observacaoIndicacao"
+							 value="#{controleMedicacaoRestritoSCHIHome.instancia.observacaoIndicacao}" 
+							 rendered="#{!controleBloqueado}"/>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.observacaoIndicacao}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+	<p:separator style="height:8px" />
+	 
+	<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid3"
+				 columns="3"
+				 width="100%">
+		<h:panelGroup id="tipoEstudoBacteriologicoPanelGroup" >
+			<font color="red" >*</font><h:outputLabel for="culturaSolicitada" value="Cultura solicitada?"  /><br />
+			<h:selectOneRadio id="culturaSolicitada"
+							  value="#{controleMedicacaoRestritoSCHIHome.instancia.culturaSolicitada}" 
+							  required="true"
+							  rendered="#{!controleBloqueado}"
+							  title="Informe se foi solicitado ou não a cultura para o paciente" >
+				 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid3" />
+				 <f:selectItems value="#{itensPadrao.booleanEnumItens}"/>
+			</h:selectOneRadio>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.culturaSolicitada.label}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.culturaSolicitada == 'T'}" >
+			<font color="red" >*</font><h:outputLabel for="material" value="Material"  /><br />
+			<p:inputText id="material"
+						 required="true"
+						 rendered="#{!controleBloqueado}"
+						 value="#{controleMedicacaoRestritoSCHIHome.instancia.materialCultura}"
+						 title="Informe o material da cultura" />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.materialCultura}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.culturaSolicitada == 'T'}" >
+			<font color="red" >*</font><h:outputLabel for="dataSolicitacaoCultura" value="Data da solicitação"  /><br />
+			<p:inputMask id="dataSolicitacaoCultura"
+						 mask="99/99/9999"
+						 required="true"
+						 rendered="#{!controleBloqueado}"
+						 value="#{controleMedicacaoRestritoSCHIHome.instancia.dataSolicitacaoCultura}"
+						 title="Informe a data que foi realizada a solicitação" >
+				<f:convertDateTime pattern="dd/MM/yyyy"  />
+			</p:inputMask>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.dataSolicitacaoCultura}" 
+						  rendered="#{controleBloqueado}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.culturaSolicitada == 'T'}" >
+			<font color="red" >*</font><h:outputLabel for="germeIsolado" value="Germe isolado"  /><br />
+			<p:inputText id="germeIsolado"
+						 required="true"
+						 rendered="#{!controleBloqueado}"
+						 value="#{controleMedicacaoRestritoSCHIHome.instancia.germeIsolado}"
+						 title="Informe o germe isolado" />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.germeIsolado}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.culturaSolicitada == 'T'}" >
+			<font color="red" >*</font><h:outputLabel for="sensibilidade" value="Sensibilidade"  /><br />
+			<p:inputText id="sensibilidade"
+					 required="true"
+					 rendered="#{!controleBloqueado}"
+					 value="#{controleMedicacaoRestritoSCHIHome.instancia.sensibilidade}"
+					 title="informe a sensibilidade" />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.sensibilidade}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+	<p:separator style="height:8px" />
+	
+	<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid5"
+				 columns="3"
+				 width="100%">
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="dose" value="Dose: " /><br />
+			<p:inputText id="dose" 
+						 onkeyup="apenasNumero(this);"
+						 rendered="#{!controleBloqueado}"
+						 value="#{controleMedicacaoRestritoSCHIHome.instancia.dose}" 
+						 title="Números de doses por dia de tratamento" />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.dose}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="via" value="Via: " /><br />
+			<p:inputText id="via" 
+						 value="#{controleMedicacaoRestritoSCHIHome.instancia.via}"
+						 rendered="#{!controleBloqueado}" 
+						 title="Números de doses por dia de tratamento" />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.via}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup >
+			<font color="red" >*</font><h:outputLabel for="frequencia" value="Frequência:"  /><br />
+			<p:inputText id="frequencia"
+					  	 value="#{controleMedicacaoRestritoSCHIHome.instancia.frequencia}"
+					  	 rendered="#{!controleBloqueado}"
+					  	 title="Informe a frequência com que deve ser ministrado a(s) dose(s)" />h
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.frequencia}" 
+						  rendered="#{controleBloqueado}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="tempoUso" value="Tempo de uso: " /><br />
+			<p:inputText id="tempoUso" 
+						 onkeyup="apenasNumero(this);"
+						 rendered="#{!controleBloqueado}"
+						 value="#{controleMedicacaoRestritoSCHIHome.instancia.tempoUso}" 
+						 title="Tempo provável de uso" />
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.tempoUso}" 
+						  rendered="#{controleBloqueado}"/>
+			#{' dias'}
+		</h:panelGroup>
+
+	</h:panelGrid>
+	
+	<p:separator style="height:8px" />
+	
+	<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid4"
+				 columns="3"
+				 width="100%">	
+		<h:panelGroup id="prescricaoAdequadaPanelGroup" 
+					  rendered="#{!controleBloqueado}">
+			<font color="red" >*</font><h:outputLabel for="prescricaoAdequada" value="Prescrição Adequada"  /><br />
+			<h:selectOneRadio id="prescricaoAdequada"
+							  value="#{controleMedicacaoRestritoSCHIHome.prescricaoAdequada}" 
+							  required="true"
+							  title="Informe se a prescrição está adequada" >
+				 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid4" />
+				 <f:selectItems value="#{itensPadrao.booleanEnumItens}"/>
+			</h:selectOneRadio>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.prescricaoAdequada == 'F' or controleBloqueado}" >
+			<font color="red" >*</font><h:outputLabel for="prescricaoInadequada" value="Prescrição inadequada devido a"  /><br />
+			<h:selectOneRadio id="prescricaoInadequada"
+							  value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada}" 
+							  required="true"
+							  rendered="#{!controleBloqueado}"
+							  title="Informe o tipo irregularidade na prescrição" >
+				 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid4" />
+				 <f:selectItems value="#{itensPadrao.tipoPrescricaoInadequadaEnumItens}"/>
+			</h:selectOneRadio>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada.label}" 
+						  rendered="#{controleBloqueado and controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada != null }"/>
+			<h:outputText value="Prescrição adequada" 
+						  rendered="#{controleBloqueado and controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada == null }"/>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada == 'OT'}" >
+			<font color="red" >*</font><h:outputLabel for="prescricaoInadequadaDescricao" value="Justificativa:"  /><br />
+			<p:inputTextarea id="prescricaoInadequadaDescricao"
+							 value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricaoInadequadaDescricao}"
+							 rendered="#{!controleBloqueado}" 
+							 required="true"
+							 title="Informe o tipo irregularidade na prescrição" />
+							 
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricaoInadequadaDescricao}" 
+						  rendered="#{controleBloqueado}"/>
+			
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+	<p:separator style="height:8px" />
+	
+</ui:composition>

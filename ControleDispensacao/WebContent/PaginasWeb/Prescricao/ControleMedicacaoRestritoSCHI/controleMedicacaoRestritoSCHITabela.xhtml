@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dataTable 	id="tabelaControleMedicacaoRestritoSCHI" 
+					value="#{controleMedicacaoRestritoSCHIConsulta.list}" 
+					var="linha"
+					dblClickSelect="true"
+					emptyMessage="Não foi encontrado registros" 
+					rows="10" 
+					paginator="true"
+					selectionMode="single" 
+					rowKey="#{linha.idControleMedicacaoRestritoSCHI}">
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Material" /></f:facet>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.materialLiberacao(linha.idControleMedicacaoRestritoSCHI)}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Indicação" /></f:facet>
+			<h:outputText value="#{linha.tipoIndicacao.label}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header"><h:outputText value="Profissional solicitante" /></f:facet>
+			<h:outputText value="#{linha.profissionalAssistente.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Data de solicitação" /></f:facet>
+			<h:outputText value="#{linha.dataCriacaoAssistente}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Profissional autorizador" /></f:facet>
+			<h:outputText value="#{linha.profissionalInfectologista.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Data de autorização" /></f:facet>
+			<h:outputText value="#{linha.dataLiberacaoInfectologista}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Situação" /></f:facet>
+			<h:outputText value="#{linha.tipoPrescricaoInadequada.label}"
+						  rendered="#{linha.tipoPrescricaoInadequada != null}"/>
+			<h:outputText value="Pendente"
+						  rendered="#{linha.tipoPrescricaoInadequada == null and linha.profissionalInfectologista == null}"/>
+			<h:outputText value="Liberada"
+						  rendered="#{linha.tipoPrescricaoInadequada == null and linha.profissionalInfectologista != null}"/>
+		</p:column>
+
+		<p:column style="width:60px; text-align: center;" >
+			<p:commandLink update="padraoTabView:controleMedicacaoRestritoSCHIForm" 
+						   title="Editar" 
+						   style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink  action="#{controleMedicacaoRestritoSCHIHome.apagar}"
+							update="tabelaControleMedicacaoRestritoSCHI padraoTabView:controleMedicacaoRestritoSCHIForm" 
+							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+							title="Apagar"
+							rendered="false"
+							style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+		
+	</p:dataTable>
+	
+</ui:composition>
