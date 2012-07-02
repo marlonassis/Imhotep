@@ -1,6 +1,5 @@
 package br.com.ControleDispensacao.seguranca;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.ControleDispensacao.auxiliar.ControleMenu;
 import br.com.ControleDispensacao.auxiliar.ControlePainel;
+import br.com.ControleDispensacao.auxiliar.ControleSenha;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
@@ -31,7 +31,6 @@ public class Autenticador {
 	private Profissional profissionalAtual;
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
-	private static final String PAGINA_HOME = "/ControleDispensacao/PaginasWeb/home.jsf";
 
 	public static Autenticador getInstancia(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
@@ -40,15 +39,6 @@ public class Autenticador {
 		}else{
 			return null;
 		}
-	}
-	
-	public boolean senhaIgualMatricula(){
-		String senha = getUsuarioAtual().getSenha();
-		String matriculaCriptografada = Utilities.md5(getUsuarioAtual().getMatricula());
-		if(senha.equals(matriculaCriptografada)){
-			return true;
-		}
-		return false;
 	}
 	
 	private void carregaUnidadesUsuario(){
@@ -62,13 +52,6 @@ public class Autenticador {
 	private void carregaUnidadeAtual() {
 		if(unidades.size() == 1){
 			unidadeAtual = unidades.iterator().next();
-			try {
-				if(!senhaIgualMatricula()){
-					FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}else{
 			mostraComboUnidade = true;
 		}
@@ -116,21 +99,15 @@ public class Autenticador {
 
 	public void continuaLogin(){
 		if(unidadeAtual != null){
-			try {
-				mostraComboUnidade = false;
-				if(!senhaIgualMatricula()){
-					FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_HOME);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			mostraComboUnidade = false;
+			new ControleSenha().redirecionaPaginaConformeSenha();
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe uma unidade.", ""));
 		}
 	}
 	
 	public boolean verificaSenha(Usuario usuarioLogado, String senha){
-		if(usuarioLogado.getSenha().equals(Utilities.md5(senha))){
+		if(usuarioLogado.getSenha().equals(Utilities.encriptaParaMd5(senha))){
 			return true;
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
@@ -152,6 +129,7 @@ public class Autenticador {
 	    				carregaProfissional();
 	    				carregaToolBarMenu();
 	    				carregaPaineis();
+	    				new ControleSenha().redirecionaPaginaConformeSenha();
 	    			}
 	    		}
 	    	}
@@ -160,12 +138,6 @@ public class Autenticador {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro desconhecido!",  null));
 			if(((Usuario)facesContext.getExternalContext().getSessionMap().get("usuario")) == null){
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao logar! Você não está logado.", "Tente logar novamente!"));
-			}else{
-				try{ 
-					facesContext.getExternalContext().redirect(PAGINA_HOME);
-				}catch (Exception e2) {
-					e2.printStackTrace();
-				}
 			}
 		}
 		setUsuario(new Usuario());

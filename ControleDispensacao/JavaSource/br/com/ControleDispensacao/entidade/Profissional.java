@@ -26,12 +26,12 @@ public class Profissional {
 	private Estado estado; 
 	private Especialidade especialidade;
 	private String nome;
-	private TipoSituacaoEnum status;
-	private Long inscricao;
+	private TipoSituacaoEnum situacao;
 	private Usuario usuarioInclusao;
 	private Date dataInclusao;
 	private Usuario usuario;
-	
+	private String registroConselho;
+	private Integer matricula;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_profissional_id_profissional_seq")
 	@Id
@@ -74,23 +74,32 @@ public class Profissional {
 		this.nome = nome;
 	}
 	
+	@Column(name = "cv_registro_conselho")
+	public String getRegistroConselho() {
+		return registroConselho;
+	}
+	
+	public void setRegistroConselho(String registroConselho) {
+		this.registroConselho = registroConselho;
+	}
+	
 	@Column(name = "tp_status")
 	@Enumerated(EnumType.STRING)
-	public TipoSituacaoEnum getStatus() {
-		return this.status;
+	public TipoSituacaoEnum getSituacao() {
+		return this.situacao;
 	}
 
-	public void setStatus(TipoSituacaoEnum status) {
-		this.status = status;
+	public void setSituacao(TipoSituacaoEnum situacao) {
+		this.situacao = situacao;
+	}
+
+	@Column(name = "in_matricula")
+	public Integer getMatricula() {
+		return matricula;
 	}
 	
-	@Column(name = "bg_inscricao")
-	public Long getInscricao() {
-		return inscricao;
-	}
-	
-	public void setInscricao(Long inscricao) {
-		this.inscricao = inscricao;
+	public void setMatricula(Integer matricula) {
+		this.matricula = matricula;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -136,7 +145,7 @@ public class Profissional {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + nome.hashCode();
+	    return hash * 31 + matricula.hashCode();
 	}
 
 	@Override

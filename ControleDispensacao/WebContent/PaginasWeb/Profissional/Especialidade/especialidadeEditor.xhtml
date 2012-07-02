@@ -31,22 +31,6 @@
 	        </p:selectOneMenu>
         </h:panelGroup>
 		
-		<h:panelGroup>
-			<h:outputLabel for="especialidadePai" value="Especialidade Pai:" /><br />
-	  		<p:autoComplete id="especialidadePai" 
-	  						forceSelection="true"
-	  						value="#{especialidadeHome.instancia.especialidadePai}"
-							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
-							var="especialidade" 
-							itemLabel="#{especialidade.descricao}"
-							itemValue="#{especialidade}"
-							converter="especialidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
-		</h:panelGroup>
-
-		
 	</h:panelGrid>
 	
 </ui:composition>

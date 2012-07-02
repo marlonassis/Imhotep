@@ -16,7 +16,6 @@ public class Especialidade {
 	private int idEspecialidade;
 	private TipoConselho tipoConselho;
 	private String descricao;
-	private Especialidade especialidadePai;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_especialidade_id_especialidade_seq")
 	@Id
@@ -38,16 +37,7 @@ public class Especialidade {
 		this.tipoConselho = tipoConselho;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_especialidade_pai")
-	public Especialidade getEspecialidadePai() {
-		return especialidadePai;
-	}
-	public void setEspecialidadePai(Especialidade especialidadePai) {
-		this.especialidadePai = especialidadePai;
-	}
-	
-	@Column(name = "ds_descricao", length = 50)
+	@Column(name = "cv_descricao", length = 50)
 	public String getDescricao() {
 		return descricao;
 	}

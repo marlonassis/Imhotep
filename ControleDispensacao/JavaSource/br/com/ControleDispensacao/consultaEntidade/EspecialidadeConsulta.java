@@ -13,8 +13,8 @@ import br.com.nucleo.PadraoConsulta;
 @SessionScoped
 public class EspecialidadeConsulta extends PadraoConsulta<Especialidade> {
 	public EspecialidadeConsulta(){
-		getCamposConsulta().put("o.descricao", IGUAL);
-		setOrderBy("to_ascii(o.descricao)");
+		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
+		setOrderBy("o.tipoConselho, to_ascii(o.descricao)");
 	}
 	
 	@Override

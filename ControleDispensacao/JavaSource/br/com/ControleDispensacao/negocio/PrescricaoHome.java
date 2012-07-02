@@ -15,7 +15,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ControleDispensacao.auxiliar.Constantes;
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
+import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.Material;
@@ -31,7 +33,7 @@ import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="prescricaoHome")
 @SessionScoped
-public class PrescricaoHome extends PadraoHome<Prescricao>{    
+public class PrescricaoHome extends PadraoHome<Prescricao>{    	
 	
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
 	private Date dataInicio;
@@ -43,6 +45,9 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private Profissional profissionalLiberacao;
 	private String usuario;
 	private String senha;
+	private String mensagem;
+	private String mensagemComplementar;
+	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
 	
 	private void limpaVariaveis(){
 		setDataInicio(null);
@@ -110,23 +115,47 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return cg.consultaUnica(new StringBuilder("select o from Profissional o where o.usuario.idUsuario = :idUsuario"), hm);
 	}
 	
+	public List<ControleMedicacaoRestritoSCHI> getControlesValidos(){
+		if(getPrescricaoItem() != null && getPrescricaoItem().getMaterial() != null){
+			ConsultaGeral<ControleMedicacaoRestritoSCHI> cg = new ConsultaGeral<ControleMedicacaoRestritoSCHI>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("dataLimite", new Date());
+			hm.put("idPaciente", getInstancia().getPaciente().getIdPaciente());
+			return new ArrayList<ControleMedicacaoRestritoSCHI>(cg.consulta(new StringBuilder("select o from ControleMedicacaoRestritoSCHI o where o.dataLimite >= :dataLimite and o.tipoPrescricaoInadequada is null and o.profissionalInfectologista != null and o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.paciente.idPaciente = :idPaciente)"), hm));
+		}
+		return new ArrayList<ControleMedicacaoRestritoSCHI>();
+	}
+	
 	public void segundaLiberacaoDose(){
 		Autenticador a = new Autenticador();
 		Usuario usuarioLiberacao = a.procurarUsuario(usuario);
 		if(usuarioLiberacao != null && a.verificaSenha(usuarioLiberacao, senha)){
-			adicionaDoses(carregaProfissional(usuarioLiberacao));
+			Profissional profissionalLiberacao = carregaProfissional(usuarioLiberacao);
+			adicionaDoses(profissionalLiberacao);
+			getControleMedicacaoRestritoSCHI().setProfissionalAssistente(profissionalLiberacao);
 		}
+	}
+	
+	private boolean geraLiberacaoAntibiotico(){
+		if(isMaterialAntibiotico()){
+			if(new ControleMedicacaoRestritoSCHIHome(getControleMedicacaoRestritoSCHI()).enviar()){
+				return true;
+			}
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao gravar a liberação para antibiótico.", "Tente novamente ou procure o CPD."));
+			return false;
+		}
+		return true;
 	}
 	
 	private void adicionaDoses(Profissional profissionalLiberacao){
 		if(liberaDose()){
-			if(liberaMedicamentoEspecialidade(profissionalLiberacao)){
+			if(liberaMedicamento(profissionalLiberacao)){
 				inicializaPrescricaoItemDoses();
 				if(getPrescricaoItem().getIdPrescricaoItem() != 0 || gravaPrescricaoItem()){
 					gravaPrescricaoItemDose();
 				}
 			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"O usuário não tem autorização para liberar o material.", "Peça autorização para um " + getListaEspecialidadeString() + "."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, mensagemComplementar));
 			}
 		}
 	}
@@ -158,19 +187,38 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		mostraModalLiberacaoMedicamento = false;
 	}
 	
+	public boolean isMaterialAntibiotico(){
+		if(getPrescricaoItem() != null && getPrescricaoItem().getMaterial() != null){
+			String grupoMaterial = getPrescricaoItem().getMaterial().getFamilia().getSubGrupo().getGrupo().getDescricao();
+			return grupoMaterial.equalsIgnoreCase(Constantes.MATERIAL_ANTIBIOTICO);
+		}
+		return false;
+	}
+	
 	/**
 	 * Verifica se o medicamento pode ser prescrito pelo profissional logado usando sua especialidade
 	 */
-	public boolean liberaMedicamentoEspecialidade(Profissional profissionalVerificacao){
+	public boolean liberaMedicamento(Profissional profissionalVerificacao){
 		List<Especialidade> especialidadeMedicamentos = getEspecialidadeMedicamento(getPrescricaoItem().getMaterial());
 		if(especialidadeMedicamentos.contains(profissionalVerificacao.getEspecialidade()) || especialidadeMedicamentos.isEmpty()){
-			profissionalLiberacao = profissionalVerificacao;
-			mostraModalLiberacaoMedicamento = false;
-			return true;
+			if(isMaterialAntibiotico() && getControleMedicacaoRestritoSCHI().getTipoIndicacao() == null){
+				usuario = null;
+				senha = null;
+				mostraModalLiberacaoMedicamento = true;
+				mensagem = "Esse material é um antibiótico.";
+				mensagemComplementar = "Preencha o formulário para liberar o antibiótico.";
+				return false;
+			}else{
+				profissionalLiberacao = profissionalVerificacao;
+				mostraModalLiberacaoMedicamento = false;
+				return true;
+			}
 		}else{
 			usuario = null;
 			senha = null;
 			mostraModalLiberacaoMedicamento = true;
+			mensagem = "O usuário não tem autorização para liberar o material.";
+			mensagemComplementar = "Peça autorização para um " + getListaEspecialidadeString() + ".";
 			return false;
 		}
 	}
@@ -238,11 +286,18 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void finalizaDosagem(){
 		if(getListaPrescricaoItemDose().size() > 0){
 			try {
-				limpaVariaveis();
-				setPrescricaoItem(new PrescricaoItem());
-				iniciaDosagem = false;
-				String paginaAtual = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI();
-				FacesContext.getCurrentInstance().getExternalContext().redirect(paginaAtual);
+				boolean controleExistente = getControleMedicacaoRestritoSCHI().getIdControleMedicacaoRestritoSCHI() != 0;
+				if(controleExistente ||  geraLiberacaoAntibiotico()){
+					if(!isMaterialAntibiotico() || anexaControleNaPrescricaoItem()){
+						limpaVariaveis();
+						setPrescricaoItem(new PrescricaoItem());
+						setControleMedicacaoRestritoSCHI(new ControleMedicacaoRestritoSCHI());
+						iniciaDosagem = false;
+						setControleMedicacaoRestritoSCHI(new ControleMedicacaoRestritoSCHI());
+						String paginaAtual = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI();
+						FacesContext.getCurrentInstance().getExternalContext().redirect(paginaAtual);
+					}
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -257,6 +312,15 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		if(super.atualizar()){
 			novaInstancia();
 		}
+	}
+	
+	private boolean anexaControleNaPrescricaoItem(){
+		getPrescricaoItem().setControleMedicacaoRestritoSCHI(getControleMedicacaoRestritoSCHI());
+		if(new PrescricaoItemHome(getPrescricaoItem(), false).atualizar()){
+			return true;
+		}
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao anexar a liberação à prescrição.", "Tente novamente ou procure o CPD."));
+		return false;
 	}
 	
 	private boolean gravaPrescricaoItem() {
@@ -450,5 +514,14 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public ControleMedicacaoRestritoSCHI getControleMedicacaoRestritoSCHI() {
+		return controleMedicacaoRestritoSCHI;
+	}
+
+	public void setControleMedicacaoRestritoSCHI(
+			ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
+		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
 	}
 }

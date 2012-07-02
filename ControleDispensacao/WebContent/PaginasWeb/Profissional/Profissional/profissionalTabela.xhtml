@@ -16,18 +16,18 @@
 					rowKey="#{linha.idProfissional}">
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Inscrição" /></f:facet>
-			<h:outputText value="#{linha.inscricao}" />
-		</p:column>
-		
-		<p:column>
-			<f:facet name="header"><h:outputText value="Especialidade" /></f:facet>
-			<h:outputText value="#{linha.especialidade.descricao}" />
+			<f:facet name="header"><h:outputText value="Matrícula" /></f:facet>
+			<h:outputText value="#{linha.matricula}" />
 		</p:column>
 					
 		<p:column>
 			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
 			<h:outputText value="#{linha.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Especialidade" /></f:facet>
+			<h:outputText value="#{linha.especialidade.descricao}" />
 		</p:column>
 		
 		<p:column style="width:60px; text-align: center;" >

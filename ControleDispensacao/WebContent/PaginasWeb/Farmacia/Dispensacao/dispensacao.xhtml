@@ -149,12 +149,12 @@
 							</p:column>
 							
 							<p:column headerText="Editar" style="width:50px">  
-					            <p:rowEditor rendered="#{(prescricaoItem.quantidadeLiberada == null || prescricaoItem.quantidadeLiberada == 0) ? true : false}" />
+					            <p:rowEditor rendered="#{((prescricaoItem.quantidadeLiberada == null || prescricaoItem.quantidadeLiberada == 0) ? true : false)}" />
 							</p:column>
 						</p:dataTable>
           	
 				        <p:commandButton value="Dispensar"
-				        				 action="#{dispensacaoHome.dispensar()}" 
+				        				 action="#{dispensacaoHome.dispensar}" 
 				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:recibo"
 				        				 rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
 				        				 oncomplete="reciboDialog.show(); itensDialog.hide();" />

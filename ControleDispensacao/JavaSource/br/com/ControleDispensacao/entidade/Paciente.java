@@ -1,7 +1,5 @@
 package br.com.ControleDispensacao.entidade;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -204,6 +202,11 @@ public class Paciente {
 	@Transient
 	public String getNomeIdade(){
 		return nome.concat(" - ").concat(Utilities.getIdadeAtual(dataNascimento));
+	}
+	
+	@Transient
+	public String getIdade(){
+		return Utilities.getIdadeAtual(dataNascimento);
 	}
 	
 	@Override

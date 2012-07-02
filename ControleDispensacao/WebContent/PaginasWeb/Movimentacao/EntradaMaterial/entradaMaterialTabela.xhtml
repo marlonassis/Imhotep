@@ -15,7 +15,7 @@
 				 selectionMode="single" 
 				 rowKey="#{linha.idEstoque}">
 		<p:ajax event="rowEdit" 
-				listener="#{entradaMaterialHome.editRowEvent}" 
+				listener="#{entradaMaterialHome.editRowEvent}"
 				update="padraoTabView:tabelaEntradaMaterial padraoTabView:entradaMaterialForm"/>
 		<p:column>
 			<f:facet name="header"><h:outputText value="Código do material" /></f:facet>
@@ -53,9 +53,27 @@
 		</p:column>
 		<p:column>
 			<f:facet name="header"><h:outputText value="Validade" /></f:facet>
-			<h:outputText value="#{linha.dataValidade}">
-				<f:convertDateTime pattern="dd/MM/yyyy"/>
-			</h:outputText>
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{linha.dataValidade}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</f:facet>
+				<f:facet name="input">
+					<p:inputMask id="dataValidade"
+								 mask="99/99/9999"
+								 value="#{linha.dataValidade}"
+								 title="Data de validade do lote">
+						<f:convertDateTime pattern="dd/MM/yyyy"  />
+					</p:inputMask>
+                </f:facet>
+			</p:cellEditor>
+
+
+
+
+
+
 		</p:column>
 		<p:column style="width:60px; text-align: center;" >
 		

@@ -34,17 +34,17 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 
 	public void editRowEvent(RowEditEvent obj){
 		Estoque estoque = (Estoque) obj.getObject();
-		if(!achouEstoque(estoque.getLote())){
+		if(!achouEstoque(estoque.getLote(), estoque.getMaterial().getIdMaterial())){
 			setInstancia(estoque);
 			super.atualizar();
 		}
 	}
 	
-	private boolean achouEstoque(String lote) {
+	private boolean achouEstoque(String lote, Integer idMaterial) {
 		ConsultaGeral<String> cg = new ConsultaGeral<String>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("lote", lote);
-		StringBuilder sb = new StringBuilder("select o.lote from Estoque o where o.lote = :lote");
+		StringBuilder sb = new StringBuilder("select o.lote from Estoque o where o.lote = :lote and o.material.idMaterial != " + idMaterial);
 		String loteAchado = cg.consultaUnica(sb, hashMap);
 		
 		if(loteAchado != null && !loteAchado.isEmpty()){

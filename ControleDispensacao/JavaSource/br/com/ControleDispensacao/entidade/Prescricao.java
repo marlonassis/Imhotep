@@ -197,7 +197,7 @@ public class Prescricao {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + leito.hashCode();
+	    return hash * 31 + dataPrescricao.hashCode();
 	}
 
 	@Override

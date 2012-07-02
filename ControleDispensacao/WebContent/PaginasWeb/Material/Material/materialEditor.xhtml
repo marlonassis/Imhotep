@@ -144,6 +144,16 @@
 				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
 			</h:selectOneRadio>
 		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="quantidadeMinima" value="Quantidade Mínima:"  /><br />
+			<p:inputText id="quantidadeMinima"
+						 onkeyup="apenasNumero(this);"
+						 value="#{materialHome.instancia.quantidadeMinima}" 
+						 title="A quantidade mínima que é usada para avisar sobre nova compra" />
+		</h:panelGroup>
+		
 
-	</h:panelGrid>
+	</h:panelGrid>	
+
 </ui:composition>

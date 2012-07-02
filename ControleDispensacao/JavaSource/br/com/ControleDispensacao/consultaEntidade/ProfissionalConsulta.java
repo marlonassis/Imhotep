@@ -15,8 +15,8 @@ public class ProfissionalConsulta extends PadraoConsulta<Profissional> {
 	public ProfissionalConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.especialidade", IGUAL);
-		getCamposConsulta().put("o.inscricao", INCLUINDO_TUDO);
-		setOrderBy("to_ascii(o.especialidade.descricao), to_ascii(o.nome)");
+		getCamposConsulta().put("o.matricula", INCLUINDO_TUDO);
+		setOrderBy("to_ascii(o.nome), to_ascii(o.especialidade.descricao)");
 	}
 	
 	@Override

@@ -4,7 +4,6 @@
       xmlns:p="http://primefaces.prime.com.tr/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-
 	<p:dataTable 	id="tabelaEspecialidade" 
 					value="#{especialidadeConsulta.list}" 
 					var="linha"
@@ -25,11 +24,6 @@
 			<h:outputText value="#{linha.tipoConselho}" />
 		</p:column>
 		
-		<p:column>
-			<f:facet name="header"><h:outputText value="Especialidade Pai" /></f:facet>
-			<h:outputText value="#{linha.especialidadePai}" />
-		</p:column>
-					
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:especialidadeForm" 
 						   title="Editar" 

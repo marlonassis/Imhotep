@@ -19,7 +19,6 @@ import javax.persistence.TemporalType;
 public class Usuario {
 	
 	private int idUsuario;
-	private String matricula;
 	private String login;
 	private String senha;
 	private Date dataInclusao;
@@ -43,15 +42,6 @@ public class Usuario {
 
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
-	}
-
-	@Column(name = "ds_matricula", length = 10)
-	public String getMatricula() {
-		return this.matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
 	}
 
 	@Column(name = "ds_login", length = 50)

@@ -29,6 +29,8 @@ public class PrescricaoItem {
 	private Profissional profissionalLiberacao;
 	private Integer quantidadeLiberada;
 	private TipoStatusEnum dispensado;
+	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI;
+	private TipoStatusEnum status;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -48,6 +50,15 @@ public class PrescricaoItem {
 	}
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_controle_medicacao_restrito_schi")
+	public ControleMedicacaoRestritoSCHI getControleMedicacaoRestritoSCHI() {
+		return controleMedicacaoRestritoSCHI;
+	}
+	public void setControleMedicacaoRestritoSCHI(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
+		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -107,6 +118,15 @@ public class PrescricaoItem {
 	}
 	public void setDispensado(TipoStatusEnum dispensado) {
 		this.dispensado = dispensado;
+	}
+	
+	@Column(name = "tp_status")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusEnum getStatus() {
+		return status;
+	}
+	public void setStatus(TipoStatusEnum status) {
+		this.status = status;
 	}
 	
 	@Override

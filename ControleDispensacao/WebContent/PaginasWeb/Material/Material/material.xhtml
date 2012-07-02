@@ -12,7 +12,7 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabMaterial" title="Material" >
 			<h:form id="materialForm" prependId="false" >
-				<p:fieldset legend="Novo material"
+				<p:fieldset legend="Novo Material"
 							collapsed="#{!materialHome.edicao}"
 							toggleable="true"
 							toggleSpeed="500">
@@ -29,7 +29,6 @@
 						<p:commandButton	value="Novo"
 											rendered="#{materialHome.edicao}"
 											update="@parent" 
-											immediate="true"
 											action="#{materialHome.novaInstancia()}"/> 
 				</p:fieldset>
             </h:form>

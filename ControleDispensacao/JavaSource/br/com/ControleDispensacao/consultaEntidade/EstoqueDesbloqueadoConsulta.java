@@ -17,7 +17,7 @@ public class EstoqueDesbloqueadoConsulta extends PadraoConsulta<Estoque> {
 		getCamposConsulta().put("o.lote", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.material", IGUAL);
 		getCamposConsulta().put("o.dataValidade", IGUAL);
-		setOrderBy("o.lote, to_ascii(o.material.descricao), o.dataValidade");
+		setOrderBy("to_ascii(o.material.descricao), o.lote, o.dataValidade");
 	}
 	
 	@Override

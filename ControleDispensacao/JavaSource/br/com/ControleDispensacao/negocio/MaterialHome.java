@@ -30,8 +30,12 @@ public class MaterialHome extends PadraoHome<Material>{
 	
 	@Override
 	public void novaInstancia() {
+		setSugGrupoList(new ArrayList<SubGrupo>());
+		setFamiliaList(new ArrayList<Familia>());
 		super.novaInstancia();
-		inicializaVariaveis();
+		getInstancia().setFamilia(new Familia());
+		getInstancia().getFamilia().setSubGrupo(new SubGrupo());
+		getInstancia().getFamilia().getSubGrupo().setGrupo(new Grupo());
 	}
 	
 	/**
@@ -40,6 +44,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	public void carregaSubGrupoList(){
 		if(getInstancia().getFamilia().getSubGrupo().getGrupo() != null){
 			setSugGrupoList((List<SubGrupo>) new SubGrupoHome().getListaSubGrupoGrupo(getInstancia().getFamilia().getSubGrupo().getGrupo().getIdGrupo()));
+			setFamiliaList(new ArrayList<Familia>());
 		}
 	}
 	
@@ -48,7 +53,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	 */
 	public void carregaFamiliaList(){
 		if(getInstancia().getFamilia().getSubGrupo() != null){
-			setFamiliaList((List<Familia>) new FamiliaHome().getListaFamiliaSubGrupo(getInstancia().getFamilia().getSubGrupo().getGrupo().getIdGrupo()));
+			setFamiliaList((List<Familia>) new FamiliaHome().getListaFamiliaSubGrupo(getInstancia().getFamilia().getSubGrupo().getIdSubGrupo()));
 		}
 	}
 	

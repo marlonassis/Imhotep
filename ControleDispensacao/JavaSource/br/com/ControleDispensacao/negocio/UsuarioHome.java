@@ -38,10 +38,10 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	
 	public void trocaSenha(){
 		Usuario usuario = Autenticador.getInstancia().getUsuarioAtual();
-		String senhaCriptografada = Utilities.md5(senhaAntiga);
+		String senhaCriptografada = Utilities.encriptaParaMd5(senhaAntiga);
 		if(senhaNova.equals(senhaNovaConfirmacao)){
 			if(usuario.getSenha().equals(senhaCriptografada)){
-				String senha = Utilities.md5(senhaNova);
+				String senha = Utilities.encriptaParaMd5(senhaNova);
 				usuario.setSenha(senha);
 				setInstancia(usuario);
 				super.atualizar();
@@ -70,7 +70,7 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 		//se o usuário informou a senha de confirmação então devemos validar a senha
 		if(trocaSenha && !getSenhaConfirmacao().equals("") && getSenhaConfirmacao() != null){
 			if (getInstancia().getSenha().equals(getSenhaConfirmacao())){
-				getInstancia().setSenha(Utilities.md5(getInstancia().getSenha()));
+				getInstancia().setSenha(Utilities.encriptaParaMd5(getInstancia().getSenha()));
 				return super.atualizar();
 			}else{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas não conferem!", "Informe duas senhas iguais."));
@@ -92,13 +92,18 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 		return null;
 	}
 	
+	public boolean enviar(Usuario usuario) {
+		setInstancia(usuario);
+		return super.enviar();
+	}
+	
 	@Override
 	public boolean enviar() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		try{
 			if(getInstancia().getSenha().equals(getSenhaConfirmacao())){
 				if(procurarUsuario(getInstancia().getLogin()) == null){
-					getInstancia().setSenha(Utilities.md5(getInstancia().getSenha()));
+					getInstancia().setSenha(Utilities.encriptaParaMd5(getInstancia().getSenha()));
 					getInstancia().setDataInclusao(new Date());
 					getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 					if(super.enviar()){

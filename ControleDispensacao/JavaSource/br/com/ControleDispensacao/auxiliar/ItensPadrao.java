@@ -9,17 +9,20 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import br.com.ControleDispensacao.enums.TipoBooleanEnum;
+import br.com.ControleDispensacao.enums.TipoIndicacaoEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
+import br.com.ControleDispensacao.enums.TipoPrescricaoInadequadaEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
 import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
+import br.com.ControleDispensacao.enums.TipoSubIndicacaoProfilaxiaEnum;
+import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 
 
 
 /**
  * @author marlonassis
- *
  */
 @ManagedBean(name="itensPadrao")
 @RequestScoped
@@ -72,4 +75,37 @@ public class ItensPadrao{
 		}
 		return tipoOperacaoEnumItens;
 	}
+	
+	public List<SelectItem> getTipoIndicacaoEnumItens(){
+		List<SelectItem> tipoIndicacaoEnumItens = new ArrayList<SelectItem>();
+		for(TipoIndicacaoEnum item : TipoIndicacaoEnum.values()){
+			tipoIndicacaoEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoIndicacaoEnumItens;
+	}
+
+	public List<SelectItem> getTipoPrescricaoInadequadaEnumItens(){
+		List<SelectItem> tipoPrescricaoInadequadaEnumItens = new ArrayList<SelectItem>();
+		for(TipoPrescricaoInadequadaEnum item : TipoPrescricaoInadequadaEnum.values()){
+			tipoPrescricaoInadequadaEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoPrescricaoInadequadaEnumItens;
+	}
+	
+	public List<SelectItem> getTipoSubIndicacaoProfilaxiaEnumItens(){
+		List<SelectItem> tipoSubIndicacaoProfilaxiaEnumItens = new ArrayList<SelectItem>();
+		for(TipoSubIndicacaoProfilaxiaEnum item : TipoSubIndicacaoProfilaxiaEnum.values()){
+			tipoSubIndicacaoProfilaxiaEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoSubIndicacaoProfilaxiaEnumItens;
+	}
+	
+	public List<SelectItem> getTipoSubIndicacaoTerapeuticaEnumItens(){
+		List<SelectItem> tipoSubIndicacaoTerapeuticaEnumItens = new ArrayList<SelectItem>();
+		for(TipoSubIndicacaoTerapeuticaEnum item : TipoSubIndicacaoTerapeuticaEnum.values()){
+			tipoSubIndicacaoTerapeuticaEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoSubIndicacaoTerapeuticaEnumItens;
+	}
+	
 }

@@ -9,4 +9,14 @@ import br.com.nucleo.PadraoHome;
 @ManagedBean(name="prescricaoItemHome")
 @SessionScoped
 public class PrescricaoItemHome extends PadraoHome<PrescricaoItem>{
+	
+	public PrescricaoItemHome(){
+	}
+	
+	public PrescricaoItemHome(PrescricaoItem prescricaoItem, boolean exibeMensagemAtualizacao){
+		super();
+		super.setExibeMensagemAtualizacao(exibeMensagemAtualizacao);
+		setInstancia(prescricaoItem);
+	}
+	
 }

@@ -32,7 +32,8 @@ public class Material {
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	private TipoStatusEnum autorizadoDispensacao;
-
+	private Integer quantidadeMinima;
+	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_id_material_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
@@ -45,7 +46,7 @@ public class Material {
 		this.idMaterial = idMaterial;
 	}
 
-	@Column(name = "ds_descricao", length = 120)
+	@Column(name = "ds_descricao")
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -131,6 +132,15 @@ public class Material {
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
+	}
+
+	@Column(name = "in_quantidade_minima")
+	public Integer getQuantidadeMinima() {
+		return this.quantidadeMinima;
+	}
+
+	public void setQuantidadeMinima(Integer quantidadeMinima) {
+		this.quantidadeMinima = quantidadeMinima;
 	}
 	
 	@Transient

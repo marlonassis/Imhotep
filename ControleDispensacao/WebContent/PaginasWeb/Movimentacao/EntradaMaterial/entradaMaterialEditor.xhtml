@@ -108,5 +108,23 @@
 						 onkeyup="apenasNumero(this);"
 						 title="Informe a quantidade" />
 		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="fornecedor" value="Fornecedor:"  /><br />
+			<p:inputText id="fornecedor" 
+						 value="#{entradaMaterialHome.instancia.fornecedor}"
+						 title="Informe o fornecedor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="valorUnitario" value="Valor unitário:"  /><br />
+			<p:inputText  id="valorUnitario"
+						  value="#{entradaMaterialHome.instancia.valorUnitario}"
+						  onkeyup="apenasNumeroComVirgula(this);" 
+						  converter="monetarioConversor"
+						  title="Informe o valor unitário do medicamento" />
+		</h:panelGroup>
+		
+		
 	</h:panelGrid>
 </ui:composition>

@@ -50,6 +50,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.Painel"/>
         <mapping class="br.com.ControleDispensacao.entidade.AutorizaPainel"/>
         <mapping class="br.com.ControleDispensacao.entidade.PrescricaoItemEstoqueSaida"/>
+        <mapping class="br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI"/>
         
     </session-factory>
 </hibernate-configuration>

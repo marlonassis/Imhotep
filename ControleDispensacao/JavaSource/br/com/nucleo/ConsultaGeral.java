@@ -20,6 +20,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 
 	}
 	
+	public ConsultaGeral(StringBuilder sb) {
+		this.setSqlConsultaSB(sb);
+	}
+	
 	public ConsultaGeral(StringBuilder sb, HashMap<Object, Object> hm) {
 		this.setSqlConsultaSB(sb);
 		this.setAddValorConsulta(hm);
@@ -45,6 +49,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 		return listaList;
 	}
 	
+	public Collection<E> consulta(StringBuilder stringB, HashMap<Object, Object> hashMap ){
+		return consulta(stringB, hashMap, false);
+	}
+	
 	/**
 	 * Método responsável por setar os valores e fazer a consulta no banco 
 	 * @param String|Builder com o sql
@@ -52,7 +60,7 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 	 * @return Coleção de objetos encontrados
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<E> consulta(StringBuilder stringB, HashMap<Object, Object> hashMap ){
+	public Collection<E> consulta(StringBuilder stringB, HashMap<Object, Object> hashMap, boolean consultaUnica ){
 		List<E> objects = null;
 		StringBuilder hql = new StringBuilder(stringB);
 		try{
@@ -63,6 +71,11 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 				for(Object obj : set)
 					query.setParameter((String) obj, hashMap.get(obj));
 			}
+			
+			if(consultaUnica){
+				query.setMaxResults(1);
+			}
+			
 			objects = (List<E>) query.list();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -80,6 +93,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 		Collection<E> consulta = consulta(sqlConsultaSB, addValorConsulta);
 		return consulta == null || consulta.size() == 0 ? null : consulta.iterator().next();
 	}	
+
+	public E consultaUnica(StringBuilder stringB){
+		return consultaUnica(stringB, getAddValorConsulta());
+	}
 	
 	public E consultaUnica(StringBuilder stringB, HashMap<Object, Object> hashMap ){
 		Collection<E> consulta = consulta(stringB, hashMap);
