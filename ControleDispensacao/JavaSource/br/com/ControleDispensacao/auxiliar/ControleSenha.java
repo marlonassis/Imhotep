@@ -9,10 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.utilidades.Utilities;
 
-public class ControleSenha {
-
-	private static final String PAGINA_TROCA_SENHA = "/ControleDispensacao/PaginasWeb/Usuario/usuarioTrocaSenha.jsf";
-	
+public class ControleSenha {	
 	public static ControleSenha getInstancia(){
 		try {
 			return (ControleSenha) Utilities.procuraInstancia(ControleSenha.class);
@@ -26,16 +23,38 @@ public class ControleSenha {
 		return null;
 	}
 	
+	public void redirecionaPaginaConformeSenha(){
+		try {
+			if(!senhaIgualMatricula()){
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean senhaIgualMatricula(){
+		Autenticador autenticador = Autenticador.getInstancia();
+		if(autenticador.getProfissionalAtual() != null){
+			String senha = autenticador.getUsuarioAtual().getSenha();
+			String matriculaCriptografada = Utilities.encriptaParaMd5(String.valueOf(autenticador.getProfissionalAtual().getMatricula()));
+			if(senha.equals(matriculaCriptografada)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void verificaSenhaPadrao() throws IOException{
 		verificaSenhaPadrao(Autenticador.getInstancia());
 	}
 	
 	public void verificaSenhaPadrao(Autenticador autenticador) throws IOException{
 		if(autenticador != null && autenticador.getUsuarioAtual() != null){
-			if(autenticador.senhaIgualMatricula() && autenticador.getUnidadeAtual() != null){
-				boolean paginaTrocaSenha = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI().indexOf(PAGINA_TROCA_SENHA) == 0;
+			if(senhaIgualMatricula() && autenticador.getUnidadeAtual() != null){
+				boolean paginaTrocaSenha = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
 				if(!paginaTrocaSenha){
-					FacesContext.getCurrentInstance().getExternalContext().redirect(PAGINA_TROCA_SENHA);
+					FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Vocẽ ainda não trocou sua senha. Para sua segurança troque agora a sua senha.", ""));
 				}
 			}
