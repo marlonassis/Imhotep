@@ -7,6 +7,14 @@ function apenasNumero(obj){
 	return obj;
 }  
 
+function filtroQuantidadeLiberada(qtdSolicitada, obj){
+	apenasNumero(obj);
+	if(parseFloat(obj.value) > parseFloat(qtdSolicitada)){
+		alert('A quantidade dispensada deve ser menor ou igual à quantidade solicitada');
+		obj.value = '';
+	}
+}
+
 function validaHoras(edit){
 	alert(edit);
 	li = new Array(':');

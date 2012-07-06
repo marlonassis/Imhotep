@@ -131,12 +131,11 @@
 										<h:outputText value="#{prescricaoItem.quantidadeLiberada == null ? 'Informe aqui a quantidade dispensada.' : prescricaoItem.quantidadeLiberada}" />
 									</f:facet>
 									<f:facet name="input">
-										
 					                    <p:inputText id="quantidadeLiberadaText"
 					                    			 value="#{prescricaoItem.quantidadeLiberada}" 
 					                    			 style="width:100%"
 					                    			 label="Informe a quantidade a ser liberada"
-													 onkeyup="apenasNumero(this);"/>
+													 onkeyup="filtroQuantidadeLiberada('#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}', this);"/>
 													 
 					                </f:facet>
 								</p:cellEditor>
@@ -180,6 +179,9 @@
 							<b>Prescrição:</b> <h:outputText value="#{dispensacaoHome.prescricao.numero}"/><br/>
 							<b>Prescritor:</b> <h:outputText value="#{dispensacaoHome.prescricao.profissional.nome}"/><br/>
 							<b>Dispensante:</b> <h:outputText value="#{autenticador.profissionalAtual.nome}"/><br/>
+							<b>Data da Prescrição:</b> <h:outputText value="#{dispensacaoHome.prescricao.dataPrescricao}">
+															<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+														</h:outputText><br/>
 							<b>Data da Dispensação:</b> <h:outputText value="#{dispensacaoHome.prescricao.dataDipensacao}">
 															<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
 														</h:outputText><br/>
