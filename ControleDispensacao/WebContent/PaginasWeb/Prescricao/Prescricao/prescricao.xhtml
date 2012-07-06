@@ -134,8 +134,12 @@
 						<h:panelGroup style="align:left;" >
 						<font color="red" >*</font><h:outputLabel for="material" value="Material:"  />
 						<br />
-						<p:commandLink  value="Consulta de medicamentos"
+						<p:commandLink  value="Verifique o nome comercial aqui"
 										onclick="window.open('http://consultaremedios.com.br','_blank')" />
+						<h:graphicImage value="/Imagens/question32.png"
+										width="16px" 
+										height="16px" 
+										title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
 						<br />
 				  		<p:autoComplete id="material" 
 				  						disabled="#{!(prescricaoHome.prescricaoItemDoseList.size() == 0)}"
