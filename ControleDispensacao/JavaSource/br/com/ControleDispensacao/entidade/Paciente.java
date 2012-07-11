@@ -211,12 +211,12 @@ public class Paciente {
 	
 	@Transient
 	public String getNomeIdade(){
-		return nome.concat(" - ").concat(Utilities.getIdadeAtual(dataNascimento));
+		return nome.concat(" - ").concat(Utilities.idadeAtual(dataNascimento));
 	}
 	
 	@Transient
 	public String getIdade(){
-		return Utilities.getIdadeAtual(dataNascimento);
+		return Utilities.idadeAtual(dataNascimento);
 	}
 	
 	@Override

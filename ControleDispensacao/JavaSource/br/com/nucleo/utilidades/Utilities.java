@@ -31,7 +31,7 @@ public class Utilities{
         return getDifDia(dtMenor, dtMaior) /365;
     }  
 	
-	public static String getIdadeAtual(Date nascimento){
+	public static String idadeAtual(Date nascimento){
 		if(nascimento != null){
 			float difAno = getDifAno(nascimento, Calendar.getInstance().getTime());
 			int floor = (int) Math.floor(difAno);
