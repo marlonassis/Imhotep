@@ -42,6 +42,7 @@ public class Paciente {
 	private String cpf;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
+	private String numeroSus;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_id_paciente_seq")
 	@Id
@@ -195,8 +196,17 @@ public class Paciente {
 	public Usuario getUsuarioInclusao() {
 		return usuarioInclusao;
 	}
+	
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
+	}
+	
+	@Column(name = "cv_numero_sus")
+	public String getNumeroSus() {
+		return numeroSus;
+	}
+	public void setNumeroSus(String numeroSus) {
+		this.numeroSus = numeroSus;
 	}
 	
 	@Transient

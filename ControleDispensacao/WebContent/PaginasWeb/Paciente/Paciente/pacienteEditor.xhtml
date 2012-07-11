@@ -27,6 +27,14 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="numeroSus" value="Número do cartão do SUS:"  /><br />
+			<p:inputText id="numeroSus" 
+						 value="#{pacienteHome.instancia.numeroSus}" 
+						 required="true"
+						 title="Informe o número do cartão do SUS" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
 			<h:outputLabel for="nomeMae" value="Nome da mãe:"  /><br />
 			<p:inputText id="nomeMae" 
 						 value="#{pacienteHome.instancia.nomeMae}" 
