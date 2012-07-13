@@ -69,7 +69,7 @@
 					<h:panelGroup  rendered="#{prescricaoHome.instancia.paciente != null}" >
 						<p:commandButton value="Indicar dosagem"
 										 ajax="true"
-										 action="#{prescricaoHome.iniciaDosagem()}" 
+										 action="#{prescricaoHome.iniciaDosagem}" 
 										 update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid padraoTabView:doseDialog" />
 					</h:panelGroup>
 				</h:panelGrid>
@@ -104,17 +104,17 @@
 				</p:dataGrid>
 				
 				<p:commandButton value="Prescrever"
-								 action="#{prescricaoHome.finalizarPrescricao()}" 
+								 action="#{prescricaoHome.finalizarPrescricao}" 
 								 rendered="#{!(prescricaoHome.prescricaoItensList.size() == 0)}"
 								 update="prescricaoForm padraoTabView:doseDialog" />
 
 				<p:commandButton value="Nova prescrição"
-								 action="#{prescricaoHome.novaInstancia()}"
+								 action="#{prescricaoHome.novaInstancia}"
 								 rendered="#{prescricaoHome.instancia.idPrescricao != 0}" 
 								 update="prescricaoForm padraoTabView:doseDialog" />
 
 				<p:commandButton value="Cancelar Prescrição"
-								 action="#{prescricaoHome.cancelarPrescricao()}" 
+								 action="#{prescricaoHome.cancelarPrescricao}" 
 								 update="prescricaoForm padraoTabView:doseDialog" 
 								 rendered="#{prescricaoHome.instancia.idPrescricao != 0}" />
 			</h:form>
@@ -194,7 +194,7 @@
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<p:commandButton action="#{prescricaoHome.primeiraLiberacaoDose()}"
+						<p:commandButton action="#{prescricaoHome.primeiraLiberacaoDose}"
 										 value="Adicionar dose" 
 										 update="doseDialogForm doseGrid padraoTabView:liberacaoDialog" />
 					</h:panelGroup>
