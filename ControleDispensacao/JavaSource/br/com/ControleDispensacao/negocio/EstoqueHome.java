@@ -41,7 +41,7 @@ public class EstoqueHome extends PadraoHome<Estoque>{
 	}
 	
 	public List<Estoque> listaEstoqueRelatorioGeral(){
-		return getBusca("select o from Estoque o where o.bloqueado = 'N'"); 
+		return getBusca("select o from Estoque o where o.bloqueado = 'N' order by to_ascii(o.material.descricao)"); 
 	}
 	
 	public List<Estoque> listaEstoqueMaterial(Material material){
