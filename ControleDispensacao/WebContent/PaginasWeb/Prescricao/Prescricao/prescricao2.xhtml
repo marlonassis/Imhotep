@@ -1,0 +1,298 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabPrescricao" title="Prescrição" >
+			<h:form id="prescricaoForm" prependId="false" >
+				
+				<p:wizard widgetVar="wiz"
+						  backLabel="Voltar"
+						  nextLabel="Avançar"
+						  flowListener="#{controlePrescricao.onFlowProcess}">
+				
+					<p:tab id="pacienteTab" title="Paciente">
+						<p:panel header="Detalhes do paciente">
+							<p:growl showDetail="true" />
+							<h:panelGrid id="prescricaoPanelGrid"
+										 columns="4"
+										 width="100%" >
+								
+								<h:panelGroup>
+									<font color="red" >*</font><h:outputLabel for="paciente" value="Paciente:" /><br />
+							  		<p:autoComplete id="paciente" 
+							  						styleClass="autoCompletePesquisa"
+							  						required="true"
+							  						size="30"
+							  						forceSelection="true"
+							  						value="#{controlePrescricao.paciente}"
+													completeMethod="#{pacienteHome.getListaPacienteAutoComplete}" 
+													var="paciente" 
+													itemLabel="#{paciente.nomeIdade}"
+													itemValue="#{paciente}"
+													converter="pacienteConversor">
+										<p:ajax event="itemSelect" update="padraoTabView:prescricaoPanelGrid" />
+									</p:autoComplete>
+									<h:graphicImage value="/Imagens/list16.png"
+													title="Ao digitar aparecerá algumas sugestões" 
+													style="padding-top:8px"/>
+								</h:panelGroup>
+								
+								<h:panelGroup  rendered="#{controlePrescricao.paciente != null}" >
+									<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
+									<p:inputText  id="massa"
+												  value="#{controlePrescricao.prescricao.massa}"
+												  required="true"
+												  onkeyup="apenasNumeroComVirgula(this);" 
+												  converter="monetarioConversor"
+												  title="Massa do paciente" />kg
+								</h:panelGroup>
+								
+								<h:panelGroup  rendered="#{controlePrescricao.paciente != null}" >
+									<font color="red" >*</font><h:outputLabel for="leito" value="Leito:"  /><br />
+									<p:inputText  id="leito"
+												  value="#{controlePrescricao.prescricao.leito}"
+												  required="true"
+												  title="Leito ao qual o paciente está em repouso" />
+								</h:panelGroup>
+								<h:panelGroup  rendered="#{controlePrescricao.paciente != null}" >
+									<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
+							  		<p:autoComplete id="unidade" 
+							  						forceSelection="true"
+							  						value="#{controlePrescricao.paciente.unidadeAlocacao}"
+													completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
+													var="unidade"
+													title="Unidade onde está alocado o paciente" 
+													required="true"
+													itemLabel="#{unidade.nome}" 
+													itemValue="#{unidade}" 
+													converter="unidadeConversor" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+						
+					<p:tab id="prescricaoFarmacologica" title="Medicamentos">
+						<p:panel header="Fármacos">
+								<h:panelGrid id="itemDosePanelGrid" 
+											 columns="2"
+											 width="100%"
+											 cellpadding="5px">
+									<h:panelGroup style="align:left;" >
+									<font color="red" >*</font><h:outputLabel for="material" value="Material:"  />
+									<br />
+									<p:commandLink  value="Verifique o nome comercial aqui"
+													onclick="window.open('http://consultaremedios.com.br','_blank')" />
+									<h:graphicImage value="/Imagens/question32.png"
+													width="16px" 
+													height="16px" 
+													title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
+									<br />
+							  		<p:autoComplete id="material" 
+							  						disabled="#{!(prescricaoHome.prescricaoItemDoseList.size() == 0)}"
+							  						value="#{prescricaoHome.prescricaoItem.material}"
+													completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
+													var="material"
+													required="true"
+													forceSelection="true"
+													title="Informe o medicamento a ser prescrito"
+													itemLabel="#{material.descricao}" 
+													itemValue="#{material}"
+													converter="materialConversor" />
+								</h:panelGroup>
+								
+								<h:panelGroup>
+									<h:outputLabel for="observacao" value="Observação:"  /><br />
+									<p:inputTextarea value="#{prescricaoHome.prescricaoItem.observacao}"
+													 autoResize="false" 
+													 cols="30"/>
+								</h:panelGroup>
+								
+								<h:panelGroup >
+									<font color="red" >*</font><h:outputLabel for="quantidadeDoses" value="Quantidade de doses diárias:"  /><br />
+									<p:inputText id="quantidadeDoses"
+											  	 value="#{prescricaoHome.quantidadeDoses}"
+											  	 title="Período em horas" />
+								</h:panelGroup>
+								
+								<h:panelGroup >
+									<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento" value="Quantidade do medicamento por dose:"  /><br />
+									<p:inputText id="quantidadeMedicamento"
+											  	 value="#{prescricaoHome.quantidadePorDose}"
+											  	 onkeyup="apenasNumero(this);"
+											  	 title="Quantidade a ser ministrado ao paciente" />
+									<h:outputText id="unidadeMaterial"
+												  value="#{prescricaoHome.prescricaoItem.material.unidadeMaterial.sigla}" />
+								</h:panelGroup>
+								
+								<h:panelGroup >
+									<font color="red" >*</font><h:outputLabel for="intervaloDoses" value="Intervalo entre as doses:"  /><br />
+									<p:inputText id="intervaloDoses"
+											  	 value="#{prescricaoHome.intervaloEntreDoses}"
+											  	 title="Intervalo de uma dose para a outra" />h
+								</h:panelGroup>
+								
+								<h:panelGroup >
+									<font color="red" >*</font><h:outputLabel for="horaInicial" value="Início da dosagem:"  /><br />
+									<p:calendar id="dataIncial"
+												pattern="dd/MM/yyyy HH:mm"
+												locale="pt" 
+												value="#{prescricaoHome.dataInicio}" />  
+								</h:panelGroup>
+								
+								<h:panelGroup>
+									<p:commandButton action="#{prescricaoHome.primeiraLiberacaoDose}"
+													 value="Adicionar dose" 
+													 update="doseDialogForm doseGrid padraoTabView:liberacaoDialog" />
+								</h:panelGroup>
+							</h:panelGrid>
+							<p:separator id="limiteGridSeparator1" style="height:8px" /> 
+							<div style="overflow: auto; height: 250px;" >
+								<p:dataGrid id="doseGrid"
+										var="itemDose" 
+										value="#{prescricaoHome.prescricaoItemDoseList}" 
+										columns="3"
+								        paginator="false">  
+							        <p:column>  
+							        
+							            <p:panel style="text-align:center">
+							                <h:panelGrid columns="1" style="width:100%">  
+							                	<h:panelGroup>
+							                		<h:outputText value="Período: "/>
+							                    	<h:outputText value="#{itemDose.dataDose}" >
+							                    		<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+							                    	</h:outputText>
+							                    </h:panelGroup>
+							                    <h:panelGroup>
+							                    	<h:outputText value="Quantidade: " />
+							                    	<h:outputText value="#{itemDose.quantidade}" />
+							                    </h:panelGroup>
+							                    
+							                    <p:commandLink  action="#{prescricaoHome.removeDose(itemDose)}"
+																update="doseGrid" 
+																title="Apagar" 
+																style="padding-right:10px;" >
+													<h:graphicImage value="/Imagens/delete.png" />
+												</p:commandLink>
+							                </h:panelGrid>
+							            </p:panel>  
+							        </p:column>  
+								</p:dataGrid>
+							</div>
+							<p:separator id="limiteGridSeparator2" style="height:8px" />
+							<p:commandButton action="#{prescricaoHome.finalizaDosagem}"
+											 value="Concluir" 
+											 update="doseDialogForm"/> 
+						
+							<p:commandButton action="#{prescricaoHome.cancelaDosagem}"
+											 value="Cancelar"
+											 immediate="true"
+											 oncomplete="window.location.reload();"/>
+						</p:panel>
+					</p:tab>
+						
+					<p:tab id="nutricao" title="Nutrição">
+						<p:panel header="Nutrição">
+							
+							<p:fieldset legend="Available Cars">  
+        <p:dataTable id="availableCars" var="car" value="#{tableBean.carsSmall}">  
+            <p:column style="width:20px">  
+                <h:outputText id="dragIcon"  
+                    styleClass="ui-icon ui-icon-arrow-4" />  
+                <p:draggable for="dragIcon" revert="true" />  
+            </p:column>  
+  
+            <p:column headerText="Model">  
+                <h:outputText value="#{car.model}" />  
+            </p:column>  
+  
+            <p:column headerText="Year">  
+                <h:outputText value="#{car.year}" />  
+            </p:column>  
+  
+            <p:column headerText="Manufacturer">  
+                <h:outputText value="#{car.manufacturer}" />  
+            </p:column>  
+  
+            <p:column headerText="Color">  
+                <h:outputText value="#{car.color}" />  
+            </p:column>  
+        </p:dataTable>  
+    </p:fieldset>  
+  
+    <p:fieldset id="selectedCars" legend="Selected Cars" style="margin-top:20px">  
+        <p:outputPanel id="dropArea">  
+            <h:outputText value="!!!Drop here!!!"  
+                    rendered="#{empty tableBean.droppedCars}"  
+                    style="font-size:24px;" />  
+  
+            <p:dataTable var="car" value="#{tableBean.droppedCars}"   
+                    rendered="#{not empty tableBean.droppedCars}">  
+  
+                <p:column headerText="Model">  
+                    <h:outputText value="#{car.model}" />  
+                </p:column>  
+  
+                <p:column headerText="Year">  
+                    <h:outputText value="#{car.year}" />  
+                </p:column>  
+  
+                <p:column headerText="Manufacturer">  
+                    <h:outputText value="#{car.manufacturer}" />  
+                </p:column>  
+  
+                <p:column headerText="Color">  
+                    <h:outputText value="#{car.color}" />  
+                </p:column>  
+  
+                <p:column style="width:32px">  
+                    <p:commandButton update=":carForm:display"  
+                            oncomplete="carDialog.show()"  
+                            icon="ui-icon-search">  
+                        <f:setPropertyActionListener value="#{car}"  
+                            target="#{tableBean.selectedCar}" />  
+                    </p:commandButton>  
+                </p:column>  
+            </p:dataTable>  
+        </p:outputPanel>  
+    </p:fieldset>  
+  
+    <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+        <p:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />  
+    </p:droppable>  
+							
+							
+							
+						</p:panel>
+					</p:tab>
+					
+					<p:tab id="cuidadosEnfermagem" title="Cuidados de Enfermagem">
+						<p:panel header="Nutrição">
+							
+							
+							
+							
+							
+						</p:panel>
+					</p:tab>
+						
+					<p:tab id="confirm" title="Confirmation">
+						<p:panel header="Confirmation">
+						
+						
+						</p:panel>
+					</p:tab>
+					
+				</p:wizard>
+				
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>
