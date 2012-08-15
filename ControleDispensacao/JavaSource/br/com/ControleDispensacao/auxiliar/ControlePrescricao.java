@@ -1,15 +1,21 @@
 package br.com.ControleDispensacao.auxiliar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.FlowEvent;
 
+import br.com.ControleDispensacao.entidade.CuidadosPaciente;
 import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.ControleDispensacao.entidade.Prescricao;
+import br.com.nucleo.ConsultaGeral;
 
 @ManagedBean(name="controlePrescricao")
 @SessionScoped
@@ -18,13 +24,12 @@ public class ControlePrescricao {
 	private boolean skip;
 	private Paciente paciente;
 	private Prescricao prescricao = new Prescricao();
+	private List<CuidadosPaciente> cuidadosEscolhidos = new ArrayList<CuidadosPaciente>();
+	private List<CuidadosPaciente> cuidadosDisponiveis = new ArrayList<CuidadosPaciente>();
 	
-	private void inciarPrescricao(){
-		
-	}
-	
-	public void adicionarDose(){
-		
+	public List<CuidadosPaciente> carregaCuidados(){
+		setCuidadosDisponiveis(new ArrayList<CuidadosPaciente>(new ConsultaGeral(new StringBuilder("select o from CuidadosPaciente o")).consulta()));
+		return getCuidadosDisponiveis();
 	}
 	
 	public void save(ActionEvent actionEvent) {
@@ -67,6 +72,22 @@ public class ControlePrescricao {
 
 	public void setPrescricao(Prescricao prescricao) {
 		this.prescricao = prescricao;
+	}
+
+	public List<CuidadosPaciente> getCuidadosEscolhidos() {
+		return cuidadosEscolhidos;
+	}
+
+	public void setCuidadosEscolhidos(List<CuidadosPaciente> cuidadosEscolhidos) {
+		this.cuidadosEscolhidos = cuidadosEscolhidos;
+	}
+
+	public List<CuidadosPaciente> getCuidadosDisponiveis() {
+		return cuidadosDisponiveis;
+	}
+
+	public void setCuidadosDisponiveis(List<CuidadosPaciente> cuidadosDisponiveis) {
+		this.cuidadosDisponiveis = cuidadosDisponiveis;
 	}
 	
 }

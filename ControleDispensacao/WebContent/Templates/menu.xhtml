@@ -29,6 +29,7 @@
 				<p:menuitem value="Tipo do Material" url="/PaginasWeb/Material/TipoMaterial/tipoMaterial.jsf" 
 							rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo do Material')}"/>
 			</p:submenu>
+			
 			<p:submenu label="Movimento"
 					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimento')}">
 				<p:menuitem value="Tipo de Movimento" url="/PaginasWeb/Movimento/TipoMovimento/tipoMovimento.jsf" 
@@ -40,6 +41,12 @@
 							rendered="#{controleMenu.menuAutorizadoStringList.contains('Pacientes')}" />
 				<p:menuitem value="Situação do Paciente" url="/PaginasWeb/Paciente/SituacaoPaciente/situacaoPaciente.jsf" 
 							rendered="#{controleMenu.menuAutorizadoStringList.contains('Situação do Paciente')}" />
+			</p:submenu>
+			
+			<p:submenu label="Prescrição"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição')}">
+				<p:menuitem value="Cuidados do paciente" url="/PaginasWeb/Prescricao/CuidadosPaciente/cuidadosPaciente.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Cuidados do Paciente')}" />
 			</p:submenu>
 			
 			<p:submenu label="Profissional"

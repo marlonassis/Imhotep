@@ -9,6 +9,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import br.com.ControleDispensacao.enums.TipoBooleanEnum;
+import br.com.ControleDispensacao.enums.TipoCuidadosPacienteEnum;
 import br.com.ControleDispensacao.enums.TipoIndicacaoEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
@@ -106,6 +107,14 @@ public class ItensPadrao{
 			tipoSubIndicacaoTerapeuticaEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return tipoSubIndicacaoTerapeuticaEnumItens;
+	}
+	
+	public List<SelectItem> getTipoCuidadosPacienteEnumItens(){
+		List<SelectItem> tipoCuidadosPacienteEnumItens = new ArrayList<SelectItem>();
+		for(TipoCuidadosPacienteEnum item : TipoCuidadosPacienteEnum.values()){
+			tipoCuidadosPacienteEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoCuidadosPacienteEnumItens;
 	}
 	
 }

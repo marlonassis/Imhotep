@@ -100,7 +100,6 @@
 							  						value="#{prescricaoHome.prescricaoItem.material}"
 													completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 													var="material"
-													required="true"
 													forceSelection="true"
 													title="Informe o medicamento a ser prescrito"
 													itemLabel="#{material.descricao}" 
@@ -198,78 +197,53 @@
 						</p:panel>
 					</p:tab>
 						
-					<p:tab id="nutricao" title="Nutrição">
-						<p:panel header="Nutrição">
-							
-							<p:fieldset legend="Available Cars">  
-        <p:dataTable id="availableCars" var="car" value="#{tableBean.carsSmall}">  
-            <p:column style="width:20px">  
-                <h:outputText id="dragIcon"  
-                    styleClass="ui-icon ui-icon-arrow-4" />  
-                <p:draggable for="dragIcon" revert="true" />  
-            </p:column>  
-  
-            <p:column headerText="Model">  
-                <h:outputText value="#{car.model}" />  
-            </p:column>  
-  
-            <p:column headerText="Year">  
-                <h:outputText value="#{car.year}" />  
-            </p:column>  
-  
-            <p:column headerText="Manufacturer">  
-                <h:outputText value="#{car.manufacturer}" />  
-            </p:column>  
-  
-            <p:column headerText="Color">  
-                <h:outputText value="#{car.color}" />  
-            </p:column>  
-        </p:dataTable>  
-    </p:fieldset>  
-  
-    <p:fieldset id="selectedCars" legend="Selected Cars" style="margin-top:20px">  
-        <p:outputPanel id="dropArea">  
-            <h:outputText value="!!!Drop here!!!"  
-                    rendered="#{empty tableBean.droppedCars}"  
-                    style="font-size:24px;" />  
-  
-            <p:dataTable var="car" value="#{tableBean.droppedCars}"   
-                    rendered="#{not empty tableBean.droppedCars}">  
-  
-                <p:column headerText="Model">  
-                    <h:outputText value="#{car.model}" />  
-                </p:column>  
-  
-                <p:column headerText="Year">  
-                    <h:outputText value="#{car.year}" />  
-                </p:column>  
-  
-                <p:column headerText="Manufacturer">  
-                    <h:outputText value="#{car.manufacturer}" />  
-                </p:column>  
-  
-                <p:column headerText="Color">  
-                    <h:outputText value="#{car.color}" />  
-                </p:column>  
-  
-                <p:column style="width:32px">  
-                    <p:commandButton update=":carForm:display"  
-                            oncomplete="carDialog.show()"  
-                            icon="ui-icon-search">  
-                        <f:setPropertyActionListener value="#{car}"  
-                            target="#{tableBean.selectedCar}" />  
-                    </p:commandButton>  
-                </p:column>  
-            </p:dataTable>  
-        </p:outputPanel>  
-    </p:fieldset>  
-  
-    <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-        <p:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />  
-    </p:droppable>  
-							
-							
-							
+					<p:tab id="cuidados" title="Cuidados">
+						<p:panel header="Cuidados">
+						<table>
+							<tr>
+								<td valign="top" >
+							        <p:dataTable id="cuidadosIniciais" 
+							        			 var="cuidado" 
+							        			 value="#{prescricaoHome.carregaCuidados()}">  
+							            <p:column style="width:20px">
+							                 <p:commandLink>
+							                 	<h:graphicImage value="/Imagens/borrownext16.png" />
+							                 </p:commandLink>
+							            </p:column>  
+							  
+							            <p:column headerText="Descrição">
+							                <h:outputText value="#{cuidado.descricao}" 
+							                			  escape="false" />  
+							            </p:column>  
+							  
+							            <p:column headerText="Tipo">  
+							                <h:outputText value="#{cuidado.tipoCuidadosPaciente.label}" />  
+							            </p:column>  
+							  			
+							        </p:dataTable>
+						  		</td>
+						  		<td valign="top" >
+						            <p:dataTable var="cuidadoEsc" 
+						            			 value="#{controlePrescricao.cuidadosEscolhidos}">
+
+						            	<p:column style="width:20px">
+							                 <p:commandLink>
+							                 	<h:graphicImage value="/Imagens/borrowback16.png" />
+							                 </p:commandLink>
+							            </p:column>
+							              
+						                <p:column headerText="Descrição">  
+						                    <h:outputText value="#{cuidadoEsc.descricao}" />  
+						                </p:column>  
+						  
+						                <p:column headerText="Tipo">
+						                    <h:outputText value="#{cuidadoEsc.tipoCuidadosPaciente.label}" />  
+						                </p:column>  
+						  
+						            </p:dataTable>
+					           	</td>
+							</tr>  
+						</table>
 						</p:panel>
 					</p:tab>
 					
