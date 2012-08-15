@@ -53,6 +53,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 		return consulta(stringB, hashMap, false);
 	}
 	
+	public Collection<E> consulta(){
+		return consulta(getSqlConsultaSB(), null, false);
+	}
+	
 	/**
 	 * Método responsável por setar os valores e fazer a consulta no banco 
 	 * @param String|Builder com o sql
