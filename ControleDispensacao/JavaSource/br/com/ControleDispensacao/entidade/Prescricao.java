@@ -29,7 +29,6 @@ public class Prescricao {
 	private Profissional profissional;
 	private Paciente paciente;
 	private Integer ano;
-	private String numero;
 	private Usuario usuarioInclusao;
 	private Date dataInclusao;
 	private String leito;
@@ -85,14 +84,6 @@ public class Prescricao {
 	}
 	public void setAno(Integer ano) {
 		this.ano = ano;
-	}
-	
-	@Column(name = "ds_numero")
-	public String getNumero() {
-		return numero;
-	}
-	public void setNumero(String numero) {
-		this.numero = numero;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

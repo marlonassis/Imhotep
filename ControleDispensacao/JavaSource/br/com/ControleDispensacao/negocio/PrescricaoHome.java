@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.FlowEvent;
 
 import br.com.ControleDispensacao.auxiliar.Constantes;
+import br.com.ControleDispensacao.auxiliar.ControlePrescricao;
+import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItem;
+import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItemDose;
+import br.com.ControleDispensacao.comparador.CuidadosPacienteComparador;
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
 import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
 import br.com.ControleDispensacao.entidade.CuidadosPaciente;
@@ -31,6 +35,7 @@ import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Usuario;
+import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
@@ -43,14 +48,62 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private boolean skip;
 	private Paciente paciente;
 	private Prescricao prescricao = new Prescricao();
+	
 	private List<CuidadosPaciente> cuidadosEscolhidos = new ArrayList<CuidadosPaciente>();
 	private List<CuidadosPaciente> cuidadosDisponiveis = new ArrayList<CuidadosPaciente>();
 
+	private String usuario;
+	private String senha;
+	
+	private PrescricaoItem prescricaoItem = new PrescricaoItem();
+	private Date dataInicio;
+	private Integer quantidadeDoses;
+	private Integer quantidadePorDose;
+	private Integer intervaloEntreDoses;
+
+	private Dose dose = new Dose();
+	
+	public void inserirItem(){
+		if(!new ControlePrescricao().gravaPrescricao(getPrescricao())){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição.", ""));
+			return;
+		}
+		getDose().getPrescricaoItem().setPrescricao(getPrescricao());
+		if(!new ControlePrescricaoItem().gravaPrescricaoItem(getDose().getPrescricaoItem())){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição item.", ""));
+			return;
+		}
+		if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(getDose())){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a dose.", ""));
+			return;
+		}
+	}
+	
 	public List<CuidadosPaciente> carregaCuidados(){
-		setCuidadosDisponiveis(new ArrayList<CuidadosPaciente>(new ConsultaGeral<CuidadosPaciente>(new StringBuilder("select o from CuidadosPaciente o")).consulta()));
+		StringBuilder sb = new StringBuilder("select o from CuidadosPaciente o ");
+		if(!getCuidadosEscolhidos().isEmpty()){
+			sb.append("where o.idCuidadosPaciente not in ("+ getIdCuidadosEscolhidos() +")");
+		}
+		
+		sb.append(" order by o.descricao");
+		
+		setCuidadosDisponiveis(new ArrayList<CuidadosPaciente>(new ConsultaGeral<CuidadosPaciente>(sb).consulta()));
+		
 		return getCuidadosDisponiveis();
 	}
 	
+	private String getIdCuidadosEscolhidos() {
+		String ids = "";
+		int cont = 0;
+		for(CuidadosPaciente o : getCuidadosEscolhidos()){
+			ids = ids.concat(String.valueOf(o.getIdCuidadosPaciente()));
+			cont++;
+			if(getCuidadosEscolhidos().size() > cont)
+				ids = ids.concat(",");
+		}
+		return ids;
+	}
+
 	public void save(ActionEvent actionEvent) {
 		FacesMessage msg = new FacesMessage("Successful", "Welcome :" );
 		FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -92,6 +145,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 
 	public List<CuidadosPaciente> getCuidadosEscolhidos() {
+		Collections.sort(cuidadosEscolhidos, new CuidadosPacienteComparador());
 		return cuidadosEscolhidos;
 	}
 
@@ -107,6 +161,29 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		this.cuidadosDisponiveis = cuidadosDisponiveis;
 	}
 
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	public Dose getDose(){
+		return dose;
+	}
+	
+	public void setDose(Dose dose){
+		this.dose = dose;
+	}
 	
 	
 	
@@ -127,16 +204,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	//////////////////////////////////////////////////////////////
 	
 	
-	private PrescricaoItem prescricaoItem = new PrescricaoItem();
-	private Date dataInicio;
-	private Integer quantidadeDoses;
-	private Integer quantidadePorDose;
-	private Integer intervaloEntreDoses;
 	private boolean iniciaDosagem;
 	private boolean mostraModalLiberacaoMedicamento;
 	private Profissional profissionalLiberacao;
-	private String usuario;
-	private String senha;
+	
 	private String mensagem;
 	private String mensagemComplementar;
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
@@ -448,7 +519,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			getInstancia().setDispensavel(TipoStatusEnum.N);
 			getInstancia().setDispensado(TipoStatusEnum.N);
 			session.save(getInstancia());
-			getInstancia().setNumero(String.valueOf(getInstancia().getIdPrescricao()));
 			session.merge(getInstancia());
 			session.flush();
 			tx.commit();
@@ -486,7 +556,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		getInstancia().setProfissional(Autenticador.getInstancia().getProfissionalAtual());
 		getInstancia().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-		getInstancia().setNumero("1");
 	}
 
 	public void cancelarPrescricao(){
@@ -590,22 +659,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void setMostraModalLiberacaoMedicamento(
 			boolean mostraModalLiberacaoMedicamento) {
 		this.mostraModalLiberacaoMedicamento = mostraModalLiberacaoMedicamento;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 
 	public ControleMedicacaoRestritoSCHI getControleMedicacaoRestritoSCHI() {

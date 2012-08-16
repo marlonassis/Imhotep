@@ -31,7 +31,6 @@ public class PrescricaoItem {
 	private TipoStatusEnum dispensado;
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI;
 	private TipoStatusEnum status;
-	private CuidadosPaciente cuidadosPaciente;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -130,17 +129,8 @@ public class PrescricaoItem {
 		this.status = status;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_cuidados_paciente")
-	public CuidadosPaciente getCuidadosPaciente() {
-		return cuidadosPaciente;
-	}
-	public void setCuidadosPaciente(CuidadosPaciente cuidadosPaciente) {
-		this.cuidadosPaciente = cuidadosPaciente;
-	}
-	
 	@Override
 	public String toString() {
-		return "Material: ".concat(material.getDescricao()).concat(" - Prescrição: ").concat(prescricao.getNumero().toString());
+		return "Material: ".concat(material.getDescricao()).concat(" - Prescrição: ").concat(String.valueOf(prescricao.getIdPrescricao()));
 	}
 }

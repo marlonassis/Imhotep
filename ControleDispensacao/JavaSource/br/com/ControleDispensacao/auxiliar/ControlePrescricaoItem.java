@@ -1,6 +1,5 @@
 package br.com.ControleDispensacao.auxiliar;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.faces.application.FacesMessage;
@@ -10,40 +9,29 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
-import br.com.ControleDispensacao.entidade.Prescricao;
+import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 
-@ManagedBean(name="controlePrescricao")
+@ManagedBean(name="controlePrescricaoItem")
 @SessionScoped
-public class ControlePrescricao extends PadraoHome<Prescricao>{
-	
-	public boolean gravaPrescricao(Prescricao prescricao) {
-		if(prescricao.getIdPrescricao() != 0){
-			return true;
-		}else{
-			return persistePrescricao(prescricao);
-		}
-	}
-
-	private boolean persistePrescricao(Prescricao prescricao) {
+public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
+	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) {
 		boolean ret = false;
+		
 		try{
-			setInstancia(prescricao);
 			iniciarTransacao();
-			carregaPrescricao();
-			getInstancia().setDispensavel(TipoStatusEnum.N);
-			getInstancia().setDispensado(TipoStatusEnum.N);
-			session.save(getInstancia());
-			session.flush();
+			prescricaoItem.setDispensado(TipoStatusEnum.N);
+			session.save(prescricaoItem);
+			session.flush();  
 			tx.commit();
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao iniciar a prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
-			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricao()");
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
+			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricaoItem()");
 			session.getTransaction().rollback();
 		}finally{
 			session.close(); // Fecha sessão
@@ -64,12 +52,4 @@ public class ControlePrescricao extends PadraoHome<Prescricao>{
 		ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
 		new ErroAplicacaoHome(ea).enviar();
 	}
-	
-	private void carregaPrescricao() {
-		getInstancia().setAno(Calendar.getInstance().get(Calendar.YEAR));
-		getInstancia().setDataInclusao(new Date());
-		getInstancia().setProfissional(Autenticador.getInstancia().getProfissionalAtual());
-		getInstancia().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-	}	
 }

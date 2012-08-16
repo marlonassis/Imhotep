@@ -16,7 +16,7 @@
 				<p:wizard widgetVar="wiz"
 						  backLabel="Voltar"
 						  nextLabel="Avançar"
-						  flowListener="#{controlePrescricao.onFlowProcess}">
+						  flowListener="#{prescricaoHome.onFlowProcess}">
 				
 					<p:tab id="pacienteTab" title="Paciente">
 						<p:panel header="Detalhes do paciente">
@@ -32,7 +32,7 @@
 							  						required="true"
 							  						size="30"
 							  						forceSelection="true"
-							  						value="#{controlePrescricao.paciente}"
+							  						value="#{prescricaoHome.prescricao.paciente}"
 													completeMethod="#{pacienteHome.getListaPacienteAutoComplete}" 
 													var="paciente" 
 													itemLabel="#{paciente.nomeIdade}"
@@ -45,28 +45,28 @@
 													style="padding-top:8px"/>
 								</h:panelGroup>
 								
-								<h:panelGroup  rendered="#{controlePrescricao.paciente != null}" >
+								<h:panelGroup  rendered="#{prescricaoHome.prescricao.paciente != null}" >
 									<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
 									<p:inputText  id="massa"
-												  value="#{controlePrescricao.prescricao.massa}"
+												  value="#{prescricaoHome.prescricao.massa}"
 												  required="true"
 												  onkeyup="apenasNumeroComVirgula(this);" 
 												  converter="monetarioConversor"
 												  title="Massa do paciente" />kg
 								</h:panelGroup>
 								
-								<h:panelGroup  rendered="#{controlePrescricao.paciente != null}" >
+								<h:panelGroup  rendered="#{prescricaoHome.prescricao.paciente != null}" >
 									<font color="red" >*</font><h:outputLabel for="leito" value="Leito:"  /><br />
 									<p:inputText  id="leito"
-												  value="#{controlePrescricao.prescricao.leito}"
+												  value="#{prescricaoHome.prescricao.leito}"
 												  required="true"
 												  title="Leito ao qual o paciente está em repouso" />
 								</h:panelGroup>
-								<h:panelGroup  rendered="#{controlePrescricao.paciente != null}" >
+								<h:panelGroup  rendered="#{prescricaoHome.prescricao.paciente != null}" >
 									<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
 							  		<p:autoComplete id="unidade" 
 							  						forceSelection="true"
-							  						value="#{controlePrescricao.paciente.unidadeAlocacao}"
+							  						value="#{prescricaoHome.prescricao.paciente.unidadeAlocacao}"
 													completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 													var="unidade"
 													title="Unidade onde está alocado o paciente" 
@@ -97,7 +97,7 @@
 									<br />
 							  		<p:autoComplete id="material" 
 							  						disabled="#{!(prescricaoHome.prescricaoItemDoseList.size() == 0)}"
-							  						value="#{prescricaoHome.prescricaoItem.material}"
+							  						value="#{prescricaoHome.dose.prescricaoItem.material}"
 													completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 													var="material"
 													forceSelection="true"
@@ -109,7 +109,7 @@
 								
 								<h:panelGroup>
 									<h:outputLabel for="observacao" value="Observação:"  /><br />
-									<p:inputTextarea value="#{prescricaoHome.prescricaoItem.observacao}"
+									<p:inputTextarea value="#{prescricaoHome.dose.prescricaoItem.observacao}"
 													 autoResize="false" 
 													 cols="30"/>
 								</h:panelGroup>
@@ -117,14 +117,14 @@
 								<h:panelGroup >
 									<font color="red" >*</font><h:outputLabel for="quantidadeDoses" value="Quantidade de doses diárias:"  /><br />
 									<p:inputText id="quantidadeDoses"
-											  	 value="#{prescricaoHome.quantidadeDoses}"
+											  	 value="#{prescricaoHome.dose.quantidadeDoses}"
 											  	 title="Período em horas" />
 								</h:panelGroup>
 								
 								<h:panelGroup >
 									<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento" value="Quantidade do medicamento por dose:"  /><br />
 									<p:inputText id="quantidadeMedicamento"
-											  	 value="#{prescricaoHome.quantidadePorDose}"
+											  	 value="#{prescricaoHome.dose.quantidadePorDose}"
 											  	 onkeyup="apenasNumero(this);"
 											  	 title="Quantidade a ser ministrado ao paciente" />
 									<h:outputText id="unidadeMaterial"
@@ -134,7 +134,7 @@
 								<h:panelGroup >
 									<font color="red" >*</font><h:outputLabel for="intervaloDoses" value="Intervalo entre as doses:"  /><br />
 									<p:inputText id="intervaloDoses"
-											  	 value="#{prescricaoHome.intervaloEntreDoses}"
+											  	 value="#{prescricaoHome.dose.intervaloEntreDoses}"
 											  	 title="Intervalo de uma dose para a outra" />h
 								</h:panelGroup>
 								
@@ -143,11 +143,11 @@
 									<p:calendar id="dataIncial"
 												pattern="dd/MM/yyyy HH:mm"
 												locale="pt" 
-												value="#{prescricaoHome.dataInicio}" />  
+												value="#{prescricaoHome.dose.dataInicio}" />  
 								</h:panelGroup>
 								
 								<h:panelGroup>
-									<p:commandButton action="#{prescricaoHome.primeiraLiberacaoDose}"
+									<p:commandButton action="#{prescricaoHome.inserirItem}"
 													 value="Adicionar dose" 
 													 update="doseDialogForm doseGrid padraoTabView:liberacaoDialog" />
 								</h:panelGroup>
@@ -181,8 +181,8 @@
 													<h:graphicImage value="/Imagens/delete.png" />
 												</p:commandLink>
 							                </h:panelGrid>
-							            </p:panel>  
-							        </p:column>  
+							            </p:panel>
+							        </p:column>
 								</p:dataGrid>
 							</div>
 							<p:separator id="limiteGridSeparator2" style="height:8px" />
@@ -196,67 +196,76 @@
 											 oncomplete="window.location.reload();"/>
 						</p:panel>
 					</p:tab>
-						
+					
+					<p:tab id="liberacao" title="Autorização">
+						<p:panel header="Medicamentos pendentes">
+							
+							
+							
+							
+							
+						</p:panel>
+					</p:tab>					
+					
 					<p:tab id="cuidados" title="Cuidados">
 						<p:panel header="Cuidados">
 						<table>
 							<tr>
 								<td valign="top" >
-							        <p:dataTable id="cuidadosIniciais" 
-							        			 var="cuidado" 
-							        			 value="#{prescricaoHome.carregaCuidados()}">  
-							            <p:column style="width:20px">
-							                 <p:commandLink>
-							                 	<h:graphicImage value="/Imagens/borrownext16.png" />
-							                 </p:commandLink>
-							            </p:column>  
-							  
-							            <p:column headerText="Descrição">
-							                <h:outputText value="#{cuidado.descricao}" 
-							                			  escape="false" />  
-							            </p:column>  
-							  
-							            <p:column headerText="Tipo">  
-							                <h:outputText value="#{cuidado.tipoCuidadosPaciente.label}" />  
-							            </p:column>  
-							  			
-							        </p:dataTable>
+									<p:panel header="Cuidados Disponíveis">
+								        <p:dataTable id="cuidadosIniciais" 
+								        			 var="cuidado"
+								        			 emptyMessage="Todos os cuidados foram escolhidos" 
+								        			 value="#{prescricaoHome.carregaCuidados()}">  
+								            <p:column style="width:20px">
+								                 <p:commandLink action="#{prescricaoHome.cuidadosEscolhidos.add(cuidado)}" 
+								                 				update="padraoTabView:cuidadosIniciais padraoTabView:cuidadosEscolhidos" >
+								                 	<h:graphicImage value="/Imagens/borrownext16.png" />
+								                 </p:commandLink>
+								            </p:column>
+											
+								            <p:column headerText="Descrição">
+								                <h:outputText value="#{cuidado.descricao}" 
+								                			  escape="false" />  
+								            </p:column>  
+								  
+								            <p:column headerText="Tipo">  
+								                <h:outputText value="#{cuidado.tipoCuidadosPaciente.label}" />  
+								            </p:column>  
+								  			
+								        </p:dataTable>
+									</p:panel>
 						  		</td>
 						  		<td valign="top" >
-						            <p:dataTable var="cuidadoEsc" 
-						            			 value="#{controlePrescricao.cuidadosEscolhidos}">
-
-						            	<p:column style="width:20px">
-							                 <p:commandLink>
-							                 	<h:graphicImage value="/Imagens/borrowback16.png" />
-							                 </p:commandLink>
-							            </p:column>
-							              
-						                <p:column headerText="Descrição">  
-						                    <h:outputText value="#{cuidadoEsc.descricao}" />  
-						                </p:column>  
-						  
-						                <p:column headerText="Tipo">
-						                    <h:outputText value="#{cuidadoEsc.tipoCuidadosPaciente.label}" />  
-						                </p:column>  
-						  
-						            </p:dataTable>
+						  			<p:panel header="Cuidados Escolhidos">
+							            <p:dataTable id="cuidadosEscolhidos"
+							            			 emptyMessage="Não há cuidados escolhidos"
+							            			 var="cuidadoEsc" 
+							            			 value="#{prescricaoHome.cuidadosEscolhidos}">
+	
+							            	<p:column style="width:20px">
+								                 <p:commandLink action="#{prescricaoHome.cuidadosEscolhidos.remove(cuidadoEsc)}" 
+								                 				update="padraoTabView:cuidadosEscolhidos padraoTabView:cuidadosIniciais">
+								                 	<h:graphicImage value="/Imagens/borrowback16.png" />
+								                 </p:commandLink>
+								            </p:column>
+								              
+							                <p:column headerText="Descrição">  
+							                    <h:outputText value="#{cuidadoEsc.descricao}" />  
+							                </p:column>  
+							  
+							                <p:column headerText="Tipo">
+							                    <h:outputText value="#{cuidadoEsc.tipoCuidadosPaciente.label}" />  
+							                </p:column>  
+							  
+							            </p:dataTable>
+							    	</p:panel>
 					           	</td>
 							</tr>  
 						</table>
 						</p:panel>
 					</p:tab>
 					
-					<p:tab id="cuidadosEnfermagem" title="Cuidados de Enfermagem">
-						<p:panel header="Nutrição">
-							
-							
-							
-							
-							
-						</p:panel>
-					</p:tab>
-						
 					<p:tab id="confirm" title="Confirmation">
 						<p:panel header="Confirmation">
 						
