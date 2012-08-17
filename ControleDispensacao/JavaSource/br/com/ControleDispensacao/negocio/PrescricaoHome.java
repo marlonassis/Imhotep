@@ -63,20 +63,129 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 
 	private Dose dose = new Dose();
 	
+	public List<PrescricaoItem> medicamentosPendentesLiberacao(){
+		return prescricaoItemPendente(getPrescricao());
+	}
+	
+	private boolean liberaDose(Material material) {
+		EstoqueHome eh = new EstoqueHome();
+		Object[] totais = eh.consultaEstoque(material);
+		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
+		return !eh.estoqueVazio(estoqueAtual) && !eh.estoqueInsuficiente(estoqueAtual, getQuantidadeDoses(), getQuantidadePorDose());
+	}
+	
+	public List<PrescricaoItem> itensPrescricao(){
+		if(prescricao != null){
+			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao"), hm);
+		}
+		return null;
+	}
+	
+	public boolean isExisteAntibiotico(){
+		for(PrescricaoItem item : prescricaoItemPendente(getPrescricao())){
+			if(isMaterialAntibiotico(item.getMaterial())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isMaterialAntibiotico(Material material){
+		if(material != null){
+			String grupoMaterial = material.getFamilia().getSubGrupo().getGrupo().getDescricao();
+			return grupoMaterial.equalsIgnoreCase(Constantes.MATERIAL_ANTIBIOTICO);
+		}
+		return false;
+	}
+	
+	public String especialidadesLiberamMaterial(Material material){
+		ConsultaGeral<String> cg = new ConsultaGeral<String>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idMaterial", material.getIdMaterial());
+		List<String> especialidades = (List<String>) cg.consulta(new StringBuilder("select o.especialidade.descricao from LiberaMaterialEspecialidade o where o.material.idMaterial = :idMaterial"), hm);
+		
+		if(especialidades.isEmpty()){
+			return "Todos";
+		}
+		
+		String ret = "";
+		int cont = 0;
+		for(String especialidade : especialidades){
+			ret = ret.concat(especialidade);
+			cont++;
+			if(especialidades.size() > cont)
+				ret = ret.concat(",");
+		}
+		return ret;
+	}
+	
 	public void inserirItem(){
-		if(!new ControlePrescricao().gravaPrescricao(getPrescricao())){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição.", ""));
-			return;
+		if(liberaDose(getDose().getPrescricaoItem().getMaterial())){
+			if(!new ControlePrescricao().gravaPrescricao(getPrescricao())){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição.", ""));
+				return;
+			}
+			getDose().getPrescricaoItem().setPrescricao(getPrescricao());
+			if(!new ControlePrescricaoItem().gravaPrescricaoItem(getDose().getPrescricaoItem())){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição item.", ""));
+				return;
+			}
+			if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(getDose())){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a dose.", ""));
+				return;
+			}
+			novaDose();
 		}
-		getDose().getPrescricaoItem().setPrescricao(getPrescricao());
-		if(!new ControlePrescricaoItem().gravaPrescricaoItem(getDose().getPrescricaoItem())){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição item.", ""));
-			return;
+	}
+
+	private void novaDose() {
+		setDose(new Dose());
+	}
+
+	public List<PrescricaoItemDose> getPrescricaoItemDoseList2(){
+		List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(getPrescricao());
+		if(pidList != null){
+			Collections.sort(pidList, new DoseDataComparador());
+			return pidList;
+		}else{
+			return null;
 		}
-		if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(getDose())){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a dose.", ""));
-			return;
+	}
+	
+	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){
+		List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(getPrescricao());
+		if(pidList != null){
+			Collections.sort(pidList, new DoseDataComparador());
+			return pidList;
+		}else{
+			return null;
 		}
+	}
+	
+	private List<PrescricaoItem> prescricaoItemPendente(Prescricao prescricao){
+		if(prescricao != null){
+			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			String selectAutorizacaoEspecialidade = "exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) ";
+			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao and (( "+selectAutorizacaoEspecialidade+" and profissionalLiberacao is null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO') and controleMedicacaoRestritoSCHI is null)) "), hm);
+		}
+		return null;
+	}
+
+
+
+	private List<PrescricaoItemDose> getListaPrescricaoItemDose(Prescricao prescricao) {
+		if(prescricao != null){
+			ConsultaGeral<PrescricaoItemDose> cg = new ConsultaGeral<PrescricaoItemDose>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			return (List<PrescricaoItemDose>) cg.consulta(new StringBuilder("select o from PrescricaoItemDose o where o.prescricaoItem.prescricao.idPrescricao = :idPrescricao"), hm);
+		}
+		return null;
 	}
 	
 	public List<CuidadosPaciente> carregaCuidados(){
@@ -243,7 +352,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		PrescricaoItemHome pih = new PrescricaoItemHome();
 		pih.setInstancia(linha);
 		pih.apagar();
-		setInstancia(getBusca("select o from Prescricao o where o.idPrescricao = " + getInstancia().getIdPrescricao()).get(0));
+//		setInstancia(getBusca("select o from Prescricao o where o.idPrescricao = " + getInstancia().getIdPrescricao()).get(0));
 	}
 	
 	private boolean removePrescricaoItem(){
@@ -300,7 +409,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	private boolean geraLiberacaoAntibiotico(){
-		if(isMaterialAntibiotico()){
+		if(isMaterialAntibiotico(getPrescricaoItem() != null ? getPrescricaoItem().getMaterial() : null)){
 			if(new ControleMedicacaoRestritoSCHIHome(getControleMedicacaoRestritoSCHI()).enviar()){
 				return true;
 			}
@@ -311,7 +420,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	private void adicionaDoses(Profissional profissionalLiberacao){
-		if(liberaDose()){
+		if(liberaDose(getPrescricaoItem().getMaterial())){
 			if(liberaMedicamento(profissionalLiberacao)){
 				inicializaPrescricaoItemDoses();
 				if(getPrescricaoItem().getIdPrescricaoItem() != 0 || gravaPrescricaoItem()){
@@ -350,21 +459,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		mostraModalLiberacaoMedicamento = false;
 	}
 	
-	public boolean isMaterialAntibiotico(){
-		if(getPrescricaoItem() != null && getPrescricaoItem().getMaterial() != null){
-			String grupoMaterial = getPrescricaoItem().getMaterial().getFamilia().getSubGrupo().getGrupo().getDescricao();
-			return grupoMaterial.equalsIgnoreCase(Constantes.MATERIAL_ANTIBIOTICO);
-		}
-		return false;
-	}
-	
 	/**
 	 * Verifica se o medicamento pode ser prescrito pelo profissional logado usando sua especialidade
 	 */
 	public boolean liberaMedicamento(Profissional profissionalVerificacao){
 		List<Especialidade> especialidadeMedicamentos = getEspecialidadeMedicamento(getPrescricaoItem().getMaterial());
 		if(especialidadeMedicamentos.contains(profissionalVerificacao.getEspecialidade()) || especialidadeMedicamentos.isEmpty()){
-			if(isMaterialAntibiotico() && getControleMedicacaoRestritoSCHI().getTipoIndicacao() == null){
+			if(isMaterialAntibiotico(getPrescricaoItem() != null ? getPrescricaoItem().getMaterial() : null) && getControleMedicacaoRestritoSCHI().getTipoIndicacao() == null){
 				usuario = null;
 				senha = null;
 				mostraModalLiberacaoMedicamento = true;
@@ -414,13 +515,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 
-	private boolean liberaDose() {
-		EstoqueHome eh = new EstoqueHome();
-		Object[] totais = eh.consultaEstoque(getPrescricaoItem().getMaterial());
-		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
-		return !eh.estoqueVazio(estoqueAtual) && !eh.estoqueInsuficiente(estoqueAtual, getQuantidadeDoses(), getQuantidadePorDose());
-	}
-
 	private String geraReferenciaUnica() {
 		//a string da referência tem o seguinte formato <idPaciente>-<idMaterial>-<idUnidade>-<idProfissional>-<idPrescricao>
 		String numeroReceita; 
@@ -447,11 +541,11 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public void finalizaDosagem(){
-		if(getListaPrescricaoItemDose().size() > 0){
+		if(getListaPrescricaoItemDose(getPrescricao()).size() > 0){
 			try {
 				boolean controleExistente = getControleMedicacaoRestritoSCHI().getIdControleMedicacaoRestritoSCHI() != 0;
 				if(controleExistente ||  geraLiberacaoAntibiotico()){
-					if(!isMaterialAntibiotico() || anexaControleNaPrescricaoItem()){
+					if(!isMaterialAntibiotico(getPrescricaoItem() != null ? getPrescricaoItem().getMaterial() : null) || anexaControleNaPrescricaoItem()){
 						limpaVariaveis();
 						setPrescricaoItem(new PrescricaoItem());
 						setControleMedicacaoRestritoSCHI(new ControleMedicacaoRestritoSCHI());
@@ -612,20 +706,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrecricao"), hm);
 	}
 	
-	/**
-	 * busca a lista das doses da prescrição atual
-	 * @return lista de prescricaoItemDose
-	 */
-	private List<PrescricaoItemDose> getListaPrescricaoItemDose(){
-		if(getPrescricaoItem() != null){
-			ConsultaGeral<PrescricaoItemDose> cg = new ConsultaGeral<PrescricaoItemDose>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idPrecricaoItem", getPrescricaoItem().getIdPrescricaoItem());
-			return (List<PrescricaoItemDose>) cg.consulta(new StringBuilder("select o from PrescricaoItemDose o where o.prescricaoItem.idPrescricaoItem = :idPrecricaoItem"), hm);
-		}
-		return null;
-	}
-	
 	public long quantidadeDosesPrescricaoItem(PrescricaoItem pi){
 		ConsultaGeral<Object[]> cg = new ConsultaGeral<Object[]>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
@@ -634,16 +714,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return (Long) total;
 	}
 	
-	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){
-		List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose();
-		if(pidList != null){
-			Collections.sort(pidList, new DoseDataComparador());
-			return pidList;
-		}else{
-			return null;
-		}
-	}
-
 	public boolean isIniciaDosagem() {
 		return iniciaDosagem;
 	}

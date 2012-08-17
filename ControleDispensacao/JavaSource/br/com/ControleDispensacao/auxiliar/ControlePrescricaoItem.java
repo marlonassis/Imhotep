@@ -3,8 +3,6 @@ package br.com.ControleDispensacao.auxiliar;
 import java.util.Date;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +13,6 @@ import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.PadraoHome;
 
-@ManagedBean(name="controlePrescricaoItem")
-@SessionScoped
 public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) {
 		boolean ret = false;

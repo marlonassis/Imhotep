@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.ControleDispensacao.enums.TipoStatusEnum;
+import br.com.ControleDispensacao.auxiliar.Constantes;
 
 @Entity
 @Table(name = "tb_material")
@@ -31,7 +29,6 @@ public class Material {
 	private String descricao;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
-	private TipoStatusEnum autorizadoDispensacao;
 	private Integer quantidadeMinima;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_id_material_seq")
@@ -104,16 +101,6 @@ public class Material {
 		this.codigoMaterial = codigoMaterial;
 	}
 	
-	@Column(name = "tp_autoriza_dispensacao")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getAutorizadoDispensacao() {
-		return this.autorizadoDispensacao;
-	}
-
-	public void setAutorizadoDispensacao(TipoStatusEnum autorizadoDispensacao) {
-		this.autorizadoDispensacao = autorizadoDispensacao;
-	}
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
@@ -141,6 +128,12 @@ public class Material {
 
 	public void setQuantidadeMinima(Integer quantidadeMinima) {
 		this.quantidadeMinima = quantidadeMinima;
+	}
+	
+	@Transient
+	public boolean isMaterialAntibiotico(){
+		String grupoMaterial = getFamilia().getSubGrupo().getGrupo().getDescricao();
+		return grupoMaterial.equalsIgnoreCase(Constantes.MATERIAL_ANTIBIOTICO);
 	}
 	
 	@Transient

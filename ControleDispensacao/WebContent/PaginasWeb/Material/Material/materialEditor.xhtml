@@ -136,16 +136,6 @@
         </h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="autorizacao" value="Necessita autorização?"  /><br />
-			<h:selectOneRadio id="autorizacao"
-							  value="#{materialHome.instancia.autorizadoDispensacao}" 
-							  required="true"
-							  title="Informe se medicamento precisa de autorização" >
-				 <f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</h:selectOneRadio>
-		</h:panelGroup>
-		
-		<h:panelGroup>
 			<h:outputLabel for="quantidadeMinima" value="Quantidade Mínima:"  /><br />
 			<p:inputText id="quantidadeMinima"
 						 onkeyup="apenasNumero(this);"

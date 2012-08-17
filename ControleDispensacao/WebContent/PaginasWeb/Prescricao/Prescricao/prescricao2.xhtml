@@ -12,7 +12,8 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabPrescricao" title="Prescrição" >
 			<h:form id="prescricaoForm" prependId="false" >
-				
+				<p:growl id="mensagemGlobal"
+						 showDetail="true" />
 				<p:wizard widgetVar="wiz"
 						  backLabel="Voltar"
 						  nextLabel="Avançar"
@@ -45,7 +46,7 @@
 													style="padding-top:8px"/>
 								</h:panelGroup>
 								
-								<h:panelGroup  rendered="#{prescricaoHome.prescricao.paciente != null}" >
+								<h:panelGroup>
 									<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
 									<p:inputText  id="massa"
 												  value="#{prescricaoHome.prescricao.massa}"
@@ -55,14 +56,15 @@
 												  title="Massa do paciente" />kg
 								</h:panelGroup>
 								
-								<h:panelGroup  rendered="#{prescricaoHome.prescricao.paciente != null}" >
+								<h:panelGroup>
 									<font color="red" >*</font><h:outputLabel for="leito" value="Leito:"  /><br />
 									<p:inputText  id="leito"
 												  value="#{prescricaoHome.prescricao.leito}"
 												  required="true"
 												  title="Leito ao qual o paciente está em repouso" />
 								</h:panelGroup>
-								<h:panelGroup  rendered="#{prescricaoHome.prescricao.paciente != null}" >
+								
+								<h:panelGroup>
 									<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
 							  		<p:autoComplete id="unidade" 
 							  						forceSelection="true"
@@ -96,7 +98,6 @@
 													title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
 									<br />
 							  		<p:autoComplete id="material" 
-							  						disabled="#{!(prescricaoHome.prescricaoItemDoseList.size() == 0)}"
 							  						value="#{prescricaoHome.dose.prescricaoItem.material}"
 													completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 													var="material"
@@ -149,61 +150,268 @@
 								<h:panelGroup>
 									<p:commandButton action="#{prescricaoHome.inserirItem}"
 													 value="Adicionar dose" 
-													 update="doseDialogForm doseGrid padraoTabView:liberacaoDialog" />
+													 update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid padraoTabView:itensGrid padraoTabView:mensagemGlobal" />
 								</h:panelGroup>
 							</h:panelGrid>
 							<p:separator id="limiteGridSeparator1" style="height:8px" /> 
 							<div style="overflow: auto; height: 250px;" >
-								<p:dataGrid id="doseGrid"
-										var="itemDose" 
-										value="#{prescricaoHome.prescricaoItemDoseList}" 
-										columns="3"
-								        paginator="false">  
-							        <p:column>  
-							        
-							            <p:panel style="text-align:center">
-							                <h:panelGrid columns="1" style="width:100%">  
-							                	<h:panelGroup>
-							                		<h:outputText value="Período: "/>
-							                    	<h:outputText value="#{itemDose.dataDose}" >
-							                    		<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-							                    	</h:outputText>
-							                    </h:panelGroup>
-							                    <h:panelGroup>
-							                    	<h:outputText value="Quantidade: " />
-							                    	<h:outputText value="#{itemDose.quantidade}" />
-							                    </h:panelGroup>
-							                    
-							                    <p:commandLink  action="#{prescricaoHome.removeDose(itemDose)}"
-																update="doseGrid" 
-																title="Apagar" 
-																style="padding-right:10px;" >
-													<h:graphicImage value="/Imagens/delete.png" />
-												</p:commandLink>
-							                </h:panelGrid>
-							            </p:panel>
-							        </p:column>
-								</p:dataGrid>
+								<table>
+									<tr>
+										<td valign="top" >
+											<p:panel header="Doses" 
+													 style="width:900px">
+												<p:dataGrid id="doseGrid"
+														var="itemDose" 
+														value="#{prescricaoHome.prescricaoItemDoseList2}" 
+														columns="3"
+												        paginator="false">  
+											        <p:column>
+											            <p:panel style="text-align:center">
+											                <h:panelGrid columns="1" style="width:100%">
+											                	<h:panelGroup>
+											                		<h:outputText value="Material: "/>
+											                    	<h:outputText value="#{itemDose.prescricaoItem.material.descricao}"/>
+											                    </h:panelGroup>  
+											                	<h:panelGroup>
+											                		<h:outputText value="Período: "/>
+											                    	<h:outputText value="#{itemDose.dataDose}" >
+											                    		<f:convertDateTime locale="pt,BR" dateStyle="long" pattern="dd/MM/yyyy HH:mm" />
+											                    	</h:outputText>
+											                    </h:panelGroup>
+											                    <h:panelGroup>
+											                    	<h:outputText value="Quantidade: " />
+											                    	<h:outputText value="#{itemDose.quantidade}" />
+											                    </h:panelGroup>
+											                    <h:panelGroup>
+												                    <p:commandLink  action="#{prescricaoHome.removeDose(itemDose)}"
+																					update="padraoTabView:doseGrid" 
+																					title="Apagar"
+																					immediate="true" 
+																					style="padding-right:10px;" >
+																		<h:graphicImage value="/Imagens/delete.png" />
+																	</p:commandLink>
+																</h:panelGroup>
+											                </h:panelGrid>
+											            </p:panel>
+											        </p:column>
+												</p:dataGrid>
+											</p:panel>
+										</td>
+										<td valign="top" >
+											<p:panel id="itensGrid" 
+													 header="Itens">
+												<ui:repeat value="#{prescricaoHome.itensPrescricao()}"
+														   var="a">
+													<h:outputText value="#{a.material.descricao}"/>
+												    <p:commandLink  action="#{prescricaoHome.removePrescricaoItem(a)}"
+																	update="padraoTabView:doseGrid padraoTabView:itensGrid"
+																	title="Apagar"
+																	immediate="true">
+														<h:graphicImage value="/Imagens/delete.png" />
+													</p:commandLink>
+													<br/>
+													<br/>
+												</ui:repeat>
+											</p:panel>
+										</td>
+									</tr>
+								</table>
 							</div>
-							<p:separator id="limiteGridSeparator2" style="height:8px" />
-							<p:commandButton action="#{prescricaoHome.finalizaDosagem}"
-											 value="Concluir" 
-											 update="doseDialogForm"/> 
-						
-							<p:commandButton action="#{prescricaoHome.cancelaDosagem}"
-											 value="Cancelar"
-											 immediate="true"
-											 oncomplete="window.location.reload();"/>
 						</p:panel>
 					</p:tab>
 					
 					<p:tab id="liberacao" title="Autorização">
 						<p:panel header="Medicamentos pendentes">
+							 <p:dataTable id="materialPendente" 
+							 			  value="#{prescricaoHome.medicamentosPendentesLiberacao()}"
+							 			  emptyMessage="Não há medicamentos pendentes de liberação." 
+										  var="pendentes">
+										
+								<p:column headerText="Material" >
+									<h:outputText value="#{pendentes.material.descricao}" />
+								</p:column>
+								
+								<p:column headerText="Especialidade(s)" >
+									<h:outputText value="#{prescricaoHome.especialidadesLiberamMaterial(pendentes.material)}" />
+								</p:column>
+										
+							</p:dataTable>
+
+							<p:panel header="Painel de liberação"
+									 rendered="#{not empty prescricaoHome.medicamentosPendentesLiberacao()}" >
+								<h:panelGrid columns="2" >
+									<h:panelGroup>
+										<font color="red" >*</font><h:outputText value="Usuário: " /><br />
+										<p:inputText value="#{prescricaoHome.usuario}" 
+													 label="Usuário" />
+									</h:panelGroup>
+									<h:panelGroup >
+										<font color="red" >*</font><h:outputText value="Senha: " /><br />
+										<p:inputText value="#{prescricaoHome.senha}" 
+													 label="Senha" 
+													 type="password" />
+									</h:panelGroup>
+								</h:panelGrid>
+										 
+								<p:panel rendered="#{prescricaoHome.existeAntibiotico}" >
+								 
+									<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid2"
+												 columns="3"
+												 width="100%">
+										<h:panelGroup id="tipoIndicacaoPanelGroup" >
+											<font color="red" >*</font><h:outputLabel for="tipoIndicacao" value="Tipo de indicação"  /><br />
+											<h:selectOneRadio id="tipoIndicacao"
+															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao}" 
+															  required="false"
+															  title="Informe o tipo de indicação" >
+												 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid2" />
+												 <f:selectItems value="#{itensPadrao.tipoIndicacaoEnumItens}"/>
+											</h:selectOneRadio>
+										</h:panelGroup>
+								
+										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'T'}" >
+											<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoTerapeutica" value="Subtipos"  /><br />
+											<h:selectOneRadio id="subTipoIndicacaoTerapeutica"
+															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoTerapeutica}" 
+															  required="false"
+															  title="Informe o subtipo de indicação terapêutica" >
+												 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoTerapeuticaEnumItens}"/>
+											</h:selectOneRadio>
+										</h:panelGroup>
+								
+										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'P'}" >
+											<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoProfilaxia" value="Subtipos"  /><br />
+											<h:selectOneRadio id="subTipoIndicacaoProfilaxia"
+															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoProfilaxia}" 
+															  required="false"
+															  title="Informe o subtipo de indicação profilática" >
+												 <p:ajax event="change" update="padraoTabView:observacaoIndicacaoPanelGroup" />
+												 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoProfilaxiaEnumItens}"/>
+											</h:selectOneRadio>
+										</h:panelGroup>
+										
+										<h:panelGroup id="observacaoIndicacaoPanelGroup"
+													  rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao != null}" >
+											<font color="red" >*</font><h:outputLabel for="observacaoIndicacao" value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'T' ? 'Qual?' : (prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoProfilaxia == 'CI' ? 'Cirurgia' : 'Justificativa') }"  /><br />
+											<p:inputTextarea id="observacaoIndicacao"
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.observacaoIndicacao}" />
+										</h:panelGroup>
+										
+									</h:panelGrid>
+								
+									<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid3"
+												 columns="3"
+												 width="100%">
+										<h:panelGroup id="tipoEstudoBacteriologicoPanelGroup" >
+											<font color="red" >*</font><h:outputLabel for="culturaSolicitada" value="Cultura solicitada?"  /><br />
+											<h:selectOneRadio id="culturaSolicitada"
+															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada}" 
+															  required="false"
+															  title="Informe se foi solicitado ou não a cultura para o paciente" >
+												 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid3" />
+												 <f:selectItems value="#{itensPadrao.booleanEnumItens}"/>
+											</h:selectOneRadio>
+										</h:panelGroup>
+								
+										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+											<font color="red" >*</font><h:outputLabel for="materialCultura" value="Material"  /><br />
+											<p:inputText id="materialCultura"
+														 required="false"
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.materialCultura}"
+														 title="Informe o material da cultura" />
+										</h:panelGroup>
+										
+										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+											<font color="red" >*</font><h:outputLabel for="dataSolicitacaoCultura" value="Data da solicitação"  /><br />
+											<p:inputMask id="dataSolicitacaoCultura"
+														 mask="99/99/9999"
+														 required="false"
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.dataSolicitacaoCultura}"
+														 title="Informe a data que foi realizada a solicitação" >
+												<f:convertDateTime pattern="dd/MM/yyyy"  />
+											</p:inputMask>
+										</h:panelGroup>
+								
+										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+											<font color="red" >*</font><h:outputLabel for="germeIsolado" value="Germe isolado"  /><br />
+											<p:inputText id="germeIsolado"
+														 required="false"
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.germeIsolado}"
+														 title="Informe o germe isolado" />
+										</h:panelGroup>
+										
+										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+											<font color="red" >*</font><h:outputLabel for="sensibilidade" value="Sensibilidade"  /><br />
+											<p:inputText id="sensibilidade"
+													 required="false"
+													 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.sensibilidade}"
+													 title="informe a sensibilidade" />
+										</h:panelGroup>
+										
+									</h:panelGrid>
+								
 							
-							
-							
-							
-							
+									<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid5"
+												 columns="3"
+												 rendered="#{prescricaoHome.existeAntibiotico}"
+												 width="100%">
+										
+										<h:panelGroup>
+											<font color="red" >*</font><h:outputLabel for="dose" value="Dose: " /><br />
+											<p:inputText id="dose" 
+														 onkeyup="apenasNumero(this);"
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.dose}" 
+														 title="Números de doses por dia de tratamento" />
+										</h:panelGroup>
+										
+										<h:panelGroup>
+											<font color="red" >*</font><h:outputLabel for="via" value="Via: " /><br />
+											<p:inputText id="via" 
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.via}" 
+														 title="Números de doses por dia de tratamento" />
+										</h:panelGroup>
+										
+										<h:panelGroup >
+											<font color="red" >*</font><h:outputLabel for="frequencia" value="Frequência:"  /><br />
+											<p:inputText id="frequencia"
+													  	 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.frequencia}"
+													  	 title="Informe a frequência com que deve ser ministrado a(s) dose(s)" />h
+										</h:panelGroup>
+										
+										<h:panelGroup>
+											<font color="red" >*</font><h:outputLabel for="tempoUso" value="Tempo de uso: " /><br />
+											<p:inputText id="tempoUso" 
+														 onkeyup="apenasNumero(this);"
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tempoUso}" 
+														 title="Tempo provável de uso" />dias
+										</h:panelGroup>
+										
+										<h:panelGroup>
+											<p:commandLink	title="Anexar autorização" 
+														style="padding-right:10px;" 
+														update="padraoTabView:anexosControleAntibioticoDialog"
+														immediate="true"
+														oncomplete="anexosControleAntibioticoDialog.show();">
+												<h:graphicImage value="/Imagens/clip-32.png" />
+											</p:commandLink>
+										</h:panelGroup>
+									</h:panelGrid>
+									
+									<h:panelGrid columns="2" >
+										<h:panelGroup >
+											<p:commandButton action="#{prescricaoHome.segundaLiberacaoDose}"
+																	 value="Liberar"
+																	 update="padraoTabView:liberacaoDoseForm padraoTabView:liberacaoDialog padraoTabView:doseDialog"/>
+										</h:panelGroup>
+										<h:panelGroup >
+											<p:commandButton action="#{prescricaoHome.cancelaAutorizacaoMaterial}"
+															 immediate="true"
+															 value="Cancelar"
+															 oncomplete="window.location.reload();"/>
+										</h:panelGroup>
+									</h:panelGrid>
+								</p:panel>
+							</p:panel>
 						</p:panel>
 					</p:tab>					
 					
