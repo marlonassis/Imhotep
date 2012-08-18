@@ -27,6 +27,7 @@
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:especialidadeForm" 
 						   title="Editar" 
+						   rendered="#{linha.especialidadePai != null}"
 						   style="padding-right:10px;" >
 				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />

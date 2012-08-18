@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.TipoMovimento;
+import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.nucleo.ConsultaGeral;
 
@@ -106,5 +107,26 @@ public class Parametro implements Serializable {
 		sb.append(" lower(to_ascii(o.descricao)) = lower(to_ascii('Devolução de medicamento dispensado'))");
 		sb.append(" or lower(to_ascii(o.descricao)) = lower(to_ascii('Saída de medicamento dispensado'))");
 		return new ArrayList<TipoMovimento>(cg.consulta(sb, null));
+	}
+	
+	public static boolean usuarioEnfermeiroMedico(Usuario usuario){
+		String usuarioEspecialidade = usuarioEspecialidade(usuario);
+		return usuarioEspecialidade.equalsIgnoreCase("Enfermagem") || usuarioEspecialidade.equalsIgnoreCase("Médico");
+	}
+	
+	public static boolean usuarioEnfermeiro(Usuario usuario){
+		return usuarioEspecialidade(usuario).equalsIgnoreCase("Enfermagem");
+	}
+	
+	public static boolean usuarioMedico(Usuario usuario){
+		return usuarioEspecialidade(usuario).equalsIgnoreCase("Médico");
+	}
+	
+	private static String usuarioEspecialidade(Usuario usuario){
+		ConsultaGeral<String> cg = new ConsultaGeral<String>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idUsuario", usuario.getIdUsuario());
+		StringBuilder sb = new StringBuilder("select o.especialidade.especialidadePai.descricao from Usuario o where o.idUsuario = :idUsuario");
+		return cg.consultaUnica(sb, hm);
 	}
 }

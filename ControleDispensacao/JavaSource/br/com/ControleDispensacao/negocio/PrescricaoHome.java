@@ -22,6 +22,7 @@ import br.com.ControleDispensacao.auxiliar.Constantes;
 import br.com.ControleDispensacao.auxiliar.ControlePrescricao;
 import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItem;
 import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItemDose;
+import br.com.ControleDispensacao.auxiliar.Parametro;
 import br.com.ControleDispensacao.comparador.CuidadosPacienteComparador;
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
 import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
@@ -43,7 +44,7 @@ import br.com.nucleo.PadraoHome;
 
 @ManagedBean(name="prescricaoHome")
 @SessionScoped
-public class PrescricaoHome extends PadraoHome<Prescricao>{    	
+public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	private boolean skip;
 	private Paciente paciente;
@@ -65,6 +66,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	public List<PrescricaoItem> medicamentosPendentesLiberacao(){
 		return prescricaoItemPendente(getPrescricao());
+	}
+	
+	private boolean liberaDose(Material material, Dose dose) {
+		EstoqueHome eh = new EstoqueHome();
+		Object[] totais = eh.consultaEstoque(material);
+		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
+		return !eh.estoqueVazio(estoqueAtual) && !eh.estoqueInsuficiente(estoqueAtual, dose.getQuantidadeDoses(), dose.getQuantidadePorDose());
 	}
 	
 	private boolean liberaDose(Material material) {
@@ -91,6 +99,19 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			}
 		}
 		return false;
+	}
+	
+	public void analiseLiberacao(){
+		List<PrescricaoItem> medicamentosPendentesLiberacao = medicamentosPendentesLiberacao();
+		Autenticador a = new Autenticador();
+		Usuario usuarioLiberacao = a.procurarUsuario(usuario);
+		if(usuarioLiberacao != null && a.verificaSenha(usuarioLiberacao, senha)){
+			for(PrescricaoItem item : medicamentosPendentesLiberacao){
+				if(isMaterialAntibiotico(item.getMaterial()) && Parametro.usuarioEnfermeiroMedico(usuarioLiberacao)){
+					
+				}
+			}
+		}
 	}
 	
 	public boolean isMaterialAntibiotico(Material material){
@@ -122,8 +143,32 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return ret;
 	}
 	
+	private boolean formularioDoseVazio(Dose dose){
+		if(dose.getPrescricaoItem().getMaterial() == null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o material.", ""));
+			return true;
+		}
+		if(dose.getQuantidadeDoses() == null || dose.getQuantidadeDoses() == 0){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a quantidade de doses diárias.", ""));
+			return true;
+		}
+		if(dose.getQuantidadePorDose() == null || dose.getQuantidadePorDose() == 0){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a quantidade do medicamento por dose.", ""));
+			return true;
+		}
+		if(dose.getIntervaloEntreDoses() == null || dose.getIntervaloEntreDoses() == 0){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o intervalo de tempo entre as doses.", ""));
+			return true;
+		}
+		if(dose.getDataInicio() == null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a hora de início da dosagem.", ""));
+			return true;
+		}
+		return false;
+	}
+	
 	public void inserirItem(){
-		if(liberaDose(getDose().getPrescricaoItem().getMaterial())){
+		if(!formularioDoseVazio(getDose()) && liberaDose(getDose().getPrescricaoItem().getMaterial(), getDose())){
 			if(!new ControlePrescricao().gravaPrescricao(getPrescricao())){
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição.", ""));
 				return;

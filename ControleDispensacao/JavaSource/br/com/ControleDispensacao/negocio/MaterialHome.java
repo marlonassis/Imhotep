@@ -89,7 +89,7 @@ public class MaterialHome extends PadraoHome<Material>{
 	}
 	
 	public Collection<Material> getListaMaterialEstoque(){
-		return super.getBusca("select o from Material o where o.idMaterial in (select e.material.idMaterial from Estoque e) order by o.descricao");
+		return super.getBusca("select o from Material o where o.idMaterial in (select e.material.idMaterial from Estoque e) order by to_ascii(o.descricao)");
 	}
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){

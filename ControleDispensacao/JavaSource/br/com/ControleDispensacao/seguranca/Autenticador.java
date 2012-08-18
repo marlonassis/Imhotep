@@ -92,7 +92,7 @@ public class Autenticador {
 		if(resultado != null){
 			return resultado;
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Usuário não encontrado!"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Usuário não encontrado!"));
 			return null;
 		}
 	}
@@ -110,7 +110,7 @@ public class Autenticador {
 		if(usuarioLogado.getSenha().equals(Utilities.encriptaParaMd5(senha))){
 			return true;
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha não confere!", "Login não realizado!"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Login não realizado!"));
 			return false;
 		}
 	}

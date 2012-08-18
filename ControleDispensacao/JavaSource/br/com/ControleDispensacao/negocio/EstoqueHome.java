@@ -51,7 +51,7 @@ public class EstoqueHome extends PadraoHome<Estoque>{
 	public boolean estoqueInsuficiente(Integer quantidade, Integer quantidadeDoses, Integer quantidadePorDose) {
 		int quantidadeReserva = quantidadeDoses * quantidadePorDose;
 		if(quantidadeReserva > quantidade){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não há quantidade suficiente no estoque. O máximo disponível é de " + String.valueOf(quantidade), ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não há quantidade suficiente no estoque. O máximo disponível é de " + String.valueOf(quantidade) + " unidade(s)", ""));
 			return true;
 		}else{
 			return false;

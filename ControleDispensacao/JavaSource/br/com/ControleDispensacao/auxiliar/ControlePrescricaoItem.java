@@ -20,6 +20,7 @@ public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 		try{
 			iniciarTransacao();
 			prescricaoItem.setDispensado(TipoStatusEnum.N);
+			prescricaoItem.setStatus(TipoStatusEnum.S);
 			session.save(prescricaoItem);
 			session.flush();  
 			tx.commit();
