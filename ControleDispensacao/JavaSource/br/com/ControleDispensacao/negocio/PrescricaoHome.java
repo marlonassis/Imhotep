@@ -50,9 +50,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private Paciente paciente;
 	private Prescricao prescricao = new Prescricao();
 	
-	private List<CuidadosPaciente> cuidadosEscolhidos = new ArrayList<CuidadosPaciente>();
-	private List<CuidadosPaciente> cuidadosDisponiveis = new ArrayList<CuidadosPaciente>();
-
 	private String usuario;
 	private String senha;
 	
@@ -105,13 +102,32 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		List<PrescricaoItem> medicamentosPendentesLiberacao = medicamentosPendentesLiberacao();
 		Autenticador a = new Autenticador();
 		Usuario usuarioLiberacao = a.procurarUsuario(usuario);
+		Profissional profissionalPeloUsuario = Autenticador.getInstancia().profissionalPeloUsuario(usuarioLiberacao);
 		if(usuarioLiberacao != null && a.verificaSenha(usuarioLiberacao, senha)){
 			for(PrescricaoItem item : medicamentosPendentesLiberacao){
 				if(isMaterialAntibiotico(item.getMaterial()) && Parametro.usuarioEnfermeiroMedico(usuarioLiberacao)){
-					
+					getControleMedicacaoRestritoSCHI().setProfissionalAssistente(profissionalPeloUsuario);
+					if(new ControleMedicacaoRestritoSCHIHome(getControleMedicacaoRestritoSCHI()).enviar()){
+						item.setControleMedicacaoRestritoSCHI(getControleMedicacaoRestritoSCHI());
+						new PrescricaoItemHome(item, false).atualizar();
+					}
+				}else{
+					if(verificaEspecialidadeValida(item.getMaterial(), profissionalPeloUsuario)){
+						item.setProfissionalLiberacao(profissionalPeloUsuario);
+						new PrescricaoItemHome(item, false).atualizar();
+					}
 				}
 			}
 		}
+	}
+	
+	private boolean verificaEspecialidadeValida(Material material, Profissional profissional){
+		ConsultaGeral<Integer> cg = new ConsultaGeral<Integer>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idMaterial", material.getIdMaterial());
+		hm.put("idEspecialidade", profissional.getEspecialidade().getIdEspecialidade());
+		Integer idEspecialidade = (Integer) cg.consultaUnica(new StringBuilder("select a.idLiberaMaterialEspecialidade from LiberaMaterialEspecialidade a where a.material.idMaterial = :idMaterial and a.especialidade.idEspecialidade = :idEspecialidade"), hm);
+		return idEspecialidade != null && idEspecialidade != 0;
 	}
 	
 	public boolean isMaterialAntibiotico(Material material){
@@ -186,6 +202,61 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 
+	public void concluirPrescricao(){
+		getInstancia().setDispensavel(TipoStatusEnum.S);
+		getInstancia().setDataPrescricao(new Date());
+		if(super.atualizar()){
+			novaInstancia();
+		}
+	}
+	
+	public void addCuidados(CuidadosPaciente cuidadosPaciente){
+		new CuidadosPrescricaoHome(cuidadosPaciente, getPrescricao());
+	}
+	
+	public void removeCuidados(CuidadosPaciente cuidadosPaciente){
+		new CuidadosPrescricaoHome(cuidadosPaciente, getPrescricao());
+	}
+	
+	private List<PrescricaoItem> cuidadosEscolhidos(Prescricao prescricao){
+		if(prescricao != null){
+			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o.cuidadosPaciente from CuidadosPrescricao o where o.prescricao.idPrescricao = :idPrescricao"), hm);
+		}
+		return null;
+	}
+	
+	private List<CuidadosPaciente> cuidadosDisponiveis(Prescricao prescricao){
+		if(prescricao != null){
+			ConsultaGeral<CuidadosPaciente> cg = new ConsultaGeral<CuidadosPaciente>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			return (List<CuidadosPaciente>) cg.consulta(new StringBuilder("select o from CuidadosPaciente o where o.idCuidadosPaciente not in (select a.cuidadosPaciente.idCuidadosPaciente from CuidadosPrescricao a where a.prescricao.idPrescricao = :idPrescricao)"), hm);
+		}
+		return null;
+	}
+	
+	public List<PrescricaoItem> cuidadosPacienteEscolhidosPrescricao(){
+		return cuidadosEscolhidos(getInstancia());
+	}
+	
+	private List<PrescricaoItem> itensLiberadosFimPrescricao(Prescricao prescricao){
+		if(prescricao != null){
+			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			String selectAutorizacaoEspecialidade = "exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) ";
+			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao and not (( "+selectAutorizacaoEspecialidade+" and profissionalLiberacao is null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO') and controleMedicacaoRestritoSCHI is null)) "), hm);
+		}
+		return null;
+	}
+	
+	public List<PrescricaoItem> itensLiberados(){
+		return itensLiberadosFimPrescricao(getInstancia());
+	}
+	
 	private void novaDose() {
 		setDose(new Dose());
 	}
@@ -235,24 +306,23 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	public List<CuidadosPaciente> carregaCuidados(){
 		StringBuilder sb = new StringBuilder("select o from CuidadosPaciente o ");
-		if(!getCuidadosEscolhidos().isEmpty()){
-			sb.append("where o.idCuidadosPaciente not in ("+ getIdCuidadosEscolhidos() +")");
+		List<CuidadosPaciente> cuidadosDisponiveis2 = cuidadosDisponiveis(getPrescricao());
+		if(!cuidadosDisponiveis2.isEmpty()){
+			sb.append("where o.idCuidadosPaciente not in ("+ getIdCuidadosEscolhidos(cuidadosDisponiveis2) +")");
 		}
 		
 		sb.append(" order by o.descricao");
 		
-		setCuidadosDisponiveis(new ArrayList<CuidadosPaciente>(new ConsultaGeral<CuidadosPaciente>(sb).consulta()));
-		
-		return getCuidadosDisponiveis();
+		return new ArrayList<CuidadosPaciente>(new ConsultaGeral<CuidadosPaciente>(sb).consulta());
 	}
 	
-	private String getIdCuidadosEscolhidos() {
+	private String getIdCuidadosEscolhidos(List<CuidadosPaciente> cuidadosDisponiveis2) {
 		String ids = "";
 		int cont = 0;
-		for(CuidadosPaciente o : getCuidadosEscolhidos()){
+		for(CuidadosPaciente o : cuidadosDisponiveis2){
 			ids = ids.concat(String.valueOf(o.getIdCuidadosPaciente()));
 			cont++;
-			if(getCuidadosEscolhidos().size() > cont)
+			if(cuidadosDisponiveis2.size() > cont)
 				ids = ids.concat(",");
 		}
 		return ids;
@@ -296,23 +366,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 
 	public void setPrescricao(Prescricao prescricao) {
 		this.prescricao = prescricao;
-	}
-
-	public List<CuidadosPaciente> getCuidadosEscolhidos() {
-		Collections.sort(cuidadosEscolhidos, new CuidadosPacienteComparador());
-		return cuidadosEscolhidos;
-	}
-
-	public void setCuidadosEscolhidos(List<CuidadosPaciente> cuidadosEscolhidos) {
-		this.cuidadosEscolhidos = cuidadosEscolhidos;
-	}
-
-	public List<CuidadosPaciente> getCuidadosDisponiveis() {
-		return cuidadosDisponiveis;
-	}
-
-	public void setCuidadosDisponiveis(List<CuidadosPaciente> cuidadosDisponiveis) {
-		this.cuidadosDisponiveis = cuidadosDisponiveis;
 	}
 
 	public String getUsuario() {

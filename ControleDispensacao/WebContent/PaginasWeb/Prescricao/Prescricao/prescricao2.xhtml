@@ -221,7 +221,8 @@
 					</p:tab>
 					
 					<p:tab id="liberacao" title="Autorização">
-						<p:panel header="Medicamentos pendentes">
+						<p:panel id="painelLiberacao"
+								 header="Medicamentos pendentes">
 							 <p:dataTable id="materialPendente" 
 							 			  value="#{prescricaoHome.medicamentosPendentesLiberacao()}"
 							 			  emptyMessage="Não há medicamentos pendentes de liberação." 
@@ -387,10 +388,10 @@
 										
 										<h:panelGroup>
 											<p:commandLink	title="Anexar autorização" 
-														style="padding-right:10px;" 
-														update="padraoTabView:anexosControleAntibioticoDialog"
-														immediate="true"
-														oncomplete="anexosControleAntibioticoDialog.show();">
+															style="padding-right:10px;" 
+															update="padraoTabView:anexosControleAntibioticoDialog"
+															immediate="true"
+															oncomplete="anexosControleAntibioticoDialog.show();">
 												<h:graphicImage value="/Imagens/clip-32.png" />
 											</p:commandLink>
 										</h:panelGroup>
@@ -401,13 +402,7 @@
 									<h:panelGroup >
 										<p:commandButton action="#{prescricaoHome.analiseLiberacao}"
 														 value="Liberar"
-														 update="padraoTabView:liberacaoDoseForm padraoTabView:liberacaoDialog padraoTabView:doseDialog"/>
-									</h:panelGroup>
-									<h:panelGroup >
-										<p:commandButton action="#{prescricaoHome.cancelaAutorizacaoMaterial}"
-														 immediate="true"
-														 value="Cancelar"
-														 oncomplete="window.location.reload();"/>
+														 update="padraoTabView:painelLiberacao"/>
 									</h:panelGroup>
 								</h:panelGrid>
 							</p:panel>
@@ -425,7 +420,7 @@
 								        			 emptyMessage="Todos os cuidados foram escolhidos" 
 								        			 value="#{prescricaoHome.carregaCuidados()}">  
 								            <p:column style="width:20px">
-								                 <p:commandLink action="#{prescricaoHome.cuidadosEscolhidos.add(cuidado)}" 
+								                 <p:commandLink action="#{prescricaoHome.addCuidados(cuidado)}" 
 								                 				update="padraoTabView:cuidadosIniciais padraoTabView:cuidadosEscolhidos" >
 								                 	<h:graphicImage value="/Imagens/borrownext16.png" />
 								                 </p:commandLink>
@@ -448,10 +443,10 @@
 							            <p:dataTable id="cuidadosEscolhidos"
 							            			 emptyMessage="Não há cuidados escolhidos"
 							            			 var="cuidadoEsc" 
-							            			 value="#{prescricaoHome.cuidadosEscolhidos}">
+							            			 value="#{prescricaoHome.cuidadosPacienteEscolhidosPrescricao()}">
 	
 							            	<p:column style="width:20px">
-								                 <p:commandLink action="#{prescricaoHome.cuidadosEscolhidos.remove(cuidadoEsc)}" 
+								                 <p:commandLink action="#{prescricaoHome.removeCuidados(cuidadoEsc)}" 
 								                 				update="padraoTabView:cuidadosEscolhidos padraoTabView:cuidadosIniciais">
 								                 	<h:graphicImage value="/Imagens/borrowback16.png" />
 								                 </p:commandLink>
@@ -473,13 +468,55 @@
 						</p:panel>
 					</p:tab>
 					
-					<p:tab id="confirm" title="Confirmation">
-						<p:panel header="Confirmation">
-						
-						
-						</p:panel>
+					<p:tab id="confirmacao" title="Confirmação">
+							<p:panel header="Paciente" >
+								<h:panelGrid columns="3" >
+									<h:panelGroup>
+										<h:outputText value="Nome:" /><br/>
+										<h:outputText value="#{prescricaoHome.prescricao.paciente.nome}" />
+									</h:panelGroup>
+									<h:panelGroup>
+										<h:outputText value="Data de Nascimento:" /><br/>
+										<h:outputText value="#{prescricaoHome.prescricao.paciente.dataNascimento}">
+											<f:convertDateTime pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</h:panelGroup>
+									<h:panelGroup>
+										<h:outputText value="Idade:" /><br/>
+										<h:outputText value="#{prescricaoHome.prescricao.paciente.idade}" />
+									</h:panelGroup>
+									<h:panelGroup>
+										<h:outputText value="Sexo:" /><br/>
+										<h:outputText value="#{prescricaoHome.prescricao.paciente.sexo.label}" />
+									</h:panelGroup>
+								</h:panelGrid>
+							</p:panel>
+							<p:panel header="Itens Liberados" >
+								<p:dataList id="itensLiberados"
+											var="itemLiberado" 
+											value="#{prescricaoHome.itensLiberados()}"
+											type="ordered">
+									<p:column headerText="Material" >
+										<h:outputText value="#{itemLiberado.material.descricao}" />
+									</p:column>
+								</p:dataList>
+							</p:panel>
+							<p:panel header="Cuidados" >
+								<p:dataList id="cuidadosEscolhidosFinalizacao"
+											var="cuidado" 
+											value="#{prescricaoHome.cuidadosPacienteEscolhidosPrescricao()}"
+											type="ordered">
+									<p:column headerText="Cuidado" >
+										<h:outputText value="#{cuidado.descricao}"
+													  escape="false"/>
+									</p:column>
+								</p:dataList>
+							</p:panel>
+							<p:panel header="Informações adicionais" >
+								<p:editor value="#{prescricaoHome.prescricao.cuidadosAdicionais}" />
+							</p:panel>
 					</p:tab>
-					
+					<p:commandButton action="#{prescricaoHome.concluirPrescricao}" />
 				</p:wizard>
 				
 			</h:form>

@@ -39,6 +39,8 @@ public class Prescricao {
 	private List<PrescricaoItem> prescricaoItens;
 	private Date dataPrescricao;
 	private Date dataDipensacao;
+	private Profissional profissionalDispensante;
+	private String cuidadosAdicionais;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_id_prescricao_seq")
 	@Id
@@ -173,6 +175,23 @@ public class Prescricao {
 	
 	public void setDataDipensacao(Date dataDipensacao) {
 		this.dataDipensacao = dataDipensacao;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_dispensante")
+	public Profissional getProfissionalDispensante() {
+		return profissionalDispensante;
+	}
+	public void setProfissionalDispensante(Profissional profissionalDispensante) {
+		this.profissionalDispensante = profissionalDispensante;
+	}
+	
+	@Column(name = "tx_cuidados_adicionais")
+	public String getCuidadosAdicionais() {
+		return cuidadosAdicionais;
+	}
+	public void setCuidadosAdicionais(String cuidadosAdicionais) {
+		this.cuidadosAdicionais = cuidadosAdicionais;
 	}
 	
 	@Override

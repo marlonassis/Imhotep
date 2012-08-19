@@ -52,6 +52,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.PrescricaoItemEstoqueSaida"/>
         <mapping class="br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI"/>
         <mapping class="br.com.ControleDispensacao.entidade.CuidadosPaciente"/>
+        <mapping class="br.com.ControleDispensacao.entidade.CuidadosPrescricao"/>
         
     </session-factory>
 </hibernate-configuration>

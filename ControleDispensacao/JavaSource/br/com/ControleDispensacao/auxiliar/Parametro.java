@@ -126,7 +126,7 @@ public class Parametro implements Serializable {
 		ConsultaGeral<String> cg = new ConsultaGeral<String>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idUsuario", usuario.getIdUsuario());
-		StringBuilder sb = new StringBuilder("select o.especialidade.especialidadePai.descricao from Usuario o where o.idUsuario = :idUsuario");
+		StringBuilder sb = new StringBuilder("select o.especialidade.especialidadePai.descricao from Profissional o where o.usuario.idUsuario = :idUsuario");
 		return cg.consultaUnica(sb, hm);
 	}
 }

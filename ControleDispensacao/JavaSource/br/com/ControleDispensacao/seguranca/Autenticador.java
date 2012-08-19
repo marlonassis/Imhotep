@@ -57,6 +57,13 @@ public class Autenticador {
 		}
 	}
 
+	public Profissional profissionalPeloUsuario(Usuario usuario){
+		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idUsuario", usuario.getIdUsuario());
+		return cg.consultaUnica(new StringBuilder("select o from Profissional o where o.usuario.idUsuario = :idUsuario"), hm);
+	}
+	
 	private void carregaProfissional(){
 		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
