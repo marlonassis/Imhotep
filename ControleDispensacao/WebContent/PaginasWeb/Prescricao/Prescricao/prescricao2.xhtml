@@ -33,7 +33,7 @@
 							  						required="true"
 							  						size="30"
 							  						forceSelection="true"
-							  						value="#{prescricaoHome.prescricao.paciente}"
+							  						value="#{prescricaoHome.prescricaoAtual.paciente}"
 													completeMethod="#{pacienteHome.getListaPacienteAutoComplete}" 
 													var="paciente" 
 													itemLabel="#{paciente.nomeIdade}"
@@ -49,7 +49,7 @@
 								<h:panelGroup>
 									<font color="red" >*</font><h:outputLabel for="massa" value="Peso:"  /><br />
 									<p:inputText  id="massa"
-												  value="#{prescricaoHome.prescricao.massa}"
+												  value="#{prescricaoHome.prescricaoAtual.massa}"
 												  required="true"
 												  onkeyup="apenasNumeroComVirgula(this);" 
 												  converter="monetarioConversor"
@@ -59,7 +59,7 @@
 								<h:panelGroup>
 									<font color="red" >*</font><h:outputLabel for="leito" value="Leito:"  /><br />
 									<p:inputText  id="leito"
-												  value="#{prescricaoHome.prescricao.leito}"
+												  value="#{prescricaoHome.prescricaoAtual.leito}"
 												  required="true"
 												  title="Leito ao qual o paciente está em repouso" />
 								</h:panelGroup>
@@ -68,7 +68,7 @@
 									<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
 							  		<p:autoComplete id="unidade" 
 							  						forceSelection="true"
-							  						value="#{prescricaoHome.prescricao.paciente.unidadeAlocacao}"
+							  						value="#{prescricaoHome.prescricaoAtual.paciente.unidadeAlocacao}"
 													completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 													var="unidade"
 													title="Unidade onde está alocado o paciente" 
@@ -200,7 +200,7 @@
 										<td valign="top" >
 											<p:panel id="itensGrid" 
 													 header="Itens">
-												<ui:repeat value="#{prescricaoHome.itensPrescricao()}"
+												<ui:repeat value="#{prescricaoHome.itensPrescricao}"
 														   var="a">
 													<h:outputText value="#{a.material.descricao}"/>
 												    <p:commandLink  action="#{prescricaoHome.removePrescricaoItem(a)}"
@@ -453,11 +453,12 @@
 								            </p:column>
 								              
 							                <p:column headerText="Descrição">  
-							                    <h:outputText value="#{cuidadoEsc.descricao}" />  
+							                    <h:outputText value="#{cuidadoEsc.cuidadosPaciente.descricao}" 
+							                    			  escape="false" />  
 							                </p:column>  
 							  
 							                <p:column headerText="Tipo">
-							                    <h:outputText value="#{cuidadoEsc.tipoCuidadosPaciente.label}" />  
+							                    <h:outputText value="#{cuidadoEsc.cuidadosPaciente.tipoCuidadosPaciente.label}" />  
 							                </p:column>  
 							  
 							            </p:dataTable>
@@ -469,57 +470,117 @@
 					</p:tab>
 					
 					<p:tab id="confirmacao" title="Confirmação">
-							<p:panel header="Paciente" >
-								<h:panelGrid columns="3" >
-									<h:panelGroup>
-										<h:outputText value="Nome:" /><br/>
-										<h:outputText value="#{prescricaoHome.prescricao.paciente.nome}" />
-									</h:panelGroup>
-									<h:panelGroup>
-										<h:outputText value="Data de Nascimento:" /><br/>
-										<h:outputText value="#{prescricaoHome.prescricao.paciente.dataNascimento}">
-											<f:convertDateTime pattern="dd/MM/yyyy"/>
-										</h:outputText>
-									</h:panelGroup>
-									<h:panelGroup>
-										<h:outputText value="Idade:" /><br/>
-										<h:outputText value="#{prescricaoHome.prescricao.paciente.idade}" />
-									</h:panelGroup>
-									<h:panelGroup>
-										<h:outputText value="Sexo:" /><br/>
-										<h:outputText value="#{prescricaoHome.prescricao.paciente.sexo.label}" />
-									</h:panelGroup>
-								</h:panelGrid>
-							</p:panel>
-							<p:panel header="Itens Liberados" >
-								<p:dataList id="itensLiberados"
-											var="itemLiberado" 
-											value="#{prescricaoHome.itensLiberados()}"
-											type="ordered">
-									<p:column headerText="Material" >
-										<h:outputText value="#{itemLiberado.material.descricao}" />
-									</p:column>
-								</p:dataList>
-							</p:panel>
-							<p:panel header="Cuidados" >
-								<p:dataList id="cuidadosEscolhidosFinalizacao"
-											var="cuidado" 
-											value="#{prescricaoHome.cuidadosPacienteEscolhidosPrescricao()}"
-											type="ordered">
-									<p:column headerText="Cuidado" >
-										<h:outputText value="#{cuidado.descricao}"
-													  escape="false"/>
-									</p:column>
-								</p:dataList>
-							</p:panel>
-							<p:panel header="Informações adicionais" >
-								<p:editor value="#{prescricaoHome.prescricao.cuidadosAdicionais}" />
-							</p:panel>
+						<p:panel header="Paciente" >
+							<h:panelGrid columns="3" 
+										 width="100%">
+								<h:panelGroup>
+									<h:outputText value="Nome:" /><br/>
+									<h:outputText value="#{prescricaoHome.prescricaoAtual.paciente.nome}" 
+												  style="font-weight: bold;"/>
+								</h:panelGroup>
+								<h:panelGroup>
+									<h:outputText value="Data de Nascimento:" /><br/>
+									<h:outputText value="#{prescricaoHome.prescricaoAtual.paciente.dataNascimento}"
+												  style="font-weight: bold;" >
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</h:panelGroup>
+								<h:panelGroup>
+									<h:outputText value="Idade:" /><br/>
+									<h:outputText value="#{prescricaoHome.prescricaoAtual.paciente.idade}" 
+												  style="font-weight: bold;"/>
+								</h:panelGroup>
+								<h:panelGroup>
+									<h:outputText value="Sexo:" /><br/>
+									<h:outputText value="#{prescricaoHome.prescricaoAtual.paciente.sexo.label}" 
+												  style="font-weight: bold;" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Itens Liberados" >
+							<p:dataList id="itensLiberados"
+										var="itemLiberado" 
+										value="#{prescricaoHome.itensLiberados()}"
+										type="ordered">
+								<p:column headerText="Material" >
+									<h:outputText value="#{itemLiberado.material.descricao}" />
+								</p:column>
+							</p:dataList>
+						</p:panel>
+						<p:panel header="Cuidados" >
+							<p:dataList id="cuidadosEscolhidosFinalizacao"
+										var="cuidado" 
+										value="#{prescricaoHome.cuidadosPacienteEscolhidosPrescricao()}"
+										type="ordered">
+								<p:column headerText="Cuidado" >
+									<h:outputText value="#{cuidado.cuidadosPaciente.descricao}"
+												  escape="false"/>
+								</p:column>
+							</p:dataList>
+						</p:panel>
+						<p:panel header="Informações adicionais" >
+							<p:editor value="#{prescricaoHome.prescricaoAtual.cuidadosAdicionais}" />
+						</p:panel>
+						<br/><br/>
+						<p:commandButton value="Finalizar Prescrição"
+										 action="#{prescricaoHome.finalizarPrescricao}"/>
 					</p:tab>
-					<p:commandButton action="#{prescricaoHome.concluirPrescricao}" />
 				</p:wizard>
-				
 			</h:form>
+			
+			<h:form prependId="false" >
+				<p:dialog id="anexosControleAntibioticoDialog"
+						  header="Controles Válidos" 
+						  widgetVar="anexosControleAntibioticoDialog" 
+						  modal="true" 
+						  width="700">
+						  
+					<p:dataTable id="tabelaPrescricaoPendente" 
+								 value="#{prescricaoHome.controlesValidos}" 
+								 var="linha"
+								 dblClickSelect="true"
+								 emptyMessage="Não foi encontrado registros" 
+								 rows="5" 
+								 paginator="true"
+								 selectionMode="single" 
+								 rowKey="#{linha.idControleMedicacaoRestritoSCHI}">
+									
+						<p:column>
+							<f:facet name="header"><h:outputText value="Infectologista" /></f:facet>
+							<h:outputText value="#{linha.profissionalInfectologista.nome}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header"><h:outputText value="Início" /></f:facet>
+							<h:outputText value="#{linha.dataLiberacaoInfectologista}" >
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<f:facet name="header"><h:outputText value="Fim" /></f:facet>
+							<h:outputText value="#{linha.dataLimite}" >
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<f:facet name="header"><h:outputText value="Tipo de indicação" /></f:facet>
+							<h:outputText value="#{linha.tipoIndicacao.label}" />
+						</p:column>
+						<p:column style="width:60px; text-align: center;" >
+							<p:commandLink	title="Anexar autorização" 
+											style="padding-right:10px;" 
+											update="padraoTabView:painelLiberacao"
+											oncomplete="anexosControleAntibioticoDialog.close();">
+								<f:setPropertyActionListener value="#{linha}" 
+															 target="#{prescricaoHome.controleMedicacaoRestritoSCHI}" />
+								<h:graphicImage value="/Imagens/clip-24.png" />
+							</p:commandLink>
+						</p:column>  
+					</p:dataTable>	
+						  
+				</p:dialog>
+			</h:form>
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

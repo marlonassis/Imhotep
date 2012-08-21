@@ -12,9 +12,9 @@ import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.nucleo.PadraoControle;
 
-public class ControlePrescricao extends PadraoHome<Prescricao>{
+public class ControlePrescricao extends PadraoControle{
 	
 	public boolean gravaPrescricao(Prescricao prescricao) {
 		if(prescricao.getIdPrescricao() != 0){
@@ -27,11 +27,9 @@ public class ControlePrescricao extends PadraoHome<Prescricao>{
 	private boolean persistePrescricao(Prescricao prescricao) {
 		boolean ret = false;
 		try{
+			completarPrescricao(prescricao);
 			setInstancia(prescricao);
 			iniciarTransacao();
-			carregaPrescricao();
-			getInstancia().setDispensavel(TipoStatusEnum.N);
-			getInstancia().setDispensado(TipoStatusEnum.N);
 			session.save(getInstancia());
 			session.flush();
 			tx.commit();
@@ -61,11 +59,12 @@ public class ControlePrescricao extends PadraoHome<Prescricao>{
 		new ErroAplicacaoHome(ea).enviar();
 	}
 	
-	private void carregaPrescricao() {
-		getInstancia().setAno(Calendar.getInstance().get(Calendar.YEAR));
-		getInstancia().setDataInclusao(new Date());
-		getInstancia().setProfissional(Autenticador.getInstancia().getProfissionalAtual());
-		getInstancia().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+	private void completarPrescricao(Prescricao prescricao) {
+		prescricao.setAno(Calendar.getInstance().get(Calendar.YEAR));
+		prescricao.setDataInclusao(new Date());
+		prescricao.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		prescricao.setDispensavel(TipoStatusEnum.N);
+		prescricao.setDispensado(TipoStatusEnum.N);
+		prescricao.setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
 	}	
 }

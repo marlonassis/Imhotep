@@ -129,4 +129,16 @@ public class Parametro implements Serializable {
 		StringBuilder sb = new StringBuilder("select o.especialidade.especialidadePai.descricao from Profissional o where o.usuario.idUsuario = :idUsuario");
 		return cg.consultaUnica(sb, hm);
 	}
+	
+	public static boolean profissionalEnfermeiroMedico(Profissional profissional){
+		return profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Enfermagem") || profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Médico");
+	}
+	
+	public static boolean profissionalEnfermeiro(Profissional profissional){
+		return profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Enfermagem");
+	}
+	
+	public static boolean profissionalMedico(Profissional profissional){
+		return profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Médico");
+	}
 }

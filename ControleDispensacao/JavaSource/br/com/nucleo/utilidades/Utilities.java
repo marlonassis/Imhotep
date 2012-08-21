@@ -35,8 +35,8 @@ public class Utilities{
 		if(nascimento != null){
 			float difAno = getDifAno(nascimento, Calendar.getInstance().getTime());
 			int floor = (int) Math.floor(difAno);
-			String idadeDes = floor + " anos e ";
-			idadeDes = idadeDes.concat((int)Math.floor(12 * (difAno - floor)) + " meses");
+			String idadeDes = floor + " ano(s)";
+//			idadeDes = idadeDes.concat((int)Math.floor(12 * (difAno - floor)) + " meses");
 			return idadeDes;
 		}
 		return "NI";

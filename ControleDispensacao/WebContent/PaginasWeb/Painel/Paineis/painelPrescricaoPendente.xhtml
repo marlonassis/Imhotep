@@ -32,10 +32,10 @@
 					<h:outputText value="#{linha.leito}" />
 				</p:column>
 				<p:column style="width:60px; text-align: center;" >
-					<p:commandLink	oncomplete="location.href='Prescricao/Prescricao/prescricao2.jsf'"
+					<p:commandLink	oncomplete="location.href='Prescricao/Prescricao/prescricao.jsf'"
 									title="Continuar prescrição" 
 									style="padding-right:10px;" >
-						<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.prescricao}" />
+						<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.prescricaoAtual}" />
 						<h:graphicImage value="/Imagens/next.png" />
 					</p:commandLink>
 				</p:column>  

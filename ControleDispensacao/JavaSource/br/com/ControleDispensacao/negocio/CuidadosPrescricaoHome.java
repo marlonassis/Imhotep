@@ -16,8 +16,9 @@ public class CuidadosPrescricaoHome extends PadraoHome<CuidadosPrescricao>{
 		
 	}
 	
-	public boolean apagarCuidadosPrescricaoHome(CuidadosPaciente cuidadosPaciente){
-		return false;
+	public boolean apagarCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao){
+		setInstancia(cuidadosPrescricao);
+		return super.apagar();
 	}
 	
 	public CuidadosPrescricaoHome(CuidadosPaciente cuidadosPaciente, Prescricao prescricao){

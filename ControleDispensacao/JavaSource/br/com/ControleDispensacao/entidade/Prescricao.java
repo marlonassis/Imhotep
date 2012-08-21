@@ -26,18 +26,17 @@ import br.com.ControleDispensacao.enums.TipoStatusEnum;
 public class Prescricao {
 	private int idPrescricao;
 	private Unidade unidade;
-	private Profissional profissional;
+	private Profissional profissionalInclusao;
 	private Paciente paciente;
 	private Integer ano;
-	private Usuario usuarioInclusao;
 	private Date dataInclusao;
+	private Date dataConclusao;
 	private String leito;
 	private Float massa;
 	private MotivoFimReceita motivoFimReceita;
 	private TipoStatusEnum dispensavel;
 	private TipoStatusEnum dispensado;
 	private List<PrescricaoItem> prescricaoItens;
-	private Date dataPrescricao;
 	private Date dataDipensacao;
 	private Profissional profissionalDispensante;
 	private String cuidadosAdicionais;
@@ -63,12 +62,12 @@ public class Prescricao {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_profissional")
-	public Profissional getProfissional() {
-		return profissional;
+	@JoinColumn(name = "id_profissional_inclusao")
+	public Profissional getProfissionalInclusao() {
+		return profissionalInclusao;
 	}
-	public void setProfissional(Profissional profissional) {
-		this.profissional = profissional;
+	public void setProfissionalInclusao(Profissional profissionalInclusao) {
+		this.profissionalInclusao = profissionalInclusao;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
@@ -88,15 +87,6 @@ public class Prescricao {
 		this.ano = ano;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario_inclusao")
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
-	}
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
-	}
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
@@ -104,6 +94,15 @@ public class Prescricao {
 	}
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = dataInclusao;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_conclusao")
+	public Date getDataConclusao() {
+		return dataConclusao;
+	}
+	public void setDataConclusao(Date dataConclusao) {
+		this.dataConclusao = dataConclusao;
 	}
 	
 	@Column(name = "ds_leito")
@@ -158,16 +157,6 @@ public class Prescricao {
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_data_prescricao")
-	public Date getDataPrescricao() {
-		return dataPrescricao;
-	}
-	
-	public void setDataPrescricao(Date dataPrescricao) {
-		this.dataPrescricao = dataPrescricao;
-	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_dispensacao")
 	public Date getDataDipensacao() {
 		return dataDipensacao;
@@ -207,7 +196,7 @@ public class Prescricao {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + dataPrescricao.hashCode();
+	    return hash * 31 + dataInclusao.hashCode();
 	}
 
 	@Override

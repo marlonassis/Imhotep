@@ -57,6 +57,29 @@ public class Autenticador {
 		}
 	}
 
+	//////////////////////////////////////Nova forma de pesquisar o usuario. A busca deve ser feita apenas para trazer o profissional e não o usuário
+	
+	private Object buscaGenerica(String sql, HashMap<Object, Object> hm){
+		ConsultaGeral<Object> cg = new ConsultaGeral<Object>();
+		return cg.consultaUnica(new StringBuilder(sql), hm);
+	}
+	
+	public Profissional profissionalPeloNomeUsuario(String nome, String senha){
+		senha = Utilities.encriptaParaMd5(senha);
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		String sqlSenha = "Select o.senha from Usuario o where o.login = :login";
+		hm.put("login", nome);
+		String resultadoSenha = (String) buscaGenerica(sqlSenha, hm);
+		if(senha.equals(resultadoSenha)){
+			String sqlProfissional = "select o from Profissional o where o.usuario.login = :login";
+			return (Profissional) buscaGenerica(sqlProfissional, hm);
+		}
+		return null;
+	}
+	
+	
+	//////////////////////////////////////////////////////
+	
 	public Profissional profissionalPeloUsuario(Usuario usuario){
 		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();

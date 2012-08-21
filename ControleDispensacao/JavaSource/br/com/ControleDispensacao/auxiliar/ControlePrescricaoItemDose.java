@@ -13,9 +13,9 @@ import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.nucleo.PadraoControle;
 
-public class ControlePrescricaoItemDose extends PadraoHome<PrescricaoItemDose>{
+public class ControlePrescricaoItemDose extends PadraoControle{
 	
 	public boolean gravaPrescricaoItemDose(Dose dose) {
 		boolean ret = false;

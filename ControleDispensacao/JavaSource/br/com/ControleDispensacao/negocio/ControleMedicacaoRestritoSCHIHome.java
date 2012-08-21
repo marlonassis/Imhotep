@@ -30,17 +30,9 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 	
 	@Override
 	public void setInstancia(ControleMedicacaoRestritoSCHI instancia) {
-		carregaPrescricao(instancia.getIdControleMedicacaoRestritoSCHI());
 		super.setInstancia(instancia);
 	}
 
-	private void carregaPrescricao(int idControle) {
-		String sql = "select o.prescricao from PrescricaoItem o where o.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI = :idControle order by o.prescricao.dataPrescricao desc";
-		ConsultaGeral<Prescricao> cg = new ConsultaGeral<Prescricao>();
-		cg.getAddValorConsulta().put("idControle", idControle);
-		setPrescricao(cg.consultaUnica(new StringBuilder(sql)));
-	}
-	
 	@Override
 	public boolean enviar() {
 		getInstancia().setDataCriacaoAssistente(new Date());

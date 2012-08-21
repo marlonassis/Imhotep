@@ -25,13 +25,13 @@ public class PrescricaoDispensadaConsulta extends PadraoConsulta<Prescricao> {
 	public List<Prescricao> getList() {
 		setConsultaGeral(new ConsultaGeral<Prescricao>());
 		carregaValoresConsulta();
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Prescricao o where o.usuarioInclusao.idUsuario = :usuarioInclusao and o.dispensado = 'S'"));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Prescricao o where o.profissionalInclusao.idProfissional = :profissionalInclusao and o.dispensado = 'S'"));
 		return super.getList();
 	}
 	
 	private void carregaValoresConsulta() {
 		HashMap<Object, Object> restricaoConsulta = new HashMap<Object, Object>();
-		restricaoConsulta.put("usuarioInclusao", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
+		restricaoConsulta.put("profissionalInclusao", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
 		getConsultaGeral().setAddValorConsulta(restricaoConsulta);
 	}
 }

@@ -20,7 +20,7 @@ public class CuidadosPrescricao {
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_cuidados_prescricao_id_cuidados_prescricao_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id_unidade_material", unique = true, nullable = false)
+	@Column(name = "id_cuidados_prescricao", unique = true, nullable = false)
 	public int getIdCuidadosPrescricao() {
 		return this.idCuidadosPrescricao;
 	}

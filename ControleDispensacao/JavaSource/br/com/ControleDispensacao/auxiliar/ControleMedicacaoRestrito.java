@@ -11,9 +11,13 @@ import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.nucleo.PadraoControle;
 
-public class ControleMedicacaoRestrito extends PadraoHome<ControleMedicacaoRestrito>{
+public class ControleMedicacaoRestrito extends PadraoControle{
+	
+	public ControleMedicacaoRestrito() {
+		super();
+	}
 	
 	public boolean gravaRestricao(ControleMedicacaoRestritoSCHI medicacaoRestritoSCHI) {
 		boolean ret = false;
@@ -22,7 +26,6 @@ public class ControleMedicacaoRestrito extends PadraoHome<ControleMedicacaoRestr
 		}
 		try{
 			iniciarTransacao();
-			medicacaoRestritoSCHI.setProfissionalAssistente(Autenticador.getInstancia().getProfissionalAtual());
 			session.save(medicacaoRestritoSCHI);
 			session.flush();  
 			tx.commit();
