@@ -411,61 +411,89 @@
 					
 					<p:tab id="cuidados" title="Cuidados">
 						<p:panel header="Cuidados">
-						<table>
-							<tr>
-								<td valign="top" >
-									<p:panel header="Cuidados Disponíveis">
-								        <p:dataTable id="cuidadosIniciais" 
-								        			 var="cuidado"
-								        			 emptyMessage="Todos os cuidados foram escolhidos" 
-								        			 value="#{prescricaoHome.carregaCuidados()}">  
-								            <p:column style="width:20px">
-								                 <p:commandLink action="#{prescricaoHome.addCuidados(cuidado)}" 
-								                 				update="padraoTabView:cuidadosIniciais padraoTabView:cuidadosEscolhidos" >
-								                 	<h:graphicImage value="/Imagens/borrownext16.png" />
-								                 </p:commandLink>
-								            </p:column>
-											
-								            <p:column headerText="Descrição">
-								                <h:outputText value="#{cuidado.descricao}" 
-								                			  escape="false" />  
-								            </p:column>  
-								  
-								            <p:column headerText="Tipo">  
-								                <h:outputText value="#{cuidado.tipoCuidadosPaciente.label}" />  
-								            </p:column>  
-								  			
-								        </p:dataTable>
-									</p:panel>
-						  		</td>
-						  		<td valign="top" >
-						  			<p:panel header="Cuidados Escolhidos">
-							            <p:dataTable id="cuidadosEscolhidos"
-							            			 emptyMessage="Não há cuidados escolhidos"
-							            			 var="cuidadoEsc" 
-							            			 value="#{prescricaoHome.cuidadosPacienteEscolhidosPrescricao()}">
-	
-							            	<p:column style="width:20px">
-								                 <p:commandLink action="#{prescricaoHome.removeCuidados(cuidadoEsc)}" 
-								                 				update="padraoTabView:cuidadosEscolhidos padraoTabView:cuidadosIniciais">
-								                 	<h:graphicImage value="/Imagens/borrowback16.png" />
-								                 </p:commandLink>
-								            </p:column>
-								              
-							                <p:column headerText="Descrição">  
-							                    <h:outputText value="#{cuidadoEsc.cuidadosPaciente.descricao}" 
-							                    			  escape="false" />  
-							                </p:column>  
-							  
-							                <p:column headerText="Tipo">
-							                    <h:outputText value="#{cuidadoEsc.cuidadosPaciente.tipoCuidadosPaciente.label}" />  
-							                </p:column>  
-							  
-							            </p:dataTable>
-							    	</p:panel>
-					           	</td>
-							</tr>  
-						</table>
+							<h:panelGrid columns="2" 
+										 width="100%" >
+								<h:panelGroup>
+									<p:fieldset legend="Aerosol"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Cuidados de Enfermagem"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Medicações"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Medicações Orais"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Medicações SC, IM"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Medicações SOS"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Medicações Tópicas"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Nutrição (SND)"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Soroterapia"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										
+									</p:fieldset>
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:fieldset legend="Outros"
+												collapsed="true"
+												toggleable="true"
+												toggleSpeed="500">
+										<p:inputTextarea  />
+									</p:fieldset>
+								</h:panelGroup>
+							</h:panelGrid>
 						</p:panel>
 					</p:tab>
 					

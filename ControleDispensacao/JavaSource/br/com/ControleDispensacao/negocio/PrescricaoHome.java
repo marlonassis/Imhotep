@@ -224,14 +224,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 	
-	public void addCuidados(CuidadosPaciente cuidadosPaciente){
-		new CuidadosPrescricaoHome(cuidadosPaciente, getPrescricaoAtual()).enviar();
-	}
-	
-	public void removeCuidados(CuidadosPrescricao cuidadosPrescricao){
-		new CuidadosPrescricaoHome().apagarCuidadosPrescricao(cuidadosPrescricao);
-	}
-	
 	private List<CuidadosPrescricao> cuidadosEscolhidos(Prescricao prescricao){
 		if(prescricao != null){
 			ConsultaGeral<CuidadosPrescricao> cg = new ConsultaGeral<CuidadosPrescricao>();
