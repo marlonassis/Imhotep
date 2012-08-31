@@ -411,87 +411,152 @@
 					
 					<p:tab id="cuidados" title="Cuidados">
 						<p:panel header="Cuidados">
-							<h:panelGrid columns="2" 
+							<h:panelGrid columns="2"
+										 border="1" 
 										 width="100%" >
-								<h:panelGroup>
-									<p:fieldset legend="Aerosol"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
+								<h:panelGroup style="width:50%;" >
+									<h:panelGroup id="AER" >
+										<p:fieldset legend="Aerosol"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											<ui:repeat value="#{controleCuidadosPrescricao.prescricaoCuidadosAerosol}"
+													   var="cuidadoAerosol">
+												<h:outputText value="#{cuidadoAerosol.descricao}"/>
+											    <p:commandLink  action="#{prescricaoHome.adicionarCuidado(cuidadoAerosol)}"
+																update="padraoTabView:AER padraoTabView:itensEscolhidosPanelGroup"
+																title="Clique aqui para adicionar esse cuidado"
+																immediate="true">
+													<h:graphicImage value="/Imagens/add.png" />
+												</p:commandLink>
+												<br/>
+												<br/>
+											</ui:repeat>
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="CEN" >
+										<p:fieldset legend="Cuidados de Enfermagem"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											<ui:repeat value="#{controleCuidadosPrescricao.prescricaoCuidadosEnfermagem}"
+													   var="cuidadoCEN">
+												<h:outputText value="#{cuidadoCEN.descricao}"/>
+											    <p:commandLink  action="#{prescricaoHome.adicionarCuidado(cuidadoCEN)}"
+																update="padraoTabView:CEN padraoTabView:itensEscolhidosPanelGroup"
+																title="Clique aqui para adicionar esse cuidado"
+																immediate="true">
+													<h:graphicImage value="/Imagens/add.png" />
+												</p:commandLink>
+												<br/>
+												<br/>
+											</ui:repeat>
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="MED" >
+										<p:fieldset legend="Medicações"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											<ui:repeat value="#{controleCuidadosPrescricao.prescricaoCuidadosMedicacoes}"
+													   var="cuidadoMED">
+												<h:outputText value="#{cuidadoMED.descricao}"/>
+											    <p:commandLink  action="#{prescricaoHome.adicionarCuidado(cuidadoMED)}"
+																update="padraoTabView:MED padraoTabView:itensEscolhidosPanelGroup"
+																title="Clique aqui para adicionar esse cuidado"
+																immediate="true">
+													<h:graphicImage value="/Imagens/add.png" />
+												</p:commandLink>
+												<br/>
+												<br/>
+											</ui:repeat>
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="MOR" >
+										<p:fieldset legend="Medicações Orais"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											<ui:repeat value="#{controleCuidadosPrescricao.prescricaoCuidadosMedicacoesOrais}"
+													   var="cuidadoMOR">
+												<h:outputText value="#{cuidadoMOR.descricao}"/>
+											    <p:commandLink  action="#{prescricaoHome.adicionarCuidado(cuidadoMOR)}"
+																update="padraoTabView:MOR padraoTabView:itensEscolhidosPanelGroup"
+																title="Clique aqui para adicionar esse cuidado"
+																immediate="true">
+													<h:graphicImage value="/Imagens/add.png" />
+												</p:commandLink>
+												<br/>
+												<br/>
+											</ui:repeat>
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="MSC" >
+										<p:fieldset legend="Medicações SC, IM"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="MSO" >
+										<p:fieldset legend="Medicações SOS"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="MTO" >
+										<p:fieldset legend="Medicações Tópicas"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="NUT" >
+										<p:fieldset legend="Nutrição (SND)"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="SOR" >
+										<p:fieldset legend="Soroterapia"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											
+										</p:fieldset>
+									</h:panelGroup>
+									<h:panelGroup id="outros" >
+										<p:fieldset legend="Outros"
+													collapsed="true"
+													toggleable="true"
+													toggleSpeed="500">
+											<p:inputTextarea cols="12" 
+															 rows="5" />
+											<br/>
+											<p:commandButton value="Adicionar" />
+										</p:fieldset>
+									</h:panelGroup>
 								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Cuidados de Enfermagem"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Medicações"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Medicações Orais"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Medicações SC, IM"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Medicações SOS"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Medicações Tópicas"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Nutrição (SND)"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Soroterapia"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										
-									</p:fieldset>
-								</h:panelGroup>
-								<h:panelGroup>
-									<p:fieldset legend="Outros"
-												collapsed="true"
-												toggleable="true"
-												toggleSpeed="500">
-										<p:inputTextarea  />
-									</p:fieldset>
+								<h:panelGroup id="itensEscolhidosPanelGroup"
+											  style="width:50%; text-align:top; " >
+									<ui:repeat value="#{controleCuidadosPrescricao.cuidadosEscolhidos}"
+											   var="cuidadosEscolhidos">
+										<h:outputText value="#{cuidadosEscolhidos.cuidadosPaciente.descricao}"/>
+									    <p:commandLink  action="#{cuidadosPrescricaoHome.apagar(cuidadosEscolhidos)}"
+														update="padraoTabView:itensEscolhidosPanelGroup padraoTabView:#{cuidadosEscolhidos.cuidadosPaciente.tipoCuidadosPaciente}"
+														title="Apagar"
+														immediate="true">
+											<h:graphicImage value="/Imagens/delete.png" />
+										</p:commandLink>
+										<br/>
+										<br/>
+									</ui:repeat>
 								</h:panelGroup>
 							</h:panelGrid>
 						</p:panel>

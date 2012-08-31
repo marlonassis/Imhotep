@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.FlowEvent;
 
 import br.com.ControleDispensacao.auxiliar.Constantes;
+import br.com.ControleDispensacao.auxiliar.ControleInstancia;
 import br.com.ControleDispensacao.auxiliar.ControleMedicacaoRestrito;
 import br.com.ControleDispensacao.auxiliar.ControlePrescricao;
 import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItem;
@@ -58,6 +59,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private Dose dose = new Dose();
 	
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
+
+	public static PrescricaoHome getInstanciaHome(){
+		return new ControleInstancia<PrescricaoHome>().instancia("prescricaoHome");
+	}
 	
 	public List<PrescricaoItem> medicamentosPendentesLiberacao(){
 		return prescricaoItemPendente(getPrescricaoAtual());
@@ -199,7 +204,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	public void inserirItem(){
 		if(!formularioDoseVazio(getDose()) && liberaDose(getDose().getPrescricaoItem().getMaterial(), getDose())){
-			if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
+			if(getPrescricaoAtual().getIdPrescricao() == 0){
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição.", ""));
 				return;
 			}
@@ -358,6 +363,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return null;
 	}
 
+	public void adicionarCuidado(CuidadosPaciente cuidadosPaciente){
+		new CuidadosPrescricaoHome().enviar(cuidadosPaciente, getPrescricaoAtual());
+	}
+	
 	public void save(ActionEvent actionEvent) {
 		FacesMessage msg = new FacesMessage("Successful", "Welcome :" );
 		FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -372,6 +381,9 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public String onFlowProcess(FlowEvent event) {
+		if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
+			FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage("Erro ao gravar a prescrição", "" ));
+		}
 		
 		if(skip) {
 			skip = false;	//reset in case user goes back
