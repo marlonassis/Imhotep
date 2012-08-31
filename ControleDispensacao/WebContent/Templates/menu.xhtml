@@ -104,13 +104,23 @@
 		</p:submenu>
 		
 		<p:submenu label="Movimentação"
-				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação')}" >  
-			<p:menuitem value="Ajuste de Estoque" url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf" 
-						rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste de Estoque')}" />
-			<p:menuitem value="Bloqueio de Lote" url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf" 
-						rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Lote')}" />
-			<p:menuitem value="Entrada de Material" url="/PaginasWeb/Movimentacao/EntradaMaterial/entradaMaterial.jsf" 
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação')}" >
+			<p:submenu label="Centro Cirúrgico"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Centro Cirúrgico')}" >
+				<p:menuitem value="Cadastro de estoque" url="/PaginasWeb/Movimentacao/EstoqueCentroCirurgico/estoqueCentroCirurgico.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Cadastro de estoque')}" />
+				<p:menuitem value="Movimentação do Estoque" url="/PaginasWeb/Movimentacao/MovimentacaoEstoqueCentroCirurgico/movimentacaoEstoqueCentroCirurgico.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação do Estoque')}" />
+			</p:submenu>  
+			<p:submenu label="Farmácia"
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Farmácia')}" >  
+				<p:menuitem value="Ajuste de Estoque" url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste de Estoque')}" />
+				<p:menuitem value="Bloqueio de Lote" url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Lote')}" />
+				<p:menuitem value="Entrada de Material" url="/PaginasWeb/Movimentacao/EntradaMaterial/entradaMaterial.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Material')}" />
+			</p:submenu>
 		</p:submenu>
 		
 		<p:submenu label="Prescrição Médica" 
