@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
@@ -168,6 +169,18 @@ public class Estoque {
 	}
 	public void setValorUnitario(Double valorUnitario) {
 		this.valorUnitario = valorUnitario;
+	}
+	
+	@Transient
+	public String getDescricaoEstoqueCentroCirurgico(){
+		if(getMaterial() != null){
+			String descricao = getMaterial().getDescricao();
+			descricao = descricao.concat("; Lote: ").concat(lote);
+			descricao = descricao.concat("; Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(dataValidade));
+			descricao = descricao.concat("; Fabricante: ").concat(fabricante.getDescricao());
+			return descricao;
+		}
+		return null;
 	}
 	
 	@Override

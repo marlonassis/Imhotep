@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.negocio;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,10 @@ public class EstoqueHome extends PadraoHome<Estoque>{
 		return getBusca("select o from Estoque o where o.dataValidade >= now() and o.quantidade > 0 and o.bloqueado = 'N' and o.material.idMaterial = " + material.getIdMaterial() + " order by o.dataValidade"); 
 	}
 
+	public Collection<Estoque> getListaEstoqueCentroCirurgicoAutoComplete(String sql){
+		return super.getBusca("select o from Estoque as o where o.dataValidade >= now() and o.bloqueado = 'N' and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) order by o.material.descricao, o.lote ");
+	}
+	
 	//lista do estoque que contém os medicamentos que estão com a data de vencimento dentro do período
 	public List<Estoque> listaEstoqueRelatorioVencimentoPeriodo(Date dataIni, Date dataFim){
 		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();

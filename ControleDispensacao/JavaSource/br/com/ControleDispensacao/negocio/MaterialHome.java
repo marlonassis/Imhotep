@@ -3,7 +3,9 @@ package br.com.ControleDispensacao.negocio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -94,6 +96,11 @@ public class MaterialHome extends PadraoHome<Material>{
 	
 	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
 		return super.getBusca("select distinct o.material from Estoque o where o.quantidade > 0 and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) ");
+	}
+	
+	public Collection<Material> getListaMaterialPesquisaCentroCirurgicoAutoComplete(String sql){
+		Set<Material> buscaList = new HashSet<Material>(super.getBusca("select o.material from EstoqueCentroCirurgico as o where o.dataValidade >= now() and o.bloqueado = 'N' and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) order by o.material.descricao, o.lote "));
+		return new ArrayList<Material>(buscaList);
 	}
 	
 	@Override

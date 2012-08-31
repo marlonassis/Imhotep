@@ -1,15 +1,15 @@
 package br.com.ControleDispensacao.enums;
 
 public enum TipoCuidadosPacienteEnum {
-	NUT("Nutrição (SND)"),
-	SOR("Soroterapia, scalp,"),
-	MED("Medicações"),
-	MSC("Medicações SC, IM"),
-	MOR("Medicações orais"),
 	AER("Aerosol"),
-	MTO("Medicações tópicas"),
+	CEN("Cuidados de Enfermagem"),
+	MED("Medicações"),
+	MOR("Medicações orais"),
+	MSC("Medicações SC, IM"),
 	MSO("Medicações SOS"),
-	CEN("Cuidados de Enfermagem");
+	MTO("Medicações tópicas"),
+	NUT("Nutrição (SND)"),
+	SOR("Soroterapia, scalp,");
 	
 	private String label;
 	

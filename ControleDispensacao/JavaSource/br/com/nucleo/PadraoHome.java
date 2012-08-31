@@ -21,7 +21,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 	private boolean exibeMensagemAtualizacao = true;
 	private boolean exibeMensagemDelecao = true;
 	private boolean exibeMensagemInsercao = true;
-	
+
 	protected String getIdSessao(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		return session.getId();
@@ -285,6 +285,10 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		return lista;
 	}
 
+	protected void mensagem(String msg, String msg2){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,msg, msg2));
+	}
+	
 	public boolean isEdicaoGenerico(Object obj){
 		Object retId = null;
 		try{

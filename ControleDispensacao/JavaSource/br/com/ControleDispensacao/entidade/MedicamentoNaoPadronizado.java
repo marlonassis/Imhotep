@@ -43,7 +43,7 @@ public class MedicamentoNaoPadronizado {
 		return this.idMedicamentoNaoPadronizado;
 	}
 	
-	public void setIdMaterial(int idMedicamentoNaoPadronizado){
+	public void setIdMedicamentoNaoPadronizado(int idMedicamentoNaoPadronizado){
 		this.idMedicamentoNaoPadronizado = idMedicamentoNaoPadronizado;
 	}
 

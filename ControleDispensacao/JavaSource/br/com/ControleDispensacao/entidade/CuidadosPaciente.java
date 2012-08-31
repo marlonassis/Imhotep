@@ -1,11 +1,15 @@
 package br.com.ControleDispensacao.entidade;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,6 +22,7 @@ public class CuidadosPaciente {
 	private int idCuidadosPaciente;
 	private String descricao;
 	private TipoCuidadosPacienteEnum  tipoCuidadosPaciente;
+	private List<CuidadosPrescricao> cuidadosPrescricaoList;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_cuidados_paciente_id_cuidados_paciente_seq")
 	@Id
@@ -50,6 +55,15 @@ public class CuidadosPaciente {
 		this.tipoCuidadosPaciente = tipoCuidadosPaciente;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cuidadosPaciente")
+	public List<CuidadosPrescricao> getCuidadosPrescricaoList() {
+		return this.cuidadosPrescricaoList;
+	}
+
+	public void setCuidadosPrescricaoList(List<CuidadosPrescricao> cuidadosPrescricaoList) {
+		this.cuidadosPrescricaoList = cuidadosPrescricaoList;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
