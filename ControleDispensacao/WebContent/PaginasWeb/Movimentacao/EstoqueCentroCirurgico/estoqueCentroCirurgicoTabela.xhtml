@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dataTable id="tabelaEstoqueCentroCirurgico" 
+				 value="#{estoqueCentroCirurgicoConsulta.list}" 
+				 var="linha"
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idEstoqueCentroCirurgico}">
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Material" /></f:facet>
+			<h:outputText value="#{linha.material.descricao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Lote" /></f:facet>
+			<h:outputText value="#{linha.lote}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Fabricante" /></f:facet>
+			<h:outputText value="#{linha.fabricante.descricao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Validade" /></f:facet>
+			<h:outputText value="#{linha.dataValidade}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Bloqueado" /></f:facet>
+			<h:outputText value="#{linha.bloqueado.label}" />
+		</p:column>
+		
+		<p:column style="width:60px; text-align: center;" >
+			<f:facet name="header"><h:outputText value="" /></f:facet>
+			<p:commandLink  action="#{estoqueCentroCirurgicoHome.liberarLote(linha)}"
+							update="padraoTabView:tabelaEstoqueCentroCirurgico"
+							rendered="#{linha.bloqueado == 'S'}"
+							title="Liberar Lote" 
+							style="padding-right:10px;" >
+				Liberar
+			</p:commandLink>
+			<p:commandLink  onclick="bloqueioDialog.show()"
+							rendered="#{linha.bloqueado == 'N'}"
+							title="Bloquear Lote" 
+							style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{estoqueCentroCirurgicoHome.estoqueBloqueio}" />
+				Apagar
+			</p:commandLink>
+			
+		</p:column>  
+		
+	</p:dataTable>
+	<p:dialog header="Motivo Bloqueio" 
+			  closable="true" 
+			  modal="true"
+			  widgetVar="bloqueioDialog">
+		
+		<font color="red" >*</font><h:outputLabel for="motivo" value="Motivo:" /><br />
+		<p:inputTextarea id="motivo"
+						 rows="10"
+						 cols="30"
+						 value="#{estoqueCentroCirurgicoHome.estoqueBloqueio.motivoBloqueio}" />
+		<p:commandButton value="Gravar"
+						 oncomplete="bloqueioDialog.hide()"
+						 update="padraoTabView:pesquisaEstoqueCentroCirurgicoForm padraoTabView:tabelaEstoqueCentroCirurgico"
+						 action="#{estoqueCentroCirurgicoHome.bloqueioLote}" />
+	</p:dialog>
+</ui:composition>

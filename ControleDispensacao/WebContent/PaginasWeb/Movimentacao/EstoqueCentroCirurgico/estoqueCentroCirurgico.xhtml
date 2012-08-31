@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabEstoqueCentroCirurgico" title="Estoque do Centro Cirúrgico" >
+			<h:form id="estoqueCentroCirurgicoForm" prependId="false" >
+				<p:fieldset legend="Novo Estoque"
+							collapsed="#{!estoqueCentroCirurgicoHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" showDetail="true" />
+						<ui:include src="estoqueCentroCirurgicoEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!estoqueCentroCirurgicoHome.edicao}"
+			            					update="padraoTabView:tabelaEstoqueCentroCirurgico estoqueCentroCirurgicoForm"
+											action="#{estoqueCentroCirurgicoHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{estoqueCentroCirurgicoHome.edicao}"
+			            					update="padraoTabView:tabelaEstoqueCentroCirurgico estoqueCentroCirurgicoForm"
+											action="#{estoqueCentroCirurgicoHome.atualizar}"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{estoqueCentroCirurgicoHome.edicao}"
+											update="@parent" 
+											action="#{estoqueCentroCirurgicoHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaEstoqueCentroCirurgicoForm" prependId="false" >
+				<p:fieldset id="pesquisaEstoqueCentroCirurgicoFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="estoqueCentroCirurgicoConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaEstoqueCentroCirurgico" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{estoqueCentroCirurgicoConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaEstoqueCentroCirurgicoForm " />
+					
+			    </p:fieldset>
+				<p:growl/>
+				<ui:include src="estoqueCentroCirurgicoTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>

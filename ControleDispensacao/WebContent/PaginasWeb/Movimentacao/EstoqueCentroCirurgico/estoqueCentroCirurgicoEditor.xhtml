@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="estoqueCentroCirurgicoPanelGrid"
+				 columns="3" 
+				 width="100%" >
+				 
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="material" value="Material:" /><br />
+	  		<p:autoComplete id="estoque" 
+	  						required="true"
+	  						size="50"
+	  						minQueryLength="4"
+	  						converter="estoqueConversor"
+	  						title="Informe descrição do material"
+	  						immediate="true"
+	  						value="#{estoqueCentroCirurgicoHome.estoqueApoio}"
+							completeMethod="#{estoqueHome.getListaEstoqueCentroCirurgicoAutoComplete}" 
+							var="estoque" 
+							itemLabel="#{estoque.descricaoEstoqueCentroCirurgico}"
+							itemValue="#{estoque}"/>
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões" 
+							style="padding-top:8px"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="quantidadePadrao" value="Quantidade Padrão:"  /><br />
+			<p:inputText id="quantidadePadrao"
+						 onkeyup="apenasNumero(this);"
+						 value="#{estoqueCentroCirurgicoHome.instancia.quantidadePadrao}" 
+						 title="Quantidade de referência para nivelar a quantidade" />
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>
