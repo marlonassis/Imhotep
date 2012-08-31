@@ -53,6 +53,8 @@
         <mapping class="br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI"/>
         <mapping class="br.com.ControleDispensacao.entidade.CuidadosPaciente"/>
         <mapping class="br.com.ControleDispensacao.entidade.CuidadosPrescricao"/>
+        <mapping class="br.com.ControleDispensacao.entidade.EstoqueCentroCirurgico"/>
+        <mapping class="br.com.ControleDispensacao.entidade.EstoqueCentroCirurgicoLivro"/>
         
     </session-factory>
 </hibernate-configuration>
