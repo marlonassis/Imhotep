@@ -12,6 +12,7 @@ import br.com.ControleDispensacao.enums.TipoBooleanEnum;
 import br.com.ControleDispensacao.enums.TipoCuidadosPacienteEnum;
 import br.com.ControleDispensacao.enums.TipoIndicacaoEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
+import br.com.ControleDispensacao.enums.TipoMovimentacaoEnum;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoPrescricaoInadequadaEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
@@ -115,6 +116,14 @@ public class ItensPadrao{
 			tipoCuidadosPacienteEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return tipoCuidadosPacienteEnumItens;
+	}
+	
+	public List<SelectItem> getTipoMovimentacaoEnumItens(){
+		List<SelectItem> tipoMovimentacaoEnumItens = new ArrayList<SelectItem>();
+		for(TipoMovimentacaoEnum item : TipoMovimentacaoEnum.values()){
+			tipoMovimentacaoEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoMovimentacaoEnumItens;
 	}
 	
 }

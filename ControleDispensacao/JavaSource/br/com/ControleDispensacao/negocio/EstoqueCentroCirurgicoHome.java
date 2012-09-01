@@ -1,7 +1,10 @@
 package br.com.ControleDispensacao.negocio;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -42,6 +45,12 @@ public class EstoqueCentroCirurgicoHome extends PadraoHome<EstoqueCentroCirurgic
 		List<EstoqueCentroCirurgico> objs = super.getBusca("select o from EstoqueCentroCirurgico o where o.bloqueado = 'N' and o.lote = '"+lote+"'");
 		return objs.size() == 0;
 	}
+	
+	public List<EstoqueCentroCirurgico> getEstoqueCentroCirurgicoList(){
+		Set<EstoqueCentroCirurgico> set = new HashSet<EstoqueCentroCirurgico>(super.getBusca("select o from EstoqueCentroCirurgico o where o.bloqueado = 'N' order by o.material.descricao, o.lote, o.dataValidade"));
+		return new ArrayList<EstoqueCentroCirurgico>(set);
+	}
+	
 	
 	@Override
 	public boolean enviar() {
@@ -97,5 +106,5 @@ public class EstoqueCentroCirurgicoHome extends PadraoHome<EstoqueCentroCirurgic
 	public void setEstoqueBloqueio(EstoqueCentroCirurgico estoqueBloqueio) {
 		this.estoqueBloqueio = estoqueBloqueio;
 	}
-	
+
 }

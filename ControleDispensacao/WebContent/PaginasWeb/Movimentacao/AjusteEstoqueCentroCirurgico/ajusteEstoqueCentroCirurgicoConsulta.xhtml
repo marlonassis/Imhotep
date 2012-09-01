@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	
+	<h:panelGrid id="bloqueioLotePanelGridConsulta"
+				 columns="3" 
+				 width="100%" >
+		
+		<h:panelGroup>
+			<h:outputLabel for="loteConsulta" value="Lote:"  /><br />
+			<p:inputText id="loteConsulta" 
+						 value="#{estoqueConsulta.instancia.lote}" 
+						 title="Informe o lote do material" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="materialConsulta" value="Material:"  /><br />
+	  		<p:autoComplete id="materialConsulta" 
+	  						forceSelection="true"
+	  						value="#{estoqueConsulta.instancia.material}"
+							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
+							var="material"
+							title="Informe o grupo do sub-grupo"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões" 
+							style="padding-top:8px"/>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>

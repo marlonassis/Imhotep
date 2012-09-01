@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.ControleDispensacao.enums.TipoMovimentacaoEnum;
 
@@ -24,10 +25,12 @@ public class EstoqueCentroCirurgicoLivro {
 	private int idEstoqueCentroCirurgicoLivro;
 	private EstoqueCentroCirurgico estoqueCentroCirurgico;
 	private Integer quantidadeMovimentacao;
+	private Integer saldoAtual;
 	private TipoMovimentacaoEnum tipoMovimentacao;
 	private Integer saldoAnterior;
 	private Date dataMovimento;
 	private Profissional profissionalMovimentacao;
+	private String nomePaciente;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_centro_cirurgico_l_id_estoque_centro_cirurgico_l_seq")
 	@Id
@@ -50,12 +53,20 @@ public class EstoqueCentroCirurgicoLivro {
 		this.estoqueCentroCirurgico = estoqueCentroCirurgico;
 	}
 	
-	@Column(name = "in_quantidade_movimentacao")
+	@Transient
 	public Integer getQuantidadeMovimentacao() {
 		return quantidadeMovimentacao;
 	}
 	public void setQuantidadeMovimentacao(Integer quantidadeMovimentacao) {
 		this.quantidadeMovimentacao = quantidadeMovimentacao;
+	}
+	
+	@Column(name = "in_saldo_atual")
+	public Integer getSaldoAtual() {
+		return saldoAtual;
+	}
+	public void setSaldoAtual(Integer saldoAtual) {
+		this.saldoAtual = saldoAtual;
 	}
 	
 	@Column(name = "tp_movimentacao")
@@ -92,6 +103,15 @@ public class EstoqueCentroCirurgicoLivro {
 	public void setProfissionalMovimentacao(Profissional profissionalMovimentacao) {
 		this.profissionalMovimentacao = profissionalMovimentacao;
 	}
+	
+	@Column(name = "cv_nome_paciente")
+	public String getNomePaciente() {
+		return nomePaciente;
+	}
+	public void setNomePaciente(String nomePaciente) {
+		this.nomePaciente = nomePaciente;
+	}
+	
 	
 	@Override
 	public boolean equals(Object obj) {

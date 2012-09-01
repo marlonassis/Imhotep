@@ -1,6 +1,8 @@
 package br.com.ControleDispensacao.entidade;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
@@ -33,6 +37,7 @@ public class EstoqueCentroCirurgico {
 	private Date dataBloqueio;
 	private Profissional profissionalCadastro;
 	private Profissional profissionalBloqueio;
+	private List<EstoqueCentroCirurgicoLivro> estoqueCentroCirurgicoLivroList;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_centro_cirurgico_id_estoque_centro_cirurgico_seq")
 	@Id
@@ -139,6 +144,27 @@ public class EstoqueCentroCirurgico {
 	}
 	public void setProfissionalBloqueio(Profissional profissionalBloqueio) {
 		this.profissionalBloqueio = profissionalBloqueio;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "estoqueCentroCirurgico")
+	public List<EstoqueCentroCirurgicoLivro> getEstoqueCentroCirurgicoLivroList() {
+		return this.estoqueCentroCirurgicoLivroList;
+	}
+
+	public void setEstoqueCentroCirurgicoLivroList(List<EstoqueCentroCirurgicoLivro> estoqueCentroCirurgicoLivroList) {
+		this.estoqueCentroCirurgicoLivroList = estoqueCentroCirurgicoLivroList;
+	}
+	
+	@Transient
+	public String getDescricaoGeral(){
+		if(getMaterial() != null){
+			String descricao = getMaterial().getDescricao();
+			descricao = descricao.concat("; Lote: ").concat(lote);
+			descricao = descricao.concat("; Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(dataValidade));
+			descricao = descricao.concat("; Fabricante: ").concat(fabricante.getDescricao());
+			return descricao;
+		}
+		return null;
 	}
 	
 	@Override
