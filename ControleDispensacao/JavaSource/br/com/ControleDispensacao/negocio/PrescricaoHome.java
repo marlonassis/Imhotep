@@ -310,6 +310,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void finalizarPrescricao() throws IOException{
 		getPrescricaoAtual().setDispensavel(TipoStatusEnum.S);
 		getPrescricaoAtual().setDataConclusao(new Date());
+		getPrescricaoAtual().setProfissionalConclusao(Autenticador.getInstancia().getProfissionalAtual());
 		if(atualizarGenerico(getPrescricaoAtual()) != null){
 			setPrescricaoAtual(new Prescricao());
 			String paginaAtual = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI();
