@@ -28,7 +28,7 @@ public class JobBackUp implements Job{
 	        ProcessBuilder pb;  
 	        
 	        String nomeBanco = "db_farmacia_" + new SimpleDateFormat("HH:mm:ss").format(new Date());
-			pb = new ProcessBuilder(diretorioPostgres+"bin/pg_dump", "-i", "-h", "localhost", "-p", "5432","-U", "postgres", "-F", "p", "-b", "-v" ,"-f", diretorioBackup+"/"+nomeBanco+".sql", "db_farmacia");  
+			pb = new ProcessBuilder(diretorioPostgres+"bin/pg_dump", "-i", "-h", "localhost", "-p", "5432","-U", "postgres", "-F", "t", "-b", "-v" ,"-f", diretorioBackup+"/"+nomeBanco+".backup", "db_farmacia");  
 	        pb.environment().put("PGPASSWORD", "postgres");  
 	        pb.redirectErrorStream(true);  
 	        pb.start();   
