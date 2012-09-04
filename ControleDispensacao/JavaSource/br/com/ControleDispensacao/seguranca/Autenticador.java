@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import br.com.ControleDispensacao.auxiliar.ControleInstancia;
 import br.com.ControleDispensacao.auxiliar.ControleMenu;
 import br.com.ControleDispensacao.auxiliar.ControlePainel;
 import br.com.ControleDispensacao.auxiliar.ControleSenha;
@@ -18,6 +19,7 @@ import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
+import br.com.ControleDispensacao.negocio.PrescricaoHome;
 import br.com.nucleo.ConsultaGeral;
 import br.com.nucleo.utilidades.Utilities;
 
@@ -33,12 +35,7 @@ public class Autenticador {
 	private Collection<Unidade> unidades;
 
 	public static Autenticador getInstancia(){
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
-		if(session != null){
-			return (Autenticador) session.getAttribute("autenticador");
-		}else{
-			return null;
-		}
+		return new ControleInstancia<Autenticador>().instancia("autenticador");
 	}
 	
 	private void carregaUnidadesUsuario(){

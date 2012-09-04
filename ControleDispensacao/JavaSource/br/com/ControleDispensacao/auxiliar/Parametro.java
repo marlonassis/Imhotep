@@ -22,21 +22,23 @@ public class Parametro implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static Especialidade getEspecialidade(){
-		Profissional profissionaAtual = Autenticador.getInstancia().getProfissionalAtual();
-		if(profissionaAtual != null){
-			return profissionaAtual.getEspecialidade();
-		}else{
-			return null;
+		try{
+			Autenticador autenticador = Autenticador.getInstancia();
+			Profissional profissionaAtual =  autenticador == null ? null : autenticador.getProfissionalAtual();
+			if(profissionaAtual != null){
+				return profissionaAtual.getEspecialidade();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	private static String getDescricaoEspecialidade(){
 		Especialidade especialidade = getEspecialidade();
-		if(especialidade == null){
+		if(especialidade == null)
 			return "";
-		}else{
-			return especialidade.getDescricao();
-		}
+		return especialidade.getDescricao();
 	}
 	
 	public static boolean isUsuarioTeste(){
@@ -87,6 +89,23 @@ public class Parametro implements Serializable {
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
 		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:dsTipoMovimento)");
 		return cg.consultaUnica(sb, hashMap);
+	}
+	
+	private static String tipoConfiguracao(String parametro){
+		ConsultaGeral<String> cg = new ConsultaGeral<String>();
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("dsParametro", parametro);
+		StringBuilder sb = new StringBuilder("select o.valor from Configuracao o where");
+		sb.append(" to_ascii(o.nome) = to_ascii(:dsParametro)");
+		return cg.consultaUnica(sb, hashMap);
+	}
+	
+	public static String getDiretorioBackupControleDispensacao(){
+		return tipoConfiguracao("DiretorioBackupControleDispensacao");
+	}
+	
+	public static String getDiretorioPostgres(){
+		return tipoConfiguracao("DiretorioPostgres");
 	}
 	
 	public static TipoMovimento tipoMovimentoEntrada(){
