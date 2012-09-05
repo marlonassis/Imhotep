@@ -22,7 +22,7 @@ public class RunQuartz implements ServletContextListener {
 			// Trigger the job to run now, and then repeat every 40 seconds
 			Trigger trigger = newTrigger().withIdentity("triggerRunBackUp")
 					.startNow()
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ?"))
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 * * * ?"))
 					.build();
 			// Tell quartz to schedule the job using our trigger
 			StdSchedulerFactory.getDefaultScheduler().scheduleJob(job, trigger);

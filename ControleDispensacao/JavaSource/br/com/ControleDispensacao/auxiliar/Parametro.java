@@ -100,8 +100,16 @@ public class Parametro implements Serializable {
 		return cg.consultaUnica(sb, hashMap);
 	}
 	
+	public static String getNomeBancoFarmacia(){
+		return tipoConfiguracao("NomeBancoPostgres");
+	}
+	
 	public static String getDiretorioBackupControleDispensacao(){
 		return tipoConfiguracao("DiretorioBackupControleDispensacao");
+	}
+	
+	public static String getBackupAtivo(){
+		return tipoConfiguracao("BackupAtivo");
 	}
 	
 	public static String getDiretorioPostgres(){

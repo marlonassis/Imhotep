@@ -20,22 +20,25 @@ public class JobBackUp implements Job{
 	}
 	
 	private static void realizaBackup(){
-	    try{
-	    	String diretorioBackup = Parametro.getDiretorioBackupControleDispensacao();
-	    	String diretorioPostgres = Parametro.getDiretorioPostgres();
-	    	diretorioBackup += new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-			criarDiretorio(diretorioBackup);
-	        ProcessBuilder pb;  
-	        
-	        String nomeBanco = "db_farmacia_" + new SimpleDateFormat("HH:mm:ss").format(new Date());
-			pb = new ProcessBuilder(diretorioPostgres+"bin/pg_dump", "-i", "-h", "localhost", "-p", "5432","-U", "postgres", "-F", "t", "-b", "-v" ,"-f", diretorioBackup+"/"+nomeBanco+".backup", "db_farmacia");  
-	        pb.environment().put("PGPASSWORD", "postgres");  
-	        pb.redirectErrorStream(true);  
-	        pb.start();   
-        }catch(Exception ex){  
-           ex.printStackTrace();
-        }  
-
+		String backupAtivo = Parametro.getBackupAtivo();
+		if(backupAtivo.equals("S")){
+		    try{
+		    	String diretorioBackup = Parametro.getDiretorioBackupControleDispensacao();
+		    	String diretorioPostgres = Parametro.getDiretorioPostgres();
+		    	String banco = Parametro.getNomeBancoFarmacia();
+		    	diretorioBackup += new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+				criarDiretorio(diretorioBackup);
+		        ProcessBuilder pb;  
+		        
+		        String nomeBanco = banco + "_" + new SimpleDateFormat("HH:mm:ss").format(new Date());
+				pb = new ProcessBuilder(diretorioPostgres+"bin/pg_dump", "-i", "-h", "localhost", "-p", "5432","-U", "postgres", "-F", "t", "-b", "-v" ,"-f", diretorioBackup+"/"+nomeBanco, banco);  
+		        pb.environment().put("PGPASSWORD", "postgres");  
+		        pb.redirectErrorStream(true);
+		        pb.start();   
+	        }catch(Exception ex){  
+	           ex.printStackTrace();
+	        }
+		}
 	}
 
 	private static void criarDiretorio(String diretorioBackup) throws IOException {
