@@ -55,17 +55,17 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 	}
 
 	public void procurarLote() throws IOException{
-		Estoque estoque = existeLote();
+		Estoque estoque = existeLote(getInstancia().getLote());
 		loteEncontrado = estoque != null;
 		if(loteEncontrado){
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/ControleDispensacao/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf?lote="+estoque.getLote());
 		}
 	}
 	
-	private Estoque existeLote() {
+	private Estoque existeLote(String lote) {
 		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("lote", getInstancia().getLote());
+		hashMap.put("lote", lote);
 		StringBuilder sb = new StringBuilder("select o from Estoque o where o.lote = :lote");
 		Estoque estoqueAtual = cg.consultaUnica(sb, hashMap);
 		

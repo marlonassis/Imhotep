@@ -70,10 +70,15 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		}
 	}
     
+	protected void preEnvio(){
+		
+	}
+	
 	@Override
 	public boolean enviar() {
 		boolean ret = false;
 		try{
+			preEnvio();
 			iniciarTransacao();
 			session.save(instancia);  
 			session.flush();  
@@ -103,7 +108,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		return ret;
 	}
 
-	public void aposEnviar() {
+	protected void aposEnviar() {
 		
 	}
 

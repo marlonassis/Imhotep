@@ -56,6 +56,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.EstoqueCentroCirurgico"/>
         <mapping class="br.com.ControleDispensacao.entidade.EstoqueCentroCirurgicoLivro"/>
         <mapping class="br.com.ControleDispensacao.entidade.Configuracao"/>
+        <mapping class="br.com.ControleDispensacao.entidade.PacienteEntrada"/>
         
     </session-factory>
 </hibernate-configuration>

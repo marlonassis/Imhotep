@@ -11,7 +11,7 @@ import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.nucleo.PadraoHome;
 
-@ManagedBean(name="cidadeHome")
+@ManagedBean(name="doacaoHome")
 @SessionScoped
 public class DoacaoHome extends PadraoHome<Doacao>{
 	

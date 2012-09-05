@@ -10,6 +10,8 @@ import javax.faces.model.SelectItem;
 
 import br.com.ControleDispensacao.enums.TipoBooleanEnum;
 import br.com.ControleDispensacao.enums.TipoCuidadosPacienteEnum;
+import br.com.ControleDispensacao.enums.TipoEscolaridadeEnum;
+import br.com.ControleDispensacao.enums.TipoEstadoCivilEnum;
 import br.com.ControleDispensacao.enums.TipoIndicacaoEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoMovimentacaoEnum;
@@ -125,5 +127,20 @@ public class ItensPadrao{
 		}
 		return tipoMovimentacaoEnumItens;
 	}
+
+	public List<SelectItem> getTipoEstadoCivilEnumItens(){
+		List<SelectItem> tipoEstadoCivilEnumItens = new ArrayList<SelectItem>();
+		for(TipoEstadoCivilEnum item : TipoEstadoCivilEnum.values()){
+			tipoEstadoCivilEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoEstadoCivilEnumItens;
+	}
 	
+	public List<SelectItem> getTipoEscolaridadeEnumItens(){
+		List<SelectItem> tipoEscolaridadeEnumItens = new ArrayList<SelectItem>();
+		for(TipoEscolaridadeEnum item : TipoEscolaridadeEnum.values()){
+			tipoEscolaridadeEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoEscolaridadeEnumItens;
+	}
 }

@@ -25,9 +25,7 @@ import br.com.nucleo.utilidades.Utilities;
 @Table(name = "tb_paciente")
 public class Paciente {
 	private int idPaciente;
-	private SituacaoPaciente situacaoPaciente;
 	private Unidade unidadeCadastro;
-	private Unidade unidadeAlocacao;
 	private Cidade cidade;
 	private String nome;
 	private TipoLogradouroEnum tipoLogradouro;
@@ -56,30 +54,12 @@ public class Paciente {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_situacao_paciente")
-	public SituacaoPaciente getSituacaoPaciente() {
-		return situacaoPaciente;
-	}
-	public void setSituacaoPaciente(SituacaoPaciente situacaoPaciente) {
-		this.situacaoPaciente = situacaoPaciente;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_unidade_cadastro")
 	public Unidade getUnidadeCadastro() {
 		return unidadeCadastro;
 	}
 	public void setUnidadeCadastro(Unidade unidadeCadastro) {
 		this.unidadeCadastro = unidadeCadastro;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade_alocacao")
-	public Unidade getUnidadeAlocacao() {
-		return unidadeAlocacao;
-	}
-	public void setUnidadeAlocacao(Unidade unidadeAlocacao) {
-		this.unidadeAlocacao = unidadeAlocacao;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

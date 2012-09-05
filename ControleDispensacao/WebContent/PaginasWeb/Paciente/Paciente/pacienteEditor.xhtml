@@ -8,10 +8,20 @@
 				 columns="3" 
 				 width="100%" >
 		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="numeroSus" value="Número do cartão do SUS:"  /><br />
+			<p:inputText id="numeroSus" 
+						 value="#{pacienteHome.instancia.numeroSus}" 
+						 required="true"
+						 title="Informe o número do cartão do SUS" />
+			<p:commandButton action="#{pacienteHome.procurarPaciente()}"
+							 image="ui-icon ui-icon-search" 
+							 title="Procurar paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="nome" value="Nome:"  /><br />
 			<p:inputText id="nome" 
 						 value="#{pacienteHome.instancia.nome}" 
-						 required="true"
 						 title="Informe o nome do paciete" />
 		</h:panelGroup>
 		
@@ -20,18 +30,9 @@
 			<p:inputMask id="dataNascimento"
 						 mask="99/99/9999"
 						 value="#{pacienteHome.instancia.dataNascimento}"
-						 title="Data de nascimento do paciente"
-						 required="false">
+						 title="Data de nascimento do paciente">
 				<f:convertDateTime pattern="dd/MM/yyyy"  />
 			</p:inputMask>
-		</h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="numeroSus" value="Número do cartão do SUS:"  /><br />
-			<p:inputText id="numeroSus" 
-						 value="#{pacienteHome.instancia.numeroSus}" 
-						 required="true"
-						 title="Informe o número do cartão do SUS" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
@@ -56,8 +57,7 @@
 						 mask="(99)9999-9999"
 						 value="#{pacienteHome.instancia.telefone}"
 						 title="Informe o telefone do paciente"
-						 converter="telefoneConversor"
-						 required="false"/>
+						 converter="telefoneConversor"/>
 		</h:panelGroup>
 		
 		<h:panelGroup>
@@ -88,7 +88,7 @@
 		<h:panelGroup>
 			<h:outputLabel for="complemento" value="Complemento:"  /><br />
 			<p:inputText id="complemento" 
-						 value="#{pacienteHome.instancia.numero}" 
+						 value="#{pacienteHome.instancia.complemento}" 
 						 title="Informe o número da casa" />
 		</h:panelGroup>
 		
@@ -102,6 +102,7 @@
 		<h:panelGroup style="align:left;" >
 			<h:outputLabel for="cidade" value="Cidade:"  /><br />
 	  		<p:autoComplete id="cidade" 
+	  						minQueryLength="4"
 	  						value="#{pacienteHome.instancia.cidade}"
 	  						forceSelection="true"
 							completeMethod="#{cidadeHome.getListaCidadeAutoComplete}" 
@@ -116,46 +117,13 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
-	  		<p:autoComplete id="unidade" 
-	  						forceSelection="true"
-	  						value="#{pacienteHome.instancia.unidadeAlocacao}"
-							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
-							var="unidade" 
-							required="true"
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}" 
-							converter="unidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
-		</h:panelGroup>
-		
-		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="sexo" value="Sexo:"  /><br />
 			<h:selectOneRadio id="sexo"
 							  value="#{pacienteHome.instancia.sexo}" 
-							  required="true" 
 							  title="Informe se o cliente é homem ou mulher" >
 				 <f:selectItems value="#{itensPadrao.sexoEnumItens}"/>
 			</h:selectOneRadio>
 		</h:panelGroup>
-		
-		<h:panelGroup> 
-			<font color="red" >*</font><h:outputLabel for="situacao" value="Situação:"  /><br />
-			<p:selectOneMenu id="situacao"
-							 value="#{pacienteHome.instancia.situacaoPaciente}" 
-							 effect="fade" 
-							 required="true"
-							 converter="situacaoPacienteConversor">
-	            <f:selectItem itemLabel="Selecione..." 
-	            			  itemValue="" /> 
-	            <f:selectItems value="#{situacaoPacienteConsulta.list}" 
-	            			   var="situacaoPaciente" 
-	            			   itemLabel="#{situacaoPaciente.descricao}" 
-	            			   itemValue="#{situacaoPaciente}"/>  
-        	</p:selectOneMenu>
-        </h:panelGroup>
 		
 	</h:panelGrid>
 </ui:composition>

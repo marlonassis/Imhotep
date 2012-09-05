@@ -37,6 +37,8 @@
 			</p:submenu>
 			<p:submenu label="Paciente"
 					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Paciente')}">
+				<p:menuitem value="Entrada de Paciente" url="/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Paciente')}" />
 				<p:menuitem value="Pacientes" url="/PaginasWeb/Paciente/Paciente/paciente.jsf" 
 							rendered="#{controleMenu.menuAutorizadoStringList.contains('Pacientes')}" />
 				<p:menuitem value="Situação do Paciente" url="/PaginasWeb/Paciente/SituacaoPaciente/situacaoPaciente.jsf" 

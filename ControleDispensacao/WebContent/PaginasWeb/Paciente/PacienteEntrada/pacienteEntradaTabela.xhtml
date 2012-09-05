@@ -5,45 +5,47 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaPaciente" 
-					value="#{pacienteConsulta.list}" 
+	<p:dataTable 	id="tabelaPacienteEntrada" 
+					value="#{pacienteEntradaConsulta.list}" 
 					var="linha"
 					dblClickSelect="true"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idPaciente}">
+					rowKey="#{linha.idPacienteEntrada}">
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-			<h:outputText value="#{linha.nome}" />
+			<f:facet name="header"><h:outputText value="Unidade de alocação" /></f:facet>
+			<h:outputText value="#{linha.unidadeAlocacao}" />
 		</p:column>
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Sexo" /></f:facet>
-			<h:outputText value="#{linha.sexo.label}" />
+			<f:facet name="header"><h:outputText value="Data de entrada" /></f:facet>
+			<h:outputText value="#{linha.dataEntrada}" >
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
 		</p:column>
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Número do SUS" /></f:facet>
-			<h:outputText value="#{linha.numeroSus}" />
+			<f:facet name="header"><h:outputText value="Situação" /></f:facet>
+			<h:outputText value="#{linha.situacaoPaciente.descricao}" />
 		</p:column>
 					
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:pacienteForm" 
+			<p:commandLink update="padraoTabView:pacienteEntradaForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{pacienteHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{pacienteEntradaHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{pacienteHome.apagar()}"
-							update="tabelaPaciente padraoTabView:pacienteForm" 
+			<p:commandLink  action="#{pacienteEntradaHome.apagar()}"
+							update="tabelaPacienteEntrada padraoTabView:pacienteEntradaForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 							title="Apagar" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{pacienteHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{pacienteEntradaHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  
