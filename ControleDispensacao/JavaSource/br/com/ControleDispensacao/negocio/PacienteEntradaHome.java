@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,7 +45,7 @@ public class PacienteEntradaHome extends PadraoHome<PacienteEntrada>{
 		if(paciente == null){
 			setInstancia(new PacienteEntrada());
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
-			super.mensagem("O número do SUS informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo usuário.");
+			super.mensagem("O número do SUS informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);
 		}else{
 			getInstancia().setPaciente(paciente);
 		}

@@ -7,6 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -290,8 +291,8 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		return lista;
 	}
 
-	protected void mensagem(String msg, String msg2){
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,msg, msg2));
+	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
 	}
 	
 	public boolean isEdicaoGenerico(Object obj){

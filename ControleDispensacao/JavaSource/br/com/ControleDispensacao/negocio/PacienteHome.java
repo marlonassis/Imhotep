@@ -37,7 +37,7 @@ public class PacienteHome extends PadraoHome<Paciente>{
 			PacienteEntradaHome.getInstanciaHome().getInstancia().setPaciente(paciente);
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
 		}else{
-			super.mensagem("O número do SUS informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo usuário.");
+			super.mensagem("O número do SUS informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);
 		}
 	}
 	

@@ -205,16 +205,16 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void inserirItem(){
 		if(!formularioDoseVazio(getDose()) && liberaDose(getDose().getPrescricaoItem().getMaterial(), getDose())){
 			if(getPrescricaoAtual().getIdPrescricao() == 0){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição.", ""));
+				super.mensagem("Ocorrreu erro ao gravar a prescrição.", "", FacesMessage.SEVERITY_ERROR);
 				return;
 			}
 			getDose().getPrescricaoItem().setPrescricao(getPrescricaoAtual());
 			if(!new ControlePrescricaoItem().gravaPrescricaoItem(getDose().getPrescricaoItem())){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a prescrição item.", ""));
+				super.mensagem("Ocorrreu erro ao gravar a prescrição item.", "", FacesMessage.SEVERITY_ERROR);
 				return;
 			}
 			if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(getDose())){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu erro ao gravar a dose.", ""));
+				super.mensagem("Ocorrreu erro ao gravar a dose.", "", FacesMessage.SEVERITY_ERROR);
 				return;
 			}
 			novaDose();

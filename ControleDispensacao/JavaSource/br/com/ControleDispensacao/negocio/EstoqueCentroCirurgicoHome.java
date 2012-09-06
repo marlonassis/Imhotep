@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -58,7 +59,7 @@ public class EstoqueCentroCirurgicoHome extends PadraoHome<EstoqueCentroCirurgic
 			inicializarInstancia(getInstancia());
 			return super.enviar();
 		}else{
-			super.mensagem("Esse lote já está cadastrado.", "Faça uma busca no estoque e atualize-o.");
+			super.mensagem("Esse lote já está cadastrado.", "Faça uma busca no estoque e atualize-o.", FacesMessage.SEVERITY_ERROR);
 		}
 		return false;
 	}
@@ -81,7 +82,7 @@ public class EstoqueCentroCirurgicoHome extends PadraoHome<EstoqueCentroCirurgic
 	
 	public void bloqueioLote(){
 		if(getEstoqueBloqueio().getMotivoBloqueio().isEmpty()){
-			super.mensagem("Informe o motivo do bloqueio", "O motivo é obrigatório.");
+			super.mensagem("Informe o motivo do bloqueio", "O motivo é obrigatório.", FacesMessage.SEVERITY_ERROR);
 		}else{
 			processoAtualizacao();
 		}

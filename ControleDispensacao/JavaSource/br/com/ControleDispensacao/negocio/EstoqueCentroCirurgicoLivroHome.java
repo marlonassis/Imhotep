@@ -2,6 +2,7 @@ package br.com.ControleDispensacao.negocio;
 
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -24,7 +25,7 @@ public class EstoqueCentroCirurgicoLivroHome extends PadraoHome<EstoqueCentroCir
 				super.novaInstancia();
 			return ret;
 		}else
-			super.mensagem("Quantidade em estoque está abaixo do solicitado.", "Consulte o estoque deste material para ver o saldo atual.");
+			super.mensagem("Quantidade em estoque está abaixo do solicitado.", "Consulte o estoque deste material para ver o saldo atual.", FacesMessage.SEVERITY_ERROR);
 		return false;
 	}
 
