@@ -382,8 +382,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public String onFlowProcess(FlowEvent event) {
-		if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
-			FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage("Erro ao gravar a prescrição", "" ));
+		if(event.getOldStep().equals("pacienteTab")){
+			if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
+				FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage("Erro ao gravar a prescrição", "" ));
+			}
 		}
 		
 		if(skip) {

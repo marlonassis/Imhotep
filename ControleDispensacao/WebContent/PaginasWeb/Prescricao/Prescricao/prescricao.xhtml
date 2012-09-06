@@ -22,7 +22,7 @@
 					<p:tab id="pacienteTab" title="Paciente">
 						<p:panel header="Detalhes do paciente">
 							<p:growl showDetail="true" />
-							<h:panelGrid id="prescricaoPanelGrid"
+							<h:panelGrid id="pacientePanelGrid"
 										 columns="4"
 										 width="100%" >
 								
@@ -38,9 +38,7 @@
 													var="paciente" 
 													itemLabel="#{paciente.nomeIdade}"
 													itemValue="#{paciente}"
-													converter="pacienteConversor">
-										<p:ajax event="itemSelect" update="padraoTabView:prescricaoPanelGrid" />
-									</p:autoComplete>
+													converter="pacienteConversor"/>
 									<h:graphicImage value="/Imagens/list16.png"
 													title="Ao digitar aparecerá algumas sugestões" 
 													style="padding-top:8px"/>
@@ -68,7 +66,7 @@
 									<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade de Alocação:" /><br />
 							  		<p:autoComplete id="unidade" 
 							  						forceSelection="true"
-							  						value="#{prescricaoHome.prescricaoAtual.paciente.unidadeAlocacao}"
+							  						value="#{prescricaoHome.prescricaoAtual.unidade}"
 													completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
 													var="unidade"
 													title="Unidade onde está alocado o paciente" 
