@@ -9,8 +9,8 @@ import javax.faces.bean.RequestScoped;
 import br.com.ControleDispensacao.entidade.CuidadosPaciente;
 import br.com.ControleDispensacao.entidade.CuidadosPrescricao;
 import br.com.ControleDispensacao.negocio.PrescricaoHome;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoControle;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoControle;
 
 @ManagedBean(name="controleCuidadosPrescricao")
 @RequestScoped

@@ -9,8 +9,8 @@ import javax.faces.bean.SessionScoped;
 import br.com.ControleDispensacao.entidade.EstoqueCentroCirurgicoLivro;
 import br.com.ControleDispensacao.enums.TipoMovimentacaoEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="estoqueCentroCirurgicoLivroHome")
 @SessionScoped

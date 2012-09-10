@@ -9,7 +9,7 @@ import br.com.ControleDispensacao.entidade.Doacao;
 import br.com.ControleDispensacao.entidade.Hospital;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="doacaoHome")
 @SessionScoped

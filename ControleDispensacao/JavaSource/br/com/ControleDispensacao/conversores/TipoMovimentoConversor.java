@@ -10,7 +10,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.ControleDispensacao.entidade.TipoMovimento;
-import br.com.nucleo.ConsultaGeral;
+import br.com.remendo.ConsultaGeral;
 
 @FacesConverter(value="tipoMovimentoConversor")
 public class TipoMovimentoConversor implements Converter {

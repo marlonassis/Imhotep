@@ -10,7 +10,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.ControleDispensacao.entidade.Especialidade;
-import br.com.nucleo.ConsultaGeral;
+import br.com.remendo.ConsultaGeral;
 
 @FacesConverter(value="especialidadeConversor")
 public class EspecialidadeConversor implements Converter {

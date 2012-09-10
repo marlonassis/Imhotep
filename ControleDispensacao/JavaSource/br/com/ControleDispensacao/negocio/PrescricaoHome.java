@@ -36,8 +36,8 @@ import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="prescricaoHome")
 @SessionScoped
@@ -55,11 +55,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private Integer quantidadeDoses;
 	private Integer quantidadePorDose;
 	private Integer intervaloEntreDoses;
-
+	
 	private Dose dose = new Dose();
 	
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
 
+	public static String FLUXO_ATUAL_PRESCRICAO = null;
+	
 	public static PrescricaoHome getInstanciaHome(){
 		return new ControleInstancia<PrescricaoHome>().instancia("prescricaoHome");
 	}
@@ -382,6 +384,8 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public String onFlowProcess(FlowEvent event) {
+		PrescricaoHome.FLUXO_ATUAL_PRESCRICAO = event.getNewStep();
+		
 		if(event.getOldStep().equals("pacienteTab")){
 			if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
 				FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage("Erro ao gravar a prescrição", "" ));

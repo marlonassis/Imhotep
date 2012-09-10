@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.Painel;
-import br.com.nucleo.utilidades.Utilities;
+import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean(name="controlePainel")
 @SessionScoped

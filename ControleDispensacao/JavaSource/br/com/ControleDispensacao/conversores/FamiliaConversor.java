@@ -10,7 +10,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.ControleDispensacao.entidade.Familia;
-import br.com.nucleo.ConsultaGeral;
+import br.com.remendo.ConsultaGeral;
 
 @FacesConverter(value="familiaConversor")
 public class FamiliaConversor implements Converter {

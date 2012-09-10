@@ -10,7 +10,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.ControleDispensacao.entidade.TipoMaterial;
-import br.com.nucleo.ConsultaGeral;
+import br.com.remendo.ConsultaGeral;
 
 @FacesConverter(value="tipoMaterialConversor")
 public class TipoMaterialConversor implements Converter {

@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.utilidades.Utilities;
+import br.com.remendo.utilidades.Utilities;
 
 public class ControleSenha {	
 	public static ControleSenha getInstancia(){

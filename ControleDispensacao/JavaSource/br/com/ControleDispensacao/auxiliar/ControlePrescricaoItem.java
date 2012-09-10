@@ -11,7 +11,7 @@ import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) {

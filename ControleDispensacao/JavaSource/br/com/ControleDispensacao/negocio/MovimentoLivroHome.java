@@ -6,7 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import br.com.ControleDispensacao.entidade.MovimentoLivro;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="movimentoLivroHome")
 @SessionScoped

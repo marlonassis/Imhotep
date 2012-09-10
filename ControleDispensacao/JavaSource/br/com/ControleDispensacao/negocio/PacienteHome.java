@@ -15,8 +15,8 @@ import br.com.ControleDispensacao.auxiliar.ControleInstancia;
 import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="pacienteHome")
 @SessionScoped

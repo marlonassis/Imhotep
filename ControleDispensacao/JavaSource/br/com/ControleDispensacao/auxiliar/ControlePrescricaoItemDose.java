@@ -13,7 +13,7 @@ import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoControle;
+import br.com.remendo.PadraoControle;
 
 public class ControlePrescricaoItemDose extends PadraoControle{
 	

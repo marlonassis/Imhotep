@@ -15,7 +15,7 @@
 	</navigation-rule>
 	 
 	<lifecycle>
-		<phase-listener>br.com.nucleo.gerenciador.GerenciadorRequisicao</phase-listener>
+		<phase-listener>br.com.remendo.gerenciador.GerenciadorRequisicao</phase-listener>
 	</lifecycle>
 
 

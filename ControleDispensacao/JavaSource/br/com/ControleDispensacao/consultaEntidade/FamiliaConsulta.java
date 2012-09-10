@@ -10,8 +10,8 @@ import br.com.ControleDispensacao.entidade.Familia;
 import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.SubGrupo;
 import br.com.ControleDispensacao.negocio.SubGrupoHome;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoConsulta;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoConsulta;
 
 @ManagedBean(name="familiaConsulta")
 @SessionScoped

@@ -9,8 +9,8 @@ import javax.faces.bean.SessionScoped;
 import br.com.ControleDispensacao.entidade.AutorizaPainel;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Usuario;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="autorizaPainelHome")
 @SessionScoped

@@ -13,7 +13,7 @@ import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.TipoMovimento;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.ConsultaGeral;
+import br.com.remendo.ConsultaGeral;
 
 @ManagedBean(name="parametro")
 @ViewScoped

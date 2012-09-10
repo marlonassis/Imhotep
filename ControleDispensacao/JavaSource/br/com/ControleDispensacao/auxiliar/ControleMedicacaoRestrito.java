@@ -11,7 +11,7 @@ import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoControle;
+import br.com.remendo.PadraoControle;
 
 public class ControleMedicacaoRestrito extends PadraoControle{
 	

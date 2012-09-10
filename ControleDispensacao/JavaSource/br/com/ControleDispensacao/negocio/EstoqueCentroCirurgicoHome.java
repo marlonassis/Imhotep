@@ -14,7 +14,7 @@ import br.com.ControleDispensacao.entidade.Estoque;
 import br.com.ControleDispensacao.entidade.EstoqueCentroCirurgico;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="estoqueCentroCirurgicoHome")
 @SessionScoped

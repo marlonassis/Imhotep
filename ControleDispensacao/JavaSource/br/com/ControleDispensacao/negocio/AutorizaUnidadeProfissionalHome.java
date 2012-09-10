@@ -9,7 +9,7 @@ import br.com.ControleDispensacao.entidade.AutorizaUnidadeProfissional;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="autorizaUnidadeProfissionalHome")
 @SessionScoped

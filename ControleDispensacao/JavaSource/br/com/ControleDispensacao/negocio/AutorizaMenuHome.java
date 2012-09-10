@@ -15,8 +15,8 @@ import org.primefaces.model.DualListModel;
 import br.com.ControleDispensacao.comparador.MenuComparador;
 import br.com.ControleDispensacao.entidade.AutorizaMenu;
 import br.com.ControleDispensacao.entidade.Menu;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="autorizaMenuHome")
 @SessionScoped

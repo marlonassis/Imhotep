@@ -10,7 +10,7 @@ import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
 import br.com.ControleDispensacao.entidade.PrescricaoItemEstoqueSaida;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="dosagemHome")
 @SessionScoped

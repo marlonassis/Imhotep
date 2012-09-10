@@ -20,8 +20,8 @@ import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.negocio.PrescricaoHome;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.utilidades.Utilities;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean(name="autenticador")
 @SessionScoped

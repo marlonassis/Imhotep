@@ -8,7 +8,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.Especialidade;
 import br.com.ControleDispensacao.entidade.Material;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="especialidadeHome")
 @SessionScoped

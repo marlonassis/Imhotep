@@ -21,9 +21,9 @@ import br.com.ControleDispensacao.entidade.MovimentoGeral;
 import br.com.ControleDispensacao.entidade.MovimentoLivro;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
-import br.com.nucleo.utilidades.Utilities;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
+import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean(name="ajusteEstoqueHome")
 @SessionScoped

@@ -7,8 +7,8 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.PacienteEntrada;
 import br.com.ControleDispensacao.negocio.PacienteEntradaHome;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoConsulta;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoConsulta;
 
 @ManagedBean(name="pacienteEntradaConsulta")
 @SessionScoped

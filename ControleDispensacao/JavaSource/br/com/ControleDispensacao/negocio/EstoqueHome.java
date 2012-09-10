@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import br.com.ControleDispensacao.entidade.Estoque;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="estoqueHome")
 @SessionScoped

@@ -6,8 +6,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoConsulta;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoConsulta;
 
 @ManagedBean(name="liberaMaterialEspecialidadeConsulta")
 @SessionScoped

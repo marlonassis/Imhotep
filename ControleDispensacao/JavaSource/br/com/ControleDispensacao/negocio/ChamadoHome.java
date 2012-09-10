@@ -11,7 +11,7 @@ import org.apache.commons.mail.HtmlEmail;
 import br.com.ControleDispensacao.entidade.Chamado;
 import br.com.ControleDispensacao.enums.TipoBooleanEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="chamadoHome")
 @SessionScoped

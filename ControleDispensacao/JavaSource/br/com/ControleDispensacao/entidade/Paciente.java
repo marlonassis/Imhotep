@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
-import br.com.nucleo.utilidades.Utilities;
+import br.com.remendo.utilidades.Utilities;
 
 @Entity
 @Table(name = "tb_paciente")

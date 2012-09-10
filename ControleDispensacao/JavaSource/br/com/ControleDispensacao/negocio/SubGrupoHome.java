@@ -8,8 +8,8 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.SubGrupo;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoHome;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="subGrupoHome")
 @SessionScoped

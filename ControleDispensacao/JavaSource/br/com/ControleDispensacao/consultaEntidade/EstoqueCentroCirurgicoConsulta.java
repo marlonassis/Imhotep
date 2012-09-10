@@ -6,8 +6,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.EstoqueCentroCirurgico;
-import br.com.nucleo.ConsultaGeral;
-import br.com.nucleo.PadraoConsulta;
+import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoConsulta;
 
 @ManagedBean(name="estoqueCentroCirurgicoConsulta")
 @SessionScoped

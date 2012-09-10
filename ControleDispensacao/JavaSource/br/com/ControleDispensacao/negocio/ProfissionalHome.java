@@ -14,8 +14,8 @@ import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.nucleo.PadraoHome;
-import br.com.nucleo.utilidades.Utilities;
+import br.com.remendo.PadraoHome;
+import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean(name="profissionalHome")
 @SessionScoped
