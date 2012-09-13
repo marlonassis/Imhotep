@@ -12,6 +12,14 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class CuidadosPrescricaoHome extends PadraoHome<CuidadosPrescricao>{
 
+	public CuidadosPrescricaoHome(){
+		super();
+	}
+	
+	public CuidadosPrescricaoHome(CuidadosPrescricao cuidadosPrescricao){
+		setInstancia(cuidadosPrescricao);
+	}
+	
 	public boolean enviar(CuidadosPaciente cuidadosPaciente, Prescricao prescricao) {
 		getInstancia().setCuidadosPaciente(cuidadosPaciente);
 		getInstancia().setPrescricao(prescricao);

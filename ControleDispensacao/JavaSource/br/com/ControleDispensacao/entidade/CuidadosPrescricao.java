@@ -16,6 +16,7 @@ public class CuidadosPrescricao {
 	private int idCuidadosPrescricao;
 	private Prescricao prescricao;
 	private CuidadosPaciente cuidadosPaciente;
+	private String descricaoOutros;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_cuidados_prescricao_id_cuidados_prescricao_seq")
 	@Id
@@ -47,6 +48,14 @@ public class CuidadosPrescricao {
 
 	public void setCuidadosPaciente(CuidadosPaciente cuidadosPaciente) {
 		this.cuidadosPaciente = cuidadosPaciente;
+	}
+	
+	@Column(name = "ds_descricao_outros")
+	public String getDescricaoOutros() {
+		return descricaoOutros;
+	}
+	public void setDescricaoOutros(String descricaoOutros) {
+		this.descricaoOutros = descricaoOutros;
 	}
 	
 	@Override

@@ -6,4 +6,6 @@ public class Constantes {
 	public static final String PAGINA_ENTRADA_PACIENTE = "/ControleDispensacao/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.jsf";
 	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
 	
+	public static final String PRESCRICAO_FARMACOLOGICA_TAB = "prescricaoFarmacologicaTab";
+	public static final String PRESCRICAO_LIBERACAO_TAB = "liberacaoTab";
 }
