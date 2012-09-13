@@ -126,13 +126,15 @@
 		</p:submenu>
 		
 		<p:submenu label="Prescrição Médica" 
-				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição Médica')}" >  
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição Médica')}" >
+			<p:menuitem value="Consulta da Prescrição" url="/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Consulta da Prescrição')}" />
 			<p:menuitem value="Dosagem" url="/PaginasWeb/Prescricao/Dosagem/dosagem.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Dosagem')}" />
-			<p:menuitem value="Prescrever" url="/PaginasWeb/Prescricao/Prescricao/prescricao.jsf" 
-						rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrever')}" />
 			<p:menuitem value="Liberação SCHI" url="/PaginasWeb/Prescricao/ControleMedicacaoRestritoSCHI/controleMedicacaoRestritoSCHI.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Liberação SCHI')}" />
+			<p:menuitem value="Prescrever" url="/PaginasWeb/Prescricao/Prescricao/prescricao.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrever')}" />
 		</p:submenu>
 		
 		<p:submenu label="Relatório" 

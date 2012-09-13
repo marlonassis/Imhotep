@@ -43,6 +43,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private boolean skip;
 	private Paciente paciente;
 	private Prescricao prescricaoAtual = new Prescricao();
+	private Prescricao prescricaoBloqueio = new Prescricao();
 	
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
 	private Date dataInicio;
@@ -184,6 +185,12 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
+	public void bloqueiarPrescricao(){
+		getPrescricaoBloqueio().setDataBloqueio(new Date());
+		getPrescricaoBloqueio().setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
+		super.atualizarGenerico(getPrescricaoBloqueio());
+	}
+	
 	public boolean isSkip() {
 		return skip;
 	}
@@ -272,6 +279,14 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 
 	public void setFluxoAtualPrescricao(String fluxoAtualPrescricao) {
 		this.fluxoAtualPrescricao = fluxoAtualPrescricao;
+	}
+
+	public Prescricao getPrescricaoBloqueio() {
+		return prescricaoBloqueio;
+	}
+
+	public void setPrescricaoBloqueio(Prescricao prescricaoBloqueio) {
+		this.prescricaoBloqueio = prescricaoBloqueio;
 	}
 	
 }

@@ -41,6 +41,9 @@ public class Prescricao {
 	private Profissional profissionalDispensante;
 	private Profissional profissionalConclusao;
 	private String observacao;
+	private Date dataBloqueio;
+	private String motivoBloqueio;
+	private Profissional profissionalBloqueio;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_id_prescricao_seq")
 	@Id
@@ -191,6 +194,33 @@ public class Prescricao {
 	}
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_bloqueio")
+	public Date getDataBloqueio() {
+		return dataBloqueio;
+	}
+	
+	public void setDataBloqueio(Date dataBloqueio) {
+		this.dataBloqueio = dataBloqueio;
+	}
+	
+	@Column(name = "cv_motivo_bloqueio")
+	public String getMotivoBloqueio() {
+		return motivoBloqueio;
+	}
+	public void setMotivoBloqueio(String motivoBloqueio) {
+		this.motivoBloqueio = motivoBloqueio;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_bloqueio")
+	public Profissional getProfissionalBloqueio() {
+		return profissionalBloqueio;
+	}
+	public void setProfissionalBloqueio(Profissional profissionalBloqueio) {
+		this.profissionalBloqueio = profissionalBloqueio;
 	}
 	
 	@Override

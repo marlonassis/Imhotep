@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="consultaPrecricao" title="Consulta da prescrição" >
+			<h:form id="consultaPrecricaoForm" prependId="false" >
+				<p:fieldset legend="Informações da prescrição"
+							collapsed="false"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" showDetail="true" />
+						<ui:include src="consultaPrescricaoVisualizador.xhtml"/>
+						<p:commandButton value="Limpar"
+										 update="@parent" 
+										 action="#{prescricaoHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaConsultaPrescricaoForm" prependId="false" >
+				<p:fieldset id="pesquisaConsultaPrescricaoFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="consultaPrescricaoConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaConsultaPrescricao" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{consultaPrescricaoConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaConsultaPrescricaoForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="consultaPrescricaoTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>
