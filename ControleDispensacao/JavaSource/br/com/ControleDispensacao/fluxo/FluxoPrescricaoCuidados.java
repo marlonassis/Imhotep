@@ -19,7 +19,6 @@ import br.com.remendo.PadraoFluxo;
 public class FluxoPrescricaoCuidados extends PadraoFluxo{
 	
 	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
-	private CuidadosPrescricao cuidadosPrescricao = new CuidadosPrescricao();
 	
 	private List consultaCuidados(String sql){
 		return new ArrayList(new ConsultaGeral().consulta(new StringBuilder(sql), null));
@@ -37,26 +36,22 @@ public class FluxoPrescricaoCuidados extends PadraoFluxo{
 		return consultaCuidados(sql);
 	}
 	
+	public List<CuidadosPrescricao> getCuidadosEscolhidosVisualizacao(Prescricao prescricaoInformada){
+		String sql = "select a from CuidadosPrescricao a where a.prescricao.idPrescricao = "+prescricaoInformada.getIdPrescricao();
+		return consultaCuidados(sql);
+	}
+	
 	public List<CuidadosPaciente> listaPrescricaoCuidados(String tipoCuidado){
 		return consultaTipoCuidado(tipoCuidado, prescricaoAtual.getIdPrescricao());
 	}
 	
-	public void insereOutrosCuidados(){
-		getCuidadosPrescricao().setPrescricao(prescricaoAtual);
-		new CuidadosPrescricaoHome(getCuidadosPrescricao()).enviar();
-		setCuidadosPrescricao(new CuidadosPrescricao());
+	public void insereOutrosCuidados(CuidadosPrescricao cuidadosPrescricao){
+		cuidadosPrescricao.setPrescricao(prescricaoAtual);
+		new CuidadosPrescricaoHome(cuidadosPrescricao).enviar();
 	}
 	
 	public void apagarCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao){
 		new CuidadosPrescricaoHome().apagar(cuidadosPrescricao);
-	}
-	
-	public CuidadosPrescricao getCuidadosPrescricao() {
-		return cuidadosPrescricao;
-	}
-
-	public void setCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao) {
-		this.cuidadosPrescricao = cuidadosPrescricao;
 	}
 	
 }

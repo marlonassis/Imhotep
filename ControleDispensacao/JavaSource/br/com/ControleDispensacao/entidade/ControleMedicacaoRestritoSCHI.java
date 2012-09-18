@@ -2,6 +2,7 @@ package br.com.ControleDispensacao.entidade;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -51,6 +52,10 @@ import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 		
 		private TipoPrescricaoInadequadaEnum tipoPrescricaoInadequada;
 		private String prescricaoInadequadaDescricao;
+		
+		private Paciente paciente;
+		private String leito;
+		private Float massa;
 		
 		@SequenceGenerator(name = "generator", sequenceName = "public.tb_controle_medicacao_restrit_id_controle_medicacao_restrit_seq")
 		@Id
@@ -254,6 +259,31 @@ import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 
 		public void setFrequencia(Integer frequencia) {
 			this.frequencia = frequencia;
+		}
+		
+		@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+		@JoinColumn(name = "id_paciente")
+		public Paciente getPaciente() {
+			return paciente;
+		}
+		public void setPaciente(Paciente paciente) {
+			this.paciente = paciente;
+		}
+		
+		@Column(name = "cv_leito")
+		public String getLeito() {
+			return leito;
+		}
+		public void setLeito(String leito) {
+			this.leito = leito;
+		}
+		
+		@Column(name = "db_massa")
+		public Float getMassa() {
+			return massa;
+		}
+		public void setMassa(Float peso) {
+			this.massa = peso;
 		}
 		
 		@Override

@@ -1,4 +1,4 @@
-package br.com.ControleDispensacao.auxiliar;
+package br.com.ControleDispensacao.controle;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;

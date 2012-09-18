@@ -5,14 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import br.com.ControleDispensacao.auxiliar.Constantes;
-import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItem;
-import br.com.ControleDispensacao.auxiliar.ControlePrescricaoItemDose;
 import br.com.ControleDispensacao.comparador.DoseDataComparador;
+import br.com.ControleDispensacao.controle.ControlePrescricaoItem;
+import br.com.ControleDispensacao.controle.ControlePrescricaoItemDose;
 import br.com.ControleDispensacao.entidade.Material;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
@@ -20,42 +17,48 @@ import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
 import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.negocio.EstoqueHome;
 import br.com.ControleDispensacao.negocio.PrescricaoHome;
-import br.com.ControleDispensacao.negocio.PrescricaoItemDoseHome;
-import br.com.ControleDispensacao.negocio.PrescricaoItemHome;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
-@ManagedBean(name="fluxoPrescricaoMedicamento")
-@RequestScoped
 public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	
-	private String fluxoAtualPrescricao = PrescricaoHome.getInstanciaHome().getFluxoAtualPrescricao();
-	
-	private Dose dose = new Dose();
 	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
 	
-	public void removePrescricaoItem(PrescricaoItem linha){
-		PrescricaoItemHome pih = new PrescricaoItemHome();
-		pih.setInstancia(linha);
-		pih.apagar();
+	public List<PrescricaoItem> getItensPrescricao(){
+		return itensPrescricao(prescricaoAtual);
 	}
 	
-	public void inserirItem(){
-			if(!formularioDoseVazio(getDose()) && liberaDose(getDose().getPrescricaoItem().getMaterial(), getDose())){
-				if(prescricaoAtual.getIdPrescricao() == 0){
-					super.mensagem("Ocorrreu erro ao gravar a prescrição.", "", FacesMessage.SEVERITY_ERROR);
-					return;
-				}
-				getDose().getPrescricaoItem().setPrescricao(prescricaoAtual);
-				if(!new ControlePrescricaoItem().gravaPrescricaoItem(getDose().getPrescricaoItem())){
+	public List<PrescricaoItemDose> getPrescricaoItemDoseEscolhidoList() {
+		List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(prescricaoAtual);
+		if(pidList != null){
+			Collections.sort(pidList, new DoseDataComparador());
+			return pidList;
+		}else{
+			return null;
+		}
+	}
+	
+	private List<PrescricaoItem> itensPrescricao(Prescricao prescricao){
+		if(prescricao != null){
+			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricao", prescricao.getIdPrescricao());
+			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao"), hm);
+		}
+		return null;
+	}
+	
+	public void inserirItem(Dose dose){
+			if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
+				dose.getPrescricaoItem().setPrescricao(prescricaoAtual);
+				if(!new ControlePrescricaoItem().gravaPrescricaoItem(dose.getPrescricaoItem())){
 					super.mensagem("Ocorrreu erro ao gravar a prescrição item.", "", FacesMessage.SEVERITY_ERROR);
 					return;
 				}
-				if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(getDose())){
+				if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(dose)){
 					super.mensagem("Ocorrreu erro ao gravar a dose.", "", FacesMessage.SEVERITY_ERROR);
 					return;
 				}
-				novaDose();
 			}
 	}
 	
@@ -90,19 +93,13 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return false;
 	}
 	
-	public List<PrescricaoItemDose> getPrescricaoItemDoseList2(){
+	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){
 			List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(prescricaoAtual);
 			if(pidList != null){
 				Collections.sort(pidList, new DoseDataComparador());
 				return pidList;
 			}
 			return null;
-	}
-	
-	public void removeDose(PrescricaoItemDose linha){
-		PrescricaoItemDoseHome pidh = new PrescricaoItemDoseHome();
-		pidh.setInstancia(linha);
-		pidh.apagar();
 	}
 	
 	private List<PrescricaoItemDose> getListaPrescricaoItemDose(Prescricao prescricao) {
@@ -115,15 +112,4 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
-	private void novaDose() {
-		setDose(new Dose());
-	}
-
-	public Dose getDose() {
-		return dose;
-	}
-
-	public void setDose(Dose dose) {
-		this.dose = dose;
-	}
 }

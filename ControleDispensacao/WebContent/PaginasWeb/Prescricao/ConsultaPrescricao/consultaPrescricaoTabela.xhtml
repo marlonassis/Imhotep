@@ -41,7 +41,7 @@
 			<p:commandLink update="padraoTabView:consultaPrescricaoForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{tipoMovimentoHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.prescricaoVisualizacao}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
@@ -52,7 +52,7 @@
 				<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.prescricaoBloqueio}" />
 				<h:graphicImage value="/Imagens/block.png" width="16px" height="16px" />
 			</p:commandLink>
-		</p:column>  
+		</p:column>
 	</p:dataTable>
 	
 	<p:dialog header="Motivo Bloqueio" 
@@ -67,8 +67,7 @@
 						 value="#{prescricaoHome.prescricaoBloqueio.motivoBloqueio}" />
 		<p:commandButton value="Gravar"
 						 oncomplete="bloqueioDialog.hide()"
-						 update="padraoTabView:tabelaConsultaPrescricao"
+						 update="padraoTabView:tabelaConsultaPrescricao padraoTabView:pesquisaConsultaPrescricaoForm"
 						 action="#{prescricaoHome.bloqueiarPrescricao()}" />
 	</p:dialog>
-	
 </ui:composition>

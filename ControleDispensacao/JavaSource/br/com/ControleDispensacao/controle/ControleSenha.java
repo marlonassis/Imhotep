@@ -1,4 +1,4 @@
-package br.com.ControleDispensacao.auxiliar;
+package br.com.ControleDispensacao.controle;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ControleDispensacao.auxiliar.Constantes;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.remendo.utilidades.Utilities;
 

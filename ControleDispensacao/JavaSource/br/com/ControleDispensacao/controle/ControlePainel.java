@@ -1,4 +1,4 @@
-package br.com.ControleDispensacao.auxiliar;
+package br.com.ControleDispensacao.controle;
 
 import java.io.Serializable;
 import java.util.ArrayList;

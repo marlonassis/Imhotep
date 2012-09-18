@@ -12,7 +12,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.ControleDispensacao.auxiliar.Constantes;
-import br.com.ControleDispensacao.auxiliar.ControleInstancia;
+import br.com.ControleDispensacao.controle.ControleInstancia;
 import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.ControleDispensacao.entidade.PacienteEntrada;
 import br.com.ControleDispensacao.seguranca.Autenticador;

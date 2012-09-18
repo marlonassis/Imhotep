@@ -11,16 +11,16 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="consultaPrecricao" title="Consulta da prescrição" >
-			<h:form id="consultaPrecricaoForm" prependId="false" >
+			<h:form id="consultaPrescricaoForm" prependId="false" >
 				<p:fieldset legend="Informações da prescrição"
-							collapsed="false"
+							collapsed="#{prescricaoHome.prescricaoVisualizacao.idPrescricao == 0}"
 							toggleable="true"
 							toggleSpeed="500">
 						<p:growl id="formGrowl" showDetail="true" />
 						<ui:include src="consultaPrescricaoVisualizador.xhtml"/>
 						<p:commandButton value="Limpar"
-										 update="@parent" 
-										 action="#{prescricaoHome.novaInstancia()}"/> 
+										 update="padraoTabView:consultaPrescricaoForm" 
+										 action="#{controleVisualizacaoPrescricao.limparPrescricaoAtual()}"/> 
 				</p:fieldset>
             </h:form>
 			
@@ -45,7 +45,7 @@
 			    </p:fieldset>  
 				<p:growl/>
 				<ui:include src="consultaPrescricaoTabela.xhtml"/>
-			</h:form>	
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

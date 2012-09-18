@@ -8,7 +8,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
-import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.enums.TipoBooleanEnum;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
@@ -19,7 +18,6 @@ import br.com.remendo.PadraoHome;
 public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedicacaoRestritoSCHI>{
 
 	private TipoBooleanEnum prescricaoAdequada = TipoBooleanEnum.T;
-	private Prescricao prescricao = new Prescricao();
 	
 	public ControleMedicacaoRestritoSCHIHome(){
 	}
@@ -80,11 +78,4 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 		this.prescricaoAdequada = prescricaoAdequada;
 	}
 
-	public Prescricao getPrescricao() {
-		return prescricao;
-	}
-
-	public void setPrescricao(Prescricao prescricao) {
-		this.prescricao = prescricao;
-	}
 }

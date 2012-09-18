@@ -62,6 +62,7 @@
 		<h:panelGroup style="align:left;" >
 			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
 	  		<p:autoComplete id="material" 
+	  						minQueryLength="4"
 	  						value="#{entradaMaterialHome.instancia.material}"
 							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
 							var="material"
@@ -81,6 +82,7 @@
 	  						value="#{entradaMaterialHome.instancia.fabricante}"
 							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
 							var="fabricante"
+							minQueryLength="3"
 							forceSelection="true"
 							title="Informe o fabricante"
 							itemLabel="#{fabricante.descricao}" 
@@ -117,10 +119,11 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<h:outputLabel for="valorUnitario" value="Valor unitário:"  /><br />
+			<font color="red" >*</font><h:outputLabel for="valorUnitario" value="Valor unitário:"  /><br />
 			<p:inputText  id="valorUnitario"
 						  value="#{entradaMaterialHome.instancia.valorUnitario}"
 						  onkeyup="apenasNumeroComVirgula(this);" 
+						  required="true"
 						  converter="monetarioConversor"
 						  title="Informe o valor unitário do medicamento" />
 		</h:panelGroup>

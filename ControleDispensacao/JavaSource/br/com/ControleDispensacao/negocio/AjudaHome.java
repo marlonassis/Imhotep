@@ -6,7 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.ControleDispensacao.auxiliar.ControleMenu;
+import br.com.ControleDispensacao.controle.ControleMenu;
 import br.com.ControleDispensacao.entidade.Menu;
 
 @ManagedBean(name="ajudaHome")

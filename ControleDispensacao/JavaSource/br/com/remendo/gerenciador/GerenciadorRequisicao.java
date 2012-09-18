@@ -8,7 +8,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
 
-import br.com.ControleDispensacao.auxiliar.ControleSenha;
+import br.com.ControleDispensacao.controle.ControleSenha;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 
 @ManagedBean(name="gerenciadorRequisicao")

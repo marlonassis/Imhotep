@@ -7,25 +7,74 @@
 	<h:panelGrid id="tipoMovimentoPanelGrid"
 				 columns="3" 
 				 width="100%" >
-				 
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="descricao" value="Movimento:"  /><br />
-			<p:inputText id="descricao" 
-						 value="#{tipoMovimentoHome.instancia.descricao}" 
-						 required="true"
-						 title="Informe a descrição do tipo do movimento" />
-		</h:panelGroup>
-		
-		<h:panelGroup> 
-			<h:outputLabel for="operacao" value="Operação:"  /><br />
-			<p:selectOneMenu id="operacao"
-							 value="#{tipoMovimentoHome.instancia.tipoOperacao}" 
-							 effect="fade">
-	            <f:selectItem itemLabel="Selecione..." 
-	            			  itemValue="#{null}" /> 
-	            <f:selectItems value="#{itensPadrao.operacaoEnumItens}"/> 
-        	</p:selectOneMenu>
-        </h:panelGroup>
-
+		<h:panelGrid columns="1" 
+					 width="100%" >
+			<h:panelGroup>
+				<p:panel header="Paciente" >
+					<h:panelGrid columns="3" 
+								 width="100%">
+						<h:panelGroup>
+							<h:outputText value="Nome:" /><br/>
+							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.nome}" 
+										  style="font-weight: bold;"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Data de Nascimento:" /><br/>
+							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.dataNascimento}"
+										  style="font-weight: bold;" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Idade:" /><br/>
+							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.idade}" 
+										  style="font-weight: bold;"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Sexo:" /><br/>
+							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.sexo.label}" 
+										  style="font-weight: bold;" />
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:panel header="Itens Liberados" >
+					<p:dataList id="itensLiberados"
+								var="itemLiberado" 
+								value="#{prescricaoHome.itensLiberadosPrescricaoVisualizacao}"
+								type="ordered">
+						<p:column headerText="Material" >
+							<h:outputText value="#{itemLiberado.material.descricao}" />
+						</p:column>
+					</p:dataList>
+				</p:panel>
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:panel header="Cuidados" >
+					<p:dataList id="cuidadosEscolhidosFinalizacao"
+								var="cuidado" 
+								value="#{prescricaoHome.cuidadosEscolhidosPrescricaoVisualizacao}"
+								type="ordered">
+						<p:column headerText="Cuidado" >
+							<h:outputText value="#{cuidado.cuidadosPaciente.descricao}"
+										  escape="false"
+										  rendered="#{empty cuidado.descricaoOutros}"/>
+							<h:outputText value="#{cuidado.descricaoOutros}"
+										  escape="false"
+										  rendered="#{not empty cuidado.descricaoOutros}"/>
+						</p:column>
+					</p:dataList>
+				</p:panel>
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:panel header="Observações" >
+					<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.observacao}" />
+				</p:panel>
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:commandButton value="Imprimir" />
+			</h:panelGroup>
+		</h:panelGrid>
 	</h:panelGrid>
 </ui:composition>

@@ -14,27 +14,27 @@
 		<h:panelGroup>
 			<h:outputLabel value="Nome:" 
 						   style="font-weight: bold;" /><br />
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.paciente.nome}"/>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricao.paciente.nome}"/>
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel value="Idade:" 
 						   style="font-weight: bold;" /><br />
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.paciente.idade}"/>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricao.paciente.idade}"/>
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel value="Peso:" 
 						   style="font-weight: bold;" /><br />
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.massa}"/>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricao.massa}"/>
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel value="Setor:" 
 						   style="font-weight: bold;" /><br />
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.unidade.nome}"/>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricao.unidade.nome}"/>
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel value="Leito:" 
 						   style="font-weight: bold;" /><br />
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.prescricao.leito}"/>
+			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.prescricao.leito}"/>
 		</h:panelGroup>
 	</h:panelGrid>
 	
@@ -211,9 +211,9 @@
 			<p:inputText id="frequencia"
 					  	 value="#{controleMedicacaoRestritoSCHIHome.instancia.frequencia}"
 					  	 rendered="#{!controleBloqueado}"
-					  	 title="Informe a frequência com que deve ser ministrado a(s) dose(s)" />h
+					  	 title="Informe a frequência com que deve ser ministrado a(s) dose(s)" />
 			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.frequencia}" 
-						  rendered="#{controleBloqueado}"/>
+						  rendered="#{controleBloqueado}"/>h
 		</h:panelGroup>
 		
 		<h:panelGroup>
@@ -247,8 +247,12 @@
 			</h:selectOneRadio>
 		</h:panelGroup>
 		
-		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.prescricaoAdequada == 'F' or controleBloqueado}" >
-			<font color="red" >*</font><h:outputLabel for="prescricaoInadequada" value="Prescrição inadequada devido a"  /><br />
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.prescricaoAdequada == 'T' and controleBloqueado}" >
+			<h:outputLabel for="prescricaoInadequada" value="Prescrição Adequada"/>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.prescricaoAdequada == 'F'}" >
+			<font color="red" >*</font><b><h:outputLabel for="prescricaoInadequada" value="Prescrição inadequada devido a"/></b><br/> 	
 			<h:selectOneRadio id="prescricaoInadequada"
 							  value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada}" 
 							  required="true"
@@ -258,9 +262,7 @@
 				 <f:selectItems value="#{itensPadrao.tipoPrescricaoInadequadaEnumItens}"/>
 			</h:selectOneRadio>
 			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada.label}" 
-						  rendered="#{controleBloqueado and controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada != null }"/>
-			<h:outputText value="Prescrição adequada" 
-						  rendered="#{controleBloqueado and controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada == null }"/>
+						  rendered="#{controleBloqueado}"/>
 		</h:panelGroup>
 		
 		<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.instancia.tipoPrescricaoInadequada == 'OT'}" >

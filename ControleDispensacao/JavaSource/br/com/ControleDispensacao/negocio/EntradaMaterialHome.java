@@ -226,6 +226,8 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 			estoqueAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 			estoqueAtual.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			estoqueAtual.setDataInclusao(new Date());
+			estoqueAtual.setFornecedor(getInstancia().getFornecedor());
+			estoqueAtual.setValorUnitario(getInstancia().getValorUnitario());
 			setInstancia(estoqueAtual);
 		}
 		return false;

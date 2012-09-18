@@ -70,6 +70,6 @@ public class CuidadosPrescricao {
 
 	@Override
 	public String toString() {
-		return getCuidadosPaciente().getDescricao();
+		return getCuidadosPaciente() !=  null ? getCuidadosPaciente().getDescricao() : getDescricaoOutros();
 	}
 }

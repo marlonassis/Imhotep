@@ -1,4 +1,4 @@
-package br.com.ControleDispensacao.auxiliar;
+package br.com.ControleDispensacao.controle;
 
 import java.util.Date;
 
@@ -6,29 +6,34 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
-import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoControle;
 
-public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
-	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) {
+public class ControleMedicacaoRestrito extends PadraoControle{
+	
+	public ControleMedicacaoRestrito() {
+		super();
+	}
+	
+	public boolean gravaRestricao(ControleMedicacaoRestritoSCHI medicacaoRestritoSCHI) {
 		boolean ret = false;
-		
+		if(medicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI() != 0){
+			return true;
+		}
 		try{
 			iniciarTransacao();
-			prescricaoItem.setDispensado(TipoStatusEnum.N);
-			prescricaoItem.setStatus(TipoStatusEnum.S);
-			session.save(prescricaoItem);
+			session.save(medicacaoRestritoSCHI);
 			session.flush();  
 			tx.commit();
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
-			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricaoItem()");
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao gravar a autorização.", ""));
+			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaRestricao(ControleMedicacaoRestritoSCHI medicacaoRestritoSCHI)");
 			session.getTransaction().rollback();
 		}finally{
 			session.close(); // Fecha sessão
@@ -49,4 +54,5 @@ public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 		ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
 		new ErroAplicacaoHome(ea).enviar();
 	}
+	
 }

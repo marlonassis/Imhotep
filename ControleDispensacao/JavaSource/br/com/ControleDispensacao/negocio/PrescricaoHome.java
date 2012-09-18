@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -17,58 +18,140 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.FlowEvent;
 
 import br.com.ControleDispensacao.auxiliar.Constantes;
-import br.com.ControleDispensacao.auxiliar.ControleInstancia;
-import br.com.ControleDispensacao.auxiliar.ControleMedicacaoRestrito;
-import br.com.ControleDispensacao.auxiliar.ControlePrescricao;
-import br.com.ControleDispensacao.auxiliar.Parametro;
-import br.com.ControleDispensacao.comparador.DoseDataComparador;
+import br.com.ControleDispensacao.comparador.CuidadosPrescricaoComparador;
+import br.com.ControleDispensacao.controle.ControleInstancia;
+import br.com.ControleDispensacao.controle.ControlePrescricao;
+import br.com.ControleDispensacao.controle.ControlePrescricaoItem;
+import br.com.ControleDispensacao.controle.ControlePrescricaoItemDose;
 import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
 import br.com.ControleDispensacao.entidade.CuidadosPaciente;
 import br.com.ControleDispensacao.entidade.CuidadosPrescricao;
 import br.com.ControleDispensacao.entidade.Material;
-import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
-import br.com.ControleDispensacao.entidade.Profissional;
+import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
+import br.com.ControleDispensacao.fluxo.FluxoPrescricaoConfirmacao;
+import br.com.ControleDispensacao.fluxo.FluxoPrescricaoCuidados;
+import br.com.ControleDispensacao.fluxo.FluxoPrescricaoLiberacaoMedicamento;
+import br.com.ControleDispensacao.fluxo.FluxoPrescricaoMedicamento;
 import br.com.ControleDispensacao.seguranca.Autenticador;
-import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="prescricaoHome")
 @SessionScoped
 public class PrescricaoHome extends PadraoHome<Prescricao>{
-	
-	private boolean skip;
-	private Paciente paciente;
+
 	private Prescricao prescricaoAtual = new Prescricao();
 	private Prescricao prescricaoBloqueio = new Prescricao();
+	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
+	private CuidadosPrescricao cuidadosPrescricao = new CuidadosPrescricao();
 	
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
-	private Date dataInicio;
-	private Integer quantidadeDoses;
-	private Integer quantidadePorDose;
-	private Integer intervaloEntreDoses;
 	
-	private String fluxoAtualPrescricao = null;
+	private List<PrescricaoItemDose> prescricaoItemDoseList = new ArrayList<PrescricaoItemDose>();
+	private List<PrescricaoItem> itensPrescricao = new ArrayList<PrescricaoItem>();
+	private List<PrescricaoItem> medicamentosPendentesLiberacaoList = new ArrayList<PrescricaoItem>();
+	private Map<String, List<CuidadosPaciente>> cuidadosPacienteMap = new HashMap<String, List<CuidadosPaciente>>();
+	private List<CuidadosPrescricao> cuidadosEscolhidos = new ArrayList<CuidadosPrescricao>();
+	private List<PrescricaoItem> itensLiberadosPrescricao = new ArrayList<PrescricaoItem>();
+	private List<ControleMedicacaoRestritoSCHI> controlesAtivosParaLiberacaoList = new ArrayList<ControleMedicacaoRestritoSCHI>();
+	
+	private Dose dose = new Dose();
+	
+	private String usuario;
+	private String senha;
+	
+	private Prescricao prescricaoVisualizacao = new Prescricao();
+	
+	public void removerCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao){
+		FluxoPrescricaoCuidados fpc = new FluxoPrescricaoCuidados();
+		fpc.apagarCuidadosPrescricao(cuidadosPrescricao);
+		carregaCuidadosFluxo();
+	}
+	
+	public void gravaOutrosCuidados(){
+		FluxoPrescricaoCuidados fpc = new FluxoPrescricaoCuidados();
+		fpc.insereOutrosCuidados(getCuidadosPrescricao());
+		carregaCuidadosFluxo();
+	}
+	
+	public boolean isExisteAntibiotico(){
+		for(PrescricaoItem item : getMedicamentosPendentesLiberacaoList()){
+			if(isMaterialAntibiotico(item.getMaterial())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isMaterialAntibiotico(Material material){
+		if(material != null){
+			String grupoMaterial = material.getFamilia().getSubGrupo().getGrupo().getDescricao();
+			return grupoMaterial.equalsIgnoreCase(Constantes.MATERIAL_ANTIBIOTICO);
+		}
+		return false;
+	}
+	
+	public void iniciarAnaliseLiberacao(){
+		if(formularioLiberacaoPreenchido()){
+			FluxoPrescricaoLiberacaoMedicamento fplm = new FluxoPrescricaoLiberacaoMedicamento();
+			getControleMedicacaoRestritoSCHI().setPaciente(getPrescricaoAtual().getPaciente());
+			getControleMedicacaoRestritoSCHI().setMassa(getPrescricaoAtual().getMassa());
+			getControleMedicacaoRestritoSCHI().setLeito(getPrescricaoAtual().getLeito());
+			fplm.analisarLiberacao(getControleMedicacaoRestritoSCHI(), getUsuario(), getSenha());
+			carregaItensLiberacao();
+			limpaFomrularioLiberacao();
+		}
+	}
+
+	private void limpaFomrularioLiberacao() {
+		setUsuario(null);
+		setSenha(null);
+		setControleMedicacaoRestritoSCHI(new ControleMedicacaoRestritoSCHI());
+	}
+	
+	private boolean formularioLiberacaoPreenchido() {
+		if(getUsuario().isEmpty() || getSenha().isEmpty()){
+			super.mensagem("Informe o usuário e senha.", null, FacesMessage.SEVERITY_INFO);
+			return false;
+		}
+		return true;
+	}
+
+	public String especialidadesLiberarMedicamento(Material material){
+		FluxoPrescricaoLiberacaoMedicamento fplm = new FluxoPrescricaoLiberacaoMedicamento();
+		return fplm.especialidadesLiberamMaterial(material);
+	}
 	
 	public static PrescricaoHome getInstanciaHome(){
 		return new ControleInstancia<PrescricaoHome>().instancia("prescricaoHome");
 	}
 	
-	public List<PrescricaoItem> getItensPrescricao(){
-		return itensPrescricao(getPrescricaoAtual());
+	public void removePrescricaoItem(PrescricaoItem tupla){
+		ControlePrescricaoItem cpi = new ControlePrescricaoItem();
+		cpi.removePrescricaoItem(tupla);
+		carregaItensFarmacologicosFluxo();
+		carregaDoseFluxo();
 	}
 	
-	private List<PrescricaoItem> itensPrescricao(Prescricao prescricao){
-		if(prescricao != null){
-			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idPrescricao", prescricao.getIdPrescricao());
-			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao"), hm);
+	public void removePrescricaoItemDose(PrescricaoItemDose tupla){
+		ControlePrescricaoItemDose cpi = new ControlePrescricaoItemDose();
+		cpi.removeDose(tupla);
+		carregaDoseFluxo();
+	}
+	
+	public void cancelarPrescricao(){
+		if(getPrescricaoAtual().getIdPrescricao() != 0){
+			setInstancia(getPrescricaoAtual());
+			if(super.apagar()){
+				setPrescricaoAtual(new Prescricao());
+				super.novaInstancia();
+			}
+		}else{
+			setPrescricaoAtual(new Prescricao());
 		}
-		return null;
 	}
 	
 	public void concluirPrescricao(){
@@ -76,53 +159,6 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		getInstancia().setDataConclusao(new Date());
 		if(super.atualizar()){
 			novaInstancia();
-		}
-	}
-	
-	private List<CuidadosPrescricao> cuidadosEscolhidos(Prescricao prescricao){
-		if(prescricao != null){
-			ConsultaGeral<CuidadosPrescricao> cg = new ConsultaGeral<CuidadosPrescricao>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idPrescricao", prescricao.getIdPrescricao());
-			return (List<CuidadosPrescricao>) cg.consulta(new StringBuilder("select o from CuidadosPrescricao o where o.prescricao.idPrescricao = :idPrescricao"), hm);
-		}
-		return null;
-	}
-	
-	public List<CuidadosPrescricao> cuidadosPacienteEscolhidosPrescricao(){
-		return cuidadosEscolhidos(getPrescricaoAtual());
-	}
-	
-	private List<PrescricaoItem> itensLiberadosFimPrescricao(Prescricao prescricao){
-		if(prescricao != null){
-			ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idPrescricao", prescricao.getIdPrescricao());
-			
-			String sql = "select o from PrescricaoItem o where " +
-			"o.prescricao.idPrescricao = :idPrescricao and (( "+
-			"exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) " +
-			" and profissionalLiberacao is not null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO') and " +
-			"controleMedicacaoRestritoSCHI is not null)" +
-			"or (not exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial)" +
-			" and not lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO'))) ";
-			
-			return (List<PrescricaoItem>) cg.consulta(new StringBuilder(sql), hm);
-		}
-		return null;
-	}
-	
-	public List<PrescricaoItem> itensLiberados(){
-		return itensLiberadosFimPrescricao(getPrescricaoAtual());
-	}
-	
-	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){
-		List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(getPrescricaoAtual());
-		if(pidList != null){
-			Collections.sort(pidList, new DoseDataComparador());
-			return pidList;
-		}else{
-			return null;
 		}
 	}
 	
@@ -137,47 +173,11 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 
-	private List<PrescricaoItemDose> getListaPrescricaoItemDose(Prescricao prescricao) {
-		if(prescricao != null){
-			ConsultaGeral<PrescricaoItemDose> cg = new ConsultaGeral<PrescricaoItemDose>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idPrescricao", prescricao.getIdPrescricao());
-			return (List<PrescricaoItemDose>) cg.consulta(new StringBuilder("select o from PrescricaoItemDose o where o.prescricaoItem.prescricao.idPrescricao = :idPrescricao"), hm);
-		}
-		return null;
-	}
-	
-	public List<CuidadosPaciente> carregaCuidados(){
-		return carregaListaCuidadosLiberados(getPrescricaoAtual());
-	}
-	
-	public List<ControleMedicacaoRestritoSCHI> getControlesValidos(){
-		if(getPrescricaoItem() != null && getPrescricaoItem().getMaterial() != null){
-			ConsultaGeral<ControleMedicacaoRestritoSCHI> cg = new ConsultaGeral<ControleMedicacaoRestritoSCHI>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("dataLimite", new Date());
-			hm.put("idPaciente", getInstancia().getPaciente().getIdPaciente());
-			String string = "select o from ControleMedicacaoRestritoSCHI o where o.dataLimite >= :dataLimite and " +
-					"o.tipoPrescricaoInadequada is null " +
-					"and o.profissionalInfectologista != null " +
-					"and o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.paciente.idPaciente = :idPaciente)";
-			return new ArrayList<ControleMedicacaoRestritoSCHI>(cg.consulta(new StringBuilder(string), hm));
-		}
-		return new ArrayList<ControleMedicacaoRestritoSCHI>();
-	}
-	
-	private List<CuidadosPaciente> carregaListaCuidadosLiberados(Prescricao prescricao){
-		if(prescricao != null){
-			ConsultaGeral<CuidadosPaciente> cg = new ConsultaGeral<CuidadosPaciente>();
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idPrescricao", prescricao.getIdPrescricao());
-			return (List<CuidadosPaciente>) cg.consulta(new StringBuilder("select o from CuidadosPaciente o where o.idCuidadosPaciente not in (select a.cuidadosPaciente.idCuidadosPaciente from CuidadosPrescricao a where a.prescricao.idPrescricao = :idPrescricao)"), hm);
-		}
-		return null;
-	}
 
+	
 	public void adicionarCuidado(CuidadosPaciente cuidadosPaciente){
 		new CuidadosPrescricaoHome().enviar(cuidadosPaciente, getPrescricaoAtual());
+		carregaCuidadosFluxo();
 	}
 	
 	public void save(ActionEvent actionEvent) {
@@ -186,43 +186,122 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public void bloqueiarPrescricao(){
-		getPrescricaoBloqueio().setDataBloqueio(new Date());
-		getPrescricaoBloqueio().setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
-		super.atualizarGenerico(getPrescricaoBloqueio());
+		if(getPrescricaoBloqueio().getMotivoBloqueio() != null && !getPrescricaoBloqueio().getMotivoBloqueio().isEmpty()){
+			getPrescricaoBloqueio().setDataBloqueio(new Date());
+			getPrescricaoBloqueio().setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
+			super.atualizarGenerico(getPrescricaoBloqueio());
+		}else{
+			super.mensagem("Informe o motivo do bloqueio.", null, FacesMessage.SEVERITY_ERROR);
+		}
 	}
 	
-	public boolean isSkip() {
-		return skip;
-	}
-
-	public void setSkip(boolean skip) {
-		this.skip = skip;
+	public void adicionarItemFarmacoPrescricao(){
+		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
+		fpm.inserirItem(getDose());
+		carregaDoseFluxo();
+		carregaItensFarmacologicosFluxo();
+		setDose(new Dose());
 	}
 	
 	public String onFlowProcess(FlowEvent event) {
-		setFluxoAtualPrescricao(event.getNewStep());
 		
-		if(event.getOldStep().equals("pacienteTab")){
-			if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
-				FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage("Erro ao gravar a prescrição", "" ));
+		verificaFluxoPrescricaoPaciente(event.getOldStep());
+		verificaFluxoPrescricaoFarmacologica(event.getNewStep());
+		verificaFluxoPrescricaoLiberacao(event.getNewStep());
+		verificaFluxoPrescricaoCuidadosPrescricao(event.getNewStep());
+		verificaFluxoPrescricaoItensLiberados(event.getNewStep());
+		
+		return event.getNewStep();
+	}
+
+	private void verificaFluxoPrescricaoItensLiberados(String fluxoAtual) {
+		if(fluxoAtual.equals(Constantes.PRESCRICAO_CONFIRMACAO_TAB)){
+			carregaItensLiberadosPrescricao();
+		}
+	}
+	
+	private void carregaItensLiberadosPrescricao(){
+		FluxoPrescricaoConfirmacao fpc = new FluxoPrescricaoConfirmacao();
+		setItensLiberadosPrescricao(fpc.getItensLiberados());
+	}
+	
+	public List<PrescricaoItem> getItensLiberadosPrescricaoVisualizacao(){
+		FluxoPrescricaoConfirmacao fpc = new FluxoPrescricaoConfirmacao();
+		return fpc.getItensLiberados(getPrescricaoVisualizacao());
+	}
+	
+	public List<CuidadosPrescricao> getCuidadosEscolhidosPrescricaoVisualizacao(){
+		FluxoPrescricaoCuidados fpc = new FluxoPrescricaoCuidados();
+		return fpc.getCuidadosEscolhidosVisualizacao(getPrescricaoVisualizacao());
+	}
+	
+	private void verificaFluxoPrescricaoCuidadosPrescricao(String fluxoAtual) {
+		if(fluxoAtual.equals(Constantes.PRESCRICAO_CUIDADOS_TAB)){
+			carregaCuidadosFluxo();
+		}
+	}
+	
+	private void carregaCuidadosFluxo(){
+		FluxoPrescricaoCuidados fpc = new FluxoPrescricaoCuidados();
+		getCuidadosPacienteMap().put("aer", fpc.listaPrescricaoCuidados("AER"));
+		getCuidadosPacienteMap().put("cen", fpc.listaPrescricaoCuidados("CEN"));
+		getCuidadosPacienteMap().put("med", fpc.listaPrescricaoCuidados("MED"));
+		getCuidadosPacienteMap().put("mor", fpc.listaPrescricaoCuidados("MOR"));
+		getCuidadosPacienteMap().put("msc", fpc.listaPrescricaoCuidados("MSC"));
+		getCuidadosPacienteMap().put("mso", fpc.listaPrescricaoCuidados("MSO"));
+		getCuidadosPacienteMap().put("mto", fpc.listaPrescricaoCuidados("MTO"));
+		getCuidadosPacienteMap().put("nut", fpc.listaPrescricaoCuidados("NUT"));
+		getCuidadosPacienteMap().put("sor", fpc.listaPrescricaoCuidados("SOR"));
+		setCuidadosEscolhidos(fpc.getCuidadosEscolhidos());
+		Collections.sort(getCuidadosEscolhidos(), new CuidadosPrescricaoComparador());
+	}
+	
+	private void verificaFluxoPrescricaoPaciente(String fluxoAntigo) {
+		if(fluxoAntigo.equals(Constantes.PRESCRICAO_PACIENTE_TAB)){
+			if(getPrescricaoAtual().getIdPrescricao() == 0){
+				if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
+					super.mensagem("Erro ao gravar a prescrição", null, FacesMessage.SEVERITY_ERROR);
+				}
+			}else{
+				if(!new ControlePrescricao().atualizaPrescricao(getPrescricaoAtual())){
+					super.mensagem("Erro ao atualizar a prescrição", null, FacesMessage.SEVERITY_ERROR);
+				}
 			}
 		}
-		
-		if(skip) {
-			skip = false;	//reset in case user goes back
-			return "confirm";
+	}
+	
+	private void verificaFluxoPrescricaoFarmacologica(String fluxoAtual) {
+		if(fluxoAtual.equals(Constantes.PRESCRICAO_FARMACOLOGICA_TAB)){
+			carregaItensFarmacologicosFluxo();
+			carregaDoseFluxo();
 		}
-		else {
-			return event.getNewStep();
+	}
+	
+	private void verificaFluxoPrescricaoLiberacao(String fluxoAtual) {
+		if(fluxoAtual.equals(Constantes.PRESCRICAO_LIBERACAO_TAB)){
+			carregaItensLiberacao();
+			carregaLiberacaoAutorizadas();
 		}
 	}
 
-	public Paciente getPaciente() {
-		return paciente;
+	private void carregaLiberacaoAutorizadas(){
+		FluxoPrescricaoLiberacaoMedicamento fplm = new FluxoPrescricaoLiberacaoMedicamento();
+		setControlesAtivosParaLiberacaoList(fplm.controlesAtivos(getPrescricaoAtual().getPaciente()));
 	}
-
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	
+	private void carregaItensLiberacao() {
+		FluxoPrescricaoLiberacaoMedicamento fpm = new FluxoPrescricaoLiberacaoMedicamento();
+		setMedicamentosPendentesLiberacaoList(fpm.getMedicamentosPendentesLiberacao());
+	}
+	
+	private void carregaItensFarmacologicosFluxo() {
+		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
+		setItensPrescricao(fpm.getItensPrescricao());
+	}
+	
+	private void carregaDoseFluxo() {
+		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
+		setPrescricaoItemDoseList(fpm.getPrescricaoItemDoseList());
 	}
 
 	public Prescricao getPrescricaoAtual() {
@@ -241,52 +320,119 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		this.prescricaoItem = prescricaoItem;
 	}
 	
-	public Date getDataInicio() {
-		return dataInicio;
-	}
-
-	public void setDataInicio(Date dataInicio) {
-		this.dataInicio = dataInicio;
-	}
-
-	public Integer getQuantidadeDoses() {
-		return quantidadeDoses;
-	}
-
-	public void setQuantidadeDoses(Integer quantidadeDoses) {
-		this.quantidadeDoses = quantidadeDoses;
-	}
-
-	public Integer getQuantidadePorDose() {
-		return quantidadePorDose;
-	}
-
-	public void setQuantidadePorDose(Integer quantidadePorDose) {
-		this.quantidadePorDose = quantidadePorDose;
-	}
-
-	public Integer getIntervaloEntreDoses() {
-		return intervaloEntreDoses;
-	}
-
-	public void setIntervaloEntreDoses(Integer intervaloEntreDoses) {
-		this.intervaloEntreDoses = intervaloEntreDoses;
-	}
-
-	public String getFluxoAtualPrescricao() {
-		return fluxoAtualPrescricao;
-	}
-
-	public void setFluxoAtualPrescricao(String fluxoAtualPrescricao) {
-		this.fluxoAtualPrescricao = fluxoAtualPrescricao;
-	}
-
 	public Prescricao getPrescricaoBloqueio() {
 		return prescricaoBloqueio;
 	}
 
 	public void setPrescricaoBloqueio(Prescricao prescricaoBloqueio) {
 		this.prescricaoBloqueio = prescricaoBloqueio;
+	}
+
+	public List<PrescricaoItem> getItensPrescricao() {
+		return itensPrescricao;
+	}
+
+	public void setItensPrescricao(List<PrescricaoItem> itensPrescricao) {
+		this.itensPrescricao = itensPrescricao;
+	}
+
+	public void setPrescricaoItemDoseList(List<PrescricaoItemDose> prescricaoItemDoseList) {
+		this.prescricaoItemDoseList = prescricaoItemDoseList;
+	}
+	
+	public List<PrescricaoItemDose> getPrescricaoItemDoseList() {
+		return prescricaoItemDoseList;
+	}
+
+	public Dose getDose() {
+		return dose;
+	}
+
+	public void setDose(Dose dose) {
+		this.dose = dose;
+	}
+
+	public List<PrescricaoItem> getMedicamentosPendentesLiberacaoList() {
+		return medicamentosPendentesLiberacaoList;
+	}
+
+	public void setMedicamentosPendentesLiberacaoList(
+			List<PrescricaoItem> medicamentosPendentesLiberacaoList) {
+		this.medicamentosPendentesLiberacaoList = medicamentosPendentesLiberacaoList;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public ControleMedicacaoRestritoSCHI getControleMedicacaoRestritoSCHI() {
+		return controleMedicacaoRestritoSCHI;
+	}
+
+	public void setControleMedicacaoRestritoSCHI(
+			ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
+		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
+	}
+
+	public Map<String, List<CuidadosPaciente>> getCuidadosPacienteMap() {
+		return cuidadosPacienteMap;
+	}
+
+	public void setCuidadosPacienteMap(Map<String, List<CuidadosPaciente>> cuidadosPacienteMap) {
+		this.cuidadosPacienteMap = cuidadosPacienteMap;
+	}
+
+	public CuidadosPrescricao getCuidadosPrescricao() {
+		return cuidadosPrescricao;
+	}
+
+	public void setCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao) {
+		this.cuidadosPrescricao = cuidadosPrescricao;
+	}
+
+	public List<CuidadosPrescricao> getCuidadosEscolhidos() {
+		return cuidadosEscolhidos;
+	}
+
+	public void setCuidadosEscolhidos(List<CuidadosPrescricao> cuidadosEscolhidos) {
+		this.cuidadosEscolhidos = cuidadosEscolhidos;
+	}
+
+	public List<PrescricaoItem> getItensLiberadosPrescricao() {
+		return itensLiberadosPrescricao;
+	}
+
+	public void setItensLiberadosPrescricao(List<PrescricaoItem> itensLiberadosPrescricao) {
+		this.itensLiberadosPrescricao = itensLiberadosPrescricao;
+	}
+
+	public List<ControleMedicacaoRestritoSCHI> getControlesAtivosParaLiberacaoList() {
+		return controlesAtivosParaLiberacaoList;
+	}
+
+	public void setControlesAtivosParaLiberacaoList(
+			List<ControleMedicacaoRestritoSCHI> controlesAtivosParaLiberacaoList) {
+		this.controlesAtivosParaLiberacaoList = controlesAtivosParaLiberacaoList;
+	}
+
+	public Prescricao getPrescricaoVisualizacao() {
+		return prescricaoVisualizacao;
+	}
+
+	public void setPrescricaoVisualizacao(Prescricao prescricaoVisualizacao) {
+		this.prescricaoVisualizacao = prescricaoVisualizacao;
 	}
 	
 }

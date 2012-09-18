@@ -25,7 +25,7 @@ public class ConsultaPrescricaoConsulta extends PadraoConsulta<Prescricao> {
 	public List<Prescricao> getList() {
 		setConsultaGeral(new ConsultaGeral<Prescricao>());
 		carregaValoresConsulta();
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Prescricao o where o.unidade.idUnidade = :idUnidade and o.dataConclusao is not null"));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Prescricao o where o.unidade.idUnidade = :idUnidade and o.dataConclusao is not null and o.dataBloqueio is null"));
 		return super.getList();
 	}
 	

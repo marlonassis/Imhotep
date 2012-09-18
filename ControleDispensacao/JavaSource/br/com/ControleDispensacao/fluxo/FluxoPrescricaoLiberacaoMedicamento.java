@@ -1,17 +1,18 @@
 package br.com.ControleDispensacao.fluxo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.application.FacesMessage;
 
 import br.com.ControleDispensacao.auxiliar.Constantes;
-import br.com.ControleDispensacao.auxiliar.ControleMedicacaoRestrito;
 import br.com.ControleDispensacao.auxiliar.Parametro;
+import br.com.ControleDispensacao.controle.ControleMedicacaoRestrito;
 import br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI;
 import br.com.ControleDispensacao.entidade.Material;
+import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.Profissional;
@@ -21,42 +22,48 @@ import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
-@ManagedBean(name="fluxoPrescricaoLiberacaoMedicamento")
-@RequestScoped
 public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 
-	private String fluxoAtualPrescricao = PrescricaoHome.getInstanciaHome().getFluxoAtualPrescricao();
 	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
 	
-	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
-	private String usuario;
-	private String senha;
-	
-	public boolean isExisteAntibiotico(){
-		for(PrescricaoItem item : prescricaoItemPendente(prescricaoAtual)){
-			if(isMaterialAntibiotico(item.getMaterial())){
-				return true;
-			}
-		}
-		return false;
+	public List<ControleMedicacaoRestritoSCHI> controlesAtivos(Paciente paciente){
+		return getControlesValidos(paciente);
 	}
 	
-	public void analiseLiberacao(){
-		Profissional profissionalAutorizador = Autenticador.getInstancia().profissionalPeloNomeUsuario(getUsuario(), getSenha());
+	private List<ControleMedicacaoRestritoSCHI> getControlesValidos(Paciente paciente){
+		ConsultaGeral<ControleMedicacaoRestritoSCHI> cg = new ConsultaGeral<ControleMedicacaoRestritoSCHI>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("dataLimite", new Date());
+		hm.put("idPaciente", paciente.getIdPaciente());
+		String string = "select o from ControleMedicacaoRestritoSCHI o where o.dataLimite >= :dataLimite and " +
+				"o.tipoPrescricaoInadequada is null " +
+				"and o.profissionalInfectologista != null " +
+				"and o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.paciente.idPaciente = :idPaciente)";
+		return new ArrayList<ControleMedicacaoRestritoSCHI>(cg.consulta(new StringBuilder(string), hm));
+	}
+	
+	public void analisarLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, String usuario, String senha){
+		Profissional profissionalAutorizador = Autenticador.getInstancia().profissionalPeloNomeUsuario(usuario, senha);
 		if(profissionalAutorizador != null){
-			analiseIndividualItensPrescritos(profissionalAutorizador);
+			if(Parametro.profissionalEnfermeiroMedico(profissionalAutorizador)){
+				analiseIndividualItensPrescritos(controleMedicacaoRestritoSCHI, profissionalAutorizador);
+			}else{
+				super.mensagem("Informe algum profissional que seja médico ou enfermeiro.", null, FacesMessage.SEVERITY_WARN);
+			}
+		}else{
+			super.mensagem("Profissional não encontrado.", "Verifique se o usuário e senha estão corretos.", FacesMessage.SEVERITY_WARN);
 		}
 	}
 	
-	private void analiseIndividualItensPrescritos(Profissional profissionalAutorizador) {
-		for(PrescricaoItem item : medicamentosPendentesLiberacao()){
-			analiseTipoMaterial(profissionalAutorizador, item);
+	private void analiseIndividualItensPrescritos(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalAutorizador) {
+		for(PrescricaoItem item : getMedicamentosPendentesLiberacao()){
+			analiseTipoMaterial(controleMedicacaoRestritoSCHI, profissionalAutorizador, item);
 		}
 	}
 	
-	private void analiseTipoMaterial(Profissional profissionalAutorizador, PrescricaoItem item) {
-		if(isMaterialAntibiotico(item.getMaterial()) && Parametro.profissionalEnfermeiroMedico(profissionalAutorizador)){
-			anexaAutorizacaoAtualizaItem(profissionalAutorizador, item);
+	private void analiseTipoMaterial(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalAutorizador, PrescricaoItem item) {
+		if(isMaterialAntibiotico(item.getMaterial())){
+			anexaAutorizacaoAtualizaItem(controleMedicacaoRestritoSCHI, profissionalAutorizador, item);
 		}else{
 			AdicionaAutorizacaoProfissionalAutorizado(profissionalAutorizador, item);
 		}
@@ -66,6 +73,8 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		if(verificaEspecialidadeValida(item.getMaterial(), profissionalPeloUsuario)){
 			item.setProfissionalLiberacao(profissionalPeloUsuario);
 			new PrescricaoItemHome(item, false).atualizar();
+		}else{
+			super.mensagem("O usuário informado não possue autorização para liberar este material.", "", FacesMessage.SEVERITY_WARN);
 		}
 	}
 	
@@ -78,18 +87,18 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		return idEspecialidade != null && idEspecialidade != 0;
 	}
 	
-	private void anexaAutorizacaoAtualizaItem(Profissional profissionalPeloUsuario, PrescricaoItem item) {
-		anexaFormularioAntibioticoItem(profissionalPeloUsuario, item);
+	private void anexaAutorizacaoAtualizaItem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalPeloUsuario, PrescricaoItem item) {
+		anexaFormularioAntibioticoItem(controleMedicacaoRestritoSCHI, profissionalPeloUsuario, item);
 		new PrescricaoItemHome(item, false).atualizar();
 	}
 	
-	private void anexaFormularioAntibioticoItem(Profissional profissionalPeloUsuario, PrescricaoItem item) {
-		getControleMedicacaoRestritoSCHI().setProfissionalAssistente(profissionalPeloUsuario);
-		getControleMedicacaoRestritoSCHI().setDataCriacaoAssistente(new Date());
-		if(getControleMedicacaoRestritoSCHI().getIdControleMedicacaoRestritoSCHI() == 0){
-			new ControleMedicacaoRestrito().gravaRestricao(getControleMedicacaoRestritoSCHI());
+	private void anexaFormularioAntibioticoItem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalPeloUsuario, PrescricaoItem item) {
+		controleMedicacaoRestritoSCHI.setProfissionalAssistente(profissionalPeloUsuario);
+		controleMedicacaoRestritoSCHI.setDataCriacaoAssistente(new Date());
+		if(controleMedicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI() == 0){
+			new ControleMedicacaoRestrito().gravaRestricao(controleMedicacaoRestritoSCHI);
 		}
-		item.setControleMedicacaoRestritoSCHI(getControleMedicacaoRestritoSCHI());
+		item.setControleMedicacaoRestritoSCHI(controleMedicacaoRestritoSCHI);
 	}
 	
 	public boolean isMaterialAntibiotico(Material material){
@@ -100,7 +109,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		return false;
 	}
 	
-	public List<PrescricaoItem> medicamentosPendentesLiberacao(){
+	public List<PrescricaoItem> getMedicamentosPendentesLiberacao(){
 			return prescricaoItemPendente(prescricaoAtual);
 	}
 	
@@ -122,7 +131,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		List<String> especialidades = (List<String>) cg.consulta(new StringBuilder("select o.especialidade.descricao from LiberaMaterialEspecialidade o where o.material.idMaterial = :idMaterial"), hm);
 		
 		if(especialidades.isEmpty()){
-			return "Todos";
+			return "Todas as especialidades liberam.";
 		}
 		
 		String ret = "";
@@ -136,28 +145,4 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		return ret;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public ControleMedicacaoRestritoSCHI getControleMedicacaoRestritoSCHI() {
-		return controleMedicacaoRestritoSCHI;
-	}
-
-	public void setControleMedicacaoRestritoSCHI(
-			ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
-		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
-	}
 }

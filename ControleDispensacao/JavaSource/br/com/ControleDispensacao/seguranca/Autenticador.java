@@ -10,10 +10,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import br.com.ControleDispensacao.auxiliar.ControleInstancia;
-import br.com.ControleDispensacao.auxiliar.ControleMenu;
-import br.com.ControleDispensacao.auxiliar.ControlePainel;
-import br.com.ControleDispensacao.auxiliar.ControleSenha;
+import br.com.ControleDispensacao.controle.ControleInstancia;
+import br.com.ControleDispensacao.controle.ControleMenu;
+import br.com.ControleDispensacao.controle.ControlePainel;
+import br.com.ControleDispensacao.controle.ControleSenha;
 import br.com.ControleDispensacao.entidade.Menu;
 import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
