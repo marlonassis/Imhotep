@@ -33,7 +33,6 @@ public class Prescricao {
 	private Date dataConclusao;
 	private String leito;
 	private Float massa;
-	private MotivoFimReceita motivoFimReceita;
 	private TipoStatusEnum dispensavel;
 	private TipoStatusEnum dispensado;
 	private List<PrescricaoItem> prescricaoItens;
@@ -125,15 +124,6 @@ public class Prescricao {
 		this.massa = peso;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_motivo_fim_receita")
-	public MotivoFimReceita getMotivoFimReceita() {
-		return motivoFimReceita;
-	}
-	public void setMotivoFimReceita(MotivoFimReceita motivoFimReceita) {
-		this.motivoFimReceita = motivoFimReceita;
-	}
-
 	@Column(name = "tp_dispensavel")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getDispensavel() {

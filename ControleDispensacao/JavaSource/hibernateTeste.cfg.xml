@@ -34,7 +34,6 @@
         <mapping class="br.com.ControleDispensacao.entidade.SituacaoPaciente"/>
         <mapping class="br.com.ControleDispensacao.entidade.Paciente"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoMovimento"/>
-        <mapping class="br.com.ControleDispensacao.entidade.MotivoFimReceita"/>
         <mapping class="br.com.ControleDispensacao.entidade.MovimentoGeral"/>
         <mapping class="br.com.ControleDispensacao.entidade.ItensMovimentoGeral"/>
         <mapping class="br.com.ControleDispensacao.entidade.Estoque"/>
