@@ -3,10 +3,9 @@ package br.com.remendo;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import br.com.remendo.gerenciador.GerenciadorConexao;
 import br.com.remendo.interfaces.IPadraoHome;
 
-public abstract class PadraoControle extends GerenciadorConexao implements IPadraoHome {
+public abstract class PadraoControle extends PadraoGeral implements IPadraoHome {
 
 	private Object instancia;
 	private boolean exibeMensagemAtualizacao = true;

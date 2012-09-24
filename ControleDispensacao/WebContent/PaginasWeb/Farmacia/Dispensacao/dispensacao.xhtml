@@ -113,9 +113,9 @@
 										selectionMode="single" 
 										rowKey="#{prescricaoItem.idPrescricaoItem}">
 								
-								<p:ajax event="rowEdit" 
-										listener="#{dispensacaoHome.editEvent}" 
-										update="padraoTabView:growl"/>
+							<p:ajax event="rowEdit" 
+									listener="#{dispensacaoHome.editEvent}" 
+									update="padraoTabView:growl"/>
 								
 							<p:column headerText="Material" >
 								<h:outputText value="#{prescricaoItem.material}" />

@@ -1,6 +1,7 @@
 package br.com.remendo.gerenciador;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 import org.hibernate.Session;
@@ -45,5 +46,9 @@ public class GerenciadorConexao {
 	public void finallyTransacao(){
 		session.close(); // Fecha sessão
 		factory.close();
+	}
+	
+	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
 	}
 }

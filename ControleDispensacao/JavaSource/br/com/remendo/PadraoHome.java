@@ -291,10 +291,6 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		return lista;
 	}
 
-	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
-	}
-	
 	public boolean isEdicaoGenerico(Object obj){
 		Object retId = null;
 		try{
