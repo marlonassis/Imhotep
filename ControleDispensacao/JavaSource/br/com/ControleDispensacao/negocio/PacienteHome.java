@@ -22,22 +22,27 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class PacienteHome extends PadraoHome<Paciente>{
 	
-	public static PacienteHome getInstanciaHome(){
-		return new ControleInstancia<PacienteHome>().instancia("pacienteHome");
+	public static PacienteHome getInstanciaHome() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		return (PacienteHome) new ControleInstancia().procuraInstancia(PacienteHome.class);
 	}
 	
 	public void procurarPaciente() throws IOException{
-		String numeroSus = getInstancia().getNumeroSus();
-		ConsultaGeral<Paciente> cg = new ConsultaGeral<Paciente>();
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("numeroSus", numeroSus);
-		Paciente paciente = cg.consultaUnica(new StringBuilder("select o from Paciente o where o.numeroSus = :numeroSus"), hm);
-		if(paciente != null){
-			PacienteEntradaHome.getInstanciaHome().setNumeroSus(numeroSus);
-			PacienteEntradaHome.getInstanciaHome().getInstancia().setPaciente(paciente);
-			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
-		}else{
-			super.mensagem("O número do SUS informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);
+		try {
+			String numeroSus = getInstancia().getNumeroSus();
+			ConsultaGeral<Paciente> cg = new ConsultaGeral<Paciente>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("numeroSus", numeroSus);
+			Paciente paciente = cg.consultaUnica(new StringBuilder("select o from Paciente o where o.numeroSus = :numeroSus"), hm);
+			if(paciente != null){
+				PacienteEntradaHome.getInstanciaHome().setNumeroSus(numeroSus);
+				PacienteEntradaHome.getInstanciaHome().getInstancia().setPaciente(paciente);
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
+			}else{
+				super.mensagem("O número do SUS informado não está cadastrado.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Ocorreu um problema ao procurar o paciente", "", FacesMessage.SEVERITY_ERROR);
 		}
 	}
 	

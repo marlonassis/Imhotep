@@ -3,16 +3,39 @@ package br.com.ControleDispensacao.controle;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-public class ControleInstancia<T> {
+public class ControleInstancia {
 	@SuppressWarnings("unchecked")
-	public T instancia(String nome){
+	public Object instancia(String nome){
 		if(FacesContext.getCurrentInstance() != null){
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
 			if(session != null){
-				T attribute = (T) session.getAttribute(nome);
+				Object attribute = session.getAttribute(nome);
 				return attribute;
 			}
 		}
 		return null;
 	}
+	
+	public Object procuraInstancia(Class<?> classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);    
+		if(session != null){
+			Object attribute = criaInstancia(classe, session);
+			return attribute;
+		}else{
+			return null;
+		}
+	}
+
+	private Object criaInstancia(Class<?> classe, HttpSession session) throws InstantiationException, IllegalAccessException {
+		Object attribute = session.getAttribute(primeiraLetraMinuscula(classe.getSimpleName()));
+		if (attribute == null){
+			session.setAttribute(classe.getSimpleName(), classe.newInstance());
+			attribute = session.getAttribute(primeiraLetraMinuscula(classe.getSimpleName()));
+		}
+		return attribute;
+	}
+	
+	private String primeiraLetraMinuscula(String palavra) {    
+	      return palavra.substring(0,1).toLowerCase().concat(palavra.substring(1));    
+	} 
 }

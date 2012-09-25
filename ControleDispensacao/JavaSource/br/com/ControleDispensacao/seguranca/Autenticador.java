@@ -35,7 +35,12 @@ public class Autenticador {
 	private Collection<Unidade> unidades;
 
 	public static Autenticador getInstancia(){
-		return new ControleInstancia<Autenticador>().instancia("autenticador");
+		try {
+			return (Autenticador) new ControleInstancia().procuraInstancia(Autenticador.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private void carregaUnidadesUsuario(){

@@ -26,7 +26,12 @@ public class PacienteEntradaHome extends PadraoHome<PacienteEntrada>{
 	private String numeroSus;
 	
 	public static PacienteEntradaHome getInstanciaHome(){
-		return new ControleInstancia<PacienteEntradaHome>().instancia("pacienteEntradaHome");
+		try {
+			return (PacienteEntradaHome) new ControleInstancia().procuraInstancia(PacienteEntradaHome.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override

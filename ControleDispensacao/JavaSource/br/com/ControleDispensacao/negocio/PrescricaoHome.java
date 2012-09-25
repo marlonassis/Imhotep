@@ -125,8 +125,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return fplm.especialidadesLiberamMaterial(material);
 	}
 	
-	public static PrescricaoHome getInstanciaHome(){
-		return new ControleInstancia<PrescricaoHome>().instancia("prescricaoHome");
+	public static PrescricaoHome getInstanciaHome() {
+		try {
+			return (PrescricaoHome) new ControleInstancia().procuraInstancia(PrescricaoHome.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public void removePrescricaoItem(PrescricaoItem tupla){
