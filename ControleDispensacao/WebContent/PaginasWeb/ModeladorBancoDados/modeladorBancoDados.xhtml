@@ -19,6 +19,7 @@
 						<p:growl id="formGrowl" showDetail="true" />
 						<ui:include src="modeladorBancoDadosEditor.xhtml"/>
 			            <p:commandButton	value="Salvar" 
+			            					rendered="#{empty modeladorBancoDados.tabelaEdicao}"
 			            					update="padraoTabView:tabelaModeladorBancoDados modeladorBancoDadosForm"
 											action="#{modeladorBancoDados.criarTabela()}" />
 			            <p:commandButton	value="Gravar" 

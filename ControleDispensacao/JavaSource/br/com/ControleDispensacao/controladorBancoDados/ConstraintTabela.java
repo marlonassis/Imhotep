@@ -8,6 +8,7 @@ public class ConstraintTabela {
 	private String nomePropriedadeReferencia;
 	private String tipoDelete;
 	private String tipoUpdate;
+	private String nomeCompletoConstraint;
 	
 	public String getNomeConstraint() {
 		return nomeConstraint;
@@ -58,34 +59,4 @@ public class ConstraintTabela {
 		this.tipoUpdate = tipoUpdate;
 	}
 	
-	@Override
-	public String toString() {
-		String constraintInicial = " constraint "+getNomeConstraint();
-		if(getTipoConstraint().equals("PRIMARY KEY")){
-			constraintInicial = constraintInicial.concat(" PRIMARY KEY (");
-			constraintInicial = constraintInicial.concat(getNomePropriedadeLocal());
-			constraintInicial = constraintInicial.concat(")");
-		}else{
-			if(getTipoConstraint().equals("FOREIGN KEY")){
-				constraintInicial = constraintInicial.concat(" FOREIGN KEY (");
-				constraintInicial = constraintInicial.concat(getNomePropriedadeLocal());
-				constraintInicial = constraintInicial.concat(") ");
-				constraintInicial = constraintInicial.concat("references ");
-				constraintInicial = constraintInicial.concat(getNomeTabelaReferencia());
-				constraintInicial = constraintInicial.concat(" (").concat(getNomePropriedadeLocal()).concat(")");
-				constraintInicial = constraintInicial.concat(" match simple on update ");
-				constraintInicial = constraintInicial.concat(getTipoUpdate());
-				constraintInicial = constraintInicial.concat("on delete ");
-				constraintInicial = constraintInicial.concat(getTipoDelete());
-			}else{
-				if(getTipoConstraint().equals("UNIQUE")){
-					constraintInicial = constraintInicial.concat(" UNIQUE (");
-					constraintInicial = constraintInicial.concat(getNomePropriedadeLocal());
-					constraintInicial = constraintInicial.concat(") ");
-				}
-			}
-		}
-		
-		return constraintInicial;
-	}
 }

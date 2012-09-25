@@ -206,7 +206,7 @@
 		
 		<ui:repeat value="#{modeladorBancoDados.tabela.constraints}"
 				   var="cons">
-			<h:outputText value="#{cons.toString()}" />
+			<h:outputText value="#{cons.nomeConstraint}" />
 			<p:commandLink  action="#{modeladorBancoDados.removerPropriedade(prop)}"
 							update="padraoTabView:modeladorBancoDadosForm"
 							title="Apagar"

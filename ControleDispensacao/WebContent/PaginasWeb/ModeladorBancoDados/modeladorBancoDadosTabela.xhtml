@@ -14,6 +14,11 @@
 			<f:facet name="header"><h:outputText value="Tabela" /></f:facet>
 			<h:outputText value="#{linha}" />
 		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Tamanho" /></f:facet>
+			<h:outputText value="#{modeladorBancoDados.tamanhoTabela(linha)}" />
+		</p:column>
 					
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:modeladorBancoDadosForm"

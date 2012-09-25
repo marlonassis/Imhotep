@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,6 +15,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.ControleDispensacao.entidade.SqlExecutado;
+import br.com.ControleDispensacao.enums.TipoStatusEnum;
+import br.com.ControleDispensacao.negocio.SqlExecutadoHome;
 import br.com.remendo.gerenciador.GerenciadorConexao;
 
 @ManagedBean(name="modeladorBancoDados")
@@ -53,6 +57,11 @@ public class ModeladorBancoDados extends GerenciadorConexao{
 		comandosExecutar = new ArrayList<String>();
 	}
 	
+	public void removerConstraint(ConstraintTabela cons){
+		comandosExecutar.add("ALTER TABLE public."+getTabela().getNomeTabela()+" DROP CONSTRAINT "+cons.getNomeConstraint()+";");
+		getTabela().getConstraints().remove(cons);
+	}
+	
 	public void removerPropriedade(PropriedadeTabela prop){
 		comandosExecutar.add("alter table public."+getTabela().getNomeTabela()+" drop column "+prop.getNomePropriedade()+";");
 		getTabela().getPropriedades().remove(prop);
@@ -68,6 +77,7 @@ public class ModeladorBancoDados extends GerenciadorConexao{
 		setTabela(new Tabela());
 		getTabela().setNomeTabela(getTabelaEdicao());
 		carregaColunas(getTabela());
+		carregaCostraint(getTabela());
 	}
 	
 	public void carregarPropriedadesReferencia(){
@@ -154,6 +164,88 @@ public class ModeladorBancoDados extends GerenciadorConexao{
 			i++;
 		}
 		return sqlCompleto;
+	}
+	
+	public String tamanhoTabela(String nomeTabela){
+		registrarDriver();
+        PreparedStatement ps = null;
+        try {
+        	String sql = "select (pg_relation_size('"+nomeTabela+"') / 1024)";
+        			
+        	c = createConnection();
+        	s = c.createStatement();
+            ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            return rs.getString(1).concat(" KB");
+        } catch (SQLException sqle) {
+            System.out.println("Database processing has failed.");
+            System.out.println("Reason: " + sqle.getMessage());
+        } finally {
+            // Close database resources
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cleanup failed to close Statement.");
+            }
+
+            try {
+                if (c != null) {
+                    c.close();
+                }
+                if (s != null) {
+                    s.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cleanup failed to close Connection.");
+            }
+        }
+        return null;
+	}
+	
+	private void carregaCostraint(Tabela tabela){
+		registrarDriver();
+        PreparedStatement ps = null;
+        try {
+        	String sql = "SELECT constraint_name FROM information_schema.constraint_table_usage "+
+        				 " where table_name = '"+tabela.getNomeTabela()+"'";
+        			
+        	c = createConnection();
+        	s = c.createStatement();
+            ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	ConstraintTabela ct = new ConstraintTabela();
+            	ct.setNomeConstraint(rs.getString(1));
+            	tabela.getConstraints().add(ct);
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Database processing has failed.");
+            System.out.println("Reason: " + sqle.getMessage());
+        } finally {
+            // Close database resources
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cleanup failed to close Statement.");
+            }
+
+            try {
+                if (c != null) {
+                    c.close();
+                }
+                if (s != null) {
+                    s.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cleanup failed to close Connection.");
+            }
+
+        }
+		
 	}
 	
 	private void carregaColunas(Tabela tabela){
@@ -253,6 +345,7 @@ public class ModeladorBancoDados extends GerenciadorConexao{
         	c = createConnection();
         	s = c.createStatement();
 			s.executeUpdate(query);
+			registrarSqlExecutado(query);
         } catch (SQLException sqle) {
         	super.mensagem("Falha no processamento no banco de dados", null, FacesMessage.SEVERITY_FATAL);
             System.out.println("Database processing has failed.");
@@ -270,6 +363,14 @@ public class ModeladorBancoDados extends GerenciadorConexao{
                 System.out.println("Cleanup failed to close Statement.");
             }
         }
+	}
+
+	private void registrarSqlExecutado(String query) {
+		SqlExecutado sqle = new SqlExecutado();
+		sqle.setDataCriacao(new Date());
+		sqle.setExecutadoBaseProducao(TipoStatusEnum.N);
+		sqle.setSql(query);
+		new SqlExecutadoHome().enviar(sqle);
 	}
 
 	private Connection createConnection() throws SQLException {
