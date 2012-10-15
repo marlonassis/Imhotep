@@ -86,7 +86,13 @@ public class EstoqueHome extends PadraoHome<Estoque>{
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+		try {
+			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário Atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EstoqueHome");
+		}
 		getInstancia().setDataInclusao(new Date());
 		return super.enviar();
 	}

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -51,7 +52,14 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 	}
 
 	private void insereInformações() {
-		getInstancia().setProfissionalInfectologista(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			getInstancia().setProfissionalInfectologista(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o profissional atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em ControleMedicacaoRestritoSCHIHome");
+		}
+		
 		getInstancia().setDataLiberacaoInfectologista(new Date());
 		Calendar dataLimite = Calendar.getInstance();
 		dataLimite.setTime(getInstancia().getDataLiberacaoInfectologista());

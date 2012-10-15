@@ -3,7 +3,6 @@ package br.com.ControleDispensacao.fluxo;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.ControleDispensacao.entidade.CuidadosPrescricao;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.negocio.PrescricaoHome;
@@ -21,12 +20,12 @@ public class FluxoPrescricaoConfirmacao extends PadraoFluxo{
 			hm.put("idPrescricao", prescricao.getIdPrescricao());
 			
 			String sql = "select o from PrescricaoItem o where " +
-			"o.prescricao.idPrescricao = :idPrescricao and (( "+
-			"exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) " +
-			" and profissionalLiberacao is not null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO') and " +
-			"controleMedicacaoRestritoSCHI is not null)" +
-			"or (not exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial)" +
-			" and not lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO'))) ";
+						 "o.prescricao.idPrescricao = :idPrescricao and (( "+
+						 "exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) " +
+						 " and profissionalLiberacao is not null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO') and " +
+						 "controleMedicacaoRestritoSCHI is not null)" +
+						 "or (not exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial)" +
+						 " and not lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO'))) ";
 			
 			return (List<PrescricaoItem>) cg.consulta(new StringBuilder(sql), hm);
 		}

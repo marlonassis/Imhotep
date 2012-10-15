@@ -60,16 +60,34 @@ public class ControlePrescricao extends PadraoControle{
 		String pagina = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI();
 		ea.setPagina(pagina);
 		ea.setStackTrace(stackTrace.toString());
-		ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
+		try {
+			ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em ControlePrescricao");
+		}
 		new ErroAplicacaoHome(ea).enviar();
 	}
 	
 	private void completarPrescricao(Prescricao prescricao) {
 		prescricao.setAno(Calendar.getInstance().get(Calendar.YEAR));
 		prescricao.setDataInclusao(new Date());
-		prescricao.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		try {
+			prescricao.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		}  catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em ControlePrescricao");
+		}
 		prescricao.setDispensavel(TipoStatusEnum.N);
 		prescricao.setDispensado(TipoStatusEnum.N);
-		prescricao.setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			prescricao.setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
+		}  catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em ControlePrescricao");
+		}
 	}	
 }

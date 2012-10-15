@@ -9,7 +9,8 @@ public enum TipoCuidadosPacienteEnum {
 	MSO("Medicações SOS"),
 	MTO("Medicações tópicas"),
 	NUT("Nutrição (SND)"),
-	SOR("Soroterapia, scalp,");
+	SOR("Soroterapia, scalp,"),
+	OUT("Outros");
 	
 	private String label;
 	

@@ -31,7 +31,13 @@ public class EstoqueCentroCirurgicoLivroHome extends PadraoHome<EstoqueCentroCir
 
 	private void preEnvio(EstoqueCentroCirurgicoLivro estoqueCentroCirurgicoLivro) {
 		estoqueCentroCirurgicoLivro.setDataMovimento(new Date());
-		estoqueCentroCirurgicoLivro.setProfissionalMovimentacao(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			estoqueCentroCirurgicoLivro.setProfissionalMovimentacao(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o profissional Atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EstoqueCentroCirurgicoLivroHome");
+		}
 		carregaSaldoAnterior(estoqueCentroCirurgicoLivro);
 		calculaSaldoAtual(estoqueCentroCirurgicoLivro);
 	}

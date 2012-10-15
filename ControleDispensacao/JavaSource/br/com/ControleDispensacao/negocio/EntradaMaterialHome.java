@@ -194,8 +194,14 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setSaldoAtual(getItensMovimentoGeral().getQuantidade());
 		movimentoLivroAtual.setSaldoAnterior(0);
 		movimentoLivroAtual.setTipoMovimento(getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento());
-		movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-		movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+		try{
+			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EntradaMaterialHome");
+		}
 		session.save(movimentoLivroAtual);
 	}
 
@@ -204,7 +210,13 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("idFabricante", getInstancia().getFabricante().getIdFabricante());
 		hashMap.put("idMaterial", getInstancia().getMaterial().getIdMaterial());
-		hashMap.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
+		try {
+			hashMap.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao acessar o pegar a unidade atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EntradaMaterialHome");
+		}
 		hashMap.put("lote", getInstancia().getLote());
 		StringBuilder sb = new StringBuilder("select o from Estoque o where o.fabricante.idFabricante = :idFabricante");
 		sb.append(" and o.material.idMaterial = :idMaterial ");
@@ -223,8 +235,14 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 			estoqueAtual.setLote(getInstancia().getLote());
 			estoqueAtual.setMaterial(getInstancia().getMaterial());
 			estoqueAtual.setQuantidade(getItensMovimentoGeral().getQuantidade());
-			estoqueAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-			estoqueAtual.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			try{
+				estoqueAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+				estoqueAtual.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			} catch (Exception e) {
+				e.printStackTrace();
+				super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
+				System.out.print("Erro em EntradaMaterialHome");
+			}
 			estoqueAtual.setDataInclusao(new Date());
 			estoqueAtual.setFornecedor(getInstancia().getFornecedor());
 			estoqueAtual.setValorUnitario(getInstancia().getValorUnitario());
@@ -243,13 +261,20 @@ public class EntradaMaterialHome extends PadraoHome<Estoque>{
 		if(movimentoGeral == null){
 			//caso não encontre um movimento geral será gerado um novo
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-			String chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(getIdSessao());
+			String chaveUnica = null;
+			try{
+				chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(getIdSessao());
+				getItensMovimentoGeral().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+				getItensMovimentoGeral().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			} catch (Exception e) {
+				e.printStackTrace();
+				super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
+				System.out.print("Erro em EntradaMaterialHome");
+			}
 			getItensMovimentoGeral().getMovimentoGeral().setNumeroControle(chaveUnica);
-			getItensMovimentoGeral().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			getItensMovimentoGeral().getMovimentoGeral().setDataInclusao(new Date());
 			getItensMovimentoGeral().getMovimentoGeral().setDataInclusao(new Date());
 			getItensMovimentoGeral().getMovimentoGeral().setTipoMovimento(Parametro.tipoMovimentoEntrada());
-			getItensMovimentoGeral().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		}else{
 			//como foi encontrado um movimento geral então a operacao é de atualização do movimento geral
 			getItensMovimentoGeral().setMovimentoGeral(movimentoGeral);

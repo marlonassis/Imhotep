@@ -2,6 +2,7 @@ package br.com.ControleDispensacao.negocio;
 
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -18,7 +19,13 @@ import br.com.remendo.PadraoHome;
 public class ChamadoHome extends PadraoHome<Chamado>{
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuario(Autenticador.getInstancia().getUsuarioAtual());
+		try {
+			getInstancia().setUsuario(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em ChamadoHome");
+		}
 		getInstancia().setDataChamado(new Date());
 		getInstancia().setAtendido(TipoBooleanEnum.F);
 		return super.enviar();

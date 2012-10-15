@@ -49,7 +49,13 @@ public class BloqueioLoteHome extends PadraoHome<Estoque>{
 		if(bloqueado){
 			if(!getInstancia().getMotivoBloqueio().isEmpty()){
 				getInstancia().setDataBloqueio(new Date());
-				getInstancia().setUsuarioBloqueio(Autenticador.getInstancia().getUsuarioAtual());
+				try {
+					getInstancia().setUsuarioBloqueio(Autenticador.getInstancia().getUsuarioAtual());
+				} catch (Exception e) {
+					e.printStackTrace();
+					super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+					System.out.print("Erro em BloqueioLoteHome");
+				}
 			}else{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o motivo do bloqueio", "Atualização não autorizada."));
 				return false;

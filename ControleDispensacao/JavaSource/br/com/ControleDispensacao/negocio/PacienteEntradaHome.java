@@ -37,7 +37,13 @@ public class PacienteEntradaHome extends PadraoHome<PacienteEntrada>{
 	@Override
 	protected void preEnvio() {
 		getInstancia().setDataInclusao(new Date());
-		getInstancia().setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			getInstancia().setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o profissional atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em PacienteEntradaHome");
+		}
 		super.preEnvio();
 	}
 	

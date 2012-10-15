@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.fluxo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,18 +42,29 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 				"and o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.paciente.idPaciente = :idPaciente)";
 		return new ArrayList<ControleMedicacaoRestritoSCHI>(cg.consulta(new StringBuilder(string), hm));
 	}
-	
-	public void analisarLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, String usuario, String senha){
-		Profissional profissionalAutorizador = Autenticador.getInstancia().profissionalPeloNomeUsuario(usuario, senha);
+	// TODO criar exception personalizado
+	public boolean analisarLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, String usuario, String senha){
+		Profissional profissionalAutorizador = null;
+		try {
+			profissionalAutorizador = Autenticador.getInstancia().profissionalPeloNomeUsuario(usuario, senha);
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em ControleMedicamentoRestrito");
+		}
+		
 		if(profissionalAutorizador != null){
 			if(Parametro.profissionalEnfermeiroMedico(profissionalAutorizador)){
 				analiseIndividualItensPrescritos(controleMedicacaoRestritoSCHI, profissionalAutorizador);
 			}else{
 				super.mensagem("Informe algum profissional que seja médico ou enfermeiro.", null, FacesMessage.SEVERITY_WARN);
+				return false;
 			}
 		}else{
 			super.mensagem("Profissional não encontrado.", "Verifique se o usuário e senha estão corretos.", FacesMessage.SEVERITY_WARN);
+			return false;
 		}
+		return true;
 	}
 	
 	private void analiseIndividualItensPrescritos(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalAutorizador) {
@@ -65,11 +77,11 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		if(isMaterialAntibiotico(item.getMaterial())){
 			anexaAutorizacaoAtualizaItem(controleMedicacaoRestritoSCHI, profissionalAutorizador, item);
 		}else{
-			AdicionaAutorizacaoProfissionalAutorizado(profissionalAutorizador, item);
+			adicionaAutorizacaoProfissionalAutorizado(profissionalAutorizador, item);
 		}
 	}
 	
-	private void AdicionaAutorizacaoProfissionalAutorizado(Profissional profissionalPeloUsuario, PrescricaoItem item) {
+	private void adicionaAutorizacaoProfissionalAutorizado(Profissional profissionalPeloUsuario, PrescricaoItem item) {
 		if(verificaEspecialidadeValida(item.getMaterial(), profissionalPeloUsuario)){
 			item.setProfissionalLiberacao(profissionalPeloUsuario);
 			new PrescricaoItemHome(item, false).atualizar();
@@ -95,6 +107,9 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 	private void anexaFormularioAntibioticoItem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalPeloUsuario, PrescricaoItem item) {
 		controleMedicacaoRestritoSCHI.setProfissionalAssistente(profissionalPeloUsuario);
 		controleMedicacaoRestritoSCHI.setDataCriacaoAssistente(new Date());
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, controleMedicacaoRestritoSCHI.getTempoUso());
+		controleMedicacaoRestritoSCHI.setDataLimite(calendar.getTime());
 		if(controleMedicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI() == 0){
 			new ControleMedicacaoRestrito().gravaRestricao(controleMedicacaoRestritoSCHI);
 		}

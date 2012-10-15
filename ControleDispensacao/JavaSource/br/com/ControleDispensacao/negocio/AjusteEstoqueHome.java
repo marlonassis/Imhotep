@@ -178,7 +178,13 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
 		movimentoLivroAtual.setMovimentoGeral(itensMovimentoGeral.getMovimentoGeral());
 		movimentoLivroAtual.setTipoMovimento(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento());
-		movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		try {
+			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar a unidade atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em AjusteEstoqueHome");
+		}
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		
 		Integer quantidadeMovimentacao = getItensMovimentoGeral().getQuantidade();
@@ -194,7 +200,13 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 			movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeMovimentacao);
 		}
 		
-		movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+		try {
+			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em AjusteEstoqueHome");
+		}
 		
 		session.save(movimentoLivroAtual);
 	}
@@ -220,11 +232,18 @@ public class AjusteEstoqueHome extends PadraoHome<Estoque>{
 	
 	private void geraMovimentoGeral() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-		String chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
+		String chaveUnica = null;
+		try{
+			chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
+			itensMovimentoGeral.getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			itensMovimentoGeral.getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em AjusteEstoqueHome");
+		}
 		itensMovimentoGeral.getMovimentoGeral().setNumeroControle(chaveUnica);
-		itensMovimentoGeral.getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		itensMovimentoGeral.getMovimentoGeral().setDataInclusao(new Date());
-		itensMovimentoGeral.getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		session.save(itensMovimentoGeral.getMovimentoGeral());
 	}
 

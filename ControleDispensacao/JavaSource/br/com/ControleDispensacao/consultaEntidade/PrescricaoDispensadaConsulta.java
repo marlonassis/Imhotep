@@ -3,6 +3,7 @@ package br.com.ControleDispensacao.consultaEntidade;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -31,7 +32,12 @@ public class PrescricaoDispensadaConsulta extends PadraoConsulta<Prescricao> {
 	
 	private void carregaValoresConsulta() {
 		HashMap<Object, Object> restricaoConsulta = new HashMap<Object, Object>();
-		restricaoConsulta.put("profissionalInclusao", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
+		try {
+			restricaoConsulta.put("profissionalInclusao", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pesquisar um prescrição dispensada.", "Erro ao pegar o usuário atual", FacesMessage.SEVERITY_ERROR);
+		}
 		getConsultaGeral().setAddValorConsulta(restricaoConsulta);
 	}
 }

@@ -221,6 +221,7 @@
 					<p:tab id="prescricaoLiberacaoTab" title="Autorização">
 						<p:panel id="painelLiberacao"
 								 header="Medicamentos pendentes">
+								 #{util.horaAtual}
 							<p:dataTable id="materialPendente" 
 										 value="#{prescricaoHome.medicamentosPendentesLiberacaoList}"
 							 			 emptyMessage="Não há medicamentos pendentes de liberação." 
@@ -600,6 +601,7 @@
 														toggleSpeed="500">
 												<p:inputTextarea cols="50"
 																 rows="10"
+																 autoResize="false"
 																 value="#{prescricaoHome.cuidadosPrescricao.descricaoOutros}" />
 												<br/>
 												<p:commandButton value="Adicionar" 
@@ -616,22 +618,60 @@
 														toggleSpeed="500">
 											<h:panelGroup id="itensEscolhidosPanelGroup"
 														  style="width:50%; text-align:top; " >
-												<ui:repeat value="#{prescricaoHome.cuidadosEscolhidos}"
-														   var="cuidadosEscolhidos">
-													<h:outputText value="#{cuidadosEscolhidos.cuidadosPaciente.descricao}"
-																  escape="false" 
-																  rendered="#{empty cuidadosEscolhidos.descricaoOutros}"/>
-													<h:outputText value="#{cuidadosEscolhidos.descricaoOutros}"
-																  escape="false"
-																  rendered="#{not empty cuidadosEscolhidos.descricaoOutros}" />
-												    <p:commandLink  action="#{prescricaoHome.removerCuidadosPrescricao(cuidadosEscolhidos)}"
-																	update="padraoTabView:itensEscolhidosPanelGroup padraoTabView:#{cuidadosEscolhidos.cuidadosPaciente.tipoCuidadosPaciente}"
-																	title="Apagar"
-																	immediate="true">
-														<h:graphicImage value="/Imagens/delete.png" />
-													</p:commandLink>
+												<ui:repeat value="#{itensPadrao.tipoCuidadosPacienteEnumItens}"
+														   var="cuidadosGerais"
+														   rendered="#{not empty prescricaoHome.cuidadosEscolhidos}">
+														   
+													<h:outputText value="Aerosol:" 
+																  rendered="#{cuidadosGerais.value == 'AER'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Cuidados de Enfermagem:" 
+																  rendered="#{cuidadosGerais.value == 'CEN'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Medicações:" 
+																  rendered="#{cuidadosGerais.value == 'MED'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Medicações Orais:" 
+																  rendered="#{cuidadosGerais.value == 'MOR'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Medicações SC, IM:" 
+																  rendered="#{cuidadosGerais.value == 'MSC'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Medicações SOS:" 
+																  rendered="#{cuidadosGerais.value == 'MSO'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Medicações Tópicas:" 
+																  rendered="#{cuidadosGerais.value == 'MTO'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Nutrição (SND):" 
+																  rendered="#{cuidadosGerais.value == 'NUT'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Soroterapia, Scalp,:" 
+																  rendered="#{cuidadosGerais.value == 'SOR'}" 
+																  style="font-weight:bold" />
+													<h:outputText value="Outros:" 
+																  rendered="#{cuidadosGerais.value == 'OUT'}" 
+																  style="font-weight:bold" />
 													<br/>
-													<br/>
+													<ui:repeat value="#{prescricaoHome.cuidadosEscolhidos}"
+															   var="cuidadosEscolhidos">
+														<h:panelGroup rendered="#{cuidadosEscolhidos.cuidadosPaciente.tipoCuidadosPaciente == cuidadosGerais.value || (cuidadosGerais.value == 'OUT' and empty cuidadosEscolhidos.cuidadosPaciente)}" >
+															<h:outputText value="#{cuidadosEscolhidos.cuidadosPaciente.descricao}"
+																		  escape="false" 
+																		  rendered="#{empty cuidadosEscolhidos.descricaoOutros}"/>
+															<h:outputText value="#{cuidadosEscolhidos.descricaoOutros}"
+																		  escape="false"
+																		  rendered="#{not empty cuidadosEscolhidos.descricaoOutros}" />
+														    <p:commandLink  action="#{prescricaoHome.removerCuidadosPrescricao(cuidadosEscolhidos)}"
+																			update="padraoTabView:itensEscolhidosPanelGroup padraoTabView:#{cuidadosEscolhidos.cuidadosPaciente.tipoCuidadosPaciente}"
+																			title="Apagar"
+																			immediate="true">
+																<h:graphicImage value="/Imagens/delete.png" />
+															</p:commandLink>
+															<br/>
+															<br/>
+														</h:panelGroup>
+													</ui:repeat>
 												</ui:repeat>
 											</h:panelGroup>
 										</p:fieldset>
@@ -680,19 +720,58 @@
 							</p:dataList>
 						</p:panel>
 						<p:panel header="Cuidados" >
-							<p:dataList id="cuidadosEscolhidosFinalizacao"
-										var="cuidado" 
-										value="#{prescricaoHome.cuidadosEscolhidos}"
-										type="ordered">
-								<p:column headerText="Cuidado" >
-									<h:outputText value="#{cuidado.cuidadosPaciente.descricao}"
-												  escape="false"
-												  rendered="#{empty cuidado.descricaoOutros}"/>
-									<h:outputText value="#{cuidado.descricaoOutros}"
-												  escape="false"
-												  rendered="#{not empty cuidado.descricaoOutros}"/>
-								</p:column>
-							</p:dataList>
+						
+							<ui:repeat value="#{itensPadrao.tipoCuidadosPacienteEnumItens}"
+									   var="cuidadosGerais2"
+									   rendered="#{not empty prescricaoHome.cuidadosEscolhidos}">
+									   
+								<h:outputText value="Aerosol:" 
+											  rendered="#{cuidadosGerais2.value == 'AER'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Cuidados de Enfermagem:" 
+											  rendered="#{cuidadosGerais2.value == 'CEN'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Medicações:" 
+											  rendered="#{cuidadosGerais2.value == 'MED'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Medicações Orais:" 
+											  rendered="#{cuidadosGerais2.value == 'MOR'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Medicações SC, IM:" 
+											  rendered="#{cuidadosGerais2.value == 'MSC'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Medicações SOS:" 
+											  rendered="#{cuidadosGerais2.value == 'MSO'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Medicações Tópicas:" 
+											  rendered="#{cuidadosGerais2.value == 'MTO'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Nutrição (SND):" 
+											  rendered="#{cuidadosGerais2.value == 'NUT'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Soroterapia, Scalp,:" 
+											  rendered="#{cuidadosGerais2.value == 'SOR'}" 
+											  style="font-weight:bold" />
+								<h:outputText value="Outros:" 
+											  rendered="#{cuidadosGerais2.value == 'OUT'}" 
+											  style="font-weight:bold" />
+								<br/>
+								<br/>
+								<ui:repeat value="#{prescricaoHome.cuidadosEscolhidos}"
+										   var="cuidadosEscolhidos2">
+									<h:panelGroup rendered="#{cuidadosEscolhidos2.cuidadosPaciente.tipoCuidadosPaciente == cuidadosGerais2.value || (cuidadosGerais2.value == 'OUT' and empty cuidadosEscolhidos2.cuidadosPaciente)}" >
+										<h:outputText value="#{cuidadosEscolhidos2.cuidadosPaciente.descricao}"
+													  escape="false" 
+													  rendered="#{empty cuidadosEscolhidos2.descricaoOutros}"/>
+										<h:outputText value="#{cuidadosEscolhidos2.descricaoOutros}"
+													  escape="false"
+													  rendered="#{not empty cuidadosEscolhidos2.descricaoOutros}" />
+										<br/>
+										<br/>
+									</h:panelGroup>
+								</ui:repeat>
+							</ui:repeat>
+						
 						</p:panel>
 						<p:panel header="Observação" >
 							<p:editor value="#{prescricaoHome.prescricaoAtual.observacao}" />
@@ -704,9 +783,6 @@
 					</p:tab>
 					
 				</p:wizard>
-			</h:form>
-			
-			<h:form prependId="false" >
 				<p:dialog id="anexosControleAntibioticoDialog"
 						  header="Controles Válidos" 
 						  widgetVar="anexosControleAntibioticoDialog" 
@@ -746,22 +822,22 @@
 						</p:column>
 						<p:column style="width:60px; text-align: center;" >
 							<p:commandLink	title="Anexar autorização" 
-											style="padding-right:10px;" 
-											update="padraoTabView:painelLiberacao"
-											oncomplete="anexosControleAntibioticoDialog.close();">
+											style="padding-right:10px;">
 								<f:setPropertyActionListener value="#{linha}" 
 															 target="#{prescricaoHome.controleMedicacaoRestritoSCHI}" />
 								<h:graphicImage value="/Imagens/clip-24.png" />
 							</p:commandLink>
 						</p:column>  
 					</p:dataTable>	
-						  
 				</p:dialog>
 			</h:form>
 			
 			<h:form>
 				<p:commandButton value="Cancelar a Prescrição"
 								 action="#{prescricaoHome.cancelarPrescricao()}" 
+								 oncomplete="window.location.reload();"/>
+				<p:commandButton value="Nova Prescrição"
+								 action="#{prescricaoHome.novaPrescricao()}" 
 								 oncomplete="window.location.reload();"/>
 			</h:form>
 		</p:tab>

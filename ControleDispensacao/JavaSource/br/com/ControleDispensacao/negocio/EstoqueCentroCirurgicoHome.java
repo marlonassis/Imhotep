@@ -71,7 +71,13 @@ public class EstoqueCentroCirurgicoHome extends PadraoHome<EstoqueCentroCirurgic
 		estoqueCentroCirurgico.setLote(getEstoqueApoio().getLote());
 		estoqueCentroCirurgico.setMaterial(getEstoqueApoio().getMaterial());
 		estoqueCentroCirurgico.setDataCadastro(new Date());
-		estoqueCentroCirurgico.setProfissionalCadastro(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			estoqueCentroCirurgico.setProfissionalCadastro(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o profissional Atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EstoqueCentroCirurgico");
+		}
 	}
 	
 	public void liberarLote(EstoqueCentroCirurgico estoqueCentroCirurgico){
@@ -97,7 +103,13 @@ public class EstoqueCentroCirurgicoHome extends PadraoHome<EstoqueCentroCirurgic
 	private void carregarDadosParaBloqueio(EstoqueCentroCirurgico estoqueCentroCirurgico) {
 		estoqueCentroCirurgico.setBloqueado(TipoStatusEnum.S);
 		estoqueCentroCirurgico.setDataBloqueio(new Date());
-		estoqueCentroCirurgico.setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			estoqueCentroCirurgico.setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o profissional Atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EstoqueCentroCirurgicoHome");
+		}
 	}
 
 	public EstoqueCentroCirurgico getEstoqueBloqueio() {

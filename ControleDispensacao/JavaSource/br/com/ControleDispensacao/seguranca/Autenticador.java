@@ -19,7 +19,6 @@ import br.com.ControleDispensacao.entidade.Painel;
 import br.com.ControleDispensacao.entidade.Profissional;
 import br.com.ControleDispensacao.entidade.Unidade;
 import br.com.ControleDispensacao.entidade.Usuario;
-import br.com.ControleDispensacao.negocio.PrescricaoHome;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.utilidades.Utilities;
 
@@ -34,13 +33,8 @@ public class Autenticador {
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
 
-	public static Autenticador getInstancia(){
-		try {
-			return (Autenticador) new ControleInstancia().procuraInstancia(Autenticador.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static Autenticador getInstancia() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		return (Autenticador) new ControleInstancia().procuraInstancia(Autenticador.class);
 	}
 	
 	private void carregaUnidadesUsuario(){
@@ -129,7 +123,7 @@ public class Autenticador {
 		}
 	}
 
-	public void continuaLogin(){
+	public void continuaLogin() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		if(unidadeAtual != null){
 			mostraComboUnidade = false;
 			new ControleSenha().redirecionaPaginaConformeSenha();

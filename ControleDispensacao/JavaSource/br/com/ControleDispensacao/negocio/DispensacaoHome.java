@@ -217,11 +217,18 @@ public class DispensacaoHome extends PadraoHome<PrescricaoItem> {
 		if(movimentoGeral == null){
 			movimentoGeral = new MovimentoGeral();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-			String chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
+			String chaveUnica = null;
+			try{
+				chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
+				movimentoGeral.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+				movimentoGeral.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			} catch (Exception e) {
+				e.printStackTrace();
+				super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
+				System.out.print("Erro em DispensacaoHome");
+			}
 			movimentoGeral.setNumeroControle(chaveUnica);
-			movimentoGeral.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			movimentoGeral.setDataInclusao(new Date());
-			movimentoGeral.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 			movimentoGeral.setMotivo("Dispensação de medicamento.");
 			movimentoGeral.setNumeroDocumento(chaveUnica);
 			movimentoGeral.setPrescricao(prescricao);
@@ -238,11 +245,17 @@ public class DispensacaoHome extends PadraoHome<PrescricaoItem> {
 		movimentoLivroAtual.setMaterial(material);
 		movimentoLivroAtual.setMovimentoGeral(movimentoGeral);
 		movimentoLivroAtual.setTipoMovimento(movimentoGeral.getTipoMovimento());
-		movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+		try{
+			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em DispensacaoHome");
+		}
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		movimentoLivroAtual.setQuantidadeSaida(quantidadeLiberada);
 		movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeLiberada);
-		movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
 		session.save(movimentoLivroAtual);
 	}
 	

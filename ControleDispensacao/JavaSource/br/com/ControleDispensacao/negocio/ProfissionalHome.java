@@ -59,9 +59,15 @@ public class ProfissionalHome extends PadraoHome<Profissional>{
 	@Override
 	public boolean enviar() {
 		if(new UsuarioHome().procurarUsuario(getInstancia().getUsuario().getLogin()) == null){
-			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			try{
+				getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+				getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			} catch (Exception e) {
+				e.printStackTrace();
+				super.mensagem("Erro ao pegar ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
+				System.out.print("Erro em ProfissionalHome");
+			}
 			getInstancia().setDataInclusao(new Date());
-			getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			getInstancia().getUsuario().setDataInclusao(new Date());
 			getInstancia().getUsuario().setSenha(Utilities.encriptaParaMd5(String.valueOf(getInstancia().getMatricula())));
 			if(super.enviar()){

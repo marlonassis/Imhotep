@@ -100,13 +100,15 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 			getControleMedicacaoRestritoSCHI().setPaciente(getPrescricaoAtual().getPaciente());
 			getControleMedicacaoRestritoSCHI().setMassa(getPrescricaoAtual().getMassa());
 			getControleMedicacaoRestritoSCHI().setLeito(getPrescricaoAtual().getLeito());
-			fplm.analisarLiberacao(getControleMedicacaoRestritoSCHI(), getUsuario(), getSenha());
-			carregaItensLiberacao();
-			limpaFomrularioLiberacao();
+			//TODO alterar o nome do método - refatorar
+			if(fplm.analisarLiberacao(getControleMedicacaoRestritoSCHI(), getUsuario(), getSenha())){
+				carregaItensLiberacao();
+				limpaFormularioLiberacao();
+			}
 		}
 	}
 
-	private void limpaFomrularioLiberacao() {
+	private void limpaFormularioLiberacao() {
 		setUsuario(null);
 		setSenha(null);
 		setControleMedicacaoRestritoSCHI(new ControleMedicacaoRestritoSCHI());
@@ -159,6 +161,24 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 	
+	public void novaPrescricao(){
+		prescricaoAtual = new Prescricao();
+		prescricaoBloqueio = new Prescricao();
+		controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
+		cuidadosPrescricao = new CuidadosPrescricao();
+		prescricaoItem = new PrescricaoItem();
+		prescricaoItemDoseList = new ArrayList<PrescricaoItemDose>();
+		itensPrescricao = new ArrayList<PrescricaoItem>();
+		medicamentosPendentesLiberacaoList = new ArrayList<PrescricaoItem>();
+		cuidadosPacienteMap = new HashMap<String, List<CuidadosPaciente>>();
+		cuidadosEscolhidos = new ArrayList<CuidadosPrescricao>();
+		itensLiberadosPrescricao = new ArrayList<PrescricaoItem>();
+		controlesAtivosParaLiberacaoList = new ArrayList<ControleMedicacaoRestritoSCHI>();
+		dose = new Dose();
+		usuario = null;
+		senha = null;
+	}
+	
 	public void concluirPrescricao(){
 		getInstancia().setDispensavel(TipoStatusEnum.S);
 		getInstancia().setDataConclusao(new Date());
@@ -170,11 +190,17 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void finalizarPrescricao() throws IOException{
 		getPrescricaoAtual().setDispensavel(TipoStatusEnum.S);
 		getPrescricaoAtual().setDataConclusao(new Date());
-		getPrescricaoAtual().setProfissionalConclusao(Autenticador.getInstancia().getProfissionalAtual());
+		try {
+			getPrescricaoAtual().setProfissionalConclusao(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o profissional atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em PrescricaoHome");
+		}
 		if(atualizarGenerico(getPrescricaoAtual()) != null){
+			setPrescricaoVisualizacao(getPrescricaoAtual());
 			setPrescricaoAtual(new Prescricao());
-			String paginaAtual = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI();
-			FacesContext.getCurrentInstance().getExternalContext().redirect(paginaAtual);
+			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_VIZUALIZA_PRESCRICAO);
 		}
 	}
 
@@ -193,7 +219,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void bloqueiarPrescricao(){
 		if(getPrescricaoBloqueio().getMotivoBloqueio() != null && !getPrescricaoBloqueio().getMotivoBloqueio().isEmpty()){
 			getPrescricaoBloqueio().setDataBloqueio(new Date());
-			getPrescricaoBloqueio().setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
+			try {
+				getPrescricaoBloqueio().setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
+			} catch (Exception e) {
+				e.printStackTrace();
+				super.mensagem("Erro ao pegar o profissional atual.", null, FacesMessage.SEVERITY_ERROR);
+				System.out.print("Erro em PrescricaoHome");
+			}
 			super.atualizarGenerico(getPrescricaoBloqueio());
 		}else{
 			super.mensagem("Informe o motivo do bloqueio.", null, FacesMessage.SEVERITY_ERROR);
@@ -424,6 +456,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 
 	public List<ControleMedicacaoRestritoSCHI> getControlesAtivosParaLiberacaoList() {
+		carregaLiberacaoAutorizadas();
 		return controlesAtivosParaLiberacaoList;
 	}
 
@@ -439,5 +472,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void setPrescricaoVisualizacao(Prescricao prescricaoVisualizacao) {
 		this.prescricaoVisualizacao = prescricaoVisualizacao;
 	}
+
+	
 	
 }

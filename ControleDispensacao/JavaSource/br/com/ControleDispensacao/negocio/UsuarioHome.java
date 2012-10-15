@@ -37,7 +37,14 @@ public class UsuarioHome extends PadraoHome<Usuario> {
 	}
 	
 	public void trocaSenha(){
-		Usuario usuario = Autenticador.getInstancia().getUsuarioAtual();
+		Usuario usuario = null;
+		try {
+			usuario = Autenticador.getInstancia().getUsuarioAtual();
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EstoqueCentroCirurgico");
+		}
 		String senhaCriptografada = Utilities.encriptaParaMd5(senhaAntiga);
 		if(senhaNova.equals(senhaNovaConfirmacao)){
 			if(usuario.getSenha().equals(senhaCriptografada)){

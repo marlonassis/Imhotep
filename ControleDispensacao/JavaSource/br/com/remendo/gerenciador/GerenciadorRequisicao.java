@@ -46,7 +46,6 @@ public class GerenciadorRequisicao implements PhaseListener{
 		
 	@Override
 	public PhaseId getPhaseId() {
-		// TODO Auto-generated method stub
 		return PhaseId.ANY_PHASE;
 	}
 

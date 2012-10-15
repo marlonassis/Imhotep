@@ -24,7 +24,7 @@ public class ControleSenha {
 		return null;
 	}
 	
-	public void redirecionaPaginaConformeSenha(){
+	public void redirecionaPaginaConformeSenha() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		try {
 			if(!senhaIgualMatricula()){
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
@@ -34,7 +34,7 @@ public class ControleSenha {
 		}
 	}
 	
-	public boolean senhaIgualMatricula(){
+	public boolean senhaIgualMatricula() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Autenticador autenticador = Autenticador.getInstancia();
 		if(autenticador.getProfissionalAtual() != null){
 			String senha = autenticador.getUsuarioAtual().getSenha();
@@ -46,11 +46,11 @@ public class ControleSenha {
 		return false;
 	}
 	
-	public void verificaSenhaPadrao() throws IOException{
+	public void verificaSenhaPadrao() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		verificaSenhaPadrao(Autenticador.getInstancia());
 	}
 	
-	public void verificaSenhaPadrao(Autenticador autenticador) throws IOException{
+	public void verificaSenhaPadrao(Autenticador autenticador) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		if(autenticador != null && autenticador.getUsuarioAtual() != null){
 			if(senhaIgualMatricula() && autenticador.getUnidadeAtual() != null){
 				boolean paginaTrocaSenha = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;

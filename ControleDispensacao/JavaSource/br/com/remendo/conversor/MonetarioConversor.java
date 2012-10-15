@@ -13,7 +13,7 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(value="monetarioConversor")
 public class MonetarioConversor implements Converter {
 	
-	private final NumberFormat formatter = new DecimalFormat("#,##0.00");
+	private final NumberFormat formatter = new DecimalFormat("#,###.##");
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
 		if (value != null && value != "") {

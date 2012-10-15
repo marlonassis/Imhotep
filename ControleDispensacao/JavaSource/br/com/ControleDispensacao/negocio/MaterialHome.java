@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -105,7 +106,13 @@ public class MaterialHome extends PadraoHome<Material>{
 	
 	@Override
 	public boolean enviar() {
-		getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+		try {
+			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em MaterialHome");
+		}
 		getInstancia().setDataInclusao(new Date());
 		getInstancia().setDescricao(getInstancia().getDescricao().toUpperCase());
 		return super.enviar();

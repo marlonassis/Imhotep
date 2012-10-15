@@ -57,9 +57,22 @@ public class PacienteHome extends PadraoHome<Paciente>{
 	
 	@Override
 	public boolean enviar() {
-		Unidade unidadeAtual = Autenticador.getInstancia().getUnidadeAtual();
+		Unidade unidadeAtual = null;
+		try {
+			unidadeAtual = Autenticador.getInstancia().getUnidadeAtual();
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.mensagem("Erro ao pegar a unidade atual.", null, FacesMessage.SEVERITY_ERROR);
+			System.out.print("Erro em EstoqueCentroCirurgico");
+		}
 		if(unidadeAtual != null){
-			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			try {
+				getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+			} catch (Exception e) {
+				e.printStackTrace();
+				super.mensagem("Erro ao pegar a usuário atual.", null, FacesMessage.SEVERITY_ERROR);
+				System.out.print("Erro em PacienteHome");
+			}
 			getInstancia().setDataInclusao(new Date());
 			getInstancia().setUnidadeCadastro(unidadeAtual);
 			return super.enviar();
