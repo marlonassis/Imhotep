@@ -32,15 +32,18 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 	}
 	
 	private List<ControleMedicacaoRestritoSCHI> getControlesValidos(Paciente paciente){
-		ConsultaGeral<ControleMedicacaoRestritoSCHI> cg = new ConsultaGeral<ControleMedicacaoRestritoSCHI>();
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("dataLimite", new Date());
-		hm.put("idPaciente", paciente.getIdPaciente());
-		String string = "select o from ControleMedicacaoRestritoSCHI o where o.dataLimite >= :dataLimite and " +
-				"o.tipoPrescricaoInadequada is null " +
-				"and o.profissionalInfectologista != null " +
-				"and o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.paciente.idPaciente = :idPaciente)";
-		return new ArrayList<ControleMedicacaoRestritoSCHI>(cg.consulta(new StringBuilder(string), hm));
+		if(paciente != null && paciente.getIdPaciente() != 0){
+			ConsultaGeral<ControleMedicacaoRestritoSCHI> cg = new ConsultaGeral<ControleMedicacaoRestritoSCHI>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("dataLimite", new Date());
+			hm.put("idPaciente", paciente.getIdPaciente());
+			String string = "select o from ControleMedicacaoRestritoSCHI o where o.dataLimite >= :dataLimite and " +
+					"o.tipoPrescricaoInadequada is null " +
+					"and o.profissionalInfectologista != null " +
+					"and o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.paciente.idPaciente = :idPaciente)";
+			return new ArrayList<ControleMedicacaoRestritoSCHI>(cg.consulta(new StringBuilder(string), hm));
+		}
+		return null;
 	}
 	// TODO criar exception personalizado
 	public boolean analisarLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, String usuario, String senha){
@@ -67,8 +70,24 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		return true;
 	}
 	
+	private List<Material> itensLiberacaoAtual(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI){
+		ConsultaGeral<Material> cg = new ConsultaGeral<Material>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idControleMedicacaoRestritoSCHI", controleMedicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI());
+		return (List<Material>) cg.consulta(new StringBuilder("select a.material from PrescricaoItem a where a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI = :idControleMedicacaoRestritoSCHI"), hm);
+	}
+	
 	private void analiseIndividualItensPrescritos(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalAutorizador) {
-		for(PrescricaoItem item : getMedicamentosPendentesLiberacao()){
+		List<PrescricaoItem> medicamentosPendentesLiberacao = getMedicamentosPendentesLiberacao();
+		List<Material> medicamentosAutorizados = null;
+		boolean controleCadastrado = controleMedicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI() != 0;
+		if(controleCadastrado)
+			medicamentosAutorizados = itensLiberacaoAtual(controleMedicacaoRestritoSCHI);
+		
+		for(PrescricaoItem item : medicamentosPendentesLiberacao){
+			if(controleCadastrado)
+				if(!medicamentosAutorizados.contains(item.getMaterial()))
+					continue;
 			analiseTipoMaterial(controleMedicacaoRestritoSCHI, profissionalAutorizador, item);
 		}
 	}

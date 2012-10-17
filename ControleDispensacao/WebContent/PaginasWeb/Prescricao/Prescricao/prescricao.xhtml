@@ -221,7 +221,7 @@
 					<p:tab id="prescricaoLiberacaoTab" title="Autorização">
 						<p:panel id="painelLiberacao"
 								 header="Medicamentos pendentes">
-								 #{util.horaAtual}
+								 
 							<p:dataTable id="materialPendente" 
 										 value="#{prescricaoHome.medicamentosPendentesLiberacaoList}"
 							 			 emptyMessage="Não há medicamentos pendentes de liberação." 
@@ -252,151 +252,197 @@
 													 type="password" />
 									</h:panelGroup>
 								</h:panelGrid>
-										 
-								<p:panel rendered="#{prescricaoHome.existeAntibiotico}" >
-								 
-									<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid2"
-												 columns="3"
-												 width="100%">
-										<h:panelGroup id="tipoIndicacaoPanelGroup" >
-											<font color="red" >*</font><h:outputLabel for="tipoIndicacao" value="Tipo de indicação"  /><br />
-											<h:selectOneRadio id="tipoIndicacao"
-															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao}" 
-															  required="false"
-															  title="Informe o tipo de indicação" >
-												 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid2" />
-												 <f:selectItems value="#{itensPadrao.tipoIndicacaoEnumItens}"/>
-											</h:selectOneRadio>
-										</h:panelGroup>
 								
-										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'T'}" >
-											<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoTerapeutica" value="Subtipos"  /><br />
-											<h:selectOneRadio id="subTipoIndicacaoTerapeutica"
-															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoTerapeutica}" 
-															  required="false"
-															  title="Informe o subtipo de indicação terapêutica" >
-												 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoTerapeuticaEnumItens}"/>
-											</h:selectOneRadio>
-										</h:panelGroup>
-								
-										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'P'}" >
-											<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoProfilaxia" value="Subtipos"  /><br />
-											<h:selectOneRadio id="subTipoIndicacaoProfilaxia"
-															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoProfilaxia}" 
-															  required="false"
-															  title="Informe o subtipo de indicação profilática" >
-												 <p:ajax event="change" update="padraoTabView:observacaoIndicacaoPanelGroup" />
-												 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoProfilaxiaEnumItens}"/>
-											</h:selectOneRadio>
-										</h:panelGroup>
-										
-										<h:panelGroup id="observacaoIndicacaoPanelGroup"
-													  rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao != null}" >
-											<font color="red" >*</font><h:outputLabel for="observacaoIndicacao" value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'T' ? 'Qual?' : (prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoProfilaxia == 'CI' ? 'Cirurgia' : 'Justificativa') }"  /><br />
-											<p:inputTextarea id="observacaoIndicacao"
-															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.observacaoIndicacao}" />
-										</h:panelGroup>
-										
-									</h:panelGrid>
-								
-									<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid3"
-												 columns="3"
-												 width="100%">
-										<h:panelGroup id="tipoEstudoBacteriologicoPanelGroup" >
-											<font color="red" >*</font><h:outputLabel for="culturaSolicitada" value="Cultura solicitada?"  /><br />
-											<h:selectOneRadio id="culturaSolicitada"
-															  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada}" 
-															  required="false"
-															  title="Informe se foi solicitado ou não a cultura para o paciente" >
-												 <p:ajax event="change" update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid3" />
-												 <f:selectItems value="#{itensPadrao.booleanEnumItens}"/>
-											</h:selectOneRadio>
-										</h:panelGroup>
-								
-										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
-											<font color="red" >*</font><h:outputLabel for="materialCultura" value="Material"  /><br />
-											<p:inputText id="materialCultura"
-														 required="false"
-														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.materialCultura}"
-														 title="Informe o material da cultura" />
-										</h:panelGroup>
-										
-										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
-											<font color="red" >*</font><h:outputLabel for="dataSolicitacaoCultura" value="Data da solicitação"  /><br />
-											<p:inputMask id="dataSolicitacaoCultura"
-														 mask="99/99/9999"
-														 required="false"
-														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.dataSolicitacaoCultura}"
-														 title="Informe a data que foi realizada a solicitação" >
-												<f:convertDateTime pattern="dd/MM/yyyy"  />
-											</p:inputMask>
-										</h:panelGroup>
-								
-										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
-											<font color="red" >*</font><h:outputLabel for="germeIsolado" value="Germe isolado"  /><br />
-											<p:inputText id="germeIsolado"
-														 required="false"
-														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.germeIsolado}"
-														 title="Informe o germe isolado" />
-										</h:panelGroup>
-										
-										<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
-											<font color="red" >*</font><h:outputLabel for="sensibilidade" value="Sensibilidade"  /><br />
-											<p:inputText id="sensibilidade"
-													 required="false"
-													 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.sensibilidade}"
-													 title="informe a sensibilidade" />
-										</h:panelGroup>
-										
-									</h:panelGrid>
+								<p:tabView id="autorizacaoTabView" 
+										   rendered="#{prescricaoHome.existeAntibiotico}">
+									<p:tab id="autorizacaoTab"
+										   title="Formulário" 
+										   disabled="#{prescricaoHome.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI != 0}">
+										<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid2"
+													 columns="3"
+													 width="100%">
+											<h:panelGroup id="tipoIndicacaoPanelGroup" >
+												<font color="red" >*</font><h:outputLabel for="tipoIndicacao" value="Tipo de indicação"  /><br />
+												<h:selectOneRadio id="tipoIndicacao"
+																  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao}" 
+																  required="false"
+																  title="Informe o tipo de indicação" >
+													 <p:ajax event="change" update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid2" />
+													 <f:selectItems value="#{itensPadrao.tipoIndicacaoEnumItens}"/>
+												</h:selectOneRadio>
+											</h:panelGroup>
 									
-									<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid5"
-												 columns="3"
-												 rendered="#{prescricaoHome.existeAntibiotico}"
-												 width="100%">
-										
-										<h:panelGroup>
-											<font color="red" >*</font><h:outputLabel for="dose" value="Dose: " /><br />
-											<p:inputText id="dose" 
-														 onkeyup="apenasNumero(this);"
-														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.dose}" 
-														 title="Números de doses por dia de tratamento" />
-										</h:panelGroup>
-										
-										<h:panelGroup>
-											<font color="red" >*</font><h:outputLabel for="via" value="Via: " /><br />
-											<p:inputText id="via" 
-														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.via}" 
-														 title="Números de doses por dia de tratamento" />
-										</h:panelGroup>
-										
-										<h:panelGroup >
-											<font color="red" >*</font><h:outputLabel for="frequencia" value="Frequência:"  /><br />
-											<p:inputText id="frequencia"
-													  	 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.frequencia}"
-													  	 title="Informe a frequência com que deve ser ministrado a(s) dose(s)" />h
-										</h:panelGroup>
-										
-										<h:panelGroup>
-											<font color="red" >*</font><h:outputLabel for="tempoUso" value="Tempo de uso: " /><br />
-											<p:inputText id="tempoUso" 
-														 onkeyup="apenasNumero(this);"
-														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tempoUso}" 
-														 title="Tempo provável de uso" />dias
-										</h:panelGroup>
-										
-										<h:panelGroup>
-											<p:commandLink	title="Anexar autorização" 
-															style="padding-right:10px;" 
-															update="padraoTabView:anexosControleAntibioticoDialog"
-															immediate="true"
-															oncomplete="anexosControleAntibioticoDialog.show();">
-												<h:graphicImage value="/Imagens/clip-32.png" />
-											</p:commandLink>
-										</h:panelGroup>
-									</h:panelGrid>
+											<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'T'}" >
+												<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoTerapeutica" value="Subtipos"  /><br />
+												<h:selectOneRadio id="subTipoIndicacaoTerapeutica"
+																  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoTerapeutica}" 
+																  required="false"
+																  title="Informe o subtipo de indicação terapêutica" >
+													 <p:ajax event="change" update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid2 padraoTabView:autorizacaoTabView:observacaoIndicacaoPanelGroup " />
+													 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoTerapeuticaEnumItens}"/>
+												</h:selectOneRadio>
+											</h:panelGroup>
 									
-								</p:panel>
+											<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'P'}" >
+												<font color="red" >*</font><h:outputLabel for="subTipoIndicacaoProfilaxia" value="Subtipos"  /><br />
+												<h:selectOneRadio id="subTipoIndicacaoProfilaxia"
+																  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoProfilaxia}" 
+																  required="false"
+																  title="Informe o subtipo de indicação profilática" >
+													 <p:ajax event="change" update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid2 padraoTabView:autorizacaoTabView:observacaoIndicacaoPanelGroup " />
+													 <f:selectItems value="#{itensPadrao.tipoSubIndicacaoProfilaxiaEnumItens}"/>
+												</h:selectOneRadio>
+											</h:panelGroup>
+											
+											<h:panelGroup id="observacaoIndicacaoPanelGroup"
+														  rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao != null}" >
+												<font color="red" >*</font><h:outputLabel for="observacaoIndicacao" value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tipoIndicacao == 'T' ? 'Qual?' : (prescricaoHome.controleMedicacaoRestritoSCHI.subIndicacaoProfilaxia == 'CI' ? 'Cirurgia' : 'Justificativa') }"  /><br />
+												<p:inputTextarea id="observacaoIndicacao"
+																 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.observacaoIndicacao}" />
+											</h:panelGroup>
+											
+										</h:panelGrid>
+									
+										<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid3"
+													 columns="3"
+													 width="100%">
+											<h:panelGroup id="tipoEstudoBacteriologicoPanelGroup" >
+												<font color="red" >*</font><h:outputLabel for="culturaSolicitada" value="Cultura solicitada?"  /><br />
+												<h:selectOneRadio id="culturaSolicitada"
+																  value="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada}" 
+																  required="false"
+																  title="Informe se foi solicitado ou não a cultura para o paciente" >
+													 <p:ajax event="change" update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid3" />
+													 <f:selectItems value="#{itensPadrao.booleanEnumItens}"/>
+												</h:selectOneRadio>
+											</h:panelGroup>
+									
+											<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+												<font color="red" >*</font><h:outputLabel for="materialCultura" value="Material"  /><br />
+												<p:inputText id="materialCultura"
+															 required="false"
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.materialCultura}"
+															 title="Informe o material da cultura" />
+											</h:panelGroup>
+											
+											<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+												<font color="red" >*</font><h:outputLabel for="dataSolicitacaoCultura" value="Data da solicitação"  /><br />
+												<p:inputMask id="dataSolicitacaoCultura"
+															 mask="99/99/9999"
+															 required="false"
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.dataSolicitacaoCultura}"
+															 title="Informe a data que foi realizada a solicitação" >
+													<f:convertDateTime pattern="dd/MM/yyyy"  />
+												</p:inputMask>
+											</h:panelGroup>
+									
+											<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+												<font color="red" >*</font><h:outputLabel for="germeIsolado" value="Germe isolado"  /><br />
+												<p:inputText id="germeIsolado"
+															 required="false"
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.germeIsolado}"
+															 title="Informe o germe isolado" />
+											</h:panelGroup>
+											
+											<h:panelGroup rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI.culturaSolicitada == 'T'}" >
+												<font color="red" >*</font><h:outputLabel for="sensibilidade" value="Sensibilidade"  /><br />
+												<p:inputText id="sensibilidade"
+														 required="false"
+														 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.sensibilidade}"
+														 title="informe a sensibilidade" />
+											</h:panelGroup>
+											
+										</h:panelGrid>
+										
+										<h:panelGrid id="controleMedicacaoRestritoSCHIPanelGrid5"
+													 columns="3"
+													 rendered="#{prescricaoHome.existeAntibiotico}"
+													 width="100%">
+											
+											<h:panelGroup>
+												<font color="red" >*</font><h:outputLabel for="dose" value="Dose: " /><br />
+												<p:inputText id="dose" 
+															 onkeyup="apenasNumero(this);"
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.dose}" 
+															 title="Números de doses por dia de tratamento" />
+											</h:panelGroup>
+											
+											<h:panelGroup>
+												<font color="red" >*</font><h:outputLabel for="via" value="Via: " /><br />
+												<p:inputText id="via" 
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.via}" 
+															 title="Números de doses por dia de tratamento" />
+											</h:panelGroup>
+											
+											<h:panelGroup >
+												<font color="red" >*</font><h:outputLabel for="frequencia" value="Frequência:"  /><br />
+												<p:inputText id="frequencia"
+														  	 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.frequencia}"
+														  	 title="Informe a frequência com que deve ser ministrado a(s) dose(s)" />h
+											</h:panelGroup>
+											
+											<h:panelGroup>
+												<font color="red" >*</font><h:outputLabel for="tempoUso" value="Tempo de uso: " /><br />
+												<p:inputText id="tempoUso" 
+															 onkeyup="apenasNumero(this);"
+															 value="#{prescricaoHome.controleMedicacaoRestritoSCHI.tempoUso}" 
+															 title="Tempo provável de uso" />dias
+											</h:panelGroup>
+										</h:panelGrid>
+									</p:tab>
+									<p:tab title="Autorizações Liberadas" >
+										<p:dataTable id="tabelaPrescricaoPendente" 
+													 value="#{prescricaoHome.controlesAtivosParaLiberacaoList}" 
+													 var="linha"
+													 dblClickSelect="true"
+													 emptyMessage="Não foi encontrado registros" 
+													 rows="5" 
+													 paginator="true"
+													 selectionMode="single" 
+													 rowKey="#{linha.idControleMedicacaoRestritoSCHI}">
+											
+											<p:column>
+												<f:facet name="header"><h:outputText value="Infectologista" /></f:facet>
+												<h:outputText value="#{linha.profissionalInfectologista.nome}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header"><h:outputText value="Início" /></f:facet>
+												<h:outputText value="#{linha.dataLiberacaoInfectologista}" >
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column>
+												<f:facet name="header"><h:outputText value="Fim" /></f:facet>
+												<h:outputText value="#{linha.dataLimite}" >
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column>
+												<f:facet name="header"><h:outputText value="Tipo de indicação" /></f:facet>
+												<h:outputText value="#{linha.tipoIndicacao.label}" />
+											</p:column>
+											<p:column style="width:60px; text-align: center;" >
+												<p:commandLink	title="Anexar autorização" 
+																rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI != linha}"
+																update="padraoTabView:autorizacaoTabView padraoTabView:autorizacaoTab padraoTabView:mensagemGlobal"
+																style="padding-right:10px;">
+													<f:setPropertyActionListener value="#{linha}" 
+																				 target="#{prescricaoHome.controleMedicacaoRestritoSCHIComMensagem}" />
+													<h:outputText value="Anexar" />
+												</p:commandLink>
+												
+												<p:commandLink	title="Anexar autorização" 
+																rendered="#{prescricaoHome.controleMedicacaoRestritoSCHI == linha}"
+																update="padraoTabView:autorizacaoTabView padraoTabView:autorizacaoTab padraoTabView:mensagemGlobal"
+																style="padding-right:10px;"
+																action="#{prescricaoHome.desanexarControle}">
+													<h:outputText value="Desanexar" />
+												</p:commandLink>
+											</p:column>  
+										</p:dataTable>	
+									</p:tab>
+								</p:tabView>		 
 								<h:panelGrid columns="2" >
 									<h:panelGroup >
 										<p:commandButton action="#{prescricaoHome.iniciarAnaliseLiberacao()}"
@@ -783,53 +829,6 @@
 					</p:tab>
 					
 				</p:wizard>
-				<p:dialog id="anexosControleAntibioticoDialog"
-						  header="Controles Válidos" 
-						  widgetVar="anexosControleAntibioticoDialog" 
-						  modal="true" 
-						  width="700">
-						  
-					<p:dataTable id="tabelaPrescricaoPendente" 
-								 value="#{prescricaoHome.controlesAtivosParaLiberacaoList}" 
-								 var="linha"
-								 dblClickSelect="true"
-								 emptyMessage="Não foi encontrado registros" 
-								 rows="5" 
-								 paginator="true"
-								 selectionMode="single" 
-								 rowKey="#{linha.idControleMedicacaoRestritoSCHI}">
-						
-						<p:column>
-							<f:facet name="header"><h:outputText value="Infectologista" /></f:facet>
-							<h:outputText value="#{linha.profissionalInfectologista.nome}" />
-						</p:column>
-						
-						<p:column>
-							<f:facet name="header"><h:outputText value="Início" /></f:facet>
-							<h:outputText value="#{linha.dataLiberacaoInfectologista}" >
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-						</p:column>
-						<p:column>
-							<f:facet name="header"><h:outputText value="Fim" /></f:facet>
-							<h:outputText value="#{linha.dataLimite}" >
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-						</p:column>
-						<p:column>
-							<f:facet name="header"><h:outputText value="Tipo de indicação" /></f:facet>
-							<h:outputText value="#{linha.tipoIndicacao.label}" />
-						</p:column>
-						<p:column style="width:60px; text-align: center;" >
-							<p:commandLink	title="Anexar autorização" 
-											style="padding-right:10px;">
-								<f:setPropertyActionListener value="#{linha}" 
-															 target="#{prescricaoHome.controleMedicacaoRestritoSCHI}" />
-								<h:graphicImage value="/Imagens/clip-24.png" />
-							</p:commandLink>
-						</p:column>  
-					</p:dataTable>	
-				</p:dialog>
 			</h:form>
 			
 			<h:form>

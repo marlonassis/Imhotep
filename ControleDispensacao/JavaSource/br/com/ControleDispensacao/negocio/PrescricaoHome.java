@@ -13,7 +13,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.event.FlowEvent;
 
@@ -64,6 +63,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private String senha;
 	
 	private Prescricao prescricaoVisualizacao = new Prescricao();
+	
+	public void desanexarControle(){
+		controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
+	}
 	
 	public void removerCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao){
 		FluxoPrescricaoCuidados fpc = new FluxoPrescricaoCuidados();
@@ -423,6 +426,14 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
 	}
 
+	public void setControleMedicacaoRestritoSCHIComMensagem(
+			ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
+		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
+		if(this.controleMedicacaoRestritoSCHI != null){
+			super.mensagem("Anexado com sucesso", null, FacesMessage.SEVERITY_INFO);
+		}
+	}
+	
 	public Map<String, List<CuidadosPaciente>> getCuidadosPacienteMap() {
 		return cuidadosPacienteMap;
 	}
