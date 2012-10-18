@@ -26,6 +26,11 @@
 		</p:column>
 		
 		<p:column>
+			<f:facet name="header"><h:outputText value="Unidade" /></f:facet>
+			<h:outputText value="#{linha.unidade}" />
+		</p:column>
+		
+		<p:column>
 			<f:facet name="header"><h:outputText value="Profissional" /></f:facet>
 			<h:outputText value="#{linha.profissionalConclusao.nome}" />
 		</p:column>
@@ -40,6 +45,7 @@
 		<p:column style="width:60px; text-align: center;" >
 			<p:commandLink update="padraoTabView:consultaPrescricaoForm" 
 						   title="Editar" 
+						   action="#{prescricaoHome.carregarCuidadosEcolhidosPrescricaoVizualizacao()}"
 						   style="padding-right:10px;" >
 				<f:setPropertyActionListener value="#{linha}" target="#{prescricaoHome.prescricaoVisualizacao}" />
 				<h:graphicImage value="/Imagens/edit.gif" />

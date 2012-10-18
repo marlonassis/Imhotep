@@ -47,6 +47,8 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
 	private CuidadosPrescricao cuidadosPrescricao = new CuidadosPrescricao();
 	
+	private List<CuidadosPrescricao> cuidadosEscolhidosPrescricaoVisualizacao = new ArrayList<CuidadosPrescricao>();
+	
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
 	
 	private List<PrescricaoItemDose> prescricaoItemDoseList = new ArrayList<PrescricaoItemDose>();
@@ -63,6 +65,10 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	private String senha;
 	
 	private Prescricao prescricaoVisualizacao = new Prescricao();
+	
+	public void limparPrescricaoVizualizacao(){
+		setPrescricaoVisualizacao(new Prescricao());
+	}
 	
 	public void desanexarControle(){
 		controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
@@ -270,9 +276,17 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		return fpc.getItensLiberados(getPrescricaoVisualizacao());
 	}
 	
-	public List<CuidadosPrescricao> getCuidadosEscolhidosPrescricaoVisualizacao(){
+	public void carregarCuidadosEcolhidosPrescricaoVizualizacao(){
 		FluxoPrescricaoCuidados fpc = new FluxoPrescricaoCuidados();
-		return fpc.getCuidadosEscolhidosVisualizacao(getPrescricaoVisualizacao());
+		setCuidadosEscolhidosPrescricaoVisualizacao(fpc.getCuidadosEscolhidosVisualizacao(getPrescricaoVisualizacao()));
+	}
+	
+	public List<CuidadosPrescricao> getCuidadosEscolhidosPrescricaoVisualizacao(){
+		return cuidadosEscolhidosPrescricaoVisualizacao;
+	}
+	
+	public void setCuidadosEscolhidosPrescricaoVisualizacao(List<CuidadosPrescricao> cuidadosEscolhidosPrescricaoVisualizacao){
+		this.cuidadosEscolhidosPrescricaoVisualizacao = cuidadosEscolhidosPrescricaoVisualizacao;
 	}
 	
 	private void verificaFluxoPrescricaoCuidadosPrescricao(String fluxoAtual) {
