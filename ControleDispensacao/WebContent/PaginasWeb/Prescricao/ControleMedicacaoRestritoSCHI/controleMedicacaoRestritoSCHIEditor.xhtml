@@ -46,7 +46,9 @@
 		<h:panelGroup>
 			<h:outputLabel value="Medicamento:" 
 						   style="font-weight: bold;" /><br />
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.materialLiberacao}"/>
+			<p:commandLink onclick="dlgDose.show();" >
+				<h:outputText value="#{controleMedicacaoRestritoSCHIHome.materialLiberacao}"/>
+			</p:commandLink>
 		</h:panelGroup>
 	</h:panelGrid>
 	 
@@ -281,5 +283,9 @@
 	</h:panelGrid>
 	
 	<p:separator style="height:8px" />
+	
+	<p:dialog id="alteracaoDoseModalDialog" header="Modal Dialog" widgetVar="dlgDose" modal="true" height="100">  
+		<h:outputText value="This is a Modal Dialog." />  
+	</p:dialog>
 	
 </ui:composition>

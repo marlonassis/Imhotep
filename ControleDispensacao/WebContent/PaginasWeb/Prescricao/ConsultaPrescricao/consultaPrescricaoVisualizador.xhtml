@@ -114,9 +114,10 @@
 				</p:panel>
 			</h:panelGroup>
 			<h:panelGroup>
-				 <h:commandButton value="Imprimir" type="button" icon="ui-icon-print">  
-			        <p:printer target="tipoMovimentoPanelGrid" />  
-			    </h:commandButton> 
+				<p:commandButton value="Imprimir prescrição" 
+								 onclick="window.open('prescricaoImpressa.jsf')" />
+				<p:commandButton value="Imprimir cuidados do paciente" 
+								 onclick="window.open('prescricaoCuidadosImpressa.jsf')"/>
 			</h:panelGroup>
 		</h:panelGrid>
 	</h:panelGrid>
