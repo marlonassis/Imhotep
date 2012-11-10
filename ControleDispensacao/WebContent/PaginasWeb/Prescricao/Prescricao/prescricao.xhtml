@@ -147,6 +147,26 @@
 												value="#{prescricaoHome.dose.dataInicio}" />  
 								</h:panelGroup>
 								
+								<h:panelGroup >
+									<font color="red" >*</font><h:outputLabel for="via" value="Via de administração:"  /><br />
+									<p:selectOneMenu value="#{prescricaoHome.dose.tipoViaAdministracaoMedicamento}" 
+													 effect="fade" >
+										<p:ajax event="change" update="padraoTabView:outraViaPanelGroup" />
+										<f:selectItem itemLabel="Selecione..." 
+													  itemValue="#{null}" /> 
+							            <f:selectItems value="#{itensPadrao.tipoViaAdministracaoMedicamentoEnumItens}" />
+							        </p:selectOneMenu>
+								</h:panelGroup>
+								
+								<h:panelGroup id="outraViaPanelGroup" >
+									<h:panelGroup rendered="#{prescricaoHome.dose.tipoViaAdministracaoMedicamento == 'OT'}" >
+										<font color="red" >*</font><h:outputLabel for="outraVia" value="Outra via:"  /><br />
+										<p:inputText id="outraVia"
+												  	 value="#{prescricaoHome.dose.outraVia}"
+												  	 title="Outra via" />
+									</h:panelGroup>
+								</h:panelGroup>
+								
 								<h:panelGroup>
 									<p:commandButton action="#{prescricaoHome.adicionarItemFarmacoPrescricao()}"
 													 value="Adicionar dose" 
@@ -180,6 +200,13 @@
 										                    <h:panelGroup>
 										                    	<h:outputText value="Quantidade: " />
 										                    	<h:outputText value="#{itemDose.quantidade}" />
+										                    </h:panelGroup>
+										                    <h:panelGroup>
+										                    	<h:outputText value="Via: " />
+										                    	<h:outputText value="#{itemDose.tipoViaAdministracaoMedicamento.label}" 
+										                    				  rendered="#{itemDose.tipoViaAdministracaoMedicamento != 'OT'}" />
+										                    	<h:outputText value="#{itemDose.outraVia}" 
+										                    				  rendered="#{itemDose.tipoViaAdministracaoMedicamento == 'OT'}" />
 										                    </h:panelGroup>
 										                    <h:panelGroup>
 											                    <p:commandLink  action="#{prescricaoHome.removePrescricaoItemDose(itemDose)}"
@@ -421,6 +448,10 @@
 											<p:column>
 												<f:facet name="header"><h:outputText value="Tipo de indicação" /></f:facet>
 												<h:outputText value="#{linha.tipoIndicacao.label}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header"><h:outputText value="Itens da liberação" /></f:facet>
+												<h:outputText value="#{prescricaoHome.itensContidosLiberacao(linha)}" />
 											</p:column>
 											<p:column style="width:60px; text-align: center;" >
 												<p:commandLink	title="Anexar autorização" 

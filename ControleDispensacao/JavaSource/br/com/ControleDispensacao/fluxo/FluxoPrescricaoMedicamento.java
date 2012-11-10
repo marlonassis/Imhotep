@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.fluxo;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
 import br.com.ControleDispensacao.entidadeExtra.Dose;
+import br.com.ControleDispensacao.enums.TipoViaAdministracaoMedicamentoEnum;
 import br.com.ControleDispensacao.negocio.EstoqueHome;
 import br.com.ControleDispensacao.negocio.PrescricaoHome;
 import br.com.remendo.ConsultaGeral;
@@ -48,18 +50,20 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
-	public void inserirItem(Dose dose){
+	public boolean inserirItem(Dose dose){
 			if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
 				dose.getPrescricaoItem().setPrescricao(prescricaoAtual);
 				if(!new ControlePrescricaoItem().gravaPrescricaoItem(dose.getPrescricaoItem())){
 					super.mensagem("Ocorrreu erro ao gravar a prescrição item.", "", FacesMessage.SEVERITY_ERROR);
-					return;
+					return false;
 				}
 				if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(dose)){
 					super.mensagem("Ocorrreu erro ao gravar a dose.", "", FacesMessage.SEVERITY_ERROR);
-					return;
+					return false;
 				}
+				return true;
 			}
+			return false;
 	}
 	
 	private boolean liberaDose(Material material, Dose dose) {
@@ -70,6 +74,11 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	}
 	
 	private boolean formularioDoseVazio(Dose dose){
+		if(dose.getDataInicio().before(Calendar.getInstance().getTime())){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A data de início da dose deve ser maior que a data atual.", ""));
+			return true;
+		}
+		
 		if(dose.getPrescricaoItem().getMaterial() == null){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o material.", ""));
 			return true;
@@ -90,6 +99,17 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a hora de início da dosagem.", ""));
 			return true;
 		}
+		
+		if(dose.getTipoViaAdministracaoMedicamento() == null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o tipo da via que o medicamento deve ser adminsitrado.", ""));
+			return true;
+		}
+		
+		if(dose.getTipoViaAdministracaoMedicamento() != null && dose.getTipoViaAdministracaoMedicamento().equals(TipoViaAdministracaoMedicamentoEnum.OT) && dose.getOutraVia() == null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a outra via de administração do medicamento.", ""));
+			return true;
+		}
+		
 		return false;
 	}
 	

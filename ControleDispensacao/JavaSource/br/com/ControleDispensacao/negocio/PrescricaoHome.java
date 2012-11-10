@@ -36,6 +36,7 @@ import br.com.ControleDispensacao.fluxo.FluxoPrescricaoCuidados;
 import br.com.ControleDispensacao.fluxo.FluxoPrescricaoLiberacaoMedicamento;
 import br.com.ControleDispensacao.fluxo.FluxoPrescricaoMedicamento;
 import br.com.ControleDispensacao.seguranca.Autenticador;
+import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="prescricaoHome")
@@ -243,10 +244,18 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	
 	public void adicionarItemFarmacoPrescricao(){
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
-		fpm.inserirItem(getDose());
-		carregaDoseFluxo();
-		carregaItensFarmacologicosFluxo();
-		setDose(new Dose());
+		if(fpm.inserirItem(getDose())){
+			carregaDoseFluxo();
+			carregaItensFarmacologicosFluxo();
+			setDose(new Dose());
+		}
+	}
+	
+	public List<Material> itensContidosLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI){
+		ConsultaGeral<Material> cg = new ConsultaGeral<Material>();
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idControleMedicacaoRestritoSCHI", controleMedicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI());
+		return (List<Material>) cg.consulta(new StringBuilder("select a.material from PrescricaoItem a where a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI = :idControleMedicacaoRestritoSCHI"), hm);
 	}
 	
 	public String onFlowProcess(FlowEvent event) {

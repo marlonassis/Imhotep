@@ -30,6 +30,8 @@ public class ControlePrescricaoItemDose extends PadraoControle{
 				temp.setQuantidade(dose.getQuantidadePorDose());
 				dataReferencia.add(Calendar.HOUR, dose.getIntervaloEntreDoses());
 				temp.setPrescricaoItem(dose.getPrescricaoItem());
+				temp.setTipoViaAdministracaoMedicamento(dose.getTipoViaAdministracaoMedicamento());
+				temp.setOutraVia(dose.getOutraVia());
 				session.save(temp);
 			}
 			session.flush();  

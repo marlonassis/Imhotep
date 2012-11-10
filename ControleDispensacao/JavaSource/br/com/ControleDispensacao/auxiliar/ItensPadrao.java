@@ -22,6 +22,7 @@ import br.com.ControleDispensacao.enums.TipoSituacaoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 import br.com.ControleDispensacao.enums.TipoSubIndicacaoProfilaxiaEnum;
 import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
+import br.com.ControleDispensacao.enums.TipoViaAdministracaoMedicamentoEnum;
 
 
 
@@ -142,6 +143,14 @@ public class ItensPadrao{
 			tipoEscolaridadeEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return tipoEscolaridadeEnumItens;
+	}
+	
+	public List<SelectItem> getTipoViaAdministracaoMedicamentoEnumItens(){
+		List<SelectItem> tipoViaAdministracaoMedicamentoEnumItens = new ArrayList<SelectItem>();
+		for(TipoViaAdministracaoMedicamentoEnum item : TipoViaAdministracaoMedicamentoEnum.values()){
+			tipoViaAdministracaoMedicamentoEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoViaAdministracaoMedicamentoEnumItens;
 	}
 	
 }

@@ -142,6 +142,7 @@ function avisoDelecao(){
 	if(!confirm('Deseja realmente excluir?')){
 		return false;
 	}
+	return true;
 }
 	
 /**
@@ -316,4 +317,3 @@ function validaEmail(obj)
 	obj.focus();
   }
 }
-

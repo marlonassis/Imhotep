@@ -44,11 +44,16 @@
 				 columns="1" 
 				 width="100%">
 		<h:panelGroup>
-			<h:outputLabel value="Medicamento:" 
+			<h:outputLabel value="Medicamentos:" 
 						   style="font-weight: bold;" /><br />
-			<p:commandLink onclick="dlgDose.show();" >
-				<h:outputText value="#{controleMedicacaoRestritoSCHIHome.materialLiberacao}"/>
-			</p:commandLink>
+			<ui:repeat value="#{controleMedicacaoRestritoSCHIHome.itensLiberacao}"
+					   var="itemLiberacao">
+				<p:commandLink update=""
+							   onclick="dlgDose.show();" >
+					<h:outputText value="#{itemLiberacao.material.descricao}"/>
+					<f:setPropertyActionListener value="#{itemLiberacao}" target="#{controleMedicacaoRestritoSCHIHome.itemEdicao}" />
+				</p:commandLink>
+			</ui:repeat>
 		</h:panelGroup>
 	</h:panelGrid>
 	 
@@ -284,7 +289,7 @@
 	
 	<p:separator style="height:8px" />
 	
-	<p:dialog id="alteracaoDoseModalDialog" header="Modal Dialog" widgetVar="dlgDose" modal="true" height="100">  
+	<p:dialog id="alteracaoDoseModalDialog" header="Modal Dialog" widgetVar="dlgDose" modal="true" height="100"> 
 		<h:outputText value="This is a Modal Dialog." />  
 	</p:dialog>
 	

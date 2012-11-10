@@ -16,11 +16,6 @@
 					rowKey="#{linha.idControleMedicacaoRestritoSCHI}">
 		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Material" /></f:facet>
-			<h:outputText value="#{controleMedicacaoRestritoSCHIHome.materialLiberacao(linha.idControleMedicacaoRestritoSCHI)}" />
-		</p:column>
-		
-		<p:column>
 			<f:facet name="header"><h:outputText value="Indicação" /></f:facet>
 			<h:outputText value="#{linha.tipoIndicacao.label}" />
 		</p:column>
@@ -73,7 +68,7 @@
 							title="Apagar"
 							rendered="false"
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>
