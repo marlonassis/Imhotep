@@ -12,6 +12,13 @@
 		<p:submenu label="Cadastro" rendered="#{controleMenu.menuAutorizadoStringList.contains('Cadastro')}" >
 			<p:menuitem value="Hospital" url="/PaginasWeb/Hospital/hospital.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Hospital')}"/>
+			<p:submenu label="Laboratório" 
+					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Laboratório')}">  
+				<p:menuitem value="Teste do Pezinho" url="/PaginasWeb/Laboratorio/TesteDoPezinho/testeDoPezinho.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Teste do Pezinho')}"/>
+				<p:menuitem value="Exame" url="/PaginasWeb/Laboratorio/Exame/exame.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Exame')}"/>
+			</p:submenu>
 			<p:submenu label="Material" 
 					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Material')}">  
 				<p:menuitem value="Fabricante" url="/PaginasWeb/Material/Fabricante/fabricante.jsf" 
@@ -89,6 +96,8 @@
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Autoriza Painel')}" />
 			<p:menuitem value="Menu" url="/PaginasWeb/Menu/menu.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Menu')}" />
+			<p:menuitem value="Modelador do Banco de Dados" url="/PaginasWeb/ModeladorBancoDados/modeladorBancoDados.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Modelador do Banco de Dados')}" />
 			<p:menuitem value="Painel" url="/PaginasWeb/Painel/Painel/painel.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Painel')}" />
 			<p:menuitem value="Troca de Senha" url="/PaginasWeb/Usuario/usuarioTrocaSenha.jsf" 

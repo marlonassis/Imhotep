@@ -53,7 +53,8 @@ public class ModeladorBancoDados extends GerenciadorConexao{
 	
 	public void executarSqls(){
 		for(String query : comandosExecutar)
-			executarQuery(query);
+			if(!executarQuery(query))
+				return;
 		comandosExecutar = new ArrayList<String>();
 	}
 	
@@ -90,9 +91,10 @@ public class ModeladorBancoDados extends GerenciadorConexao{
 	public void criarTabela(){
 		String query = "create table public."+getTabela().getNomeTabela();
 		query = montaSqlCriarTabelaCompleta(query, getTabela());
-		executarQuery(query);
-		comandosExecutar = new ArrayList<String>();
-		setTabelaEdicao(getTabela().getNomeTabela());
+		if(executarQuery(query)){
+			comandosExecutar = new ArrayList<String>();
+			setTabelaEdicao(getTabela().getNomeTabela());
+		}
 	}
 	
 	public void apagarTabela(){
@@ -101,28 +103,28 @@ public class ModeladorBancoDados extends GerenciadorConexao{
 	}
 
 	private String gerarConstraint(ConstraintTabela constraintTabela2, String constraintInicial) {
-		constraintInicial = " constraint "+constraintTabela2.getNomeConstraint();
+		constraintInicial += " constraint "+constraintTabela2.getNomeConstraint();
 		if(constraintTabela2.getTipoConstraint().equals("PRIMARY KEY")){
-			constraintInicial = constraintInicial.concat(" PRIMARY KEY (");
+			constraintInicial = constraintInicial.concat(" PRIMARY KEY ( ");
 			constraintInicial = constraintInicial.concat(constraintTabela2.getNomePropriedadeLocal());
-			constraintInicial = constraintInicial.concat(")");
+			constraintInicial = constraintInicial.concat(" ) ");
 		}else{
 			if(constraintTabela2.getTipoConstraint().equals("FOREIGN KEY")){
-				constraintInicial = constraintInicial.concat(" FOREIGN KEY (");
+				constraintInicial = constraintInicial.concat(" FOREIGN KEY ( ");
 				constraintInicial = constraintInicial.concat(constraintTabela2.getNomePropriedadeLocal());
-				constraintInicial = constraintInicial.concat(") ");
+				constraintInicial = constraintInicial.concat(" ) ");
 				constraintInicial = constraintInicial.concat("references ");
 				constraintInicial = constraintInicial.concat(constraintTabela2.getNomeTabelaReferencia());
-				constraintInicial = constraintInicial.concat(" (").concat(constraintTabela2.getNomePropriedadeLocal()).concat(")");
+				constraintInicial = constraintInicial.concat(" (").concat(constraintTabela2.getNomePropriedadeReferencia()).concat(")");
 				constraintInicial = constraintInicial.concat(" match simple on update ");
 				constraintInicial = constraintInicial.concat(constraintTabela2.getTipoUpdate());
-				constraintInicial = constraintInicial.concat("on delete ");
+				constraintInicial = constraintInicial.concat(" on delete ");
 				constraintInicial = constraintInicial.concat(constraintTabela2.getTipoDelete());
 			}else{
 				if(constraintTabela2.getTipoConstraint().equals("UNIQUE")){
 					constraintInicial = constraintInicial.concat(" UNIQUE (");
 					constraintInicial = constraintInicial.concat(constraintTabela2.getNomePropriedadeLocal());
-					constraintInicial = constraintInicial.concat(") ");
+					constraintInicial = constraintInicial.concat(" ) ");
 				}
 			}
 		}
@@ -339,8 +341,9 @@ public class ModeladorBancoDados extends GerenciadorConexao{
         return listaRet;
 	}
 
-	private void executarQuery(String query) {
+	private boolean executarQuery(String query) {
 		registrarDriver();
+		boolean ret = true;
         try {
         	c = createConnection();
         	s = c.createStatement();
@@ -350,6 +353,7 @@ public class ModeladorBancoDados extends GerenciadorConexao{
         	super.mensagem("Falha no processamento no banco de dados", null, FacesMessage.SEVERITY_FATAL);
             System.out.println("Database processing has failed.");
             System.out.println("Reason: " + sqle.getMessage());
+            ret = false;
         } finally {
             try {
                 if (s != null) {
@@ -363,6 +367,7 @@ public class ModeladorBancoDados extends GerenciadorConexao{
                 System.out.println("Cleanup failed to close Statement.");
             }
         }
+        return ret;
 	}
 
 	private void registrarSqlExecutado(String query) {

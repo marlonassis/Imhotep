@@ -57,6 +57,9 @@
         <mapping class="br.com.ControleDispensacao.entidade.Configuracao"/>
         <mapping class="br.com.ControleDispensacao.entidade.PacienteEntrada"/>
         <mapping class="br.com.ControleDispensacao.entidade.SqlExecutado"/>
+        <mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinho"/>
+        <mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinhoResultado"/>
+        <mapping class="br.com.ControleDispensacao.entidade.Exame"/>
         
     </session-factory>
 </hibernate-configuration>

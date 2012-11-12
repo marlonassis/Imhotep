@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabExame" title="Exame" >
+			<h:form id="exameForm" prependId="false" >
+				<p:fieldset legend="Novo Exame"
+							collapsed="#{!exameHome.edicao}"
+							toggleable="true"
+							toggleSpeed="500">
+						<p:growl id="formGrowl" showDetail="true" />
+						<ui:include src="exameEditor.xhtml"/>
+			            <p:commandButton	value="Salvar" 
+			            					rendered="#{!exameHome.edicao}"
+			            					update="padraoTabView:tabelaExame exameForm"
+											action="#{exameHome.enviar}" />
+			            <p:commandButton	value="Gravar" 
+			            					rendered="#{exameHome.edicao}"
+			            					update="padraoTabView:tabelaExame exameForm"
+											action="#{exameHome.atualizar}"/> 
+						<p:commandButton	value="Imprimir Recibo" 
+			            					rendered="#{exameHome.edicao}"
+											onclick="window.open('exameComprovanteEntrega.jsf')"/> 
+						<p:commandButton	value="Novo"
+											rendered="#{exameHome.edicao}"
+											update="@parent" 
+											action="#{exameHome.novaInstancia()}"/> 
+				</p:fieldset>
+            </h:form>
+			
+			<h:form id="pesquisaExameForm" prependId="false" >
+				<p:fieldset id="pesquisaExameFieldSet"
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="exameConsulta.xhtml"/>
+					
+					<p:commandButton 	value="Pesquisar" 
+										update="tabelaExame" 
+										image="ui-icon ui-icon-search" />
+					
+					<p:commandButton 	value="Limpar" 
+										action="#{exameConsulta.novaInstancia()}"
+										image="ui-icon ui-icon-arrowrefresh-1-s" 
+										title="Limpar os campos" 
+										update="pesquisaExameForm " />
+					
+			    </p:fieldset>  
+				<p:growl/>
+				<ui:include src="exameTabela.xhtml"/>
+			</h:form>	
+		</p:tab>
+	</ui:define>
+</ui:composition>

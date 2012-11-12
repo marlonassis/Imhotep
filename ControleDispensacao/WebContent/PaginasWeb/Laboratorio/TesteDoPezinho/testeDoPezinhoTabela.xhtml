@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dataTable 	id="tabelaTesteDoPezinho" 
+					value="#{testeDoPezinhoConsulta.list}" 
+					var="linha"
+					dblClickSelect="true"
+					emptyMessage="Não foi encontrado registros" 
+					rows="10" 
+					paginator="true"
+					selectionMode="single" 
+					rowKey="#{linha.idTesteDoPezinho}">
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Nome da Criança" /></f:facet>
+			<h:outputText value="#{linha.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Lote" /></f:facet>
+			<h:outputText value="#{linha.lote}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Amostra Válida" /></f:facet>
+			<h:outputText value="#{linha.amostraValida.label}" />
+		</p:column>
+					
+		<p:column style="width:60px; text-align: center;" >
+			<p:commandLink update="padraoTabView:testeDoPezinhoForm" 
+						   title="Editar" 
+						   style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{testeDoPezinhoHome.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink  action="#{testeDoPezinhoHome.apagar()}"
+							update="tabelaTesteDoPezinho padraoTabView:testeDoPezinhoForm" 
+							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+							title="Apagar" 
+							style="padding-right:10px;" >
+				<f:setPropertyActionListener value="#{linha}" target="#{testeDoPezinhoHome.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>  
+	</p:dataTable>
+	
+</ui:composition>
