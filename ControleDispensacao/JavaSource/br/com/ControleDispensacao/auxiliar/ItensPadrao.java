@@ -14,6 +14,7 @@ import br.com.ControleDispensacao.enums.TipoEscolaridadeEnum;
 import br.com.ControleDispensacao.enums.TipoEstadoCivilEnum;
 import br.com.ControleDispensacao.enums.TipoIndicacaoEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
+import br.com.ControleDispensacao.enums.TipoMetodoExameEnum;
 import br.com.ControleDispensacao.enums.TipoMovimentacaoEnum;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoPrescricaoInadequadaEnum;
@@ -151,6 +152,14 @@ public class ItensPadrao{
 			tipoViaAdministracaoMedicamentoEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return tipoViaAdministracaoMedicamentoEnumItens;
+	}
+	
+	public List<SelectItem> getTipoMetodoExameEnumItens(){
+		List<SelectItem> tipoMetodoExameEnumItens = new ArrayList<SelectItem>();
+		for(TipoMetodoExameEnum item : TipoMetodoExameEnum.values()){
+			tipoMetodoExameEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoMetodoExameEnumItens;
 	}
 	
 }

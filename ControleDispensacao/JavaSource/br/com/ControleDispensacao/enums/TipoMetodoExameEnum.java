@@ -1,18 +1,17 @@
 package br.com.ControleDispensacao.enums;
 
 /**
- * Classe que contém todos os papéis possíveis a um usuário
  * @author marlonassis
  */
 
 public enum TipoMetodoExameEnum {
-	T("Sim"), 
-	F("Não");
+	IM("Imunofluorimetria"), 
+	FI("Focalização Isoelétrica");
 	
 	private String label;
 	
-	TipoMetodoExameEnum(String sexo){
-		label = sexo;
+	TipoMetodoExameEnum(String metodo){
+		label = metodo;
 	}
 	
 	public String getLabel(){

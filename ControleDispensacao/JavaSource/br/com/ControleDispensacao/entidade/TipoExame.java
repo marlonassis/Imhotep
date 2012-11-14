@@ -8,23 +8,25 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_exame")
-public class Exame {
+@Table(name = "tb_tipo_exame")
+public class TipoExame {
 	
-	private int idExame;
+	private int idTipoExame;
 	private String valorReferencia;
 	private String nome;
+	private String sigla;
+	private Float valor;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_exame_id_exame_seq")
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_tipo_exame_id_tipo_exame_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id_exame", unique = true, nullable = false)
-	public int getIdExame() {
-		return this.idExame;
+	@Column(name = "id_tipo_exame", unique = true, nullable = false)
+	public int getIdTipoExame() {
+		return this.idTipoExame;
 	}
 	
-	public void setIdExame(int idExame){
-		this.idExame = idExame;
+	public void setIdTipoExame(int idTipoExame){
+		this.idTipoExame = idTipoExame;
 	}
 	
 	@Column(name = "cv_nome")
@@ -43,14 +45,30 @@ public class Exame {
 		this.valorReferencia = valorReferencia;
 	}
 	
+	@Column(name = "cv_sigla")
+	public String getSigla() {
+		return sigla;
+	}
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+	
+	@Column(name = "db_valor")
+	public Float getValor() {
+		return valor;
+	}
+	public void setValor(Float valor) {
+		this.valor = valor;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
 			return false;
-		if(!(obj instanceof Exame))
+		if(!(obj instanceof TipoExame))
 			return false;
 		
-		return ((Exame)obj).getIdExame() == this.idExame;
+		return ((TipoExame)obj).getIdTipoExame() == this.idTipoExame;
 	}
 
 	@Override

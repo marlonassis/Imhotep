@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	<h:panelGrid id="tipoExamePanelGrid"
+				 columns="3" 
+				 width="100%" >
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="nome" value="Nome:"  /><br />
+			<p:inputText id="nome"
+						 required="true"
+						 value="#{tipoExameHome.instancia.nome}" 
+						 title="Informe o valor de referência" />
+		</h:panelGroup>
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="valorReferencia" value="Valor de Referência:"  /><br />
+			<p:inputText  id="valorReferencia"
+						  value="#{tipoExameHome.instancia.valorReferencia}"
+						  required="true"
+						  onkeyup="apenasNumeroComVirgula(this);" 
+						  converter="monetarioConversor"
+						  title="Valor de Referência" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="valor" value="Valor:"  /><br />
+			<p:inputText id="valor"
+						 value="#{tipoExameHome.instancia.valor}" 
+						 title="Informe o valor padrão" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="sigla" value="Sigla:"  /><br />
+			<p:inputText id="sigla"
+						 value="#{tipoExameHome.instancia.sigla}" 
+						 title="Informe a sigla do exame" />
+		</h:panelGroup>
+		
+	</h:panelGrid>
+</ui:composition>

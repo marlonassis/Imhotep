@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<h:outputText value="Dados do Exame" 
+				  style="font-weight:bold" />
+	<br/>
+	<h:panelGrid id="testeDoPezinhoPanelGrid"
+				 columns="3" 
+				 width="100%" >
+		<h:panelGroup>
+			<h:outputLabel for="nome" value="Nome:" style="font-weight:bold" /><br />
+			<h:outputText id="nome"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nome}"/> 
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="registro" value="Registro:" style="font-weight:bold" /><br />
+			<h:outputText id="registro"
+						  value=""/> 
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="dataNascimento" value="Data de Nascimento:" style="font-weight:bold" /><br />
+			<h:outputText id="dataNascimento"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataNascimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText> 
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="nomeMae" value="Nome da Mãe:" style="font-weight:bold" /><br />
+			<h:outputText id="nomeMae"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nomeMae}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="dataRecebimento" value="Data de Recebimento:" style="font-weight:bold" /><br />
+			<h:outputText id="dataRecebimento"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataCadastro}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="dataTSH" value="Data TSH:" style="font-weight:bold" /><br />
+			<h:outputText id="dataTSH"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataTsh}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="endereco" value="Endereço:" style="font-weight:bold" /><br />
+			<h:outputText id="endereco"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.endereco}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="dataColeta" value="Data da Coleta:" style="font-weight:bold" /><br />
+			<h:outputText id="dataColeta"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataColeta}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="dataHB" value="Data HB:" style="font-weight:bold" /><br />
+			<h:outputText id="dataHB"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataHb}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="procedencia" value="Procedência:" style="font-weight:bold" /><br />
+			<h:outputText id="procedencia"
+						  value=""/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="cidade" value="Cidade:" style="font-weight:bold" /><br />
+			<h:outputText id="cidade"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.cidade.nomeCidadeEstado}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="dataPKU" value="Data PKU:" style="font-weight:bold" /><br />
+			<h:outputText id="dataPKU"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataPku}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="tipo" value="Tipo (Classe):" style="font-weight:bold" /><br />
+			<h:outputText id="tipo"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tipo}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="lote" value="Lote:" style="font-weight:bold" /><br />
+			<h:outputText id="lote"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.lote}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="amostra" value="Amostra:" style="font-weight:bold" /><br />
+			<h:outputText id="amostra"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.amostra}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="material" value="Material:" style="font-weight:bold" /><br />
+			<h:outputText id="material"
+						  value="Sangue em papel de filtro"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="posto" value="Posto:" style="font-weight:bold" /><br />
+			<h:outputText id="posto"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nomePosto}"/>
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid id="dadosTesteDoPezinhoPanelGrid"
+				 columns="4" 
+				 width="100%" >
+		<h:panelGroup>
+			<h:outputLabel for="tsh" value="TSH:" style="font-weight:bold" /><br />
+			<h:outputText id="tsh"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tsh}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="irt" value="IRT:" style="font-weight:bold" /><br />
+			<h:outputText id="irt"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tsh}"/>
+		</h:panelGroup>	
+		<h:panelGroup>
+			<h:outputLabel for="pku" value="PKU:" style="font-weight:bold" /><br />
+			<h:outputText id="pku"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.irt}"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="hemoglobina" value="Hemoglobina:" style="font-weight:bold" /><br />
+			<h:outputText id="hemoglobina"
+						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.hemoglobinas}"/>
+		</h:panelGroup>
+	</h:panelGrid>
+	<br/>
+	<h:outputText value="Dados do Exame" 
+				  style="font-weight:bold" />
+	<br/>
+	<h:panelGrid id="testeDoPezinhoResultadoListaPanelGrid"
+				 columns="1" 
+				 width="100%" >
+        <h:panelGroup> 
+			 <p:dataTable var="resultadoPezinho" 
+			 			  value="#{testeDoPezinhoResultadoHome.listaResultadoPezinho}">  
+		        <p:column headerText="Exame">  
+		            <h:outputText value="#{resultadoPezinho.tipoExame.nome}" />  
+		        </p:column>  
+		  
+		        <p:column headerText="Método">  
+		            <h:outputText value="#{resultadoPezinho.metodo.label}" />  
+		        </p:column>  
+		  
+		        <p:column headerText="Valor de Referência">  
+		            <h:outputText value="#{resultadoPezinho.tipoExame.valorReferencia}" />  
+		        </p:column>  
+		  
+		        <p:column headerText="Resultado">  
+		            <h:outputText value="#{resultadoPezinho.resultado}" />  
+		        </p:column>
+		    </p:dataTable>  
+        </h:panelGroup>
+        
+        
+	</h:panelGrid>
+</ui:composition>

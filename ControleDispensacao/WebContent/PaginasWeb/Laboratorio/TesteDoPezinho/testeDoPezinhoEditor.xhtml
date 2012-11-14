@@ -4,177 +4,201 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 	<h:panelGrid id="testeDoPezinhoPanelGrid"
-				 columns="1" 
+				 columns="3" 
 				 width="100%" >
-		<h:panelGrid id="cabecaPanelGrid"
-					 columns="3" 
-					 width="100%" >
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="numeroAmostra" value="Número Amostra:"  /><br />
-				<p:inputText id="numeroAmostra"
-							 required="true"
-							 value="#{testeDoPezinhoHome.instancia.numeroAmostra}" 
-							 title="Informe o número da amostra" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="dataColeta" value="Data da Coleta:"  /><br />
-				<p:calendar id="dataColeta"
-							required="true"
-							pattern="dd/MM/yyyy HH:mm"
-							locale="pt" 
-							value="#{testeDoPezinhoHome.instancia.dataColeta}" />  
-			</h:panelGroup>
-			
-			<h:panelGroup>
-			#{' '}
-			</h:panelGroup>
-		</h:panelGrid>
-		<h:panelGrid id="corpoPanelGrid"
-					 columns="3" 
-					 width="100%" >
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
-				<p:inputText id="lote" 
-							 required="true"
-							 value="#{testeDoPezinhoHome.instancia.lote}" 
-							 title="Informe o lote da amostra" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="numeroExame" value="Número do Exame:"  /><br />
-				<p:inputText id="numeroExame" 
-							 required="true"
-							 value="#{testeDoPezinhoHome.instancia.numeroExame}" 
-							 title="Informe o número do exame" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="tipo" value="Tipo (Classe):"  /><br />
-				<p:inputText id="tipo" 
-							 required="true"
-							 value="#{testeDoPezinhoHome.instancia.tipo}" 
-							 title="Informe o número do exame" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="nome" value="Nome Completo do Recém-Nascido:"  /><br />
-				<p:inputText id="nome"
-							 required="true" 
-							 size="30"
-							 value="#{testeDoPezinhoHome.instancia.nome}" 
-							 title="Informe o nome da criança" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="dataNascimento" value="Data do Nascimento"  /><br />
-				<p:calendar id="dataNascimento"
-							required="true"
-							pattern="dd/MM/yyyy HH:mm"
-							locale="pt" 
-							value="#{testeDoPezinhoHome.instancia.dataNascimento}" />  
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="sexo" value="Sexo:"  /><br />
-				<p:selectOneRadio value="#{testeDoPezinhoHome.instancia.sexo}"
-								  required="true" 
-								  effect="fade" >  
-		        	<f:selectItems value="#{itensPadrao.sexoEnumItens}"/> 
-		        </p:selectOneRadio>
-	        </h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="tipoGemelar" value="Gemelar:"  /><br />
-				<p:selectOneRadio id="tipoGemelar"
-								  required="true"
-								  value="#{testeDoPezinhoHome.instancia.tipoGemelar}" 
-								  title="Informe se a criança é gêmea" >
-					<p:ajax event="change" update="padraoTabView:outraViaPanelGroup" />
-					<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-				</p:selectOneRadio>
-			</h:panelGroup>
-			
-			<h:panelGroup>
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="numeroAmostra" value="Número Amostra:"  /><br />
+			<p:inputText id="numeroAmostra"
+						 required="true"
+						 value="#{testeDoPezinhoHome.instancia.numeroAmostra}" 
+						 title="Informe o número da amostra" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="dataColeta" value="Data da Coleta:"  /><br />
+			<p:calendar id="dataColeta"
+						required="true"
+						pattern="dd/MM/yyyy HH:mm"
+						locale="pt" 
+						value="#{testeDoPezinhoHome.instancia.dataColeta}" />  
+		</h:panelGroup>
+		
+		<h:panelGroup>
+		#{' '}
+		</h:panelGroup>
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
+			<p:inputText id="lote" 
+						 required="true"
+						 value="#{testeDoPezinhoHome.instancia.lote}" 
+						 title="Informe o lote da amostra" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="numeroExame" value="Número do Exame:"  /><br />
+			<p:inputText id="numeroExame" 
+						 required="true"
+						 value="#{testeDoPezinhoHome.instancia.numeroExame}" 
+						 title="Informe o número do exame" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="tipo" value="Tipo (Classe):"  /><br />
+			<p:inputText id="tipo" 
+						 required="true"
+						 value="#{testeDoPezinhoHome.instancia.tipo}" 
+						 title="Informe o número do exame" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="nome" value="Nome Completo do Recém-Nascido:"  /><br />
+			<p:inputText id="nome"
+						 required="true" 
+						 size="30"
+						 value="#{testeDoPezinhoHome.instancia.nome}" 
+						 title="Informe o nome da criança" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="dataNascimento" value="Data do Nascimento"  /><br />
+			<p:calendar id="dataNascimento"
+						required="true"
+						pattern="dd/MM/yyyy HH:mm"
+						locale="pt" 
+						value="#{testeDoPezinhoHome.instancia.dataNascimento}" />  
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="sexo" value="Sexo:"  /><br />
+			<p:selectOneRadio value="#{testeDoPezinhoHome.instancia.sexo}"
+							  required="true" 
+							  effect="fade" >  
+	        	<f:selectItems value="#{itensPadrao.sexoEnumItens}"/> 
+	        </p:selectOneRadio>
+        </h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="tipoGemelar" value="Gemelar:"  /><br />
+			<p:selectOneRadio id="tipoGemelar"
+							  required="true"
+							  value="#{testeDoPezinhoHome.instancia.tipoGemelar}" 
+							  title="Informe se a criança é gêmea" >
+				<p:ajax event="change" update="padraoTabView:gemelarPanelGroup" />
+				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
+			</p:selectOneRadio>
+		</h:panelGroup>
+		
+		<h:panelGroup id="gemelarPanelGroup" >
+			<h:panelGroup rendered="#{testeDoPezinhoHome.instancia.tipoGemelar == 'S'}" >
 				<font color="red" >*</font><h:outputLabel for="gemelar" value=""  /><br />
 				<p:inputText id="gemelar"
 							 required="true" 
 							 value="#{testeDoPezinhoHome.instancia.gemelar}" 
 							 title="Informe a descrição do tipo de gemelar" />
 			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="nomeMae" value="Nome da Mãe do Recém-Nascido"  /><br />
-				<p:inputText id="nomeMae"
-							 required="true"
-							 size="30"
-							 value="#{testeDoPezinhoHome.instancia.nomeMae}" 
-							 title="Informe o nome da mãe da criança" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="endereco" value="Endereço:"  /><br />
-				<p:inputText id="endereco" 
-							 required="true"
-							 size="30"
-							 value="#{testeDoPezinhoHome.instancia.endereco}" 
-							 title="Informe o endereço da casa" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="numero" value="Numero:"  /><br />
-				<p:inputText id="numero" 
-							 required="true"
-							 value="#{testeDoPezinhoHome.instancia.numeroCasa}" 
-							 title="Informe o número da casa" />
-			</h:panelGroup>
-			
-			<h:panelGroup style="align:left;" >
-				<font color="red" >*</font><h:outputLabel for="cidade" value="Cidade:"  /><br />
-		  		<p:autoComplete id="cidade" 
-		  						required="true"
-		  						minQueryLength="4"
-		  						value="#{testeDoPezinhoHome.instancia.cidade}"
-		  						forceSelection="true"
-								completeMethod="#{cidadeHome.getListaCidadeAutoComplete}" 
-								var="cidade"
-								title="Informe a cidade à qual o testeDoPezinho veio"
-								itemLabel="#{cidade.nomeCidadeEstado}" 
-								itemValue="#{cidade}"
-								converter="cidadeConversor" />
-				<h:graphicImage value="/Imagens/list16.png"
-								title="Ao digitar aparecerá algumas sugestões" 
-								style="padding-top:8px"/>
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="telefone" value="Telefone:"  /><br />
-				<p:inputMask id="telefone"
-							 required="true"
-							 mask="(99)9999-9999"
-							 value="#{testeDoPezinhoHome.instancia.telefone}"
-							 title="Informe o telefone de contato da família"
-							 converter="telefoneConversor"/>
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="nomePosto" value="Nome do Posto:"  /><br />
-				<p:inputText id="nomePosto" 
-							 required="true"
-							 value="#{testeDoPezinhoHome.instancia.nomePosto}" 
-							 title="Informe o nome do posto" />
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<font color="red" >*</font><h:outputLabel for="amostraValida" value="Amostra Válida?"  /><br />
-				<p:selectOneRadio id="amostraValida"
-								  required="true"
-								  value="#{testeDoPezinhoHome.instancia.amostraValida}" 
-								  title="Informe se a amostra está adequada para o exame" >
-					<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-				</p:selectOneRadio>
-			</h:panelGroup>
-			
-		</h:panelGrid>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="nomeMae" value="Nome da Mãe do Recém-Nascido"  /><br />
+			<p:inputText id="nomeMae"
+						 required="true"
+						 size="30"
+						 value="#{testeDoPezinhoHome.instancia.nomeMae}" 
+						 title="Informe o nome da mãe da criança" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="endereco" value="Endereço:"  /><br />
+			<p:inputText id="endereco" 
+						 required="true"
+						 size="30"
+						 value="#{testeDoPezinhoHome.instancia.endereco}" 
+						 title="Informe o endereço da casa" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="numero" value="Numero:"  /><br />
+			<p:inputText id="numero" 
+						 required="true"
+						 value="#{testeDoPezinhoHome.instancia.numeroCasa}" 
+						 title="Informe o número da casa" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<font color="red" >*</font><h:outputLabel for="cidade" value="Cidade:"  /><br />
+	  		<p:autoComplete id="cidade" 
+	  						required="true"
+	  						minQueryLength="4"
+	  						value="#{testeDoPezinhoHome.instancia.cidade}"
+	  						forceSelection="true"
+							completeMethod="#{cidadeHome.getListaCidadeAutoComplete}" 
+							var="cidade"
+							title="Informe a cidade à qual o testeDoPezinho veio"
+							itemLabel="#{cidade.nomeCidadeEstado}" 
+							itemValue="#{cidade}"
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões" 
+							style="padding-top:8px"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="telefone" value="Telefone:"  /><br />
+			<p:inputMask id="telefone"
+						 required="true"
+						 mask="(99)9999-9999"
+						 value="#{testeDoPezinhoHome.instancia.telefone}"
+						 title="Informe o telefone de contato da família"
+						 converter="telefoneConversor"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="nomePosto" value="Nome do Posto:"  /><br />
+			<p:inputText id="nomePosto" 
+						 required="true"
+						 value="#{testeDoPezinhoHome.instancia.nomePosto}" 
+						 title="Informe o nome do posto" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="prematuro" value="Nasceu Prematura?"  /><br />
+			<p:selectOneRadio id="prematuro"
+							  required="true"
+							  value="#{testeDoPezinhoHome.instancia.prematuro}" 
+							  title="Informe se a criança é prematura" >
+				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
+			</p:selectOneRadio>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="transfusao" value="Recebeu Transfusão?"  /><br />
+			<p:selectOneRadio id="transfusao"
+							  required="true"
+							  value="#{testeDoPezinhoHome.instancia.transfusao}" 
+							  title="Informe se a criança recebeu transfusão de sangue" >
+				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
+			</p:selectOneRadio>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="amostraValida" value="Amostra Válida?"  /><br />
+			<p:selectOneRadio id="amostraValida"
+							  required="true"
+							  value="#{testeDoPezinhoHome.instancia.amostraValida}" 
+							  title="Informe se a amostra está adequada para o exame" >
+				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
+			</p:selectOneRadio>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="amostraValida" value="Amostra Válida?"  /><br />
+			<p:selectOneRadio id="amostraValida"
+							  required="true"
+							  value="#{testeDoPezinhoHome.instancia.amostraValida}" 
+							  title="Informe se a amostra está adequada para o exame" >
+				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
+			</p:selectOneRadio>
+		</h:panelGroup>
+
 	</h:panelGrid>
 </ui:composition>

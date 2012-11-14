@@ -16,9 +16,10 @@
 					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Laboratório')}">  
 				<p:menuitem value="Teste do Pezinho" url="/PaginasWeb/Laboratorio/TesteDoPezinho/testeDoPezinho.jsf" 
 							rendered="#{controleMenu.menuAutorizadoStringList.contains('Teste do Pezinho')}"/>
-				<p:menuitem value="Exame" url="/PaginasWeb/Laboratorio/Exame/exame.jsf" 
-							rendered="#{controleMenu.menuAutorizadoStringList.contains('Exame')}"/>
+				<p:menuitem value="Tipo de Exame" url="/PaginasWeb/Laboratorio/TipoExame/tipoExame.jsf" 
+							rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo de Exame')}"/>
 			</p:submenu>
+			
 			<p:submenu label="Material" 
 					   rendered="#{controleMenu.menuAutorizadoStringList.contains('Material')}">  
 				<p:menuitem value="Fabricante" url="/PaginasWeb/Material/Fabricante/fabricante.jsf" 
@@ -133,7 +134,11 @@
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Material')}" />
 			</p:submenu>
 		</p:submenu>
-		
+		<p:submenu label="Laboratório HU" 
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Laboratório HU')}" >
+			<p:menuitem value="Resultado do Pezinho" url="/PaginasWeb/Laboratorio/TesteDoPezinhoResultado/testeDoPezinhoResultado.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Resultado do Pezinho')}"/>
+		</p:submenu>
 		<p:submenu label="Prescrição Médica" 
 				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição Médica')}" >
 			<p:menuitem value="Consulta da Prescrição" url="/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.jsf" 
@@ -152,6 +157,12 @@
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque')}" />
 			<p:menuitem value="Estoque por Data de Vencimento" url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
+		</p:submenu>
+		
+		<p:submenu label="Serviço Social" 
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Serviço Social')}" >
+			<p:menuitem value="Testes do Pezinho Alterados" url="/PaginasWeb/ServicoSocial/TesteDoPezinhoRevisao/testeDoPezinhoRevisao.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Testes do Pezinho Alterados')}" />
 		</p:submenu>
 		
 		<p:menuitem value="Ajuda" url="/PaginasWeb/Ajuda/Ajuda/ajuda.jsf"/>

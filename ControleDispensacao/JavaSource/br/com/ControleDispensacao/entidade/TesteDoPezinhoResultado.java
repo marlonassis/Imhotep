@@ -19,13 +19,13 @@ import javax.persistence.TemporalType;
 import br.com.ControleDispensacao.enums.TipoMetodoExameEnum;
 
 @Entity
-@Table(name = "tb_teste_do_pezinho")
+@Table(name = "tb_teste_do_pezinho_resultado")
 public class TesteDoPezinhoResultado {
 	
 	private int idTesteDoPezinhoResultado;
 	private TipoMetodoExameEnum metodo;
 	private TesteDoPezinho testeDoPezinho;
-	private Exame exame;
+	private TipoExame tipoExame;
 	private Date dataCadastro;
 	private String resultado;
 	private Profissional profissionalCadastro;
@@ -61,12 +61,12 @@ public class TesteDoPezinhoResultado {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_exame")
-	public Exame getExame() {
-		return exame;
+	@JoinColumn(name = "id_tipo_exame")
+	public TipoExame getTipoExame() {
+		return tipoExame;
 	}
-	public void setExame(Exame exame) {
-		this.exame = exame;
+	public void setTipoExame(TipoExame tipoExame) {
+		this.tipoExame = tipoExame;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -5,40 +5,43 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaExame" 
-					value="#{exameConsulta.list}" 
+	<p:dataTable 	id="tabelaTesteDoPezinhoRevisao" 
+					value="#{testeDoPezinhoRevisaoConsulta.list}" 
 					var="linha"
 					dblClickSelect="true"
 					emptyMessage="Não foi encontrado registros" 
 					rows="10" 
 					paginator="true"
 					selectionMode="single" 
-					rowKey="#{linha.idExame}">
-		
+					rowKey="#{linha.idTesteDoPezinho}">
+					
 		<p:column>
-			<f:facet name="header"><h:outputText value="Nome do Exame" /></f:facet>
+			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
 			<h:outputText value="#{linha.nome}" />
 		</p:column>
-		
 		<p:column>
-			<f:facet name="header"><h:outputText value="Valor de Referência" /></f:facet>
-			<h:outputText value="#{linha.valorReferencia}" />
+			<f:facet name="header"><h:outputText value="Amostra Válida" /></f:facet>
+			<h:outputText value="#{linha.amostraValida.label}" />
 		</p:column>
-		
+		<p:column>
+			<f:facet name="header"><h:outputText value="Lote" /></f:facet>
+			<h:outputText value="#{linha.lote}" />
+		</p:column>
 		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:exameForm" 
+			<p:commandLink update="padraoTabView:testeDoPezinhoRevisaoForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{exameHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{testeDoPezinhoResultadoHome.testeDoPezinho}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
-			<p:commandLink  action="#{exameHome.apagar()}"
-							update="tabelaExame padraoTabView:exameForm" 
+			<p:commandLink  action="#{familiaHome.apagar()}"
+							update="tabelaFamilia padraoTabView:familiaForm" 
 							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-							title="Apagar" 
+							title="Apagar"
+							rendered="false" 
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{exameHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{testeDoPezinhoResultadoHome.testeDoPezinho}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>  

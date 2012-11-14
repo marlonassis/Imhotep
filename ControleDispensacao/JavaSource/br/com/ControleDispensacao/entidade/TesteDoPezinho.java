@@ -26,16 +26,19 @@ public class TesteDoPezinho {
 	private int idTesteDoPezinho;
 	private Integer amostra;
 	private TipoStatusEnum amostraValida;
+	private TipoStatusEnum transfusao;
+	private TipoStatusEnum prematuro;
+	private String motivoAmostraInvalida;
 	private Profissional profissionalCadastrante;
 	private Date dataCadastro;
 	private Date dataPku;
 	private Date dataHb;
 	private Date dataTsh;
-	private String irt;
+	private Integer irt;
 	private String hemoglobinas;
 	private Integer tsh;
 	private Integer pku;
-	private String nomePosto;
+	private UnidadeSaude unidadeSaude;
 	private String telefone;
 	private Cidade cidade;
 	private String endereco;
@@ -72,6 +75,14 @@ public class TesteDoPezinho {
 		this.amostra = amostra;
 	}
 	
+	@Column(name = "cv_motivo_amostra_invalida")
+	public String getMotivoAmostraInvalida() {
+		return motivoAmostraInvalida;
+	}
+	public void setMotivoAmostraInvalida(String motivoAmostraInvalida) {
+		this.motivoAmostraInvalida = motivoAmostraInvalida;
+	}
+	
 	@Column(name = "cv_amostra_valida")
 	@Enumerated(EnumType.STRING)
 	public TipoStatusEnum getAmostraValida() {
@@ -79,6 +90,24 @@ public class TesteDoPezinho {
 	}
 	public void setAmostraValida(TipoStatusEnum amostraValida) {
 		this.amostraValida = amostraValida;
+	}
+	
+	@Column(name = "cv_transfusao")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusEnum getTransfusao() {
+		return transfusao;
+	}
+	public void setTransfusao(TipoStatusEnum transfusao) {
+		this.transfusao = transfusao;
+	}
+	
+	@Column(name = "cv_prematuro")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusEnum getPrematuro() {
+		return prematuro;
+	}
+	public void setPrematuro(TipoStatusEnum prematuro) {
+		this.prematuro = prematuro;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -126,11 +155,11 @@ public class TesteDoPezinho {
 		this.dataTsh = dataTsh;
 	}
 	
-	@Column(name = "cv_irt")
-	public String getIrt() {
+	@Column(name = "in_irt")
+	public Integer getIrt() {
 		return irt;
 	}
-	public void setIrt(String irt) {
+	public void setIrt(Integer irt) {
 		this.irt = irt;
 	}
 	
@@ -158,12 +187,12 @@ public class TesteDoPezinho {
 		this.pku = pku;
 	}
 	
-	@Column(name = "cv_nome_posto")
-	public String getNomePosto() {
-		return nomePosto;
+	@Column(name = "id_unidade_saude")
+	public UnidadeSaude getUnidadeSaude() {
+		return unidadeSaude;
 	}
-	public void setNomePosto(String nomePosto) {
-		this.nomePosto = nomePosto;
+	public void setUnidadeSaude(UnidadeSaude unidadeSaude) {
+		this.unidadeSaude = unidadeSaude;
 	}
 	
 	@Column(name = "cv_telefone")

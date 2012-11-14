@@ -59,7 +59,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.SqlExecutado"/>
         <mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinho"/>
         <mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinhoResultado"/>
-        <mapping class="br.com.ControleDispensacao.entidade.Exame"/>
+        <mapping class="br.com.ControleDispensacao.entidade.TipoExame"/>
         
     </session-factory>
 </hibernate-configuration>
