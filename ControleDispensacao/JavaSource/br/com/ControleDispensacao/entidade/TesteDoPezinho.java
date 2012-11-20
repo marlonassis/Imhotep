@@ -51,7 +51,7 @@ public class TesteDoPezinho {
 	private String nome;
 	private String tipo;
 	private Integer numeroExame;
-	private String lote;
+	private Long lote;
 	private Date dataColeta;
 	private Date dataResultado;
 	private Integer numeroAmostra;
@@ -296,11 +296,11 @@ public class TesteDoPezinho {
 		this.numeroExame = numeroExame;
 	}
 	
-	@Column(name = "cv_lote")
-	public String getLote() {
+	@Column(name = "in_lote")
+	public Long getLote() {
 		return lote;
 	}
-	public void setLote(String lote) {
+	public void setLote(Long lote) {
 		this.lote = lote;
 	}
 	
