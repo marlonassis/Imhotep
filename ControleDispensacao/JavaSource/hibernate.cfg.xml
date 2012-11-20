@@ -60,6 +60,7 @@
         <mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinho"/>
         <mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinhoResultado"/>
         <mapping class="br.com.ControleDispensacao.entidade.TipoExame"/>
+        <mapping class="br.com.ControleDispensacao.entidade.UnidadeSaude"/>
         
     </session-factory>
 </hibernate-configuration>

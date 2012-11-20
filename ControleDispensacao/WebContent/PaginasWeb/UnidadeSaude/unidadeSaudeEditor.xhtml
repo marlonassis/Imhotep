@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<h:panelGrid id="unidadeSaudePanelGrid"
+				 columns="3" 
+				 width="100%" >
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="estabelecimento" value="Nome:"  /><br />
+			<p:inputText id="estabelecimento" 
+						 value="#{unidadeSaudeHome.instancia.estabelecimento}" 
+						 title="Informe o nome da unidade" 
+						 required="true"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="endereco" value="Endereço:"  /><br />
+			<p:inputText id="endereco" 
+						 value="#{unidadeSaudeHome.instancia.endereco}"
+						 required="true" 
+						 title="Informe descrição do hospital" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="bairro" value="Bairro:"  /><br />
+			<p:inputText id="bairro" 
+						 value="#{unidadeSaudeHome.instancia.bairro}"
+						 required="true" 
+						 title="Informe o nome do bairro da unidade" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="telefone" value="Telefone:"  /><br />
+			<p:inputMask id="telefone"
+						 required="true"
+						 mask="(99)9999-9999"
+						 value="#{unidadeSaudeHome.instancia.telefone}"
+						 title="Informe o telefone do paciente"
+						 converter="telefoneConversor"/>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="tipoUnidade" value="Tipo da Unidade:"  /><br />
+			<p:selectOneMenu id="metodo"
+							 required="true" 
+							 value="#{unidadeSaudeHome.instancia.tipoUnidade}"
+							 effect="fade">
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="#{null}" /> 
+	            <f:selectItems value="#{itensPadrao.tipoUnidadeSaudeEnumItens}" />
+	        </p:selectOneMenu>
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;" >
+			<h:outputLabel for="cidade" value="Cidade:"  /><br />
+	  		<p:autoComplete id="cidade" 
+	  						minQueryLength="4"
+	  						value="#{unidadeSaudeHome.instancia.cidade}"
+	  						forceSelection="true"
+							completeMethod="#{cidadeHome.getListaCidadeAutoComplete}" 
+							var="cidade"
+							title="Informe a cidade à qual a unidade está localizada"
+							itemLabel="#{cidade.nomeCidadeEstado}" 
+							itemValue="#{cidade}"
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões" 
+							style="padding-top:8px"/>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+</ui:composition>

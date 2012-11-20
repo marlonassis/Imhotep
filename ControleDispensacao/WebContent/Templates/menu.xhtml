@@ -81,6 +81,10 @@
 			
 			<p:menuitem value="Unidade do Material" url="/PaginasWeb/Material/UnidadeMaterial/unidadeMaterial.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade do Material')}" />
+			
+			<p:menuitem value="Unidade de Saúde" url="/PaginasWeb/UnidadeSaude/unidadeSaude.jsf" 
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade de Saúde')}" />
+		
 		</p:submenu>
 		
 		<p:submenu label="Chamado"
@@ -157,6 +161,8 @@
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque')}" />
 			<p:menuitem value="Estoque por Data de Vencimento" url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.jsf" 
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
+			<p:menuitem value="Quantitativo do Pezinho" url="/PaginasWeb/Relatorios/RelatorioQuantitativoPezinho/relatorioQuantitativoPezinho.jsf" 
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Quantitativo do Pezinho')}" />
 		</p:submenu>
 		
 		<p:submenu label="Serviço Social" 

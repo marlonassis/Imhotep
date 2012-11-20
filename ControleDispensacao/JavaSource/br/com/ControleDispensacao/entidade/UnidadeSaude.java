@@ -21,14 +21,14 @@ public class UnidadeSaude {
 	private String estabelecimento;
 	private String endereco;
 	private String bairro;
-	private Integer telefone;
+	private Long telefone;
 	private TipoUnidadeSaudeEnum tipoUnidade;
 	private Cidade cidade;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_unidade_saude_id_unidade_saude_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
-	@Column(name = "tb_unidade_saude", unique = true, nullable = false)
+	@Column(name = "id_unidade_saude", unique = true, nullable = false)
 	public int getIdUnidadeSaude() {
 		return this.idUnidadeSaude;
 	}
@@ -37,7 +37,7 @@ public class UnidadeSaude {
 		this.idUnidadeSaude = idUnidadeSaude;
 	}
 	
-	@Column(name = "tp_via_administracao_medicamento")
+	@Column(name = "cv_tipo_unidade")
 	@Enumerated(EnumType.STRING)
 	public TipoUnidadeSaudeEnum getTipoUnidade() {
 		return tipoUnidade;
@@ -81,10 +81,10 @@ public class UnidadeSaude {
 	}
 	
 	@Column(name = "in_telefone")
-	public Integer getTelefone() {
+	public Long getTelefone() {
 		return telefone;
 	}
-	public void setTelefone(Integer telefone) {
+	public void setTelefone(Long telefone) {
 		this.telefone = telefone;
 	}
 	

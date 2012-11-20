@@ -187,7 +187,8 @@ public class TesteDoPezinho {
 		this.pku = pku;
 	}
 	
-	@Column(name = "id_unidade_saude")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_unidade_saude")
 	public UnidadeSaude getUnidadeSaude() {
 		return unidadeSaude;
 	}

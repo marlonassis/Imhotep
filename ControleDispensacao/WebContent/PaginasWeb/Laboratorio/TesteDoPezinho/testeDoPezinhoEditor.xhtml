@@ -153,12 +153,21 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="nomePosto" value="Nome do Posto:"  /><br />
-			<p:inputText id="nomePosto" 
-						 required="true"
-						 value="#{testeDoPezinhoHome.instancia.nomePosto}" 
-						 title="Informe o nome do posto" />
-		</h:panelGroup>
+			<font color="red" >*</font><h:outputLabel for="unidadeSaude" value="Unidade de Saúde:"  /><br />
+			<p:selectOneMenu id="unidadeSaude"
+							 converter="unidadeSaudeConversor"
+							 required="true"
+							 value="#{testeDoPezinhoHome.instancia.unidadeSaude}" 
+							 effect="fade" >
+				<f:selectItem itemLabel="Selecione..." 
+							  itemValue="" /> 
+	            <f:selectItems value="#{unidadeSaudeConsulta.list}" 
+	            			   var="unidadeSaude" 
+	            			   itemLabel="#{unidadeSaude.estabelecimento}" 
+	            			   itemValue="#{unidadeSaude}"/>  
+	        </p:selectOneMenu>
+        </h:panelGroup>
+		
 		
 		<h:panelGroup>
 			<font color="red" >*</font><h:outputLabel for="prematuro" value="Nasceu Prematura?"  /><br />
@@ -176,16 +185,6 @@
 							  required="true"
 							  value="#{testeDoPezinhoHome.instancia.transfusao}" 
 							  title="Informe se a criança recebeu transfusão de sangue" >
-				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
-			</p:selectOneRadio>
-		</h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="amostraValida" value="Amostra Válida?"  /><br />
-			<p:selectOneRadio id="amostraValida"
-							  required="true"
-							  value="#{testeDoPezinhoHome.instancia.amostraValida}" 
-							  title="Informe se a amostra está adequada para o exame" >
 				<f:selectItems value="#{itensPadrao.statusEnumItens}"/>
 			</p:selectOneRadio>
 		</h:panelGroup>
