@@ -20,7 +20,9 @@
 						<ui:include src="consultaPrescricaoVisualizador.xhtml"/>
 						<p:commandButton value="Limpar"
 										 update="padraoTabView:consultaPrescricaoForm" 
-										 action="#{prescricaoHome.limparPrescricaoVizualizacao()}"/> 
+										 action="#{prescricaoHome.limparPrescricaoVizualizacao()}"/><br/> 
+						<p:commandButton value="Imprimir prescrição" 
+										 onclick="window.open('prescricaoImpressao.jsf')" />
 				</p:fieldset>
             </h:form>
 			

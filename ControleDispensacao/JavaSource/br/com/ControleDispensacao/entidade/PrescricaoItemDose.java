@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,18 +15,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.ControleDispensacao.enums.TipoViaAdministracaoMedicamentoEnum;
-
 @Entity
 @Table(name = "tb_prescricao_item_dose")
 public class PrescricaoItemDose {
 	private int idPrescricaoItemDose;
 	private PrescricaoItem prescricaoItem;
 	private Integer periodo;
-	private Integer quantidade;
 	private Date dataDose;
-	private TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento;
-	private String outraVia;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_dose_id_prescricao_item_dose_seq")
 	@Id
@@ -57,14 +50,6 @@ public class PrescricaoItemDose {
 	public void setPeriodo(Integer periodo) {
 		this.periodo = periodo;
 	}
-
-	@Column(name = "in_quantidade")
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_dose")
@@ -76,27 +61,9 @@ public class PrescricaoItemDose {
 		this.dataDose = dataDose;
 	}
 	
-	@Column(name = "tp_via_administracao_medicamento")
-	@Enumerated(EnumType.STRING)
-	public TipoViaAdministracaoMedicamentoEnum getTipoViaAdministracaoMedicamento() {
-		return tipoViaAdministracaoMedicamento;
-	}
-	public void setTipoViaAdministracaoMedicamento(TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento) {
-		this.tipoViaAdministracaoMedicamento = tipoViaAdministracaoMedicamento;
-	}
-	
-	@Column(name = "cv_outra_via")
-	public String getOutraVia() {
-		return outraVia;
-	}
-	public void setOutraVia(String outraVia) {
-		this.outraVia = outraVia;
-	}
-	
 	@Transient
 	public String getNumeroReferencia(){
 		String referencia = String.valueOf(periodo).concat("-");
-		referencia.concat(String.valueOf(quantidade)).concat("-");
 		referencia.concat(String.valueOf(dataDose.getTime()));
 		return referencia;
 	}

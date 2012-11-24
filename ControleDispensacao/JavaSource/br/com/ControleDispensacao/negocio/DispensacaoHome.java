@@ -306,7 +306,7 @@ public class DispensacaoHome extends PadraoHome<PrescricaoItem> {
 		if(prescricaoItens != null){
 			Integer total = 0;
 			for(PrescricaoItemDose pid : prescricaoItens){
-				total += pid.getQuantidade();
+//				total += pid.getQuantidade();
 			}
 			return String.valueOf(total);
 		}

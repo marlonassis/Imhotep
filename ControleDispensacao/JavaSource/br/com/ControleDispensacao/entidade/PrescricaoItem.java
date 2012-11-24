@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
+import br.com.ControleDispensacao.enums.TipoViaAdministracaoMedicamentoEnum;
 
 @Entity
 @Table(name = "tb_prescricao_item")
@@ -31,6 +32,9 @@ public class PrescricaoItem {
 	private TipoStatusEnum dispensado;
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI;
 	private TipoStatusEnum status;
+	private TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento;
+	private String outraVia;
+	private String quantidadePorDose;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -127,6 +131,43 @@ public class PrescricaoItem {
 	}
 	public void setStatus(TipoStatusEnum status) {
 		this.status = status;
+	}
+	
+
+	@Column(name = "tp_via_administracao_medicamento")
+	@Enumerated(EnumType.STRING)
+	public TipoViaAdministracaoMedicamentoEnum getTipoViaAdministracaoMedicamento() {
+		return tipoViaAdministracaoMedicamento;
+	}
+	public void setTipoViaAdministracaoMedicamento(TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento) {
+		this.tipoViaAdministracaoMedicamento = tipoViaAdministracaoMedicamento;
+	}
+	
+	@Column(name = "cv_outra_via")
+	public String getOutraVia() {
+		return outraVia;
+	}
+	public void setOutraVia(String outraVia) {
+		this.outraVia = outraVia;
+	}
+	
+
+	@Column(name = "cv_quantidade_por_dose")
+	public String getQuantidadePorDose() {
+		return quantidadePorDose;
+	}
+	public void setQuantidadePorDose(String quantidadePorDose) {
+		this.quantidadePorDose = quantidadePorDose;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if(!(obj instanceof PrescricaoItem))
+			return false;
+		
+		return ((PrescricaoItem)obj).getIdPrescricaoItem() == this.idPrescricaoItem;
 	}
 	
 	@Override

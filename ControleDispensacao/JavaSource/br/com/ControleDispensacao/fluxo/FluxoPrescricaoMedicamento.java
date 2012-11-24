@@ -100,12 +100,12 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 			return true;
 		}
 		
-		if(dose.getTipoViaAdministracaoMedicamento() == null){
+		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() == null){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o tipo da via que o medicamento deve ser adminsitrado.", ""));
 			return true;
 		}
 		
-		if(dose.getTipoViaAdministracaoMedicamento() != null && dose.getTipoViaAdministracaoMedicamento().equals(TipoViaAdministracaoMedicamentoEnum.OT) && dose.getOutraVia() == null){
+		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() != null && dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento().equals(TipoViaAdministracaoMedicamentoEnum.OT) && dose.getPrescricaoItem().getOutraVia() == null){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a outra via de administração do medicamento.", ""));
 			return true;
 		}

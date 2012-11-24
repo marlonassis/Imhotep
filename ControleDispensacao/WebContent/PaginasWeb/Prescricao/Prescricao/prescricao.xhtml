@@ -127,7 +127,7 @@
 								<h:panelGroup >
 									<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento" value="Quantidade do medicamento por dose:"  /><br />
 									<p:inputText id="quantidadeMedicamento"
-											  	 value="#{prescricaoHome.dose.quantidadePorDose}"
+											  	 value="#{prescricaoHome.dose.prescricaoItem.quantidadePorDose}"
 											  	 onkeyup="apenasNumero(this);"
 											  	 title="Quantidade a ser ministrado ao paciente" />
 								</h:panelGroup>
@@ -149,7 +149,7 @@
 								
 								<h:panelGroup >
 									<font color="red" >*</font><h:outputLabel for="via" value="Via de administração:"  /><br />
-									<p:selectOneMenu value="#{prescricaoHome.dose.tipoViaAdministracaoMedicamento}" 
+									<p:selectOneMenu value="#{prescricaoHome.dose.prescricaoItem.tipoViaAdministracaoMedicamento}" 
 													 effect="fade" >
 										<p:ajax event="change" update="padraoTabView:outraViaPanelGroup" />
 										<f:selectItem itemLabel="Selecione..." 
@@ -159,10 +159,10 @@
 								</h:panelGroup>
 								
 								<h:panelGroup id="outraViaPanelGroup" >
-									<h:panelGroup rendered="#{prescricaoHome.dose.tipoViaAdministracaoMedicamento == 'OT'}" >
+									<h:panelGroup rendered="#{prescricaoHome.dose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}" >
 										<font color="red" >*</font><h:outputLabel for="outraVia" value="Outra via:"  /><br />
 										<p:inputText id="outraVia"
-												  	 value="#{prescricaoHome.dose.outraVia}"
+												  	 value="#{prescricaoHome.dose.prescricaoItem.outraVia}"
 												  	 title="Outra via" />
 									</h:panelGroup>
 								</h:panelGroup>
@@ -199,14 +199,14 @@
 										                    </h:panelGroup>
 										                    <h:panelGroup>
 										                    	<h:outputText value="Quantidade: " />
-										                    	<h:outputText value="#{itemDose.quantidade}" />
+										                    	<h:outputText value="#{itemDose.prescricaoItem.quantidadePorDose}" />
 										                    </h:panelGroup>
 										                    <h:panelGroup>
 										                    	<h:outputText value="Via: " />
-										                    	<h:outputText value="#{itemDose.tipoViaAdministracaoMedicamento.label}" 
-										                    				  rendered="#{itemDose.tipoViaAdministracaoMedicamento != 'OT'}" />
+										                    	<h:outputText value="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento.label}" 
+										                    				  rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento != 'OT'}" />
 										                    	<h:outputText value="#{itemDose.outraVia}" 
-										                    				  rendered="#{itemDose.tipoViaAdministracaoMedicamento == 'OT'}" />
+										                    				  rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}" />
 										                    </h:panelGroup>
 										                    <h:panelGroup>
 											                    <p:commandLink  action="#{prescricaoHome.removePrescricaoItemDose(itemDose)}"

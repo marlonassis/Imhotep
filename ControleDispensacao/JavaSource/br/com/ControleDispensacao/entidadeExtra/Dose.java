@@ -11,8 +11,6 @@ public class Dose {
 	private Integer intervaloEntreDoses;
 	private Integer quantidadePorDose;
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
-	private TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento;
-	private String outraVia;
 	
 	public Date getDataInicio() {
 		return dataInicio;
@@ -43,17 +41,5 @@ public class Dose {
 	}
 	public void setPrescricaoItem(PrescricaoItem prescricaoItem) {
 		this.prescricaoItem = prescricaoItem;
-	}
-	public TipoViaAdministracaoMedicamentoEnum getTipoViaAdministracaoMedicamento() {
-		return tipoViaAdministracaoMedicamento;
-	}
-	public void setTipoViaAdministracaoMedicamento(TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento) {
-		this.tipoViaAdministracaoMedicamento = tipoViaAdministracaoMedicamento;
-	}
-	public String getOutraVia() {
-		return outraVia;
-	}
-	public void setOutraVia(String outraVia) {
-		this.outraVia = outraVia;
 	}
 }

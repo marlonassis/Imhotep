@@ -6,8 +6,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -22,6 +25,16 @@ import javax.servlet.http.HttpSession;
 @ManagedBean(name="util")
 @RequestScoped
 public class Utilities{
+	
+	public String dataHoraFormatada(Date data, String pattern){
+		if(data !=  null)
+			return new SimpleDateFormat(pattern).format(data);
+		return null;		
+	}
+	
+	public List converterSetList(Set sets){
+		return new ArrayList(sets);
+	}
 	
 	public static float getDifDia(java.util.Date dtMenor, java.util.Date dtMaior){  
         return (dtMaior.getTime() - dtMenor.getTime()) / (1000*60*60*24);

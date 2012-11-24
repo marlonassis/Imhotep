@@ -2,6 +2,7 @@ package br.com.ControleDispensacao.entidade;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class Prescricao {
 	private TipoStatusEnum dispensavel;
 	private TipoStatusEnum dispensado;
 	private List<PrescricaoItem> prescricaoItens;
+	private Set<CuidadosPrescricao> cuidadosPrescricao;
 	private Date dataDipensacao;
 	private Profissional profissionalDispensante;
 	private Profissional profissionalConclusao;
@@ -148,6 +150,14 @@ public class Prescricao {
 	}
 	public void setPrescricaoItens(List<PrescricaoItem> prescricaoItens) {
 		this.prescricaoItens = prescricaoItens;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "prescricao")
+	public Set<CuidadosPrescricao> getCuidadosPrescricao() {
+		return cuidadosPrescricao;
+	}
+	public void setCuidadosPrescricao(Set<CuidadosPrescricao> cuidadosPrescricao) {
+		this.cuidadosPrescricao = cuidadosPrescricao;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
