@@ -242,12 +242,21 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 	
+	public void adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose){
+		getDose().getPrescricaoItem().setPrescricao(prescricaoSCHI);
+		gravarPrescricaoMedicamento(dose);
+	}
+	
 	public void adicionarItemFarmacoPrescricao(){
+		gravarPrescricaoMedicamento(getDose());
+	}
+
+	private void gravarPrescricaoMedicamento(Dose doseFluxo) {
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
-		if(fpm.inserirItem(getDose())){
+		if(fpm.inserirItem(doseFluxo)){
 			carregaDoseFluxo();
 			carregaItensFarmacologicosFluxo();
-			setDose(new Dose());
+			doseFluxo = new Dose();
 		}
 	}
 	

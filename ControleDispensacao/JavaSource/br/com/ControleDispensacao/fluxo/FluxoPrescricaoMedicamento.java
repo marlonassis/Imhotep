@@ -114,12 +114,29 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	}
 	
 	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){
-			List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(prescricaoAtual);
-			if(pidList != null){
-				Collections.sort(pidList, new DoseDataComparador());
-				return pidList;
-			}
-			return null;
+			return buscaDoses(prescricaoAtual);
+	}
+
+	public List<PrescricaoItemDose> getPrescricaoItemDoseSCHIList(PrescricaoItem prescricaoItem){
+		return buscaDosesPrescricaoItem(prescricaoItem);
+	}
+	
+	private List<PrescricaoItemDose> buscaDosesPrescricaoItem(PrescricaoItem prescricaoItem) {
+		List<PrescricaoItemDose> pidList = getListaDosePrescricaoItem(prescricaoItem);
+		if(pidList != null){
+			Collections.sort(pidList, new DoseDataComparador());
+			return pidList;
+		}
+		return null;
+	}
+	
+	private List<PrescricaoItemDose> buscaDoses(Prescricao prescricao) {
+		List<PrescricaoItemDose> pidList = getListaPrescricaoItemDose(prescricao);
+		if(pidList != null){
+			Collections.sort(pidList, new DoseDataComparador());
+			return pidList;
+		}
+		return null;
 	}
 	
 	private List<PrescricaoItemDose> getListaPrescricaoItemDose(Prescricao prescricao) {
@@ -132,4 +149,27 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
+	private List<PrescricaoItemDose> getListaDosePrescricaoItem(PrescricaoItem prescricaoItem) {
+		if(prescricaoItem != null){
+			ConsultaGeral<PrescricaoItemDose> cg = new ConsultaGeral<PrescricaoItemDose>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricaoItem", prescricaoItem.getIdPrescricaoItem());
+			return (List<PrescricaoItemDose>) cg.consulta(new StringBuilder("select o from PrescricaoItemDose o where o.prescricaoItem.idPrescricaoItem = :idPrescricaoItem"), hm);
+		}
+		return null;
+	}
+	
+	public Long quantidadeDosesPrescricaoItem(PrescricaoItem prescricaoItem){
+		return getQuantidadeDosePrescricaoItem(prescricaoItem);
+	}
+	
+	private Long getQuantidadeDosePrescricaoItem(PrescricaoItem prescricaoItem) {
+		if(prescricaoItem != null){
+			ConsultaGeral<Long> cg = new ConsultaGeral<Long>();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idPrescricaoItem", prescricaoItem.getIdPrescricaoItem());
+			return cg.consultaUnica(new StringBuilder("select count(o.idPrescricaoItemDose) from PrescricaoItemDose o where o.prescricaoItem.idPrescricaoItem = :idPrescricaoItem"), hm);
+		}
+		return null;
+	}
 }

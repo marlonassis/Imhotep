@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -56,6 +57,8 @@ import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 		private Paciente paciente;
 		private String leito;
 		private Float massa;
+		
+		private PrescricaoItem prescricaoItem;
 		
 		@SequenceGenerator(name = "generator", sequenceName = "public.tb_controle_medicacao_restrit_id_controle_medicacao_restrit_seq")
 		@Id
@@ -284,6 +287,14 @@ import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 		}
 		public void setMassa(Float peso) {
 			this.massa = peso;
+		}
+		
+		@OneToOne(mappedBy = "controleMedicacaoRestritoSCHI", targetEntity = PrescricaoItem.class, fetch = FetchType.EAGER)
+		public PrescricaoItem getPrescricaoItem() {
+			return prescricaoItem;
+		}
+		public void setPrescricaoItem(PrescricaoItem prescricaoItem) {
+			this.prescricaoItem = prescricaoItem;
 		}
 		
 		@Override

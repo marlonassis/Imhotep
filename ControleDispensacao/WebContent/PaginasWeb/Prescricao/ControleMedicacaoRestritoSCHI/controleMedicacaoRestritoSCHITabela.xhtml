@@ -58,7 +58,7 @@
 			<p:commandLink update="padraoTabView:controleMedicacaoRestritoSCHIForm" 
 						   title="Editar" 
 						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 			
@@ -68,7 +68,7 @@
 							title="Apagar"
 							rendered="false"
 							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.carregarInstancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{controleMedicacaoRestritoSCHIHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

@@ -46,14 +46,38 @@
 		<h:panelGroup>
 			<h:outputLabel value="Medicamentos:" 
 						   style="font-weight: bold;" /><br />
-			<ui:repeat value="#{controleMedicacaoRestritoSCHIHome.itensLiberacao}"
-					   var="itemLiberacao">
-				<p:commandLink update=""
-							   onclick="dlgDose.show();" >
-					<h:outputText value="#{itemLiberacao.material.descricao}"/>
-					<f:setPropertyActionListener value="#{itemLiberacao}" target="#{controleMedicacaoRestritoSCHIHome.itemEdicao}" />
-				</p:commandLink>
-			</ui:repeat>
+			
+			<p:dataTable id="itensLiberacaoTable"
+						 var="itemLiberacao" 
+			 			 value="#{controleMedicacaoRestritoSCHIHome.itensLiberacao}">  
+		        <p:column headerText="Medicamento">  
+		            <h:outputText value="#{itemLiberacao.material.descricao}" />  
+		        </p:column>
+		        
+		  		<p:column headerText="Quantidade de Doses">  
+		            <h:outputText value="#{controleMedicacaoRestritoSCHIHome.quantidadeDosesPrescricaoItem(itemLiberacao)}" /> dose(s) 
+		        </p:column>
+		        
+		        <p:column style="width:60px; text-align: center;" 
+		        		  rendered="#{controleMedicacaoRestritoSCHIHome.instancia.profissionalInfectologista == null}" >
+		            <p:commandLink update="padraoTabView:dosePanel"
+							   	   onclick="dlgItem.show();" >
+						<h:graphicImage value="/Imagens/pill16.png" />
+						<f:setPropertyActionListener value="#{itemLiberacao}" target="#{controleMedicacaoRestritoSCHIHome.carregarPrescricaoItemEdicao}" />
+					</p:commandLink>
+					#{'  '}
+					<p:commandLink  action="#{controleMedicacaoRestritoSCHIHome.apagarItemPrescricao()}"
+									onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+									update="padraoTabView:itensLiberacaoTable" 
+									title="Apagar"
+									style="padding-right:10px;" >
+						<f:setPropertyActionListener value="#{itemLiberacao}" target="#{controleMedicacaoRestritoSCHIHome.itemEdicao}" />
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+				</p:column>
+		    </p:dataTable>  
+			
+			
 		</h:panelGroup>
 	</h:panelGrid>
 	 
@@ -288,9 +312,5 @@
 	</h:panelGrid>
 	
 	<p:separator style="height:8px" />
-	
-	<p:dialog id="alteracaoDoseModalDialog" header="Modal Dialog" widgetVar="dlgDose" modal="true" height="100"> 
-		<h:outputText value="This is a Modal Dialog." />  
-	</p:dialog>
 	
 </ui:composition>
