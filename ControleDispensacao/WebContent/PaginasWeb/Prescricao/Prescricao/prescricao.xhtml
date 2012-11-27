@@ -127,7 +127,7 @@
 								<h:panelGroup >
 									<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento" value="Quantidade do medicamento por dose:"  /><br />
 									<p:inputText id="quantidadeMedicamento"
-											  	 value="#{prescricaoHome.dose.prescricaoItem.quantidadePorDose}"
+											  	 value="#{prescricaoHome.dose.quantidadePorDose}"
 											  	 onkeyup="apenasNumero(this);"
 											  	 title="Quantidade a ser ministrado ao paciente" />
 								</h:panelGroup>
@@ -199,7 +199,7 @@
 										                    </h:panelGroup>
 										                    <h:panelGroup>
 										                    	<h:outputText value="Quantidade: " />
-										                    	<h:outputText value="#{itemDose.prescricaoItem.quantidadePorDose}" />
+										                    	<h:outputText value="#{itemDose.quantidade}" />
 										                    </h:panelGroup>
 										                    <h:panelGroup>
 										                    	<h:outputText value="Via: " />

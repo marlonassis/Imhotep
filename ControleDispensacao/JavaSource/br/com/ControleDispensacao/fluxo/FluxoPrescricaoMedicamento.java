@@ -53,17 +53,32 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	public boolean inserirItem(Dose dose){
 			if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
 				dose.getPrescricaoItem().setPrescricao(prescricaoAtual);
-				if(!new ControlePrescricaoItem().gravaPrescricaoItem(dose.getPrescricaoItem())){
-					super.mensagem("Ocorrreu erro ao gravar a prescrição item.", "", FacesMessage.SEVERITY_ERROR);
-					return false;
-				}
-				if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(dose)){
-					super.mensagem("Ocorrreu erro ao gravar a dose.", "", FacesMessage.SEVERITY_ERROR);
-					return false;
+				if(gravaPrescricaoItem(dose.getPrescricaoItem())){
+					gravaDose(dose);
 				}
 				return true;
 			}
 			return false;
+	}
+	
+	public boolean inserirDose(Dose dose){
+		return gravaDose(dose);
+	}
+	
+	private boolean gravaDose(Dose dose){
+		if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(dose)){
+			super.mensagem("Ocorrreu erro ao gravar a dose.", "", FacesMessage.SEVERITY_ERROR);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean gravaPrescricaoItem(PrescricaoItem pi){
+		if(!new ControlePrescricaoItem().gravaPrescricaoItem(pi)){
+			super.mensagem("Ocorrreu erro ao gravar a prescrição item.", "", FacesMessage.SEVERITY_ERROR);
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean liberaDose(Material material, Dose dose) {

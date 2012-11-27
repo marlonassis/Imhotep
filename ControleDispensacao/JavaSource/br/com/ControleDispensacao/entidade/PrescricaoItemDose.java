@@ -21,6 +21,7 @@ public class PrescricaoItemDose {
 	private int idPrescricaoItemDose;
 	private PrescricaoItem prescricaoItem;
 	private Integer periodo;
+	private Integer quantidade;
 	private Date dataDose;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_dose_id_prescricao_item_dose_seq")
@@ -59,6 +60,14 @@ public class PrescricaoItemDose {
 	
 	public void setDataDose(Date dataDose) {
 		this.dataDose = dataDose;
+	}
+	
+	@Column(name = "in_quantidade")
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 	
 	@Transient

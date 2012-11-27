@@ -59,7 +59,7 @@
 				<p:dialog id="alteracaoDoseModalDialog" 
 						  header="Modal Dialog" 
 						  widgetVar="dlgItem" 
-						  modal="true" 
+						  modal="true"
 						  height="600" 
 						  resizable="false"> 
 					<p:panel id="dosePanel"
@@ -109,7 +109,7 @@
 							<h:panelGroup >
 								<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento2" value="Quantidade do medicamento por dose:"  /><br />
 								<p:inputText id="quantidadeMedicamento2"
-										  	 value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.quantidadePorDose}"
+										  	 value="#{controleMedicacaoRestritoSCHIHome.dose.quantidadePorDose}"
 										  	 onkeyup="apenasNumero(this);"
 										  	 title="Quantidade a ser ministrado ao paciente" />
 							</h:panelGroup>
@@ -153,7 +153,7 @@
 							<h:panelGroup>
 								<p:commandButton action="#{controleMedicacaoRestritoSCHIHome.adicionaPrescricaoItem()}"
 												 value="Adicionar dose" 
-												 update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid padraoTabView:itensGrid padraoTabView:mensagemGlobal" />
+												 update="padraoTabView:dosePanel padraoTabView:controleMedicacaoRestritoSCHIPanelGrid1" />
 							</h:panelGroup>
 						</h:panelGrid>
 						<p:separator id="limiteGridSeparator1" style="height:8px" /> 
@@ -182,7 +182,7 @@
 									                    </h:panelGroup>
 									                    <h:panelGroup>
 									                    	<h:outputText value="Quantidade: " />
-									                    	<h:outputText value="#{itemDose.prescricaoItem.quantidadePorDose}" />
+									                    	<h:outputText value="#{itemDose.quantidade}" />
 									                    </h:panelGroup>
 									                    <h:panelGroup>
 									                    	<h:outputText value="Via: " />

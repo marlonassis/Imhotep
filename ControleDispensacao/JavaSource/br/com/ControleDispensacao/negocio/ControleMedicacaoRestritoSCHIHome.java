@@ -43,7 +43,9 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 	
 	public void adicionaPrescricaoItem(){
 		Prescricao prescricao = getInstancia().getPrescricaoItem().getPrescricao();
-		new PrescricaoHome().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, getDose());
+		if(new PrescricaoHome().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, getDose())){
+			setDose(new Dose());
+		}
 	}
 	
 	public ControleMedicacaoRestritoSCHIHome(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {

@@ -50,6 +50,10 @@
 						  rendered="#{linha.tipoPrescricaoInadequada != null}"/>
 			<h:outputText value="Pendente"
 						  rendered="#{linha.tipoPrescricaoInadequada == null and linha.profissionalInfectologista == null}"/>
+			<h:graphicImage value="/Imagens/warning16.png"
+							title="Solicitação Pendente" 
+							style="padding-top:8px"
+							rendered="#{linha.tipoPrescricaoInadequada == null and linha.profissionalInfectologista == null}" />
 			<h:outputText value="Liberada"
 						  rendered="#{linha.tipoPrescricaoInadequada == null and linha.profissionalInfectologista != null}"/>
 		</p:column>

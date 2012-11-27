@@ -3,14 +3,13 @@ package br.com.ControleDispensacao.entidadeExtra;
 import java.util.Date;
 
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
-import br.com.ControleDispensacao.enums.TipoViaAdministracaoMedicamentoEnum;
 
 public class Dose {
 	private Date dataInicio;
 	private Integer quantidadeDoses;
 	private Integer intervaloEntreDoses;
-	private Integer quantidadePorDose;
 	private PrescricaoItem prescricaoItem = new PrescricaoItem();
+	private Integer quantidadePorDose;
 	
 	public Date getDataInicio() {
 		return dataInicio;

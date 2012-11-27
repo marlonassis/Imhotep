@@ -34,7 +34,6 @@ public class PrescricaoItem {
 	private TipoStatusEnum status;
 	private TipoViaAdministracaoMedicamentoEnum tipoViaAdministracaoMedicamento;
 	private String outraVia;
-	private String quantidadePorDose;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_item_id_prescricao_item_seq")
 	@Id
@@ -152,14 +151,6 @@ public class PrescricaoItem {
 	}
 	
 
-	@Column(name = "cv_quantidade_por_dose")
-	public String getQuantidadePorDose() {
-		return quantidadePorDose;
-	}
-	public void setQuantidadePorDose(String quantidadePorDose) {
-		this.quantidadePorDose = quantidadePorDose;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

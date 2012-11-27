@@ -46,7 +46,9 @@
 		<h:panelGroup>
 			<h:outputLabel value="Medicamentos:" 
 						   style="font-weight: bold;" /><br />
-			
+			<p:commandLink>
+				<h:graphicImage value="/Imagens/add.png" />Adicionar medicamento
+			</p:commandLink>
 			<p:dataTable id="itensLiberacaoTable"
 						 var="itemLiberacao" 
 			 			 value="#{controleMedicacaoRestritoSCHIHome.itensLiberacao}">  
