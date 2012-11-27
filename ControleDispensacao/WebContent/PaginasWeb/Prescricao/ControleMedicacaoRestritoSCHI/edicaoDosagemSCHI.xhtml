@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/Templates/templatePopUp.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabDosagem" title="Dosagem" >
+			<h:form id="doseForm" prependId="false" >
+				<p:growl/>
+				<h:panelGrid id="itemDosePanelGrid" 
+							 columns="2"
+							 width="100%"
+							 cellpadding="5px">
+					<h:panelGroup style="align:left;" >
+						<font color="red" >*</font><h:outputLabel for="material2" value="Material:"  />
+						<br />
+						<p:commandLink  value="Verifique o nome comercial aqui"
+										onclick="window.open('http://consultaremedios.com.br','_blank')" />
+						<h:graphicImage value="/Imagens/question32.png"
+										width="16px" 
+										height="16px" 
+										title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
+						<br />
+				  		<p:autoComplete id="material2" 
+				  						disabled="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.material != null}"
+				  						value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.material}"
+				  						minQueryLength="4"
+										completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
+										var="material"
+										forceSelection="true"
+										title="Informe o medicamento a ser prescrito"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel for="observacao2" value="Observação:"  /><br />
+						<p:inputTextarea id="observacao2"
+										 value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.observacao}"
+										 autoResize="false" 
+										 cols="30"/>
+					</h:panelGroup>
+					
+					<h:panelGroup >
+						<font color="red" >*</font><h:outputLabel for="quantidadeDoses2" value="Quantidade de doses diárias:"  /><br />
+						<p:inputText id="quantidadeDoses2"
+								  	 value="#{controleMedicacaoRestritoSCHIHome.dose.quantidadeDoses}"
+								  	 title="Período em horas" />
+					</h:panelGroup>
+					
+					<h:panelGroup >
+						<font color="red" >*</font><h:outputLabel for="quantidadeMedicamento2" value="Quantidade do medicamento por dose:"  /><br />
+						<p:inputText id="quantidadeMedicamento2"
+								  	 value="#{controleMedicacaoRestritoSCHIHome.dose.quantidadePorDose}"
+								  	 onkeyup="apenasNumero(this);"
+								  	 title="Quantidade a ser ministrado ao paciente" />
+					</h:panelGroup>
+					
+					<h:panelGroup >
+						<font color="red" >*</font><h:outputLabel for="intervaloDoses2" value="Intervalo entre as doses:"  /><br />
+						<p:inputText id="intervaloDoses2"
+								  	 value="#{controleMedicacaoRestritoSCHIHome.dose.intervaloEntreDoses}"
+								  	 title="Intervalo de uma dose para a outra" />h
+					</h:panelGroup>
+					
+					<h:panelGroup >
+						<font color="red" >*</font><h:outputLabel for="horaInicial2" value="Início da dosagem:"  /><br />
+						<p:calendar id="dataIncial2"
+									pattern="dd/MM/yyyy HH:mm"
+									locale="pt" 
+									value="#{controleMedicacaoRestritoSCHIHome.dose.dataInicio}" />
+					</h:panelGroup>
+					
+					<h:panelGroup >
+						<font color="red" >*</font><h:outputLabel for="via2" value="Via de administração:"  /><br />
+						<p:selectOneMenu id="via2"
+										 value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.tipoViaAdministracaoMedicamento}" 
+										 effect="fade" >
+							<p:ajax event="change" update="padraoTabView:outraViaPanelGroup" />
+							<f:selectItem itemLabel="Selecione..." 
+										  itemValue="#{null}" /> 
+				            <f:selectItems value="#{itensPadrao.tipoViaAdministracaoMedicamentoEnumItens}" />
+				        </p:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:panelGroup id="outraViaPanelGroup" >
+						<h:panelGroup rendered="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}" >
+							<font color="red" >*</font><h:outputLabel for="outraVia2" value="Outra via:"  /><br />
+							<p:inputText id="outraVia2"
+									  	 value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.outraVia}"
+									  	 title="Outra via" />
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:commandButton action="#{controleMedicacaoRestritoSCHIHome.adicionaDose()}"
+										 value="Adicionar dose" 
+										 oncomplete="window.opener.location.reload();"
+										 update="padraoTabView:doseForm" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<p:separator id="limiteGridSeparator1" style="height:8px" /> 
+				<table>
+					<tr>
+						<td valign="top" >
+							<p:panel header="Doses" 
+									 style="width:900px">
+								<p:dataGrid id="doseGrid"
+										var="itemDose" 
+										value="#{controleMedicacaoRestritoSCHIHome.prescricaoItemDoseList}" 
+										columns="3"
+								        paginator="false">  
+							        <p:column>
+							            <p:panel style="text-align:center">
+							                <h:panelGrid columns="1" style="width:100%">
+							                	<h:panelGroup>
+							                		<h:outputText value="Material: "/>
+							                    	<h:outputText value="#{itemDose.prescricaoItem.material.descricao}"/>
+							                    </h:panelGroup>  
+							                	<h:panelGroup>
+							                		<h:outputText value="Período: "/>
+							                    	<h:outputText value="#{itemDose.dataDose}" >
+							                    		<f:convertDateTime locale="pt,BR" dateStyle="long" pattern="dd/MM/yyyy HH:mm" />
+							                    	</h:outputText>
+							                    </h:panelGroup>
+							                    <h:panelGroup>
+							                    	<h:outputText value="Quantidade: " />
+							                    	<h:outputText value="#{itemDose.quantidade}" />
+							                    </h:panelGroup>
+							                    <h:panelGroup>
+							                    	<h:outputText value="Via: " />
+							                    	<h:outputText value="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento.label}" 
+							                    				  rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento != 'OT'}" />
+							                    	<h:outputText value="#{itemDose.outraVia}" 
+							                    				  rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}" />
+							                    </h:panelGroup>
+							                    <h:panelGroup>
+								                    <p:commandLink  action="#{controleMedicacaoRestritoSCHIHome.apagarDose(itemDose)}"
+																	update="padraoTabView:doseGrid" 
+																	title="Apagar"
+																	immediate="true" 
+																	style="padding-right:10px;" >
+														<h:graphicImage value="/Imagens/delete.png" />
+													</p:commandLink>
+												</h:panelGroup>
+							                </h:panelGrid>
+							            </p:panel>
+							        </p:column>
+								</p:dataGrid>
+							</p:panel>
+						</td>
+					</tr>
+				</table>
+			</h:form>
+		</p:tab>	
+	</ui:define>
+</ui:composition>

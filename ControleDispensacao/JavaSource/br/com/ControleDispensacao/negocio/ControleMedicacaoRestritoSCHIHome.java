@@ -41,11 +41,10 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 		}
 	}
 	
-	public void adicionaPrescricaoItem(){
+	public void adicionaDose(){
 		Prescricao prescricao = getInstancia().getPrescricaoItem().getPrescricao();
-		if(new PrescricaoHome().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, getDose())){
-			setDose(new Dose());
-		}
+		new PrescricaoHome().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, getDose());
+		carregaDose(getDose().getPrescricaoItem());
 	}
 	
 	public ControleMedicacaoRestritoSCHIHome(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
@@ -86,11 +85,27 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 		return new FluxoPrescricaoMedicamento().quantidadeDosesPrescricaoItem(prescricaoItem);
 	}
 	
+	public void apagarDose(PrescricaoItemDose dose){
+		new PrescricaoHome().removePrescricaoItemDose(dose);
+		carregaDose(dose.getPrescricaoItem());
+	}
+	
+	public void novaPrescricaoItem(){
+		setPrescricaoItemDoseList(new ArrayList<PrescricaoItemDose>());
+		setDose(new Dose());
+		setItemEdicao(new PrescricaoItem());
+	}
+	
 	public void setCarregarPrescricaoItemEdicao(PrescricaoItem prescricaoItem){
+		setDose(new Dose());
 		setItemEdicao(prescricaoItem);
-		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
-		setPrescricaoItemDoseList(fpm.getPrescricaoItemDoseSCHIList(getItemEdicao()));
 		getDose().setPrescricaoItem(prescricaoItem);
+		carregaDose(getItemEdicao());
+	}
+
+	private void carregaDose(PrescricaoItem prescricaoItem) {
+		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
+		setPrescricaoItemDoseList(fpm.getPrescricaoItemDoseSCHIList(prescricaoItem));
 	}
 	
 	public void setCarregarInstancia(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI){

@@ -46,7 +46,8 @@
 		<h:panelGroup>
 			<h:outputLabel value="Medicamentos:" 
 						   style="font-weight: bold;" /><br />
-			<p:commandLink>
+			<p:commandLink action="#{controleMedicacaoRestritoSCHIHome.novaPrescricaoItem}"
+						   oncomplete="window.open('edicaoDosagemSCHI.jsf')" >
 				<h:graphicImage value="/Imagens/add.png" />Adicionar medicamento
 			</p:commandLink>
 			<p:dataTable id="itensLiberacaoTable"
@@ -62,8 +63,8 @@
 		        
 		        <p:column style="width:60px; text-align: center;" 
 		        		  rendered="#{controleMedicacaoRestritoSCHIHome.instancia.profissionalInfectologista == null}" >
-		            <p:commandLink update="padraoTabView:dosePanel"
-							   	   onclick="dlgItem.show();" >
+					<p:commandLink update="padraoTabView:dosePanel"
+							   	   oncomplete="window.open('edicaoDosagemSCHI.jsf')" >
 						<h:graphicImage value="/Imagens/pill16.png" />
 						<f:setPropertyActionListener value="#{itemLiberacao}" target="#{controleMedicacaoRestritoSCHIHome.carregarPrescricaoItemEdicao}" />
 					</p:commandLink>

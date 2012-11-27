@@ -54,9 +54,8 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 			if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
 				dose.getPrescricaoItem().setPrescricao(prescricaoAtual);
 				if(gravaPrescricaoItem(dose.getPrescricaoItem())){
-					gravaDose(dose);
+					return gravaDose(dose);
 				}
-				return true;
 			}
 			return false;
 	}
