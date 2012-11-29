@@ -1,6 +1,7 @@
 package br.com.ControleDispensacao.entidade;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -58,7 +59,9 @@ import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 		private String leito;
 		private Float massa;
 		
-		private PrescricaoItem prescricaoItem;
+		private Prescricao prescricao;
+		
+		private List<PrescricaoItem> prescricaoItemList;
 		
 		@SequenceGenerator(name = "generator", sequenceName = "public.tb_controle_medicacao_restrit_id_controle_medicacao_restrit_seq")
 		@Id
@@ -289,12 +292,23 @@ import br.com.ControleDispensacao.enums.TipoSubIndicacaoTerapeuticaEnum;
 			this.massa = peso;
 		}
 		
-		@OneToOne(mappedBy = "controleMedicacaoRestritoSCHI", targetEntity = PrescricaoItem.class, fetch = FetchType.EAGER)
-		public PrescricaoItem getPrescricaoItem() {
-			return prescricaoItem;
+		@OneToMany(fetch = FetchType.LAZY, mappedBy = "controleMedicacaoRestritoSCHI", targetEntity = PrescricaoItem.class)
+		public List<PrescricaoItem> getPrescricaoItemList() {
+			return this.prescricaoItemList;
 		}
-		public void setPrescricaoItem(PrescricaoItem prescricaoItem) {
-			this.prescricaoItem = prescricaoItem;
+
+		public void setprescricaoItemList(List<PrescricaoItem> prescricaoItemList) {
+			this.prescricaoItemList = prescricaoItemList;
+		}
+		
+		@ManyToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "id_prescricao")
+		public Prescricao getPrescricao() {
+			return prescricao;
+		}
+
+		public void setPrescricao(Prescricao prescricao) {
+			this.prescricao = prescricao;
 		}
 		
 		@Override

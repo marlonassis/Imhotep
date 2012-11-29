@@ -107,6 +107,7 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	public void iniciarAnaliseLiberacao(){
 		if(formularioLiberacaoPreenchido()){
 			FluxoPrescricaoLiberacaoMedicamento fplm = new FluxoPrescricaoLiberacaoMedicamento();
+			getControleMedicacaoRestritoSCHI().setPrescricao(getPrescricaoAtual());
 			getControleMedicacaoRestritoSCHI().setPaciente(getPrescricaoAtual().getPaciente());
 			getControleMedicacaoRestritoSCHI().setMassa(getPrescricaoAtual().getMassa());
 			getControleMedicacaoRestritoSCHI().setLeito(getPrescricaoAtual().getLeito());
@@ -242,9 +243,13 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 		}
 	}
 	
-	public boolean adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose){
+	public boolean adicionarItemFarmacoPrescricaoDoseControleSCHI(Prescricao prescricaoSCHI, Dose dose){
 		getDose().getPrescricaoItem().setPrescricao(prescricaoSCHI);
 		return gravarDose(dose);
+	}
+	
+	public boolean adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose){
+		return gravarPrescricaoMedicamento(dose, prescricaoSCHI);
 	}
 	
 	private boolean gravarDose(Dose dose) {
@@ -253,16 +258,18 @@ public class PrescricaoHome extends PadraoHome<Prescricao>{
 	}
 	
 	public void adicionarItemFarmacoPrescricao(){
-		gravarPrescricaoMedicamento(getDose());
+		gravarPrescricaoMedicamento(getDose(), getPrescricaoAtual());
 	}
 
-	private void gravarPrescricaoMedicamento(Dose doseFluxo) {
+	private boolean gravarPrescricaoMedicamento(Dose doseFluxo, Prescricao prescricao) {
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
-		if(fpm.inserirItem(doseFluxo)){
+		if(fpm.inserirItem(doseFluxo, prescricao)){
 			carregaDoseFluxo();
 			carregaItensFarmacologicosFluxo();
 			doseFluxo = new Dose();
+			return true;
 		}
+		return false;
 	}
 	
 	public List<Material> itensContidosLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI){

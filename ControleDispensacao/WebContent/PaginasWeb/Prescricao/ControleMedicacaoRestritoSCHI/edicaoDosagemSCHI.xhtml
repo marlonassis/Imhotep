@@ -12,7 +12,6 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabDosagem" title="Dosagem" >
 			<h:form id="doseForm" prependId="false" >
-				<p:growl/>
 				<h:panelGrid id="itemDosePanelGrid" 
 							 columns="2"
 							 width="100%"
@@ -100,18 +99,20 @@
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<p:commandButton action="#{controleMedicacaoRestritoSCHIHome.adicionaDose()}"
+						<p:commandButton action="#{controleMedicacaoRestritoSCHIHome.gravaItem()}"
 										 value="Adicionar dose" 
 										 oncomplete="window.opener.location.reload();"
-										 update="padraoTabView:doseForm" />
+										 update="padraoTabView:dosePanel"/> 
 					</h:panelGroup>
 				</h:panelGrid>
 				<p:separator id="limiteGridSeparator1" style="height:8px" /> 
 				<table>
 					<tr>
 						<td valign="top" >
-							<p:panel header="Doses" 
+							<p:panel id="dosePanel"
+									 header="Doses" 
 									 style="width:900px">
+								<p:growl/>
 								<p:dataGrid id="doseGrid"
 										var="itemDose" 
 										value="#{controleMedicacaoRestritoSCHIHome.prescricaoItemDoseList}" 

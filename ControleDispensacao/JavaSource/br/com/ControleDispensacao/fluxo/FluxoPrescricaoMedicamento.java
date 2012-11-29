@@ -50,9 +50,9 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
-	public boolean inserirItem(Dose dose){
+	public boolean inserirItem(Dose dose, Prescricao prescricao){
 			if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
-				dose.getPrescricaoItem().setPrescricao(prescricaoAtual);
+				dose.getPrescricaoItem().setPrescricao(prescricao);
 				if(gravaPrescricaoItem(dose.getPrescricaoItem())){
 					return gravaDose(dose);
 				}
@@ -61,7 +61,10 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	}
 	
 	public boolean inserirDose(Dose dose){
-		return gravaDose(dose);
+		if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
+			return gravaDose(dose);
+		}
+		return false;
 	}
 	
 	private boolean gravaDose(Dose dose){

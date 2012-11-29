@@ -37,14 +37,25 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 	
 	public void apagarItemPrescricao(){
 		if(new PrescricaoItemHome(getItemEdicao(), false).apagar()){
-			carregarMedicamentosPendentes(getInstancia().getIdControleMedicacaoRestritoSCHI());
+			carregarMedicamentosPendentes(getInstancia());
 		}
 	}
 	
-	public void adicionaDose(){
-		Prescricao prescricao = getInstancia().getPrescricaoItem().getPrescricao();
-		new PrescricaoHome().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, getDose());
+	public void gravaItem(){
+		Prescricao prescricao = getInstancia().getPrescricao();
+		if(getDose().getPrescricaoItem().getIdPrescricaoItem() == 0){
+			adicionaPrescricaoItem(getDose(), prescricao);
+		}else{
+			new PrescricaoHome().adicionarItemFarmacoPrescricaoDoseControleSCHI(prescricao, getDose());
+		}
 		carregaDose(getDose().getPrescricaoItem());
+		carregarMedicamentosPendentes(getInstancia());
+	}
+	
+	public void adicionaPrescricaoItem(Dose dose, Prescricao prescricao){
+		dose.getPrescricaoItem().setControleMedicacaoRestritoSCHI(getInstancia());
+		new PrescricaoHome().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, dose);
+		carregaDose(dose.getPrescricaoItem());
 	}
 	
 	public ControleMedicacaoRestritoSCHIHome(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
@@ -110,13 +121,13 @@ public class ControleMedicacaoRestritoSCHIHome extends PadraoHome<ControleMedica
 	
 	public void setCarregarInstancia(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI){
 		setInstancia(controleMedicacaoRestritoSCHI);
-		carregarMedicamentosPendentes(controleMedicacaoRestritoSCHI.getIdControleMedicacaoRestritoSCHI());
+		carregarMedicamentosPendentes(controleMedicacaoRestritoSCHI);
 	}
 	
-	private void carregarMedicamentosPendentes(int idControleMedicacaoRestritoSCHI){
+	private void carregarMedicamentosPendentes(ControleMedicacaoRestritoSCHI cmr){
 		ConsultaGeral<PrescricaoItem> cg = new ConsultaGeral<PrescricaoItem>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idControleMedicacaoRestritoSCHI", idControleMedicacaoRestritoSCHI);
+		hm.put("idControleMedicacaoRestritoSCHI", cmr.getIdControleMedicacaoRestritoSCHI());
 		String hql = "select o from PrescricaoItem o where o.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI = :idControleMedicacaoRestritoSCHI";
 		itensLiberacao = new ArrayList<PrescricaoItem>(cg.consulta(new StringBuilder(hql), hm));
 	}
