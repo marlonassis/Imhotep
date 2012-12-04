@@ -14,4 +14,6 @@ public class Constantes {
 	public static final String PRESCRICAO_CUIDADOS_TAB = "prescricaoCuidadosTab";
 	public static final String PRESCRICAO_CONFIRMACAO_TAB = "prescricaoConfirmacaoTab";
 	
+	public static final String PAGINA_LOGIN = "/ControleDispensacao/PaginasWeb/login.jsf";
+	
 }
