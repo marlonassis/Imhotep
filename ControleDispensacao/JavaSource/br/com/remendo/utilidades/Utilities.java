@@ -33,7 +33,9 @@ public class Utilities{
 	}
 	
 	public List converterSetList(Set sets){
-		return new ArrayList(sets);
+		if(sets != null)
+			return new ArrayList(sets);
+		return null;
 	}
 	
 	public static float getDifDia(java.util.Date dtMenor, java.util.Date dtMaior){  

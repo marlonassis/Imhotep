@@ -10,7 +10,7 @@
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>  
 		<property name="hibernate.connection.username">postgres</property>  
 		<property name="hibernate.connection.password">postgres</property>  
-		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia_2</property>
     
         <mapping class="br.com.ControleDispensacao.entidade.Usuario"/>
         <mapping class="br.com.ControleDispensacao.entidade.Menu"/>
