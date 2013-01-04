@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,52 +10,45 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabTesteDoPezinhoRevisao" title="Família" >
-			<h:form id="testeDoPezinhoRevisaoForm" prependId="false" >
+		<p:tab id="tabTesteDoPezinhoRevisao" title="Família">
+			<h:form id="testeDoPezinhoRevisaoForm" prependId="false">
 				<p:fieldset legend="Teste do Pezinho"
-							collapsed="#{testeDoPezinhoResultadoHome.testeDoPezinho == null}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="testeDoPezinhoRevisaoEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="false"
-			            					update="padraoTabView:tabelaTesteDoPezinhoRevisao testeDoPezinhoRevisaoForm"
-											action="#{testeDoPezinhoResultadoHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="false"
-			            					update="padraoTabView:tabelaTesteDoPezinhoRevisao testeDoPezinhoRevisaoForm"
-											action="#{testeDoPezinhoResultadoHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											update="@parent" 
-											action="#{testeDoPezinhoResultadoHome.novaInstancia()}"/> 
-						<p:commandButton	value="Imprimir Laudo" 
-											onclick="window.open('testeDoPezinhoResultadoLaudo.jsf')"/> 
+					collapsed="#{testeDoPezinhoResultadoHome.testeDoPezinho == null}"
+					toggleable="true" toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="testeDoPezinhoRevisaoEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="false"
+						update="padraoTabView:tabelaTesteDoPezinhoRevisao testeDoPezinhoRevisaoForm"
+						action="#{testeDoPezinhoResultadoHome.enviar}" />
+					<p:commandButton value="Gravar" rendered="false"
+						update="padraoTabView:tabelaTesteDoPezinhoRevisao testeDoPezinhoRevisaoForm"
+						action="#{testeDoPezinhoResultadoHome.atualizar}" />
+					<p:commandButton value="Novo" update="@parent"
+						action="#{testeDoPezinhoResultadoHome.novaInstancia()}" />
+					<p:commandButton value="Imprimir Laudo"
+						onclick="window.open('testeDoPezinhoResultadoLaudo.jsf')" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaTesteDoPezinhoRevisaoForm" prependId="false" >
+			</h:form>
+
+			<h:form id="pesquisaTesteDoPezinhoRevisaoForm" prependId="false">
 				<p:fieldset id="pesquisaTesteDoPezinhoRevisaoFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="testeDoPezinhoRevisaoConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaTesteDoPezinhoRevisao" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{testeDoPezinhoRevisaoConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaTesteDoPezinhoRevisaoForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="testeDoPezinhoRevisaoTabela.xhtml"/>
-			</h:form>	
+					legend="Pesquisa" collapsed="true" toggleable="true"
+					toggleSpeed="500">
+					<ui:include src="testeDoPezinhoRevisaoConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar"
+						update="tabelaTesteDoPezinhoRevisao"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{testeDoPezinhoRevisaoConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaTesteDoPezinhoRevisaoForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="testeDoPezinhoRevisaoTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

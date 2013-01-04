@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>Controle Dispensacao</display-name>
+  <display-name>ControleDispensacao</display-name>
   <welcome-file-list>
-    <welcome-file>index.jsf</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
@@ -17,6 +16,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
     <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
   <context-param>
@@ -67,37 +67,4 @@
   <listener>
     <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
   </listener>
-  
-  
-    <context-param>
-        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-        <param-value>6Lf_WcYSAAAAAEYjxv5BD8Ft-E3PeAdEA1FhFLhg</param-value>
-    </context-param>
- 
-    <context-param>
-        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-        <param-value>6Lf_WcYSAAAAAOUsNgodZttgwvU9nGgK6iLFasE7</param-value>
-   </context-param>
-  
-    <context-param>
-        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
-        <param-value>true</param-value>
-    </context-param>  
-
-	<context-param>
-		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-		<param-value>/WEB-INF/Componentes/remendo.taglib.xml</param-value>
-	</context-param>
-
-
-	<!-- Plugging the "Blue Sky" skin into the project -->
-	<context-param>
-		<param-name>org.richfaces.SKIN</param-name>
-		<param-value>blueSky</param-value>
-	</context-param>
-
-    <listener>  
-        <listener-class>br.com.ControleDispensacao.quartz.RunQuartz</listener-class>  
-    </listener>  
-
 </web-app>

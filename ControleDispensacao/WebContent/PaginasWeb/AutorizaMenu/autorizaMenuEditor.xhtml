@@ -2,41 +2,36 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="autorizaMenuPanelGrid"
-				 columns="3" 
-				 width="100%" >
-				 
+	<h:panelGrid id="autorizaMenuPanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:" /><br />
-	  		<p:autoComplete id="especialidade" 
-	  						required="true"
-	  						forceSelection="true"
-	  						value="#{autorizaMenuHome.instancia.especialidade}"
-							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
-							var="especialidade" 
-							itemLabel="#{especialidade.descricao}" 
-							itemValue="#{especialidade}" 
-							converter="especialidadeConversor">
-				<p:ajax event="itemSelect" update="padraoTabView:autorizaMenuPanelGrid" />
+			<font color="red">*</font>
+			<h:outputLabel for="especialidade" value="Especialidade:" />
+			<br />
+			<p:autoComplete id="especialidade" required="true"
+				forceSelection="true"
+				value="#{autorizaMenuHome.instancia.especialidade}"
+				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
+				var="especialidade" itemLabel="#{especialidade.descricao}"
+				itemValue="#{especialidade}" converter="especialidadeConversor">
+				<p:ajax event="itemSelect"
+					update=":#{p:component('autorizaMenuPanelGrid')}" />
 			</p:autoComplete>
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="menu" value="Menu:" /><br />
-	  		<p:pickList id="pickList" value="#{autorizaMenuHome.menuDualList}"  
-                var="menu"  
-                addLabel="Adicionar"
-                addAllLabel="Adicionar todos"
-                removeLabel="Remover"
-                removeAllLabel="Remover todos"
-                itemLabel="#{menu}"  
-                itemValue="#{menu}" 
-                converter="menuConversor"/>  
+			<font color="red">*</font>
+			<h:outputLabel for="menu" value="Menu:" />
+			<br />
+			<p:pickList id="pickList" value="#{autorizaMenuHome.menuDualList}"
+				var="menu" addLabel="Adicionar" addAllLabel="Adicionar todos"
+				removeLabel="Remover" removeAllLabel="Remover todos"
+				itemLabel="#{menu}" itemValue="#{menu}" converter="menuConversor" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

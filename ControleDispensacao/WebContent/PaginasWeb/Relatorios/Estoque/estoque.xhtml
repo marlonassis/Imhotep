@@ -2,19 +2,18 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabRelatorios" title="Relatórios" >
-			<h:form id="relatoriosForm" style="text-align: left;" >
-			    <p:commandLink id="downloadRelatorioGeral" 
-			    			   value="Relatório Geral do estoque" 
-			    			   ajax="false"
-			    			   action="#{relatorioEstoque.relatorioGeralEstoque}">  
-			    </p:commandLink>  
+		<p:tab id="tabRelatorios" title="Relatórios">
+			<h:form id="relatoriosForm" style="text-align: left;">
+				<p:commandLink id="downloadRelatorioGeral"
+					value="Relatório Geral do estoque" ajax="false"
+					action="#{relatorioEstoque.relatorioGeralEstoque}">
+				</p:commandLink>
 			</h:form>
 		</p:tab>
 	</ui:define>

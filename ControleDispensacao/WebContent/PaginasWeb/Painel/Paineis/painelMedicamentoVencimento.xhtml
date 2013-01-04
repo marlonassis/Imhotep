@@ -2,44 +2,47 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templateLimpo.xhtml">
 
 	<ui:define name="conteudoPadrao">
-		<p:fieldset legend="Medicamento vencido ou a vencer em 5 dias" collapsed="false" toggleable="false">
-			<p:dataTable 	id="tabelaEstoqueVencido" 
-							value="#{bloqueioLoteHome.listaEstoqueVencido()}" 
-							var="linha"
-							dblClickSelect="true"
-							emptyMessage="Não foi encontrado registros" 
-							rows="5" 
-							paginator="true"
-							selectionMode="single" 
-							rowKey="#{linha.idEstoque}">
-							
+		<p:fieldset legend="Medicamento vencido ou a vencer em 5 dias"
+			collapsed="false" toggleable="false">
+			<p:dataTable id="tabelaEstoqueVencido"
+				value="#{bloqueioLoteHome.listaEstoqueVencido()}" var="linha"
+				dblClickSelect="true" emptyMessage="Não foi encontrado registros"
+				rows="5" paginator="true" selectionMode="single"
+				rowKey="#{linha.idEstoque}">
+
 				<p:column>
-					<f:facet name="header"><h:outputText value="Lote" /></f:facet>
+					<f:facet name="header">
+						<h:outputText value="Lote" />
+					</f:facet>
 					<h:outputText value="#{linha.lote}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header"><h:outputText value="Material" /></f:facet>
+					<f:facet name="header">
+						<h:outputText value="Material" />
+					</f:facet>
 					<h:outputText value="#{linha.material}" />
 				</p:column>
-				<p:column headerText="Data da validade" style="#{util.dateAtual > linha.dataValidade ? 'background-color:#FFDAB9;' : ''}" >
+				<p:column headerText="Data da validade"
+					style="#{util.dateAtual > linha.dataValidade ? 'background-color:#FFDAB9;' : ''}">
 					<h:outputText value="#{linha.dataValidade}">
-						<f:convertDateTime pattern="dd/MM/yyyy"/>
+						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
 				</p:column>
-				<p:column style="width:60px; text-align: center;" >
-					<p:commandLink  action="#{bloqueioLoteHome.bloqueioAutomaticoEstoque()}"
-									onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
-									oncomplete="window.location.reload();"
-									title="Bloquear Lote" 
-									style="padding-right:10px;" >
-						<f:setPropertyActionListener value="#{linha}" target="#{bloqueioLoteHome.instancia}" />
+				<p:column style="width:60px; text-align: center;">
+					<p:commandLink
+						action="#{bloqueioLoteHome.bloqueioAutomaticoEstoque()}"
+						onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
+						oncomplete="window.location.reload();" title="Bloquear Lote"
+						style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}"
+							target="#{bloqueioLoteHome.instancia}" />
 						<h:graphicImage value="/Imagens/block.png" />
 					</p:commandLink>
-				</p:column>  
+				</p:column>
 			</p:dataTable>
 		</p:fieldset>
 	</ui:define>

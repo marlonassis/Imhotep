@@ -2,45 +2,41 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
+	xmlns:p="http://primefaces.org/ui">
+
+
 	<h:panelGrid id="liberaMaterialEspecialidadePanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="especialidadeConsulta" value="Especialidade:"  /><br />
-	  		<p:autoComplete id="especialidadeConsulta" 
-	  						value="#{liberaMaterialEspecialidadeConsulta.instancia.especialidade}"
-							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
-							var="especialidade"
-							forceSelection="true"
-							title="Informe a especialidade"
-							itemLabel="#{especialidade.descricao}" 
-							itemValue="#{especialidade}"
-							converter="especialidadeConversor" />
+		columns="3" width="100%">
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="especialidadeConsulta" value="Especialidade:" />
+			<br />
+			<p:autoComplete id="especialidadeConsulta"
+				value="#{liberaMaterialEspecialidadeConsulta.instancia.especialidade}"
+				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
+				var="especialidade" forceSelection="true"
+				title="Informe a especialidade"
+				itemLabel="#{especialidade.descricao}" itemValue="#{especialidade}"
+				converter="especialidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="materialConsulta" value="Material:"  /><br />
-	  		<p:autoComplete id="materialConsulta" 
-	  						value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
-							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
-							var="material"
-							forceSelection="true"
-							title="Informe o material"
-							itemLabel="#{material.descricao}" 
-							itemValue="#{material}"
-							converter="materialConversor" />
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="materialConsulta" value="Material:" />
+			<br />
+			<p:autoComplete id="materialConsulta"
+				value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
+				completeMethod="#{materialHome.getListaMaterialAutoComplete}"
+				var="material" forceSelection="true" title="Informe o material"
+				itemLabel="#{material.descricao}" itemValue="#{material}"
+				converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
-	
+
 </ui:composition>

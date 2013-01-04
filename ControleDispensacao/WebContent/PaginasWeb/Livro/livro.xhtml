@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,51 +10,40 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabLivro" title="Livro" >
-			<h:form id="livroForm" prependId="false" >
-				<p:fieldset legend="Novo Livro"
-							collapsed="#{!livroHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="livroEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!livroHome.edicao}"
-			            					update="padraoTabView:tabelaLivro livroForm"
-											action="#{livroHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{livroHome.edicao}"
-			            					update="padraoTabView:tabelaLivro livroForm"
-											action="#{livroHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{livroHome.edicao}"
-											update="@parent" 
-											action="#{livroHome.novaInstancia()}"/> 
+		<p:tab id="tabLivro" title="Livro">
+			<h:form id="livroForm" prependId="false">
+				<p:fieldset legend="Novo Livro" collapsed="#{!livroHome.edicao}"
+					toggleable="true" toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="livroEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!livroHome.edicao}"
+						update="padraoTabView:tabelaLivro livroForm"
+						action="#{livroHome.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{livroHome.edicao}"
+						update="padraoTabView:tabelaLivro livroForm"
+						action="#{livroHome.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{livroHome.edicao}"
+						update="@parent" action="#{livroHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaLivroForm" prependId="false" >
-				<p:fieldset id="pesquisaLivroFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="livroConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaLivro" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{livroConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaLivroForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="livroTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaLivroForm" prependId="false">
+				<p:fieldset id="pesquisaLivroFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="livroConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaLivro"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{livroConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaLivroForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="livroTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

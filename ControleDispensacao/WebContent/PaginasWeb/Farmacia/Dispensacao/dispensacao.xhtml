@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,239 +10,235 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabDispensacao" 
-			   title="Dispensação" >
-			<h:form id="dispensacaoConsultaForm" >
-				<p:fieldset id="pesquisaMaterialFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
+		<p:tab id="tabDispensacao" title="Dispensação">
+			<h:form id="dispensacaoConsultaForm">
+				<p:fieldset id="pesquisaMaterialFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:param name="consulta" value="#{dispensacaoConsulta}" />
-					<ui:include src="dispensacaoConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="padraoTabView:dispensacaoItensGrid" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{dispensacaoConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="dispensacaoConsultaForm padraoTabView:dispensacaoForm" />
-					
-			    </p:fieldset>  
+					<ui:include src="dispensacaoConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar"
+						update="padraoTabView:dispensacaoItensGrid"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{dispensacaoConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="dispensacaoConsultaForm padraoTabView:dispensacaoForm" />
+
+				</p:fieldset>
 			</h:form>
-			<h:form id="dispensacaoForm" prependId="false" >
-				<p:dataTable id="dispensacaoItensGrid" 
-							 value="#{dispensacaoConsulta.list}" 
-							 var="itemPendente"
-							 emptyMessage="Não foi encontrado registros" 
-							 rows="10" 
-							 dblClickSelect="true"
-							 paginator="true"
-							 selectionMode="single" 
-							 rowKey="#{itemPendente.idPrescricao}">
-					
-			   		<p:column>
-						<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
+			<h:form id="dispensacaoForm" prependId="false">
+				<p:dataTable id="dispensacaoItensGrid"
+					value="#{dispensacaoConsulta.list}" var="itemPendente"
+					emptyMessage="Não foi encontrado registros" rows="10"
+					dblClickSelect="true" paginator="true" selectionMode="single"
+					rowKey="#{itemPendente.idPrescricao}">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Paciente" />
+						</f:facet>
 						<h:outputText value="#{itemPendente.paciente}" />
 					</p:column>
-					
+
 					<p:column>
-						<f:facet name="header"><h:outputText value="Prescritor" /></f:facet>
+						<f:facet name="header">
+							<h:outputText value="Prescritor" />
+						</f:facet>
 						<h:outputText value="#{itemPendente.profissional}" />
 					</p:column>
-					
+
 					<p:column>
-						<f:facet name="header"><h:outputText value="Data da prescrição" /></f:facet>
-						<h:outputText value="#{itemPendente.dataPrescricao}" >
-							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+						<f:facet name="header">
+							<h:outputText value="Data da prescrição" />
+						</f:facet>
+						<h:outputText value="#{itemPendente.dataPrescricao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 						</h:outputText>
 					</p:column>
-					
+
 					<p:column>
-						<f:facet name="header"><h:outputText value="Quantidade de Itens" /></f:facet>
+						<f:facet name="header">
+							<h:outputText value="Quantidade de Itens" />
+						</f:facet>
 						<h:outputText value="#{itemPendente.prescricaoItens.size()}" />
 					</p:column>
-					
+
 					<p:column>
-						<f:facet name="header"><h:outputText value="Dispensado" /></f:facet>
+						<f:facet name="header">
+							<h:outputText value="Dispensado" />
+						</f:facet>
 						<h:outputText value="#{itemPendente.dispensado.label}" />
 					</p:column>
-					
+
 					<p:column>
-						<f:facet name="header"><h:outputText value="Número" /></f:facet>
+						<f:facet name="header">
+							<h:outputText value="Número" />
+						</f:facet>
 						<h:outputText value="#{itemPendente.numero}" />
 					</p:column>
-					
+
 					<p:column>
-						<p:commandLink update="padraoTabView:display" 
-									   title="Dispensar" 
-									   style="padding-right:10px;" 
-									   oncomplete="itensDialog.show()">
-							<f:setPropertyActionListener value="#{itemPendente}" target="#{dispensacaoHome.prescricao}" />
+						<p:commandLink update="padraoTabView:display" title="Dispensar"
+							style="padding-right:10px;" oncomplete="itensDialog.show()">
+							<f:setPropertyActionListener value="#{itemPendente}"
+								target="#{dispensacaoHome.prescricao}" />
 							<h:graphicImage value="/Imagens/edit.gif" />
 						</p:commandLink>
 					</p:column>
 				</p:dataTable>
-				
-				
-				<p:dialog id="dialog" 
-						  header="Itens da prescrição" 
-						  widgetVar="itensDialog" 
-						  resizable="true"  
-						  showEffect="explode"
-						  hideEffect="explode">
-					<h:panelGroup id="display" > 
-						<p:growl id="growl"
-								 showDetail="true" />
+
+
+				<p:dialog id="dialog" header="Itens da prescrição"
+					widgetVar="itensDialog" resizable="true" showEffect="explode"
+					hideEffect="explode">
+					<h:panelGroup id="display">
+						<p:growl id="growl" showDetail="true" />
 						<p:commandLink id="iconeRecibo"
-									   rendered="#{dispensacaoHome.prescricao.dispensado == 'S'}"
-									   update="padraoTabView:recibo" 
-									   onclick="reciboDialog.show();" >
-							<h:graphicImage value="/Imagens/recibo.png" width="32" height="32" />
+							rendered="#{dispensacaoHome.prescricao.dispensado == 'S'}"
+							update="padraoTabView:recibo" onclick="reciboDialog.show();">
+							<h:graphicImage value="/Imagens/recibo.png" width="32"
+								height="32" />
 						</p:commandLink>
-						<p:dataTable 	id="prescricaoItemGrid" 
-										value="#{dispensacaoHome.prescricao.prescricaoItens}" 
-										var="prescricaoItem"
-										dblClickSelect="true"
-										emptyMessage="Não foi encontrado registros" 
-										rows="10"
-										paginator="true"
-										selectionMode="single" 
-										rowKey="#{prescricaoItem.idPrescricaoItem}">
-								
-							<p:ajax event="rowEdit" 
-									listener="#{dispensacaoHome.editEvent}" 
-									update="padraoTabView:growl"/>
-								
-							<p:column headerText="Material" >
+						<p:dataTable id="prescricaoItemGrid"
+							value="#{dispensacaoHome.prescricao.prescricaoItens}"
+							var="prescricaoItem" dblClickSelect="true"
+							emptyMessage="Não foi encontrado registros" rows="10"
+							paginator="true" selectionMode="single"
+							rowKey="#{prescricaoItem.idPrescricaoItem}">
+
+							<p:ajax event="rowEdit" listener="#{dispensacaoHome.editEvent}"
+								update="padraoTabView:growl" />
+
+							<p:column headerText="Material">
 								<h:outputText value="#{prescricaoItem.material}" />
 							</p:column>
-							
-							<p:column headerText="Quantidade solicitada" >
-								<h:outputText value="#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}" />
+
+							<p:column headerText="Quantidade solicitada">
+								<h:outputText
+									value="#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}" />
 							</p:column>
-							
-							<p:column headerText="Quantidade dispensada" >
+
+							<p:column headerText="Quantidade dispensada">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{prescricaoItem.quantidadeLiberada == null ? 'Informe aqui a quantidade dispensada.' : prescricaoItem.quantidadeLiberada}" />
+										<h:outputText
+											value="#{prescricaoItem.quantidadeLiberada == null ? 'Informe aqui a quantidade dispensada.' : prescricaoItem.quantidadeLiberada}" />
 									</f:facet>
 									<f:facet name="input">
-					                    <p:inputText id="quantidadeLiberadaText"
-					                    			 value="#{prescricaoItem.quantidadeLiberada}" 
-					                    			 style="width:100%"
-					                    			 label="Informe a quantidade a ser liberada"
-													 onkeyup="filtroQuantidadeLiberada('#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}', this);"/>
-													 
-					                </f:facet>
+										<p:inputText id="quantidadeLiberadaText"
+											value="#{prescricaoItem.quantidadeLiberada}"
+											style="width:100%"
+											label="Informe a quantidade a ser liberada"
+											onkeyup="filtroQuantidadeLiberada('#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}', this);" />
+
+									</f:facet>
 								</p:cellEditor>
 							</p:column>
-							
+
 							<p:column>
-								<p:dataList value="#{dispensacaoHome.listaPrescricaoItemEstoqueSaida(prescricaoItem)}" var="item" type="ordered">  
+								<p:dataList
+									value="#{dispensacaoHome.listaPrescricaoItemEstoqueSaida(prescricaoItem)}"
+									var="item" type="ordered">  
 								    #{item.estoque.lote} - #{item.quantidadeSaida}
-								</p:dataList> 
+								</p:dataList>
 							</p:column>
-							
-							<p:column headerText="Editar" style="width:50px">  
-					            <p:rowEditor rendered="#{((prescricaoItem.quantidadeLiberada == null || prescricaoItem.quantidadeLiberada == 0) ? true : false)}" />
+
+							<p:column headerText="Editar" style="width:50px">
+								<p:rowEditor
+									rendered="#{((prescricaoItem.quantidadeLiberada == null || prescricaoItem.quantidadeLiberada == 0) ? true : false)}" />
 							</p:column>
 						</p:dataTable>
-          	
-				        <p:commandButton value="Dispensar"
-				        				 action="#{dispensacaoHome.dispensar}" 
-				        				 update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:recibo"
-				        				 rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
-				        				 oncomplete="reciboDialog.show(); itensDialog.hide();" />
+
+						<p:commandButton value="Dispensar"
+							action="#{dispensacaoHome.dispensar}"
+							update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:recibo"
+							rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
+							oncomplete="reciboDialog.show(); itensDialog.hide();" />
 					</h:panelGroup>
-			    </p:dialog>
-			    
-			    <p:dialog id="dialogRecibo" 
-						  header="Recibo" 
-						  widgetVar="reciboDialog" 
-						  resizable="true" 
-						  width="600"
-						  modal="true" 
-						  showEffect="explode"
-						  hideEffect="explode">
-				    <h:commandButton value="Imprimir" type="button" icon="ui-icon-print">  
-				        <p:printer target="recibo" />  
-				    </h:commandButton>  
-					<h:panelGroup id="recibo" >
-						<h2>Hospital Universitário</h2><br/>         
-						<h1>Recibo de liberação de material</h1><br/>
-						
-						<div align="left" >
-							<b>Prescrição:</b> <h:outputText value="#{dispensacaoHome.prescricao.numero}"/><br/>
-							<b>Prescritor:</b> <h:outputText value="#{dispensacaoHome.prescricao.profissional.nome}"/><br/>
-							<b>Dispensante:</b> <h:outputText value="#{autenticador.profissionalAtual.nome}"/><br/>
-							<b>Data da Prescrição:</b> <h:outputText value="#{dispensacaoHome.prescricao.dataPrescricao}">
-															<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-														</h:outputText><br/>
-							<b>Data da Dispensação:</b> <h:outputText value="#{dispensacaoHome.prescricao.dataDipensacao}">
-															<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-														</h:outputText><br/>
-							<b>Data da Impressão:</b> #{util.dataAtual} #{util.horaAtual}<br/>
-							<b>Unidade:</b> <h:outputText value="#{dispensacaoHome.prescricao.unidade}"/><br/><br/>
-							<table border="1" >
+				</p:dialog>
+
+				<p:dialog id="dialogRecibo" header="Recibo" widgetVar="reciboDialog"
+					resizable="true" width="600" modal="true" showEffect="explode"
+					hideEffect="explode">
+					<h:commandButton value="Imprimir" type="button"
+						icon="ui-icon-print">
+						<p:printer target="recibo" />
+					</h:commandButton>
+					<h:panelGroup id="recibo">
+						<h2>Hospital Universitário</h2>
+						<br />
+						<h1>Recibo de liberação de material</h1>
+						<br />
+
+						<div align="left">
+							<b>Prescrição:</b>
+							<h:outputText value="#{dispensacaoHome.prescricao.numero}" />
+							<br /> <b>Prescritor:</b>
+							<h:outputText
+								value="#{dispensacaoHome.prescricao.profissional.nome}" />
+							<br /> <b>Dispensante:</b>
+							<h:outputText value="#{autenticador.profissionalAtual.nome}" />
+							<br /> <b>Data da Prescrição:</b>
+							<h:outputText
+								value="#{dispensacaoHome.prescricao.dataPrescricao}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+							<br /> <b>Data da Dispensação:</b>
+							<h:outputText
+								value="#{dispensacaoHome.prescricao.dataDipensacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+							<br /> <b>Data da Impressão:</b> #{util.dataAtual}
+							#{util.horaAtual}<br /> <b>Unidade:</b>
+							<h:outputText value="#{dispensacaoHome.prescricao.unidade}" />
+							<br />
+							<br />
+							<table border="1">
 								<thead>
 									<tr>
-								      <th><h:outputText value="Código"/></th>
-								      <th><h:outputText value="Material"/></th>
-								      <th><h:outputText value="Qtd"/></th>
-								      <th><h:outputText value="Validade"/></th>
-								      <th><h:outputText value="Lote"/></th>
-								    </tr>
+										<th><h:outputText value="Código" /></th>
+										<th><h:outputText value="Material" /></th>
+										<th><h:outputText value="Qtd" /></th>
+										<th><h:outputText value="Validade" /></th>
+										<th><h:outputText value="Lote" /></th>
+									</tr>
 								</thead>
 								<ui:repeat value="#{dispensacaoHome.listaReciboPrescricao()}"
-										   var="item" >
-									<tr style="cellpadding:5px" >
-										<td>
-											<h:outputText value="#{item.prescricaoItem.material.codigoMaterial}"/>
-										</td>
-										<td >
-								        	<h:outputText value="#{item.prescricaoItem.material}"/>
-								        </td>
-								        <td>
-								        	<h:outputText value="#{item.quantidadeSaida}"/>
-								        </td>
-								        <td>
-								        	<h:outputText value="#{item.estoque.dataValidade}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
-								        </td>
-								        <td>
-								        	<h:outputText value="#{item.estoque.lote}"/>
-								        </td>
+									var="item">
+									<tr style="cellpadding: 5px">
+										<td><h:outputText
+												value="#{item.prescricaoItem.material.codigoMaterial}" /></td>
+										<td><h:outputText
+												value="#{item.prescricaoItem.material}" /></td>
+										<td><h:outputText value="#{item.quantidadeSaida}" /></td>
+										<td><h:outputText value="#{item.estoque.dataValidade}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText></td>
+										<td><h:outputText value="#{item.estoque.lote}" /></td>
 									</tr>
 								</ui:repeat>
 							</table>
 						</div>
-						<br/><br/><br/>
+						<br />
+						<br />
+						<br />
 						<center>
-							<table width="100%" >
+							<table width="100%">
 								<tr>
-									<td align="center" >
-										__________________________
-									</td>
-									<td align="center" >
-										__________________________
-									</td>
+									<td align="center">__________________________</td>
+									<td align="center">__________________________</td>
 								</tr>
 								<tr>
-									<td align="center" >
-										Despachante
-									</td>
-									<td align="center" >
-										Recebedor
-									</td>
+									<td align="center">Despachante</td>
+									<td align="center">Recebedor</td>
 								</tr>
 							</table>
 						</center>
 					</h:panelGroup>
 				</p:dialog>
-			    
+
 			</h:form>
 		</p:tab>
 	</ui:define>

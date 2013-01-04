@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,51 +10,44 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabCuidadosPaciente" title="Cuidados do paciente" >
-			<h:form id="cuidadosPacienteForm" prependId="false" >
+		<p:tab id="tabCuidadosPaciente" title="Cuidados do paciente">
+			<h:form id="cuidadosPacienteForm" prependId="false">
 				<p:fieldset legend="Novo cuidado"
-							collapsed="#{!cuidadosPacienteHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="cuidadosPacienteEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!cuidadosPacienteHome.edicao}"
-			            					update="padraoTabView:tabelaCuidadosPaciente cuidadosPacienteForm"
-											action="#{cuidadosPacienteHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{cuidadosPacienteHome.edicao}"
-			            					update="padraoTabView:tabelaCuidadosPaciente cuidadosPacienteForm"
-											action="#{cuidadosPacienteHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{cuidadosPacienteHome.edicao}"
-											update="@parent" 
-											action="#{cuidadosPacienteHome.novaInstancia()}"/> 
+					collapsed="#{!cuidadosPacienteHome.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="cuidadosPacienteEditor.xhtml" />
+					<p:commandButton value="Salvar"
+						rendered="#{!cuidadosPacienteHome.edicao}"
+						update="padraoTabView:tabelaCuidadosPaciente cuidadosPacienteForm"
+						action="#{cuidadosPacienteHome.enviar}" />
+					<p:commandButton value="Gravar"
+						rendered="#{cuidadosPacienteHome.edicao}"
+						update="padraoTabView:tabelaCuidadosPaciente cuidadosPacienteForm"
+						action="#{cuidadosPacienteHome.atualizar}" />
+					<p:commandButton value="Novo"
+						rendered="#{cuidadosPacienteHome.edicao}" update="@parent"
+						action="#{cuidadosPacienteHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaCuidadosPacienteForm" prependId="false" >
-				<p:fieldset id="pesquisaCuidadosPacienteFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="cuidadosPacienteConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaCuidadosPaciente" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{cuidadosPacienteConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaCuidadosPacienteForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="cuidadosPacienteTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaCuidadosPacienteForm" prependId="false">
+				<p:fieldset id="pesquisaCuidadosPacienteFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="cuidadosPacienteConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaCuidadosPaciente"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{cuidadosPacienteConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaCuidadosPacienteForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="cuidadosPacienteTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

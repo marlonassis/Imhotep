@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,51 +10,42 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabBloqueioMaterial" title="Bloqueio de lote" >
-			<h:form id="bloqueioLoteForm" prependId="false" >
+		<p:tab id="tabBloqueioMaterial" title="Bloqueio de lote">
+			<h:form id="bloqueioLoteForm" prependId="false">
 				<p:fieldset legend="Novo bloqueio de lote"
-							collapsed="#{!bloqueioLoteHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="bloqueioLoteEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="false"
-			            					update="padraoTabView:tabelaBloqueioLote bloqueioMaterialForm"
-											action="#{bloqueioLoteHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{bloqueioLoteHome.edicao}"
-			            					update="padraoTabView:tabelaBloqueioLote bloqueioLoteForm"
-											action="#{bloqueioLoteHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{bloqueioLoteHome.edicao}"
-											update="@parent" 
-											action="#{bloqueioLoteHome.novaInstancia()}"/> 
+					collapsed="#{!bloqueioLoteHome.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="bloqueioLoteEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="false"
+						update="padraoTabView:tabelaBloqueioLote bloqueioMaterialForm"
+						action="#{bloqueioLoteHome.enviar}" />
+					<p:commandButton value="Gravar"
+						rendered="#{bloqueioLoteHome.edicao}"
+						update="padraoTabView:tabelaBloqueioLote bloqueioLoteForm"
+						action="#{bloqueioLoteHome.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{bloqueioLoteHome.edicao}"
+						update="@parent" action="#{bloqueioLoteHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaBloqueioLoteForm" prependId="false" >
-				<p:fieldset id="pesquisaBloqueioLoteFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="bloqueioLoteConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaBloqueioLote" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{estoqueConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaBloqueioLoteForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="bloqueioLoteTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaBloqueioLoteForm" prependId="false">
+				<p:fieldset id="pesquisaBloqueioLoteFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="bloqueioLoteConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaBloqueioLote"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{estoqueConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaBloqueioLoteForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="bloqueioLoteTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

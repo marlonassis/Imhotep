@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templateLimpo.xhtml">
 
 	<ui:define name="head">
@@ -13,154 +13,106 @@
 		<script>
 			var cont = 0;
 		</script>
-		
-		<table width="100%" 
-			   class="bordasimples" >
+
+		<table width="100%" class="bordasimples">
 			<tr>
-			
-				<td>
-					<h:graphicImage url="/Imagens/ufs_logo.png"/>
+
+				<td><h:graphicImage url="/Imagens/ufs_logo.png" /></td>
+				<td colspan="6">
+					<center>
+						<b>UNIVERSIDADE FEDERAL DE SERGIPE</b>
+					</center>
+					<br />
+					<center>
+						<b>HOSPITAL UNIVERSITÁRIO</b>
+					</center>
 				</td>
-				<td colspan="6" >
-					<center><b>UNIVERSIDADE FEDERAL DE SERGIPE</b></center><br/>
-					<center><b>HOSPITAL UNIVERSITÁRIO</b></center>
-				</td>
-				<td>
-					<h:graphicImage url="/Imagens/hu_logo.png"/>
-				</td>
+				<td><h:graphicImage url="/Imagens/hu_logo.png" /></td>
 			</tr>
-			<tr height="20px" >
+			<tr height="20px">
 				<td colspan="8" />
 			</tr>
 			<tr>
-				<td rowspan="2" >
-					<b>
-						Equipe<br/>
-						Assistente:
-					</b>
-				</td>
-				<td rowspan="2" >
-					Serviço de Infectologia
-				</td>
-				<td  colspan="2" >
-					<b>MR2</b>
-				</td>
-				<td  colspan="2" >
-					<b>MR1</b>
-				</td>
-				<td  colspan="2" >
-					<b>Ddo (a)</b>
-				</td>
+				<td rowspan="2"><b> Equipe<br /> Assistente:
+				</b></td>
+				<td rowspan="2">Serviço de Infectologia</td>
+				<td colspan="2"><b>MR2</b></td>
+				<td colspan="2"><b>MR1</b></td>
+				<td colspan="2"><b>Ddo (a)</b></td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					X
-				</td>
-				<td colspan="2">
-					Y
-				</td>
-				<td colspan="2">
-					Z
-				</td>
+				<td colspan="2">X</td>
+				<td colspan="2">Y</td>
+				<td colspan="2">Z</td>
 			</tr>
-			<tr height="20px" >
+			<tr height="20px">
 				<td colspan="8" />
 			</tr>
-			
+
 			<tr>
-				<td>
-				<h:outputText value="Data:" 
-							  style="font-weight: bold;"/><br/>
-				<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.dataConclusao}">
-					<f:convertDateTime pattern="dd/MM/yyyy"/>
-				</h:outputText> 
+				<td><h:outputText value="Data:" style="font-weight: bold;" /><br />
+					<h:outputText
+						value="#{prescricaoHome.prescricaoVisualizacao.dataConclusao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText></td>
+				<td colspan="2"><h:outputText value="Paciente:"
+						style="font-weight: bold;" /><br /> <h:outputText
+						value="#{prescricaoHome.prescricaoVisualizacao.paciente.nome}" />
 				</td>
-				<td colspan="2" >
-					<h:outputText value="Paciente:" 
-							  style="font-weight: bold;"/><br/>
-					<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.nome}"/>
+				<td><h:outputText value="Idade:" style="font-weight: bold;" /><br />
+					<h:outputText
+						value="#{prescricaoHome.prescricaoVisualizacao.paciente.idade}" />
 				</td>
-				<td>
-					<h:outputText value="Idade:" 
-							  style="font-weight: bold;"/><br/>
-					<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.idade}"/>
-				</td>
-				<td>
-					<h:outputText value="Clínica Médica II" 
-							  style="font-weight: bold;"/><br/>
-					<h:outputText value="Infectologia"/>
-				</td>
-				<td colspan="2" >
-					<h:outputText value="Unidade:" 
-							  style="font-weight: bold;"/><br/>
-					<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.unidade.nome}"/>
-				</td>
-				<td>
-					<h:outputText value="Enfermaria-Leito:" 
-							  style="font-weight: bold;"/><br/>
-					<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.leito}"/> #{' - Isolamento'}
-				</td>
+				<td><h:outputText value="Clínica Médica II"
+						style="font-weight: bold;" /><br /> <h:outputText
+						value="Infectologia" /></td>
+				<td colspan="2"><h:outputText value="Unidade:"
+						style="font-weight: bold;" /><br /> <h:outputText
+						value="#{prescricaoHome.prescricaoVisualizacao.unidade.nome}" /></td>
+				<td><h:outputText value="Enfermaria-Leito:"
+						style="font-weight: bold;" /><br /> <h:outputText
+						value="#{prescricaoHome.prescricaoVisualizacao.leito}" /> #{' -
+					Isolamento'}</td>
 			</tr>
-			<tr height="20px" >
+			<tr height="20px">
 				<td colspan="8" />
 			</tr>
 			<tr>
-				<td>
-				<h:outputText value="Item:" 
-							  style="font-weight: bold;"/>
-				</td>
-				<td>
-				<h:outputText value="Prescrição Farmacológica:" 
-							  style="font-weight: bold;"/>
-				</td>
-				<td>
-				<h:outputText value="Dose:" 
-							  style="font-weight: bold;"/>
-				</td>
-				<td>
-				<h:outputText value="Via:" 
-							  style="font-weight: bold;"/>
-				</td>
-				<td colspan="4" >
-				<h:outputText value="Horário:" 
-							  style="font-weight: bold;"/>
-				</td>
+				<td><h:outputText value="Item:" style="font-weight: bold;" /></td>
+				<td><h:outputText value="Prescrição Farmacológica:"
+						style="font-weight: bold;" /></td>
+				<td><h:outputText value="Dose:" style="font-weight: bold;" /></td>
+				<td><h:outputText value="Via:" style="font-weight: bold;" /></td>
+				<td colspan="4"><h:outputText value="Horário:"
+						style="font-weight: bold;" /></td>
 			</tr>
-			<ui:repeat value="#{prescricaoHome.prescricaoVisualizacao.prescricaoItens}"
-					   var="item" >
+			<ui:repeat
+				value="#{prescricaoHome.prescricaoVisualizacao.prescricaoItens}"
+				var="item">
 				<tr>
-					<td>
-					<script>
+					<td><script>
 						cont++;
 						document.write(cont);
-					</script>
-					</td>
-					<td>
-						#{item.material.descricao}
-					</td>
-					<td>
-						#{item.quantidadeLiberada}
-					</td>
-					<td>
-						#{item.tipoViaAdministracaoMedicamento.label}
-					</td>
-					<td colspan="4" >
+					</script></td>
+					<td>#{item.material.descricao}</td>
+					<td>#{item.quantidadeLiberada}</td>
+					<td>#{item.tipoViaAdministracaoMedicamento.label}</td>
+					<td colspan="4">
 						<table class="bordasimples">
 							<tr>
-								<ui:repeat value="#{util.converterSetList(item.prescricaoItemDoses)}"
-							   			   var="dose" >
-							   		<td>
-							   			<h:outputText value="#{dose.dataDose}" >
-							   				<f:convertDateTime pattern="HH:mm"/>
-							   			</h:outputText>
-									</td>
+								<ui:repeat
+									value="#{util.converterSetList(item.prescricaoItemDoses)}"
+									var="dose">
+									<td><h:outputText value="#{dose.dataDose}">
+											<f:convertDateTime pattern="HH:mm" />
+										</h:outputText></td>
 								</ui:repeat>
 							</tr>
 							<tr>
-								<ui:repeat value="#{util.converterSetList(item.prescricaoItemDoses)}"
-							   			   var="dose" >
-							   		<td height="20px" >
-									</td>
+								<ui:repeat
+									value="#{util.converterSetList(item.prescricaoItemDoses)}"
+									var="dose">
+									<td height="20px"></td>
 								</ui:repeat>
 							</tr>
 						</table>
@@ -168,39 +120,37 @@
 				</tr>
 			</ui:repeat>
 			<tr>
+				<td></td>
+				<td colspan="3"><b>Cuidados:</b></td>
 				<td>
+					<center>
+						<b>7h-13h</b>
+					</center>
 				</td>
-				<td colspan="3" >
-					<b>Cuidados:</b>
+				<td colspan="2">
+					<center>
+						<b>13h-19h</b>
+					</center>
 				</td>
-				<td >
-					<center><b>7h-13h</b></center>
-				</td>
-				<td colspan="2" >
-					<center><b>13h-19h</b></center>
-				</td>
-				<td >
-					<center><b>19h-7h</b></center>
+				<td>
+					<center>
+						<b>19h-7h</b>
+					</center>
 				</td>
 			</tr>
-			<ui:repeat value="#{util.converterSetList(prescricaoHome.prescricaoVisualizacao.cuidadosPrescricao)}"
-					   var="cuidado" >
+			<ui:repeat
+				value="#{util.converterSetList(prescricaoHome.prescricaoVisualizacao.cuidadosPrescricao)}"
+				var="cuidado">
 				<tr>
-					<td>
-					<script>
+					<td><script>
 						cont++;
 						document.write(cont);
-					</script>
-					</td>
-					<td colspan="3" >
-						#{cuidado.cuidadosPaciente != null ? cuidado.cuidadosPaciente.descricao : cuidado.descricaoOutros}
-					</td>
-					<td >
-					</td>
-					<td colspan="2" >
-					</td>
-					<td >
-					</td>
+					</script></td>
+					<td colspan="3">#{cuidado.cuidadosPaciente != null ?
+						cuidado.cuidadosPaciente.descricao : cuidado.descricaoOutros}</td>
+					<td></td>
+					<td colspan="2"></td>
+					<td></td>
 				</tr>
 			</ui:repeat>
 		</table>

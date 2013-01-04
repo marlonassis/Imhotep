@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,51 +10,40 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabMenu" title="Menu" >
-			<h:form id="menuForm" prependId="false" >
-				<p:fieldset legend="Novo Menu"
-							collapsed="#{!menuHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="menuEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!menuHome.edicao}"
-			            					update="padraoTabView:tabelaMenu menuForm"
-											action="#{menuHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{menuHome.edicao}"
-			            					update="padraoTabView:tabelaMenu menuForm"
-											action="#{menuHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{menuHome.edicao}"
-											update="@parent" 
-											action="#{menuHome.novaInstancia()}"/> 
+		<p:tab id="tabMenu" title="Menu">
+			<h:form id="menuForm" prependId="false">
+				<p:fieldset legend="Novo Menu" collapsed="#{!menuHome.edicao}"
+					toggleable="true" toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="menuEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!menuHome.edicao}"
+						update="padraoTabView:tabelaMenu menuForm"
+						action="#{menuHome.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{menuHome.edicao}"
+						update="padraoTabView:tabelaMenu menuForm"
+						action="#{menuHome.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{menuHome.edicao}"
+						update="@parent" action="#{menuHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaMenuForm" prependId="false" >
-				<p:fieldset id="pesquisaMenuFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="menuConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaMenu" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{menuConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaMenuForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="menuTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaMenuForm" prependId="false">
+				<p:fieldset id="pesquisaMenuFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="menuConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaMenu"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{menuConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaMenuForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="menuTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

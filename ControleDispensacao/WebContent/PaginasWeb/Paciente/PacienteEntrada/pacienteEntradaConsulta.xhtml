@@ -2,28 +2,26 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="pacientePanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-		
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="pacientePanelGridConsulta" columns="3" width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
-			<p:inputText id="nomeConsulta" 
-						 value="#{pacienteConsulta.instancia.nome}" 
-						 title="Informe o nome do paciente" />
+			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			<br />
+			<p:inputText id="nomeConsulta"
+				value="#{pacienteConsulta.instancia.nome}"
+				title="Informe o nome do paciente" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="cpfConsulta" value="CPF:"  /><br />
-			<p:inputMask id="cpfConsulta"
-						 mask="999.999.999-99"
-						 value="#{pacienteConsulta.instancia.cpf}"
-						 title="Informe o CPF do paciente"
-						 onblur="validaCPF(this);"/>
+			<h:outputLabel for="cpfConsulta" value="CPF:" />
+			<br />
+			<p:inputMask id="cpfConsulta" mask="999.999.999-99"
+				value="#{pacienteConsulta.instancia.cpf}"
+				title="Informe o CPF do paciente" onblur="validaCPF(this);" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

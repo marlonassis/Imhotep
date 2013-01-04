@@ -2,29 +2,27 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="unidadeMaterialPanelGrid"
-				 columns="3" 
-				 width="100%" >
-				 
-				 
+	<h:panelGrid id="unidadeMaterialPanelGrid" columns="3" width="100%">
+
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="z" value="Descrição:"  /><br />
-			<p:inputText id="descricao" 
-						 value="#{unidadeMaterialHome.instancia.descricao}" 
-						 required="true"
-						 title="Informe a descrição da unidade material" />
+			<font color="red">*</font>
+			<h:outputLabel for="z" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao"
+				value="#{unidadeMaterialHome.instancia.descricao}" required="true"
+				title="Informe a descrição da unidade material" />
 		</h:panelGroup>
-				 
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="sigla" value="Sigla:"  /><br />
-			<p:inputText id="sigla" 
-						 value="#{unidadeMaterialHome.instancia.sigla}" 
-						 required="true"
-						 size="2"
-						 maxlength="2"
-						 title="Informe a sigla da unidade material" />
+			<font color="red">*</font>
+			<h:outputLabel for="sigla" value="Sigla:" />
+			<br />
+			<p:inputText id="sigla"
+				value="#{unidadeMaterialHome.instancia.sigla}" required="true"
+				size="2" maxlength="2" title="Informe a sigla da unidade material" />
 		</h:panelGroup>
 
 	</h:panelGrid>

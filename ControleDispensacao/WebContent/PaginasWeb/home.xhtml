@@ -3,39 +3,36 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabHome" title="Home" >
-			<h:form id="homeForm"  >
-				Bem Vindo #{autenticador.profissionalAtual.nome}
-			</h:form>
-			
+		<p:tab id="tabHome" title="Home">
 			<h:form>
-				<table width="100%" >
+				<table width="100%">
 					<tr>
-						<td style="vertical-align: top" >
-							<h:panelGrid rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Vencidos')}" columns="1" border="0">
+						<td style="vertical-align: top"><h:panelGrid
+								rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Vencidos')}"
+								columns="1" border="0">
 								<h:panelGroup>
-									<ui:include src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
+									<ui:include
+										src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
 								</h:panelGroup>
-							</h:panelGrid>
-						</td>
-						<td style="vertical-align: top" >
-							<h:panelGrid rendered="#{controlePainel.painelAutorizadoStringList.contains('Prescrição Pendente')}" width="100%" columns="1" border="0">
+							</h:panelGrid></td>
+						<td style="vertical-align: top"><h:panelGrid
+								rendered="#{controlePainel.painelAutorizadoStringList.contains('Prescrição Pendente')}"
+								width="100%" columns="1" border="0">
 								<h:panelGroup>
-									<ui:include src="/PaginasWeb/Painel/Paineis/painelPrescricaoPendente.xhtml" />
+									<ui:include
+										src="/PaginasWeb/Painel/Paineis/painelPrescricaoPendente.xhtml" />
 								</h:panelGroup>
-							</h:panelGrid>
-						</td>
+							</h:panelGrid></td>
 					</tr>
 				</table>
 			</h:form>
-			
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -2,220 +2,240 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	<h:outputText value="Dados do Exame" 
-				  style="font-weight:bold" />
-	<br/>
-	<h:panelGrid id="testeDoPezinhoPanelGrid"
-				 columns="3" 
-				 width="100%" >
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:outputText value="Dados do Exame" style="font-weight:bold" />
+	<br />
+	<h:panelGrid id="testeDoPezinhoPanelGrid" columns="3" width="100%">
 		<h:panelGroup>
-			<h:outputLabel for="nome" value="Nome:" style="font-weight:bold" /><br />
+			<h:outputLabel for="nome" value="Nome:" style="font-weight:bold" />
+			<br />
 			<h:outputText id="nome"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nome}"/> 
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nome}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="registro" value="Registro:" style="font-weight:bold" /><br />
-			<h:outputText id="registro"
-						  value=""/> 
+			<h:outputLabel for="registro" value="Registro:"
+				style="font-weight:bold" />
+			<br />
+			<h:outputText id="registro" value="" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="dataNascimento" value="Data de Nascimento:" style="font-weight:bold" /><br />
+			<h:outputLabel for="dataNascimento" value="Data de Nascimento:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="dataNascimento"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataNascimento}">
-				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-			</h:outputText> 
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataNascimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="nomeMae" value="Nome da Mãe:" style="font-weight:bold" /><br />
+			<h:outputLabel for="nomeMae" value="Nome da Mãe:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="nomeMae"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nomeMae}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nomeMae}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="dataRecebimento" value="Data de Recebimento:" style="font-weight:bold" /><br />
+			<h:outputLabel for="dataRecebimento" value="Data de Recebimento:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="dataRecebimento"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataCadastro}">
-				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataCadastro}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="dataTSH" value="Data TSH:" style="font-weight:bold" /><br />
-			<p:calendar id="dataTSH"
-						pattern="dd/MM/yyyy HH:mm"
-						locale="pt" 
-						value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataTsh}" />
+			<h:outputLabel for="dataTSH" value="Data TSH:"
+				style="font-weight:bold" />
+			<br />
+			<p:calendar id="dataTSH" pattern="dd/MM/yyyy HH:mm" locale="pt"
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataTsh}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="endereco" value="Endereço:" style="font-weight:bold" /><br />
+			<h:outputLabel for="endereco" value="Endereço:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="endereco"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.endereco}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.endereco}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="dataColeta" value="Data da Coleta:" style="font-weight:bold" /><br />
+			<h:outputLabel for="dataColeta" value="Data da Coleta:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="dataColeta"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataColeta}">
-				<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataColeta}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="dataHB" value="Data HB:" style="font-weight:bold" /><br />
-			<p:calendar id="dataHB"
-						pattern="dd/MM/yyyy HH:mm"
-						locale="pt" 
-						value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataHb}" />
+			<h:outputLabel for="dataHB" value="Data HB:" style="font-weight:bold" />
+			<br />
+			<p:calendar id="dataHB" pattern="dd/MM/yyyy HH:mm" locale="pt"
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataHb}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="procedencia" value="Procedência:" style="font-weight:bold" /><br />
-			<h:outputText id="procedencia"
-						  value=""/>
+			<h:outputLabel for="procedencia" value="Procedência:"
+				style="font-weight:bold" />
+			<br />
+			<h:outputText id="procedencia" value="" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="cidade" value="Cidade:" style="font-weight:bold" /><br />
+			<h:outputLabel for="cidade" value="Cidade:" style="font-weight:bold" />
+			<br />
 			<h:outputText id="cidade"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.cidade.nomeCidadeEstado}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.cidade.nomeCidadeEstado}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="dataPKU" value="Data PKU:" style="font-weight:bold" /><br />
-			<p:calendar id="dataPKU"
-						pattern="dd/MM/yyyy HH:mm"
-						locale="pt" 
-						value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataPku}" />
+			<h:outputLabel for="dataPKU" value="Data PKU:"
+				style="font-weight:bold" />
+			<br />
+			<p:calendar id="dataPKU" pattern="dd/MM/yyyy HH:mm" locale="pt"
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataPku}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="tipo" value="Tipo (Classe):" style="font-weight:bold" /><br />
+			<h:outputLabel for="tipo" value="Tipo (Classe):"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="tipo"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tipo}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tipo}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="lote" value="Lote:" style="font-weight:bold" /><br />
+			<h:outputLabel for="lote" value="Lote:" style="font-weight:bold" />
+			<br />
 			<h:outputText id="lote"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.lote}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.lote}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="amostra" value="Amostra:" style="font-weight:bold" /><br />
+			<h:outputLabel for="amostra" value="Amostra:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="amostra"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.amostra}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.amostra}" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="material" value="Material:" style="font-weight:bold" /><br />
-			<h:outputText id="material"
-						  value="Sangue em papel de filtro"/>
+			<h:outputLabel for="material" value="Material:"
+				style="font-weight:bold" />
+			<br />
+			<h:outputText id="material" value="Sangue em papel de filtro" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="posto" value="Unidade de Saúde:" style="font-weight:bold" /><br />
+			<h:outputLabel for="posto" value="Unidade de Saúde:"
+				style="font-weight:bold" />
+			<br />
 			<h:outputText id="posto"
-						  value="#{testeDoPezinhoResultadoHome.testeDoPezinho.unidadeSaude.estabelecimento}"/>
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.unidadeSaude.estabelecimento}" />
 		</h:panelGroup>
 	</h:panelGrid>
-	<h:panelGrid id="dadosTesteDoPezinhoPanelGrid"
-				 columns="4" 
-				 width="100%" >
+	<h:panelGrid id="dadosTesteDoPezinhoPanelGrid" columns="4" width="100%">
 		<h:panelGroup>
-			<h:outputLabel for="tsh" value="TSH:"  /><br />
+			<h:outputLabel for="tsh" value="TSH:" />
+			<br />
 			<p:inputText id="tsh"
-						 value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tsh}" 
-						 title="Informe o valor do resultado do tsh" />
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tsh}"
+				title="Informe o valor do resultado do tsh" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="irt" value="IRT:"  /><br />
+			<h:outputLabel for="irt" value="IRT:" />
+			<br />
 			<p:inputText id="irt"
-						 value="#{testeDoPezinhoResultadoHome.testeDoPezinho.irt}" 
-						 title="Informe o valor do resultado do irt" />
-		</h:panelGroup>	
-		<h:panelGroup>
-			<h:outputLabel for="pku" value="PKU:"  /><br />
-			<p:inputText id="pku"
-						 value="#{testeDoPezinhoResultadoHome.testeDoPezinho.pku}" 
-						 title="Informe o valor do resultado do pku" />
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.irt}"
+				title="Informe o valor do resultado do irt" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="hemoglobina" value="Hemoglobina:"  /><br />
+			<h:outputLabel for="pku" value="PKU:" />
+			<br />
+			<p:inputText id="pku"
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.pku}"
+				title="Informe o valor do resultado do pku" />
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputLabel for="hemoglobina" value="Hemoglobina:" />
+			<br />
 			<p:inputText id="hemoglobina"
-						 value="#{testeDoPezinhoResultadoHome.testeDoPezinho.hemoglobinas}" 
-						 title="Informe o valor do resultado da hemoglobina" />
+				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.hemoglobinas}"
+				title="Informe o valor do resultado da hemoglobina" />
 		</h:panelGroup>
 	</h:panelGrid>
-	<br/>
-	<h:outputText value="Dados do Exame" 
-				  style="font-weight:bold" />
-	<br/>
-	<h:panelGrid id="testeDoPezinhoResultadoPanelGrid"
-				 columns="4" 
-				 width="100%" >
+	<br />
+	<h:outputText value="Dados do Exame" style="font-weight:bold" />
+	<br />
+	<h:panelGrid id="testeDoPezinhoResultadoPanelGrid" columns="4"
+		width="100%">
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="tipoExame" value="Tipo de Exame:"  /><br />
+			<font color="red">*</font>
+			<h:outputLabel for="tipoExame" value="Tipo de Exame:" />
+			<br />
 			<p:selectOneMenu id="tipoExame"
-							 value="#{testeDoPezinhoResultadoHome.instancia.tipoExame}" 
-							 effect="fade" 
-							 converter="tipoExameConversor">  
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="" /> 
-	            <f:selectItems value="#{tipoExameHome.tipoExameLista}" 
-	            			   var="tipoExame" 
-	            			   itemLabel="#{tipoExame.nome}" 
-	            			   itemValue="#{tipoExame}"/> 
-	        </p:selectOneMenu>
+				value="#{testeDoPezinhoResultadoHome.instancia.tipoExame}"
+				effect="fade" converter="tipoExameConversor">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{tipoExameHome.tipoExameLista}"
+					var="tipoExame" itemLabel="#{tipoExame.nome}"
+					itemValue="#{tipoExame}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="metodo" value="Método:"  /><br />
+			<font color="red">*</font>
+			<h:outputLabel for="metodo" value="Método:" />
+			<br />
 			<p:selectOneMenu id="metodo"
-							 value="#{testeDoPezinhoResultadoHome.instancia.metodo}" 
-							 effect="fade">
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="#{null}" /> 
-	            <f:selectItems value="#{itensPadrao.tipoMetodoExameEnumItens}" />
-	        </p:selectOneMenu>
+				value="#{testeDoPezinhoResultadoHome.instancia.metodo}"
+				effect="fade">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+				<f:selectItems value="#{itensPadrao.tipoMetodoExameEnumItens}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="resultado" value="Resultado:"  /><br />
+			<font color="red">*</font>
+			<h:outputLabel for="resultado" value="Resultado:" />
+			<br />
 			<p:inputText id="resultado"
-						 value="#{testeDoPezinhoResultadoHome.instancia.resultado}" 
-						 title="Informe o valor do resultado do exame" />
+				value="#{testeDoPezinhoResultadoHome.instancia.resultado}"
+				title="Informe o valor do resultado do exame" />
 		</h:panelGroup>
-		
-		<h:panelGroup> 
-			 <p:commandLink action="#{testeDoPezinhoResultadoHome.addResultado}"
-							update="padraoTabView:testeDoPezinhoResultadoListaPanelGrid"
-							title="Clique aqui para adicionar o resultado">
+
+		<h:panelGroup>
+			<p:commandLink action="#{testeDoPezinhoResultadoHome.addResultado}"
+				update="padraoTabView:testeDoPezinhoResultadoListaPanelGrid"
+				title="Clique aqui para adicionar o resultado">
 				<h:graphicImage value="/Imagens/add.png" />
 			</p:commandLink>
-        </h:panelGroup>
-    </h:panelGrid>
-	<h:panelGrid id="testeDoPezinhoResultadoListaPanelGrid"
-				 columns="1" 
-				 width="100%" >
-        <h:panelGroup> 
-			 <p:dataTable var="resultadoPezinho" 
-			 			  value="#{testeDoPezinhoResultadoHome.listaResultadoPezinho}">  
-		        <p:column headerText="Exame">  
-		            <h:outputText value="#{resultadoPezinho.tipoExame.nome}" />  
-		        </p:column>  
-		  
-		        <p:column headerText="Método">  
-		            <h:outputText value="#{resultadoPezinho.metodo.label}" />  
-		        </p:column>  
-		  
-		        <p:column headerText="Valor de Referência">  
-		            <h:outputText value="#{resultadoPezinho.tipoExame.valorReferencia}" />  
-		        </p:column>  
-		  
-		        <p:column headerText="Resultado">  
-		            <h:outputText value="#{resultadoPezinho.resultado}" />  
-		        </p:column>
-		        
-		        <p:column style="width:60px; text-align: center;" >
-					<p:commandLink  action="#{testeDoPezinhoResultadoHome.apagarExame()}"
-									update="padraoTabView:testeDoPezinhoResultadoListaPanelGrid" 
-									title="Apagar"
-									style="padding-right:10px;" >
-						<f:setPropertyActionListener value="#{resultadoPezinho}" target="#{testeDoPezinhoResultadoHome.instancia}" />
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid id="testeDoPezinhoResultadoListaPanelGrid" columns="1"
+		width="100%">
+		<h:panelGroup>
+			<p:dataTable var="resultadoPezinho"
+				value="#{testeDoPezinhoResultadoHome.listaResultadoPezinho}">
+				<p:column headerText="Exame">
+					<h:outputText value="#{resultadoPezinho.tipoExame.nome}" />
+				</p:column>
+
+				<p:column headerText="Método">
+					<h:outputText value="#{resultadoPezinho.metodo.label}" />
+				</p:column>
+
+				<p:column headerText="Valor de Referência">
+					<h:outputText value="#{resultadoPezinho.tipoExame.valorReferencia}" />
+				</p:column>
+
+				<p:column headerText="Resultado">
+					<h:outputText value="#{resultadoPezinho.resultado}" />
+				</p:column>
+
+				<p:column style="width:60px; text-align: center;">
+					<p:commandLink
+						action="#{testeDoPezinhoResultadoHome.apagarExame()}"
+						update="padraoTabView:testeDoPezinhoResultadoListaPanelGrid"
+						title="Apagar" style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{resultadoPezinho}"
+							target="#{testeDoPezinhoResultadoHome.instancia}" />
 						<h:graphicImage value="/Imagens/delete.png" />
 					</p:commandLink>
 				</p:column>
-		    </p:dataTable>  
-        </h:panelGroup>
-        
-        
+			</p:dataTable>
+		</h:panelGroup>
+
+
 	</h:panelGrid>
 </ui:composition>

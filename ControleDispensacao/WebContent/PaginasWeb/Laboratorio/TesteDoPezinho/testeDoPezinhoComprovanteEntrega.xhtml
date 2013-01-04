@@ -2,71 +2,51 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templateLimpo.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 
 	<ui:define name="conteudoPadrao">
-		
-		<table border="2" >
+
+		<table border="2">
 			<tr>
-				<th>
-					Serviço de Triagem Neonatal
-				</th>
+				<th>Serviço de Triagem Neonatal</th>
 			</tr>
 			<tr>
-				<th>
-					HU - Hospital Universitário
-				</th>
+				<th>HU - Hospital Universitário</th>
 			</tr>
 			<tr>
-				<td>
-					<b>Unidade de Saúde:</b><br/>
-					#{testeDoPezinhoHome.instancia.unidadeSaude.estabelecimento}
-				</td>
+				<td><b>Unidade de Saúde:</b><br />
+					#{testeDoPezinhoHome.instancia.unidadeSaude.estabelecimento}</td>
 			</tr>
 			<tr>
-				<td>
-					<b>Telefone:</b><br/>
-					
-				</td>
+				<td><b>Telefone:</b><br /></td>
 			</tr>
 			<tr>
-				<td>
-					<b>Nome:</b><br/>
-					#{testeDoPezinhoHome.instancia.nome}
-				</td>
+				<td><b>Nome:</b><br /> #{testeDoPezinhoHome.instancia.nome}</td>
 			</tr>
 			<tr>
-				<td>
-					<b>Data de Nascimento:</b><br/>
-					<h:outputText value="#{testeDoPezinhoHome.instancia.dataNascimento}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-					</h:outputText>
-				</td>
+				<td><b>Data de Nascimento:</b><br /> <h:outputText
+						value="#{testeDoPezinhoHome.instancia.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText></td>
 			</tr>
 			<tr>
-				<td>
-					<b>Data da Coleta:</b><br/>
-					<h:outputText value="#{testeDoPezinhoHome.instancia.dataColeta}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-					</h:outputText>
-				</td>
+				<td><b>Data da Coleta:</b><br /> <h:outputText
+						value="#{testeDoPezinhoHome.instancia.dataColeta}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText></td>
 			</tr>
 			<tr>
-				<td>
-					<b>Data Prevista Para o Resultado:</b><br/>
-					<h:outputText value="#{testeDoPezinhoHome.instancia.dataResultado}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-					</h:outputText>
-				</td>
+				<td><b>Data Prevista Para o Resultado:</b><br /> <h:outputText
+						value="#{testeDoPezinhoHome.instancia.dataResultado}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText></td>
 			</tr>
 			<tr height="100px" valign="bottom">
-				<td>
-					"TESTE DO PEZINHO, DIREITO DE TODO RECÉM-NASCIDO"
-				</td>
+				<td>"TESTE DO PEZINHO, DIREITO DE TODO RECÉM-NASCIDO"</td>
 			</tr>
 		</table>
 	</ui:define>

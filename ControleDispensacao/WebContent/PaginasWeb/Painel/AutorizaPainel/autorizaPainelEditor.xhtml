@@ -2,41 +2,36 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="autorizaPainelPanelGrid"
-				 columns="3" 
-				 width="100%" >
-				 
+	<h:panelGrid id="autorizaPainelPanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="especialidade" value="Especialidade:" /><br />
-	  		<p:autoComplete id="especialidade"
-	  						required="true" 
-	  						forceSelection="true"
-	  						value="#{autorizaPainelHome.instancia.especialidade}"
-							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
-							var="especialidade" 
-							itemLabel="#{especialidade.descricao}" 
-							itemValue="#{especialidade}" 
-							converter="especialidadeConversor" />
+			<font color="red">*</font>
+			<h:outputLabel for="especialidade" value="Especialidade:" />
+			<br />
+			<p:autoComplete id="especialidade" required="true"
+				forceSelection="true"
+				value="#{autorizaPainelHome.instancia.especialidade}"
+				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
+				var="especialidade" itemLabel="#{especialidade.descricao}"
+				itemValue="#{especialidade}" converter="especialidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
-		</h:panelGroup>		
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="painel" value="Painel:" /><br />
-	  		<p:autoComplete id="painel"
-	  						required="true" 
-	  						forceSelection="true"
-	  						value="#{autorizaPainelHome.instancia.painel}"
-							completeMethod="#{painelHome.getListaPainelAutoComplete}" 
-							var="painel" 
-							itemLabel="#{painel.descricao}" 
-							itemValue="#{painel}" 
-							converter="painelConversor" />
+			<font color="red">*</font>
+			<h:outputLabel for="painel" value="Painel:" />
+			<br />
+			<p:autoComplete id="painel" required="true" forceSelection="true"
+				value="#{autorizaPainelHome.instancia.painel}"
+				completeMethod="#{painelHome.getListaPainelAutoComplete}"
+				var="painel" itemLabel="#{painel.descricao}" itemValue="#{painel}"
+				converter="painelConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 	</h:panelGrid>

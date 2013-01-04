@@ -1,59 +1,61 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaDosagem" 
-					value="#{prescricaoDispensadaConsulta.list}" 
-					var="linha"
-					emptyMessage="Não foi encontrado registros" 
-					rows="10" 
-					dblClickSelect="true"
-					paginator="true"
-					selectionMode="single" 
-					rowKey="#{linha.idPrescricao}">
-		
+	<p:dataTable id="tabelaDosagem"
+		value="#{prescricaoDispensadaConsulta.list}" var="linha"
+		emptyMessage="Não foi encontrado registros" rows="10"
+		dblClickSelect="true" paginator="true" selectionMode="single"
+		rowKey="#{linha.idPrescricao}">
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Paciente" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Paciente" />
+			</f:facet>
 			<h:outputText value="#{linha.paciente}" />
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Peso" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Peso" />
+			</f:facet>
 			<h:outputText value="#{linha.massa}" />
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Leito" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Leito" />
+			</f:facet>
 			<h:outputText value="#{linha.leito}" />
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Número" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Número" />
+			</f:facet>
 			<h:outputText value="#{linha.numero}" />
 		</p:column>
-					
-		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:dosagemForm" 
-						   title="Editar" 
-						   oncomplete="dosagemDialog.show();"
-						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{dosagemHome.instancia}" />
+
+		<p:column style="width:60px; text-align: center;">
+			<p:commandLink update="padraoTabView:dosagemForm" title="Editar"
+				oncomplete="dosagemDialog.show();" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{dosagemHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
-			
-			<p:commandLink  action="#{dosagemHome.apagar()}"
-							update="tabelaDosagem padraoTabView:dosagemForm" 
-							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-							title="Apagar"
-							rendered="false" 
-							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{dosagemHome.instancia}" />
+
+			<p:commandLink action="#{dosagemHome.apagar()}"
+				update="tabelaDosagem padraoTabView:dosagemForm"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" rendered="false" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{dosagemHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
-		</p:column>  
+		</p:column>
 	</p:dataTable>
-	
+
 </ui:composition>

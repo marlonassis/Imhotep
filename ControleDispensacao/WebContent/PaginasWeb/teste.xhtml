@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Controle de acesso">
+			<p:fieldset legend="Login" collapsed="false" toggleable="true"
+				toggleSpeed="500">
+				<h:form id="loginForm">
+					<p:dataTable id="tabelaMaterial" value="#{materialConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idMaterial}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Código" />
+			</f:facet>
+			<h:outputText value="#{linha.codigoMaterial}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Descrição" />
+			</f:facet>
+			<h:outputText value="#{linha.descricao}" />
+		</p:column>
+		<p:column style="width:60px; text-align: center;">
+			<p:commandLink update="padraoTabView:materialForm" title="Editar"
+				style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{materialHome.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{materialHome.apagar()}"
+				update="tabelaMaterial padraoTabView:materialForm"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{materialHome.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+				</h:form>
+			</p:fieldset>
+		</p:tab>
+	</ui:define>
+</ui:composition>

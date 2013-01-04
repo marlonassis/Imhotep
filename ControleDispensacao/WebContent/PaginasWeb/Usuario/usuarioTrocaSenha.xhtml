@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,38 +10,40 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabUsuario" title="Alteração de senha" >
-			<h:form id="usuarioForm" prependId="false" >
+		<p:tab id="tabUsuario" title="Alteração de senha">
+			<h:form id="usuarioForm" prependId="false">
 				<p:growl id="growl" />
-				<h:panelGrid columns="1" >
+				<h:panelGrid columns="1">
 					<h:panelGroup>
-						<font color="red" >*</font><h:outputLabel for="senhaAntiga" value="Senha antiga:"  /><br />
-						<p:inputText id="senhaAntiga"
-									 value="#{usuarioHome.senhaAntiga}" 
-									 required="true"
-									 type="password"/>
+						<font color="red">*</font>
+						<h:outputLabel for="senhaAntiga" value="Senha antiga:" />
+						<br />
+						<p:inputText id="senhaAntiga" value="#{usuarioHome.senhaAntiga}"
+							required="true" type="password" />
 					</h:panelGroup>
 					<h:panelGroup>
-						<font color="red" >*</font><h:outputLabel for="senhaNova" value="Senha nova:"  /><br />
-						<p:inputText id="senhaNova"
-									 value="#{usuarioHome.senhaNova}" 
-									 required="true" 
-									 type="password"/>
+						<font color="red">*</font>
+						<h:outputLabel for="senhaNova" value="Senha nova:" />
+						<br />
+						<p:inputText id="senhaNova" value="#{usuarioHome.senhaNova}"
+							required="true" type="password" />
 					</h:panelGroup>
 					<h:panelGroup>
-						<font color="red" >*</font><h:outputLabel for="senhaNovaConfirmacao" value="Confirme a senha nova:"  /><br />
+						<font color="red">*</font>
+						<h:outputLabel for="senhaNovaConfirmacao"
+							value="Confirme a senha nova:" />
+						<br />
 						<p:inputText id="senhaNovaConfirmacao"
-									 value="#{usuarioHome.senhaNovaConfirmacao}" 
-									 required="true" 
-									 type="password" />
+							value="#{usuarioHome.senhaNovaConfirmacao}" required="true"
+							type="password" />
 					</h:panelGroup>
 					<h:panelGroup>
-						<p:commandButton value="Alterar Senha" 
-										 action="#{usuarioHome.trocaSenha()}"
-										 update="padraoTabView:usuarioForm" />
+						<p:commandButton value="Alterar Senha"
+							action="#{usuarioHome.trocaSenha()}"
+							update="padraoTabView:usuarioForm" />
 					</h:panelGroup>
 				</h:panelGrid>
-			</h:form>	
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

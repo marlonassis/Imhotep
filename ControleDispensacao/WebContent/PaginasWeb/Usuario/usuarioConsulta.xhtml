@@ -2,19 +2,18 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="usuarioPanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="usuarioPanelGridConsulta" columns="3" width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="loginConsulta" value="Login:"  /><br />
-			<p:inputText id="loginConsulta" 
-						 value="#{usuarioConsulta.instancia.login}" 
-						 title="Informe o apelido de acesso"/> 
+			<h:outputLabel for="loginConsulta" value="Login:" />
+			<br />
+			<p:inputText id="loginConsulta"
+				value="#{usuarioConsulta.instancia.login}"
+				title="Informe o apelido de acesso" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

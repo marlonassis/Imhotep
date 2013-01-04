@@ -3,23 +3,27 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-<f:view contentType="text/html"
-		locale="pt_BR">
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html" locale="pt_BR">
 
 	<h:head>
 		<title>Controle de Dispensação</title>
 		<ui:insert name="head"></ui:insert>
-		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery-1.7.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery.price_format.1.6.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery.maskMoney1.4.1.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/moeda.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/basico.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/concentrador.js"></script>
-		
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery.price_format.1.6.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery.maskMoney1.4.1.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/moeda.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/basico.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/concentrador.js"></script>
+
 		<script type="text/javascript">
 			PrimeFaces.locales['pt_BR'] = {
 			                closeText: 'Fechar',
@@ -49,10 +53,11 @@
 			                allDayText : 'Todo Dia'
 			            };
 </script>
-		
+
 	</h:head>
 
-	<h:body id="body" >
+
+<h:body id="body" >
 	
 		<div class="ui-widget ui-widget-header">
 			<div id="logo">
@@ -130,5 +135,6 @@
         
         </ui:insert>
 	</h:body>
+
 </f:view>
 </html>

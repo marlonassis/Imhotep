@@ -2,43 +2,39 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="livroPanelGrid"
-				 columns="3" 
-				 width="100%" >
+	<h:panelGrid id="livroPanelGrid" columns="3" width="100%">
 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="profissional" value="Profissional:" /><br />
-	  		<p:autoComplete id="profissional" 
-	  						value="#{autorizaUnidadeProfissionalHome.instancia.profissional}"
-							completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}"
-							required="true" 
-							forceSelection="true"
-							var="profissional" 
-							itemLabel="#{profissional.nome}" 
-							itemValue="#{profissional}" 
-							converter="profissionalConversor" />
+			<font color="red">*</font>
+			<h:outputLabel for="profissional" value="Profissional:" />
+			<br />
+			<p:autoComplete id="profissional"
+				value="#{autorizaUnidadeProfissionalHome.instancia.profissional}"
+				completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}"
+				required="true" forceSelection="true" var="profissional"
+				itemLabel="#{profissional.nome}" itemValue="#{profissional}"
+				converter="profissionalConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-				 
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="unidade" value="Unidade:" /><br />
-	  		<p:autoComplete id="unidade" 
-	  						value="#{autorizaUnidadeProfissionalHome.instancia.unidade}"
-							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
-							var="unidade" 
-							forceSelection="true"
-							required="true"
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}" 
-							converter="unidadeConversor" />
+			<font color="red">*</font>
+			<h:outputLabel for="unidade" value="Unidade:" />
+			<br />
+			<p:autoComplete id="unidade"
+				value="#{autorizaUnidadeProfissionalHome.instancia.unidade}"
+				completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}"
+				var="unidade" forceSelection="true" required="true"
+				itemLabel="#{unidade.nome}" itemValue="#{unidade}"
+				converter="unidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

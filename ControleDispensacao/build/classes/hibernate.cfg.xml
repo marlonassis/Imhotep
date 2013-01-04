@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="ControleDispensacao">
+
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.connection.show_sql">true</property>
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.username">postgres</property>
+		<property name="hibernate.connection.password">postgres</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_farmacia</property>
+
+		<mapping class="br.com.ControleDispensacao.entidade.Usuario" />
+		<mapping class="br.com.ControleDispensacao.entidade.Menu" />
+		<mapping class="br.com.ControleDispensacao.entidade.Fabricante" />
+		<mapping class="br.com.ControleDispensacao.entidade.TipoMaterial" />
+		<mapping class="br.com.ControleDispensacao.entidade.Grupo" />
+		<mapping class="br.com.ControleDispensacao.entidade.SubGrupo" />
+		<mapping class="br.com.ControleDispensacao.entidade.Familia" />
+		<mapping class="br.com.ControleDispensacao.entidade.Material" />
+		<mapping class="br.com.ControleDispensacao.entidade.UnidadeMaterial" />
+		<mapping class="br.com.ControleDispensacao.entidade.ListaEspecial" />
+		<mapping class="br.com.ControleDispensacao.entidade.Livro" />
+		<mapping class="br.com.ControleDispensacao.entidade.AutorizaMenu" />
+		<mapping class="br.com.ControleDispensacao.entidade.TipoConselho" />
+		<mapping
+			class="br.com.ControleDispensacao.entidade.LiberaMaterialEspecialidade" />
+		<mapping class="br.com.ControleDispensacao.entidade.Profissional" />
+		<mapping class="br.com.ControleDispensacao.entidade.Estado" />
+		<mapping class="br.com.ControleDispensacao.entidade.Cidade" />
+		<mapping class="br.com.ControleDispensacao.entidade.Unidade" />
+		<mapping
+			class="br.com.ControleDispensacao.entidade.AutorizaUnidadeProfissional" />
+		<mapping class="br.com.ControleDispensacao.entidade.SituacaoPaciente" />
+		<mapping class="br.com.ControleDispensacao.entidade.Paciente" />
+		<mapping class="br.com.ControleDispensacao.entidade.TipoMovimento" />
+		<mapping class="br.com.ControleDispensacao.entidade.MovimentoGeral" />
+		<mapping class="br.com.ControleDispensacao.entidade.ItensMovimentoGeral" />
+		<mapping class="br.com.ControleDispensacao.entidade.Estoque" />
+		<mapping class="br.com.ControleDispensacao.entidade.MovimentoLivro" />
+		<mapping class="br.com.ControleDispensacao.entidade.Especialidade" />
+		<mapping class="br.com.ControleDispensacao.entidade.Prescricao" />
+		<mapping class="br.com.ControleDispensacao.entidade.PrescricaoItem" />
+		<mapping class="br.com.ControleDispensacao.entidade.PrescricaoItemDose" />
+		<mapping class="br.com.ControleDispensacao.entidade.Chamado" />
+		<mapping class="br.com.ControleDispensacao.entidade.Hospital" />
+		<mapping class="br.com.ControleDispensacao.entidade.Doacao" />
+		<mapping class="br.com.ControleDispensacao.entidade.ErroAplicacao" />
+		<mapping class="br.com.ControleDispensacao.entidade.Painel" />
+		<mapping class="br.com.ControleDispensacao.entidade.AutorizaPainel" />
+		<mapping
+			class="br.com.ControleDispensacao.entidade.PrescricaoItemEstoqueSaida" />
+		<mapping
+			class="br.com.ControleDispensacao.entidade.ControleMedicacaoRestritoSCHI" />
+		<mapping class="br.com.ControleDispensacao.entidade.CuidadosPaciente" />
+		<mapping class="br.com.ControleDispensacao.entidade.CuidadosPrescricao" />
+		<mapping class="br.com.ControleDispensacao.entidade.EstoqueCentroCirurgico" />
+		<mapping
+			class="br.com.ControleDispensacao.entidade.EstoqueCentroCirurgicoLivro" />
+		<mapping class="br.com.ControleDispensacao.entidade.Configuracao" />
+		<mapping class="br.com.ControleDispensacao.entidade.PacienteEntrada" />
+		<mapping class="br.com.ControleDispensacao.entidade.SqlExecutado" />
+		<mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinho" />
+		<mapping class="br.com.ControleDispensacao.entidade.TesteDoPezinhoResultado" />
+		<mapping class="br.com.ControleDispensacao.entidade.TipoExame" />
+		<mapping class="br.com.ControleDispensacao.entidade.UnidadeSaude" />
+
+	</session-factory>
+</hibernate-configuration>

@@ -2,40 +2,40 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="profissionalPanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="profissionalPanelGridConsulta" columns="3"
+		width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
-			<p:inputText id="nomeConsulta" 
-						 value="#{profissionalConsulta.instancia.nome}"
-						 title="Informe o nome do profissional" />
+			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			<br />
+			<p:inputText id="nomeConsulta"
+				value="#{profissionalConsulta.instancia.nome}"
+				title="Informe o nome do profissional" />
 		</h:panelGroup>
-	
+
 		<h:panelGroup>
-			<h:outputLabel for="matriculaConsulta" value="Matrícula:"  /><br />
-			<p:inputText id="matriculaConsulta" 
-						 value="#{profissionalConsulta.instancia.matricula}"
-						 onkeyup="apenasNumeros(this);"
-						 title="Informe a matrícula do profissional" />
+			<h:outputLabel for="matriculaConsulta" value="Matrícula:" />
+			<br />
+			<p:inputText id="matriculaConsulta"
+				value="#{profissionalConsulta.instancia.matricula}"
+				onkeyup="apenasNumeros(this);"
+				title="Informe a matrícula do profissional" />
 		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="especialidadeConsulta" value="Especialidade:"  /><br />
-	  		<p:autoComplete id="especialidadeConsulta" 
-	  						value="#{profissionalConsulta.instancia.especialidade}"
-							completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}" 
-							var="especialidade"
-							forceSelection="true"
-							title="Informe a especialidade"
-							itemLabel="#{especialidade.descricao}" 
-							itemValue="#{especialidade}"
-							converter="especialidadeConversor" />
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="especialidadeConsulta" value="Especialidade:" />
+			<br />
+			<p:autoComplete id="especialidadeConsulta"
+				value="#{profissionalConsulta.instancia.especialidade}"
+				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
+				var="especialidade" forceSelection="true"
+				title="Informe a especialidade"
+				itemLabel="#{especialidade.descricao}" itemValue="#{especialidade}"
+				converter="especialidadeConversor" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

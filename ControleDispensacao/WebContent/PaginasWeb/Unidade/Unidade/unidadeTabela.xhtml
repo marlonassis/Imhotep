@@ -1,52 +1,55 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable 	id="tabelaUnidade" 
-					value="#{unidadeConsulta.list}" 
-					var="linha"
-					dblClickSelect="true"
-					emptyMessage="Não foi encontrado registros" 
-					rows="10" 
-					paginator="true"
-					selectionMode="single" 
-					rowKey="#{linha.idUnidade}">
-					
+	<p:dataTable id="tabelaUnidade" value="#{unidadeConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idUnidade}">
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Sigla" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Sigla" />
+			</f:facet>
 			<h:outputText value="#{linha.sigla}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Nome" />
+			</f:facet>
 			<h:outputText value="#{linha.nome}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Coordenador" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Coordenador" />
+			</f:facet>
 			<h:outputText value="#{linha.coordenador.nome}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Unidade Superior" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Unidade Superior" />
+			</f:facet>
 			<h:outputText value="#{linha.unidadePai.nome}" />
 		</p:column>
-		<p:column style="width:60px; text-align: center;" >
-			<p:commandLink update="padraoTabView:unidadeForm" 
-						   title="Editar" 
-						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{unidadeHome.instancia}" />
+		<p:column style="width:60px; text-align: center;">
+			<p:commandLink update="padraoTabView:unidadeForm" title="Editar"
+				style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{unidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
-			<p:commandLink  action="#{unidadeHome.apagar()}"
-							update="tabelaUnidade padraoTabView:unidadeForm" 
-							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-							title="Apagar" 
-							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{unidadeHome.instancia}" />
+			<p:commandLink action="#{unidadeHome.apagar()}"
+				update="tabelaUnidade padraoTabView:unidadeForm"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{unidadeHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
-		</p:column>  
+		</p:column>
 	</p:dataTable>
-	
+
 </ui:composition>

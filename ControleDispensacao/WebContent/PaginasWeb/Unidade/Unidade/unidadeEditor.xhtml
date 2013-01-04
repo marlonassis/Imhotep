@@ -2,73 +2,66 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="unidadePanelGrid"
-				 columns="3" 
-				 width="100%" >
-				
+	<h:panelGrid id="unidadePanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="sigla" value="Sigla:"  /><br />
-			<p:inputText id="sigla" 
-						 value="#{unidadeHome.instancia.sigla}" 
-						 required="true"
-						 title="Informe a descrição do unidade" />
-		</h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="sigla" value="Nome:"  /><br />
-			<p:inputText id="nome" 
-						 value="#{unidadeHome.instancia.nome}" 
-						 required="true"
-						 title="Informe a descrição do unidade" />
-		</h:panelGroup>
-		
-		<h:panelGroup >
-			<h:outputLabel for="telefone" value="Telefone:"  /><br />
-			<p:inputMask id="telefone"
-						 mask="(99)9999-9999"
-						 value="#{unidadeHome.instancia.telefone}"
-						 title="Campo texto com máscara para telefone"
-						 converter="telefoneConversor"
-						 required="false"/>
-		</h:panelGroup>
-		
-		<h:panelGroup >
-			<h:outputLabel for="email" value="e-mail:"  /><br />
-			<p:inputText id="email"
-						 value="#{unidadeHome.instancia.email}"
-						 title="Informe o e-mail do cliente"
-						 onblur="validaEmail(this);"
-						 required="false"/>
-		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="unidadePai" value="Unidade Superior:"  /><br />
-	  		<p:autoComplete id="unidadePai" 
-	  						value="#{unidadeHome.instancia.unidadePai}"
-	  						forceSelection="true"
-							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
-							var="unidade"
-							title="Informe o grupo do sub-grupo"
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}"
-							converter="unidadeConversor" />
+			<font color="red">*</font>
+			<h:outputLabel for="sigla" value="Sigla:" />
+			<br />
+			<p:inputText id="sigla" value="#{unidadeHome.instancia.sigla}"
+				required="true" title="Informe a descrição do unidade" />
 		</h:panelGroup>
 
-		<h:panelGroup style="align:left;" >
-			<font color="red" >*</font><h:outputLabel for="coordenador" value="Coordenador:"  /><br />
-	  		<p:autoComplete id="coordenador" 
-	  						forceSelection="true"
-	  						value="#{unidadeHome.instancia.coordenador}"
-							completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}" 
-							var="profissional"
-							required="true"
-							title="Informe o grupo do sub-grupo"
-							itemLabel="#{profissional.nome}" 
-							itemValue="#{profissional}"
-							converter="profissionalConversor" />
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="sigla" value="Nome:" />
+			<br />
+			<p:inputText id="nome" value="#{unidadeHome.instancia.nome}"
+				required="true" title="Informe a descrição do unidade" />
 		</h:panelGroup>
-		
+
+		<h:panelGroup>
+			<h:outputLabel for="telefone" value="Telefone:" />
+			<br />
+			<p:inputMask id="telefone" mask="(99)9999-9999"
+				value="#{unidadeHome.instancia.telefone}"
+				title="Campo texto com máscara para telefone"
+				converter="telefoneConversor" required="false" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="email" value="e-mail:" />
+			<br />
+			<p:inputText id="email" value="#{unidadeHome.instancia.email}"
+				title="Informe o e-mail do cliente" onblur="validaEmail(this);"
+				required="false" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="unidadePai" value="Unidade Superior:" />
+			<br />
+			<p:autoComplete id="unidadePai"
+				value="#{unidadeHome.instancia.unidadePai}" forceSelection="true"
+				completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}"
+				var="unidade" title="Informe o grupo do sub-grupo"
+				itemLabel="#{unidade.nome}" itemValue="#{unidade}"
+				converter="unidadeConversor" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="coordenador" value="Coordenador:" />
+			<br />
+			<p:autoComplete id="coordenador" forceSelection="true"
+				value="#{unidadeHome.instancia.coordenador}"
+				completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}"
+				var="profissional" required="true"
+				title="Informe o grupo do sub-grupo"
+				itemLabel="#{profissional.nome}" itemValue="#{profissional}"
+				converter="profissionalConversor" />
+		</h:panelGroup>
+
 	</h:panelGrid>
 </ui:composition>

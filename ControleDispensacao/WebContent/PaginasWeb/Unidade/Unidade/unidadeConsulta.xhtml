@@ -2,17 +2,16 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="unidadePanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="unidadePanelGridConsulta" columns="3" width="100%">
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:"  /><br />
-			<p:inputText id="nomeConsulta" 
-						 value="#{unidadeConsulta.instancia.nome}" 
-						 title="Informe o nome da unidade" />
+			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			<br />
+			<p:inputText id="nomeConsulta"
+				value="#{unidadeConsulta.instancia.nome}"
+				title="Informe o nome da unidade" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

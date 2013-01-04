@@ -3,25 +3,27 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
 <f:view contentType="text/html">
 
 	<h:head>
-		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery-1.7.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/basico.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/concentrador.js"></script>
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery-1.7.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/basico.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/concentrador.js"></script>
 	</h:head>
 
 
 	<h:body>
-		<div align="center" >
-			<p:tabView id="padraoTabView" 
-						   effect="opacity" 
-						   effectDuration="normal" 
-						   cache="true" >
+		<div align="center">
+			<p:tabView id="padraoTabView" effect="opacity"
+				effectDuration="normal" cache="true">
 				<ui:insert name="conteudoPadrao"></ui:insert>
 			</p:tabView>
 		</div>

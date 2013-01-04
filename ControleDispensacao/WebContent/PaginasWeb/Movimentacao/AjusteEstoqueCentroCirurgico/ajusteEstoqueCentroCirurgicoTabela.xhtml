@@ -1,47 +1,55 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable id="tabelaAjusteEstoqueCentroCirurgico" 
-				 value="#{estoqueCentroCirurgicoLivroEstoqueAtualConsulta.list}" 
-				 var="linha"
-				 dblClickSelect="true"
-				 emptyMessage="Não foi encontrado registros" 
-				 rows="10" 
-				 paginator="true"
-				 selectionMode="single" 
-				 rowKey="#{linha.idEstoqueCentroCirurgicoLivro}">
-					
+	<p:dataTable id="tabelaAjusteEstoqueCentroCirurgico"
+		value="#{estoqueCentroCirurgicoLivroEstoqueAtualConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idEstoqueCentroCirurgicoLivro}">
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Descrição" /></f:facet>
-			<h:outputText value="#{linha.estoqueCentroCirurgico.material.descricao}" />
+			<f:facet name="header">
+				<h:outputText value="Descrição" />
+			</f:facet>
+			<h:outputText
+				value="#{linha.estoqueCentroCirurgico.material.descricao}" />
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Fabricante" /></f:facet>
-			<h:outputText value="#{linha.estoqueCentroCirurgico.fabricante.descricao}" />
+			<f:facet name="header">
+				<h:outputText value="Fabricante" />
+			</f:facet>
+			<h:outputText
+				value="#{linha.estoqueCentroCirurgico.fabricante.descricao}" />
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Lote" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Lote" />
+			</f:facet>
 			<h:outputText value="#{linha.estoqueCentroCirurgico.lote}" />
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Validade" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Validade" />
+			</f:facet>
 			<h:outputText value="#{linha.estoqueCentroCirurgico.dataValidade}">
-				<f:convertDateTime pattern="MMMM/yyyy"/>
+				<f:convertDateTime pattern="MMMM/yyyy" />
 			</h:outputText>
 		</p:column>
-		
+
 		<p:column>
-			<f:facet name="header"><h:outputText value="Saldo Atual" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Saldo Atual" />
+			</f:facet>
 			<h:outputText value="#{linha.saldoAtual}" />
 		</p:column>
-	
+
 	</p:dataTable>
-	
+
 </ui:composition>

@@ -2,106 +2,96 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="ajusteEstoquePanelGrid"
-				 columns="3" 
-				 width="100%" >
-				 
+	<h:panelGrid id="ajusteEstoquePanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="tipoMovimento" value="Tipo do movimento:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.itensMovimentoGeral.movimentoGeral.tipoMovimento}" 
-							 effect="fade" 
-							 converter="tipoMovimentoConversor"
-							 required="true">
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="" /> 
-	            <f:selectItems value="#{tipoMovimentoConsulta.list}" 
-	            			   var="tipoMovimento" 
-	            			   itemLabel="#{tipoMovimento.descricao}" 
-	            			   itemValue="#{tipoMovimento}"/>  
-	        </p:selectOneMenu>
-        </h:panelGroup>
-		
-		<h:panelGroup id="hospitalPanelGroup" >
-			<h:panelGrid columns="2" 
-				 width="100%" >
+			<font color="red">*</font>
+			<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
+			<br />
+			<p:selectOneMenu
+				value="#{ajusteEstoqueHome.itensMovimentoGeral.movimentoGeral.tipoMovimento}"
+				effect="fade" converter="tipoMovimentoConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{tipoMovimentoConsulta.list}"
+					var="tipoMovimento" itemLabel="#{tipoMovimento.descricao}"
+					itemValue="#{tipoMovimento}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup id="hospitalPanelGroup">
+			<h:panelGrid columns="2" width="100%">
 				<h:panelGroup>
-					<h:outputLabel for="hospital" value="Hospital:"  /><br />
-					<p:selectOneMenu value="#{ajusteEstoqueHome.itensMovimentoGeral.hospital}" 
-									 effect="fade" 
-									 converter="hospitalConversor"
-									 required="false">
-						<f:ajax event="change" 
-								render="hospitalPanelGroup" /> 
-						<f:selectItem itemLabel="Selecione..." 
-									  itemValue="#{null}" /> 
-			            <f:selectItems value="#{hospitalConsulta.list}" 
-			            			   var="hospital" 
-			            			   itemLabel="#{hospital.nome}" 
-			            			   itemValue="#{hospital}"/>  
-			        </p:selectOneMenu>
-		        </h:panelGroup>
-		
+					<h:outputLabel for="hospital" value="Hospital:" />
+					<br />
+					<p:selectOneMenu
+						value="#{ajusteEstoqueHome.itensMovimentoGeral.hospital}"
+						effect="fade" converter="hospitalConversor" required="false">
+						<f:ajax event="change" render="hospitalPanelGroup" />
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+						<f:selectItems value="#{hospitalConsulta.list}" var="hospital"
+							itemLabel="#{hospital.nome}" itemValue="#{hospital}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
 				<h:panelGroup id="dataDoacaoPanelGroup"
-							  rendered="#{ajusteEstoqueHome.itensMovimentoGeral.hospital != null}">
-					<font color="red" >*</font><h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
-					<p:calendar id="dataDoacao"
-								pattern="dd/MM/yyyy"
-								required="true"
-								value="#{ajusteEstoqueHome.itensMovimentoGeral.dataDoacao}" />
+					rendered="#{ajusteEstoqueHome.itensMovimentoGeral.hospital != null}">
+					<font color="red">*</font>
+					<h:outputLabel for="dataDoacao" value="Data da doação:" />
+					<br />
+					<p:calendar id="dataDoacao" pattern="dd/MM/yyyy" required="true"
+						value="#{ajusteEstoqueHome.itensMovimentoGeral.dataDoacao}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="motivo" value="Motivo:"  /><br />
-			<p:inputText id="motivo" 
-						 value="#{ajusteEstoqueHome.itensMovimentoGeral.movimentoGeral.motivo}" 
-						 required="true"
-						 title="Informe o motivo do ajuste" />
+			<font color="red">*</font>
+			<h:outputLabel for="motivo" value="Motivo:" />
+			<br />
+			<p:inputText id="motivo"
+				value="#{ajusteEstoqueHome.itensMovimentoGeral.movimentoGeral.motivo}"
+				required="true" title="Informe o motivo do ajuste" />
 		</h:panelGroup>
-		
-		<h:panelGroup id="materialPanelGroup" >
-			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.material}" 
-							 effect="fade" 
-							 converter="materialConversor"
-							 required="true">
-				<f:ajax event="change" 
-						listener="#{ajusteEstoqueHome.carregaEstoqueMaterial()}" 
-						render="estoquePanelGroup" />  
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="" /> 
-	            <f:selectItems value="#{materialHome.listaMaterialEstoque}" 
-	            			   var="material" 
-	            			   itemLabel="#{material.descricaoUnidadeMaterial}" 
-	            			   itemValue="#{material}"/> 
-	        </p:selectOneMenu>
+
+		<h:panelGroup id="materialPanelGroup">
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Material:" />
+			<br />
+			<p:selectOneMenu value="#{ajusteEstoqueHome.material}" effect="fade"
+				converter="materialConversor" required="true">
+				<f:ajax event="change"
+					listener="#{ajusteEstoqueHome.carregaEstoqueMaterial()}"
+					render="estoquePanelGroup" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{materialHome.listaMaterialEstoque}"
+					var="material" itemLabel="#{material.descricaoUnidadeMaterial}"
+					itemValue="#{material}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
-		
-		<h:panelGroup id="estoquePanelGroup" >
-			<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
-			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia}" 
-							 effect="fade" 
-							 converter="estoqueConversor"
-							 required="true">  
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="" /> 
-	            <f:selectItems value="#{ajusteEstoqueHome.estoqueList}" 
-	            			   var="estoque" 
-	            			   itemLabel="#{estoque.toString()}" 
-	            			   itemValue="#{estoque}"/> 
-	        </p:selectOneMenu>
+
+		<h:panelGroup id="estoquePanelGroup">
+			<font color="red">*</font>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:selectOneMenu value="#{ajusteEstoqueHome.instancia}" effect="fade"
+				converter="estoqueConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{ajusteEstoqueHome.estoqueList}"
+					var="estoque" itemLabel="#{estoque.toString()}"
+					itemValue="#{estoque}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
-			<p:inputText id="quantidade" 
-						 value="#{ajusteEstoqueHome.itensMovimentoGeral.quantidade}" 
-						 required="true"
-						 onkeyup="apenasNumero(this);"
-						 title="Informe a quantidade do ajuste" />
+			<font color="red">*</font>
+			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<br />
+			<p:inputText id="quantidade"
+				value="#{ajusteEstoqueHome.itensMovimentoGeral.quantidade}"
+				required="true" onkeyup="apenasNumero(this);"
+				title="Informe a quantidade do ajuste" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

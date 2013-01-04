@@ -3,71 +3,68 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-<f:view contentType="text/html"
-		locale="pt_BR">
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html" locale="pt_BR">
 
 	<h:head>
 		<title>Controle de Dispensação</title>
 		<ui:insert name="head"></ui:insert>
-		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery-1.7.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery.price_format.1.6.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/jquery.maskMoney1.4.1.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/moeda.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/basico.js"></script>
-		<script type="text/javascript" src="#{request.contextPath}/js/concentrador.js"></script>
-		
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery-1.7.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery.price_format.1.6.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery.maskMoney1.4.1.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/moeda.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/basico.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/concentrador.js"></script>
+
 	</h:head>
 
-	<h:body id="body" >
-	
-		<div id="geral" 
-			 align="center" >
-			<div id="conteudoPadrao" align="center" >
+	<h:body id="body">
+
+		<div id="geral" align="center">
+			<div id="conteudoPadrao" align="center">
 				<p:growl></p:growl>
-				
-				<p:dialog header="#{header}"
-						  widgetVar="padraoDialog" 
-						  modal="false" >  
-				    <ui:insert name="dialogGeneric"/>
-				</p:dialog> 
-				
-				<p:tabView id="padraoTabView" 
-						   effect="opacity" 
-						   effectDuration="normal" 
-						   cache="true" >
-					<ui:insert name="conteudoPadrao"/>
+
+				<p:dialog header="#{header}" widgetVar="padraoDialog" modal="false">
+					<ui:insert name="dialogGeneric" />
+				</p:dialog>
+
+				<p:tabView id="padraoTabView" effect="opacity"
+					effectDuration="normal" cache="true">
+					<ui:insert name="conteudoPadrao" />
 				</p:tabView>
-				<ui:insert name="conteudoPadraoSemTab"/>
+				<ui:insert name="conteudoPadraoSemTab" />
 			</div>
-	
-			<p:dialog id="genericDialog" 
-					  widgetVar="genericoDialog" 
-					  height="300" 
-					  width="600" 
-					  resizable="true" 
-					  modal="true" 
-					  showEffect="clip" >
+
+			<p:dialog id="genericDialog" widgetVar="genericoDialog" height="300"
+				width="600" resizable="true" modal="true" showEffect="clip">
 				<ui:insert name="modal"></ui:insert>
 			</p:dialog>
-	
+
 			<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
 				<p class="copyright">&copy;&nbsp;&nbsp;2012 &nbsp;&bull;&nbsp;</p>
-				<p style="float:right">Rodando com PrimeFaces 3 no JSF2.0</p>
+				<p style="float: right">Rodando com PrimeFaces 3 no JSF2.0</p>
 			</div>
-		</div>			
+		</div>
 
-        <ui:insert name="status">
-        	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
-			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..."   
-			        draggable="false" closable="false">  
-			    <p:graphicImage value="/Imagens/ajaxloadingbar.gif" />  
-			</p:dialog>  
-        
-        </ui:insert>
+		<ui:insert name="status">
+			<p:ajaxStatus onstart="statusDialog.show();"
+				onsuccess="statusDialog.hide();" />
+			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..."
+				draggable="false" closable="false">
+				<p:graphicImage value="/Imagens/ajaxloadingbar.gif" />
+			</p:dialog>
+
+		</ui:insert>
 	</h:body>
 </f:view>
 </html>

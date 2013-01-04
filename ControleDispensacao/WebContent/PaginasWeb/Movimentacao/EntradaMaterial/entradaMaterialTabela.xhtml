@@ -1,72 +1,74 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable id="tabelaEntradaMaterial" 
-				 value="#{estoqueDesbloqueadoConsulta.list}" 
-				 var="linha"
-				 dblClickSelect="true"
-				 emptyMessage="Não foi encontrado registros" 
-				 rows="10" 
-				 paginator="true"
-				 selectionMode="single" 
-				 rowKey="#{linha.idEstoque}">
-		<p:ajax event="rowEdit" 
-				listener="#{entradaMaterialHome.editRowEvent}"
-				update="padraoTabView:tabelaEntradaMaterial padraoTabView:entradaMaterialForm"/>
+	<p:dataTable id="tabelaEntradaMaterial"
+		value="#{estoqueDesbloqueadoConsulta.list}" var="linha"
+		dblClickSelect="true" emptyMessage="Não foi encontrado registros"
+		rows="10" paginator="true" selectionMode="single"
+		rowKey="#{linha.idEstoque}">
+		<p:ajax event="rowEdit" listener="#{entradaMaterialHome.editRowEvent}"
+			update="padraoTabView:tabelaEntradaMaterial padraoTabView:entradaMaterialForm" />
 		<p:column>
-			<f:facet name="header"><h:outputText value="Código do material" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Código do material" />
+			</f:facet>
 			<h:outputText value="#{linha.material.codigoMaterial}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Material" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Material" />
+			</f:facet>
 			<h:outputText value="#{linha.material}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Unidade do material" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Unidade do material" />
+			</f:facet>
 			<h:outputText value="#{linha.material.unidadeMaterial}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Fabricante" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Fabricante" />
+			</f:facet>
 			<h:outputText value="#{linha.fabricante}" />
 		</p:column>
-		<p:column headerText="Lote" >
+		<p:column headerText="Lote">
 			<p:cellEditor>
 				<f:facet name="output">
 					<h:outputText value="#{linha.lote}" />
 				</f:facet>
 				<f:facet name="input">
-                    <p:inputText id="lote"
-                    			 value="#{linha.lote}" 
-                    			 style="width:100%"
-                    			 immediate="true"
-                    			 label="Informe o lote"/>
-                </f:facet>
+					<p:inputText id="lote" value="#{linha.lote}" style="width:100%"
+						immediate="true" label="Informe o lote" />
+				</f:facet>
 			</p:cellEditor>
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Quantidade" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Quantidade" />
+			</f:facet>
 			<h:outputText value="#{linha.quantidade}" />
 		</p:column>
 		<p:column>
-			<f:facet name="header"><h:outputText value="Validade" /></f:facet>
+			<f:facet name="header">
+				<h:outputText value="Validade" />
+			</f:facet>
 			<p:cellEditor>
 				<f:facet name="output">
 					<h:outputText value="#{linha.dataValidade}">
-						<f:convertDateTime pattern="dd/MM/yyyy"/>
+						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
 				</f:facet>
 				<f:facet name="input">
-					<p:inputMask id="dataValidade"
-								 mask="99/99/9999"
-								 value="#{linha.dataValidade}"
-								 title="Data de validade do lote">
-						<f:convertDateTime pattern="dd/MM/yyyy"  />
+					<p:inputMask id="dataValidade" mask="99/99/9999"
+						value="#{linha.dataValidade}" title="Data de validade do lote">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</p:inputMask>
-                </f:facet>
+				</f:facet>
 			</p:cellEditor>
 
 
@@ -75,28 +77,26 @@
 
 
 		</p:column>
-		<p:column style="width:60px; text-align: center;" >
-		
-			<p:rowEditor/>
-		
-			<p:commandLink update="padraoTabView:entradaMaterialForm" 
-						   title="Editar"
-						   rendered="false" 
-						   style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{entradaMaterialHome.instancia}" />
+		<p:column style="width:60px; text-align: center;">
+
+			<p:rowEditor />
+
+			<p:commandLink update="padraoTabView:entradaMaterialForm"
+				title="Editar" rendered="false" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{entradaMaterialHome.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
-			
-			<p:commandLink  action="#{entradaMaterialHome.apagar()}"
-							update="tabelaEntradaMaterial padraoTabView:entradaMaterialForm" 
-							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-							title="Apagar" 
-							rendered="false"
-							style="padding-right:10px;" >
-				<f:setPropertyActionListener value="#{linha}" target="#{entradaMaterialHome.instancia}" />
+
+			<p:commandLink action="#{entradaMaterialHome.apagar()}"
+				update="tabelaEntradaMaterial padraoTabView:entradaMaterialForm"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" rendered="false" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{entradaMaterialHome.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
-		</p:column>  
+		</p:column>
 	</p:dataTable>
-	
+
 </ui:composition>

@@ -2,26 +2,27 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="tipoConselhoPanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="tipoConselhoPanelGridConsulta" columns="3"
+		width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
-			<p:inputText id="descricaoConsulta" 
-						 value="#{tipoConselhoConsulta.instancia.descricao}"
-						 title="Informe descrição do conselho" />
+			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			<br />
+			<p:inputText id="descricaoConsulta"
+				value="#{tipoConselhoConsulta.instancia.descricao}"
+				title="Informe descrição do conselho" />
 		</h:panelGroup>
-	
+
 		<h:panelGroup>
-			<h:outputLabel for="siglaConsulta" value="Sigla:"  /><br />
-			<p:inputText id="siglaConsulta" 
-						 value="#{tipoConselhoConsulta.instancia.sigla}" 
-						 title="Informe a sigla do conselho" />
+			<h:outputLabel for="siglaConsulta" value="Sigla:" />
+			<br />
+			<p:inputText id="siglaConsulta"
+				value="#{tipoConselhoConsulta.instancia.sigla}"
+				title="Informe a sigla do conselho" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

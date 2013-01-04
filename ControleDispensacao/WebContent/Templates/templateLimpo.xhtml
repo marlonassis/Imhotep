@@ -3,21 +3,26 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
 <f:view contentType="text/html">
 
 	<h:head>
-		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
 	</h:head>
 
 
 	<h:body>
-		<div align="center" >
+		<div align="center">
 			<style>
-				table.bordasimples {border-collapse: collapse;}
-				table.bordasimples tr td {border:2px solid #000000;}
-			</style>
+table.bordasimples {
+	border-collapse: collapse;
+}
+
+table.bordasimples tr td {
+	border: 2px solid #000000;
+}
+</style>
 			<ui:insert name="conteudoPadrao"></ui:insert>
 		</div>
 	</h:body>

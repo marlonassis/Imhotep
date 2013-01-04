@@ -2,45 +2,40 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="autorizaUnidadeProfissionalGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="autorizaUnidadeProfissionalGridConsulta" columns="3"
+		width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="profissionalConsulta" value="Profissional:" /><br />
-	  		<p:autoComplete id="profissionalConsulta" 
-	  						forceSelection="true"
-	  						value="#{autorizaUnidadeProfissionalConsulta.instancia.profissional}"
-							completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}" 
-							var="profissional" 
-							itemLabel="#{profissional.nome}" 
-							itemValue="#{profissional}" 
-							title="Informe o nome do profissional"
-							converter="profissionalConversor" />
+			<h:outputLabel for="profissionalConsulta" value="Profissional:" />
+			<br />
+			<p:autoComplete id="profissionalConsulta" forceSelection="true"
+				value="#{autorizaUnidadeProfissionalConsulta.instancia.profissional}"
+				completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}"
+				var="profissional" itemLabel="#{profissional.nome}"
+				itemValue="#{profissional}" title="Informe o nome do profissional"
+				converter="profissionalConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="unidadeConsulta" value="Unidade:" /><br />
-	  		<p:autoComplete id="unidadeConsulta" 
-	  						value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}"
-	  						forceSelection="true"
-							completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}" 
-							var="unidade" 
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}" 
-							title="Informe a unidade"
-							converter="unidadeConversor" />
+			<h:outputLabel for="unidadeConsulta" value="Unidade:" />
+			<br />
+			<p:autoComplete id="unidadeConsulta"
+				value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}"
+				forceSelection="true"
+				completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}"
+				var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"
+				title="Informe a unidade" converter="unidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 	</h:panelGrid>
-	
+
 </ui:composition>

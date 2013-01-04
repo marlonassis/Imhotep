@@ -2,42 +2,38 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="aplicacaoPanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="aplicacaoPanelGridConsulta" columns="3" width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
-			<p:inputText id="descricaoConsulta" 
-						 value="#{menuConsulta.instancia.descricao}" 
-						 title="Informe a descrição do menu" />
+			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			<br />
+			<p:inputText id="descricaoConsulta"
+				value="#{menuConsulta.instancia.descricao}"
+				title="Informe a descrição do menu" />
 		</h:panelGroup>
-				 
+
 		<h:panelGroup>
-			<h:outputLabel for="urlConsulta" value="Url:"  /><br />
-			<p:inputText id="urlConsulta" 
-						 value="#{menuConsulta.instancia.url}"
-						 title="Informe a url do menu" />
+			<h:outputLabel for="urlConsulta" value="Url:" />
+			<br />
+			<p:inputText id="urlConsulta" value="#{menuConsulta.instancia.url}"
+				title="Informe a url do menu" />
 		</h:panelGroup>
-		
-				
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="menuPaiConsulta" value="Menu pai:"  /><br />
-	  		<p:autoComplete id="menuPaiConsulta" 
-	  						forceSelection="true"
-	  						value="#{menuConsulta.instancia.menuPai}"
-							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
-							var="menu"
-							title="Informe o menu pai"
-							itemLabel="#{menu.descricao}" 
-							itemValue="#{menu}"
-							converter="menuConversor" />
+
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="menuPaiConsulta" value="Menu pai:" />
+			<br />
+			<p:autoComplete id="menuPaiConsulta" forceSelection="true"
+				value="#{menuConsulta.instancia.menuPai}"
+				completeMethod="#{menuHome.getListaMenuAutoComplete}" var="menu"
+				title="Informe o menu pai" itemLabel="#{menu.descricao}"
+				itemValue="#{menu}" converter="menuConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

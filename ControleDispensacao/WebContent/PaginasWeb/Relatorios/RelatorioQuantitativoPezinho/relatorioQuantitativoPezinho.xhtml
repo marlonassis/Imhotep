@@ -2,39 +2,38 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabRelatorios" title="Relatório quantitativo" >
-			<h:form id="relatoriosForm" style="text-align: left;" >
-				<h:panelGrid id="materialPanelGrid"
-							 columns="2" 
-							 width="100%" >
+		<p:tab id="tabRelatorios" title="Relatório quantitativo">
+			<h:form id="relatoriosForm" style="text-align: left;">
+				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
 					<h:panelGroup>
-						<font color="red" >*</font><h:outputLabel for="dataIni" value="Início:"  /><br />
+						<font color="red">*</font>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
 						<p:calendar id="dataIni"
-									value="#{relatorioQuantitativoPezinho.dataIni}" 
-									pattern="dd/MM/yyyy" 
-									locale="pt" />
+							value="#{relatorioQuantitativoPezinho.dataIni}"
+							pattern="dd/MM/yyyy" locale="pt" />
 					</h:panelGroup>
 					<h:panelGroup>
-						<font color="red" >*</font><h:outputLabel for="dataFim" value="Fim:"  /><br />
+						<font color="red">*</font>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
 						<p:calendar id="dataFim"
-									value="#{relatorioQuantitativoPezinho.dataFim}" 
-									pattern="dd/MM/yyyy" 
-									locale="pt" />
+							value="#{relatorioQuantitativoPezinho.dataFim}"
+							pattern="dd/MM/yyyy" locale="pt" />
 					</h:panelGroup>
 					<h:panelGroup>
-					    <p:commandLink id="downloadRelatorio" 
-					    			   value="Gerar relatório" 
-					    			   ajax="false"
-					    			   action="#{relatorioQuantitativoPezinho.relatorioQuantitativoPezinho}">  
-					    </p:commandLink>
+						<p:commandLink id="downloadRelatorio" value="Gerar relatório"
+							ajax="false"
+							action="#{relatorioQuantitativoPezinho.relatorioQuantitativoPezinho}">
+						</p:commandLink>
 					</h:panelGroup>
-				</h:panelGrid>  
+				</h:panelGrid>
 			</h:form>
 		</p:tab>
 	</ui:define>

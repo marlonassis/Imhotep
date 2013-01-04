@@ -2,52 +2,54 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="ajusteEstoquePanelGrid"
-				 columns="3" 
-				 width="100%" >
-				 
-		<h:panelGroup id="estoquePanelGroup" >
-			<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
-			<p:selectOneMenu value="#{estoqueCentroCirurgicoLivroHome.instancia.estoqueCentroCirurgico}" 
-							 effect="fade" 
-							 converter="estoqueCentroCirurgicoConversor"
-							 required="true">  
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="" /> 
-	            <f:selectItems value="#{estoqueCentroCirurgicoHome.estoqueCentroCirurgicoList}" 
-	            			   var="estoque" 
-	            			   itemLabel="#{estoque.descricaoGeral}" 
-	            			   itemValue="#{estoque}"/> 
-	        </p:selectOneMenu>
+	<h:panelGrid id="ajusteEstoquePanelGrid" columns="3" width="100%">
+
+		<h:panelGroup id="estoquePanelGroup">
+			<font color="red">*</font>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:selectOneMenu
+				value="#{estoqueCentroCirurgicoLivroHome.instancia.estoqueCentroCirurgico}"
+				effect="fade" converter="estoqueCentroCirurgicoConversor"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems
+					value="#{estoqueCentroCirurgicoHome.estoqueCentroCirurgicoList}"
+					var="estoque" itemLabel="#{estoque.descricaoGeral}"
+					itemValue="#{estoque}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="tipoMovimento" value="Tipo do movimento:"  /><br />
-			<p:selectOneMenu value="#{estoqueCentroCirurgicoLivroHome.instancia.tipoMovimentacao}" 
-							 effect="fade" 
-							 required="true">
-				<f:selectItem itemLabel="Selecione..." 
-							  itemValue="#{null}" /> 
-	            <f:selectItems value="#{itensPadrao.tipoMovimentacaoEnumItens}" />
-	        </p:selectOneMenu>
-        </h:panelGroup>
-		
-		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
-			<p:inputText id="quantidade" 
-						 value="#{estoqueCentroCirurgicoLivroHome.instancia.quantidadeMovimentacao}" 
-						 required="true"
-						 onkeyup="apenasNumero(this);"
-						 title="Informe a quantidade do ajuste" />
+			<font color="red">*</font>
+			<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
+			<br />
+			<p:selectOneMenu
+				value="#{estoqueCentroCirurgicoLivroHome.instancia.tipoMovimentacao}"
+				effect="fade" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+				<f:selectItems value="#{itensPadrao.tipoMovimentacaoEnumItens}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="nomePaciente" value="Nome do paciente:"  /><br />
-			<p:inputText id="nomePaciente" 
-						 value="#{estoqueCentroCirurgicoLivroHome.instancia.nomePaciente}" 
-						 title="Informe o nome do paciente" />
+			<font color="red">*</font>
+			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<br />
+			<p:inputText id="quantidade"
+				value="#{estoqueCentroCirurgicoLivroHome.instancia.quantidadeMovimentacao}"
+				required="true" onkeyup="apenasNumero(this);"
+				title="Informe a quantidade do ajuste" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="nomePaciente" value="Nome do paciente:" />
+			<br />
+			<p:inputText id="nomePaciente"
+				value="#{estoqueCentroCirurgicoLivroHome.instancia.nomePaciente}"
+				title="Informe o nome do paciente" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

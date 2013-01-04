@@ -2,41 +2,38 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="dosagemPanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-	
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="dosagemPanelGridConsulta" columns="3" width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="paciente" 
-						   value="Paciente:" /><br />
-			<p:autoComplete id="paciente" 
-							forceSelection="true"
-							value="#{prescricaoDispensadaConsulta.instancia.paciente}"
-							completeMethod="#{pacienteHome.getListaPacienteAutoComplete}"
-							var="paciente" 
-							itemLabel="#{paciente.nome}" 
-							itemValue="#{paciente}"
-							converter="pacienteConversor" />
+			<h:outputLabel for="paciente" value="Paciente:" />
+			<br />
+			<p:autoComplete id="paciente" forceSelection="true"
+				value="#{prescricaoDispensadaConsulta.instancia.paciente}"
+				completeMethod="#{pacienteHome.getListaPacienteAutoComplete}"
+				var="paciente" itemLabel="#{paciente.nome}" itemValue="#{paciente}"
+				converter="pacienteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-				 
+
 		<h:panelGroup>
-			<h:outputLabel for="numeroConsulta" value="Número:"  /><br />
-			<p:inputText id="numeroCosulta" 
-						 value="#{prescricaoDispensadaConsulta.instancia.numero}"
-						 title="Informe o número da prescrição" />
+			<h:outputLabel for="numeroConsulta" value="Número:" />
+			<br />
+			<p:inputText id="numeroCosulta"
+				value="#{prescricaoDispensadaConsulta.instancia.numero}"
+				title="Informe o número da prescrição" />
 		</h:panelGroup>
-	
+
 		<h:panelGroup>
-			<h:outputLabel for="leitoConsulta" value="Leito:"  /><br />
-			<p:inputText id="leitoCosulta" 
-						 value="#{prescricaoDispensadaConsulta.instancia.leito}"
-						 title="Informe o leito do paciente" />
+			<h:outputLabel for="leitoConsulta" value="Leito:" />
+			<br />
+			<p:inputText id="leitoCosulta"
+				value="#{prescricaoDispensadaConsulta.instancia.leito}"
+				title="Informe o leito do paciente" />
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

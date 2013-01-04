@@ -2,25 +2,23 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="painelPanelGrid"
-				 columns="3" 
-				 width="100%" >
-				 
+	<h:panelGrid id="painelPanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="url" value="URL:"  /><br />
-			<p:inputText id="url" 
-						 value="#{painelHome.instancia.url}" 
-						 required="true"
-						 title="Informe a url do painel" />
+			<font color="red">*</font>
+			<h:outputLabel for="url" value="URL:" />
+			<br />
+			<p:inputText id="url" value="#{painelHome.instancia.url}"
+				required="true" title="Informe a url do painel" />
 		</h:panelGroup>
 		<h:panelGroup>
-			<h:outputLabel for="descricao" value="Descrição:"  /><br />
-			<p:inputText id="descricao"
-				 	  	 value="#{painelHome.instancia.descricao}"/>
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" value="#{painelHome.instancia.descricao}" />
 		</h:panelGroup>
-		
+
 
 	</h:panelGrid>
 </ui:composition>

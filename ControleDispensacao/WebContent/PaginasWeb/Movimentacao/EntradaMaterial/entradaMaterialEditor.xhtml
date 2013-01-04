@@ -2,132 +2,129 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="entradaMaterialPanelGrid"
-				 columns="3" 
-				 width="100%" >
-		
+	<h:panelGrid id="entradaMaterialPanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
-			<h:panelGrid columns="2" 
-						 width="100%" >
+			<h:panelGrid columns="2" width="100%">
 				<h:panelGroup>
-					<font color="red" >*</font><h:outputLabel for="lote" value="Lote:"  /><br />
-					<p:inputText id="lote" 
-								 value="#{entradaMaterialHome.instancia.lote}"
-								 title="Informe o lote" />
+					<font color="red">*</font>
+					<h:outputLabel for="lote" value="Lote:" />
+					<br />
+					<p:inputText id="lote"
+						value="#{entradaMaterialHome.instancia.lote}"
+						title="Informe o lote" />
 					<p:commandButton value="Procurar lote"
-									 action="#{entradaMaterialHome.procurarLote}" />
+						action="#{entradaMaterialHome.procurarLote}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>
-		
-		<h:panelGroup id="hospitalPanelGroup" >
-			<h:panelGrid columns="2" 
-				 width="100%" >
+
+		<h:panelGroup id="hospitalPanelGroup">
+			<h:panelGrid columns="2" width="100%">
 				<h:panelGroup>
-					<h:outputLabel for="hospital" value="Hospital:"  /><br />
-					<p:selectOneMenu value="#{entradaMaterialHome.itensMovimentoGeral.hospital}" 
-									 effect="fade" 
-									 converter="hospitalConversor">
-						<f:ajax event="change" 
-								render="hospitalPanelGroup" /> 
-						<f:selectItem itemLabel="Selecione..." 
-									  itemValue="#{null}" /> 
-			            <f:selectItems value="#{hospitalConsulta.list}" 
-			            			   var="hospital" 
-			            			   itemLabel="#{hospital.nome}" 
-			            			   itemValue="#{hospital}"/>  
-			        </p:selectOneMenu>
-		        </h:panelGroup>
-		
+					<h:outputLabel for="hospital" value="Hospital:" />
+					<br />
+					<p:selectOneMenu
+						value="#{entradaMaterialHome.itensMovimentoGeral.hospital}"
+						effect="fade" converter="hospitalConversor">
+						<f:ajax event="change" render="hospitalPanelGroup" />
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+						<f:selectItems value="#{hospitalConsulta.list}" var="hospital"
+							itemLabel="#{hospital.nome}" itemValue="#{hospital}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
 				<h:panelGroup id="dataDoacaoPanelGroup"
-							  rendered="#{entradaMaterialHome.itensMovimentoGeral.hospital != null}">
-					<font color="red" >*</font><h:outputLabel for="dataDoacao" value="Data da doação:"  /><br />
-					<p:calendar id="dataDoacao"
-								pattern="dd/MM/yyyy"
-								value="#{entradaMaterialHome.itensMovimentoGeral.dataDoacao}" />
+					rendered="#{entradaMaterialHome.itensMovimentoGeral.hospital != null}">
+					<font color="red">*</font>
+					<h:outputLabel for="dataDoacao" value="Data da doação:" />
+					<br />
+					<p:calendar id="dataDoacao" pattern="dd/MM/yyyy"
+						value="#{entradaMaterialHome.itensMovimentoGeral.dataDoacao}" />
 				</h:panelGroup>
 			</h:panelGrid>
-		</h:panelGroup>		
+		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="numeroDocumento" value="Número do documento:"  /><br />
-			<p:inputText id="numeroDocumento" 
-						 value="#{entradaMaterialHome.itensMovimentoGeral.movimentoGeral.numeroDocumento}"
-						 onkeyup="apenasNumero(this);"
-						 title="Informe o múmero do documento" />
+			<font color="red">*</font>
+			<h:outputLabel for="numeroDocumento" value="Número do documento:" />
+			<br />
+			<p:inputText id="numeroDocumento"
+				value="#{entradaMaterialHome.itensMovimentoGeral.movimentoGeral.numeroDocumento}"
+				onkeyup="apenasNumero(this);" title="Informe o múmero do documento" />
 		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<font color="red" >*</font><h:outputLabel for="material" value="Material:"  /><br />
-	  		<p:autoComplete id="material" 
-	  						minQueryLength="4"
-	  						value="#{entradaMaterialHome.instancia.material}"
-							completeMethod="#{materialHome.getListaMaterialAutoComplete}" 
-							var="material"
-							forceSelection="true"
-							title="Informe o material"
-							itemLabel="#{material.descricaoUnidadeMaterial}" 
-							itemValue="#{material}"
-							converter="materialConversor" />
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Material:" />
+			<br />
+			<p:autoComplete id="material" minQueryLength="4"
+				value="#{entradaMaterialHome.instancia.material}"
+				completeMethod="#{materialHome.getListaMaterialAutoComplete}"
+				var="material" forceSelection="true" title="Informe o material"
+				itemLabel="#{material.descricaoUnidadeMaterial}"
+				itemValue="#{material}" converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<font color="red" >*</font><h:outputLabel for="fabricante" value="Fabricante:"  /><br />
-	  		<p:autoComplete id="fabricante" 
-	  						value="#{entradaMaterialHome.instancia.fabricante}"
-							completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}" 
-							var="fabricante"
-							minQueryLength="3"
-							forceSelection="true"
-							title="Informe o fabricante"
-							itemLabel="#{fabricante.descricao}" 
-							itemValue="#{fabricante}"
-							converter="fabricanteConversor" />
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="fabricante" value="Fabricante:" />
+			<br />
+			<p:autoComplete id="fabricante"
+				value="#{entradaMaterialHome.instancia.fabricante}"
+				completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}"
+				var="fabricante" minQueryLength="3" forceSelection="true"
+				title="Informe o fabricante" itemLabel="#{fabricante.descricao}"
+				itemValue="#{fabricante}" converter="fabricanteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
-		<h:panelGroup >
-			<font color="red" >*</font><h:outputLabel for="dataValidade" value="Data de validade:"  /><br />
-			<p:inputMask id="dataValidade"
-						 mask="99/99/9999"
-						 value="#{entradaMaterialHome.instancia.dataValidade}"
-						 title="Data de validade do lote">
-				<f:convertDateTime pattern="dd/MM/yyyy"  />
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataValidade" value="Data de validade:" />
+			<br />
+			<p:inputMask id="dataValidade" mask="99/99/9999"
+				value="#{entradaMaterialHome.instancia.dataValidade}"
+				title="Data de validade do lote">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</p:inputMask>
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="quantidade" value="Quantidade:"  /><br />
-			<p:inputText id="quantidade" 
-						 value="#{entradaMaterialHome.itensMovimentoGeral.quantidade}"
-						 onkeyup="apenasNumero(this);"
-						 title="Informe a quantidade" />
+			<font color="red">*</font>
+			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<br />
+			<p:inputText id="quantidade"
+				value="#{entradaMaterialHome.itensMovimentoGeral.quantidade}"
+				onkeyup="apenasNumero(this);" title="Informe a quantidade" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="fornecedor" value="Fornecedor:"  /><br />
-			<p:inputText id="fornecedor" 
-						 value="#{entradaMaterialHome.instancia.fornecedor}"
-						 title="Informe o fornecedor" />
+			<h:outputLabel for="fornecedor" value="Fornecedor:" />
+			<br />
+			<p:inputText id="fornecedor"
+				value="#{entradaMaterialHome.instancia.fornecedor}"
+				title="Informe o fornecedor" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="valorUnitario" value="Valor unitário:"  /><br />
-			<p:inputText  id="valorUnitario"
-						  value="#{entradaMaterialHome.instancia.valorUnitario}"
-						  onkeyup="apenasNumeroComVirgula(this);" 
-						  required="true"
-						  converter="monetarioConversor"
-						  title="Informe o valor unitário do medicamento" />
+			<font color="red">*</font>
+			<h:outputLabel for="valorUnitario" value="Valor unitário:" />
+			<br />
+			<p:inputText id="valorUnitario"
+				value="#{entradaMaterialHome.instancia.valorUnitario}"
+				onkeyup="apenasNumeroComVirgula(this);" required="true"
+				converter="monetarioConversor"
+				title="Informe o valor unitário do medicamento" />
 		</h:panelGroup>
-		
-		
+
+
 	</h:panelGrid>
 </ui:composition>

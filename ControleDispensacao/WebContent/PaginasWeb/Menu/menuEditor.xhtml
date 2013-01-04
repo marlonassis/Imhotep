@@ -2,49 +2,44 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="menuPanelGrid"
-				 columns="3" 
-				 width="100%" >
+	<h:panelGrid id="menuPanelGrid" columns="3" width="100%">
 
 
 		<h:panelGroup>
-			<font color="red" >*</font><h:outputLabel for="descricao" value="Descrição:"  /><br />
-			<p:inputText id="descricao" 
-						 value="#{menuHome.instancia.descricao}"
-						 required="true" 
-						 title="Informe a descrição do menu" />
+			<font color="red">*</font>
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" value="#{menuHome.instancia.descricao}"
+				required="true" title="Informe a descrição do menu" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="url" value="Url:"  /><br />
-			<p:inputText id="url" 
-						 value="#{menuHome.instancia.url}"
-						 title="Informe a url do menu" />
+			<h:outputLabel for="url" value="Url:" />
+			<br />
+			<p:inputText id="url" value="#{menuHome.instancia.url}"
+				title="Informe a url do menu" />
 		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;" >
-			<h:outputLabel for="menuPai" value="Menu pai:"  /><br />
-	  		<p:autoComplete id="menuPai" 
-	  						value="#{menuHome.instancia.menuPai}"
-	  						forceSelection="true"
-							completeMethod="#{menuHome.getListaMenuAutoComplete}" 
-							var="menu"
-							title="Informe o menu pai"
-							itemLabel="#{menu.descricao}" 
-							itemValue="#{menu}"
-							converter="menuConversor" />
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="menuPai" value="Menu pai:" />
+			<br />
+			<p:autoComplete id="menuPai" value="#{menuHome.instancia.menuPai}"
+				forceSelection="true"
+				completeMethod="#{menuHome.getListaMenuAutoComplete}" var="menu"
+				title="Informe o menu pai" itemLabel="#{menu.descricao}"
+				itemValue="#{menu}" converter="menuConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="urlAjuda" value="Url Ajuda:"  /><br />
-			<p:inputText id="urlAjuda" 
-						 value="#{menuHome.instancia.urlAjuda}"
-						 title="Informe a url da página de ajuda do menu" />
+			<h:outputLabel for="urlAjuda" value="Url Ajuda:" />
+			<br />
+			<p:inputText id="urlAjuda" value="#{menuHome.instancia.urlAjuda}"
+				title="Informe a url da página de ajuda do menu" />
 		</h:panelGroup>
 
 

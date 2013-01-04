@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,58 +10,50 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabTesteDoPezinho" title="TesteDoPezinho" >
-			<h:form id="testeDoPezinhoForm" prependId="false" >
+		<p:tab id="tabTesteDoPezinho" title="TesteDoPezinho">
+			<h:form id="testeDoPezinhoForm" prependId="false">
 				<p:fieldset legend="Novo TesteDoPezinho"
-							collapsed="#{!testeDoPezinhoHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="testeDoPezinhoEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!testeDoPezinhoHome.edicao}"
-			            					update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
-											action="#{testeDoPezinhoHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{testeDoPezinhoHome.edicao}"
-			            					update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
-											action="#{testeDoPezinhoHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{testeDoPezinhoHome.edicao}"
-											update="@parent" 
-											action="#{testeDoPezinhoHome.novaInstancia()}"/>
-						<br/> 
-						<p:commandButton	value="Imprimir Recibo" 
-			            					rendered="#{testeDoPezinhoHome.edicao}"
-											onclick="window.open('testeDoPezinhoComprovanteEntrega.jsf')"/> 
+					collapsed="#{!testeDoPezinhoHome.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="testeDoPezinhoEditor.xhtml" />
+					<p:commandButton value="Salvar"
+						rendered="#{!testeDoPezinhoHome.edicao}"
+						update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
+						action="#{testeDoPezinhoHome.enviar}" />
+					<p:commandButton value="Gravar"
+						rendered="#{testeDoPezinhoHome.edicao}"
+						update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
+						action="#{testeDoPezinhoHome.atualizar}" />
+					<p:commandButton value="Novo"
+						rendered="#{testeDoPezinhoHome.edicao}" update="@parent"
+						action="#{testeDoPezinhoHome.novaInstancia()}" />
+					<br />
+					<p:commandButton value="Imprimir Recibo"
+						rendered="#{testeDoPezinhoHome.edicao}"
+						onclick="window.open('testeDoPezinhoComprovanteEntrega.jsf')" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaTesteDoPezinhoForm" prependId="false" >
-				<p:fieldset id="pesquisaTesteDoPezinhoFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="testeDoPezinhoConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaTesteDoPezinho" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{testeDoPezinhoConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaTesteDoPezinhoForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<p:commandButton value="Gerar Lote" 
-								 action="#{testeDoPezinhoHome.gerarLote}" 
-								 update="@parent" />
-				<ui:include src="testeDoPezinhoTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaTesteDoPezinhoForm" prependId="false">
+				<p:fieldset id="pesquisaTesteDoPezinhoFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="testeDoPezinhoConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaTesteDoPezinho"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{testeDoPezinhoConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaTesteDoPezinhoForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<p:commandButton value="Gerar Lote"
+					action="#{testeDoPezinhoHome.gerarLote}" update="@parent" />
+				<ui:include src="testeDoPezinhoTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

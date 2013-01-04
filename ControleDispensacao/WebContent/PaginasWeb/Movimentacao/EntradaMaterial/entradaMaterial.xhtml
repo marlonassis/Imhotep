@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,52 +10,43 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabEntradaMaterial" title="Entrada de Material" >
-			<h:form id="entradaMaterialForm" prependId="false" >
+		<p:tab id="tabEntradaMaterial" title="Entrada de Material">
+			<h:form id="entradaMaterialForm" prependId="false">
 				<p:fieldset legend="Nova entrada de material"
-							collapsed="#{!entradaMaterialHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="entradaMaterialEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!entradaMaterialHome.edicao}"
-			            					update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
-											action="#{entradaMaterialHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="false"
-			            					update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
-											action="#{entradaMaterialHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{entradaMaterialHome.edicao}"
-											update="@parent" 
-											action="#{entradaMaterialHome.novaInstancia()}"/> 
+					collapsed="#{!entradaMaterialHome.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="entradaMaterialEditor.xhtml" />
+					<p:commandButton value="Salvar"
+						rendered="#{!entradaMaterialHome.edicao}"
+						update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
+						action="#{entradaMaterialHome.enviar}" />
+					<p:commandButton value="Gravar" rendered="false"
+						update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
+						action="#{entradaMaterialHome.atualizar}" />
+					<p:commandButton value="Novo"
+						rendered="#{entradaMaterialHome.edicao}" update="@parent"
+						action="#{entradaMaterialHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaEntradaMaterialForm" prependId="false" >
-				<p:fieldset id="pesquisaEntradaMaterialFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="entradaMaterialConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaEntradaMaterial" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{estoqueDesbloqueadoConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										immediate="true"
-										update="pesquisaEntradaMaterialForm" />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="entradaMaterialTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaEntradaMaterialForm" prependId="false">
+				<p:fieldset id="pesquisaEntradaMaterialFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="entradaMaterialConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaEntradaMaterial"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{estoqueDesbloqueadoConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						immediate="true" update="pesquisaEntradaMaterialForm" />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="entradaMaterialTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -2,58 +2,50 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabUnidadeSaude" title="UnidadeSaude" >
-			<h:form id="unidadeSaudeForm" prependId="false" >
+		<p:tab id="tabUnidadeSaude" title="UnidadeSaude">
+			<h:form id="unidadeSaudeForm" prependId="false">
 				<p:fieldset legend="Novo UnidadeSaude"
-							collapsed="#{!unidadeSaudeHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="unidadeSaudeEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!unidadeSaudeHome.edicao}"
-			            					update="padraoTabView:tabelaUnidadeSaude unidadeSaudeForm"
-											action="#{unidadeSaudeHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{unidadeSaudeHome.edicao}"
-			            					update="padraoTabView:tabelaUnidadeSaude unidadeSaudeForm"
-											action="#{unidadeSaudeHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{unidadeSaudeHome.edicao}"
-											update="@parent" 
-											action="#{unidadeSaudeHome.novaInstancia()}"/> 
+					collapsed="#{!unidadeSaudeHome.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="unidadeSaudeEditor.xhtml" />
+					<p:commandButton value="Salvar"
+						rendered="#{!unidadeSaudeHome.edicao}"
+						update="padraoTabView:tabelaUnidadeSaude unidadeSaudeForm"
+						action="#{unidadeSaudeHome.enviar}" />
+					<p:commandButton value="Gravar"
+						rendered="#{unidadeSaudeHome.edicao}"
+						update="padraoTabView:tabelaUnidadeSaude unidadeSaudeForm"
+						action="#{unidadeSaudeHome.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{unidadeSaudeHome.edicao}"
+						update="@parent" action="#{unidadeSaudeHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaUnidadeSaudeForm" prependId="false" >
-				<p:fieldset id="pesquisaUnidadeSaudeFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="unidadeSaudeConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaUnidadeSaude" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{unidadeSaudeConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaUnidadeSaudeForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="unidadeSaudeTabela.xhtml"/>
-			</h:form>	
+			</h:form>
+
+			<h:form id="pesquisaUnidadeSaudeForm" prependId="false">
+				<p:fieldset id="pesquisaUnidadeSaudeFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="unidadeSaudeConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaUnidadeSaude"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{unidadeSaudeConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaUnidadeSaudeForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="unidadeSaudeTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

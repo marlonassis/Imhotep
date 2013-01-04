@@ -2,41 +2,39 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="livroPanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="livroPanelGridConsulta" columns="3" width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="livroConsulta" value="Livro:" /><br />
-	  		<p:autoComplete id="livroConsulta" 
-	  						value="#{listaEspecialConsulta.instancia.livro}"
-							completeMethod="#{livroHome.getListaLivroSuggest}" 
-							var="livro" 
-							forceSelection="true"
-							itemLabel="#{livro.descricao}" 
-							itemValue="#{livro}" 
-							converter="livroConversor" />
+			<h:outputLabel for="livroConsulta" value="Livro:" />
+			<br />
+			<p:autoComplete id="livroConsulta"
+				value="#{listaEspecialConsulta.instancia.livro}"
+				completeMethod="#{livroHome.getListaLivroSuggest}" var="livro"
+				forceSelection="true" itemLabel="#{livro.descricao}"
+				itemValue="#{livro}" converter="livroConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões" 
-							style="padding-top:8px"/>
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="listaConsulta" value="Lista:"  /><br />
-			<p:inputText id="listaConsulta" 
-						 value="#{listaEspecialConsulta.instancia.lista}" 
-						 title="Informe o nome da lista" />
+			<h:outputLabel for="listaConsulta" value="Lista:" />
+			<br />
+			<p:inputText id="listaConsulta"
+				value="#{listaEspecialConsulta.instancia.lista}"
+				title="Informe o nome da lista" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
-			<p:inputText id="descricaoConsulta" 
-						 value="#{listaEspecialConsulta.instancia.descricao}" 
-						 title="Informe a descrição da lista" />
+			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			<br />
+			<p:inputText id="descricaoConsulta"
+				value="#{listaEspecialConsulta.instancia.descricao}"
+				title="Informe a descrição da lista" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,30 +10,25 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabAjuda" title="Ajuda" >
-			
-			<h:form id="pesquisaAjudaForm" prependId="true" >
-				<p:fieldset id="pesquisaAjudaFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="ajudaConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaAjuda" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										action="#{ajudaHome.limparPesquisa()}"
-										title="Limpar os campos" 
-										update="padraoTabView:pesquisaAjudaForm" />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="ajudaTabela.xhtml"/>
-			</h:form>	
+		<p:tab id="tabAjuda" title="Ajuda">
+
+			<h:form id="pesquisaAjudaForm" prependId="true">
+				<p:fieldset id="pesquisaAjudaFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="ajudaConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update=":#{p:component('tabelaAjuda')}"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						image="ui-icon ui-icon-arrowrefresh-1-s"
+						action="#{ajudaHome.limparPesquisa()}" title="Limpar os campos"
+						update=":#{p:component('pesquisaAjudaForm')}" />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="ajudaTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

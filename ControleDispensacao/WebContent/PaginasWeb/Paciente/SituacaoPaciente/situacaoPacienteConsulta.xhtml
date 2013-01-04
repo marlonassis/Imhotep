@@ -2,19 +2,19 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	
-	
-	<h:panelGrid id="situacaoPacientePanelGridConsulta"
-				 columns="3" 
-				 width="100%" >
-				 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="situacaoPacientePanelGridConsulta" columns="3"
+		width="100%">
+
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:"  /><br />
-			<p:inputText id="descricaoConsulta" 
-						 value="#{situacaoPacienteConsulta.instancia.descricao}" 
-						 title="Informe descrição do situacaoPaciente" />
+			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			<br />
+			<p:inputText id="descricaoConsulta"
+				value="#{situacaoPacienteConsulta.instancia.descricao}"
+				title="Informe descrição do situacaoPaciente" />
 		</h:panelGroup>
-		
+
 	</h:panelGrid>
 </ui:composition>

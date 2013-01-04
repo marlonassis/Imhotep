@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,51 +10,49 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabLiberaMaterialEspecialidade" title="Liberação de material por especialidade" >
-			<h:form id="liberaMaterialEspecialidadeForm" prependId="false" >
+		<p:tab id="tabLiberaMaterialEspecialidade"
+			title="Liberação de material por especialidade">
+			<h:form id="liberaMaterialEspecialidadeForm" prependId="false">
 				<p:fieldset legend="Nova liberação"
-							collapsed="#{!liberaMaterialEspecialidadeHome.edicao}"
-							toggleable="true"
-							toggleSpeed="500">
-						<p:growl id="formGrowl" showDetail="true" />
-						<ui:include src="liberaMaterialEspecialidadeEditor.xhtml"/>
-			            <p:commandButton	value="Salvar" 
-			            					rendered="#{!liberaMaterialEspecialidadeHome.edicao}"
-			            					update="padraoTabView:tabelaLiberaMaterialEspecialidade liberaMaterialEspecialidadeForm"
-											action="#{liberaMaterialEspecialidadeHome.enviar}" />
-			            <p:commandButton	value="Gravar" 
-			            					rendered="#{liberaMaterialEspecialidadeHome.edicao}"
-			            					update="padraoTabView:tabelaLiberaMaterialEspecialidade liberaMaterialEspecialidadeForm"
-											action="#{liberaMaterialEspecialidadeHome.atualizar}"/> 
-						<p:commandButton	value="Novo"
-											rendered="#{liberaMaterialEspecialidadeHome.edicao}"
-											update="@parent" 
-											action="#{liberaMaterialEspecialidadeHome.novaInstancia()}"/> 
+					collapsed="#{!liberaMaterialEspecialidadeHome.edicao}"
+					toggleable="true" toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="liberaMaterialEspecialidadeEditor.xhtml" />
+					<p:commandButton value="Salvar"
+						rendered="#{!liberaMaterialEspecialidadeHome.edicao}"
+						update="padraoTabView:tabelaLiberaMaterialEspecialidade liberaMaterialEspecialidadeForm"
+						action="#{liberaMaterialEspecialidadeHome.enviar}" />
+					<p:commandButton value="Gravar"
+						rendered="#{liberaMaterialEspecialidadeHome.edicao}"
+						update="padraoTabView:tabelaLiberaMaterialEspecialidade liberaMaterialEspecialidadeForm"
+						action="#{liberaMaterialEspecialidadeHome.atualizar}" />
+					<p:commandButton value="Novo"
+						rendered="#{liberaMaterialEspecialidadeHome.edicao}"
+						update="@parent"
+						action="#{liberaMaterialEspecialidadeHome.novaInstancia()}" />
 				</p:fieldset>
-            </h:form>
-			
-			<h:form id="pesquisaLiberaMaterialEspecialidadeForm" prependId="false" >
+			</h:form>
+
+			<h:form id="pesquisaLiberaMaterialEspecialidadeForm"
+				prependId="false">
 				<p:fieldset id="pesquisaLiberaMaterialEspecialidadeFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="liberaMaterialEspecialidadeConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaLiberaMaterialEspecialidade" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{liberaMaterialEspecialidadeConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaLiberaMaterialEspecialidadeForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="liberaMaterialEspecialidadeTabela.xhtml"/>
-			</h:form>	
+					legend="Pesquisa" collapsed="true" toggleable="true"
+					toggleSpeed="500">
+					<ui:include src="liberaMaterialEspecialidadeConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar"
+						update="tabelaLiberaMaterialEspecialidade"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{liberaMaterialEspecialidadeConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaLiberaMaterialEspecialidadeForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="liberaMaterialEspecialidadeTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

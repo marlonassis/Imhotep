@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -10,74 +10,64 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabDosagem" title="Dosagem" >
-				<p:dialog id="dialog" 
-						  header="Dosagem" 
-						  widgetVar="dosagemDialog" 
-						  resizable="true"  
-						  showEffect="explode"
-						  hideEffect="explode">
-					<h:form id="dosagemForm" 
-							prependId="false" >
-						<p:dataTable id="playersTable" 
-									 var="prescricaoItem" 
-									 dblClickSelect="true"
-									 value="#{dosagemHome.instancia.prescricaoItens}">
-					        <f:facet name="header">
+		<p:tab id="tabDosagem" title="Dosagem">
+			<p:dialog id="dialog" header="Dosagem" widgetVar="dosagemDialog"
+				resizable="true" showEffect="explode" hideEffect="explode">
+				<h:form id="dosagemForm" prependId="false">
+					<p:dataTable id="playersTable" var="prescricaoItem"
+						dblClickSelect="true"
+						value="#{dosagemHome.instancia.prescricaoItens}">
+						<f:facet name="header">
 					            Dosagem - Leito #{dosagemHome.instancia.leito}
 					        </f:facet>
-					
-					        <p:columnGroup type="header">
-					            <p:row>
-					                <p:column colspan="2" headerText="Material"/>
-					            </p:row>
-					
-					            <p:row>
-					                <p:column headerText="Hora da dose" />
-					                <p:column headerText="Quantidade" />
-					            </p:row>
-					        </p:columnGroup>
-					
-					        <p:subTable var="dose" value="#{dosagemHome.listaPrescricaoItemDose(prescricaoItem)}">
-					            <f:facet name="header">
-					              <h:outputText value="#{prescricaoItem.material.descricao}" /> 
-					            </f:facet>
-					            <p:column>
-					                <h:outputText value="#{dose.dataDose}">
-					                	<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-					                </h:outputText> 
-					            </p:column>
-					            <p:column>
-					                <h:outputText value="#{dose.quantidade}"/>
-					            </p:column>
-					
-					        </p:subTable>
-					    </p:dataTable>
-		            </h:form>
-				</p:dialog>
-			
-			<h:form id="pesquisaDosagemForm" prependId="false" >
-				<p:fieldset id="pesquisaDosagemFieldSet"
-							legend="Pesquisa" 
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="dosagemConsulta.xhtml"/>
-					
-					<p:commandButton 	value="Pesquisar" 
-										update="tabelaDosagem" 
-										image="ui-icon ui-icon-search" />
-					
-					<p:commandButton 	value="Limpar" 
-										action="#{prescricaoDispensadaConsulta.novaInstancia()}"
-										image="ui-icon ui-icon-arrowrefresh-1-s" 
-										title="Limpar os campos" 
-										update="pesquisaDosagemForm " />
-					
-			    </p:fieldset>  
-				<p:growl/>
-				<ui:include src="dosagemTabela.xhtml"/>
-			</h:form>	
+
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column colspan="2" headerText="Material" />
+							</p:row>
+
+							<p:row>
+								<p:column headerText="Hora da dose" />
+								<p:column headerText="Quantidade" />
+							</p:row>
+						</p:columnGroup>
+
+						<p:subTable var="dose"
+							value="#{dosagemHome.listaPrescricaoItemDose(prescricaoItem)}">
+							<f:facet name="header">
+								<h:outputText value="#{prescricaoItem.material.descricao}" />
+							</f:facet>
+							<p:column>
+								<h:outputText value="#{dose.dataDose}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</h:outputText>
+							</p:column>
+							<p:column>
+								<h:outputText value="#{dose.quantidade}" />
+							</p:column>
+
+						</p:subTable>
+					</p:dataTable>
+				</h:form>
+			</p:dialog>
+
+			<h:form id="pesquisaDosagemForm" prependId="false">
+				<p:fieldset id="pesquisaDosagemFieldSet" legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="dosagemConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" update="tabelaDosagem"
+						image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+						action="#{prescricaoDispensadaConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update="pesquisaDosagemForm " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="dosagemTabela.xhtml" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

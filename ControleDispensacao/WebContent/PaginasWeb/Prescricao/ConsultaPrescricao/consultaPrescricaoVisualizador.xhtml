@@ -2,115 +2,124 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="tipoMovimentoPanelGrid"
-				 columns="3" 
-				 width="100%" >
-		<h:panelGrid columns="1" 
-					 width="100%" >
+	<h:panelGrid id="tipoMovimentoPanelGrid" columns="3" width="100%">
+		<h:panelGrid columns="1" width="100%">
 			<h:panelGroup>
-				<p:panel header="Paciente" >
-					<h:panelGrid columns="3" 
-								 width="100%">
+				<p:panel header="Paciente">
+					<h:panelGrid columns="3" width="100%">
 						<h:panelGroup>
-							<h:outputText value="Nome:" /><br/>
-							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.nome}" 
-										  style="font-weight: bold;"/>
+							<h:outputText value="Nome:" />
+							<br />
+							<h:outputText
+								value="#{prescricaoHome.prescricaoVisualizacao.paciente.nome}"
+								style="font-weight: bold;" />
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputText value="Data de Nascimento:" /><br/>
-							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.dataNascimento}"
-										  style="font-weight: bold;" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							<h:outputText value="Data de Nascimento:" />
+							<br />
+							<h:outputText
+								value="#{prescricaoHome.prescricaoVisualizacao.paciente.dataNascimento}"
+								style="font-weight: bold;">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</h:outputText>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputText value="Idade:" /><br/>
-							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.idade}" 
-										  style="font-weight: bold;"/>
+							<h:outputText value="Idade:" />
+							<br />
+							<h:outputText
+								value="#{prescricaoHome.prescricaoVisualizacao.paciente.idade}"
+								style="font-weight: bold;" />
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputText value="Sexo:" /><br/>
-							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.paciente.sexo.label}" 
-										  style="font-weight: bold;" />
+							<h:outputText value="Sexo:" />
+							<br />
+							<h:outputText
+								value="#{prescricaoHome.prescricaoVisualizacao.paciente.sexo.label}"
+								style="font-weight: bold;" />
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputText value="Unidade:" /><br/>
-							<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.unidade}" 
-										  style="font-weight: bold;" />
+							<h:outputText value="Unidade:" />
+							<br />
+							<h:outputText
+								value="#{prescricaoHome.prescricaoVisualizacao.unidade}"
+								style="font-weight: bold;" />
 						</h:panelGroup>
 					</h:panelGrid>
 				</p:panel>
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:panel header="Itens Liberados" >
-					<p:dataList id="itensLiberados"
-								var="itemLiberado" 
-								value="#{prescricaoHome.itensLiberadosPrescricaoVisualizacao}"
-								type="ordered">
-						<p:column headerText="Material" >
+				<p:panel header="Itens Liberados">
+					<p:dataList id="itensLiberados" var="itemLiberado"
+						value="#{prescricaoHome.itensLiberadosPrescricaoVisualizacao}"
+						type="ordered">
+						<p:column headerText="Material">
 							<h:outputText value="#{itemLiberado.material.descricao}" />
 						</p:column>
 					</p:dataList>
 				</p:panel>
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:panel header="Cuidados" >
+				<p:panel header="Cuidados">
 					<ui:repeat value="#{itensPadrao.tipoCuidadosPacienteEnumItens}"
-							   var="cuidadosGerais2">
-							   
-						<h:outputText value="Aerosol:" 
-									  rendered="#{cuidadosGerais2.value == 'AER'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Cuidados de Enfermagem:" 
-									  rendered="#{cuidadosGerais2.value == 'CEN'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Medicações:" 
-									  rendered="#{cuidadosGerais2.value == 'MED'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Medicações Orais:" 
-									  rendered="#{cuidadosGerais2.value == 'MOR'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Medicações SC, IM:" 
-									  rendered="#{cuidadosGerais2.value == 'MSC'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Medicações SOS:" 
-									  rendered="#{cuidadosGerais2.value == 'MSO'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Medicações Tópicas:" 
-									  rendered="#{cuidadosGerais2.value == 'MTO'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Nutrição (SND):" 
-									  rendered="#{cuidadosGerais2.value == 'NUT'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Soroterapia, Scalp,:" 
-									  rendered="#{cuidadosGerais2.value == 'SOR'}" 
-									  style="font-weight:bold" />
-						<h:outputText value="Outros:" 
-									  rendered="#{cuidadosGerais2.value == 'OUT'}" 
-									  style="font-weight:bold" />
-						<br/>
-						<br/>
-						<ui:repeat value="#{prescricaoHome.cuidadosEscolhidosPrescricaoVisualizacao}"
-								   var="cuidadosEscolhidos2">
-							<h:panelGroup rendered="#{cuidadosEscolhidos2.cuidadosPaciente.tipoCuidadosPaciente == cuidadosGerais2.value || (cuidadosGerais2.value == 'OUT' and empty cuidadosEscolhidos2.cuidadosPaciente)}" >
-								<h:outputText value="#{cuidadosEscolhidos2.cuidadosPaciente.descricao}"
-											  escape="false" 
-											  rendered="#{empty cuidadosEscolhidos2.descricaoOutros}"/>
+						var="cuidadosGerais2">
+
+						<h:outputText value="Aerosol:"
+							rendered="#{cuidadosGerais2.value == 'AER'}"
+							style="font-weight:bold" />
+						<h:outputText value="Cuidados de Enfermagem:"
+							rendered="#{cuidadosGerais2.value == 'CEN'}"
+							style="font-weight:bold" />
+						<h:outputText value="Medicações:"
+							rendered="#{cuidadosGerais2.value == 'MED'}"
+							style="font-weight:bold" />
+						<h:outputText value="Medicações Orais:"
+							rendered="#{cuidadosGerais2.value == 'MOR'}"
+							style="font-weight:bold" />
+						<h:outputText value="Medicações SC, IM:"
+							rendered="#{cuidadosGerais2.value == 'MSC'}"
+							style="font-weight:bold" />
+						<h:outputText value="Medicações SOS:"
+							rendered="#{cuidadosGerais2.value == 'MSO'}"
+							style="font-weight:bold" />
+						<h:outputText value="Medicações Tópicas:"
+							rendered="#{cuidadosGerais2.value == 'MTO'}"
+							style="font-weight:bold" />
+						<h:outputText value="Nutrição (SND):"
+							rendered="#{cuidadosGerais2.value == 'NUT'}"
+							style="font-weight:bold" />
+						<h:outputText value="Soroterapia, Scalp,:"
+							rendered="#{cuidadosGerais2.value == 'SOR'}"
+							style="font-weight:bold" />
+						<h:outputText value="Outros:"
+							rendered="#{cuidadosGerais2.value == 'OUT'}"
+							style="font-weight:bold" />
+						<br />
+						<br />
+						<ui:repeat
+							value="#{prescricaoHome.cuidadosEscolhidosPrescricaoVisualizacao}"
+							var="cuidadosEscolhidos2">
+							<h:panelGroup
+								rendered="#{cuidadosEscolhidos2.cuidadosPaciente.tipoCuidadosPaciente == cuidadosGerais2.value || (cuidadosGerais2.value == 'OUT' and empty cuidadosEscolhidos2.cuidadosPaciente)}">
+								<h:outputText
+									value="#{cuidadosEscolhidos2.cuidadosPaciente.descricao}"
+									escape="false"
+									rendered="#{empty cuidadosEscolhidos2.descricaoOutros}" />
 								<h:outputText value="#{cuidadosEscolhidos2.descricaoOutros}"
-											  escape="false"
-											  rendered="#{not empty cuidadosEscolhidos2.descricaoOutros}" />
-								<br/>
-								<br/>
+									escape="false"
+									rendered="#{not empty cuidadosEscolhidos2.descricaoOutros}" />
+								<br />
+								<br />
 							</h:panelGroup>
 						</ui:repeat>
 					</ui:repeat>
 				</p:panel>
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:panel header="Observações" >
-					<h:outputText value="#{prescricaoHome.prescricaoVisualizacao.observacao}" />
+				<p:panel header="Observações">
+					<h:outputText
+						value="#{prescricaoHome.prescricaoVisualizacao.observacao}" />
 				</p:panel>
 			</h:panelGroup>
 		</h:panelGrid>

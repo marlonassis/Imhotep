@@ -3,61 +3,68 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://primefaces.org/ui">
 
 <f:view contentType="text/html">
 
 	<h:head>
 		<title>CFinanceiro</title>
-		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
-		
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/css/default.css" />
+
 		<ui:insert name="head"></ui:insert>
 	</h:head>
 
-	<h:body id="body" >
+	<h:body id="body">
 		<div class="ui-widget ui-widget-header">
 			<div id="logo">
 				<h1>Controle Financeiro</h1>
 			</div>
 		</div>
-		
-		<div id="geral" align="center" >
-			<p:tooltip global="true"/>  
-			<div id="menu" >
+
+		<div id="geral" align="center">
+			<p:tooltip global="true" />
+			<div id="menu">
 				<h:form>
 					<ui:include src="menu.xhtml" />
 				</h:form>
 			</div>
-			<p:dialog id="genericDialog" widgetVar="genericDialog" height="610" width="1000" resizable="true" modal="true" showEffect="clip" >
+			<p:dialog id="genericDialog" widgetVar="genericDialog" height="610"
+				width="1000" resizable="true" modal="true" showEffect="clip">
 				<ui:insert name="modal"></ui:insert>
 			</p:dialog>
-			
-			<div id="content" align="center" >
+
+			<div id="content" align="center">
 				<p:growl></p:growl>
-				<p:tabView effect="opacity" effectDuration="normal" cache="true" >
+				<p:tabView effect="opacity" effectDuration="normal" cache="true">
 					<ui:insert name="content"></ui:insert>
 				</p:tabView>
 			</div>
-	
-	
+
+
 			<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
-				<p class="copyright">&copy;&nbsp;&nbsp;2009-2010 &nbsp;&bull;&nbsp; <a href="http://www.prime.com.tr">Prime Technology</a>.</p>
-				<p style="float:right">Running #{build.primefacesVersion} on #{build.jsfVersion}</p>
+				<p class="copyright">
+					&copy;&nbsp;&nbsp;2009-2010 &nbsp;&bull;&nbsp; <a
+						href="http://www.prime.com.tr">Prime Technology</a>.
+				</p>
+				<p style="float: right">Running #{build.primefacesVersion} on
+					#{build.jsfVersion}</p>
 			</div>
-		</div>			
+		</div>
 
-        <ui:insert name="status">
-            <p:ajaxStatus style="width:32px;height:32px;display:block;position:fixed;right:0;top:0;">
-                <f:facet name="start">
-                    <p:graphicImage value="/Imagens/loading.gif" />
-                </f:facet>
+		<ui:insert name="status">
+			<p:ajaxStatus
+				style="width:32px;height:32px;display:block;position:fixed;right:0;top:0;">
+				<f:facet name="start">
+					<p:graphicImage value="/Imagens/loading.gif" />
+				</f:facet>
 
-                <f:facet name="complete">
-                    <h:outputText value="" />
-                </f:facet>
-            </p:ajaxStatus>
-        </ui:insert>
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+		</ui:insert>
 	</h:body>
 </f:view>
 </html>
