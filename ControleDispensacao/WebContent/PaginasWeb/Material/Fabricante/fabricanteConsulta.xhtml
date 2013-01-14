@@ -8,12 +8,15 @@
 	<h:panelGrid id="fabricantePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
+			<p:inputText id="descricao" required="false"
 				value="#{fabricanteConsulta.instancia.descricao}"
-				title="Informe descrição do fabricante" />
+				title="Informe o nome do fabricante." />
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

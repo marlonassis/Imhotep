@@ -32,16 +32,16 @@
 			<p:commandLink update="padraoTabView:bloqueioLoteForm" title="Editar"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{bloqueioLoteHome.instancia}" />
+					target="#{bloqueioLoteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{bloqueioLoteHome.apagar()}"
+			<p:commandLink action="#{bloqueioLoteRaiz.apagar()}"
 				update="tabelaEstoque padraoTabView:estoqueForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{bloqueioMaterialHome.instancia}" />
+					target="#{bloqueioMaterialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

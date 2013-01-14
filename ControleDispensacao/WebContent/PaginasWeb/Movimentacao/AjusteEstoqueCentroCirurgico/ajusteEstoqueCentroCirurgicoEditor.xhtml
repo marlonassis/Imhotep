@@ -11,12 +11,12 @@
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
 			<p:selectOneMenu
-				value="#{estoqueCentroCirurgicoLivroHome.instancia.estoqueCentroCirurgico}"
+				value="#{estoqueCentroCirurgicoLivroRaiz.instancia.estoqueCentroCirurgico}"
 				effect="fade" converter="estoqueCentroCirurgicoConversor"
 				required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems
-					value="#{estoqueCentroCirurgicoHome.estoqueCentroCirurgicoList}"
+					value="#{estoqueCentroCirurgicoRaiz.estoqueCentroCirurgicoList}"
 					var="estoque" itemLabel="#{estoque.descricaoGeral}"
 					itemValue="#{estoque}" />
 			</p:selectOneMenu>
@@ -27,7 +27,7 @@
 			<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
 			<br />
 			<p:selectOneMenu
-				value="#{estoqueCentroCirurgicoLivroHome.instancia.tipoMovimentacao}"
+				value="#{estoqueCentroCirurgicoLivroRaiz.instancia.tipoMovimentacao}"
 				effect="fade" required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
 				<f:selectItems value="#{itensPadrao.tipoMovimentacaoEnumItens}" />
@@ -39,7 +39,7 @@
 			<h:outputLabel for="quantidade" value="Quantidade:" />
 			<br />
 			<p:inputText id="quantidade"
-				value="#{estoqueCentroCirurgicoLivroHome.instancia.quantidadeMovimentacao}"
+				value="#{estoqueCentroCirurgicoLivroRaiz.instancia.quantidadeMovimentacao}"
 				required="true" onkeyup="apenasNumero(this);"
 				title="Informe a quantidade do ajuste" />
 		</h:panelGroup>
@@ -48,7 +48,7 @@
 			<h:outputLabel for="nomePaciente" value="Nome do paciente:" />
 			<br />
 			<p:inputText id="nomePaciente"
-				value="#{estoqueCentroCirurgicoLivroHome.instancia.nomePaciente}"
+				value="#{estoqueCentroCirurgicoLivroRaiz.instancia.nomePaciente}"
 				title="Informe o nome do paciente" />
 		</h:panelGroup>
 	</h:panelGrid>

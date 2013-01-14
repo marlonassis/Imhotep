@@ -13,18 +13,18 @@
 		<p:tab id="tabTesteDoPezinhoResultado" title="Tipo de Exame">
 			<h:form id="testeDoPezinhoResultadoForm" prependId="false">
 				<p:fieldset legend="Novo Tipo de Exame"
-					collapsed="#{!(testeDoPezinhoResultadoHome.testeDoPezinho != null)}"
+					collapsed="#{!(testeDoPezinhoResultadoRaiz.testeDoPezinho != null)}"
 					toggleable="true" toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="testeDoPezinhoResultadoEditor.xhtml" />
 					<p:commandButton value="Salvar" rendered="false"
 						update="padraoTabView:tabelaTesteDoPezinhoResultado testeDoPezinhoResultadoForm"
-						action="#{testeDoPezinhoResultadoHome.enviar}" />
+						action="#{testeDoPezinhoResultadoRaiz.enviar}" />
 					<p:commandButton value="Gravar"
 						update="padraoTabView:tabelaTesteDoPezinhoResultado testeDoPezinhoResultadoForm"
-						action="#{testeDoPezinhoResultadoHome.atualizar}" />
+						action="#{testeDoPezinhoResultadoRaiz.atualizar}" />
 					<p:commandButton value="Novo" update="@parent"
-						action="#{testeDoPezinhoResultadoHome.novaInstancia()}" />
+						action="#{testeDoPezinhoResultadoRaiz.novaInstancia()}" />
 					<p:commandButton value="Imprimir Laudo"
 						onclick="window.open('testeDoPezinhoResultadoLaudo.jsf')" />
 				</p:fieldset>

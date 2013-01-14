@@ -20,8 +20,8 @@
 						<br />
 						<p:autoComplete id="paciente" required="true"
 							forceSelection="true" immediate="true"
-							value="#{prescricaoHome.instancia.paciente}"
-							completeMethod="#{pacienteHome.getListaPacienteAutoComplete}"
+							value="#{prescricaoRaiz.instancia.paciente}"
+							completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
 							var="paciente" itemLabel="#{paciente.nome}"
 							itemValue="#{paciente}" converter="pacienteConversor" />
 						<h:graphicImage value="/Imagens/list16.png"
@@ -32,7 +32,7 @@
 						<font color="red">*</font>
 						<h:outputLabel for="massa" value="Massa:" />
 						<br />
-						<p:inputText id="massa" value="#{prescricaoHome.instancia.massa}"
+						<p:inputText id="massa" value="#{prescricaoRaiz.instancia.massa}"
 							onkeyup="apenasNumeroComVirgula(this);"
 							converter="monetarioConversor" title="Massa do paciente" />
 					</h:panelGroup>
@@ -40,26 +40,26 @@
 						<font color="red">*</font>
 						<h:outputLabel for="leito" value="Leito:" />
 						<br />
-						<p:inputText id="leito" value="#{prescricaoHome.instancia.leito}"
+						<p:inputText id="leito" value="#{prescricaoRaiz.instancia.leito}"
 							title="Leito ao qual o paciente está em repouso" />
 					</h:panelGroup>
 
 					<h:panelGroup>
 						<p:commandButton value="Indicar dosagem" ajax="true"
-							action="#{prescricaoHome.iniciaDosagem()}"
+							action="#{prescricaoRaiz.iniciaDosagem()}"
 							update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid padraoTabView:doseDialog" />
 					</h:panelGroup>
 				</h:panelGrid>
 
 				<p:dataGrid id="prescricaoItensGrid" var="item"
-					value="#{prescricaoHome.prescricaoItensList}" columns="3"
+					value="#{prescricaoRaiz.prescricaoItensList}" columns="3"
 					paginator="false">
 					<p:column>
 						<p:panel header="#{item.material.descricao}"
 							style="text-align:center">
 							<h:panelGrid columns="1" style="width:100%">
 								<h:outputText
-									value="#{prescricaoHome.quantidadeDosesPrescricaoItem(item)} dose(s)" />
+									value="#{prescricaoRaiz.quantidadeDosesPrescricaoItem(item)} dose(s)" />
 								<h:outputText value="#{item.observacao}" />
 								<p:commandLink title="Mostrar as doses"
 									oncomplete="dosagemDialog.show();"
@@ -67,11 +67,11 @@
 									rendered="false">
 									<p:graphicImage value="/Imagens/pills32px.png" />
 									<f:setPropertyActionListener value="#{item}"
-										target="#{prescricaoHome.prescricaoItem}" />
+										target="#{prescricaoRaiz.prescricaoItem}" />
 								</p:commandLink>
 								<p:commandLink title="Remover este item da prescrição"
 									immediate="true"
-									action="#{prescricaoHome.removePrescricaoItem(item)}"
+									action="#{prescricaoRaiz.removePrescricaoItem(item)}"
 									update="prescricaoItensGrid">
 									<p:graphicImage value="/Imagens/delete16.gif" />
 								</p:commandLink>
@@ -81,14 +81,14 @@
 				</p:dataGrid>
 
 				<p:commandButton value="Prescrever"
-					action="#{prescricaoHome.finalizarPrescricao()}"
+					action="#{prescricaoRaiz.finalizarPrescricao()}"
 					update="prescricaoForm padraoTabView:doseDialog" />
 
 				<p:commandButton value="Cancelar Prescrição"
-					action="#{prescricaoHome.cancelarPrescricao()}"
+					action="#{prescricaoRaiz.cancelarPrescricao()}"
 					update="prescricaoForm padraoTabView:doseDialog" />
 			</h:form>
-			<p:dialog id="doseDialog" visible="#{prescricaoHome.iniciaDosagem}"
+			<p:dialog id="doseDialog" visible="#{prescricaoRaiz.iniciaDosagem}"
 				header="Informe a dosagem do medicamento" widgetVar="dosagemDialog"
 				modal="true" closable="false">
 				<h:form id="doseDialogForm" prependId="false">
@@ -99,8 +99,8 @@
 							<h:outputLabel for="material" value="Material:" />
 							<br />
 							<p:autoComplete id="material"
-								value="#{prescricaoHome.prescricaoItem.material}"
-								completeMethod="#{materialHome.getListaMaterialAutoComplete}"
+								value="#{prescricaoRaiz.prescricaoItem.material}"
+								completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
 								var="material" required="true" forceSelection="true"
 								title="Informe o medicamento a ser prescrito"
 								itemLabel="#{material.descricao}" itemValue="#{material}"
@@ -114,7 +114,7 @@
 							<h:outputLabel for="observacao" value="Observação:" />
 							<br />
 							<p:inputTextarea
-								value="#{prescricaoHome.prescricaoItem.observacao}"
+								value="#{prescricaoRaiz.prescricaoItem.observacao}"
 								autoResize="false" cols="30" />
 						</h:panelGroup>
 
@@ -124,7 +124,7 @@
 								value="Quantidade de doses diárias:" />
 							<br />
 							<p:inputText id="quantidadeDoses"
-								value="#{prescricaoHome.quantidadeDoses}"
+								value="#{prescricaoRaiz.quantidadeDoses}"
 								title="Período em horas" />
 						</h:panelGroup>
 
@@ -134,10 +134,10 @@
 								value="Quantidade do medicamento por dose:" />
 							<br />
 							<p:inputText id="quantidadeMedicamento"
-								value="#{prescricaoHome.quantidadePorDose}"
+								value="#{prescricaoRaiz.quantidadePorDose}"
 								title="Quantidade a ser ministrado ao paciente" />
 							<h:outputText id="unidadeMaterial"
-								value="#{prescricaoHome.prescricaoItem.material.unidadeMaterial.sigla}" />
+								value="#{prescricaoRaiz.prescricaoItem.material.unidadeMaterial.sigla}" />
 						</h:panelGroup>
 
 						<h:panelGroup>
@@ -146,7 +146,7 @@
 								value="Intervalo entre as doses:" />
 							<br />
 							<p:inputText id="intervaloDoses"
-								value="#{prescricaoHome.intervaloEntreDoses}"
+								value="#{prescricaoRaiz.intervaloEntreDoses}"
 								title="Intervalo de uma dose para a outra" />h
 							</h:panelGroup>
 
@@ -155,18 +155,18 @@
 							<h:outputLabel for="horaInicial" value="Início da dosagem:" />
 							<br />
 							<p:calendar id="dataIncial" pattern="dd/MM/yyyy HH:mm"
-								locale="pt_BR" value="#{prescricaoHome.dataInicio}" />
+								locale="pt_BR" value="#{prescricaoRaiz.dataInicio}" />
 						</h:panelGroup>
 
 						<h:panelGroup>
-							<p:commandButton action="#{prescricaoHome.adicionaDoses()}"
+							<p:commandButton action="#{prescricaoRaiz.adicionaDoses()}"
 								value="Adicionar dose" update="doseDialogForm doseGrid" />
 						</h:panelGroup>
 					</h:panelGrid>
 					<p:separator id="limiteGridSeparator1" style="height:8px" />
 					<p:growl showDetail="true" />
 					<p:dataGrid id="doseGrid" var="itemDose"
-						value="#{prescricaoHome.prescricaoItemDoseList}" columns="3"
+						value="#{prescricaoRaiz.prescricaoItemDoseList}" columns="3"
 						paginator="false">
 						<p:column>
 
@@ -183,7 +183,7 @@
 										<h:outputText value="#{itemDose.quantidade}" />
 									</h:panelGroup>
 
-									<p:commandLink action="#{prescricaoHome.removeDose(itemDose)}"
+									<p:commandLink action="#{prescricaoRaiz.removeDose(itemDose)}"
 										update="doseGrid" title="Apagar" style="padding-right:10px;">
 										<h:graphicImage value="/Imagens/delete.png" />
 									</p:commandLink>
@@ -194,12 +194,12 @@
 
 					<p:separator id="limiteGridSeparator2" style="height:8px" />
 					<h:panelGroup>
-						<p:commandButton action="#{prescricaoHome.finalizaDosagem()}"
+						<p:commandButton action="#{prescricaoRaiz.finalizaDosagem()}"
 							value="Concluir" update="doseDialogForm" />
 					</h:panelGroup>
 
 					<h:panelGroup>
-						<p:commandButton action="#{prescricaoHome.cancelaDosagem()}"
+						<p:commandButton action="#{prescricaoRaiz.cancelaDosagem()}"
 							value="Cancelar" immediate="true"
 							oncomplete="window.location.reload();" />
 					</h:panelGroup>

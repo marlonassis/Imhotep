@@ -11,7 +11,7 @@
 			<h:outputLabel for="nome" value="Nome:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="nome"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nome}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.nome}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="registro" value="Registro:"
@@ -24,7 +24,7 @@
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="dataNascimento"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataNascimento}">
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.dataNascimento}">
 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
@@ -33,14 +33,14 @@
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="nomeMae"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.nomeMae}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.nomeMae}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="dataRecebimento" value="Data de Recebimento:"
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="dataRecebimento"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataCadastro}">
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.dataCadastro}">
 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
@@ -49,7 +49,7 @@
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="dataTSH"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataTsh}">
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.dataTsh}">
 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
@@ -58,14 +58,14 @@
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="endereco"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.endereco}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.endereco}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="dataColeta" value="Data da Coleta:"
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="dataColeta"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataColeta}">
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.dataColeta}">
 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
@@ -73,7 +73,7 @@
 			<h:outputLabel for="dataHB" value="Data HB:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="dataHB"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataHb}">
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.dataHb}">
 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
@@ -87,14 +87,14 @@
 			<h:outputLabel for="cidade" value="Cidade:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="cidade"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.cidade.nomeCidadeEstado}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.cidade.nomeCidadeEstado}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="dataPKU" value="Data PKU:"
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="dataPKU"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.dataPku}">
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.dataPku}">
 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			</h:outputText>
 		</h:panelGroup>
@@ -103,20 +103,20 @@
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="tipo"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tipo}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.tipo}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="lote" value="Lote:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="lote"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.lote}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.lote}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="amostra" value="Amostra:"
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="amostra"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.amostra}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.amostra}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="material" value="Material:"
@@ -129,7 +129,7 @@
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="unidadeSaude"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.unidadeSaude.estabelecimento}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.unidadeSaude.estabelecimento}" />
 		</h:panelGroup>
 	</h:panelGrid>
 	<h:panelGrid id="dadosTesteDoPezinhoPanelGrid" columns="4" width="100%">
@@ -137,26 +137,26 @@
 			<h:outputLabel for="tsh" value="TSH:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="tsh"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tsh}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.tsh}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="irt" value="IRT:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="irt"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.tsh}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.tsh}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="pku" value="PKU:" style="font-weight:bold" />
 			<br />
 			<h:outputText id="pku"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.irt}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.irt}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputLabel for="hemoglobina" value="Hemoglobina:"
 				style="font-weight:bold" />
 			<br />
 			<h:outputText id="hemoglobina"
-				value="#{testeDoPezinhoResultadoHome.testeDoPezinho.hemoglobinas}" />
+				value="#{testeDoPezinhoResultadoRaiz.testeDoPezinho.hemoglobinas}" />
 		</h:panelGroup>
 	</h:panelGrid>
 	<br />
@@ -166,7 +166,7 @@
 		width="100%">
 		<h:panelGroup>
 			<p:dataTable var="resultadoPezinho"
-				value="#{testeDoPezinhoResultadoHome.listaResultadoPezinho}">
+				value="#{testeDoPezinhoResultadoRaiz.listaResultadoPezinho}">
 				<p:column headerText="Exame">
 					<h:outputText value="#{resultadoPezinho.tipoExame.nome}" />
 				</p:column>

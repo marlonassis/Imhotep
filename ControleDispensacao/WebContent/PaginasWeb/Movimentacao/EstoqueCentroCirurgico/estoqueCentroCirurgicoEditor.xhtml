@@ -14,8 +14,8 @@
 			<p:autoComplete id="estoque" required="true" size="50"
 				minQueryLength="4" converter="estoqueConversor"
 				title="Informe descrição do material" immediate="true"
-				value="#{estoqueCentroCirurgicoHome.estoqueApoio}"
-				completeMethod="#{estoqueHome.getListaEstoqueCentroCirurgicoAutoComplete}"
+				value="#{estoqueCentroCirurgicoRaiz.estoqueApoio}"
+				completeMethod="#{estoqueRaiz.getListaEstoqueCentroCirurgicoAutoComplete}"
 				var="estoque" itemLabel="#{estoque.descricaoEstoqueCentroCirurgico}"
 				itemValue="#{estoque}" />
 			<h:graphicImage value="/Imagens/list16.png"
@@ -27,7 +27,7 @@
 			<h:outputLabel for="quantidadePadrao" value="Quantidade Padrão:" />
 			<br />
 			<p:inputText id="quantidadePadrao" onkeyup="apenasNumero(this);"
-				value="#{estoqueCentroCirurgicoHome.instancia.quantidadePadrao}"
+				value="#{estoqueCentroCirurgicoRaiz.instancia.quantidadePadrao}"
 				title="Quantidade de referência para nivelar a quantidade" />
 		</h:panelGroup>
 

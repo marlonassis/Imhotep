@@ -14,21 +14,21 @@
 			title="Estoque do Centro Cirúrgico">
 			<h:form id="estoqueCentroCirurgicoForm" prependId="false">
 				<p:fieldset legend="Novo Estoque"
-					collapsed="#{!estoqueCentroCirurgicoHome.edicao}" toggleable="true"
+					collapsed="#{!estoqueCentroCirurgicoRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="estoqueCentroCirurgicoEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!estoqueCentroCirurgicoHome.edicao}"
+						rendered="#{!estoqueCentroCirurgicoRaiz.edicao}"
 						update="padraoTabView:tabelaEstoqueCentroCirurgico estoqueCentroCirurgicoForm"
-						action="#{estoqueCentroCirurgicoHome.enviar}" />
+						action="#{estoqueCentroCirurgicoRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{estoqueCentroCirurgicoHome.edicao}"
+						rendered="#{estoqueCentroCirurgicoRaiz.edicao}"
 						update="padraoTabView:tabelaEstoqueCentroCirurgico estoqueCentroCirurgicoForm"
-						action="#{estoqueCentroCirurgicoHome.atualizar}" />
+						action="#{estoqueCentroCirurgicoRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{estoqueCentroCirurgicoHome.edicao}" update="@parent"
-						action="#{estoqueCentroCirurgicoHome.novaInstancia()}" />
+						rendered="#{estoqueCentroCirurgicoRaiz.edicao}" update="@parent"
+						action="#{estoqueCentroCirurgicoRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

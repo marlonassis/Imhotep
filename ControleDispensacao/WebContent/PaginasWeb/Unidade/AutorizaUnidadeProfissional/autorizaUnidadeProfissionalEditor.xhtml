@@ -4,37 +4,38 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="livroPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="profissional" value="Profissional:" />
-			<br />
-			<p:autoComplete id="profissional"
-				value="#{autorizaUnidadeProfissionalHome.instancia.profissional}"
-				completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}"
-				required="true" forceSelection="true" var="profissional"
-				itemLabel="#{profissional.nome}" itemValue="#{profissional}"
-				converter="profissionalConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
+	<h:panelGrid id="autorizaUnidadeProfissionalPanelGrid" columns="3" width="100%">
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="unidade" value="Unidade:" />
 			<br />
-			<p:autoComplete id="unidade"
-				value="#{autorizaUnidadeProfissionalHome.instancia.unidade}"
-				completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}"
-				var="unidade" forceSelection="true" required="true"
-				itemLabel="#{unidade.nome}" itemValue="#{unidade}"
-				converter="unidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{autorizaUnidadeProfissionalRaiz.instancia.unidade}"
+				effect="fade" converter="unidadeConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{unidade}" />
+				<f:selectItems value="#{unidadeRaiz.getListaUnidadeAutoComplete}"
+					var="unidade" itemLabel="#{unidade.nome}"
+					itemValue="#{unidade}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="profissional" value="Profissional:" />
+			<br />
+			<p:selectOneMenu value="#{autorizaUnidadeProfissionalRaiz.instancia.profissional}"
+				effect="fade" converter="profissionalConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{profissional}" />
+				<f:selectItems value="#{profissionalRaiz.getListaProfissionalAutoComplete}"
+					var="profissional" itemLabel="#{profissional.nome}"
+					itemValue="#{profissional}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

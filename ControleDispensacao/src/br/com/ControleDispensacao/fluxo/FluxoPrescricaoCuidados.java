@@ -9,8 +9,8 @@ import javax.faces.bean.RequestScoped;
 import br.com.ControleDispensacao.entidade.CuidadosPaciente;
 import br.com.ControleDispensacao.entidade.CuidadosPrescricao;
 import br.com.ControleDispensacao.entidade.Prescricao;
-import br.com.ControleDispensacao.negocio.CuidadosPrescricaoHome;
-import br.com.ControleDispensacao.negocio.PrescricaoHome;
+import br.com.ControleDispensacao.negocio.CuidadosPrescricaoRaiz;
+import br.com.ControleDispensacao.negocio.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
@@ -18,7 +18,7 @@ import br.com.remendo.PadraoFluxo;
 @RequestScoped
 public class FluxoPrescricaoCuidados extends PadraoFluxo{
 	
-	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
+	private Prescricao prescricaoAtual = PrescricaoRaiz.getInstanciaHome().getPrescricaoAtual();
 	
 	private List consultaCuidados(String sql){
 		return new ArrayList(new ConsultaGeral().consulta(new StringBuilder(sql), null));
@@ -47,11 +47,11 @@ public class FluxoPrescricaoCuidados extends PadraoFluxo{
 	
 	public void insereOutrosCuidados(CuidadosPrescricao cuidadosPrescricao){
 		cuidadosPrescricao.setPrescricao(prescricaoAtual);
-		new CuidadosPrescricaoHome(cuidadosPrescricao).enviar();
+		new CuidadosPrescricaoRaiz(cuidadosPrescricao).enviar();
 	}
 	
 	public void apagarCuidadosPrescricao(CuidadosPrescricao cuidadosPrescricao){
-		new CuidadosPrescricaoHome().apagar(cuidadosPrescricao);
+		new CuidadosPrescricaoRaiz().apagar(cuidadosPrescricao);
 	}
 	
 }

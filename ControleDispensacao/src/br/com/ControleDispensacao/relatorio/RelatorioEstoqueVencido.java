@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.ControleDispensacao.entidade.Estoque;
-import br.com.ControleDispensacao.negocio.EstoqueHome;
+import br.com.ControleDispensacao.negocio.EstoqueRaiz;
 
 @ManagedBean(name="relatorioEstoqueVencido")
 @ViewScoped
@@ -26,7 +26,7 @@ public class RelatorioEstoqueVencido extends PadraoRelatorio{
 	public void relatorioEstoqueVencidoPeriodo() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/ControleDispensacao/relatorio/EstoqueVecidoPeriodo.jasper";
 		String nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<Estoque> listaEstoqueRelatorioGeral = new EstoqueHome().listaEstoqueRelatorioVencimentoPeriodo(dataIni, dataFim);
+		List<Estoque> listaEstoqueRelatorioGeral = new EstoqueRaiz().listaEstoqueRelatorioVencimentoPeriodo(dataIni, dataFim);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );

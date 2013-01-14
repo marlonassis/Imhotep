@@ -5,34 +5,37 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="autorizaAplicacaoGridConsulta" columns="3"
-		width="100%">
+	<h:panelGrid id="autorizaPainelPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="especialidadeConsulta" value="Especialidade:" />
+			
+			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:autoComplete id="especialidadeConsulta" forceSelection="true"
-				value="#{autorizaPainelConsulta.instancia.especialidade}"
-				completeMethod="#{autorizaPainelHome.getListaEspecialidadeAutoComplete}"
-				var="especialidade" itemLabel="#{especialidade.login}"
-				itemValue="#{especialidade}" title="Informe a especialidade"
-				converter="especialidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{autorizaPainelConsulta.instancia.especialidade}"
+				effect="fade" converter="especialidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+					var="especialidade" itemLabel="#{especialidade.descricao}"
+					itemValue="#{especialidade}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
+
 		<h:panelGroup>
-			<h:outputLabel for="painelConsulta" value="Painel:" />
+			
+			<h:outputLabel for="Painel" value="Painel:" />
 			<br />
-			<p:autoComplete id="painelConsulta" forceSelection="true"
-				value="#{autorizaPainelConsulta.instancia.painel}"
-				completeMethod="#{autorizaPainelHome.getListaPainelAutoComplete}"
-				var="painel" itemLabel="#{painel.url}" itemValue="#{painel}"
-				title="Informe a descrição do painel" converter="painelConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{autorizaPainelConsulta.instancia.Painel}"
+				effect="fade" converter="painelConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{painel}" />
+				<f:selectItems value="#{painelRaiz.getListaPainelAutoComplete}"
+					var="Painel" itemLabel="#{painel.descricao}"
+					itemValue="#{painel}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

@@ -11,7 +11,7 @@ import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
 import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
-import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
+import br.com.ControleDispensacao.negocio.ErroAplicacaoRaiz;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.remendo.PadraoControle;
 
@@ -62,7 +62,7 @@ public class ControlePrescricaoItemDose extends PadraoControle{
 			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControleMedicamentoRestrito");
 		}
-		new ErroAplicacaoHome(ea).enviar();
+		new ErroAplicacaoRaiz(ea).enviar();
 	}
 	
 	public void removeDose(PrescricaoItemDose tupla){

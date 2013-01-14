@@ -13,20 +13,20 @@
 		<p:tab id="tabEntradaMaterial" title="Entrada de Material">
 			<h:form id="entradaMaterialForm" prependId="false">
 				<p:fieldset legend="Nova entrada de material"
-					collapsed="#{!entradaMaterialHome.edicao}" toggleable="true"
+					collapsed="#{!entradaMaterialRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="entradaMaterialEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!entradaMaterialHome.edicao}"
+						rendered="#{!entradaMaterialRaiz.edicao}"
 						update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
-						action="#{entradaMaterialHome.enviar}" />
+						action="#{entradaMaterialRaiz.enviar}" />
 					<p:commandButton value="Gravar" rendered="false"
 						update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
-						action="#{entradaMaterialHome.atualizar}" />
+						action="#{entradaMaterialRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{entradaMaterialHome.edicao}" update="@parent"
-						action="#{entradaMaterialHome.novaInstancia()}" />
+						rendered="#{entradaMaterialRaiz.edicao}" update="@parent"
+						action="#{entradaMaterialRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

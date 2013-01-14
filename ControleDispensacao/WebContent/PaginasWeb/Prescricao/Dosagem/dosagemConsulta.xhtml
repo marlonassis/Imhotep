@@ -12,7 +12,7 @@
 			<br />
 			<p:autoComplete id="paciente" forceSelection="true"
 				value="#{prescricaoDispensadaConsulta.instancia.paciente}"
-				completeMethod="#{pacienteHome.getListaPacienteAutoComplete}"
+				completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
 				var="paciente" itemLabel="#{paciente.nome}" itemValue="#{paciente}"
 				converter="pacienteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"

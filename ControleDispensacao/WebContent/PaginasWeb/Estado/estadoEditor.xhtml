@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="estadoPanelGrid" columns="3" width="100%">
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="unidadeFederativa" value="Unidade Federativa:" />
+			<br />
+			<p:inputText id="unidadeFederativa" required="true"
+				value="#{estadoRaiz.instancia.unidadeFederativa}"
+				title="Informe a sigla do estado." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="true"
+				value="#{estadoRaiz.instancia.nome}"
+				title="Informe o nome do estado." />
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+
+</ui:composition>

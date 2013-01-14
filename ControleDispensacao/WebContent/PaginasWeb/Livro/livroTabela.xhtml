@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<p:dataTable id="tabelaLivro" value="#{livroConsulta.list}" var="linha"
-		dblClickSelect="true" emptyMessage="Não foi encontrado registros"
-		rows="10" paginator="true" selectionMode="single"
-		rowKey="#{linha.idLivro}">
+	
+	<p:dataTable id="tabelaLivro" value="#{livroConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idLivro}">
 
 		<p:column>
 			<f:facet name="header">
@@ -16,20 +15,24 @@
 			</f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:livroForm" title="Editar"
+
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('livroEditorForm')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{livroHome.instancia}" />
+					target="#{livroRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{livroHome.apagar()}"
-				update="tabelaLivro padraoTabView:livroForm"
+			<p:commandLink action="#{livroRaiz.apagar()}"
+				update=":#{p:component('livroEditorForm')} :#{p:component('livroPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{livroHome.instancia}" />
+					target="#{livroRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

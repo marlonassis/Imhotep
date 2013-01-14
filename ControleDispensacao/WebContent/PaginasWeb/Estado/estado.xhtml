@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Estado">
+			<h:form id="estadoEditorForm">
+				<p:fieldset legend="Novo Estado"
+					collapsed="#{!estadoRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="estadoEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!estadoRaiz.edicao}"
+						update=":#{p:component('estadoEditorForm')} :#{p:component('estadoPesquisaForm')}"
+						action="#{estadoRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{estadoRaiz.edicao}"
+						update=":#{p:component('estadoEditorForm')} :#{p:component('estadoPesquisaForm')}"
+						action="#{estadoRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{estadoRaiz.edicao}"
+						 update="@parent"
+						 action="#{estadoRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="estadoPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="estadoConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('estadoPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+						action="#{estadoConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update=":#{p:component('estadoPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="estadoTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

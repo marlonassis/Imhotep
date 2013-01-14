@@ -5,14 +5,27 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="livroPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="painelPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="urlConsulta" value="URL:" />
+			
+			<h:outputLabel for="url" value="URL:" />
 			<br />
-			<p:inputText id="urlConsulta" value="#{painelConsulta.instancia.url}"
-				title="Informe a url do painel" />
+			<p:inputText id="url" required="false"
+				value="#{painelConsulta.instancia.url}"
+				title="Informe a URL do painel." />
 		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="false"
+				value="#{painelConsulta.instancia.descricao}"
+				title="Descreva o painel" />
+		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

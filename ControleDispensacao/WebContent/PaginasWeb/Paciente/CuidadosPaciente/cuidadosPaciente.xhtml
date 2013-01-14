@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="CuidadosPaciente">
+			<h:form id="cuidadosPacienteEditorForm">
+				<p:fieldset legend="Novo CuidadosPaciente"
+					collapsed="#{!cuidadosPacienteRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="cuidadosPacienteEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!cuidadosPacienteRaiz.edicao}"
+						update=":#{p:component('cuidadosPacienteEditorForm')} :#{p:component('cuidadosPacientePesquisaForm')}"
+						action="#{cuidadosPacienteRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{cuidadosPacienteRaiz.edicao}"
+						update=":#{p:component('cuidadosPacienteEditorForm')} :#{p:component('cuidadosPacientePesquisaForm')}"
+						action="#{cuidadosPacienteRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{cuidadosPacienteRaiz.edicao}"
+						 update="@parent"
+						 action="#{cuidadosPacienteRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="cuidadosPacientePesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="cuidadosPacienteConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('cuidadosPacientePesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+						action="#{cuidadosPacienteConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update=":#{p:component('cuidadosPacientePesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="cuidadosPacienteTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

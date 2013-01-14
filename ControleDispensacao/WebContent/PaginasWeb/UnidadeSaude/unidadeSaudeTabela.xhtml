@@ -1,50 +1,59 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<p:dataTable id="tabelaUnidadeSaude"
-		value="#{unidadeSaudeConsulta.list}" var="linha" dblClickSelect="true"
+	
+	<p:dataTable id="tabelaUnidadeSaude" value="#{unidadeSaudeConsulta.list}"
+		var="linha" dblClickSelect="true"
 		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
 		selectionMode="single" rowKey="#{linha.idUnidadeSaude}">
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Nome" />
+				<h:outputText value="Nome do Estabelecimento" />
 			</f:facet>
 			<h:outputText value="#{linha.estabelecimento}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Cidade" />
+				<h:outputText value="Telefone" />
 			</f:facet>
-			<h:outputText value="#{linha.cidade.nomeCidadeEstado}" />
+			<h:outputText value="#{linha.telefone}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Bairro" />
+				<h:outputText value="Tipo da Unidade" />
 			</f:facet>
-			<h:outputText value="#{linha.bairro}" />
+			<h:outputText value="#{linha.tipoUnidade}" />
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:unidadeSaudeForm" title="Editar"
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Cidade" />
+			</f:facet>
+			<h:outputText value="#{linha.cidade}" />
+		</p:column>
+
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('unidadeSaudeEditorForm')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{unidadeSaudeHome.instancia}" />
+					target="#{unidadeSaudeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{unidadeSaudeHome.apagar()}"
-				update="tabelaUnidadeSaude padraoTabView:unidadeSaudeForm"
+			<p:commandLink action="#{unidadeSaudeRaiz.apagar()}"
+				update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{unidadeSaudeHome.instancia}" />
+					target="#{unidadeSaudeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

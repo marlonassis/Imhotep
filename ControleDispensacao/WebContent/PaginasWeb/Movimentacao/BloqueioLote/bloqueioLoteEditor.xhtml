@@ -11,7 +11,7 @@
 			<h:outputLabel for="material" value="Material:" />
 			<br />
 			<h:outputText
-				value="#{bloqueioLoteHome.instancia.material.descricao}"
+				value="#{bloqueioLoteRaiz.instancia.material.descricao}"
 				title="Nome do material" />
 		</h:panelGroup>
 
@@ -19,7 +19,7 @@
 			<font color="red">*</font>
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
-			<h:outputText value="#{bloqueioLoteHome.instancia.lote}"
+			<h:outputText value="#{bloqueioLoteRaiz.instancia.lote}"
 				title="Lote do material" />
 		</h:panelGroup>
 
@@ -27,7 +27,7 @@
 			<font color="red">*</font>
 			<h:outputLabel for="quantidade" value="Quantidade:" />
 			<br />
-			<h:outputText value="#{bloqueioLoteHome.instancia.quantidade}"
+			<h:outputText value="#{bloqueioLoteRaiz.instancia.quantidade}"
 				title="Quantidade em estoque" />
 		</h:panelGroup>
 
@@ -36,7 +36,7 @@
 			<h:outputLabel for="bloqueado" value="Lote bloqueado?" />
 			<br />
 			<h:selectOneRadio id="bloqueado"
-				value="#{bloqueioLoteHome.instancia.bloqueado}" required="true"
+				value="#{bloqueioLoteRaiz.instancia.bloqueado}" required="true"
 				title="Informe se o lote está bloqueado">
 				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
 			</h:selectOneRadio>
@@ -46,7 +46,7 @@
 			<h:outputLabel for="motivo" value="Motivo:" />
 			<br />
 			<p:inputTextarea id="motivo"
-				value="#{bloqueioLoteHome.instancia.motivoBloqueio}"
+				value="#{bloqueioLoteRaiz.instancia.motivoBloqueio}"
 				title="Informe o motivo do bloqueio" />
 		</h:panelGroup>
 	</h:panelGrid>

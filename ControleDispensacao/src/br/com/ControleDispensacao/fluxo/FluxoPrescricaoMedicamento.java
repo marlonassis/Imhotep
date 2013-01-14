@@ -17,14 +17,14 @@ import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.PrescricaoItemDose;
 import br.com.ControleDispensacao.entidadeExtra.Dose;
 import br.com.ControleDispensacao.enums.TipoViaAdministracaoMedicamentoEnum;
-import br.com.ControleDispensacao.negocio.EstoqueHome;
-import br.com.ControleDispensacao.negocio.PrescricaoHome;
+import br.com.ControleDispensacao.negocio.EstoqueRaiz;
+import br.com.ControleDispensacao.negocio.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
 public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	
-	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
+	private Prescricao prescricaoAtual = PrescricaoRaiz.getInstanciaHome().getPrescricaoAtual();
 	
 	public List<PrescricaoItem> getItensPrescricao(){
 		return itensPrescricao(prescricaoAtual);
@@ -84,7 +84,7 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	}
 	
 	private boolean liberaDose(Material material, Dose dose) {
-		EstoqueHome eh = new EstoqueHome();
+		EstoqueRaiz eh = new EstoqueRaiz();
 		Object[] totais = eh.consultaEstoque(material);
 		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
 		return !eh.estoqueVazio(estoqueAtual) && !eh.estoqueInsuficiente(estoqueAtual, dose.getQuantidadeDoses(), dose.getQuantidadePorDose());

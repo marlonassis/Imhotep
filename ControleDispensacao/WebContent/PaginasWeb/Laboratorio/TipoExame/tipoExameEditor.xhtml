@@ -3,38 +3,50 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
+
 	<h:panelGrid id="tipoExamePanelGrid" columns="3" width="100%">
+
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
 			<p:inputText id="nome" required="true"
-				value="#{tipoExameHome.instancia.nome}"
-				title="Informe o valor de referência" />
+				value="#{tipoExameRaiz.instancia.nome}"
+				title="Informe o nome do exame." />
 		</h:panelGroup>
+
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="valorReferencia" value="Valor de Referência:" />
+			<h:outputLabel for="valorReferencia" value="Valor de Referêcia:" />
 			<br />
-			<p:inputText id="valorReferencia"
-				value="#{tipoExameHome.instancia.valorReferencia}" required="true"
-				onkeyup="apenasNumeroComVirgula(this);"
-				converter="monetarioConversor" title="Valor de Referência" />
+			<p:inputText id="valorReferencia" required="true"
+				value="#{tipoExameRaiz.instancia.valorReferencia}"
+				title="Informe o valor de referência do exame." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="valor" value="Valor:" />
+			<font color="red">*</font>
+			<h:outputLabel for="valor" value="valor:" />
 			<br />
-			<p:inputText id="valor" value="#{tipoExameHome.instancia.valor}"
-				title="Informe o valor padrão" />
+			<p:inputText id="valor"
+				     value="#{tipoExameRaiz.prescricaoAtual.valor}"
+				     required="true" onkeyup="apenasNumeroComVirgula(this);"
+				     converter="monetarioConversor" title="Informe o valor.">
+				
+			</p:inputText>
 		</h:panelGroup>
 
 		<h:panelGroup>
+			<font color="red">*</font>
 			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="sigla" value="#{tipoExameHome.instancia.sigla}"
-				title="Informe a sigla do exame" />
+			<p:inputText id="sigla" required="true"
+				value="#{tipoExameRaiz.instancia.sigla}"
+				title="Informe a sigla do exame." />
 		</h:panelGroup>
 
+
+
 	</h:panelGrid>
+
 </ui:composition>

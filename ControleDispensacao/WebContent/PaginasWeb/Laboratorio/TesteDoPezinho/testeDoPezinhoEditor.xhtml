@@ -9,7 +9,7 @@
 			<h:outputLabel for="numeroAmostra" value="Número Amostra:" />
 			<br />
 			<p:inputText id="numeroAmostra" required="true"
-				value="#{testeDoPezinhoHome.instancia.numeroAmostra}"
+				value="#{testeDoPezinhoRaiz.instancia.numeroAmostra}"
 				title="Informe o número da amostra" />
 		</h:panelGroup>
 
@@ -19,7 +19,7 @@
 			<br />
 			<p:calendar id="dataColeta" required="true"
 				pattern="dd/MM/yyyy HH:mm" locale="pt"
-				value="#{testeDoPezinhoHome.instancia.dataColeta}" />
+				value="#{testeDoPezinhoRaiz.instancia.dataColeta}" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -31,7 +31,7 @@
 			<h:outputLabel for="numeroExame" value="Número do Exame:" />
 			<br />
 			<p:inputText id="numeroExame" required="true"
-				value="#{testeDoPezinhoHome.instancia.numeroExame}"
+				value="#{testeDoPezinhoRaiz.instancia.numeroExame}"
 				title="Informe o número do exame" />
 		</h:panelGroup>
 
@@ -40,7 +40,7 @@
 			<h:outputLabel for="nome" value="Nome Completo do Recém-Nascido:" />
 			<br />
 			<p:inputText id="nome" required="true" size="30"
-				value="#{testeDoPezinhoHome.instancia.nome}"
+				value="#{testeDoPezinhoRaiz.instancia.nome}"
 				title="Informe o nome da criança" />
 		</h:panelGroup>
 
@@ -50,14 +50,14 @@
 			<br />
 			<p:calendar id="dataNascimento" required="true"
 				pattern="dd/MM/yyyy HH:mm" locale="pt"
-				value="#{testeDoPezinhoHome.instancia.dataNascimento}" />
+				value="#{testeDoPezinhoRaiz.instancia.dataNascimento}" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="sexo" value="Sexo:" />
 			<br />
-			<p:selectOneRadio value="#{testeDoPezinhoHome.instancia.sexo}"
+			<p:selectOneRadio value="#{testeDoPezinhoRaiz.instancia.sexo}"
 				required="true" effect="fade">
 				<f:selectItems value="#{itensPadrao.sexoEnumItens}" />
 			</p:selectOneRadio>
@@ -68,7 +68,7 @@
 			<h:outputLabel for="tipoGemelar" value="Gemelar:" />
 			<br />
 			<p:selectOneRadio id="tipoGemelar" required="true"
-				value="#{testeDoPezinhoHome.instancia.tipoGemelar}"
+				value="#{testeDoPezinhoRaiz.instancia.tipoGemelar}"
 				title="Informe se a criança é gêmea">
 				<p:ajax event="change" update="padraoTabView:gemelarPanelGroup" />
 				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
@@ -77,12 +77,12 @@
 
 		<h:panelGroup id="gemelarPanelGroup">
 			<h:panelGroup
-				rendered="#{testeDoPezinhoHome.instancia.tipoGemelar == 'S'}">
+				rendered="#{testeDoPezinhoRaiz.instancia.tipoGemelar == 'S'}">
 				<font color="red">*</font>
 				<h:outputLabel for="gemelar" value="" />
 				<br />
 				<p:inputText id="gemelar" required="true"
-					value="#{testeDoPezinhoHome.instancia.gemelar}"
+					value="#{testeDoPezinhoRaiz.instancia.gemelar}"
 					title="Informe a descrição do tipo de gemelar" />
 			</h:panelGroup>
 		</h:panelGroup>
@@ -92,7 +92,7 @@
 			<h:outputLabel for="nomeMae" value="Nome da Mãe do Recém-Nascido" />
 			<br />
 			<p:inputText id="nomeMae" required="true" size="30"
-				value="#{testeDoPezinhoHome.instancia.nomeMae}"
+				value="#{testeDoPezinhoRaiz.instancia.nomeMae}"
 				title="Informe o nome da mãe da criança" />
 		</h:panelGroup>
 
@@ -101,7 +101,7 @@
 			<h:outputLabel for="endereco" value="Endereço:" />
 			<br />
 			<p:inputText id="endereco" required="true" size="30"
-				value="#{testeDoPezinhoHome.instancia.endereco}"
+				value="#{testeDoPezinhoRaiz.instancia.endereco}"
 				title="Informe o endereço da casa" />
 		</h:panelGroup>
 
@@ -110,7 +110,7 @@
 			<h:outputLabel for="numero" value="Numero:" />
 			<br />
 			<p:inputText id="numero" required="true"
-				value="#{testeDoPezinhoHome.instancia.numeroCasa}"
+				value="#{testeDoPezinhoRaiz.instancia.numeroCasa}"
 				title="Informe o número da casa" />
 		</h:panelGroup>
 
@@ -119,8 +119,8 @@
 			<h:outputLabel for="cidade" value="Cidade:" />
 			<br />
 			<p:autoComplete id="cidade" required="true" minQueryLength="4"
-				value="#{testeDoPezinhoHome.instancia.cidade}" forceSelection="true"
-				completeMethod="#{cidadeHome.getListaCidadeAutoComplete}"
+				value="#{testeDoPezinhoRaiz.instancia.cidade}" forceSelection="true"
+				completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
 				var="cidade" title="Informe a cidade à qual o testeDoPezinho veio"
 				itemLabel="#{cidade.nomeCidadeEstado}" itemValue="#{cidade}"
 				converter="cidadeConversor" />
@@ -134,7 +134,7 @@
 			<h:outputLabel for="telefone" value="Telefone:" />
 			<br />
 			<p:inputMask id="telefone" required="true" mask="(99)9999-9999"
-				value="#{testeDoPezinhoHome.instancia.telefone}"
+				value="#{testeDoPezinhoRaiz.instancia.telefone}"
 				title="Informe o telefone de contato da família"
 				converter="telefoneConversor" />
 		</h:panelGroup>
@@ -144,7 +144,7 @@
 			<h:outputLabel for="unidadeSaude" value="Unidade de Saúde:" />
 			<br />
 			<p:selectOneMenu id="unidadeSaude" converter="unidadeSaudeConversor"
-				required="true" value="#{testeDoPezinhoHome.instancia.unidadeSaude}"
+				required="true" value="#{testeDoPezinhoRaiz.instancia.unidadeSaude}"
 				effect="fade">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{unidadeSaudeConsulta.list}"
@@ -159,7 +159,7 @@
 			<h:outputLabel for="prematuro" value="Nasceu Prematura?" />
 			<br />
 			<p:selectOneRadio id="prematuro" required="true"
-				value="#{testeDoPezinhoHome.instancia.prematuro}"
+				value="#{testeDoPezinhoRaiz.instancia.prematuro}"
 				title="Informe se a criança é prematura">
 				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
 			</p:selectOneRadio>
@@ -170,7 +170,7 @@
 			<h:outputLabel for="transfusao" value="Recebeu Transfusão?" />
 			<br />
 			<p:selectOneRadio id="transfusao" required="true"
-				value="#{testeDoPezinhoHome.instancia.transfusao}"
+				value="#{testeDoPezinhoRaiz.instancia.transfusao}"
 				title="Informe se a criança recebeu transfusão de sangue">
 				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
 			</p:selectOneRadio>
@@ -181,7 +181,7 @@
 			<h:outputLabel for="amostraValida" value="Amostra Válida?" />
 			<br />
 			<p:selectOneRadio id="amostraValida" required="true"
-				value="#{testeDoPezinhoHome.instancia.amostraValida}"
+				value="#{testeDoPezinhoRaiz.instancia.amostraValida}"
 				title="Informe se a amostra está adequada para o exame">
 				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
 			</p:selectOneRadio>

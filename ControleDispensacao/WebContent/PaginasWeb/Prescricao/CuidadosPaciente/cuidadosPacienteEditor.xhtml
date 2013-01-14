@@ -11,7 +11,7 @@
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
 			<p:inputText id="descricao"
-				value="#{cuidadosPacienteHome.instancia.descricao}" required="true"
+				value="#{cuidadosPacienteRaiz.instancia.descricao}" required="true"
 				label="Descrição" title="Informe a descrição" />
 		</h:panelGroup>
 
@@ -19,7 +19,7 @@
 			<h:outputLabel for="cuidadosPaciente" value="Tipo do cuidado:" />
 			<br />
 			<p:selectOneMenu id="cuidadosPaciente"
-				value="#{cuidadosPacienteHome.instancia.tipoCuidadosPaciente}"
+				value="#{cuidadosPacienteRaiz.instancia.tipoCuidadosPaciente}"
 				effect="fade">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
 				<f:selectItems value="#{itensPadrao.tipoCuidadosPacienteEnumItens}" />

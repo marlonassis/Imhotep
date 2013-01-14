@@ -1,15 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<p:dataTable id="tabelaUnidadeMaterial"
-		value="#{unidadeMaterialConsulta.list}" var="linha"
-		dblClickSelect="true" emptyMessage="Não foi encontrado registros"
-		rows="10" paginator="true" selectionMode="single"
-		rowKey="#{linha.idUnidadeMaterial}">
+	
+	<p:dataTable id="tabelaUnidadeMaterial" value="#{unidadeMaterialConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idUnidadeMaterial}">
 
 		<p:column>
 			<f:facet name="header">
@@ -25,20 +23,23 @@
 			<h:outputText value="#{linha.sigla}" />
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:unidadeMaterialForm"
-				title="Editar" style="padding-right:10px;">
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('unidadeMaterialEditorForm')}"
+				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{unidadeMaterialHome.instancia}" />
+					target="#{unidadeMaterialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{unidadeMaterialHome.apagar()}"
-				update="tabelaUnidadeMaterial padraoTabView:unidadeMaterialForm"
+			<p:commandLink action="#{unidadeMaterialRaiz.apagar()}"
+				update=":#{p:component('unidadeMaterialEditorForm')} :#{p:component('unidadeMaterialPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{unidadeMaterialHome.instancia}" />
+					target="#{unidadeMaterialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

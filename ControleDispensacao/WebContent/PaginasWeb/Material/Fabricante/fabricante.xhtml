@@ -10,40 +10,41 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabFabricante" title="Fabricante">
-			<h:form id="fabricanteForm" prependId="false">
+		<p:tab title="Fabricante">
+			<h:form id="fabricanteEditorForm">
 				<p:fieldset legend="Novo Fabricante"
-					collapsed="#{!fabricanteHome.edicao}" toggleable="true"
+					collapsed="#{!fabricanteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="fabricanteEditor.xhtml" />
-					<p:commandButton value="Salvar"
-						rendered="#{!fabricanteHome.edicao}"
-						update="padraoTabView:tabelaFabricante fabricanteForm"
-						action="#{fabricanteHome.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{fabricanteHome.edicao}"
-						update="padraoTabView:tabelaFabricante fabricanteForm"
-						action="#{fabricanteHome.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{fabricanteHome.edicao}"
-						update="@parent" action="#{fabricanteHome.novaInstancia()}" />
+					<p:commandButton value="Salvar" rendered="#{!fabricanteRaiz.edicao}"
+						update=":#{p:component('fabricanteEditorForm')} :#{p:component('fabricantePesquisaForm')}"
+						action="#{fabricanteRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{fabricanteRaiz.edicao}"
+						update=":#{p:component('fabricanteEditorForm')} :#{p:component('fabricantePesquisaForm')}"
+						action="#{fabricanteRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{fabricanteRaiz.edicao}"
+						 update="@parent"
+						 action="#{fabricanteRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaFabricanteForm" prependId="false">
-				<p:fieldset id="pesquisaFabricanteFieldSet" legend="Pesquisa"
+			<h:form id="fabricantePesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="fabricanteConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaFabricante"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('fabricantePesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
 						action="#{fabricanteConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaFabricanteForm " />
+						update=":#{p:component('fabricantePesquisaForm')}" />
 
 				</p:fieldset>
-				<p:growl />
 				<ui:include src="fabricanteTabela.xhtml" />
 			</h:form>
 		</p:tab>

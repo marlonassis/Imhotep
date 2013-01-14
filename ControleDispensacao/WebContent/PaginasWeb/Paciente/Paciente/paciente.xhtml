@@ -10,39 +10,41 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabPaciente" title="Paciente">
-			<h:form id="pacienteForm" prependId="false">
+		<p:tab title="Paciente">
+			<h:form id="pacienteEditorForm">
 				<p:fieldset legend="Novo Paciente"
-					collapsed="#{!pacienteHome.edicao}" toggleable="true"
+					collapsed="#{!pacienteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="pacienteEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!pacienteHome.edicao}"
-						update="padraoTabView:tabelaPaciente pacienteForm"
-						action="#{pacienteHome.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{pacienteHome.edicao}"
-						update="padraoTabView:tabelaPaciente pacienteForm"
-						action="#{pacienteHome.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{pacienteHome.edicao}"
-						update="@parent" action="#{pacienteHome.novaInstancia()}" />
+					<p:commandButton value="Salvar" rendered="#{!pacienteRaiz.edicao}"
+						update=":#{p:component('pacienteEditorForm')} :#{p:component('pacientePesquisaForm')}"
+						action="#{pacienteRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{pacienteRaiz.edicao}"
+						update=":#{p:component('pacienteEditorForm')} :#{p:component('pacientePesquisaForm')}"
+						action="#{pacienteRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{pacienteRaiz.edicao}"
+						 update="@parent"
+						 action="#{pacienteRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaPacienteForm" prependId="false">
-				<p:fieldset id="pesquisaPacienteFieldSet" legend="Pesquisa"
+			<h:form id="pacientePesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="pacienteConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaPaciente"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('pacientePesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
 						action="#{pacienteConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaPacienteForm " />
+						update=":#{p:component('pacientePesquisaForm')}" />
 
 				</p:fieldset>
-				<p:growl />
 				<ui:include src="pacienteTabela.xhtml" />
 			</h:form>
 		</p:tab>

@@ -8,12 +8,15 @@
 	<h:panelGrid id="grupoPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
+			<p:inputText id="descricao" required="false"
 				value="#{grupoConsulta.instancia.descricao}"
-				title="Informe descrição do grupo" />
+				title="Descreva o Grupo." />
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

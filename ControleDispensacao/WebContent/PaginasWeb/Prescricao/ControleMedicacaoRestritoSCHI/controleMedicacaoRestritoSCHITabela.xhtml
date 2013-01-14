@@ -70,16 +70,16 @@
 				update="padraoTabView:controleMedicacaoRestritoSCHIForm"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{controleMedicacaoRestritoSCHIHome.carregarInstancia}" />
+					target="#{controleMedicacaoRestritoSCHIRaiz.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{controleMedicacaoRestritoSCHIHome.apagar}"
+			<p:commandLink action="#{controleMedicacaoRestritoSCHIRaiz.apagar}"
 				update="tabelaControleMedicacaoRestritoSCHI padraoTabView:controleMedicacaoRestritoSCHIForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{controleMedicacaoRestritoSCHIHome.instancia}" />
+					target="#{controleMedicacaoRestritoSCHIRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

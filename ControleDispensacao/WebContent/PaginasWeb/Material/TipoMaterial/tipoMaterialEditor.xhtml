@@ -10,9 +10,13 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{tipoMaterialHome.instancia.descricao}" required="true"
-				title="Informe a descrição do tipoMaterial" />
+			<p:inputText id="descricao" required="true"
+				value="#{tipoMaterialRaiz.instancia.descricao}"
+				title="Descreva o tipo de material." />
 		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

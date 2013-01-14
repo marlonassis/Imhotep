@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import br.com.ControleDispensacao.entidade.ErroAplicacao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
-import br.com.ControleDispensacao.negocio.ErroAplicacaoHome;
+import br.com.ControleDispensacao.negocio.ErroAplicacaoRaiz;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
@@ -52,7 +52,7 @@ public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControleMedicamentoRestrito");
 		}
-		new ErroAplicacaoHome(ea).enviar();
+		new ErroAplicacaoRaiz(ea).enviar();
 	}
 	
 	

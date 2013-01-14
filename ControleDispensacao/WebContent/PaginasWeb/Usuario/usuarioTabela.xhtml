@@ -20,16 +20,16 @@
 			<p:commandLink update="padraoTabView:usuarioForm" title="Editar"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{usuarioHome.instancia}" />
+					target="#{usuarioRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{usuarioHome.apagar()}"
+			<p:commandLink action="#{usuarioRaiz.apagar()}"
 				update="tabelaUsuario padraoTabView:usuarioForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{usuarioHome.instancia}" />
+					target="#{usuarioRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

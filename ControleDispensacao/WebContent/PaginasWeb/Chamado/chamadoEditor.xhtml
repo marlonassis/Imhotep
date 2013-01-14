@@ -5,19 +5,39 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="chamadoPanelGrid" columns="3" width="100%">
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="assunto" value="Assunto:" />
-			<br />
-			<p:inputText id="assunto" value="#{chamadoHome.instancia.assunto}"
-				title="Informe o assunto do chamado" required="true" />
-		</h:panelGroup>
+
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:editor id="descricao" value="#{chamadoHome.instancia.descricao}"
-				required="true" />
+			<p:inputText id="descricao" required="true"
+				value="#{chamadoRaiz.instancia.descricao}"
+				title="Desceva o problema" />
 		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="assunto" value="Assunto:" />
+			<br />
+			<p:inputText id="assunto" required="true"
+				value="#{chamadoRaiz.instancia.assunto}"
+				title="Escreva resumidamente o problema." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="atendido" value="Atendido" />
+			<br />
+			<p:selectOneRadio id="atendido" required="false"
+				value="#{chamadoRaiz.instancia.atendido}"
+				title="">
+				<f:selectItems value="#{itensPadrao.tipoBooleanEnum}" />
+				
+			</p:selectOneRadio>
+		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

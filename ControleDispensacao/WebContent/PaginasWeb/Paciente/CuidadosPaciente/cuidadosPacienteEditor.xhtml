@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="cuidadosPacientePanelGrid" columns="3" width="100%">
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="true"
+				value="#{cuidadosPacienteRaiz.instancia.descricao}"
+				title="Descreva o cuidado." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="tipoCuidadosPaciente" value="Tipo do cuidado" />
+			<br />
+			<p:selectOneRadio id="tipoCuidadosPaciente" required="false"
+				value="#{cuidadosPacienteRaiz.instancia.tipoCuidadosPaciente}"
+				title="Informe o tipo do cuidado">
+				<f:selectItems value="#{itensPadrao.tipoCuidadosPacienteEnum}" />
+				
+			</p:selectOneRadio>
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+
+</ui:composition>

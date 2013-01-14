@@ -19,12 +19,12 @@
 					<ui:include src="ajusteEstoqueCentroCirurgicoEditor.xhtml" />
 					<p:commandButton value="Salvar" rendered="true"
 						update=":#{p:component('ajusteEstoqueCentroCirurgicoForm')} :#{p:component('pesquisaAjusteEstoqueCentroCirurgicoForm')}"
-						action="#{estoqueCentroCirurgicoLivroHome.enviar}" />
+						action="#{estoqueCentroCirurgicoLivroRaiz.enviar}" />
 					<p:commandButton value="Gravar" rendered="false"
 						update=":#{p:component('ajusteEstoqueCentroCirurgicoForm')} :#{p:component('pesquisaAjusteEstoqueCentroCirurgicoForm')}"
-						action="#{estoqueCentroCirurgicoLivroHome.atualizar}" />
+						action="#{estoqueCentroCirurgicoLivroRaiz.atualizar}" />
 					<p:commandButton value="Novo" rendered="false" update=":#{p:component('ajusteEstoqueCentroCirurgicoForm')}"
-						action="#{estoqueCentroCirurgicoLivroHome.novaInstancia()}" />
+						action="#{estoqueCentroCirurgicoLivroRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

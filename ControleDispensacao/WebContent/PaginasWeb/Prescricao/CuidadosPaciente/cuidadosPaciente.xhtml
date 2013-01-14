@@ -13,21 +13,21 @@
 		<p:tab id="tabCuidadosPaciente" title="Cuidados do paciente">
 			<h:form id="cuidadosPacienteForm" prependId="false">
 				<p:fieldset legend="Novo cuidado"
-					collapsed="#{!cuidadosPacienteHome.edicao}" toggleable="true"
+					collapsed="#{!cuidadosPacienteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="cuidadosPacienteEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!cuidadosPacienteHome.edicao}"
+						rendered="#{!cuidadosPacienteRaiz.edicao}"
 						update="padraoTabView:tabelaCuidadosPaciente cuidadosPacienteForm"
-						action="#{cuidadosPacienteHome.enviar}" />
+						action="#{cuidadosPacienteRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{cuidadosPacienteHome.edicao}"
+						rendered="#{cuidadosPacienteRaiz.edicao}"
 						update="padraoTabView:tabelaCuidadosPaciente cuidadosPacienteForm"
-						action="#{cuidadosPacienteHome.atualizar}" />
+						action="#{cuidadosPacienteRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{cuidadosPacienteHome.edicao}" update="@parent"
-						action="#{cuidadosPacienteHome.novaInstancia()}" />
+						rendered="#{cuidadosPacienteRaiz.edicao}" update="@parent"
+						action="#{cuidadosPacienteRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

@@ -10,15 +10,22 @@
 			<font color="red">*</font>
 			<h:outputLabel for="url" value="URL:" />
 			<br />
-			<p:inputText id="url" value="#{painelHome.instancia.url}"
-				required="true" title="Informe a url do painel" />
+			<p:inputText id="url" required="true"
+				value="#{painelRaiz.instancia.url}"
+				title="Informe a URL do painel." />
 		</h:panelGroup>
+
 		<h:panelGroup>
+			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" value="#{painelHome.instancia.descricao}" />
+			<p:inputText id="descricao" required="true"
+				value="#{painelRaiz.instancia.descricao}"
+				title="Descreva o painel" />
 		</h:panelGroup>
+
 
 
 	</h:panelGrid>
+
 </ui:composition>

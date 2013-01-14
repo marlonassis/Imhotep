@@ -10,23 +10,40 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{especialidadeHome.instancia.descricao}" required="true"
-				onkeyup="apenasNumeros(this);"
-				title="Informe a inscrição do profissional" />
+			<p:inputText id="descricao" required="true"
+				value="#{especialidadeRaiz.instancia.descricao}"
+				title="Informe o nome da especialidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="tipoConselho" value="Tipo do conselho:" />
+			<font color="red">*</font>
+			<h:outputLabel for="tipoConselho" value="Conselho:" />
 			<br />
-			<p:selectOneMenu value="#{especialidadeHome.instancia.tipoConselho}"
-				effect="fade" converter="tipoConselhoConversor">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
+			<p:selectOneMenu value="#{especialidadeRaiz.instancia.tipoConselho}"
+				effect="fade" converter="tipoConselhoConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{tipoConselho}" />
 				<f:selectItems value="#{tipoConselhoConsulta.list}"
 					var="tipoConselho" itemLabel="#{tipoConselho.descricaoSigla}"
 					itemValue="#{tipoConselho}" />
+				
 			</p:selectOneMenu>
 		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="especialidadePai" value="Especialidade Superior:" />
+			<br />
+			<p:selectOneMenu value="#{especialidadeRaiz.instancia.especialidadePai}"
+				effect="fade" converter="especialidadeConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeConsulta.list}"
+					var="especialidadePai" itemLabel="#{especialidade}"
+					itemValue="#{especialidade}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 

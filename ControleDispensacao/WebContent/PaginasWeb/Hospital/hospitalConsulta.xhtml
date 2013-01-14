@@ -8,20 +8,24 @@
 	<h:panelGrid id="hospitalPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="nomeConsulta"
-				value="#{hospitalConsulta.instancia.nome}"
-				title="Informe o nome do hospital" />
+			<p:inputText id="descricao" required="false"
+				value="#{hospitalConsulta.instancia.descricao}"
+				title="Descreva o hospital" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="nome" value="Nome:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
-				value="#{hospitalConsulta.instancia.descricao}"
-				title="Informe descrição do hospital" />
+			<p:inputText id="nome" required="false"
+				value="#{hospitalConsulta.instancia.nome}"
+				title="Informe o nome do hospital." />
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

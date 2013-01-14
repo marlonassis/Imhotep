@@ -1,14 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
+	
 	<p:dataTable id="tabelaPaciente" value="#{pacienteConsulta.list}"
 		var="linha" dblClickSelect="true"
 		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
 		selectionMode="single" rowKey="#{linha.idPaciente}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Cidade" />
+			</f:facet>
+			<h:outputText value="#{linha.cidade}" />
+		</p:column>
 
 		<p:column>
 			<f:facet name="header">
@@ -21,7 +27,21 @@
 			<f:facet name="header">
 				<h:outputText value="Sexo" />
 			</f:facet>
-			<h:outputText value="#{linha.sexo.label}" />
+			<h:outputText value="#{linha.sexo}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data de Nascimento" />
+			</f:facet>
+			<h:outputText value="#{linha.dataNascimento}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="CPF" />
+			</f:facet>
+			<h:outputText value="#{linha.cpf}" />
 		</p:column>
 
 		<p:column>
@@ -31,20 +51,23 @@
 			<h:outputText value="#{linha.numeroSus}" />
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:pacienteForm" title="Editar"
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('pacienteEditorForm')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{pacienteHome.instancia}" />
+					target="#{pacienteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{pacienteHome.apagar()}"
-				update="tabelaPaciente padraoTabView:pacienteForm"
+			<p:commandLink action="#{pacienteRaiz.apagar()}"
+				update=":#{p:component('pacienteEditorForm')} :#{p:component('pacientePesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{pacienteHome.instancia}" />
+					target="#{pacienteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

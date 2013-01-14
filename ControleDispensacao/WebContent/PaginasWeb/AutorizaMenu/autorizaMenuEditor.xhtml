@@ -7,31 +7,36 @@
 	<h:panelGrid id="autorizaMenuPanelGrid" columns="3" width="100%">
 
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="especialidade" value="Especialidade:" />
+			
+			<h:outputLabel for="autorizaMenuRaiz.menuDualList" value=":" />
 			<br />
-			<p:autoComplete id="especialidade" required="true"
-				forceSelection="true"
-				value="#{autorizaMenuHome.instancia.especialidade}"
-				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
-				var="especialidade" itemLabel="#{especialidade.descricao}"
-				itemValue="#{especialidade}" converter="especialidadeConversor">
-				<p:ajax event="itemSelect"
-					update=":#{p:component('autorizaMenuPanelGrid')}" />
-			</p:autoComplete>
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{autorizaMenuRaiz.instancia.autorizaMenuRaiz.menuDualList}"
+				effect="fade" converter="menuConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{menu}" />
+				<f:selectItems value="#{}"
+					var="autorizaMenuRaiz.menuDualList" itemLabel="#{menu}"
+					itemValue="#{menu}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="menu" value="Menu:" />
+			
+			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:pickList id="pickList" value="#{autorizaMenuHome.menuDualList}"
-				var="menu" addLabel="Adicionar" addAllLabel="Adicionar todos"
-				removeLabel="Remover" removeAllLabel="Remover todos"
-				itemLabel="#{menu}" itemValue="#{menu}" converter="menuConversor" />
+			<p:selectOneMenu value="#{autorizaMenuRaiz.instancia.especialidade}"
+				effect="fade" converter="especialidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+					var="especialidade" itemLabel="#{especialidade.descricao}"
+					itemValue="#{especialidade}" />
+				<p:ajax event="autorizaMenuPanelGrid"
+					update=":#{p:component('autorizaMenuPanelGrid')}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

@@ -52,26 +52,26 @@
 			<tr>
 				<td><h:outputText value="Data:" style="font-weight: bold;" /><br />
 					<h:outputText
-						value="#{prescricaoHome.prescricaoVisualizacao.dataConclusao}">
+						value="#{prescricaoRaiz.prescricaoVisualizacao.dataConclusao}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText></td>
 				<td colspan="2"><h:outputText value="Paciente:"
 						style="font-weight: bold;" /><br /> <h:outputText
-						value="#{prescricaoHome.prescricaoVisualizacao.paciente.nome}" />
+						value="#{prescricaoRaiz.prescricaoVisualizacao.paciente.nome}" />
 				</td>
 				<td><h:outputText value="Idade:" style="font-weight: bold;" /><br />
 					<h:outputText
-						value="#{prescricaoHome.prescricaoVisualizacao.paciente.idade}" />
+						value="#{prescricaoRaiz.prescricaoVisualizacao.paciente.idade}" />
 				</td>
 				<td><h:outputText value="Clínica Médica II"
 						style="font-weight: bold;" /><br /> <h:outputText
 						value="Infectologia" /></td>
 				<td colspan="2"><h:outputText value="Unidade:"
 						style="font-weight: bold;" /><br /> <h:outputText
-						value="#{prescricaoHome.prescricaoVisualizacao.unidade.nome}" /></td>
+						value="#{prescricaoRaiz.prescricaoVisualizacao.unidade.nome}" /></td>
 				<td><h:outputText value="Enfermaria-Leito:"
 						style="font-weight: bold;" /><br /> <h:outputText
-						value="#{prescricaoHome.prescricaoVisualizacao.leito}" /> #{' -
+						value="#{prescricaoRaiz.prescricaoVisualizacao.leito}" /> #{' -
 					Isolamento'}</td>
 			</tr>
 			<tr height="20px">
@@ -87,7 +87,7 @@
 						style="font-weight: bold;" /></td>
 			</tr>
 			<ui:repeat
-				value="#{prescricaoHome.prescricaoVisualizacao.prescricaoItens}"
+				value="#{prescricaoRaiz.prescricaoVisualizacao.prescricaoItens}"
 				var="item">
 				<tr>
 					<td><script>
@@ -139,7 +139,7 @@
 				</td>
 			</tr>
 			<ui:repeat
-				value="#{util.converterSetList(prescricaoHome.prescricaoVisualizacao.cuidadosPrescricao)}"
+				value="#{util.converterSetList(prescricaoRaiz.prescricaoVisualizacao.cuidadosPrescricao)}"
 				var="cuidado">
 				<tr>
 					<td><script>

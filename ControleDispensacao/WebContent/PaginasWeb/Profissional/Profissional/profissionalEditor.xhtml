@@ -10,7 +10,7 @@
 			<h:outputLabel for="tipoConselho" value="Tipo do conselho:" />
 			<br />
 			<p:selectOneMenu
-				value="#{profissionalHome.instancia.especialidade.tipoConselho}"
+				value="#{profissionalRaiz.instancia.especialidade.tipoConselho}"
 				effect="fade" converter="tipoConselhoConversor">
 				<f:ajax event="change" render="profissionalPanelGrid" />
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
@@ -25,21 +25,21 @@
 			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
 			<p:selectOneMenu id="especialidade"
-				value="#{profissionalHome.instancia.especialidade}" effect="fade"
+				value="#{profissionalRaiz.instancia.especialidade}" effect="fade"
 				required="true" converter="especialidadeConversor">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{profissionalHome.listaEspecialidade}"
+				<f:selectItems value="#{profissionalRaiz.listaEspecialidade}"
 					var="especialidade" itemLabel="#{especialidade.descricao}"
 					itemValue="#{especialidade}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup id="estadoPanelGroup"
-			rendered="#{profissionalHome.instancia.especialidade.tipoConselho != null}">
+			rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
 			<h:outputLabel for="estado" value="Estado:" />
 			<br />
 			<p:selectOneMenu id="estado"
-				value="#{profissionalHome.instancia.estado}" effect="fade"
+				value="#{profissionalRaiz.instancia.estado}" effect="fade"
 				converter="estadoConversor">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{estadoConsulta.list}" var="estado"
@@ -48,12 +48,12 @@
 		</h:panelGroup>
 
 		<h:panelGroup id="numeroRegistroPanelGroup"
-			rendered="#{profissionalHome.instancia.especialidade.tipoConselho != null}">
+			rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
 			<font color="red">*</font>
 			<h:outputLabel for="numeroRegistro" value="Registro:" />
 			<br />
 			<p:inputText id="numeroRegistro" required="true"
-				value="#{profissionalHome.instancia.registroConselho}"
+				value="#{profissionalRaiz.instancia.registroConselho}"
 				title="Informe o número do registro no conselho do profissional" />
 		</h:panelGroup>
 
@@ -62,7 +62,7 @@
 			<h:outputLabel for="matricula" value="Matrícula" />
 			<br />
 			<p:inputText id="matricula"
-				value="#{profissionalHome.instancia.matricula}" required="true"
+				value="#{profissionalRaiz.instancia.matricula}" required="true"
 				onkeyup="apenasNumero(this);"
 				title="Informe a matrícula do profissional" />
 		</h:panelGroup>
@@ -72,7 +72,7 @@
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
 			<p:inputText id="nome" required="true"
-				value="#{profissionalHome.instancia.nome}"
+				value="#{profissionalRaiz.instancia.nome}"
 				title="Informe o nome do profissional" />
 		</h:panelGroup>
 
@@ -81,7 +81,7 @@
 			<h:outputLabel for="situacao" value="Situação:" />
 			<br />
 			<h:selectOneRadio id="situacao"
-				value="#{profissionalHome.instancia.situacao}" required="true"
+				value="#{profissionalRaiz.instancia.situacao}" required="true"
 				title="Informe se o profissional está ativo ou inativo">
 				<f:selectItems value="#{itensPadrao.situacaoEnumItens}" />
 			</h:selectOneRadio>
@@ -92,17 +92,17 @@
 			<h:outputLabel for="login" value="Login:" />
 			<br />
 			<p:inputText id="login"
-				value="#{profissionalHome.instancia.usuario.login}" required="true"
-				disabled="#{profissionalHome.edicao}"
+				value="#{profissionalRaiz.instancia.usuario.login}" required="true"
+				disabled="#{profissionalRaiz.edicao}"
 				title="Informe o apelido de acesso" />
 		</h:panelGroup>
 
-		<h:panelGroup rendered="#{!profissionalHome.edicao}">
+		<h:panelGroup rendered="#{!profissionalRaiz.edicao}">
 			<font color="red">*</font>
 			<h:outputLabel for="unidade" value="Unidade:" />
 			<br />
-			<p:autoComplete id="unidade" value="#{profissionalHome.unidade}"
-				completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}"
+			<p:autoComplete id="unidade" value="#{profissionalRaiz.unidade}"
+				completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
 				var="unidade" forceSelection="true" required="true"
 				itemLabel="#{unidade.nome}" itemValue="#{unidade}"
 				converter="unidadeConversor" />

@@ -1,14 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
+	
 	<p:dataTable id="tabelaHospital" value="#{hospitalConsulta.list}"
 		var="linha" dblClickSelect="true"
 		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
 		selectionMode="single" rowKey="#{linha.idHospital}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Descrição" />
+			</f:facet>
+			<h:outputText value="#{linha.descricao}" />
+		</p:column>
 
 		<p:column>
 			<f:facet name="header">
@@ -17,26 +23,23 @@
 			<h:outputText value="#{linha.nome}" />
 		</p:column>
 
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Descrição" />
-			</f:facet>
-			<h:outputText value="#{linha.descricao}" />
-		</p:column>
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:hospitalForm" title="Editar"
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('hospitalEditorForm')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{hospitalHome.instancia}" />
+					target="#{hospitalRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{hospitalHome.apagar()}"
-				update="tabelaHospital padraoTabView:hospitalForm"
+			<p:commandLink action="#{hospitalRaiz.apagar()}"
+				update=":#{p:component('hospitalEditorForm')} :#{p:component('hospitalPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{hospitalHome.instancia}" />
+					target="#{hospitalRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

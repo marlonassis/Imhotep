@@ -5,38 +5,37 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="liberaMaterialEspecialidadePanelGridConsulta"
-		columns="3" width="100%">
+	<h:panelGrid id="liberaMaterialEspecialidadePanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="especialidadeConsulta" value="Especialidade:" />
+		<h:panelGroup>
+			
+			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:autoComplete id="especialidadeConsulta"
-				value="#{liberaMaterialEspecialidadeConsulta.instancia.especialidade}"
-				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
-				var="especialidade" forceSelection="true"
-				title="Informe a especialidade"
-				itemLabel="#{especialidade.descricao}" itemValue="#{especialidade}"
-				converter="especialidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{liberaMaterialEspecialidadeConsulta.instancia.especialidade}"
+				effect="fade" converter="especialidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+					var="especialidade" itemLabel="#{especialidade.descricao}"
+					itemValue="#{especialidade}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="materialConsulta" value="Material:" />
+		<h:panelGroup>
+			
+			<h:outputLabel for="material" value="Material:" />
 			<br />
-			<p:autoComplete id="materialConsulta"
-				value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
-				completeMethod="#{materialHome.getListaMaterialAutoComplete}"
-				var="material" forceSelection="true" title="Informe o material"
-				itemLabel="#{material.descricao}" itemValue="#{material}"
-				converter="materialConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
+				effect="fade" converter="materialConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{material}" />
+				<f:selectItems value="#{materialRaiz.getListaMaterialAutoComplete}"
+					var="material" itemLabel="#{material.descricao}"
+					itemValue="#{material}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
-
 </ui:composition>

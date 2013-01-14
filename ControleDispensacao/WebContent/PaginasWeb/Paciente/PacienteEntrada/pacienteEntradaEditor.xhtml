@@ -10,8 +10,8 @@
 			<h:outputLabel for="unidade" value="Unidade de Alocação:" />
 			<br />
 			<p:autoComplete id="unidade" forceSelection="true"
-				value="#{pacienteEntradaHome.instancia.unidadeAlocacao}"
-				completeMethod="#{unidadeHome.getListaUnidadeAutoComplete}"
+				value="#{pacienteEntradaRaiz.instancia.unidadeAlocacao}"
+				completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
 				var="unidade" required="true" itemLabel="#{unidade.nome}"
 				itemValue="#{unidade}" converter="unidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
@@ -24,7 +24,7 @@
 			<h:outputLabel for="situacao" value="Situação:" />
 			<br />
 			<p:selectOneMenu id="situacao"
-				value="#{pacienteEntradaHome.instancia.situacaoPaciente}"
+				value="#{pacienteEntradaRaiz.instancia.situacaoPaciente}"
 				effect="fade" required="true" converter="situacaoPacienteConversor">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{situacaoPacienteConsulta.list}"
@@ -38,7 +38,7 @@
 			<h:outputLabel for="estadoCivil" value="Estado Civil:" />
 			<br />
 			<p:selectOneMenu id="estadoCivil"
-				value="#{pacienteEntradaHome.instancia.tipoEstadoCivil}"
+				value="#{pacienteEntradaRaiz.instancia.tipoEstadoCivil}"
 				effect="fade" required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
 				<f:selectItems value="#{itensPadrao.tipoEstadoCivilEnumItens}" />
@@ -50,7 +50,7 @@
 			<h:outputLabel for="tipoEscolaridade" value="Escolaridade:" />
 			<br />
 			<p:selectOneMenu id="tipoEscolaridade"
-				value="#{pacienteEntradaHome.instancia.tipoEscolaridade}"
+				value="#{pacienteEntradaRaiz.instancia.tipoEscolaridade}"
 				effect="fade" required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
 				<f:selectItems value="#{itensPadrao.tipoEscolaridadeEnumItens}" />
@@ -62,7 +62,7 @@
 			<h:outputLabel for="naturalidade" value="Naturalidade:" />
 			<br />
 			<p:inputText id="naturalidade"
-				value="#{pacienteEntradaHome.instancia.naturalidade}"
+				value="#{pacienteEntradaRaiz.instancia.naturalidade}"
 				required="true" title="Informe a naturalidade do paciente" />
 		</h:panelGroup>
 
@@ -71,7 +71,7 @@
 			<h:outputLabel for="profissaoAtual" value="Profissão Atual:" />
 			<br />
 			<p:inputText id="profissaoAtual"
-				value="#{pacienteEntradaHome.instancia.profissaoAtual}"
+				value="#{pacienteEntradaRaiz.instancia.profissaoAtual}"
 				required="true" title="Informe a atual profissão do paciente" />
 		</h:panelGroup>
 
@@ -80,7 +80,7 @@
 			<h:outputLabel for="profissaoAnterior" value="Profissão Anterior:" />
 			<br />
 			<p:inputText id="profissaoAnterior"
-				value="#{pacienteEntradaHome.instancia.profissaoAnterior}"
+				value="#{pacienteEntradaRaiz.instancia.profissaoAnterior}"
 				required="true" title="Informe a profissão anterior do paciente" />
 		</h:panelGroup>
 
@@ -89,7 +89,7 @@
 			<h:outputLabel for="religiao" value="Religião:" />
 			<br />
 			<p:inputText id="religiao"
-				value="#{pacienteEntradaHome.instancia.religiao}" required="true"
+				value="#{pacienteEntradaRaiz.instancia.religiao}" required="true"
 				title="Informe a religião do paciente" />
 		</h:panelGroup>
 
@@ -97,7 +97,7 @@
 			<h:outputLabel for="informante" value="Informante:" />
 			<br />
 			<p:inputText id="informante"
-				value="#{pacienteEntradaHome.instancia.informante}"
+				value="#{pacienteEntradaRaiz.instancia.informante}"
 				title="Informe o nome da pessoa que está fornecendo as informações sobre o paciente" />
 		</h:panelGroup>
 
@@ -106,7 +106,7 @@
 				value="Grau de Parentesco do Informante:" />
 			<br />
 			<p:inputText id="grauParentescoInformante"
-				value="#{pacienteEntradaHome.instancia.grauParentescoInformante}"
+				value="#{pacienteEntradaRaiz.instancia.grauParentescoInformante}"
 				title="Informe o grau de parentesco da pessoa que está fornecendo as informações sobre o paciente" />
 		</h:panelGroup>
 
@@ -116,7 +116,7 @@
 				value="Data da entrada do paciente na unidade:" />
 			<br />
 			<p:calendar id="dataEntrada" pattern="dd/MM/yyyy HH:mm" locale="pt"
-				value="#{pacienteEntradaHome.instancia.dataEntrada}" />
+				value="#{pacienteEntradaRaiz.instancia.dataEntrada}" />
 		</h:panelGroup>
 
 	</h:panelGrid>

@@ -5,16 +5,46 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="especialidadePanelGridConsulta" columns="3"
-		width="100%">
+	<h:panelGrid id="especialidadePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="nomeConsulta"
+			<p:inputText id="descricao" required="false"
 				value="#{especialidadeConsulta.instancia.descricao}"
-				title="Informe o nome do especialidade" />
+				title="Informe o nome da especialidade" />
 		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="tipoConselho" value="Conselho:" />
+			<br />
+			<p:selectOneMenu value="#{especialidadeConsulta.instancia.tipoConselho}"
+				effect="fade" converter="tipoConselhoConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{tipoConselho}" />
+				<f:selectItems value="#{tipoConselhoConsulta.list}"
+					var="tipoConselho" itemLabel="#{tipoConselho.descricaoSigla}"
+					itemValue="#{tipoConselho}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="especialidadePai" value="Especialidade Superior:" />
+			<br />
+			<p:selectOneMenu value="#{especialidadeConsulta.instancia.especialidadePai}"
+				effect="fade" converter="especialidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeConsulta.list}"
+					var="especialidadePai" itemLabel="#{especialidade}"
+					itemValue="#{especialidade}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

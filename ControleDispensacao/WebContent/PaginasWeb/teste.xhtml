@@ -31,16 +31,16 @@
 			<p:commandLink update="padraoTabView:materialForm" title="Editar"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{materialHome.instancia}" />
+					target="#{materialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{materialHome.apagar()}"
+			<p:commandLink action="#{materialRaiz.apagar()}"
 				update="tabelaMaterial padraoTabView:materialForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{materialHome.instancia}" />
+					target="#{materialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

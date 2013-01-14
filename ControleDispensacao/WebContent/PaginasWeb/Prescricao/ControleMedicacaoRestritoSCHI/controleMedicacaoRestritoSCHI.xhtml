@@ -15,20 +15,20 @@
 			<h:form id="controleMedicacaoRestritoSCHIForm" prependId="false">
 				<p:fieldset
 					legend="Formulário de Controle de Medicacao Restrita ao SCHI"
-					collapsed="#{!controleMedicacaoRestritoSCHIHome.edicao}"
-					toggleable="#{controleMedicacaoRestritoSCHIHome.edicao}"
+					collapsed="#{!controleMedicacaoRestritoSCHIRaiz.edicao}"
+					toggleable="#{controleMedicacaoRestritoSCHIRaiz.edicao}"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="controleMedicacaoRestritoSCHIEditor.xhtml" />
 					<p:commandButton value="Salvar" rendered="false"
 						update="padraoTabView:tabelaControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHIForm"
-						action="#{controleMedicacaoRestritoSCHIHome.enviar}" />
+						action="#{controleMedicacaoRestritoSCHIRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{controleMedicacaoRestritoSCHIHome.edicao and controleMedicacaoRestritoSCHIHome.instancia.profissionalInfectologista == null }"
+						rendered="#{controleMedicacaoRestritoSCHIRaiz.edicao and controleMedicacaoRestritoSCHIRaiz.instancia.profissionalInfectologista == null }"
 						update="padraoTabView:tabelaControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHIForm"
-						action="#{controleMedicacaoRestritoSCHIHome.atualizar}" />
+						action="#{controleMedicacaoRestritoSCHIRaiz.atualizar}" />
 					<p:commandButton value="Novo" rendered="false" update="@parent"
-						action="#{controleMedicacaoRestritoSCHIHome.novaInstancia}" />
+						action="#{controleMedicacaoRestritoSCHIRaiz.novaInstancia}" />
 				</p:fieldset>
 			</h:form>
 

@@ -10,16 +10,16 @@
 			<font color="red">*</font>
 			<h:outputLabel for="login" value="Login:" />
 			<br />
-			<p:inputText id="login" value="#{usuarioHome.instancia.login}"
-				required="true" disabled="#{usuarioHome.edicao}"
+			<p:inputText id="login" value="#{usuarioRaiz.instancia.login}"
+				required="true" disabled="#{usuarioRaiz.edicao}"
 				title="Informe o apelido de acesso" />
 		</h:panelGroup>
 
 		<h:panelGroup id="trocaSenhaPanelGroup"
-			rendered="#{usuarioHome.edicao}">
+			rendered="#{usuarioRaiz.edicao}">
 			<h:outputLabel value="Deseja alterar a senha?" />
 			<br />
-			<p:selectBooleanCheckbox value="#{usuarioHome.trocaSenha}">
+			<p:selectBooleanCheckbox value="#{usuarioRaiz.trocaSenha}">
 				<p:ajax
 					update="trocaSenhaPanelGroup senhaConfirmaPanelGroup senhaPanelGroup" />
 			</p:selectBooleanCheckbox>
@@ -29,9 +29,9 @@
 			<font color="red">*</font>
 			<h:outputLabel for="senha" value="Senha:" />
 			<br />
-			<p:inputText id="senha" value="#{usuarioHome.instancia.senha}"
+			<p:inputText id="senha" value="#{usuarioRaiz.instancia.senha}"
 				label="Senha" required="true"
-				disabled="#{!usuarioHome.trocaSenha and usuarioHome.edicao}"
+				disabled="#{!usuarioRaiz.trocaSenha and usuarioRaiz.edicao}"
 				type="password" />
 		</h:panelGroup>
 
@@ -40,8 +40,8 @@
 				value="Informe novamente a senha:" />
 			<br />
 			<p:inputText id="senhaConfirmacai"
-				value="#{usuarioHome.senhaConfirmacao}" label="Senha"
-				disabled="#{!usuarioHome.trocaSenha and usuarioHome.edicao}"
+				value="#{usuarioRaiz.senhaConfirmacao}" label="Senha"
+				disabled="#{!usuarioRaiz.trocaSenha and usuarioRaiz.edicao}"
 				type="password" />
 		</h:panelGroup>
 

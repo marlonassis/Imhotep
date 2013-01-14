@@ -5,23 +5,44 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="hospitalPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="unidadeSaudePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			
+			<h:outputLabel for="estabelecimento" value="Nome do Estabelecimento:" />
 			<br />
-			<p:inputText id="nomeConsulta"
-				value="#{hospitalConsulta.instancia.nome}"
-				title="Informe o nome do hospital" />
+			<p:inputText id="estabelecimento" required="false"
+				value="#{unidadeSaudeConsulta.instancia.estabelecimento}"
+				title="Informe o nome do posto da unidade de saúde." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="tipoUnidade" value="Tipo da Unidade" />
 			<br />
-			<p:inputText id="descricaoConsulta"
-				value="#{hospitalConsulta.instancia.descricao}"
-				title="Informe descrição do hospital" />
+			<p:selectOneRadio id="tipoUnidade" required="false"
+				value="#{unidadeSaudeConsulta.instancia.tipoUnidade}"
+				title="Informe o tipo da unidade de saúde.">
+				<f:selectItems value="#{itensPadrao.tipoUnidadeSaudeEnum}" />
+				
+			</p:selectOneRadio>
 		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="cidade" value="Cidade:" />
+			<br />
+			<p:selectOneMenu value="#{unidadeSaudeConsulta.instancia.cidade}"
+				effect="fade" converter="cidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{cidade}" />
+				<f:selectItems value="#{cidadeRaiz.getListaCidadeAutoComplete}"
+					var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
+					itemValue="#{cidade}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

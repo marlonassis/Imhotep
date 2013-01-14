@@ -51,10 +51,10 @@
 		<p:column style="width:60px; text-align: center;">
 			<p:commandLink update="padraoTabView:consultaPrescricaoForm"
 				title="Editar"
-				action="#{prescricaoHome.carregarCuidadosEcolhidosPrescricaoVizualizacao()}"
+				action="#{prescricaoRaiz.carregarCuidadosEcolhidosPrescricaoVizualizacao()}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{prescricaoHome.prescricaoVisualizacao}" />
+					target="#{prescricaoRaiz.prescricaoVisualizacao}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
@@ -62,7 +62,7 @@
 				update="tabelaConsultaPrescricao padraoTabView:consultaPrescricaoForm"
 				title="Bloquear" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{prescricaoHome.prescricaoBloqueio}" />
+					target="#{prescricaoRaiz.prescricaoBloqueio}" />
 				<h:graphicImage value="/Imagens/block.png" width="16px"
 					height="16px" />
 			</p:commandLink>
@@ -76,9 +76,9 @@
 		<h:outputLabel for="motivo" value="Motivo:" />
 		<br />
 		<p:inputTextarea id="motivo" rows="10" cols="30"
-			value="#{prescricaoHome.prescricaoBloqueio.motivoBloqueio}" />
+			value="#{prescricaoRaiz.prescricaoBloqueio.motivoBloqueio}" />
 		<p:commandButton value="Gravar" oncomplete="bloqueioDialog.hide()"
 			update="padraoTabView:tabelaConsultaPrescricao padraoTabView:pesquisaConsultaPrescricaoForm"
-			action="#{prescricaoHome.bloqueiarPrescricao()}" />
+			action="#{prescricaoRaiz.bloqueiarPrescricao()}" />
 	</p:dialog>
 </ui:composition>

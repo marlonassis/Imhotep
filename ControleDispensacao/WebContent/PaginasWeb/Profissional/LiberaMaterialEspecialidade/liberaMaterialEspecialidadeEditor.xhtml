@@ -4,39 +4,37 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="liberaMaterialEspecialidadePanelGrid" columns="3"
-		width="100%">
+	<h:panelGrid id="liberaMaterialEspecialidadePanelGrid" columns="3" width="100%">
 
-		<h:panelGroup style="align:left;">
+		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:autoComplete id="especialidade" forceSelection="true"
-				value="#{liberaMaterialEspecialidadeHome.instancia.especialidade}"
-				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
-				var="especialidade" title="Informe especialidade" required="true"
-				itemLabel="#{especialidade.descricao}" itemValue="#{especialidade}"
-				converter="especialidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{liberaMaterialEspecialidadeRaiz.instancia.especialidade}"
+				effect="fade" converter="especialidadeConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+					var="especialidade" itemLabel="#{especialidade.descricao}"
+					itemValue="#{especialidade}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
-		<h:panelGroup style="align:left;">
+		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
 			<br />
-			<p:autoComplete id="material"
-				value="#{liberaMaterialEspecialidadeHome.instancia.material}"
-				completeMethod="#{materialHome.getListaMaterialAutoComplete}"
-				var="material" forceSelection="true" required="true"
-				title="Informe o grupo do sub-grupo"
-				itemLabel="#{material.descricao}" itemValue="#{material}"
-				converter="materialConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{liberaMaterialEspecialidadeRaiz.instancia.material}"
+				effect="fade" converter="materialConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{material}" />
+				<f:selectItems value="#{materialRaiz.getListaMaterialAutoComplete}"
+					var="material" itemLabel="#{material.descricao}"
+					itemValue="#{material}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 

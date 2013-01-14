@@ -1,44 +1,52 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<p:dataTable id="tabelaEspecialidade"
-		value="#{especialidadeConsulta.list}" var="linha"
-		dblClickSelect="true" emptyMessage="Não foi encontrado registros"
-		rows="10" paginator="true" selectionMode="single"
-		rowKey="#{linha.idEspecialidade}">
+	
+	<p:dataTable id="tabelaEspecialidade" value="#{especialidadeConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idEspecialidade}">
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Descricao" />
+				<h:outputText value="Descrição" />
 			</f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Tipo do Conselho" />
+				<h:outputText value="Conselho" />
 			</f:facet>
 			<h:outputText value="#{linha.tipoConselho}" />
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:especialidadeForm"
-				title="Editar" rendered="#{linha.especialidadePai != null}"
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Especialidade Superior" />
+			</f:facet>
+			<h:outputText value="#{linha.especialidadePai}" />
+		</p:column>
+
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('especialidadeEditorForm')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{especialidadeHome.instancia}" />
+					target="#{especialidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{especialidadeHome.apagar()}"
-				update="tabelaEspecialidade padraoTabView:especialidadeForm"
+			<p:commandLink action="#{especialidadeRaiz.apagar()}"
+				update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{especialidadeHome.instancia}" />
+					target="#{especialidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

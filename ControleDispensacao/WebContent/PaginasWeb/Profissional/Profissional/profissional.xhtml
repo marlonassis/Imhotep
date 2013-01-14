@@ -13,20 +13,20 @@
 		<p:tab id="tabProfissional" title="Profissional">
 			<h:form id="profissionalForm" prependId="false">
 				<p:fieldset legend="Novo Profissional"
-					collapsed="#{!profissionalHome.edicao}" toggleable="true"
+					collapsed="#{!profissionalRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="profissionalEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!profissionalHome.edicao}"
+						rendered="#{!profissionalRaiz.edicao}"
 						update="padraoTabView:tabelaProfissional profissionalForm"
-						action="#{profissionalHome.enviar}" />
+						action="#{profissionalRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{profissionalHome.edicao}"
+						rendered="#{profissionalRaiz.edicao}"
 						update="padraoTabView:tabelaProfissional profissionalForm"
-						action="#{profissionalHome.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{profissionalHome.edicao}"
-						update="@parent" action="#{profissionalHome.novaInstancia()}" />
+						action="#{profissionalRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{profissionalRaiz.edicao}"
+						update="@parent" action="#{profissionalRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

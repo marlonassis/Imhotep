@@ -5,13 +5,13 @@ import java.util.List;
 
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
-import br.com.ControleDispensacao.negocio.PrescricaoHome;
+import br.com.ControleDispensacao.negocio.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
 public class FluxoPrescricaoConfirmacao extends PadraoFluxo{
 	
-	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
+	private Prescricao prescricaoAtual = PrescricaoRaiz.getInstanciaHome().getPrescricaoAtual();
 	
 	private List<PrescricaoItem> itensLiberadosFimPrescricao(Prescricao prescricao){
 		if(prescricao != null){

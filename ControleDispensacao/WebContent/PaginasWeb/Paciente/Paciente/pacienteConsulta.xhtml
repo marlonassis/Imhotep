@@ -8,20 +8,61 @@
 	<h:panelGrid id="pacientePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="nomeConsulta" value="Nome:" />
+			
+			<h:outputLabel for="cidade" value="Cidade:" />
 			<br />
-			<p:inputText id="nomeConsulta"
+			<p:selectOneMenu value="#{pacienteConsulta.instancia.cidade}"
+				effect="fade" converter="cidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{cidade}" />
+				<f:selectItems value="#{cidadeRaiz.getListaCidadeAutoComplete}"
+					var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
+					itemValue="#{cidade}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="false"
 				value="#{pacienteConsulta.instancia.nome}"
 				title="Informe o nome do paciente" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="cpfConsulta" value="CPF:" />
+			
+			<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
 			<br />
-			<p:inputMask id="cpfConsulta" mask="999.999.999-99"
-				value="#{pacienteConsulta.instancia.cpf}"
-				title="Informe o CPF do paciente" onblur="validaCPF(this);" />
+			<p:calendar id="dataNascimento" required="false"
+				pattern="dd/MM/yyyy" locale="pt"
+				value="#{pacienteConsulta.instancia.dataNascimento}">
+							
+			</p:calendar>
 		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="cpf" value="CPF:" />
+			<br />
+			<p:inputMask id="cpf" required="false" mask="999.999.999-99"
+				value="#{pacienteConsulta.instancia.cpf}"
+				title="Informe o cadastro de pessoa física do paciente."
+				converter="cpfConversor">
+				
+			</p:inputMask>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="numeroSus" value="Número do SUS:" />
+			<br />
+			<p:inputText id="numeroSus" required="false"
+				value="#{pacienteConsulta.instancia.numeroSus}"
+				title="Informe o número do cartão do SUS do paciente." />
+		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

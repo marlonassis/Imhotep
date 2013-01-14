@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
@@ -12,31 +11,42 @@
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Código" />
-			</f:facet>
-			<h:outputText value="#{linha.codigoMaterial}" />
-		</p:column>
-		<p:column>
-			<f:facet name="header">
 				<h:outputText value="Descrição" />
 			</f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade do Material" />
+			</f:facet>
+			<h:outputText value="#{linha.unidadeMaterial}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Código do Material" />
+			</f:facet>
+			<h:outputText value="#{linha.codigoMaterial}" />
+		</p:column>
+
+
+		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('materialForm')}"
+				update=":#{p:component('materialEditorForm')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{materialHome.instancia}" />
+					target="#{materialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{materialHome.apagar()}"
-				update=":#{p:component('materialForm')} :#{p:component('pesquisaMaterialForm')}"
+			<p:commandLink action="#{materialRaiz.apagar()}"
+				update=":#{p:component('materialEditorForm')} :#{p:component('materialPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{materialHome.instancia}" />
+					target="#{materialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

@@ -9,7 +9,7 @@
 		<p:fieldset legend="Prescrição Pendente" collapsed="false"
 			toggleable="false">
 			<p:dataTable id="tabelaPrescricaoPendente"
-				value="#{prescricaoHome.listaPrescricaoPendente}" var="linha"
+				value="#{prescricaoRaiz.listaPrescricaoPendente}" var="linha"
 				dblClickSelect="true" emptyMessage="Não foi encontrado registros"
 				rows="5" paginator="true" selectionMode="single"
 				rowKey="#{linha.idPrescricao}">
@@ -36,11 +36,11 @@
 				</p:column>
 				<p:column style="width:60px; text-align: center;">
 					<p:commandLink
-						action="#{bloqueioLoteHome.bloqueioAutomáticoEstoque()}"
+						action="#{bloqueioLoteRaiz.bloqueioAutomáticoEstoque()}"
 						oncomplete="location.href='Prescricao/Prescricao/prescricao.jsf'"
 						title="Continuar prescrição" style="padding-right:10px;">
 						<f:setPropertyActionListener value="#{linha}"
-							target="#{prescricaoHome.instancia}" />
+							target="#{prescricaoRaiz.instancia}" />
 						<h:graphicImage value="/Imagens/next.png" />
 					</p:commandLink>
 				</p:column>

@@ -38,16 +38,16 @@
 			<p:commandLink update="padraoTabView:pacienteEntradaForm"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{pacienteEntradaHome.instancia}" />
+					target="#{pacienteEntradaRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{pacienteEntradaHome.apagar()}"
+			<p:commandLink action="#{pacienteEntradaRaiz.apagar()}"
 				update="tabelaPacienteEntrada padraoTabView:pacienteEntradaForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{pacienteEntradaHome.instancia}" />
+					target="#{pacienteEntradaRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

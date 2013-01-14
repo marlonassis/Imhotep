@@ -5,16 +5,18 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="tipoMaterialPanelGridConsulta" columns="3"
-		width="100%">
+	<h:panelGrid id="tipoMaterialPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
+			<p:inputText id="descricao" required="false"
 				value="#{tipoMaterialConsulta.instancia.descricao}"
-				title="Informe descrição do tipoMaterial" />
+				title="Descreva o tipo de material." />
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

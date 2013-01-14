@@ -13,10 +13,10 @@
 					<h:outputLabel for="lote" value="Lote:" />
 					<br />
 					<p:inputText id="lote"
-						value="#{entradaMaterialHome.instancia.lote}"
+						value="#{entradaMaterialRaiz.instancia.lote}"
 						title="Informe o lote" />
 					<p:commandButton value="Procurar lote"
-						action="#{entradaMaterialHome.procurarLote}" />
+						action="#{entradaMaterialRaiz.procurarLote}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>
@@ -27,7 +27,7 @@
 					<h:outputLabel for="hospital" value="Hospital:" />
 					<br />
 					<p:selectOneMenu
-						value="#{entradaMaterialHome.itensMovimentoGeral.hospital}"
+						value="#{entradaMaterialRaiz.itensMovimentoGeral.hospital}"
 						effect="fade" converter="hospitalConversor">
 						<f:ajax event="change" render="hospitalPanelGroup" />
 						<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
@@ -37,12 +37,12 @@
 				</h:panelGroup>
 
 				<h:panelGroup id="dataDoacaoPanelGroup"
-					rendered="#{entradaMaterialHome.itensMovimentoGeral.hospital != null}">
+					rendered="#{entradaMaterialRaiz.itensMovimentoGeral.hospital != null}">
 					<font color="red">*</font>
 					<h:outputLabel for="dataDoacao" value="Data da doação:" />
 					<br />
 					<p:calendar id="dataDoacao" pattern="dd/MM/yyyy"
-						value="#{entradaMaterialHome.itensMovimentoGeral.dataDoacao}" />
+						value="#{entradaMaterialRaiz.itensMovimentoGeral.dataDoacao}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>
@@ -52,7 +52,7 @@
 			<h:outputLabel for="numeroDocumento" value="Número do documento:" />
 			<br />
 			<p:inputText id="numeroDocumento"
-				value="#{entradaMaterialHome.itensMovimentoGeral.movimentoGeral.numeroDocumento}"
+				value="#{entradaMaterialRaiz.itensMovimentoGeral.movimentoGeral.numeroDocumento}"
 				onkeyup="apenasNumero(this);" title="Informe o múmero do documento" />
 		</h:panelGroup>
 
@@ -61,8 +61,8 @@
 			<h:outputLabel for="material" value="Material:" />
 			<br />
 			<p:autoComplete id="material" minQueryLength="4"
-				value="#{entradaMaterialHome.instancia.material}"
-				completeMethod="#{materialHome.getListaMaterialAutoComplete}"
+				value="#{entradaMaterialRaiz.instancia.material}"
+				completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
 				var="material" forceSelection="true" title="Informe o material"
 				itemLabel="#{material.descricaoUnidadeMaterial}"
 				itemValue="#{material}" converter="materialConversor" />
@@ -76,8 +76,8 @@
 			<h:outputLabel for="fabricante" value="Fabricante:" />
 			<br />
 			<p:autoComplete id="fabricante"
-				value="#{entradaMaterialHome.instancia.fabricante}"
-				completeMethod="#{fabricanteHome.getListaFabricanteAutoComplete}"
+				value="#{entradaMaterialRaiz.instancia.fabricante}"
+				completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
 				var="fabricante" minQueryLength="3" forceSelection="true"
 				title="Informe o fabricante" itemLabel="#{fabricante.descricao}"
 				itemValue="#{fabricante}" converter="fabricanteConversor" />
@@ -91,7 +91,7 @@
 			<h:outputLabel for="dataValidade" value="Data de validade:" />
 			<br />
 			<p:inputMask id="dataValidade" mask="99/99/9999"
-				value="#{entradaMaterialHome.instancia.dataValidade}"
+				value="#{entradaMaterialRaiz.instancia.dataValidade}"
 				title="Data de validade do lote">
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</p:inputMask>
@@ -102,7 +102,7 @@
 			<h:outputLabel for="quantidade" value="Quantidade:" />
 			<br />
 			<p:inputText id="quantidade"
-				value="#{entradaMaterialHome.itensMovimentoGeral.quantidade}"
+				value="#{entradaMaterialRaiz.itensMovimentoGeral.quantidade}"
 				onkeyup="apenasNumero(this);" title="Informe a quantidade" />
 		</h:panelGroup>
 
@@ -110,7 +110,7 @@
 			<h:outputLabel for="fornecedor" value="Fornecedor:" />
 			<br />
 			<p:inputText id="fornecedor"
-				value="#{entradaMaterialHome.instancia.fornecedor}"
+				value="#{entradaMaterialRaiz.instancia.fornecedor}"
 				title="Informe o fornecedor" />
 		</h:panelGroup>
 
@@ -119,7 +119,7 @@
 			<h:outputLabel for="valorUnitario" value="Valor unitário:" />
 			<br />
 			<p:inputText id="valorUnitario"
-				value="#{entradaMaterialHome.instancia.valorUnitario}"
+				value="#{entradaMaterialRaiz.instancia.valorUnitario}"
 				onkeyup="apenasNumeroComVirgula(this);" required="true"
 				converter="monetarioConversor"
 				title="Informe o valor unitário do medicamento" />

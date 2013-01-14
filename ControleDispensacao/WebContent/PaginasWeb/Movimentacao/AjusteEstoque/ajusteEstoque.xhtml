@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabAjusteEstoque" title="Ajuste de Estoque">
-			#{ajusteEstoqueHome.carregaEstoqueString(param.lote)}
+			#{ajusteEstoqueRaiz.carregaEstoqueString(param.lote)}
 			<h:form id="ajusteEstoqueForm">
 				<p:fieldset legend="Novo ajuste de estoque" collapsed="false"
 					toggleable="false" toggleSpeed="500">
@@ -19,12 +19,12 @@
 					<ui:include src="ajusteEstoqueEditor.xhtml" />
 					<p:commandButton value="Salvar" rendered="true"
 						update=":#{p:component('ajusteEstoqueForm')}"
-						action="#{ajusteEstoqueHome.enviar}" />
+						action="#{ajusteEstoqueRaiz.enviar}" />
 					<p:commandButton value="Gravar" rendered="false"
 						update=":#{p:component('ajusteEstoqueForm')}"
-						action="#{ajusteEstoqueHome.atualizar}" />
+						action="#{ajusteEstoqueRaiz.atualizar}" />
 					<p:commandButton value="Novo" rendered="false" update=":#{p:component('ajusteEstoqueForm')}"
-						action="#{ajusteEstoqueHome.novaInstancia()}" />
+						action="#{ajusteEstoqueRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

@@ -13,19 +13,19 @@
 		<p:tab id="tabBloqueioMaterial" title="Bloqueio de lote">
 			<h:form id="bloqueioLoteForm" prependId="false">
 				<p:fieldset legend="Novo bloqueio de lote"
-					collapsed="#{!bloqueioLoteHome.edicao}" toggleable="true"
+					collapsed="#{!bloqueioLoteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="bloqueioLoteEditor.xhtml" />
 					<p:commandButton value="Salvar" rendered="false"
 						update="padraoTabView:tabelaBloqueioLote bloqueioMaterialForm"
-						action="#{bloqueioLoteHome.enviar}" />
+						action="#{bloqueioLoteRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{bloqueioLoteHome.edicao}"
+						rendered="#{bloqueioLoteRaiz.edicao}"
 						update="padraoTabView:tabelaBloqueioLote bloqueioLoteForm"
-						action="#{bloqueioLoteHome.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{bloqueioLoteHome.edicao}"
-						update="@parent" action="#{bloqueioLoteHome.novaInstancia()}" />
+						action="#{bloqueioLoteRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{bloqueioLoteRaiz.edicao}"
+						update="@parent" action="#{bloqueioLoteRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

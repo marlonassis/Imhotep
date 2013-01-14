@@ -9,7 +9,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.ControleDispensacao.entidade.Familia;
 import br.com.ControleDispensacao.entidade.Grupo;
 import br.com.ControleDispensacao.entidade.SubGrupo;
-import br.com.ControleDispensacao.negocio.SubGrupoHome;
+import br.com.ControleDispensacao.negocio.SubGrupoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
@@ -21,7 +21,7 @@ public class FamiliaConsulta extends PadraoConsulta<Familia> {
 	
 	public void carregaSubgGrupoList(){
 		if(getInstancia().getSubGrupo() != null && getInstancia().getSubGrupo().getGrupo() != null){
-			setSugGrupoList((List<SubGrupo>) new SubGrupoHome().getListaSubGrupoGrupo(getInstancia().getSubGrupo().getGrupo().getIdGrupo()));
+			setSugGrupoList((List<SubGrupo>) new SubGrupoRaiz().getListaSubGrupoGrupo(getInstancia().getSubGrupo().getGrupo().getIdGrupo()));
 		}
 	}
 	

@@ -13,24 +13,24 @@
 		<p:tab id="tabTesteDoPezinho" title="TesteDoPezinho">
 			<h:form id="testeDoPezinhoForm" prependId="false">
 				<p:fieldset legend="Novo TesteDoPezinho"
-					collapsed="#{!testeDoPezinhoHome.edicao}" toggleable="true"
+					collapsed="#{!testeDoPezinhoRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="testeDoPezinhoEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!testeDoPezinhoHome.edicao}"
+						rendered="#{!testeDoPezinhoRaiz.edicao}"
 						update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
-						action="#{testeDoPezinhoHome.enviar}" />
+						action="#{testeDoPezinhoRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{testeDoPezinhoHome.edicao}"
+						rendered="#{testeDoPezinhoRaiz.edicao}"
 						update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
-						action="#{testeDoPezinhoHome.atualizar}" />
+						action="#{testeDoPezinhoRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{testeDoPezinhoHome.edicao}" update="@parent"
-						action="#{testeDoPezinhoHome.novaInstancia()}" />
+						rendered="#{testeDoPezinhoRaiz.edicao}" update="@parent"
+						action="#{testeDoPezinhoRaiz.novaInstancia()}" />
 					<br />
 					<p:commandButton value="Imprimir Recibo"
-						rendered="#{testeDoPezinhoHome.edicao}"
+						rendered="#{testeDoPezinhoRaiz.edicao}"
 						onclick="window.open('testeDoPezinhoComprovanteEntrega.jsf')" />
 				</p:fieldset>
 			</h:form>
@@ -51,7 +51,7 @@
 				</p:fieldset>
 				<p:growl />
 				<p:commandButton value="Gerar Lote"
-					action="#{testeDoPezinhoHome.gerarLote}" update="@parent" />
+					action="#{testeDoPezinhoRaiz.gerarLote}" update="@parent" />
 				<ui:include src="testeDoPezinhoTabela.xhtml" />
 			</h:form>
 		</p:tab>

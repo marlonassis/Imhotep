@@ -10,9 +10,13 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" value="#{livroHome.instancia.descricao}"
-				required="true" title="Informe a descrição do livro" />
+			<p:inputText id="descricao" required="true"
+				value="#{livroRaiz.instancia.descricao}"
+				title="Descreva o livro." />
 		</h:panelGroup>
 
+
+
 	</h:panelGrid>
+
 </ui:composition>

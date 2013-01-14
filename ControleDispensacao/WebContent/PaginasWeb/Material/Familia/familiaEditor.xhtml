@@ -8,41 +8,29 @@
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
+			<h:outputLabel for="subGrupo" value="SubGrupo:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{familiaHome.instancia.descricao}" required="true"
-				title="Informe a descrição do familia" />
+			<p:selectOneMenu value="#{familiaRaiz.instancia.subGrupo}"
+				effect="fade" converter="subGrupoConverter" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{subgrupo}" />
+				<f:selectItems value="#{subGrupoConsulta.list}"
+					var="subGrupo" itemLabel="#{subGrupo.descricao}"
+					itemValue="#{subgrupo}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
-		<h:panelGroup id="grupoPanelGroup">
-			<h:panelGrid columns="2" width="100%">
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="grupo" value="Grupo:" />
-					<br />
-					<p:selectOneMenu value="#{familiaHome.grupo}" effect="fade"
-						converter="grupoConversor" required="true">
-						<f:ajax event="change"
-							listener="#{familiaHome.carregaSubgGrupoList()}"
-							render="grupoPanelGroup" />
-						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{grupoConsulta.list}" var="grupo"
-							itemLabel="#{grupo.descricao}" itemValue="#{grupo}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="subGrupo" value="Sub-grupo:" />
-					<br />
-					<p:selectOneMenu value="#{familiaHome.instancia.subGrupo}"
-						effect="fade" required="true" converter="subGrupoConversor">
-						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{familiaHome.sugGrupoList}" var="subGrupo"
-							itemLabel="#{subGrupo.descricao}" itemValue="#{subGrupo}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-			</h:panelGrid>
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="true"
+				value="#{familiaRaiz.instancia.descricao}"
+				title="Descreva a família." />
 		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

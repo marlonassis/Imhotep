@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.ControleDispensacao.entidade.TesteDoPezinho;
-import br.com.ControleDispensacao.negocio.TesteDoPezinhoHome;
+import br.com.ControleDispensacao.negocio.TesteDoPezinhoRaiz;
 
 @ManagedBean(name="relatorioQuantitativoPezinho")
 @ViewScoped
@@ -26,7 +26,7 @@ public class RelatorioQuantitativoPezinho extends PadraoRelatorio{
 	public void relatorioQuantitativoPezinho() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/ControleDispensacao/relatorio/RelatorioQuantitativoPezinho.jasper";
 		String nomeRelatorio = "RelatorioQuantitativoPezinho-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<TesteDoPezinho> listaEstoqueRelatorioGeral = new TesteDoPezinhoHome().listaTestesDoPezinhoColeta(dataIni, dataFim);
+		List<TesteDoPezinho> listaEstoqueRelatorioGeral = new TesteDoPezinhoRaiz().listaTestesDoPezinhoColeta(dataIni, dataFim);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );

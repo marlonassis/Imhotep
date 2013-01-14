@@ -10,42 +10,41 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabAutorizaPainel" title="Autorização para painel">
-			<h:form id="autorizaPainelForm" prependId="false">
-				<p:fieldset legend="Nova Autorização"
-					collapsed="#{!autorizaPainelHome.edicao}" toggleable="true"
+		<p:tab title="AutorizaPainel">
+			<h:form id="autorizaPainelEditorForm">
+				<p:fieldset legend="Novo AutorizaPainel"
+					collapsed="#{!autorizaPainelRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="autorizaPainelEditor.xhtml" />
-					<p:commandButton value="Salvar"
-						rendered="#{!autorizaPainelHome.edicao}"
-						update="padraoTabView:tabelaAutorizaPainel autorizaPainelForm"
-						action="#{autorizaPainelHome.enviar}" />
-					<p:commandButton value="Gravar"
-						rendered="#{autorizaPainelHome.edicao}"
-						update="padraoTabView:tabelaAutorizaPainel autorizaPainelForm"
-						action="#{autorizaPainelHome.atualizar}" />
-					<p:commandButton value="Novo"
-						rendered="#{autorizaPainelHome.edicao}" update="@parent"
-						action="#{autorizaPainelHome.novaInstancia()}" />
+					<p:commandButton value="Salvar" rendered="#{!autorizaPainelRaiz.edicao}"
+						update=":#{p:component('autorizaPainelEditorForm')} :#{p:component('autorizaPainelPesquisaForm')}"
+						action="#{autorizaPainelRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{autorizaPainelRaiz.edicao}"
+						update=":#{p:component('autorizaPainelEditorForm')} :#{p:component('autorizaPainelPesquisaForm')}"
+						action="#{autorizaPainelRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{autorizaPainelRaiz.edicao}"
+						 update="@parent"
+						 action="#{autorizaPainelRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaAutorizaPainelForm" prependId="false">
-				<p:fieldset id="pesquisaAutorizaPainelFieldSet" legend="Pesquisa"
+			<h:form id="autorizaPainelPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="autorizaPainelConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaAutorizaPainel"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('autorizaPainelPesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
 						action="#{autorizaPainelConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaAutorizaPainelForm " />
+						update=":#{p:component('autorizaPainelPesquisaForm')}" />
 
 				</p:fieldset>
-				<p:growl />
 				<ui:include src="autorizaPainelTabela.xhtml" />
 			</h:form>
 		</p:tab>

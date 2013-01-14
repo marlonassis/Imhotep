@@ -24,7 +24,7 @@
 						value="#{familiaConsulta.instancia.subGrupo.grupo}" effect="fade"
 						converter="grupoConversor">
 						<f:ajax event="change"
-							listener="#{familiaHome.carregaSubgGrupoList()}"
+							listener="#{familiaRaiz.carregaSubgGrupoList()}"
 							render="grupoPanelGroupConsulta" />
 						<f:selectItem itemLabel="Selecione..." itemValue="" />
 						<f:selectItems value="#{grupoConsulta.list}" var="grupo"

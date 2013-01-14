@@ -19,7 +19,7 @@
 			<br />
 			<p:autoComplete id="pacienteConsulta" forceSelection="true"
 				immediate="true" value="#{consulta.instancia.paciente}"
-				completeMethod="#{pacienteHome.getListaPacienteAutoComplete}"
+				completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
 				var="paciente" itemLabel="#{paciente.nome}" itemValue="#{paciente}"
 				converter="pacienteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
@@ -32,7 +32,7 @@
 			<br />
 			<p:autoComplete id="profissionalConsulta" forceSelection="true"
 				value="#{consulta.instancia.profissional}"
-				completeMethod="#{profissionalHome.getListaProfissionalAutoComplete}"
+				completeMethod="#{profissionalRaiz.getListaProfissionalAutoComplete}"
 				var="profissional" itemLabel="#{profissional.nome}"
 				itemValue="#{profissional}" converter="profissionalConversor" />
 			<h:graphicImage value="/Imagens/list16.png"

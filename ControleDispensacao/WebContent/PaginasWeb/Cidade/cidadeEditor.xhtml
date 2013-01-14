@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="cidadePanelGrid" columns="3" width="100%">
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="estado" value="Estado:" />
+			<br />
+			<p:selectOneMenu value="#{cidadeRaiz.instancia.estado}"
+				effect="fade" converter="estadoConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{estado}" />
+				<f:selectItems value="#{estadoConsulta.list}"
+					var="estado" itemLabel="#{estado.nome}"
+					itemValue="#{estado}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="true"
+				value="#{cidadeRaiz.instancia.nome}"
+				title="" />
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+
+</ui:composition>

@@ -5,24 +5,27 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="unidadeMaterialPanelGridConsulta" columns="3"
-		width="100%">
+	<h:panelGrid id="unidadeMaterialPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
+			<p:inputText id="descricao" required="false"
 				value="#{unidadeMaterialConsulta.instancia.descricao}"
-				title="Informe descrição da unidade material" />
+				title="Descreva o nome da unidade do material." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="siglaConsulta" value="Sigla:" />
+			
+			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="siglaConsulta"
-				value="#{unidadeMaterialConsulta.instancia.sigla}" size="2"
-				maxlength="2" title="Informe a sigla da unidade material" />
+			<p:inputText id="sigla" required="false"
+				value="#{unidadeMaterialConsulta.instancia.sigla}"
+				title="Informe a sigla do material." />
 		</h:panelGroup>
+
+
 
 	</h:panelGrid>
 </ui:composition>

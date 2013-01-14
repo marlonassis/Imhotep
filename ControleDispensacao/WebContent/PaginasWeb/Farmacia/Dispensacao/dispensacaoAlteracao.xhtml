@@ -21,18 +21,18 @@
 						<br />
 						<p:inputText id="numeroPrescricao" label="Número da prescrição"
 							required="true"
-							disabled="#{!(dispensacaoHome.listPrescricaoItemEstoqueSaida == null)}"
-							value="#{dispensacaoHome.numeroPrescricao}" />
+							disabled="#{!(dispensacaoRaiz.listPrescricaoItemEstoqueSaida == null)}"
+							value="#{dispensacaoRaiz.numeroPrescricao}" />
 						<p:commandButton value="Pesquisar prescrição"
-							action="#{dispensacaoHome.carregaEstoqueEdicao}"
+							action="#{dispensacaoRaiz.carregaEstoqueEdicao}"
 							update="padraoTabView:dispensacaoAlteracaoForm" />
 						<p:commandButton value="Nova pesquisa"
-							action="#{dispensacaoHome.novaPesquisa}"
+							action="#{dispensacaoRaiz.novaPesquisa}"
 							update="padraoTabView:dispensacaoAlteracaoForm" />
 					</h:panelGroup>
 					<h:panelGroup>
 						<p:dataTable id="tabelaEstoqueDispensado"
-							value="#{dispensacaoHome.listPrescricaoItemEstoqueSaida}"
+							value="#{dispensacaoRaiz.listPrescricaoItemEstoqueSaida}"
 							var="linha" emptyMessage="Não foi encontrado registros" rows="10"
 							dblClickSelect="true" paginator="true" selectionMode="single"
 							rowKey="#{linha.idPrescricaoItemEstoqueSaida}">
@@ -49,7 +49,7 @@
 								<p:commandLink update="padraoTabView:display" title="Editar"
 									oncomplete="itensDialog.show();" style="padding-right:10px;">
 									<f:setPropertyActionListener value="#{linha}"
-										target="#{dispensacaoHome.prescricaoItemEstoqueSaida}" />
+										target="#{dispensacaoRaiz.prescricaoItemEstoqueSaida}" />
 									<h:graphicImage value="/Imagens/edit.gif" />
 								</p:commandLink>
 							</p:column>
@@ -68,33 +68,33 @@
 								<h:outputLabel for="prescricao" value="Número da prescrição:" />
 								<br />
 								<h:outputText id="prescricao"
-									value="#{dispensacaoHome.prescricaoItemEstoqueSaida.prescricaoItem.prescricao.numero}" />
+									value="#{dispensacaoRaiz.prescricaoItemEstoqueSaida.prescricaoItem.prescricao.numero}" />
 							</h:panelGroup>
 							<h:panelGroup>
 								<h:outputLabel for="material" value="Material:" />
 								<br />
 								<h:outputText id="material"
-									value="#{dispensacaoHome.prescricaoItemEstoqueSaida.prescricaoItem.material}" />
+									value="#{dispensacaoRaiz.prescricaoItemEstoqueSaida.prescricaoItem.material}" />
 							</h:panelGroup>
 							<h:panelGroup>
 								<h:outputLabel for="lote" value="Lote:" />
 								<br />
 								<h:outputText id="lote"
-									value="#{dispensacaoHome.prescricaoItemEstoqueSaida.estoque.lote}" />
+									value="#{dispensacaoRaiz.prescricaoItemEstoqueSaida.estoque.lote}" />
 							</h:panelGroup>
 							<h:panelGroup>
 								<h:outputLabel for="quantidadeSaida"
 									value="Quantidade de saída:" />
 								<br />
 								<h:outputText id="quantidadeSaida"
-									value="#{dispensacaoHome.prescricaoItemEstoqueSaida.quantidadeSaida}" />
+									value="#{dispensacaoRaiz.prescricaoItemEstoqueSaida.quantidadeSaida}" />
 							</h:panelGroup>
 							<h:panelGroup>
 								<font color="red">*</font>
 								<h:outputLabel for="tipoMovimento" value="Tipo de movimento:" />
 								<br />
 								<p:selectOneMenu id="tipoMovimento"
-									value="#{dispensacaoHome.tipoMovimento}" effect="fade"
+									value="#{dispensacaoRaiz.tipoMovimento}" effect="fade"
 									converter="tipoMovimentoConversor" required="true">
 									<f:selectItem itemLabel="Selecione..." itemValue="" />
 									<f:selectItems
@@ -108,11 +108,11 @@
 									value="Quantidade de ajuste:" />
 								<br />
 								<p:inputText id="quantidadeAjuste"
-									value="#{dispensacaoHome.quantidadeAjuste}" />
+									value="#{dispensacaoRaiz.quantidadeAjuste}" />
 							</h:panelGroup>
 							<h:panelGroup>
 								<p:commandButton value="Ajustrar"
-									action="#{dispensacaoHome.ajustarEstoqueDispensado()}"
+									action="#{dispensacaoRaiz.ajustarEstoqueDispensado()}"
 									update="padraoTabView:display padraoTabView:tabelaEstoqueDispensado" />
 							</h:panelGroup>
 						</h:panelGrid>

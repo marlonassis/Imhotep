@@ -83,7 +83,7 @@
 						<p:commandLink update="padraoTabView:display" title="Dispensar"
 							style="padding-right:10px;" oncomplete="itensDialog.show()">
 							<f:setPropertyActionListener value="#{itemPendente}"
-								target="#{dispensacaoHome.prescricao}" />
+								target="#{dispensacaoRaiz.prescricao}" />
 							<h:graphicImage value="/Imagens/edit.gif" />
 						</p:commandLink>
 					</p:column>
@@ -96,19 +96,19 @@
 					<h:panelGroup id="display">
 						<p:growl id="growl" showDetail="true" />
 						<p:commandLink id="iconeRecibo"
-							rendered="#{dispensacaoHome.prescricao.dispensado == 'S'}"
+							rendered="#{dispensacaoRaiz.prescricao.dispensado == 'S'}"
 							update="padraoTabView:recibo" onclick="reciboDialog.show();">
 							<h:graphicImage value="/Imagens/recibo.png" width="32"
 								height="32" />
 						</p:commandLink>
 						<p:dataTable id="prescricaoItemGrid"
-							value="#{dispensacaoHome.prescricao.prescricaoItens}"
+							value="#{dispensacaoRaiz.prescricao.prescricaoItens}"
 							var="prescricaoItem" dblClickSelect="true"
 							emptyMessage="Não foi encontrado registros" rows="10"
 							paginator="true" selectionMode="single"
 							rowKey="#{prescricaoItem.idPrescricaoItem}">
 
-							<p:ajax event="rowEdit" listener="#{dispensacaoHome.editEvent}"
+							<p:ajax event="rowEdit" listener="#{dispensacaoRaiz.editEvent}"
 								update="padraoTabView:growl" />
 
 							<p:column headerText="Material">
@@ -117,7 +117,7 @@
 
 							<p:column headerText="Quantidade solicitada">
 								<h:outputText
-									value="#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}" />
+									value="#{dispensacaoRaiz.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}" />
 							</p:column>
 
 							<p:column headerText="Quantidade dispensada">
@@ -131,7 +131,7 @@
 											value="#{prescricaoItem.quantidadeLiberada}"
 											style="width:100%"
 											label="Informe a quantidade a ser liberada"
-											onkeyup="filtroQuantidadeLiberada('#{dispensacaoHome.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}', this);" />
+											onkeyup="filtroQuantidadeLiberada('#{dispensacaoRaiz.quantidadeTotalDoses(prescricaoItem.prescricaoItemDoses)}', this);" />
 
 									</f:facet>
 								</p:cellEditor>
@@ -139,7 +139,7 @@
 
 							<p:column>
 								<p:dataList
-									value="#{dispensacaoHome.listaPrescricaoItemEstoqueSaida(prescricaoItem)}"
+									value="#{dispensacaoRaiz.listaPrescricaoItemEstoqueSaida(prescricaoItem)}"
 									var="item" type="ordered">  
 								    #{item.estoque.lote} - #{item.quantidadeSaida}
 								</p:dataList>
@@ -152,9 +152,9 @@
 						</p:dataTable>
 
 						<p:commandButton value="Dispensar"
-							action="#{dispensacaoHome.dispensar}"
+							action="#{dispensacaoRaiz.dispensar}"
 							update="padraoTabView:growl padraoTabView:dispensacaoItensGrid padraoTabView:recibo"
-							rendered="#{dispensacaoHome.prescricao.dispensado == 'N'}"
+							rendered="#{dispensacaoRaiz.prescricao.dispensado == 'N'}"
 							oncomplete="reciboDialog.show(); itensDialog.hide();" />
 					</h:panelGroup>
 				</p:dialog>
@@ -174,25 +174,25 @@
 
 						<div align="left">
 							<b>Prescrição:</b>
-							<h:outputText value="#{dispensacaoHome.prescricao.numero}" />
+							<h:outputText value="#{dispensacaoRaiz.prescricao.numero}" />
 							<br /> <b>Prescritor:</b>
 							<h:outputText
-								value="#{dispensacaoHome.prescricao.profissional.nome}" />
+								value="#{dispensacaoRaiz.prescricao.profissional.nome}" />
 							<br /> <b>Dispensante:</b>
 							<h:outputText value="#{autenticador.profissionalAtual.nome}" />
 							<br /> <b>Data da Prescrição:</b>
 							<h:outputText
-								value="#{dispensacaoHome.prescricao.dataPrescricao}">
+								value="#{dispensacaoRaiz.prescricao.dataPrescricao}">
 								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 							</h:outputText>
 							<br /> <b>Data da Dispensação:</b>
 							<h:outputText
-								value="#{dispensacaoHome.prescricao.dataDipensacao}">
+								value="#{dispensacaoRaiz.prescricao.dataDipensacao}">
 								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 							</h:outputText>
 							<br /> <b>Data da Impressão:</b> #{util.dataAtual}
 							#{util.horaAtual}<br /> <b>Unidade:</b>
-							<h:outputText value="#{dispensacaoHome.prescricao.unidade}" />
+							<h:outputText value="#{dispensacaoRaiz.prescricao.unidade}" />
 							<br />
 							<br />
 							<table border="1">
@@ -205,7 +205,7 @@
 										<th><h:outputText value="Lote" /></th>
 									</tr>
 								</thead>
-								<ui:repeat value="#{dispensacaoHome.listaReciboPrescricao()}"
+								<ui:repeat value="#{dispensacaoRaiz.listaReciboPrescricao()}"
 									var="item">
 									<tr style="cellpadding: 5px">
 										<td><h:outputText

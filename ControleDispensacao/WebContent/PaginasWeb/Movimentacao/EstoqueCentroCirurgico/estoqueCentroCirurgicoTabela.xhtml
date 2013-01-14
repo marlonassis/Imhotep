@@ -53,7 +53,7 @@
 				<h:outputText value="" />
 			</f:facet>
 			<p:commandLink
-				action="#{estoqueCentroCirurgicoHome.liberarLote(linha)}"
+				action="#{estoqueCentroCirurgicoRaiz.liberarLote(linha)}"
 				update="padraoTabView:tabelaEstoqueCentroCirurgico"
 				rendered="#{linha.bloqueado == 'S'}" title="Liberar Lote"
 				style="padding-right:10px;">
@@ -63,7 +63,7 @@
 				rendered="#{linha.bloqueado == 'N'}" title="Bloquear Lote"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{estoqueCentroCirurgicoHome.estoqueBloqueio}" />
+					target="#{estoqueCentroCirurgicoRaiz.estoqueBloqueio}" />
 				Apagar
 			</p:commandLink>
 
@@ -77,9 +77,9 @@
 		<h:outputLabel for="motivo" value="Motivo:" />
 		<br />
 		<p:inputTextarea id="motivo" rows="10" cols="30"
-			value="#{estoqueCentroCirurgicoHome.estoqueBloqueio.motivoBloqueio}" />
+			value="#{estoqueCentroCirurgicoRaiz.estoqueBloqueio.motivoBloqueio}" />
 		<p:commandButton value="Gravar" oncomplete="bloqueioDialog.hide()"
 			update="padraoTabView:pesquisaEstoqueCentroCirurgicoForm padraoTabView:tabelaEstoqueCentroCirurgico"
-			action="#{estoqueCentroCirurgicoHome.bloqueioLote}" />
+			action="#{estoqueCentroCirurgicoRaiz.bloqueioLote}" />
 	</p:dialog>
 </ui:composition>

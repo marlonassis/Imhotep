@@ -5,20 +5,27 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="tipoConselhoPanelGrid" columns="3" width="100%">
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao"
-				value="#{tipoConselhoHome.instancia.descricao}" required="true"
-				title="Informe a descrição da unidade material" />
-		</h:panelGroup>
+
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="sigla" value="#{tipoConselhoHome.instancia.sigla}"
-				required="true" title="Informe a sigla da unidade material" />
+			<p:inputText id="sigla" required="true"
+				value="#{tipoConselhoRaiz.instancia.sigla}"
+				title="Informe a sigla do conselho." />
 		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="true"
+				value="#{tipoConselhoRaiz.instancia.descricao}"
+				title="Descreva o conselho." />
+		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

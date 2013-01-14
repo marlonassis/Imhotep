@@ -9,7 +9,7 @@
 		<p:fieldset legend="Medicamento vencido ou a vencer em 5 dias"
 			collapsed="false" toggleable="false">
 			<p:dataTable id="tabelaEstoqueVencido"
-				value="#{bloqueioLoteHome.listaEstoqueVencido()}" var="linha"
+				value="#{bloqueioLoteRaiz.listaEstoqueVencido()}" var="linha"
 				dblClickSelect="true" emptyMessage="Não foi encontrado registros"
 				rows="5" paginator="true" selectionMode="single"
 				rowKey="#{linha.idEstoque}">
@@ -34,12 +34,12 @@
 				</p:column>
 				<p:column style="width:60px; text-align: center;">
 					<p:commandLink
-						action="#{bloqueioLoteHome.bloqueioAutomaticoEstoque()}"
+						action="#{bloqueioLoteRaiz.bloqueioAutomaticoEstoque()}"
 						onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
 						oncomplete="window.location.reload();" title="Bloquear Lote"
 						style="padding-right:10px;">
 						<f:setPropertyActionListener value="#{linha}"
-							target="#{bloqueioLoteHome.instancia}" />
+							target="#{bloqueioLoteRaiz.instancia}" />
 						<h:graphicImage value="/Imagens/block.png" />
 					</p:commandLink>
 				</p:column>

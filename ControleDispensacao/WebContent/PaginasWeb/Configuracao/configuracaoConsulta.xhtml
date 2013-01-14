@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="configuracaoPanelGridConsulta" columns="3" width="100%">
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="false"
+				value="#{configuracaoConsulta.instancia.descricao}"
+				title="Desceva a configuração" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="false"
+				value="#{configuracaoConsulta.instancia.nome}"
+				title="Informe o nome da configuração." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="valor" value="Valor:" />
+			<br />
+			<p:inputText id="valor" required="false"
+				value="#{configuracaoConsulta.instancia.valor}"
+				title="Informe o conteúdo da configuração." />
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+</ui:composition>

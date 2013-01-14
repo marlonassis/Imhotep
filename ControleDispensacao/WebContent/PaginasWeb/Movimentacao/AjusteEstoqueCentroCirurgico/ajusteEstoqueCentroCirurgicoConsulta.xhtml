@@ -21,7 +21,7 @@
 			<br />
 			<p:autoComplete id="materialConsulta" forceSelection="true"
 				value="#{estoqueConsulta.instancia.material}"
-				completeMethod="#{materialHome.getListaMaterialAutoComplete}"
+				completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
 				var="material" title="Informe o grupo do sub-grupo"
 				itemLabel="#{material.descricao}" itemValue="#{material}"
 				converter="materialConversor" />

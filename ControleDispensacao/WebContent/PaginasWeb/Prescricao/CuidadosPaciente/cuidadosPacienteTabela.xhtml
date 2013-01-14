@@ -28,16 +28,16 @@
 			<p:commandLink update="padraoTabView:cuidadosPacienteForm"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{cuidadosPacienteHome.instancia}" />
+					target="#{cuidadosPacienteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{cuidadosPacienteHome.apagar()}"
+			<p:commandLink action="#{cuidadosPacienteRaiz.apagar()}"
 				update="tabelaCuidadosPaciente padraoTabView:cuidadosPacienteForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{cuidadosPacienteHome.instancia}" />
+					target="#{cuidadosPacienteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

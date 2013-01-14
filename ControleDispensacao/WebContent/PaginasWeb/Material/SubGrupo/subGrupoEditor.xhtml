@@ -8,24 +8,29 @@
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
+			<h:outputLabel for="grupo" value="Grupo:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{subGrupoHome.instancia.descricao}" required="true"
-				title="Informe a descrição do subGrupo" />
+			<p:selectOneMenu value="#{subGrupoRaiz.instancia.grupo}"
+				effect="fade" converter="grupoConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{grupo}" />
+				<f:selectItems value="#{grupoConsulta.list}"
+					var="grupo" itemLabel="#{grupo.descricao}"
+					itemValue="#{grupo}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="grupo" value="Grupo:" />
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:selectOneMenu value="#{subGrupoHome.instancia.grupo}"
-				effect="fade" required="true" converter="grupoConversor">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{grupoConsulta.list}" var="grupo"
-					itemLabel="#{grupo.descricao}" itemValue="#{grupo}" />
-			</p:selectOneMenu>
+			<p:inputText id="descricao" required="true"
+				value="#{subGrupoRaiz.instancia.descricao}"
+				title="Descreva o subgrupo." />
 		</h:panelGroup>
 
+
+
 	</h:panelGrid>
+
 </ui:composition>

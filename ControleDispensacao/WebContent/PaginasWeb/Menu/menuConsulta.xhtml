@@ -5,35 +5,62 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="aplicacaoPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="menuPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			
+			<h:outputLabel for="menuPai" value="Menu Pai:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
+			<p:selectOneMenu value="#{menuConsulta.instancia.menuPai}"
+				effect="fade" converter="menuConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{menu}" />
+				<f:selectItems value="#{menuRaiz.getListaMenuAutoComplete}"
+					var="menuPai" itemLabel="#{menu.descricao}"
+					itemValue="#{menu}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="false"
 				value="#{menuConsulta.instancia.descricao}"
-				title="Informe a descrição do menu" />
+				title="Descreva o menu." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="urlConsulta" value="Url:" />
+			
+			<h:outputLabel for="bloqueado" value="Bloqueado" />
 			<br />
-			<p:inputText id="urlConsulta" value="#{menuConsulta.instancia.url}"
-				title="Informe a url do menu" />
+			<p:selectOneRadio id="bloqueado" required="false"
+				value="#{menuConsulta.instancia.bloqueado}"
+				title="Informe se o menu está ou não bloqueado.">
+				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
+				
+			</p:selectOneRadio>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="url" value="URL:" />
+			<br />
+			<p:inputText id="url" required="false"
+				value="#{menuConsulta.instancia.url}"
+				title="Informe a URL do menu." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="urlAjuda" value="URL de Ajuda:" />
+			<br />
+			<p:inputText id="urlAjuda" required="false"
+				value="#{menuConsulta.instancia.urlAjuda}"
+				title="Informe a url de ajuda." />
 		</h:panelGroup>
 
 
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="menuPaiConsulta" value="Menu pai:" />
-			<br />
-			<p:autoComplete id="menuPaiConsulta" forceSelection="true"
-				value="#{menuConsulta.instancia.menuPai}"
-				completeMethod="#{menuHome.getListaMenuAutoComplete}" var="menu"
-				title="Informe o menu pai" itemLabel="#{menu.descricao}"
-				itemValue="#{menu}" converter="menuConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
+
 	</h:panelGrid>
 </ui:composition>

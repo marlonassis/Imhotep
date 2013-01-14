@@ -8,22 +8,27 @@
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Movimento:" />
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{tipoMovimentoHome.instancia.descricao}" required="true"
-				title="Informe a descrição do tipo do movimento" />
+			<p:inputText id="descricao" required="true"
+				value="#{tipoMovimentoRaiz.instancia.descricao}"
+				title="Descreva o tipo de movimento." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="operacao" value="Operação:" />
+			<font color="red">*</font>
+			<h:outputLabel for="tipoOperacao" value="Tipo da Operação" />
 			<br />
-			<p:selectOneMenu id="operacao"
-				value="#{tipoMovimentoHome.instancia.tipoOperacao}" effect="fade">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
-				<f:selectItems value="#{itensPadrao.operacaoEnumItens}" />
-			</p:selectOneMenu>
+			<p:selectOneRadio id="tipoOperacao" required="true"
+				value="#{tipoMovimentoRaiz.instancia.tipoOperacao}"
+				title="Informe o tipo da operação.">
+				<f:selectItems value="#{itensPadrao.tipoOperacaoEnum}" />
+				
+			</p:selectOneRadio>
 		</h:panelGroup>
 
+
+
 	</h:panelGrid>
+
 </ui:composition>

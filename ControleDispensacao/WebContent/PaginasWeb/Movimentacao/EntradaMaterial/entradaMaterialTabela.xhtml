@@ -10,7 +10,7 @@
 		dblClickSelect="true" emptyMessage="Não foi encontrado registros"
 		rows="10" paginator="true" selectionMode="single"
 		rowKey="#{linha.idEstoque}">
-		<p:ajax event="rowEdit" listener="#{entradaMaterialHome.editRowEvent}"
+		<p:ajax event="rowEdit" listener="#{entradaMaterialRaiz.editRowEvent}"
 			update="padraoTabView:tabelaEntradaMaterial padraoTabView:entradaMaterialForm" />
 		<p:column>
 			<f:facet name="header">
@@ -84,16 +84,16 @@
 			<p:commandLink update="padraoTabView:entradaMaterialForm"
 				title="Editar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{entradaMaterialHome.instancia}" />
+					target="#{entradaMaterialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{entradaMaterialHome.apagar()}"
+			<p:commandLink action="#{entradaMaterialRaiz.apagar()}"
 				update="tabelaEntradaMaterial padraoTabView:entradaMaterialForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{entradaMaterialHome.instancia}" />
+					target="#{entradaMaterialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

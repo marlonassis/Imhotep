@@ -17,15 +17,15 @@ import br.com.ControleDispensacao.entidade.Paciente;
 import br.com.ControleDispensacao.entidade.Prescricao;
 import br.com.ControleDispensacao.entidade.PrescricaoItem;
 import br.com.ControleDispensacao.entidade.Profissional;
-import br.com.ControleDispensacao.negocio.PrescricaoHome;
-import br.com.ControleDispensacao.negocio.PrescricaoItemHome;
+import br.com.ControleDispensacao.negocio.PrescricaoRaiz;
+import br.com.ControleDispensacao.negocio.PrescricaoItemRaiz;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
 public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 
-	private Prescricao prescricaoAtual = PrescricaoHome.getInstanciaHome().getPrescricaoAtual();
+	private Prescricao prescricaoAtual = PrescricaoRaiz.getInstanciaHome().getPrescricaoAtual();
 	
 	public List<ControleMedicacaoRestritoSCHI> controlesAtivos(Paciente paciente){
 		return getControlesValidos(paciente);
@@ -103,7 +103,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 	private void adicionaAutorizacaoProfissionalAutorizado(Profissional profissionalPeloUsuario, PrescricaoItem item) {
 		if(verificaEspecialidadeValida(item.getMaterial(), profissionalPeloUsuario)){
 			item.setProfissionalLiberacao(profissionalPeloUsuario);
-			new PrescricaoItemHome(item, false).atualizar();
+			new PrescricaoItemRaiz(item, false).atualizar();
 		}else{
 			super.mensagem("O usuário informado não possue autorização para liberar este material.", "", FacesMessage.SEVERITY_WARN);
 		}
@@ -120,7 +120,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 	
 	private void anexaAutorizacaoAtualizaItem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalPeloUsuario, PrescricaoItem item) {
 		anexaFormularioAntibioticoItem(controleMedicacaoRestritoSCHI, profissionalPeloUsuario, item);
-		new PrescricaoItemHome(item, false).atualizar();
+		new PrescricaoItemRaiz(item, false).atualizar();
 	}
 	
 	private void anexaFormularioAntibioticoItem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalPeloUsuario, PrescricaoItem item) {

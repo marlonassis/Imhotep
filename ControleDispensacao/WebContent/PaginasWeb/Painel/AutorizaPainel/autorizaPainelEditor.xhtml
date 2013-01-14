@@ -10,29 +10,32 @@
 			<font color="red">*</font>
 			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:autoComplete id="especialidade" required="true"
-				forceSelection="true"
-				value="#{autorizaPainelHome.instancia.especialidade}"
-				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
-				var="especialidade" itemLabel="#{especialidade.descricao}"
-				itemValue="#{especialidade}" converter="especialidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="painel" value="Painel:" />
-			<br />
-			<p:autoComplete id="painel" required="true" forceSelection="true"
-				value="#{autorizaPainelHome.instancia.painel}"
-				completeMethod="#{painelHome.getListaPainelAutoComplete}"
-				var="painel" itemLabel="#{painel.descricao}" itemValue="#{painel}"
-				converter="painelConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{autorizaPainelRaiz.instancia.especialidade}"
+				effect="fade" converter="especialidadeConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
+				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+					var="especialidade" itemLabel="#{especialidade.descricao}"
+					itemValue="#{especialidade}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="Painel" value="Painel:" />
+			<br />
+			<p:selectOneMenu value="#{autorizaPainelRaiz.instancia.Painel}"
+				effect="fade" converter="painelConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{painel}" />
+				<f:selectItems value="#{painelRaiz.getListaPainelAutoComplete}"
+					var="Painel" itemLabel="#{painel.descricao}"
+					itemValue="#{painel}" />
+				
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

@@ -5,32 +5,9 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="autorizaMenuGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="autorizaMenuPanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup>
-			<h:outputLabel for="especialidadeConsulta" value="Especialidade:" />
-			<br />
-			<p:autoComplete id="especialidadeConsulta" forceSelection="true"
-				value="#{autorizaMenuConsulta.instancia.especialidade}"
-				completeMethod="#{especialidadeHome.getListaEspecialidadeAutoComplete}"
-				var="especialidade" itemLabel="#{especialidade.descricao}"
-				itemValue="#{especialidade}" converter="especialidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
-		<h:panelGroup>
-			<h:outputLabel for="menuConsulta" value="Menu:" />
-			<br />
-			<p:autoComplete id="menuConsulta" forceSelection="true"
-				value="#{autorizaMenuConsulta.instancia.menu}"
-				completeMethod="#{menuHome.getListaMenuAutoComplete}" var="menu"
-				itemLabel="#{menu.descricao}" itemValue="#{menu}"
-				converter="menuConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
+
 
 	</h:panelGrid>
 </ui:composition>

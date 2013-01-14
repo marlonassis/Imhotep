@@ -8,20 +8,24 @@
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="nome" value="Nome:" />
+			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="nome" value="#{hospitalHome.instancia.nome}"
-				title="Informe o nome do hospital" required="true" />
+			<p:inputText id="descricao" required="true"
+				value="#{hospitalRaiz.instancia.descricao}"
+				title="Descreva o hospital" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
+			<h:outputLabel for="nome" value="Nome:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{hospitalHome.instancia.descricao}" required="true"
-				title="Informe descrição do hospital" />
+			<p:inputText id="nome" required="true"
+				value="#{hospitalRaiz.instancia.nome}"
+				title="Informe o nome do hospital." />
 		</h:panelGroup>
 
+
+
 	</h:panelGrid>
+
 </ui:composition>

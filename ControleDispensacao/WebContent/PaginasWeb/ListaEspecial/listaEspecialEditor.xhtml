@@ -4,62 +4,66 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="livroPanelGrid" columns="3" width="100%">
+	<h:panelGrid id="listaEspecialPanelGrid" columns="3" width="100%">
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="livro" value="Livro:" />
 			<br />
-			<p:autoComplete id="livro" required="true" forceSelection="true"
-				value="#{listaEspecialHome.instancia.livro}"
-				completeMethod="#{livroHome.getListaLivroSuggest}" var="livro"
-				itemLabel="#{livro.descricao}" itemValue="#{livro}"
-				converter="livroConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+			<p:selectOneMenu value="#{listaEspecialRaiz.instancia.livro}"
+				effect="fade" converter="livroConversor" required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{livro}" />
+				<f:selectItems value="#{livroRaiz.getListaLivroSuggest}"
+					var="livro" itemLabel="#{livro.descricao}"
+					itemValue="#{livro}" />
+				
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="lista" value="Lista:" />
+			<h:outputLabel for="lista" value="Nome da lista:" />
 			<br />
-			<p:inputText id="lista" value="#{listaEspecialHome.instancia.lista}"
-				required="true" title="Informe o nome da lista" />
+			<p:inputText id="lista" required="true"
+				value="#{listaEspecialRaiz.instancia.lista}"
+				title="Informe o nome da lista." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
+			
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao"
-				value="#{listaEspecialHome.instancia.descricao}" required="true"
-				title="Informe a descrição da lista" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="medicamentoControlado"
-				value="Medicamento Controlado?" />
-			<br />
-			<h:selectOneRadio id="medicamentoControlado"
-				value="#{listaEspecialHome.instancia.medicamentoControlado}"
-				required="true"
-				title="Informe se a lista vai ter remédio controlado">
-				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
-			</h:selectOneRadio>
+			<p:inputText id="descricao" required="false"
+				value="#{listaEspecialRaiz.instancia.descricao}"
+				title="Descreva a lista" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="receitaControlada" value="Receita Controlada?" />
 			<br />
-			<h:selectOneRadio id="receitaControlada"
-				value="#{listaEspecialHome.instancia.receitaControlada}"
-				required="true" title="Informe se a receita é controlada">
-				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
-			</h:selectOneRadio>
+			<p:selectOneRadio id="receitaControlada" required="true"
+				value="#{listaEspecialRaiz.instancia.receitaControlada}"
+				title="Selecione sim, caso a receita seja controlada.">
+				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
+				
+			</p:selectOneRadio>
 		</h:panelGroup>
 
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="medicamentoControlado" value="Medicamento Controlado?" />
+			<br />
+			<p:selectOneRadio id="medicamentoControlado" required="true"
+				value="#{listaEspecialRaiz.instancia.medicamentoControlado}"
+				title="Informe sim caso o remédio seja controlado.">
+				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
+				
+			</p:selectOneRadio>
+		</h:panelGroup>
+
+
+
 	</h:panelGrid>
+
 </ui:composition>

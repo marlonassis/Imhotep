@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaEstado" value="#{estadoConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idEstado}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade Federativa" />
+			</f:facet>
+			<h:outputText value="#{linha.unidadeFederativa}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nome" />
+			</f:facet>
+			<h:outputText value="#{linha.nome}" />
+		</p:column>
+
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('estadoEditorForm')}"
+				style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{estadoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{estadoRaiz.apagar()}"
+				update=":#{p:component('estadoEditorForm')} :#{p:component('estadoPesquisaForm')}"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{estadoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

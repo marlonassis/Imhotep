@@ -33,16 +33,16 @@
 			<p:commandLink update="padraoTabView:testeDoPezinhoRevisaoForm"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{testeDoPezinhoResultadoHome.testeDoPezinho}" />
+					target="#{testeDoPezinhoResultadoRaiz.testeDoPezinho}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{familiaHome.apagar()}"
+			<p:commandLink action="#{familiaRaiz.apagar()}"
 				update="tabelaFamilia padraoTabView:familiaForm"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{testeDoPezinhoResultadoHome.testeDoPezinho}" />
+					target="#{testeDoPezinhoResultadoRaiz.testeDoPezinho}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

@@ -16,9 +16,9 @@
 				<h:form id="dosagemForm" prependId="false">
 					<p:dataTable id="playersTable" var="prescricaoItem"
 						dblClickSelect="true"
-						value="#{dosagemHome.instancia.prescricaoItens}">
+						value="#{dosagemRaiz.instancia.prescricaoItens}">
 						<f:facet name="header">
-					            Dosagem - Leito #{dosagemHome.instancia.leito}
+					            Dosagem - Leito #{dosagemRaiz.instancia.leito}
 					        </f:facet>
 
 						<p:columnGroup type="header">
@@ -33,7 +33,7 @@
 						</p:columnGroup>
 
 						<p:subTable var="dose"
-							value="#{dosagemHome.listaPrescricaoItemDose(prescricaoItem)}">
+							value="#{dosagemRaiz.listaPrescricaoItemDose(prescricaoItem)}">
 							<f:facet name="header">
 								<h:outputText value="#{prescricaoItem.material.descricao}" />
 							</f:facet>

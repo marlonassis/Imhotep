@@ -19,9 +19,9 @@
 						<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
 						<br />
 						<p:inputText id="numeroSus"
-							value="#{pacienteEntradaHome.numeroSus}"
+							value="#{pacienteEntradaRaiz.numeroSus}"
 							title="Informe o número do cartão do SUS" />
-						<p:commandButton action="#{pacienteEntradaHome.carregaPaciente()}"
+						<p:commandButton action="#{pacienteEntradaRaiz.carregaPaciente()}"
 							image="ui-icon ui-icon-search"
 							update="padraoTabView:dadosPaciente padraoTabView:tabelaPacienteEntrada"
 							title="Procurar paciente" />
@@ -33,25 +33,25 @@
 							<b>Nome:</b>
 							<br />
 							<h:outputText
-								value="#{pacienteEntradaHome.instancia.paciente.nome}" />
+								value="#{pacienteEntradaRaiz.instancia.paciente.nome}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							<b>SUS:</b>
 							<br />
 							<h:outputText
-								value="#{pacienteEntradaHome.instancia.paciente.numeroSus}" />
+								value="#{pacienteEntradaRaiz.instancia.paciente.numeroSus}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							<b>Sexo:</b>
 							<br />
 							<h:outputText
-								value="#{pacienteEntradaHome.instancia.paciente.sexo.label}" />
+								value="#{pacienteEntradaRaiz.instancia.paciente.sexo.label}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							<b>Data de nascimento:</b>
 							<br />
 							<h:outputText
-								value="#{pacienteEntradaHome.instancia.paciente.dataNascimento}">
+								value="#{pacienteEntradaRaiz.instancia.paciente.dataNascimento}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</h:outputText>
 						</h:panelGroup>
@@ -59,7 +59,7 @@
 							<b>Cidade:</b>
 							<br />
 							<h:outputText
-								value="#{pacienteEntradaHome.instancia.paciente.cidade.nome}-#{pacienteEntradaHome.instancia.paciente.cidade.estado.uf}" />
+								value="#{pacienteEntradaRaiz.instancia.paciente.cidade.nome}-#{pacienteEntradaRaiz.instancia.paciente.cidade.estado.uf}" />
 						</h:panelGroup>
 					</h:panelGrid>
 				</p:panel>
@@ -67,21 +67,21 @@
 
 			<h:form id="pacienteEntradaForm" prependId="false">
 				<p:fieldset legend="Nova Entrada"
-					collapsed="#{!pacienteEntradaHome.edicao}" toggleable="true"
+					collapsed="#{!pacienteEntradaRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="pacienteEntradaEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!pacienteEntradaHome.edicao}"
+						rendered="#{!pacienteEntradaRaiz.edicao}"
 						update="padraoTabView:tabelaPacienteEntrada pacienteEntradaForm"
-						action="#{pacienteEntradaHome.enviar}" />
+						action="#{pacienteEntradaRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{pacienteEntradaHome.edicao}"
+						rendered="#{pacienteEntradaRaiz.edicao}"
 						update="padraoTabView:tabelaPacienteEntrada pacienteEntradaForm"
-						action="#{pacienteEntradaHome.atualizar}" />
+						action="#{pacienteEntradaRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{pacienteEntradaHome.edicao}" update="@parent"
-						action="#{pacienteEntradaHome.novaInstancia()}" />
+						rendered="#{pacienteEntradaRaiz.edicao}" update="@parent"
+						action="#{pacienteEntradaRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

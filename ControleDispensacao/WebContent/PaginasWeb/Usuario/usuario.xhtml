@@ -12,18 +12,18 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabUsuario" title="Usuário">
 			<h:form id="usuarioForm" prependId="false">
-				<p:fieldset legend="Novo Usuário" collapsed="#{!usuarioHome.edicao}"
+				<p:fieldset legend="Novo Usuário" collapsed="#{!usuarioRaiz.edicao}"
 					toggleable="true" toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="usuarioEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!usuarioHome.edicao}"
+					<p:commandButton value="Salvar" rendered="#{!usuarioRaiz.edicao}"
 						update="padraoTabView:tabelaUsuario usuarioForm"
-						action="#{usuarioHome.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{usuarioHome.edicao}"
+						action="#{usuarioRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{usuarioRaiz.edicao}"
 						update="padraoTabView:tabelaUsuario usuarioForm"
-						action="#{usuarioHome.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{usuarioHome.edicao}"
-						update="@parent" action="#{usuarioHome.novaInstancia()}" />
+						action="#{usuarioRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{usuarioRaiz.edicao}"
+						update="@parent" action="#{usuarioRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

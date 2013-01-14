@@ -25,10 +25,10 @@
 							title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
 						<br />
 						<p:autoComplete id="material2"
-							disabled="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.material != null}"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.material}"
+							disabled="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.material != null}"
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.material}"
 							minQueryLength="4"
-							completeMethod="#{materialHome.getListaMaterialAntibioticoAutoComplete}"
+							completeMethod="#{materialRaiz.getListaMaterialAntibioticoAutoComplete}"
 							var="material" forceSelection="true"
 							title="Informe o medicamento a ser prescrito"
 							itemLabel="#{material.descricao}" itemValue="#{material}"
@@ -39,7 +39,7 @@
 						<h:outputLabel for="observacao2" value="Observação:" />
 						<br />
 						<p:inputTextarea id="observacao2"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.observacao}"
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.observacao}"
 							autoResize="false" cols="30" />
 					</h:panelGroup>
 
@@ -49,7 +49,7 @@
 							value="Quantidade de doses diárias:" />
 						<br />
 						<p:inputText id="quantidadeDoses2"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.quantidadeDoses}"
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.quantidadeDoses}"
 							title="Período em horas" />
 					</h:panelGroup>
 
@@ -59,7 +59,7 @@
 							value="Quantidade do medicamento por dose:" />
 						<br />
 						<p:inputText id="quantidadeMedicamento2"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.quantidadePorDose}"
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.quantidadePorDose}"
 							onkeyup="apenasNumero(this);"
 							title="Quantidade a ser ministrado ao paciente" />
 					</h:panelGroup>
@@ -70,7 +70,7 @@
 							value="Intervalo entre as doses:" />
 						<br />
 						<p:inputText id="intervaloDoses2"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.intervaloEntreDoses}"
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.intervaloEntreDoses}"
 							title="Intervalo de uma dose para a outra" />h
 					</h:panelGroup>
 
@@ -80,7 +80,7 @@
 						<br />
 						<p:calendar id="dataIncial2" pattern="dd/MM/yyyy HH:mm"
 							locale="pt"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.dataInicio}" />
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.dataInicio}" />
 					</h:panelGroup>
 
 					<h:panelGroup>
@@ -88,7 +88,7 @@
 						<h:outputLabel for="via2" value="Via de administração:" />
 						<br />
 						<p:selectOneMenu id="via2"
-							value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.tipoViaAdministracaoMedicamento}"
+							value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.tipoViaAdministracaoMedicamento}"
 							effect="fade">
 							<p:ajax event="change" update="padraoTabView:outraViaPanelGroup" />
 							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
@@ -99,19 +99,19 @@
 
 					<h:panelGroup id="outraViaPanelGroup">
 						<h:panelGroup
-							rendered="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}">
+							rendered="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}">
 							<font color="red">*</font>
 							<h:outputLabel for="outraVia2" value="Outra via:" />
 							<br />
 							<p:inputText id="outraVia2"
-								value="#{controleMedicacaoRestritoSCHIHome.dose.prescricaoItem.outraVia}"
+								value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.outraVia}"
 								title="Outra via" />
 						</h:panelGroup>
 					</h:panelGroup>
 
 					<h:panelGroup>
 						<p:commandButton
-							action="#{controleMedicacaoRestritoSCHIHome.gravaItem()}"
+							action="#{controleMedicacaoRestritoSCHIRaiz.gravaItem()}"
 							value="Adicionar dose"
 							oncomplete="window.opener.location.reload();"
 							update="padraoTabView:dosePanel" />
@@ -124,7 +124,7 @@
 								style="width:900px">
 								<p:growl />
 								<p:dataGrid id="doseGrid" var="itemDose"
-									value="#{controleMedicacaoRestritoSCHIHome.prescricaoItemDoseList}"
+									value="#{controleMedicacaoRestritoSCHIRaiz.prescricaoItemDoseList}"
 									columns="3" paginator="false">
 									<p:column>
 										<p:panel style="text-align:center">
@@ -155,7 +155,7 @@
 												</h:panelGroup>
 												<h:panelGroup>
 													<p:commandLink
-														action="#{controleMedicacaoRestritoSCHIHome.apagarDose(itemDose)}"
+														action="#{controleMedicacaoRestritoSCHIRaiz.apagarDose(itemDose)}"
 														update="padraoTabView:doseGrid" title="Apagar"
 														immediate="true" style="padding-right:10px;">
 														<h:graphicImage value="/Imagens/delete.png" />

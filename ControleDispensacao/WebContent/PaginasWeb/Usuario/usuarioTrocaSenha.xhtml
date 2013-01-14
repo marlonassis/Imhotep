@@ -18,14 +18,14 @@
 						<font color="red">*</font>
 						<h:outputLabel for="senhaAntiga" value="Senha antiga:" />
 						<br />
-						<p:inputText id="senhaAntiga" value="#{usuarioHome.senhaAntiga}"
+						<p:inputText id="senhaAntiga" value="#{usuarioRaiz.senhaAntiga}"
 							required="true" type="password" />
 					</h:panelGroup>
 					<h:panelGroup>
 						<font color="red">*</font>
 						<h:outputLabel for="senhaNova" value="Senha nova:" />
 						<br />
-						<p:inputText id="senhaNova" value="#{usuarioHome.senhaNova}"
+						<p:inputText id="senhaNova" value="#{usuarioRaiz.senhaNova}"
 							required="true" type="password" />
 					</h:panelGroup>
 					<h:panelGroup>
@@ -34,12 +34,12 @@
 							value="Confirme a senha nova:" />
 						<br />
 						<p:inputText id="senhaNovaConfirmacao"
-							value="#{usuarioHome.senhaNovaConfirmacao}" required="true"
+							value="#{usuarioRaiz.senhaNovaConfirmacao}" required="true"
 							type="password" />
 					</h:panelGroup>
 					<h:panelGroup>
 						<p:commandButton value="Alterar Senha"
-							action="#{usuarioHome.trocaSenha()}"
+							action="#{usuarioRaiz.trocaSenha()}"
 							update="padraoTabView:usuarioForm" />
 					</h:panelGroup>
 				</h:panelGrid>
