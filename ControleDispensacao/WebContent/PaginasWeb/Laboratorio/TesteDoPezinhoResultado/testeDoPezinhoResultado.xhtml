@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabTesteDoPezinhoResultado" title="Tipo de Exame">
-			<h:form id="testeDoPezinhoResultadoForm" prependId="false">
+			<h:form id="testeDoPezinhoResultadoForm" >
 				<p:fieldset legend="Novo Tipo de Exame"
 					collapsed="#{!(testeDoPezinhoResultadoRaiz.testeDoPezinho != null)}"
 					toggleable="true" toggleSpeed="500">
@@ -30,7 +30,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaTesteDoPezinhoResultadoForm" prependId="false">
+			<h:form id="pesquisaTesteDoPezinhoResultadoForm" >
 				<p:fieldset id="pesquisaTesteDoPezinhoResultadoFieldSet"
 					legend="Pesquisa" collapsed="true" toggleable="true"
 					toggleSpeed="500">

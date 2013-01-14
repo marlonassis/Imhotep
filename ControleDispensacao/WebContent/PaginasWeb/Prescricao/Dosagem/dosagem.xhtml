@@ -13,7 +13,7 @@
 		<p:tab id="tabDosagem" title="Dosagem">
 			<p:dialog id="dialog" header="Dosagem" widgetVar="dosagemDialog"
 				resizable="true" showEffect="explode" hideEffect="explode">
-				<h:form id="dosagemForm" prependId="false">
+				<h:form id="dosagemForm" >
 					<p:dataTable id="playersTable" var="prescricaoItem"
 						dblClickSelect="true"
 						value="#{dosagemRaiz.instancia.prescricaoItens}">
@@ -51,7 +51,7 @@
 				</h:form>
 			</p:dialog>
 
-			<h:form id="pesquisaDosagemForm" prependId="false">
+			<h:form id="pesquisaDosagemForm" >
 				<p:fieldset id="pesquisaDosagemFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="dosagemConsulta.xhtml" />

@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabSituacaoPaciente" title="Situacao do Paciente">
-			<h:form id="situacaoPacienteForm" prependId="false">
+			<h:form id="situacaoPacienteForm" >
 				<p:fieldset legend="Novo Situacao do Paciente"
 					collapsed="#{!situacaoPacienteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -31,7 +31,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaSituacaoPacienteForm" prependId="false">
+			<h:form id="pesquisaSituacaoPacienteForm" >
 				<p:fieldset id="pesquisaSituacaoPacienteFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="situacaoPacienteConsulta.xhtml" />

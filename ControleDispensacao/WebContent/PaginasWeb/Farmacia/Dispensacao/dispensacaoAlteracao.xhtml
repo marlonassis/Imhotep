@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabDispensacao" title="Alteração de dispensação">
-			<h:form id="dispensacaoAlteracaoForm" prependId="false">
+			<h:form id="dispensacaoAlteracaoForm" >
 				<p:growl id="growl" />
 				<h:panelGrid columns="1" width="100%">
 					<h:panelGroup>
@@ -57,7 +57,7 @@
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
-			<h:form id="ajusteForm" prependId="false">
+			<h:form id="ajusteForm" >
 				<p:dialog id="dialog" header="Ajuste de dispensação"
 					widgetVar="itensDialog" resizable="true" showEffect="explode"
 					hideEffect="explode">

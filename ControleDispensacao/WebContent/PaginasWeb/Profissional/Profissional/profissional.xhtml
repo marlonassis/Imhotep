@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabProfissional" title="Profissional">
-			<h:form id="profissionalForm" prependId="false">
+			<h:form id="profissionalForm" >
 				<p:fieldset legend="Novo Profissional"
 					collapsed="#{!profissionalRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -30,7 +30,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaProfissionalForm" prependId="false">
+			<h:form id="pesquisaProfissionalForm" >
 				<p:fieldset id="pesquisaProfissionalFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="profissionalConsulta.xhtml" />

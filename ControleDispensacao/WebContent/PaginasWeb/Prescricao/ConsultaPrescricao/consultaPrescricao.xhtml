@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="consultaPrecricao" title="Consulta da prescrição">
-			<h:form id="consultaPrescricaoForm" prependId="false">
+			<h:form id="consultaPrescricaoForm" >
 				<p:fieldset legend="Informações da prescrição"
 					collapsed="#{prescricaoRaiz.prescricaoVisualizacao.idPrescricao == 0}"
 					toggleable="true" toggleSpeed="500">
@@ -26,7 +26,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaConsultaPrescricaoForm" prependId="false">
+			<h:form id="pesquisaConsultaPrescricaoForm" >
 				<p:fieldset id="pesquisaConsultaPrescricaoFieldSet"
 					legend="Pesquisa" collapsed="true" toggleable="true"
 					toggleSpeed="500">

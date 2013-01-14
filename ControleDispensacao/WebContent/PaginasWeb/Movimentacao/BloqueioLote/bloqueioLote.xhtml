@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabBloqueioMaterial" title="Bloqueio de lote">
-			<h:form id="bloqueioLoteForm" prependId="false">
+			<h:form id="bloqueioLoteForm" >
 				<p:fieldset legend="Novo bloqueio de lote"
 					collapsed="#{!bloqueioLoteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -29,7 +29,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaBloqueioLoteForm" prependId="false">
+			<h:form id="pesquisaBloqueioLoteForm" >
 				<p:fieldset id="pesquisaBloqueioLoteFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="bloqueioLoteConsulta.xhtml" />

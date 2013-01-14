@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabEntradaMaterial" title="Entrada de Material">
-			<h:form id="entradaMaterialForm" prependId="false">
+			<h:form id="entradaMaterialForm" >
 				<p:fieldset legend="Nova entrada de material"
 					collapsed="#{!entradaMaterialRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -30,7 +30,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaEntradaMaterialForm" prependId="false">
+			<h:form id="pesquisaEntradaMaterialForm" >
 				<p:fieldset id="pesquisaEntradaMaterialFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="entradaMaterialConsulta.xhtml" />

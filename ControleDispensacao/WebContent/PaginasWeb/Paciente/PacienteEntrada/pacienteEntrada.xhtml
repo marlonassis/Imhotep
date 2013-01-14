@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabPacienteEntrada" title="Entrada do Paciente">
-			<h:form id="dadosPaciente" prependId="false">
+			<h:form id="dadosPaciente" >
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
 					closable="true" />
 				<p:panel header="Paciente">
@@ -65,7 +65,7 @@
 				</p:panel>
 			</h:form>
 
-			<h:form id="pacienteEntradaForm" prependId="false">
+			<h:form id="pacienteEntradaForm" >
 				<p:fieldset legend="Nova Entrada"
 					collapsed="#{!pacienteEntradaRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -85,7 +85,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaPacienteEntradaForm" prependId="false">
+			<h:form id="pesquisaPacienteEntradaForm" >
 				<p:fieldset id="pesquisaPacienteEntradaFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="pacienteEntradaConsulta.xhtml" />

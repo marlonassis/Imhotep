@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabPrescricao" title="Prescrição">
-			<h:form id="prescricaoForm" prependId="false">
+			<h:form id="prescricaoForm" >
 				<p:growl showDetail="true" />
 				<h:panelGrid id="prescricaoPanelGrid" columns="3" width="100%">
 					<h:panelGroup>
@@ -91,7 +91,7 @@
 			<p:dialog id="doseDialog" visible="#{prescricaoRaiz.iniciaDosagem}"
 				header="Informe a dosagem do medicamento" widgetVar="dosagemDialog"
 				modal="true" closable="false">
-				<h:form id="doseDialogForm" prependId="false">
+				<h:form id="doseDialogForm" >
 					<h:panelGrid id="itemDosePanelGrid" columns="2" width="100%"
 						cellpadding="5px">
 						<h:panelGroup style="align:left;">

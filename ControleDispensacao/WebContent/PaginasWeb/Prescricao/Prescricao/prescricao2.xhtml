@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabPrescricao" title="Prescrição">
-			<h:form id="prescricaoForm" prependId="false">
+			<h:form id="prescricaoForm" >
 				<p:growl id="mensagemGlobal" showDetail="true" />
 				<p:wizard widgetVar="wiz" backLabel="Voltar" nextLabel="Avançar"
 					flowListener="#{prescricaoRaiz.onFlowProcess}">
@@ -556,7 +556,7 @@
 				</p:wizard>
 			</h:form>
 
-			<h:form prependId="false">
+			<h:form >
 				<p:dialog id="anexosControleAntibioticoDialog"
 					header="Controles Válidos"
 					widgetVar="anexosControleAntibioticoDialog" modal="true"
