@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabProfissional" title="Profissional">
-			<h:form id="profissionalForm" >
+			<h:form id="profissionalEditorForm" >
 				<p:fieldset legend="Novo Profissional"
 					collapsed="#{!profissionalRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -19,29 +19,29 @@
 					<ui:include src="profissionalEditor.xhtml" />
 					<p:commandButton value="Salvar"
 						rendered="#{!profissionalRaiz.edicao}"
-						update="padraoTabView:tabelaProfissional profissionalForm"
+						update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
 						action="#{profissionalRaiz.enviar}" />
 					<p:commandButton value="Gravar"
 						rendered="#{profissionalRaiz.edicao}"
-						update="padraoTabView:tabelaProfissional profissionalForm"
+						update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
 						action="#{profissionalRaiz.atualizar}" />
 					<p:commandButton value="Novo" rendered="#{profissionalRaiz.edicao}"
-						update="@parent" action="#{profissionalRaiz.novaInstancia()}" />
+						update=":#{p:component('profissionalEditorForm')}" action="#{profissionalRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaProfissionalForm" >
+			<h:form id="profissionalPesquisaForm" >
 				<p:fieldset id="pesquisaProfissionalFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="profissionalConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaProfissional"
+					<p:commandButton value="Pesquisar" update=":#{p:component('profissionalPesquisaForm')}"
 						image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{profissionalConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaProfissionalForm " />
+						update=":#{p:component('profissionalPesquisaForm')}" />
 
 				</p:fieldset>
 				<p:growl />

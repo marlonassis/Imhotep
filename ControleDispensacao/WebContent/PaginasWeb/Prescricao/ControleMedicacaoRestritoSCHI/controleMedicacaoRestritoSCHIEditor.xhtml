@@ -65,9 +65,9 @@
 						value="#{controleMedicacaoRestritoSCHIRaiz.quantidadeDosesPrescricaoItem(itemLiberacao)}" /> dose(s) 
 		        </p:column>
 
-				<p:column style="width:60px; text-align: center;"
+				<p:column style="width:120px; text-align: center;"
 					rendered="#{controleMedicacaoRestritoSCHIRaiz.instancia.profissionalInfectologista == null}">
-					<p:commandLink update="padraoTabView:dosePanel"
+					<p:commandLink 
 						oncomplete="window.open('edicaoDosagemSCHI.jsf')">
 						<h:graphicImage value="/Imagens/pill16.png" />
 						<f:setPropertyActionListener value="#{itemLiberacao}"
@@ -77,7 +77,7 @@
 					<p:commandLink
 						action="#{controleMedicacaoRestritoSCHIRaiz.apagarItemPrescricao()}"
 						onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-						update="padraoTabView:itensLiberacaoTable" title="Apagar"
+						update=":#{p:component('itensLiberacaoTable')}" title="Apagar"
 						style="padding-right:10px;">
 						<f:setPropertyActionListener value="#{itemLiberacao}"
 							target="#{controleMedicacaoRestritoSCHIRaiz.itemEdicao}" />
@@ -104,7 +104,7 @@
 				required="true" rendered="#{!controleBloqueado}"
 				title="Informe o tipo de indicação">
 				<p:ajax event="change"
-					update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid2" />
+					update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid2')}" />
 				<f:selectItems value="#{itensPadrao.tipoIndicacaoEnumItens}" />
 			</h:selectOneRadio>
 
@@ -142,7 +142,7 @@
 				required="true" rendered="#{!controleBloqueado}"
 				title="Informe o subtipo de indicação profilática">
 				<p:ajax event="change"
-					update="padraoTabView:observacaoIndicacaoPanelGroup" />
+					update=":#{p:component('observacaoIndicacaoPanelGroup')}" />
 				<f:selectItems
 					value="#{itensPadrao.tipoSubIndicacaoProfilaxiaEnumItens}" />
 			</h:selectOneRadio>
@@ -182,7 +182,7 @@
 				required="true" rendered="#{!controleBloqueado}"
 				title="Informe se foi solicitado ou não a cultura para o paciente">
 				<p:ajax event="change"
-					update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid3" />
+					update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid3')}" />
 				<f:selectItems value="#{itensPadrao.booleanEnumItens}" />
 			</h:selectOneRadio>
 			<h:outputText
@@ -332,7 +332,7 @@
 				value="#{controleMedicacaoRestritoSCHIRaiz.prescricaoAdequada}"
 				required="true" title="Informe se a prescrição está adequada">
 				<p:ajax event="change"
-					update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid4" />
+					update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid4')}" />
 				<f:selectItems value="#{itensPadrao.booleanEnumItens}" />
 			</h:selectOneRadio>
 		</h:panelGroup>
@@ -354,7 +354,7 @@
 				required="true" rendered="#{!controleBloqueado}"
 				title="Informe o tipo irregularidade na prescrição">
 				<p:ajax event="change"
-					update="padraoTabView:controleMedicacaoRestritoSCHIPanelGrid4" />
+					update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid4')}" />
 				<f:selectItems
 					value="#{itensPadrao.tipoPrescricaoInadequadaEnumItens}" />
 			</h:selectOneRadio>

@@ -54,7 +54,7 @@
 			</f:facet>
 			<p:commandLink
 				action="#{estoqueCentroCirurgicoRaiz.liberarLote(linha)}"
-				update="padraoTabView:tabelaEstoqueCentroCirurgico"
+				update=":#{p:component('tabelaEstoqueCentroCirurgico')}"
 				rendered="#{linha.bloqueado == 'S'}" title="Liberar Lote"
 				style="padding-right:10px;">
 				Liberar
@@ -79,7 +79,7 @@
 		<p:inputTextarea id="motivo" rows="10" cols="30"
 			value="#{estoqueCentroCirurgicoRaiz.estoqueBloqueio.motivoBloqueio}" />
 		<p:commandButton value="Gravar" oncomplete="bloqueioDialog.hide()"
-			update="padraoTabView:pesquisaEstoqueCentroCirurgicoForm padraoTabView:tabelaEstoqueCentroCirurgico"
+			update=":#{p:component('tabelaEstoqueCentroCirurgico')} :#{p:component('estoqueCentroCirurgicoPesquisaForm')}"
 			action="#{estoqueCentroCirurgicoRaiz.bloqueioLote}" />
 	</p:dialog>
 </ui:composition>

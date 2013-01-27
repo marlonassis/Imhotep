@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.ControleDispensacao.enums.TipoMotivosRejeicaoAmostraTestePezinhoEnum;
 import br.com.ControleDispensacao.enums.TipoSexoEnum;
 import br.com.ControleDispensacao.enums.TipoStatusEnum;
 
@@ -25,7 +26,7 @@ public class TesteDoPezinho {
 
 	private int idTesteDoPezinho;
 	private Integer amostra;
-	private TipoStatusEnum amostraValida;
+	private Boolean amostraValida;
 	private TipoStatusEnum transfusao;
 	private TipoStatusEnum prematuro;
 	private String motivoAmostraInvalida;
@@ -55,6 +56,7 @@ public class TesteDoPezinho {
 	private Date dataColeta;
 	private Date dataResultado;
 	private Integer numeroAmostra;
+	private TipoMotivosRejeicaoAmostraTestePezinhoEnum motivoRejeicao;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_teste_do_pezinho_id_teste_do_pezinho_seq")
 	@Id
@@ -83,12 +85,11 @@ public class TesteDoPezinho {
 		this.motivoAmostraInvalida = motivoAmostraInvalida;
 	}
 	
-	@Column(name = "cv_amostra_valida")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getAmostraValida() {
+	@Column(name = "bo_amostra_valida", nullable=false )
+	public Boolean getAmostraValida() {
 		return amostraValida;
 	}
-	public void setAmostraValida(TipoStatusEnum amostraValida) {
+	public void setAmostraValida(Boolean amostraValida) {
 		this.amostraValida = amostraValida;
 	}
 	
@@ -330,6 +331,15 @@ public class TesteDoPezinho {
 		this.numeroAmostra = numeroAmostra;
 	}
 
+	@Column(name = "tp_motivo_rejeicao")
+	@Enumerated(EnumType.STRING)
+	public TipoMotivosRejeicaoAmostraTestePezinhoEnum getMotivoRejeicao() {
+		return motivoRejeicao;
+	}
+	public void setMotivoRejeicao(TipoMotivosRejeicaoAmostraTestePezinhoEnum motivoRejeicao) {
+		this.motivoRejeicao = motivoRejeicao;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

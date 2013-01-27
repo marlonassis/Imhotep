@@ -6,12 +6,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:dataTable id="tabelaEntradaMaterial"
-		value="#{estoqueDesbloqueadoConsulta.list}" var="linha"
-		dblClickSelect="true" emptyMessage="Não foi encontrado registros"
-		rows="10" paginator="true" selectionMode="single"
-		rowKey="#{linha.idEstoque}">
+				 value="#{estoqueDesbloqueadoConsulta.list}" var="linha"
+				 dblClickSelect="true" emptyMessage="Não foi encontrado registros"
+				 rows="10" paginator="true" selectionMode="single"
+				 rowKey="#{linha.idEstoque}">
 		<p:ajax event="rowEdit" listener="#{entradaMaterialRaiz.editRowEvent}"
-			update="padraoTabView:tabelaEntradaMaterial padraoTabView:entradaMaterialForm" />
+			update=":#{p:component('tabelaEntradaMaterial')} :#{p:component('entradaMaterialForm')}" />
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Código do material" />
@@ -70,18 +70,12 @@
 					</p:inputMask>
 				</f:facet>
 			</p:cellEditor>
-
-
-
-
-
-
 		</p:column>
 		<p:column style="width:60px; text-align: center;">
 
 			<p:rowEditor />
 
-			<p:commandLink update="padraoTabView:entradaMaterialForm"
+			<p:commandLink update=":#{p:component('entradaMaterialForm')}"
 				title="Editar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{entradaMaterialRaiz.instancia}" />
@@ -89,7 +83,7 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{entradaMaterialRaiz.apagar()}"
-				update="tabelaEntradaMaterial padraoTabView:entradaMaterialForm"
+				update=":#{p:component('entradaMaterialForm')} :#{p:component('tabelaEntradaMaterial')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"

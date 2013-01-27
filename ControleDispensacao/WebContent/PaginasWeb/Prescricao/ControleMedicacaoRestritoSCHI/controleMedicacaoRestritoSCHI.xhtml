@@ -12,7 +12,7 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabControleMedicacaoRestritoSCHI"
 			title="ControleMedicacaoRestritoSCHI">
-			<h:form id="controleMedicacaoRestritoSCHIForm" >
+			<h:form id="controleMedicacaoRestritoSCHIEditorForm" >
 				<p:fieldset
 					legend="Formulário de Controle de Medicacao Restrita ao SCHI"
 					collapsed="#{!controleMedicacaoRestritoSCHIRaiz.edicao}"
@@ -21,35 +21,34 @@
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="controleMedicacaoRestritoSCHIEditor.xhtml" />
 					<p:commandButton value="Salvar" rendered="false"
-						update="padraoTabView:tabelaControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHIForm"
+						update=":#{p:component('controleMedicacaoRestritoSCHIEditorForm')} :#{p:component('controleMedicacaoRestritoSCHIPesquisaForm')}"
 						action="#{controleMedicacaoRestritoSCHIRaiz.enviar}" />
 					<p:commandButton value="Gravar"
+						update=":#{p:component('controleMedicacaoRestritoSCHIEditorForm')} :#{p:component('controleMedicacaoRestritoSCHIPesquisaForm')}"
 						rendered="#{controleMedicacaoRestritoSCHIRaiz.edicao and controleMedicacaoRestritoSCHIRaiz.instancia.profissionalInfectologista == null }"
-						update="padraoTabView:tabelaControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHIForm"
 						action="#{controleMedicacaoRestritoSCHIRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="false" update="@parent"
+					<p:commandButton value="Novo" rendered="false" update=":#{p:component('controleMedicacaoRestritoSCHIEditorForm')}"
 						action="#{controleMedicacaoRestritoSCHIRaiz.novaInstancia}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaControleMedicacaoRestritoSCHIForm"
-				>
+			<h:form id="controleMedicacaoRestritoSCHIPesquisaForm">
 				<p:fieldset id="pesquisaControleMedicacaoRestritoSCHIFieldSet"
 					legend="Pesquisa" collapsed="true" toggleable="true"
 					toggleSpeed="500">
 					<ui:include src="controleMedicacaoRestritoSCHIConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar"
-						update="tabelaControleMedicacaoRestritoSCHI"
+						update=":#{p:component('controleMedicacaoRestritoSCHIPesquisaForm')}"
 						image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{controleMedicacaoRestritoSCHIConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaControleMedicacaoRestritoSCHIForm " />
+						update=":#{p:component('controleMedicacaoRestritoSCHIPesquisaForm')}" />
 
 				</p:fieldset>
-				<p:growl />
+				
 				<ui:include src="controleMedicacaoRestritoSCHITabela.xhtml" />
 			</h:form>
 		</p:tab>

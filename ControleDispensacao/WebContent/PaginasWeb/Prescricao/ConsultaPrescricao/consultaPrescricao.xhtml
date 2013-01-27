@@ -18,7 +18,7 @@
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="consultaPrescricaoVisualizador.xhtml" />
 					<p:commandButton value="Limpar"
-						update="padraoTabView:consultaPrescricaoForm"
+						update=":#{p:component('consultaPrescricaoForm')}"
 						action="#{prescricaoRaiz.limparPrescricaoVizualizacao()}" />
 					<br />
 					<p:commandButton value="Imprimir prescrição"
@@ -33,12 +33,12 @@
 					<ui:include src="consultaPrescricaoConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar"
-						update="tabelaConsultaPrescricao" image="ui-icon ui-icon-search" />
+						update=":#{p:component('tabelaConsultaPrescricao')}" image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{consultaPrescricaoConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaConsultaPrescricaoForm " />
+						update=":#{p:component('pesquisaConsultaPrescricaoForm')} " />
 
 				</p:fieldset>
 				<p:growl />

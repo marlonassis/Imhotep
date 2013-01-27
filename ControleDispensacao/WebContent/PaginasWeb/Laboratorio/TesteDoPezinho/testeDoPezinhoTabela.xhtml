@@ -36,11 +36,11 @@
 			<f:facet name="header">
 				<h:outputText value="Amostra Válida" />
 			</f:facet>
-			<h:outputText value="#{linha.amostraValida.label}" />
+			<h:outputText value="#{linha.amostraValida == true ? 'Sim' : 'Não'}" />
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:testeDoPezinhoForm"
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink update=":#{p:component('testeDoPezinhoEditorForm')}"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{testeDoPezinhoRaiz.instancia}" />
@@ -48,7 +48,7 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{testeDoPezinhoRaiz.apagar()}"
-				update="tabelaTesteDoPezinho padraoTabView:testeDoPezinhoForm"
+				update=":#{p:component('testeDoPezinhoEditorForm')} :#{p:component('testeDoPezinhoPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"

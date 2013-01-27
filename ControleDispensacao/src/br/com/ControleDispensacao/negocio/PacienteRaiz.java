@@ -67,7 +67,7 @@ public class PacienteRaiz extends PadraoHome<Paciente>{
 		}
 		if(unidadeAtual != null){
 			try {
-				getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+				getInstancia().setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
 			} catch (Exception e) {
 				e.printStackTrace();
 				super.mensagem("Erro ao pegar a usuário atual.", null, FacesMessage.SEVERITY_ERROR);

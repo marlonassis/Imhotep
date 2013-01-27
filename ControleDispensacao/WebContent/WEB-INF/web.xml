@@ -64,7 +64,7 @@
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
   </context-param>
-  <listener>
-    <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-  </listener>
+<listener>
+  <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+</listener>
 </web-app>

@@ -38,8 +38,8 @@
 			<h:outputText value="#{linha.especialidade.especialidadePai}" />
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:profissionalForm" title="Editar"
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink update=":#{p:component('profissionalEditorForm')}" title="Editar"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{profissionalRaiz.instancia}" />
@@ -47,7 +47,7 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{profissionalRaiz.apagar()}"
-				update="tabelaProfissional padraoTabView:profissionalForm"
+				update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"

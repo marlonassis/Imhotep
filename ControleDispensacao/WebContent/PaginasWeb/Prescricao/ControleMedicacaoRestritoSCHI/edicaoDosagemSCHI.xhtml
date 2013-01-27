@@ -90,7 +90,7 @@
 						<p:selectOneMenu id="via2"
 							value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.tipoViaAdministracaoMedicamento}"
 							effect="fade">
-							<p:ajax event="change" update="padraoTabView:outraViaPanelGroup" />
+							<p:ajax event="change" update=":#{p:component('outraViaPanelGroup')}" />
 							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
 							<f:selectItems
 								value="#{itensPadrao.tipoViaAdministracaoMedicamentoEnumItens}" />
@@ -110,17 +110,20 @@
 					</h:panelGroup>
 
 					<h:panelGroup>
-						<p:commandButton
-							action="#{controleMedicacaoRestritoSCHIRaiz.gravaItem()}"
-							value="Adicionar dose"
-							oncomplete="window.opener.location.reload();"
-							update="padraoTabView:dosePanel" />
+						<p:commandButton action="#{controleMedicacaoRestritoSCHIRaiz.gravaItem()}"
+										 value="Adicionar dose"
+										 oncomplete="window.opener.location.reload();"
+										 update=":#{p:component('dosePanel')}" />
+						<p:commandButton action="#{controleMedicacaoRestritoSCHIRaiz.novaPrescricaoItem}"
+										 oncomplete="window.location.reload();"
+										 value="Nova dose"/>
 					</h:panelGroup>
 				</h:panelGrid>
 				<p:separator id="limiteGridSeparator1" style="height:8px" />
 				<table>
 					<tr>
-						<td valign="top"><p:panel id="dosePanel" header="Doses"
+						<td valign="top">
+							<p:panel id="dosePanel" header="Doses"
 								style="width:900px">
 								<p:growl />
 								<p:dataGrid id="doseGrid" var="itemDose"
@@ -156,7 +159,7 @@
 												<h:panelGroup>
 													<p:commandLink
 														action="#{controleMedicacaoRestritoSCHIRaiz.apagarDose(itemDose)}"
-														update="padraoTabView:doseGrid" title="Apagar"
+														update=":#{p:component('doseGrid')}" title="Apagar"
 														immediate="true" style="padding-right:10px;">
 														<h:graphicImage value="/Imagens/delete.png" />
 													</p:commandLink>
@@ -165,7 +168,8 @@
 										</p:panel>
 									</p:column>
 								</p:dataGrid>
-							</p:panel></td>
+							</p:panel>
+						</td>
 					</tr>
 				</table>
 			</h:form>

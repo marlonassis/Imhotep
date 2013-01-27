@@ -28,6 +28,7 @@
 									<p:autoComplete id="paciente" styleClass="autoCompletePesquisa"
 										required="true" minQueryLength="3" size="30"
 										forceSelection="true"
+										scrollHeight="300"
 										value="#{prescricaoRaiz.prescricaoAtual.paciente}"
 										completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
 										var="paciente" itemLabel="#{paciente.nomeIdade}"
@@ -61,13 +62,19 @@
 									<font color="red">*</font>
 									<h:outputLabel for="unidade" value="Unidade de Alocação:" />
 									<br />
-									<p:autoComplete id="unidade" forceSelection="true"
-										minQueryLength="4" size="30"
+									<p:autoComplete id="unidade" 
+										forceSelection="true"
+										minQueryLength="4" 
+										size="30"
 										value="#{prescricaoRaiz.prescricaoAtual.unidade}"
 										completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-										var="unidade" title="Unidade onde está alocado o paciente"
-										required="true" itemLabel="#{unidade.nome}"
-										itemValue="#{unidade}" converter="unidadeConversor" />
+										var="unidade" 
+										title="Unidade onde está alocado o paciente"
+										scrollHeight="300"
+										required="true" 
+										itemLabel="#{unidade.nome}"
+										itemValue="#{unidade}" 
+										converter="unidadeConversor" />
 								</h:panelGroup>
 							</h:panelGrid>
 						</p:panel>
@@ -152,7 +159,7 @@
 										value="#{prescricaoRaiz.dose.prescricaoItem.tipoViaAdministracaoMedicamento}"
 										effect="fade">
 										<p:ajax event="change"
-											update="padraoTabView:outraViaPanelGroup" />
+											update=":#{p:component('outraViaPanelGroup')}" />
 										<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
 										<f:selectItems
 											value="#{itensPadrao.tipoViaAdministracaoMedicamentoEnumItens}" />
@@ -175,13 +182,14 @@
 									<p:commandButton
 										action="#{prescricaoRaiz.adicionarItemFarmacoPrescricao()}"
 										value="Adicionar dose"
-										update="padraoTabView:itemDosePanelGrid padraoTabView:doseGrid padraoTabView:itensGrid padraoTabView:mensagemGlobal" />
+										update=":#{p:component('itensGrid')} :#{p:component('doseGrid')} :#{p:component('itemDosePanelGrid')} :#{p:component('mensagemGlobal')}" />
 								</h:panelGroup>
 							</h:panelGrid>
 							<p:separator id="limiteGridSeparator1" style="height:8px" />
 							<table>
 								<tr>
-									<td valign="top"><p:panel header="Doses"
+									<td valign="top">
+										<p:panel header="Doses"
 											style="width:900px">
 											<p:dataGrid id="doseGrid" var="itemDose"
 												value="#{prescricaoRaiz.prescricaoItemDoseList}" columns="3"
@@ -216,7 +224,7 @@
 															<h:panelGroup>
 																<p:commandLink
 																	action="#{prescricaoRaiz.removePrescricaoItemDose(itemDose)}"
-																	update="padraoTabView:doseGrid" title="Apagar"
+																	update=":#{p:component('doseGrid')}" title="Apagar"
 																	immediate="true" style="padding-right:10px;">
 																	<h:graphicImage value="/Imagens/delete.png" />
 																</p:commandLink>
@@ -225,22 +233,25 @@
 													</p:panel>
 												</p:column>
 											</p:dataGrid>
-										</p:panel></td>
-									<td valign="top"><p:panel id="itensGrid" header="Itens">
+										</p:panel>
+									</td>
+									<td valign="top">
+										<p:panel id="itensGrid" header="Itens">
 											<ui:repeat value="#{prescricaoRaiz.itensPrescricao}"
 												var="prescricaoItemInserido">
 												<h:outputText
 													value="#{prescricaoItemInserido.material.descricao}" />
 												<p:commandLink
 													action="#{prescricaoRaiz.removePrescricaoItem(prescricaoItemInserido)}"
-													update="padraoTabView:doseGrid padraoTabView:itensGrid"
+													update=":#{p:component('doseGrid')} :#{p:component('itensGrid')}"
 													title="Apagar" immediate="true">
 													<h:graphicImage value="/Imagens/delete.png" />
 												</p:commandLink>
 												<br />
 												<br />
 											</ui:repeat>
-										</p:panel></td>
+										</p:panel>
+									</td>
 								</tr>
 							</table>
 						</p:panel>
@@ -297,7 +308,7 @@
 													value="#{prescricaoRaiz.controleMedicacaoRestritoSCHI.tipoIndicacao}"
 													required="false" title="Informe o tipo de indicação">
 													<p:ajax event="change"
-														update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid2" />
+														update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid2')}" />
 													<f:selectItems
 														value="#{itensPadrao.tipoIndicacaoEnumItens}" />
 												</h:selectOneRadio>
@@ -314,7 +325,7 @@
 													required="false"
 													title="Informe o subtipo de indicação terapêutica">
 													<p:ajax event="change"
-														update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid2 padraoTabView:autorizacaoTabView:observacaoIndicacaoPanelGroup " />
+														update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid2')} :#{p:component('observacaoIndicacaoPanelGroup')}" />
 													<f:selectItems
 														value="#{itensPadrao.tipoSubIndicacaoTerapeuticaEnumItens}" />
 												</h:selectOneRadio>
@@ -331,7 +342,7 @@
 													required="false"
 													title="Informe o subtipo de indicação profilática">
 													<p:ajax event="change"
-														update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid2 padraoTabView:autorizacaoTabView:observacaoIndicacaoPanelGroup " />
+														update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid2')} :#{p:component('observacaoIndicacaoPanelGroup')}" />
 													<f:selectItems
 														value="#{itensPadrao.tipoSubIndicacaoProfilaxiaEnumItens}" />
 												</h:selectOneRadio>
@@ -361,7 +372,7 @@
 													required="false"
 													title="Informe se foi solicitado ou não a cultura para o paciente">
 													<p:ajax event="change"
-														update="padraoTabView:autorizacaoTabView:controleMedicacaoRestritoSCHIPanelGrid3" />
+														update=":#{p:component('controleMedicacaoRestritoSCHIPanelGrid3')}" />
 													<f:selectItems value="#{itensPadrao.booleanEnumItens}" />
 												</h:selectOneRadio>
 											</h:panelGroup>
@@ -501,7 +512,7 @@
 											<p:column style="width:60px; text-align: center;">
 												<p:commandLink title="Anexar autorização"
 													rendered="#{prescricaoRaiz.controleMedicacaoRestritoSCHI != linha}"
-													update="padraoTabView:autorizacaoTabView padraoTabView:autorizacaoTab padraoTabView:mensagemGlobal"
+													update=":#{p:component('autorizacaoTabView')} :#{p:component('autorizacaoTab')} :#{p:component('mensagemGlobal')}"
 													style="padding-right:10px;">
 													<f:setPropertyActionListener value="#{linha}"
 														target="#{prescricaoRaiz.controleMedicacaoRestritoSCHIComMensagem}" />
@@ -510,7 +521,7 @@
 
 												<p:commandLink title="Anexar autorização"
 													rendered="#{prescricaoRaiz.controleMedicacaoRestritoSCHI == linha}"
-													update="padraoTabView:autorizacaoTabView padraoTabView:autorizacaoTab padraoTabView:mensagemGlobal"
+													update=":#{p:component('autorizacaoTabView')} :#{p:component('autorizacaoTab')} :#{p:component('mensagemGlobal')}"
 													style="padding-right:10px;"
 													action="#{prescricaoRaiz.desanexarControle}">
 													<h:outputText value="Desanexar" />
@@ -524,7 +535,7 @@
 										<p:commandButton
 											action="#{prescricaoRaiz.iniciarAnaliseLiberacao()}"
 											value="Liberar"
-											update="padraoTabView:painelLiberacao padraoTabView:mensagemGlobal" />
+											update=":#{p:component('mensagemGlobal')} :#{p:component('painelLiberacao')}" />
 									</h:panelGroup>
 								</h:panelGrid>
 							</p:panel>
@@ -544,7 +555,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoAerosol)}"
-														update="padraoTabView:AER padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('AER')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -562,7 +573,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoCEN)}"
-														update="padraoTabView:CEN padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('CEN')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -580,7 +591,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoMED)}"
-														update="padraoTabView:MED padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('MED')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -598,7 +609,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoMOR)}"
-														update="padraoTabView:MOR padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('MOR')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -616,7 +627,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoMSC)}"
-														update="padraoTabView:MSC padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('MSC')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -634,7 +645,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoMSO)}"
-														update="padraoTabView:MSO padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('MSO')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -652,7 +663,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoMTO)}"
-														update="padraoTabView:MTO padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('MTO')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -670,7 +681,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoNUT)}"
-														update="padraoTabView:NUT padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('NUT')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -688,7 +699,7 @@
 														escape="false" />
 													<p:commandLink
 														action="#{prescricaoRaiz.adicionarCuidado(cuidadoSOR)}"
-														update="padraoTabView:SOR padraoTabView:itensEscolhidosPanelGroup"
+														update=":#{p:component('SOR')} :#{p:component('itensEscolhidosPanelGroup')}"
 														title="Clique aqui para adicionar esse cuidado"
 														immediate="true">
 														<h:graphicImage value="/Imagens/add.png" />
@@ -705,7 +716,7 @@
 												<br />
 												<p:commandButton value="Adicionar"
 													action="#{prescricaoRaiz.gravaOutrosCuidados()}"
-													update="padraoTabView:itensEscolhidosPanelGroup" />
+													update=":#{p:component('itensEscolhidosPanelGroup')}" />
 											</p:fieldset>
 										</h:panelGroup></td>
 									<td valign="top" width="25%"><p:fieldset
@@ -763,7 +774,7 @@
 																rendered="#{not empty cuidadosEscolhidos.descricaoOutros}" />
 															<p:commandLink
 																action="#{prescricaoRaiz.removerCuidadosPrescricao(cuidadosEscolhidos)}"
-																update="padraoTabView:itensEscolhidosPanelGroup padraoTabView:#{cuidadosEscolhidos.cuidadosPaciente.tipoCuidadosPaciente}"
+																update=":#{p:component('itensEscolhidosPanelGroup')} :#{p:component(cuidadosEscolhidos.cuidadosPaciente.tipoCuidadosPaciente)}"
 																title="Apagar" immediate="true">
 																<h:graphicImage value="/Imagens/delete.png" />
 															</p:commandLink>
@@ -886,7 +897,7 @@
 						<br />
 						<p:commandButton value="Finalizar Prescrição"
 							action="#{prescricaoRaiz.finalizarPrescricao}"
-							update="padraoTabView:itensEscolhidosPanelGroup" />
+							update=":#{p:component('itensEscolhidosPanelGroup')}" />
 					</p:tab>
 
 				</p:wizard>

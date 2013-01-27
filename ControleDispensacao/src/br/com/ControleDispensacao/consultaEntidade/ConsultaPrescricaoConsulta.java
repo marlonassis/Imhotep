@@ -26,14 +26,14 @@ public class ConsultaPrescricaoConsulta extends PadraoConsulta<Prescricao> {
 	public List<Prescricao> getList() {
 		setConsultaGeral(new ConsultaGeral<Prescricao>());
 		carregaValoresConsulta();
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Prescricao o where o.unidade.idUnidade = :idUnidade and o.dataConclusao is not null and o.dataBloqueio is null"));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Prescricao o where o.dataConclusao is not null and o.dataBloqueio is null"));
 		return super.getList();
 	}
 	
 	private void carregaValoresConsulta() {
 		HashMap<Object, Object> restricaoConsulta = new HashMap<Object, Object>();
 		try {
-			restricaoConsulta.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
+//			restricaoConsulta.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
 		} catch (Exception e) {
 			e.printStackTrace();
 			super.mensagem("Erro ao pesquisar prescrição", "Erro ao pegar a unidade atual.", FacesMessage.SEVERITY_ERROR);

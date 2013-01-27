@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabTesteDoPezinho" title="TesteDoPezinho">
-			<h:form id="testeDoPezinhoForm" >
+			<h:form id="testeDoPezinhoEditorForm" >
 				<p:fieldset legend="Novo TesteDoPezinho"
 					collapsed="#{!testeDoPezinhoRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -19,14 +19,15 @@
 					<ui:include src="testeDoPezinhoEditor.xhtml" />
 					<p:commandButton value="Salvar"
 						rendered="#{!testeDoPezinhoRaiz.edicao}"
-						update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
+						update=":#{p:component('testeDoPezinhoEditorForm')} :#{p:component('testeDoPezinhoPesquisaForm')}"
 						action="#{testeDoPezinhoRaiz.enviar}" />
 					<p:commandButton value="Gravar"
 						rendered="#{testeDoPezinhoRaiz.edicao}"
-						update="padraoTabView:tabelaTesteDoPezinho testeDoPezinhoForm"
+						update=":#{p:component('testeDoPezinhoEditorForm')} :#{p:component('testeDoPezinhoPesquisaForm')}"
 						action="#{testeDoPezinhoRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{testeDoPezinhoRaiz.edicao}" update="@parent"
+						rendered="#{testeDoPezinhoRaiz.edicao}" 
+						update=":#{p:component('testeDoPezinhoEditorForm')}"
 						action="#{testeDoPezinhoRaiz.novaInstancia()}" />
 					<br />
 					<p:commandButton value="Imprimir Recibo"
@@ -35,7 +36,7 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaTesteDoPezinhoForm" >
+			<h:form id="testeDoPezinhoPesquisaForm" >
 				<p:fieldset id="pesquisaTesteDoPezinhoFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="testeDoPezinhoConsulta.xhtml" />
@@ -46,12 +47,13 @@
 					<p:commandButton value="Limpar"
 						action="#{testeDoPezinhoConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaTesteDoPezinhoForm " />
+						update=":#{p:component('testeDoPezinhoPesquisaForm')} " />
 
 				</p:fieldset>
 				<p:growl />
 				<p:commandButton value="Gerar Lote"
-					action="#{testeDoPezinhoRaiz.gerarLote}" update="@parent" />
+					action="#{testeDoPezinhoRaiz.gerarLote}" 
+					update=":#{p:component('testeDoPezinhoPesquisaForm')}" />
 				<ui:include src="testeDoPezinhoTabela.xhtml" />
 			</h:form>
 		</p:tab>

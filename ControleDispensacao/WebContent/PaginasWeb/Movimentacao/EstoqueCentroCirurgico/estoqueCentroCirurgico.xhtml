@@ -12,7 +12,7 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabEstoqueCentroCirurgico"
 			title="Estoque do Centro Cirúrgico">
-			<h:form id="estoqueCentroCirurgicoForm" >
+			<h:form id="estoqueCentroCirurgicoEditorForm" >
 				<p:fieldset legend="Novo Estoque"
 					collapsed="#{!estoqueCentroCirurgicoRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
@@ -20,32 +20,32 @@
 					<ui:include src="estoqueCentroCirurgicoEditor.xhtml" />
 					<p:commandButton value="Salvar"
 						rendered="#{!estoqueCentroCirurgicoRaiz.edicao}"
-						update="padraoTabView:tabelaEstoqueCentroCirurgico estoqueCentroCirurgicoForm"
+						update=":#{p:component('estoqueCentroCirurgicoEditorForm')} :#{p:component('estoqueCentroCirurgicoPesquisaForm')}"
 						action="#{estoqueCentroCirurgicoRaiz.enviar}" />
 					<p:commandButton value="Gravar"
 						rendered="#{estoqueCentroCirurgicoRaiz.edicao}"
-						update="padraoTabView:tabelaEstoqueCentroCirurgico estoqueCentroCirurgicoForm"
+						update=":#{p:component('estoqueCentroCirurgicoEditorForm')} :#{p:component('estoqueCentroCirurgicoPesquisaForm')}"
 						action="#{estoqueCentroCirurgicoRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{estoqueCentroCirurgicoRaiz.edicao}" update="@parent"
+						rendered="#{estoqueCentroCirurgicoRaiz.edicao}" update=":#{p:component('estoqueCentroCirurgicoEditorForm')}"
 						action="#{estoqueCentroCirurgicoRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaEstoqueCentroCirurgicoForm" >
+			<h:form id="estoqueCentroCirurgicoPesquisaForm" >
 				<p:fieldset id="pesquisaEstoqueCentroCirurgicoFieldSet"
 					legend="Pesquisa" collapsed="true" toggleable="true"
 					toggleSpeed="500">
 					<ui:include src="estoqueCentroCirurgicoConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar"
-						update="tabelaEstoqueCentroCirurgico"
+						update=":#{p:component('estoqueCentroCirurgicoPesquisaForm')}"
 						image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{estoqueCentroCirurgicoConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaEstoqueCentroCirurgicoForm " />
+						update=":#{p:component('estoqueCentroCirurgicoPesquisaForm')}" />
 
 				</p:fieldset>
 				<p:growl />

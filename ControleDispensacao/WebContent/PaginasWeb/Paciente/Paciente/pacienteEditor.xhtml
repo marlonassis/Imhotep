@@ -8,20 +8,6 @@
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="cidade" value="Cidade:" />
-			<br />
-			<p:selectOneMenu value="#{pacienteRaiz.instancia.cidade}"
-				effect="fade" converter="cidadeConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{cidade}" />
-				<f:selectItems value="#{cidadeRaiz.getListaCidadeAutoComplete}"
-					var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
-					itemValue="#{cidade}" />
-				
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
 			<p:inputText id="nome" required="true"
@@ -30,28 +16,6 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="tipoLogradouro" value="Tipo do Logradouro" />
-			<br />
-			<p:selectOneRadio id="tipoLogradouro" required="true"
-				value="#{pacienteRaiz.instancia.tipoLogradouro}"
-				title="Informe se o paciente mora em uma rua, avenida, etc...">
-				<f:selectItems value="#{itensPadrao.tipoLogradouroEnum}" />
-				
-			</p:selectOneRadio>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="logradouro" value="Logradouro:" />
-			<br />
-			<p:inputText id="logradouro" required="false"
-				value="#{pacienteRaiz.instancia.logradouro}"
-				title="Logradouro do paciente" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
 			<h:outputLabel for="numero" value="Número:" />
 			<br />
 			<p:inputText id="numero" required="false"
@@ -67,7 +31,26 @@
 				value="#{pacienteRaiz.instancia.complemento}"
 				title="Informe algum complemento do endereço, caso seja necessário." />
 		</h:panelGroup>
-
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="Cidade" value="Cidade:" />
+			<br />
+			<p:autoComplete id="cidade" styleClass="autoCompletePesquisa"
+				required="true" 
+				minQueryLength="3" 
+				size="30"
+				scrollHeight="300"
+				forceSelection="true"
+				value="#{pacienteRaiz.instancia.cidade}"
+				completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
+				var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
+				itemValue="#{cidade}" converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+		
 		<h:panelGroup>
 			
 			<h:outputLabel for="bairro" value="Bairro:" />
@@ -93,7 +76,7 @@
 			<p:selectOneRadio id="sexo" required="true"
 				value="#{pacienteRaiz.instancia.sexo}"
 				title="Informe o sexo do paciente: Masculino ou Feminino.">
-				<f:selectItems value="#{itensPadrao.tipoSexoEnum}" />
+				<f:selectItems value="#{itensPadrao.sexoEnumItens}" />
 				
 			</p:selectOneRadio>
 		</h:panelGroup>
@@ -103,7 +86,7 @@
 			<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
 			<br />
 			<p:calendar id="dataNascimento" required="true"
-				pattern="dd/MM/yyyy" locale="pt"
+				pattern="dd/MM/yyyy" locale="pt_BR"
 				value="#{pacienteRaiz.instancia.dataNascimento}">
 							
 			</p:calendar>

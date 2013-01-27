@@ -10,12 +10,9 @@
 			
 			<h:outputLabel for="autorizaMenuRaiz.menuDualList" value=":" />
 			<br />
-			<p:selectOneMenu value="#{autorizaMenuRaiz.instancia.autorizaMenuRaiz.menuDualList}"
+			<p:selectOneMenu value="#{autorizaMenuRaiz.menuDualList}"
 				effect="fade" converter="menuConversor" required="false">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{menu}" />
-				<f:selectItems value="#{}"
-					var="autorizaMenuRaiz.menuDualList" itemLabel="#{menu}"
-					itemValue="#{menu}" />
 				
 			</p:selectOneMenu>
 		</h:panelGroup>
@@ -30,8 +27,6 @@
 				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
 					var="especialidade" itemLabel="#{especialidade.descricao}"
 					itemValue="#{especialidade}" />
-				<p:ajax event="autorizaMenuPanelGrid"
-					update=":#{p:component('autorizaMenuPanelGrid')}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 

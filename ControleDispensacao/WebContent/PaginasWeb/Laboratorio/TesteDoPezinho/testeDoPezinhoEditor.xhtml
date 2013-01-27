@@ -70,7 +70,7 @@
 			<p:selectOneRadio id="tipoGemelar" required="true"
 				value="#{testeDoPezinhoRaiz.instancia.tipoGemelar}"
 				title="Informe se a criança é gêmea">
-				<p:ajax event="change" update="padraoTabView:gemelarPanelGroup" />
+				<p:ajax event="change" update=":#{p:component('gemelarPanelGroup')}" />
 				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
 			</p:selectOneRadio>
 		</h:panelGroup>
@@ -118,11 +118,17 @@
 			<font color="red">*</font>
 			<h:outputLabel for="cidade" value="Cidade:" />
 			<br />
-			<p:autoComplete id="cidade" required="true" minQueryLength="4"
-				value="#{testeDoPezinhoRaiz.instancia.cidade}" forceSelection="true"
+			<p:autoComplete id="cidade" 
+				scrollHeight="300"
+				required="true" 
+				minQueryLength="4"
+				value="#{testeDoPezinhoRaiz.instancia.cidade}" 
+				forceSelection="true"
 				completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
-				var="cidade" title="Informe a cidade à qual o testeDoPezinho veio"
-				itemLabel="#{cidade.nomeCidadeEstado}" itemValue="#{cidade}"
+				var="cidade" 
+				title="Informe a cidade à qual o testeDoPezinho veio"
+				itemValue="#{cidade}"
+				itemLabel="#{cidade.nomeCidadeEstado}" 
 				converter="cidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
@@ -176,16 +182,37 @@
 			</p:selectOneRadio>
 		</h:panelGroup>
 
-		<h:panelGroup>
+		<h:panelGroup id="amostraInvalida" >
 			<font color="red">*</font>
 			<h:outputLabel for="amostraValida" value="Amostra Válida?" />
 			<br />
 			<p:selectOneRadio id="amostraValida" required="true"
 				value="#{testeDoPezinhoRaiz.instancia.amostraValida}"
 				title="Informe se a amostra está adequada para o exame">
-				<f:selectItems value="#{itensPadrao.statusEnumItens}" />
+				<p:ajax event="change" update=":#{p:component('amostraInvalida')}" />
+				<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+				<f:selectItem itemLabel="Não" itemValue="#{false}" />
 			</p:selectOneRadio>
+			<h:outputLabel for="motivoRejeicao" value="Informe o motivo da rejeição:" rendered="#{testeDoPezinhoRaiz.instancia.amostraValida != null and !testeDoPezinhoRaiz.instancia.amostraValida}" />
+			<br />
+			<p:selectOneMenu value="#{testeDoPezinhoRaiz.instancia.motivoRejeicao}"
+				effect="fade" 
+				required="true"
+				rendered="#{testeDoPezinhoRaiz.instancia.amostraValida != null and !testeDoPezinhoRaiz.instancia.amostraValida}">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{itensPadrao.tipoMotivosRejeicaoAmostraTestePezinhoEnumItens}"
+					var="pe" itemLabel="#{pe.label}"
+					itemValue="#{pe}" />
+				<p:ajax event="change" update=":#{p:component('amostraInvalida')}" />
+			</p:selectOneMenu>
+			<br/>
+			<h:outputLabel for="descricaoReijeicao" value="Descreva o motivo:" rendered="#{testeDoPezinhoRaiz.instancia.motivoRejeicao=='OT'}" />
+			<br />
+			<p:inputTextarea rendered="#{testeDoPezinhoRaiz.instancia.motivoRejeicao=='OT'}" 
+							 value="#{testeDoPezinhoRaiz.instancia.motivoAmostraInvalida}" 
+							 required="true" />
 		</h:panelGroup>
 
 	</h:panelGrid>
+	
 </ui:composition>

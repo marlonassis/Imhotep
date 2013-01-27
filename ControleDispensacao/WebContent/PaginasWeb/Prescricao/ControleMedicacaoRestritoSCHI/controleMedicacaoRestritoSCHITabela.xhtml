@@ -67,7 +67,7 @@
 
 		<p:column style="width:60px; text-align: center;">
 			<p:commandLink
-				update="padraoTabView:controleMedicacaoRestritoSCHIForm"
+				update=":#{p:component('controleMedicacaoRestritoSCHIEditorForm')}"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{controleMedicacaoRestritoSCHIRaiz.carregarInstancia}" />
@@ -75,7 +75,7 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{controleMedicacaoRestritoSCHIRaiz.apagar}"
-				update="tabelaControleMedicacaoRestritoSCHI padraoTabView:controleMedicacaoRestritoSCHIForm"
+				update=":#{p:component('controleMedicacaoRestritoSCHIEditorForm')} :#{p:component('controleMedicacaoRestritoSCHIPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" rendered="false" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"

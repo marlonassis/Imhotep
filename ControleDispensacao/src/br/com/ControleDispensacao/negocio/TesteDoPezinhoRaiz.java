@@ -78,21 +78,21 @@ public class TesteDoPezinhoRaiz extends PadraoHome<TesteDoPezinho>{
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		String sql = "select o from TesteDoPezinho o where o.dataColeta >= :dataIni and o.dataColeta <= :dataFim";
+		String sql = "select o from TesteDoPezinho o where o.dataColeta >= :dataIni and o.dataColeta <= :dataFim and o.amostraValida = true";
 		return new ArrayList<TesteDoPezinho>(cg.consulta(new StringBuilder(sql), map));
 	}
 	
 	private List<TesteDoPezinho> buscarTestesSemLote() {
 		ConsultaGeral<TesteDoPezinho> cg = new ConsultaGeral<TesteDoPezinho>();
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		String sql = "select o from TesteDoPezinho o where o.lote is null";
+		String sql = "select o from TesteDoPezinho o where o.lote is null and o.amostraValida = true";
 		return new ArrayList<TesteDoPezinho>(cg.consulta(new StringBuilder(sql), map));
 	}
 	
 	private TesteDoPezinho buscarUltimoTesteComLote() {
 		ConsultaGeral<TesteDoPezinho> cg = new ConsultaGeral<TesteDoPezinho>();
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		String sql = "select o from TesteDoPezinho o where o.dataCadastro = (select max(a.dataCadastro) from TesteDoPezinho a where a.lote != null)";
+		String sql = "select o from TesteDoPezinho o where o.dataCadastro = (select max(a.dataCadastro) from TesteDoPezinho a where a.lote != null and o.amostraValida = true)";
 		return cg.consultaUnica(new StringBuilder(sql), map);
 	}
 	

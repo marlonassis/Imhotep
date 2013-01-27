@@ -19,13 +19,13 @@
 					<ui:include src="entradaMaterialEditor.xhtml" />
 					<p:commandButton value="Salvar"
 						rendered="#{!entradaMaterialRaiz.edicao}"
-						update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
+						update=":#{p:component('entradaMaterialForm')} :#{p:component('tabelaEntradaMaterial')}"
 						action="#{entradaMaterialRaiz.enviar}" />
 					<p:commandButton value="Gravar" rendered="false"
-						update="padraoTabView:tabelaEntradaMaterial entradaMaterialForm"
+						update=":#{p:component('entradaMaterialForm')} :#{p:component('tabelaEntradaMaterial')}"
 						action="#{entradaMaterialRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{entradaMaterialRaiz.edicao}" update="@parent"
+						rendered="#{entradaMaterialRaiz.edicao}" update=":#{p:component('entradaMaterialForm')}"
 						action="#{entradaMaterialRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
@@ -35,13 +35,13 @@
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="entradaMaterialConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaEntradaMaterial"
+					<p:commandButton value="Pesquisar" update=":#{p:component('tabelaEntradaMaterial')}"
 						image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{estoqueDesbloqueadoConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						immediate="true" update="pesquisaEntradaMaterialForm" />
+						immediate="true" update=":#{p:component('pesquisaEntradaMaterialForm')}" />
 
 				</p:fieldset>
 				<p:growl />

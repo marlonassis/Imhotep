@@ -39,7 +39,7 @@ public class Paciente {
 	private String telefone;
 	private String cpf;
 	private Date dataInclusao;
-	private Usuario usuarioInclusao;
+	private Profissional profissionalInclusao;
 	private String numeroSus;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_id_paciente_seq")
@@ -172,13 +172,13 @@ public class Paciente {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario_inclusao")
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
+	@JoinColumn(name = "id_profissional_inclusao")
+	public Profissional getProfissionalInclusao() {
+		return profissionalInclusao;
 	}
 	
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
+	public void setProfissionalInclusao(Profissional profissionalInclusao) {
+		this.profissionalInclusao = profissionalInclusao;
 	}
 	
 	@Column(name = "cv_numero_sus")

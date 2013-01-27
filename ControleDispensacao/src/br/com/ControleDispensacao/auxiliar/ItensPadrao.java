@@ -15,6 +15,7 @@ import br.com.ControleDispensacao.enums.TipoEstadoCivilEnum;
 import br.com.ControleDispensacao.enums.TipoIndicacaoEnum;
 import br.com.ControleDispensacao.enums.TipoLogradouroEnum;
 import br.com.ControleDispensacao.enums.TipoMetodoExameEnum;
+import br.com.ControleDispensacao.enums.TipoMotivosRejeicaoAmostraTestePezinhoEnum;
 import br.com.ControleDispensacao.enums.TipoMovimentacaoEnum;
 import br.com.ControleDispensacao.enums.TipoOperacaoEnum;
 import br.com.ControleDispensacao.enums.TipoPrescricaoInadequadaEnum;
@@ -171,4 +172,12 @@ public class ItensPadrao{
 		return tipoUnidadeSaudeEnumItens;
 	}
 
+	public List<SelectItem> getTipoMotivosRejeicaoAmostraTestePezinhoEnumItens(){
+		List<SelectItem> tipoMotivosRejeicaoAmostraTestePezinhoEnumItens = new ArrayList<SelectItem>();
+		for(TipoMotivosRejeicaoAmostraTestePezinhoEnum item : TipoMotivosRejeicaoAmostraTestePezinhoEnum.values()){
+			tipoMotivosRejeicaoAmostraTestePezinhoEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoMotivosRejeicaoAmostraTestePezinhoEnumItens;
+	}
+	
 }

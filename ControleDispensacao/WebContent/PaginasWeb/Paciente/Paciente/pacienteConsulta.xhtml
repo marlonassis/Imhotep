@@ -8,17 +8,23 @@
 	<h:panelGrid id="pacientePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="cidade" value="Cidade:" />
+			<h:outputLabel for="Cidade" value="Cidade:" />
 			<br />
-			<p:selectOneMenu value="#{pacienteConsulta.instancia.cidade}"
-				effect="fade" converter="cidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{cidade}" />
-				<f:selectItems value="#{cidadeRaiz.getListaCidadeAutoComplete}"
-					var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
-					itemValue="#{cidade}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="cidade"
+							dropdown="true" 
+							styleClass="autoCompletePesquisa"
+							required="false" 
+							minQueryLength="3" size="30"
+							forceSelection="true"
+							value="#{pacienteRaiz.instancia.cidade}"
+							completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
+							var="cidade" 
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>

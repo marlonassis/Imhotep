@@ -48,8 +48,8 @@
 			</h:outputText>
 		</p:column>
 
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:consultaPrescricaoForm"
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink update=":#{p:component('consultaPrescricaoForm')}"
 				title="Editar"
 				action="#{prescricaoRaiz.carregarCuidadosEcolhidosPrescricaoVizualizacao()}"
 				style="padding-right:10px;">
@@ -59,7 +59,7 @@
 			</p:commandLink>
 
 			<p:commandLink onclick="bloqueioDialog.show()"
-				update="tabelaConsultaPrescricao padraoTabView:consultaPrescricaoForm"
+				update=":#{p:component('tabelaConsultaPrescricao')} :#{p:component('consultaPrescricaoForm')}"
 				title="Bloquear" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{prescricaoRaiz.prescricaoBloqueio}" />
@@ -78,7 +78,7 @@
 		<p:inputTextarea id="motivo" rows="10" cols="30"
 			value="#{prescricaoRaiz.prescricaoBloqueio.motivoBloqueio}" />
 		<p:commandButton value="Gravar" oncomplete="bloqueioDialog.hide()"
-			update="padraoTabView:tabelaConsultaPrescricao padraoTabView:pesquisaConsultaPrescricaoForm"
+			update=":#{p:component('tabelaConsultaPrescricao')} :#{p:component('pesquisaConsultaPrescricaoForm')}"
 			action="#{prescricaoRaiz.bloqueiarPrescricao()}" />
 	</p:dialog>
 </ui:composition>
