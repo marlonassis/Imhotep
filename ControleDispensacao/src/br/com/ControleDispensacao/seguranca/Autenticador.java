@@ -196,9 +196,13 @@ public class Autenticador {
 	private void carregaToolBarMenu() {
 		try {
 			//carrega o menu que pertence ao usuário
-			String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
+			boolean usuarioAdmnistrador = getProfissionalAtual().getEspecialidade().getDescricao().equalsIgnoreCase("administrador");
+			String hqlUsuarioNaoAdministrador = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
+			String hqlUsuarioAdministrador = "select o from Menu o order by to_ascii(o.descricao)";
+			String hql = usuarioAdmnistrador ? hqlUsuarioAdministrador : hqlUsuarioNaoAdministrador;
 			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+			if(!usuarioAdmnistrador)
+				hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
 			ControleMenu controleMenu = new ControleMenu();
 			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm)));
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
@@ -213,7 +217,19 @@ public class Autenticador {
 		}
 	}
 
-	
+	public boolean precisaTrocarSenha(){
+		try {
+			return new ControleSenha().senhaIgualMatricula();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 	
 	public Usuario getUsuarioAtual() {
 		return usuarioAtual;

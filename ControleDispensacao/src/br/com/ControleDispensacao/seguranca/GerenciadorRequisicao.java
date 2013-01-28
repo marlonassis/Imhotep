@@ -1,5 +1,6 @@
 package br.com.ControleDispensacao.seguranca;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -9,6 +10,7 @@ import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.ControleDispensacao.auxiliar.Constantes;
+import br.com.ControleDispensacao.controle.ControleSenha;
 import br.com.ControleDispensacao.seguranca.Autenticador;
 
 @ManagedBean(name="gerenciadorRequisicao")
@@ -29,6 +31,11 @@ public class GerenciadorRequisicao implements PhaseListener{
 			boolean paginaLogin = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_LOGIN) == 0;
 			if(!paginaLogin && (autenticador == null || autenticador.getUsuarioAtual() == null)){
 				facesContext.getExternalContext().redirect(Constantes.PAGINA_LOGIN);
+			}
+			
+			boolean paginaTrocaSenha = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
+			if(!paginaLogin && !paginaTrocaSenha && autenticador != null && new ControleSenha().senhaIgualMatricula()){
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
 			}
 			
 		} catch (Exception e) {

@@ -5,65 +5,37 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="listaEspecialPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="livroPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="livro" value="Livro:" />
+			<h:outputLabel for="livroConsulta" value="Livro:" />
 			<br />
-			<p:selectOneMenu value="#{listaEspecialConsulta.instancia.livro}"
-				effect="fade" converter="livroConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{livro}" />
-				<f:selectItems value="#{livroRaiz.getListaLivroSuggest}"
-					var="livro" itemLabel="#{livro.descricao}"
-					itemValue="#{livro}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="livroConsulta"
+				value="#{listaEspecialConsulta.instancia.livro}"
+				completeMethod="#{livroRaiz.getListaLivroSuggest}" var="livro"
+				forceSelection="true" itemLabel="#{livro.descricao}"
+				itemValue="#{livro}" converter="livroConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="lista" value="Nome da lista:" />
+			<h:outputLabel for="listaConsulta" value="Lista:" />
 			<br />
-			<p:inputText id="lista" required="false"
+			<p:inputText id="listaConsulta"
 				value="#{listaEspecialConsulta.instancia.lista}"
-				title="Informe o nome da lista." />
+				title="Informe o nome da lista" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="descricao" value="Descrição:" />
+			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="false"
+			<p:inputText id="descricaoConsulta"
 				value="#{listaEspecialConsulta.instancia.descricao}"
-				title="Descreva a lista" />
+				title="Informe a descrição da lista" />
 		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="receitaControlada" value="Receita Controlada?" />
-			<br />
-			<p:selectOneRadio id="receitaControlada" required="false"
-				value="#{listaEspecialConsulta.instancia.receitaControlada}"
-				title="Selecione sim, caso a receita seja controlada.">
-				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
-				
-			</p:selectOneRadio>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="medicamentoControlado" value="Medicamento Controlado?" />
-			<br />
-			<p:selectOneRadio id="medicamentoControlado" required="false"
-				value="#{listaEspecialConsulta.instancia.medicamentoControlado}"
-				title="Informe sim caso o remédio seja controlado.">
-				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
-				
-			</p:selectOneRadio>
-		</h:panelGroup>
-
-
 
 	</h:panelGrid>
+	
 </ui:composition>

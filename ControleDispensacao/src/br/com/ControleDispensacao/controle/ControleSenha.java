@@ -28,6 +28,8 @@ public class ControleSenha {
 		try {
 			if(!senhaIgualMatricula()){
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
+			}else{
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

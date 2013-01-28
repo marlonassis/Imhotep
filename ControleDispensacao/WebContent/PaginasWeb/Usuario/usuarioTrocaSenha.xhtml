@@ -13,6 +13,9 @@
 		<p:tab id="tabUsuario" title="Alteração de senha">
 			<h:form id="usuarioForm" >
 				<p:growl id="growl" />
+				<h:panelGroup rendered="#{autenticador.precisaTrocarSenha()}" >
+					<font color="red" >Esse é o seu primeiro acesso. É necessário que você troque sua senha.</font>
+				</h:panelGroup>
 				<h:panelGrid columns="1">
 					<h:panelGroup>
 						<font color="red">*</font>
@@ -40,7 +43,7 @@
 					<h:panelGroup>
 						<p:commandButton value="Alterar Senha"
 							action="#{usuarioRaiz.trocaSenha()}"
-							update="padraoTabView:usuarioForm" />
+							update=":#{p:component('usuarioForm')}" />
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
