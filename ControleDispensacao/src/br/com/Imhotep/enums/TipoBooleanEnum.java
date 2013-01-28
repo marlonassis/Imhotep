@@ -1,0 +1,30 @@
+package br.com.Imhotep.enums;
+
+/**
+ * Classe que contém todos os papéis possíveis a um usuário
+ * @author marlonassis
+ */
+
+public enum TipoBooleanEnum {
+	T("Sim"), 
+	F("Não");
+	
+	private String label;
+	
+	TipoBooleanEnum(String sexo){
+		label = sexo;
+	}
+	
+	public String getLabel(){
+		return label;
+	}
+	
+	public void setLabel(String label){
+		this.label = label;
+	}
+	
+	@Override
+	public String toString() {
+		return label;
+	}
+}

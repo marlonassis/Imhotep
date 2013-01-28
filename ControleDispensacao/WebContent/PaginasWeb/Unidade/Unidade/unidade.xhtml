@@ -24,7 +24,7 @@
 						update=":#{p:component('unidadeEditorForm')} :#{p:component('unidadePesquisaForm')}"
 						action="#{unidadeRaiz.atualizar}" />
 					<p:commandButton value="Novo" rendered="#{unidadeRaiz.edicao}"
-						 update="@parent"
+						 update=":#{p:component('unidadeEditorForm')}"
 						 action="#{unidadeRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
