@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
 
+import br.com.ControleDispensacao.auxiliar.Constantes;
 import br.com.ControleDispensacao.auxiliar.Parametro;
 import br.com.ControleDispensacao.entidade.Doacao;
 import br.com.ControleDispensacao.entidade.Estoque;
@@ -58,7 +59,7 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		Estoque estoque = existeLote(getInstancia().getLote());
 		loteEncontrado = estoque != null;
 		if(loteEncontrado){
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/ControleDispensacao/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf?lote="+estoque.getLote());
+			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_AJUSTE_ESTOQUE + "?lote="+estoque.getLote());
 		}
 	}
 	

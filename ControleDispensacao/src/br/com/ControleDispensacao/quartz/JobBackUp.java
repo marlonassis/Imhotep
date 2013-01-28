@@ -11,6 +11,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import br.com.ControleDispensacao.auxiliar.Constantes;
 import br.com.ControleDispensacao.auxiliar.Parametro;
 
 public class JobBackUp implements Job{
@@ -25,14 +26,14 @@ public class JobBackUp implements Job{
 		    try{
 		    	String diretorioBackup = Parametro.getDiretorioBackupControleDispensacao();
 		    	String diretorioPostgres = Parametro.getDiretorioPostgres();
-		    	String banco = Parametro.getNomeBancoFarmacia();
+		    	String banco = Constantes.NOME_BANCO;
 		    	diretorioBackup += new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 				criarDiretorio(diretorioBackup);
 		        ProcessBuilder pb;  
 		        
 		        String nomeBanco = banco + "_" + new SimpleDateFormat("HH:mm:ss").format(new Date());
-				pb = new ProcessBuilder(diretorioPostgres+"bin/pg_dump", "-i", "-h", "localhost", "-p", "5432","-U", "postgres", "-F", "t", "-b", "-v" ,"-f", diretorioBackup+"/"+nomeBanco, banco);  
-		        pb.environment().put("PGPASSWORD", "postgres");  
+				pb = new ProcessBuilder(diretorioPostgres+"bin/pg_dump", "-i", "-h", "localhost", "-p", "5432","-U", Constantes.USUARIO_BANCO, "-F", "t", "-b", "-v" ,"-f", diretorioBackup+"/"+nomeBanco, banco);  
+		        pb.environment().put("PGPASSWORD", Constantes.SENHA_BANCO);  
 		        pb.redirectErrorStream(true);
 		        pb.start();   
 	        }catch(Exception ex){  

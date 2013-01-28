@@ -13,6 +13,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.ControleDispensacao.auxiliar.Constantes;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -27,9 +29,9 @@ public class PadraoRelatorio implements Serializable {
 	
 	@SuppressWarnings("rawtypes")
     protected void geraRelatorio(String caminho, String nomeRelatorio, List list, Map<String, Object> map) throws ClassNotFoundException, IOException, JRException, SQLException {
-    	String url = "jdbc:postgresql://127.0.0.1:5432/db_farmacia";
-		String usuario = "postgres";
-		String senha = "postgres";
+    	String url = Constantes.URL_BANCO;
+		String usuario = Constantes.USUARIO_BANCO;
+		String senha = Constantes.SENHA_BANCO;
 		Class.forName("org.postgresql.Driver"); 
 		Connection con = DriverManager.getConnection(url, usuario, senha);
 		
