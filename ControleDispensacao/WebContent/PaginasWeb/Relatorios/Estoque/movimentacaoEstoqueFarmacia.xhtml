@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório de movimentaçao do estoque">
+			<h:form id="relatoriosForm" style="text-align: left;">
+				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="material" value="Informe o material:" />
+						<br />
+						<p:autoComplete id="material"
+										value="#{relatorioMovimentacaoEstoqueFarmacia.material}"
+										minQueryLength="4"
+										required="true"
+										completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
+										var="material" forceSelection="true"
+										title="Informe o medicamento a ser prescrito"
+										itemLabel="#{material.descricao}" itemValue="#{material}"
+										converter="materialConversor" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
+						<p:calendar id="dataIni"
+							value="#{relatorioMovimentacaoEstoqueFarmacia.dataIni}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
+						<p:calendar id="dataFim"
+							value="#{relatorioMovimentacaoEstoqueFarmacia.dataFim}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<p:commandLink id="downloadRelatorio"
+							value="Gerar relatório por período" ajax="false"
+							action="#{relatorioMovimentacaoEstoqueFarmacia.relatorioMovimentacao}">
+						</p:commandLink>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>
