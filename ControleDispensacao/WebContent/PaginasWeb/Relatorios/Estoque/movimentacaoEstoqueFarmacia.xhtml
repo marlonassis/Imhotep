@@ -22,9 +22,11 @@
 										required="true"
 										scrollHeight="300"
 										completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
-										var="material" forceSelection="true"
+										var="material" 
+										forceSelection="true"
 										title="Informe o medicamento a ser prescrito"
-										itemLabel="#{material.descricao}" itemValue="#{material}"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
 										converter="materialConversor" />
 					</h:panelGroup>
 					

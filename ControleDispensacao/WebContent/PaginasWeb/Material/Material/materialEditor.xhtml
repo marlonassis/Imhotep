@@ -20,11 +20,16 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:autoComplete id="descricao" required="true"
-				title="Informe descrição do material" immediate="true"
-				value="#{materialRaiz.instancia.descricao}"
-				completeMethod="#{materialRaiz.getListaMaterialDescricaoAutoComplete}"
-				var="material" itemLabel="#{material}" itemValue="#{material}" />
+			<p:autoComplete id="descricao" 
+							scrollHeight="300"
+							required="true"
+							title="Informe descrição do material" 
+							immediate="true"
+							value="#{materialRaiz.instancia.descricao}"
+							completeMethod="#{materialRaiz.getListaMaterialDescricaoAutoComplete}"
+							var="material" 
+							itemLabel="#{material}" 
+							itemValue="#{material}" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

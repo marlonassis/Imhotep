@@ -29,12 +29,15 @@
 			<h:outputLabel for="especialidadeConsulta" value="Especialidade:" />
 			<br />
 			<p:autoComplete id="especialidadeConsulta"
-				value="#{profissionalConsulta.instancia.especialidade}"
-				completeMethod="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
-				var="especialidade" forceSelection="true"
-				title="Informe a especialidade"
-				itemLabel="#{especialidade.descricao}" itemValue="#{especialidade}"
-				converter="especialidadeConversor" />
+							scrollHeight="300"
+							value="#{profissionalConsulta.instancia.especialidade}"
+							completeMethod="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+							var="especialidade" 
+							forceSelection="true"
+							title="Informe a especialidade"
+							itemLabel="#{especialidade.descricao}" 
+							itemValue="#{especialidade}"
+							converter="especialidadeConversor" />
 		</h:panelGroup>
 
 	</h:panelGrid>

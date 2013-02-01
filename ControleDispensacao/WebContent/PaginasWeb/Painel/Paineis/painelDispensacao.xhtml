@@ -18,12 +18,17 @@
 						<font color="red">*</font>
 						<h:outputLabel for="paciente" value="Paciente:" />
 						<br />
-						<p:autoComplete id="paciente" required="true"
-							forceSelection="true" immediate="true"
-							value="#{prescricaoRaiz.instancia.paciente}"
-							completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
-							var="paciente" itemLabel="#{paciente.nome}"
-							itemValue="#{paciente}" converter="pacienteConversor" />
+						<p:autoComplete id="paciente" 
+										scrollHeight="300"
+										required="true"
+										forceSelection="true" 
+										immediate="true"
+										value="#{prescricaoRaiz.instancia.paciente}"
+										completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
+										var="paciente" 
+										itemLabel="#{paciente.nome}"
+										itemValue="#{paciente}" 
+										converter="pacienteConversor" />
 						<h:graphicImage value="/Imagens/list16.png"
 							title="Ao digitar aparecerá algumas sugestões"
 							style="padding-top:8px" />
@@ -99,12 +104,16 @@
 							<h:outputLabel for="material" value="Material:" />
 							<br />
 							<p:autoComplete id="material"
-								value="#{prescricaoRaiz.prescricaoItem.material}"
-								completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
-								var="material" required="true" forceSelection="true"
-								title="Informe o medicamento a ser prescrito"
-								itemLabel="#{material.descricao}" itemValue="#{material}"
-								converter="materialConversor" />
+											scrollHeight="300"
+											value="#{prescricaoRaiz.prescricaoItem.material}"
+											completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
+											var="material" 
+											required="true" 
+											forceSelection="true"
+											title="Informe o medicamento a ser prescrito"
+											itemLabel="#{material.descricao}" 
+											itemValue="#{material}"
+											converter="materialConversor" />
 							<h:graphicImage value="/Imagens/list16.png"
 								title="Ao digitar aparecerá algumas sugestões"
 								style="padding-top:8px" />

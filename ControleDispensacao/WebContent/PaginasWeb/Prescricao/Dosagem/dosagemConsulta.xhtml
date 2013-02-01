@@ -10,11 +10,15 @@
 		<h:panelGroup>
 			<h:outputLabel for="paciente" value="Paciente:" />
 			<br />
-			<p:autoComplete id="paciente" forceSelection="true"
-				value="#{prescricaoDispensadaConsulta.instancia.paciente}"
-				completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
-				var="paciente" itemLabel="#{paciente.nome}" itemValue="#{paciente}"
-				converter="pacienteConversor" />
+			<p:autoComplete id="paciente" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{prescricaoDispensadaConsulta.instancia.paciente}"
+							completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
+							var="paciente" 
+							itemLabel="#{paciente.nome}" 
+							itemValue="#{paciente}"
+							converter="pacienteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

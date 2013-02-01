@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabPacienteEntrada" title="Entrada do Paciente">
-			<h:form id="dadosPaciente" >
+			<h:form id="dadosPacienteForm" >
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
 					closable="true" />
 				<p:panel header="Paciente">
@@ -19,12 +19,12 @@
 						<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
 						<br />
 						<p:inputText id="numeroSus"
-							value="#{pacienteEntradaRaiz.numeroSus}"
-							title="Informe o número do cartão do SUS" />
+									 value="#{pacienteEntradaRaiz.numeroSus}"
+									 title="Informe o número do cartão do SUS" />
 						<p:commandButton action="#{pacienteEntradaRaiz.carregaPaciente()}"
-							image="ui-icon ui-icon-search"
-							update="padraoTabView:dadosPaciente padraoTabView:tabelaPacienteEntrada"
-							title="Procurar paciente" />
+										 image="ui-icon ui-icon-search"
+										 update=":#{p:component('dadosPacienteForm')} :#{p:component('pacienteEntradaPesquisaForm')} :#{p:component('pacienteEntradaForm')}"
+										 title="Procurar paciente" />
 					</h:panelGroup>
 					<br />
 					<h:panelGrid id="pacienteEncontradoPanelGrid" columns="3"
@@ -72,31 +72,34 @@
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="pacienteEntradaEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!pacienteEntradaRaiz.edicao}"
-						update="padraoTabView:tabelaPacienteEntrada pacienteEntradaForm"
-						action="#{pacienteEntradaRaiz.enviar}" />
+									 rendered="#{!pacienteEntradaRaiz.edicao}"
+									 update=":#{p:component('pacienteEntradaForm')} :#{p:component('pacienteEntradaPesquisaForm')}"
+									 action="#{pacienteEntradaRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{pacienteEntradaRaiz.edicao}"
-						update="padraoTabView:tabelaPacienteEntrada pacienteEntradaForm"
-						action="#{pacienteEntradaRaiz.atualizar}" />
+									 rendered="#{pacienteEntradaRaiz.edicao}"
+									 update=":#{p:component('pacienteEntradaForm')} :#{p:component('pacienteEntradaPesquisaForm')}"
+									 action="#{pacienteEntradaRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{pacienteEntradaRaiz.edicao}" update="@parent"
-						action="#{pacienteEntradaRaiz.novaInstancia()}" />
+									 rendered="#{pacienteEntradaRaiz.edicao}" 
+									 update=":#{p:component('pacienteEntradaPesquisaForm')} :#{p:component('pacienteEntradaForm')}"
+									 action="#{pacienteEntradaRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaPacienteEntradaForm" >
+			<h:form id="pacienteEntradaPesquisaForm" >
 				<p:fieldset id="pesquisaPacienteEntradaFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="pacienteEntradaConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaPacienteEntrada"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+									 update=":#{p:component('pacienteEntradaPesquisaForm')}"
+									 image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{pacienteEntradaConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaPacienteEntradaForm " />
+						image="ui-icon ui-icon-arrowrefresh-1-s" 
+						title="Limpar os campos"
+						update=":#{p:component('pacienteEntradaPesquisaForm')}" />
 
 				</p:fieldset>
 				<p:growl />

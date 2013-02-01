@@ -101,11 +101,16 @@
 			<font color="red">*</font>
 			<h:outputLabel for="unidade" value="Unidade:" />
 			<br />
-			<p:autoComplete id="unidade" value="#{profissionalRaiz.unidade}"
-				completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-				var="unidade" forceSelection="true" required="true"
-				itemLabel="#{unidade.nome}" itemValue="#{unidade}"
-				converter="unidadeConversor" />
+			<p:autoComplete id="unidade" 
+							scrollHeight="300"
+							value="#{profissionalRaiz.unidade}"
+							completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
+							var="unidade" 
+							forceSelection="true" 
+							required="true"
+							itemLabel="#{unidade.nome}" 
+							itemValue="#{unidade}"
+							converter="unidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

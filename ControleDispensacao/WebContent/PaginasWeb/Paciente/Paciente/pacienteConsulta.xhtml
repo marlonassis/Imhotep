@@ -11,10 +11,12 @@
 			<h:outputLabel for="Cidade" value="Cidade:" />
 			<br />
 			<p:autoComplete id="cidade"
+							scrollHeight="300"
 							dropdown="true" 
 							styleClass="autoCompletePesquisa"
 							required="false" 
-							minQueryLength="3" size="30"
+							minQueryLength="3" 
+							size="30"
 							forceSelection="true"
 							value="#{pacienteRaiz.instancia.cidade}"
 							completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"

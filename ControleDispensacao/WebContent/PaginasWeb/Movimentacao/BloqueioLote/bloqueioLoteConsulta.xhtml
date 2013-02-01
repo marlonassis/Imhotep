@@ -19,12 +19,16 @@
 		<h:panelGroup style="align:left;">
 			<h:outputLabel for="materialConsulta" value="Material:" />
 			<br />
-			<p:autoComplete id="materialConsulta" forceSelection="true"
-				value="#{estoqueConsulta.instancia.material}"
-				completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
-				var="material" title="Informe o grupo do sub-grupo"
-				itemLabel="#{material.descricao}" itemValue="#{material}"
-				converter="materialConversor" />
+			<p:autoComplete id="materialConsulta" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{estoqueConsulta.instancia.material}"
+							completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
+							var="material" 
+							title="Informe o grupo do sub-grupo"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

@@ -119,17 +119,17 @@
 			<h:outputLabel for="cidade" value="Cidade:" />
 			<br />
 			<p:autoComplete id="cidade" 
-				scrollHeight="300"
-				required="true" 
-				minQueryLength="4"
-				value="#{testeDoPezinhoRaiz.instancia.cidade}" 
-				forceSelection="true"
-				completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
-				var="cidade" 
-				title="Informe a cidade à qual o testeDoPezinho veio"
-				itemValue="#{cidade}"
-				itemLabel="#{cidade.nomeCidadeEstado}" 
-				converter="cidadeConversor" />
+							scrollHeight="300"
+							required="true" 
+							minQueryLength="4"
+							value="#{testeDoPezinhoRaiz.instancia.cidade}" 
+							forceSelection="true"
+							completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
+							var="cidade" 
+							title="Informe a cidade à qual o testeDoPezinho veio"
+							itemValue="#{cidade}"
+							itemLabel="#{cidade.nomeCidadeEstado}" 
+							converter="cidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

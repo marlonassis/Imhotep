@@ -10,12 +10,16 @@
 		<h:panelGroup style="align:left;">
 			<h:outputLabel for="materialConsulta" value="Material:" />
 			<br />
-			<p:autoComplete id="materialConsulta" forceSelection="true"
-				value="#{estoqueCentroCirurgicoConsulta.instancia.material}"
-				completeMethod="#{materialRaiz.getListaMaterialPesquisaCentroCirurgicoAutoComplete}"
-				var="material" title="Informe o grupo do sub-grupo"
-				itemLabel="#{material.descricao}" itemValue="#{material}"
-				converter="materialConversor" />
+			<p:autoComplete id="materialConsulta" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{estoqueCentroCirurgicoConsulta.instancia.material}"
+							completeMethod="#{materialRaiz.getListaMaterialPesquisaCentroCirurgicoAutoComplete}"
+							var="material" 
+							title="Informe o grupo do sub-grupo"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
@@ -25,11 +29,15 @@
 			<h:outputLabel for="fabricanteConsulta" value="Fabricante:" />
 			<br />
 			<p:autoComplete id="fabricanteConsulta"
-				value="#{estoqueCentroCirurgicoConsulta.instancia.fabricante}"
-				completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
-				var="fabricante" forceSelection="true" title="Informe o fabricante"
-				itemLabel="#{fabricante.descricao}" itemValue="#{fabricante}"
-				converter="fabricanteConversor" />
+							scrollHeight="300"
+							value="#{estoqueCentroCirurgicoConsulta.instancia.fabricante}"
+							completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
+							var="fabricante" 
+							forceSelection="true" 
+							title="Informe o fabricante"
+							itemLabel="#{fabricante.descricao}" 
+							itemValue="#{fabricante}"
+							converter="fabricanteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

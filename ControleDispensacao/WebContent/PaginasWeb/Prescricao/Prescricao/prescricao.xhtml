@@ -25,14 +25,19 @@
 									<font color="red">*</font>
 									<h:outputLabel for="paciente" value="Paciente:" />
 									<br />
-									<p:autoComplete id="paciente" styleClass="autoCompletePesquisa"
-										required="true" minQueryLength="3" size="30"
-										forceSelection="true"
-										scrollHeight="300"
-										value="#{prescricaoRaiz.prescricaoAtual.paciente}"
-										completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
-										var="paciente" itemLabel="#{paciente.nomeIdade}"
-										itemValue="#{paciente}" converter="pacienteConversor" />
+									<p:autoComplete id="paciente"
+													scrollHeight="300" 
+													styleClass="autoCompletePesquisa"
+													required="true" 
+													minQueryLength="3" size="30"
+													forceSelection="true"
+													scrollHeight="300"
+													value="#{prescricaoRaiz.prescricaoAtual.paciente}"
+													completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
+													var="paciente" 
+													itemLabel="#{paciente.nomeIdade}"
+													itemValue="#{paciente}" 
+													converter="pacienteConversor" />
 									<h:graphicImage value="/Imagens/list16.png"
 										title="Ao digitar aparecerá algumas sugestões"
 										style="padding-top:8px" />
@@ -63,18 +68,18 @@
 									<h:outputLabel for="unidade" value="Unidade de Alocação:" />
 									<br />
 									<p:autoComplete id="unidade" 
-										forceSelection="true"
-										minQueryLength="4" 
-										size="30"
-										value="#{prescricaoRaiz.prescricaoAtual.unidade}"
-										completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-										var="unidade" 
-										title="Unidade onde está alocado o paciente"
-										scrollHeight="300"
-										required="true" 
-										itemLabel="#{unidade.nome}"
-										itemValue="#{unidade}" 
-										converter="unidadeConversor" />
+													forceSelection="true"
+													minQueryLength="4" 
+													size="30"
+													value="#{prescricaoRaiz.prescricaoAtual.unidade}"
+													completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
+													var="unidade" 
+													title="Unidade onde está alocado o paciente"
+													scrollHeight="300"
+													required="true" 
+													itemLabel="#{unidade.nome}"
+													itemValue="#{unidade}" 
+													converter="unidadeConversor" />
 								</h:panelGroup>
 							</h:panelGrid>
 						</p:panel>
@@ -95,14 +100,16 @@
 										title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
 									<br />
 									<p:autoComplete id="material"
-										value="#{prescricaoRaiz.dose.prescricaoItem.material}"
-										minQueryLength="4"
-										scrollHeight="300"
-										completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
-										var="material" forceSelection="true"
-										title="Informe o medicamento a ser prescrito"
-										itemLabel="#{material.descricao}" itemValue="#{material}"
-										converter="materialConversor" />
+													value="#{prescricaoRaiz.dose.prescricaoItem.material}"
+													minQueryLength="4"
+													scrollHeight="300"
+													completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
+													var="material" 
+													forceSelection="true"
+													title="Informe o medicamento a ser prescrito"
+													itemLabel="#{material.descricao}" 
+													itemValue="#{material}"
+													converter="materialConversor" />
 								</h:panelGroup>
 
 								<h:panelGroup>

@@ -60,12 +60,16 @@
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
 			<br />
-			<p:autoComplete id="material" minQueryLength="4"
-				value="#{entradaMaterialRaiz.instancia.material}"
-				completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
-				var="material" forceSelection="true" title="Informe o material"
-				itemLabel="#{material.descricaoUnidadeMaterial}"
-				itemValue="#{material}" converter="materialConversor" />
+			<p:autoComplete id="material" 
+							scrollHeight="300"
+							minQueryLength="4"
+							value="#{entradaMaterialRaiz.instancia.material}"
+							completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
+							var="material" 
+							forceSelection="true" 
+							title="Informe o material"
+							itemLabel="#{material.descricaoUnidadeMaterial}"
+							itemValue="#{material}" converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
@@ -76,11 +80,15 @@
 			<h:outputLabel for="fabricante" value="Fabricante:" />
 			<br />
 			<p:autoComplete id="fabricante"
-				value="#{entradaMaterialRaiz.instancia.fabricante}"
-				completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
-				var="fabricante" minQueryLength="3" forceSelection="true"
-				title="Informe o fabricante" itemLabel="#{fabricante.descricao}"
-				itemValue="#{fabricante}" converter="fabricanteConversor" />
+							value="#{entradaMaterialRaiz.instancia.fabricante}"
+							completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
+							var="fabricante" 
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe o fabricante" 
+							itemLabel="#{fabricante.descricao}"
+							itemValue="#{fabricante}" 
+							converter="fabricanteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

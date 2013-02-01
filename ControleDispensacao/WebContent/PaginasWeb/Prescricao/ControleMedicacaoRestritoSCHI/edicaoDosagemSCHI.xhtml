@@ -25,14 +25,17 @@
 							title="Ao clicar no link será aberto o site para consulta do nome comercial do medicamento" />
 						<br />
 						<p:autoComplete id="material2"
-							disabled="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.material != null}"
-							value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.material}"
-							minQueryLength="4"
-							completeMethod="#{materialRaiz.getListaMaterialAntibioticoAutoComplete}"
-							var="material" forceSelection="true"
-							title="Informe o medicamento a ser prescrito"
-							itemLabel="#{material.descricao}" itemValue="#{material}"
-							converter="materialConversor" />
+										scrollHeight="300"
+										disabled="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.material != null}"
+										value="#{controleMedicacaoRestritoSCHIRaiz.dose.prescricaoItem.material}"
+										minQueryLength="4"
+										completeMethod="#{materialRaiz.getListaMaterialAntibioticoAutoComplete}"
+										var="material" 
+										forceSelection="true"
+										title="Informe o medicamento a ser prescrito"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
 					</h:panelGroup>
 
 					<h:panelGroup>

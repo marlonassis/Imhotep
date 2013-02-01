@@ -17,11 +17,16 @@
 		<h:panelGroup>
 			<h:outputLabel for="pacienteConsulta" value="Paciente:" />
 			<br />
-			<p:autoComplete id="pacienteConsulta" forceSelection="true"
-				immediate="true" value="#{consulta.instancia.paciente}"
-				completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
-				var="paciente" itemLabel="#{paciente.nome}" itemValue="#{paciente}"
-				converter="pacienteConversor" />
+			<p:autoComplete id="pacienteConsulta"
+							scrollHeight="300" 
+							forceSelection="true"
+							immediate="true" 
+							value="#{consulta.instancia.paciente}"
+							completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
+							var="paciente" 
+							itemLabel="#{paciente.nome}" 
+							itemValue="#{paciente}"
+							converter="pacienteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
@@ -30,11 +35,15 @@
 		<h:panelGroup>
 			<h:outputLabel for="profissionalConsulta" value="Prescritor:" />
 			<br />
-			<p:autoComplete id="profissionalConsulta" forceSelection="true"
-				value="#{consulta.instancia.profissional}"
-				completeMethod="#{profissionalRaiz.getListaProfissionalAutoComplete}"
-				var="profissional" itemLabel="#{profissional.nome}"
-				itemValue="#{profissional}" converter="profissionalConversor" />
+			<p:autoComplete id="profissionalConsulta" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{consulta.instancia.profissional}"
+							completeMethod="#{profissionalRaiz.getListaProfissionalAutoComplete}"
+							var="profissional" 
+							itemLabel="#{profissional.nome}"
+							itemValue="#{profissional}" 
+							converter="profissionalConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

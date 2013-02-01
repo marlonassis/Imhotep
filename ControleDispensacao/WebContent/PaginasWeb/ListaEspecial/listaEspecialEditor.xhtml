@@ -10,11 +10,16 @@
 			<font color="red">*</font>
 			<h:outputLabel for="livro" value="Livro:" />
 			<br />
-			<p:autoComplete id="livro" required="true" forceSelection="true"
-				value="#{listaEspecialRaiz.instancia.livro}"
-				completeMethod="#{livroRaiz.getListaLivroSuggest}" var="livro"
-				itemLabel="#{livro.descricao}" itemValue="#{livro}"
-				converter="livroConversor" />
+			<p:autoComplete id="livro" 
+							scrollHeight="300"
+							required="true" 
+							forceSelection="true"
+							value="#{listaEspecialRaiz.instancia.livro}"
+							completeMethod="#{livroRaiz.getListaLivroSuggest}" 
+							var="livro"
+							itemLabel="#{livro.descricao}" 
+							itemValue="#{livro}"
+							converter="livroConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

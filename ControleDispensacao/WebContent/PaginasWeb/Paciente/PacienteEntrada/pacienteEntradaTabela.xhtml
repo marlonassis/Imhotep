@@ -27,15 +27,8 @@
 			</h:outputText>
 		</p:column>
 
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Situação" />
-			</f:facet>
-			<h:outputText value="#{linha.situacaoPaciente.descricao}" />
-		</p:column>
-
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:pacienteEntradaForm"
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink update=":#{p:component('pacienteEntradaForm')}"
 				title="Editar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{pacienteEntradaRaiz.instancia}" />
@@ -43,7 +36,7 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{pacienteEntradaRaiz.apagar()}"
-				update="tabelaPacienteEntrada padraoTabView:pacienteEntradaForm"
+				update=":#{p:component('pacienteEntradaForm')} :#{p:component('pacienteEntradaPesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"

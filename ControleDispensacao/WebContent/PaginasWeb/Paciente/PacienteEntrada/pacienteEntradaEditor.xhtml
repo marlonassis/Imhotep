@@ -9,28 +9,19 @@
 			<font color="red">*</font>
 			<h:outputLabel for="unidade" value="Unidade de Alocação:" />
 			<br />
-			<p:autoComplete id="unidade" forceSelection="true"
-				value="#{pacienteEntradaRaiz.instancia.unidadeAlocacao}"
-				completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-				var="unidade" required="true" itemLabel="#{unidade.nome}"
-				itemValue="#{unidade}" converter="unidadeConversor" />
+			<p:autoComplete id="unidade" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{pacienteEntradaRaiz.instancia.unidadeAlocacao}"
+							completeMethod="#{unidadeRaiz.getListaUnidadeAutoComplete}"
+							var="unidade" 
+							required="true" 
+							itemLabel="#{unidade.nome}"
+							itemValue="#{unidade}" 
+							converter="unidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="situacao" value="Situação:" />
-			<br />
-			<p:selectOneMenu id="situacao"
-				value="#{pacienteEntradaRaiz.instancia.situacaoPaciente}"
-				effect="fade" required="true" converter="situacaoPacienteConversor">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{situacaoPacienteConsulta.list}"
-					var="situacaoPaciente" itemLabel="#{situacaoPaciente.descricao}"
-					itemValue="#{situacaoPaciente}" />
-			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -61,9 +52,19 @@
 			<font color="red">*</font>
 			<h:outputLabel for="naturalidade" value="Naturalidade:" />
 			<br />
-			<p:inputText id="naturalidade"
-				value="#{pacienteEntradaRaiz.instancia.naturalidade}"
-				required="true" title="Informe a naturalidade do paciente" />
+			<p:autoComplete id="naturalidade" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{pacienteEntradaRaiz.instancia.naturalidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>

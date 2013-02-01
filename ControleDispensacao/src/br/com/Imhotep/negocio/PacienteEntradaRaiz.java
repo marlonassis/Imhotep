@@ -25,6 +25,13 @@ public class PacienteEntradaRaiz extends PadraoHome<PacienteEntrada>{
 	
 	private String numeroSus;
 	
+	@Override
+	public void novaInstancia() {
+		Paciente paciente = getInstancia().getPaciente();
+		super.novaInstancia();
+		getInstancia().setPaciente(paciente);
+	}
+	
 	public static PacienteEntradaRaiz getInstanciaHome(){
 		try {
 			return (PacienteEntradaRaiz) new ControleInstancia().procuraInstancia(PacienteEntradaRaiz.class);

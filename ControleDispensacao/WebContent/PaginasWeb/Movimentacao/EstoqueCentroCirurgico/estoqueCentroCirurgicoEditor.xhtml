@@ -11,13 +11,18 @@
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
 			<br />
-			<p:autoComplete id="estoque" required="true" size="50"
-				minQueryLength="4" converter="estoqueConversor"
-				title="Informe descrição do material" immediate="true"
-				value="#{estoqueCentroCirurgicoRaiz.estoqueApoio}"
-				completeMethod="#{estoqueRaiz.getListaEstoqueCentroCirurgicoAutoComplete}"
-				var="estoque" itemLabel="#{estoque.descricaoEstoqueCentroCirurgico}"
-				itemValue="#{estoque}" />
+			<p:autoComplete id="estoque" 
+							required="true" 
+							size="50"
+							minQueryLength="4" 
+							converter="estoqueConversor"
+							title="Informe descrição do material" 
+							immediate="true"
+							value="#{estoqueCentroCirurgicoRaiz.estoqueApoio}"
+							completeMethod="#{estoqueRaiz.getListaEstoqueCentroCirurgicoAutoComplete}"
+							var="estoque" 
+							itemLabel="#{estoque.descricaoEstoqueCentroCirurgico}"
+							itemValue="#{estoque}" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />

@@ -24,10 +24,9 @@ import br.com.Imhotep.enums.TipoEstadoCivilEnum;
 public class PacienteEntrada {
 	private int idPacienteEntrada;
 	private Paciente paciente;
-	private SituacaoPaciente situacaoPaciente;
 	private Unidade unidadeAlocacao;
 	private TipoEstadoCivilEnum tipoEstadoCivil;
-	private String naturalidade;
+	private Cidade naturalidade;
 	private String profissaoAtual;
 	private String profissaoAnterior;
 	private TipoEscolaridadeEnum tipoEscolaridade;
@@ -57,16 +56,7 @@ public class PacienteEntrada {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_situacao_paciente")
-	public SituacaoPaciente getSituacaoPaciente() {
-		return situacaoPaciente;
-	}
-	public void setSituacaoPaciente(SituacaoPaciente situacaoPaciente) {
-		this.situacaoPaciente = situacaoPaciente;
-	}
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_unidade_alocacao")
 	public Unidade getUnidadeAlocacao() {
@@ -85,11 +75,12 @@ public class PacienteEntrada {
 		this.tipoEstadoCivil = tipoEstadoCivil;
 	}
 	
-	@Column(name = "cv_naturalidade")
-	public String getNaturalidade() {
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_naturalidade")
+	public Cidade getNaturalidade() {
 		return naturalidade;
 	}
-	public void setNaturalidade(String naturalidade) {
+	public void setNaturalidade(Cidade naturalidade) {
 		this.naturalidade = naturalidade;
 	}
 	

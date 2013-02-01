@@ -5,128 +5,127 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="pacientePanelGrid" columns="3" width="100%">
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
+			<br />
+			<p:inputText id="numeroSus"
+				value="#{pacienteRaiz.instancia.numeroSus}" required="true"
+				title="Informe o número do cartão do SUS" />
+			<p:commandButton action="#{pacienteRaiz.procurarPaciente()}"
+				image="ui-icon ui-icon-search" title="Procurar paciente" />
+		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
-			<p:inputText id="nome" required="true"
-				value="#{pacienteRaiz.instancia.nome}"
-				title="Informe o nome do paciente" />
+			<p:inputText id="nome" value="#{pacienteRaiz.instancia.nome}"
+				title="Informe o nome do paciete" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="numero" value="Número:" />
+			<h:outputLabel for="dataNascimento" value="Data de nascimento:" />
 			<br />
-			<p:inputText id="numero" required="false"
-				value="#{pacienteRaiz.instancia.numero}"
-				title="Informe o número da residência." />
+			<p:inputMask id="dataNascimento" mask="99/99/9999"
+				value="#{pacienteRaiz.instancia.dataNascimento}"
+				title="Data de nascimento do paciente">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</p:inputMask>
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
+			<h:outputLabel for="nomeMae" value="Nome da mãe:" />
+			<br />
+			<p:inputText id="nomeMae" value="#{pacienteRaiz.instancia.nomeMae}"
+				title="Informe o nome da mãe do paciente" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="cpf" value="CPF:" />
+			<br />
+			<p:inputMask id="cpf" mask="999.999.999-99"
+				value="#{pacienteRaiz.instancia.cpf}"
+				title="Informe o CPF do paciente" onblur="validaCPF(this);" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="telefone" value="Telefone:" />
+			<br />
+			<p:inputMask id="telefone" mask="(99)9999-9999"
+				value="#{pacienteRaiz.instancia.telefone}"
+				title="Informe o telefone do paciente" converter="telefoneConversor" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="tipoLogradouro" value="Tipo do Logradouro:" />
+			<br />
+			<p:selectOneMenu value="#{pacienteRaiz.instancia.tipoLogradouro}"
+				effect="fade">
+				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+				<f:selectItems value="#{itensPadrao.logradouroEnumItens}" />
+
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="logradouro" value="Logradouro:" />
+			<br />
+			<p:inputText id="logradouro"
+				value="#{pacienteRaiz.instancia.nomeLogradouro}"
+				title="Informe o logradouro" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="numero" value="Numero:" />
+			<br />
+			<p:inputText id="numero" value="#{pacienteRaiz.instancia.numero}"
+				title="Informe o número da casa" />
+		</h:panelGroup>
+
+		<h:panelGroup>
 			<h:outputLabel for="complemento" value="Complemento:" />
 			<br />
-			<p:inputText id="complemento" required="false"
+			<p:inputText id="complemento"
 				value="#{pacienteRaiz.instancia.complemento}"
-				title="Informe algum complemento do endereço, caso seja necessário." />
+				title="Informe o número da casa" />
 		</h:panelGroup>
-		
+
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="Cidade" value="Cidade:" />
+			<h:outputLabel for="bairro" value="Bairro:" />
 			<br />
-			<p:autoComplete id="cidade" styleClass="autoCompletePesquisa"
-				required="true" 
-				minQueryLength="3" 
-				size="30"
-				scrollHeight="300"
-				forceSelection="true"
-				value="#{pacienteRaiz.instancia.cidade}"
-				completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
-				var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
-				itemValue="#{cidade}" converter="cidadeConversor" />
+			<p:inputText id="bairro" value="#{pacienteRaiz.instancia.bairro}"
+				title="Informe o bairro da casa" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="cidade" value="Cidade:" />
+			<br />
+			<p:autoComplete id="cidade" 
+							minQueryLength="4"
+							value="#{pacienteRaiz.instancia.cidade}" 
+							scrollHeight="300"
+							forceSelection="true"
+							completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
+							var="cidade" 
+							title="Informe a cidade à qual o paciente veio"
+							itemLabel="#{cidade.nomeCidadeEstado}" 
+							itemValue="#{cidade}"
+							converter="cidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
 		</h:panelGroup>
-		
-		<h:panelGroup>
-			
-			<h:outputLabel for="bairro" value="Bairro:" />
-			<br />
-			<p:inputText id="bairro" required="false"
-				value="#{pacienteRaiz.instancia.bairro}"
-				title="Informe o bairro da residência." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="nomeMae" value="Nome da Mãe:" />
-			<br />
-			<p:inputText id="nomeMae" required="false"
-				value="#{pacienteRaiz.instancia.nomeMae}"
-				title="Informe o nome da mãe." />
-		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="sexo" value="Sexo" />
+			<h:outputLabel for="sexo" value="Sexo:" />
 			<br />
-			<p:selectOneRadio id="sexo" required="true"
-				value="#{pacienteRaiz.instancia.sexo}"
-				title="Informe o sexo do paciente: Masculino ou Feminino.">
+			<h:selectOneRadio id="sexo" value="#{pacienteRaiz.instancia.sexo}"
+				title="Informe se o cliente é homem ou mulher">
 				<f:selectItems value="#{itensPadrao.sexoEnumItens}" />
-				
-			</p:selectOneRadio>
+			</h:selectOneRadio>
 		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
-			<br />
-			<p:calendar id="dataNascimento" required="true"
-				pattern="dd/MM/yyyy" locale="pt_BR"
-				value="#{pacienteRaiz.instancia.dataNascimento}">
-							
-			</p:calendar>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="telefone" value="Telefone:" />
-			<br />
-			<p:inputMask id="telefone" required="false" mask="(99)9999-9999"
-				value="#{pacienteRaiz.instancia.telefone}"
-				title="Informe o telefone do paciente"
-				converter="telefoneConversor">
-				
-			</p:inputMask>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="cpf" value="CPF:" />
-			<br />
-			<p:inputMask id="cpf" required="false" mask="999.999.999-99"
-				value="#{pacienteRaiz.instancia.cpf}"
-				title="Informe o cadastro de pessoa física do paciente."
-				converter="cpfConversor">
-				
-			</p:inputMask>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="numeroSus" value="Número do SUS:" />
-			<br />
-			<p:inputText id="numeroSus" required="true"
-				value="#{pacienteRaiz.instancia.numeroSus}"
-				title="Informe o número do cartão do SUS do paciente." />
-		</h:panelGroup>
-
-
 
 	</h:panelGrid>
-
 </ui:composition>
