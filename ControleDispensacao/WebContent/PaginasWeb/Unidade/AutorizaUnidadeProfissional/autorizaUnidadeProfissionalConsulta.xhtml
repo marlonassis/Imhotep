@@ -7,32 +7,34 @@
 
 	<h:panelGrid id="autorizaUnidadeProfissionalPanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup>
-			
+		<h:panelGroup style="align:left;">
 			<h:outputLabel for="unidade" value="Unidade:" />
 			<br />
-			<p:selectOneMenu value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}"
-				effect="fade" converter="unidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{unidade}" />
-				<f:selectItems value="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-					var="unidade" itemLabel="#{unidade.nome}"
-					itemValue="#{unidade}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="unidade"
+							scrollHeight="300"
+							value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}" 
+							forceSelection="true"
+							completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							title="Informe a unidade."
+							var="unidade"
+							itemLabel="#{unidade.nome}" 
+							itemValue="#{unidade}"
+							converter="unidadeConversor" />
 		</h:panelGroup>
 
-		<h:panelGroup>
-			
+		<h:panelGroup style="align:left;">
 			<h:outputLabel for="profissional" value="Profissional:" />
 			<br />
-			<p:selectOneMenu value="#{autorizaUnidadeProfissionalConsulta.instancia.profissional}"
-				effect="fade" converter="profissionalConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{profissional}" />
-				<f:selectItems value="#{profissionalRaiz.getListaProfissionalAutoComplete}"
-					var="profissional" itemLabel="#{profissional.nome}"
-					itemValue="#{profissional}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="profissional" 
+							forceSelection="true"
+							scrollHeight="300"
+							value="#{autorizaUnidadeProfissionalConsulta.instancia.profissional}"
+							completeMethod="#{profissionalAutoComplete.autoComplete}"
+							title="Informe o nome do profissional."
+							var="profissional" 
+							itemLabel="#{profissional.nome}" 
+							itemValue="#{profissional}"
+							converter="profissionalConversor" />
 		</h:panelGroup>
 
 

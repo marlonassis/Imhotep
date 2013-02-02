@@ -1,6 +1,5 @@
 package br.com.Imhotep.negocio;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -40,15 +39,6 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 		super.novaInstancia();
 		getInstancia().setUsuario(new Usuario());
 		getInstancia().setEspecialidade(new Especialidade());
-	}
-	
-	/**
-	 * Método que retorna uma lista de Profissional
-	 * @param String sql
-	 * @return Collection Profissional
-	 */
-	public Collection<Profissional> getListaProfissionalAutoComplete(String consulta){
-		return super.getBusca("select o from Profissional as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+consulta+"%')) ");
 	}
 	
 	public boolean atualizar(Profissional profissional) {

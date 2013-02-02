@@ -8,38 +8,43 @@
 	<h:panelGrid id="unidadePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="unidadePai" value="Unidade Superior:" />
+			
+			<h:outputLabel for="coordenador" value="Coordenador:" />
 			<br />
-			<p:selectOneMenu value="#{unidadeConsulta.instancia.unidadePai}"
-				effect="fade" converter="unidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{unidade}" />
-				<f:selectItems value="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-					var="unidadePai" itemLabel="#{unidade.nome}"
-					itemValue="#{unidade}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="coordenador"
+							scrollHeight="300"
+							value="#{unidadeConsulta.instancia.coordenador}" 
+							forceSelection="true"
+							completeMethod="#{profissionalAutoComplete.autoComplete}"
+							var="coordenador" 
+							title="Informe o nome do coordenador"
+							itemLabel="#{coordenador.nome}" 
+							itemValue="#{coordenador}"
+							converter="profissionalConversor" />				
 		</h:panelGroup>
 
+		<h:panelGroup>
+			
+			<h:outputLabel for="unidadePai" value="Unidade Pai:" />
+			<br />
+			<p:autoComplete id="unidadePai"
+							scrollHeight="300"
+							value="#{unidadeConsulta.instancia.unidadePai}" 
+							forceSelection="true"
+							completeMethod="#{unidadeAutoComplete.autoComplete}"
+							title="Informe o grupo do sub-grupo"
+							var="unidade" 
+							itemLabel="#{unidade.nome}" 
+							itemValue="#{unidade}"
+							converter="unidadeConversor" />				
+		</h:panelGroup>
+		
 		<h:panelGroup>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
 			<p:inputText id="nome" required="false"
 				value="#{unidadeConsulta.instancia.nome}"
 				title="Informe o nome da unidade." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="coordenador" value="Coordenador:" />
-			<br />
-			<p:selectOneMenu value="#{unidadeConsulta.instancia.coordenador}"
-				effect="fade" converter="profissionalConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{profissional}" />
-				<f:selectItems value="#{profissionalRaiz.getListaProfissionalAutoComplete}"
-					var="coordenador" itemLabel="#{profissional.nome}"
-					itemValue="#{profissional}" />
-				
-			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>

@@ -7,74 +7,69 @@
 	<h:panelGrid id="unidadePanelGrid" columns="3" width="100%">
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="unidadePai" value="Unidade Superior:" />
-			<br />
-			<p:selectOneMenu value="#{unidadeRaiz.instancia.unidadePai}"
-				effect="fade" converter="unidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{unidade}" />
-				<f:selectItems value="#{unidadeRaiz.getListaUnidadeAutoComplete}"
-					var="unidadePai" itemLabel="#{unidade.nome}"
-					itemValue="#{unidade}" />
-				
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="sigla" required="true"
-				value="#{unidadeRaiz.instancia.sigla}"
-				title="Informe a sigla da unidade." />
+			<p:inputText id="sigla" value="#{unidadeRaiz.instancia.sigla}"
+				required="true" title="Informe a descrição do unidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="nome" value="Nome:" />
+			<h:outputLabel for="sigla" value="Nome:" />
 			<br />
-			<p:inputText id="nome" required="true"
-				value="#{unidadeRaiz.instancia.nome}"
-				title="Informe o nome da unidade." />
+			<p:inputText id="nome" value="#{unidadeRaiz.instancia.nome}"
+				required="true" title="Informe a descrição do unidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
+			<h:outputLabel for="telefone" value="Telefone:" />
+			<br />
+			<p:inputMask id="telefone" mask="(99)9999-9999"
+				value="#{unidadeRaiz.instancia.telefone}"
+				title="Campo texto com máscara para telefone"
+				converter="telefoneConversor" required="false" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="email" value="e-mail:" />
+			<br />
+			<p:inputText id="email" value="#{unidadeRaiz.instancia.email}"
+				title="Informe o e-mail do cliente" onblur="validaEmail(this);"
+				required="false" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="unidadePai" value="Unidade Superior:" />
+			<br />
+			<p:autoComplete id="unidadePai"
+							scrollHeight="300"
+							value="#{unidadeRaiz.instancia.unidadePai}" 
+							forceSelection="true"
+							completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							title="Informe a unidade pai desta unidade."
+							var="unidade"
+							itemLabel="#{unidade.nome}" 
+							itemValue="#{unidade}"
+							converter="unidadeConversor" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
 			<font color="red">*</font>
 			<h:outputLabel for="coordenador" value="Coordenador:" />
 			<br />
-			<p:selectOneMenu value="#{unidadeRaiz.instancia.coordenador}"
-				effect="fade" converter="profissionalConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{profissional}" />
-				<f:selectItems value="#{profissionalRaiz.getListaProfissionalAutoComplete}"
-					var="coordenador" itemLabel="#{profissional.nome}"
-					itemValue="#{profissional}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="coordenador" 
+							forceSelection="true"
+							scrollHeight="300"
+							value="#{unidadeRaiz.instancia.coordenador}"
+							completeMethod="#{profissionalAutoComplete.autoComplete}"
+							required="true"
+							title="Informe o nome do profissional que é coordenador do setor."
+							var="profissional" 
+							itemLabel="#{profissional.nome}" 
+							itemValue="#{profissional}"
+							converter="profissionalConversor" />
 		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="telefone" value="Telefone:" />
-			<br />
-			<p:inputMask id="telefone" required="true" mask="(99)9999-9999"
-				value="#{unidadeRaiz.instancia.telefone}"
-				title="Informe o telefone da unidade."
-				converter="telefoneConversor">
-				
-			</p:inputMask>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="email" value="e-mail:" />
-			<br />
-			<p:inputText id="email" required="false"
-				value="#{unidadeRaiz.instancia.email}"
-				title="Informe o e-mail, caso exista para a unidade." />
-		</h:panelGroup>
-
-
 
 	</h:panelGrid>
-
 </ui:composition>
