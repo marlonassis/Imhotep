@@ -49,26 +49,31 @@
 			
 			<h:outputLabel for="tipoUnidade" value="Tipo da Unidade" />
 			<br />
-			<p:selectOneRadio id="tipoUnidade" required="false"
-				value="#{unidadeSaudeRaiz.instancia.tipoUnidade}"
-				title="Informe o tipo da unidade de saúde.">
-				<f:selectItems value="#{itensPadrao.tipoUnidadeSaudeEnum}" />
-				
-			</p:selectOneRadio>
+			<p:selectOneMenu id="tipoUnidade" 
+									 required="false"
+									 value="#{unidadeSaudeRaiz.instancia.tipoUnidade}"
+									 title="Informe o tipo da unidade de saúde.">
+				<f:selectItems value="#{itensPadrao.tipoUnidadeSaudeEnumItens}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="cidade" value="Cidade:" />
 			<br />
-			<p:selectOneMenu value="#{unidadeSaudeRaiz.instancia.cidade}"
-				effect="fade" converter="cidadeConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{cidade}" />
-				<f:selectItems value="#{cidadeRaiz.getListaCidadeAutoComplete}"
-					var="cidade" itemLabel="#{cidade.nomeCidadeEstado}"
-					itemValue="#{cidade}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="cidade" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{unidadeSaudeRaiz.instancia.cidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 
