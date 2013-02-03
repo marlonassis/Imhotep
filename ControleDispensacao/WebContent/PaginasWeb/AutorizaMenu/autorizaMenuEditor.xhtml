@@ -7,31 +7,41 @@
 	<h:panelGrid id="autorizaMenuPanelGrid" columns="3" width="100%">
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="autorizaMenuRaiz.menuDualList" value=":" />
+			<font color="red">*</font>
+			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:selectOneMenu value="#{autorizaMenuRaiz.menuDualList}"
-				effect="fade" converter="menuConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{menu}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="especialidade" 
+							scrollHeight="300"
+							required="true"
+							forceSelection="true"
+							value="#{autorizaMenuRaiz.instancia.especialidade}"
+							completeMethod="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+							var="especialidade" 
+							itemLabel="#{especialidade.descricao}"
+							itemValue="#{especialidade}" 
+							converter="especialidadeConversor">
+				<p:ajax event="itemSelect"
+					update=":#{p:component('autorizaMenuPanelGrid')}" />
+			</p:autoComplete>
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="especialidade" value="Especialidade:" />
+			<font color="red">*</font>
+			<h:outputLabel for="menu" value="Menu:" />
 			<br />
-			<p:selectOneMenu value="#{autorizaMenuRaiz.instancia.especialidade}"
-				effect="fade" converter="especialidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
-				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
-					var="especialidade" itemLabel="#{especialidade.descricao}"
-					itemValue="#{especialidade}" />
-			</p:selectOneMenu>
+			<p:pickList id="pickList" 
+						value="#{autorizaMenuRaiz.menuDualList}"
+						addLabel="Adicionar" 
+						addAllLabel="Adicionar todos"
+						removeLabel="Remover" 
+						removeAllLabel="Remover todos"
+						var="menu" 
+						itemLabel="#{menu}" 
+						itemValue="#{menu}" 
+						converter="menuConversor" />
 		</h:panelGroup>
-
-
-
 	</h:panelGrid>
-
 </ui:composition>

@@ -13,39 +13,18 @@
 		<p:tab title="AutorizaMenu">
 			<h:form id="autorizaMenuEditorForm">
 				<p:fieldset legend="Novo AutorizaMenu"
-					collapsed="#{!autorizaMenuRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
+							collapsed="false" 
+							toggleable="true"
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="autorizaMenuEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!autorizaMenuRaiz.edicao}"
-						update=":#{p:component('autorizaMenuEditorForm')} :#{p:component('autorizaMenuPesquisaForm')}"
-						action="#{autorizaMenuRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{autorizaMenuRaiz.edicao}"
-						update=":#{p:component('autorizaMenuEditorForm')} :#{p:component('autorizaMenuPesquisaForm')}"
-						action="#{autorizaMenuRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{autorizaMenuRaiz.edicao}"
-						 update="@parent"
-						 action="#{autorizaMenuRaiz.novaInstancia()}" />
+					<p:commandButton value="Gravar" 
+									 update=":#{p:component('autorizaMenuEditorForm')}"
+									 action="#{autorizaMenuRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 update=":#{p:component('autorizaMenuEditorForm')}"
+									 action="#{autorizaMenuRaiz.novaInstancia()}" />
 				</p:fieldset>
-			</h:form>
-
-			<h:form id="autorizaMenuPesquisaForm">
-				<p:growl />
-				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="autorizaMenuConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('autorizaMenuPesquisaForm')}"/>
-
-					<p:commandButton value="Limpar"
-						action="#{autorizaMenuConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('autorizaMenuPesquisaForm')}" />
-
-				</p:fieldset>
-				<ui:include src="autorizaMenuTabela.xhtml" />
 			</h:form>
 		</p:tab>
 	</ui:define>
