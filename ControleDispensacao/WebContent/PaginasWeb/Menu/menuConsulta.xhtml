@@ -7,60 +7,6 @@
 
 	<h:panelGrid id="menuPanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup>
-			
-			<h:outputLabel for="menuPai" value="Menu Pai:" />
-			<br />
-			<p:selectOneMenu value="#{menuConsulta.instancia.menuPai}"
-				effect="fade" converter="menuConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{menu}" />
-				<f:selectItems value="#{menuRaiz.getListaMenuAutoComplete}"
-					var="menuPai" itemLabel="#{menu.descricao}"
-					itemValue="#{menu}" />
-				
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" required="false"
-				value="#{menuConsulta.instancia.descricao}"
-				title="Descreva o menu." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="bloqueado" value="Bloqueado" />
-			<br />
-			<p:selectOneRadio id="bloqueado" required="false"
-				value="#{menuConsulta.instancia.bloqueado}"
-				title="Informe se o menu está ou não bloqueado.">
-				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
-				
-			</p:selectOneRadio>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="url" value="URL:" />
-			<br />
-			<p:inputText id="url" required="false"
-				value="#{menuConsulta.instancia.url}"
-				title="Informe a URL do menu." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="urlAjuda" value="URL de Ajuda:" />
-			<br />
-			<p:inputText id="urlAjuda" required="false"
-				value="#{menuConsulta.instancia.urlAjuda}"
-				title="Informe a url de ajuda." />
-		</h:panelGroup>
-
-
-
+	
 	</h:panelGrid>
 </ui:composition>

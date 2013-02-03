@@ -8,31 +8,37 @@
 	<h:panelGrid id="autorizaPainelPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
 			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:selectOneMenu value="#{autorizaPainelConsulta.instancia.especialidade}"
-				effect="fade" converter="especialidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
-				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
-					var="especialidade" itemLabel="#{especialidade.descricao}"
-					itemValue="#{especialidade}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="especialidade" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{autorizaPainelConsulta.instancia.especialidade}"
+							completeMethod="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+							var="especialidade" 
+							itemLabel="#{especialidade.descricao}"
+							itemValue="#{especialidade}" 
+							converter="especialidadeConversor"/>
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="Painel" value="Painel:" />
+			<h:outputLabel for="painel" value="Painel:" />
 			<br />
-			<p:selectOneMenu value="#{autorizaPainelConsulta.instancia.Painel}"
-				effect="fade" converter="painelConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{painel}" />
-				<f:selectItems value="#{painelRaiz.getListaPainelAutoComplete}"
-					var="Painel" itemLabel="#{painel.descricao}"
-					itemValue="#{painel}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="painel" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{autorizaPainelConsulta.instancia.painel}"
+							completeMethod="#{painelAutoComplete.autoComplete}"
+							var="painel" 
+							itemLabel="#{painel.descricao}"
+							itemValue="#{painel}" 
+							converter="painelConversor"/>
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 

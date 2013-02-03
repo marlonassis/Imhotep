@@ -6,61 +6,46 @@
 
 	<h:panelGrid id="menuPanelGrid" columns="3" width="100%">
 
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="menuPai" value="Menu Pai:" />
-			<br />
-			<p:selectOneMenu value="#{menuRaiz.instancia.menuPai}"
-				effect="fade" converter="menuConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{menu}" />
-				<f:selectItems value="#{menuRaiz.getListaMenuAutoComplete}"
-					var="menuPai" itemLabel="#{menu.descricao}"
-					itemValue="#{menu}" />
-				
-			</p:selectOneMenu>
-		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{menuRaiz.instancia.descricao}"
-				title="Descreva o menu." />
+			<p:inputText id="descricao" value="#{menuRaiz.instancia.descricao}"
+				required="true" title="Informe a descrição do menu" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="bloqueado" value="Bloqueado" />
+			<h:outputLabel for="url" value="Url:" />
 			<br />
-			<p:selectOneRadio id="bloqueado" required="true"
-				value="#{menuRaiz.instancia.bloqueado}"
-				title="Informe se o menu está ou não bloqueado.">
-				<f:selectItems value="#{itensPadrao.tipoStatusEnum}" />
-				
-			</p:selectOneRadio>
+			<p:inputText id="url" value="#{menuRaiz.instancia.url}"
+				title="Informe a url do menu" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="menuPai" value="Menu pai:" />
+			<br />
+			<p:autoComplete id="menuPai" 
+							value="#{menuRaiz.instancia.menuPai}"
+							forceSelection="true"
+							completeMethod="#{menuAutoComplete.autoComplete}" 
+							title="Informe o menu pai" 
+							var="menu"
+							itemLabel="#{menu.descricao}"
+							itemValue="#{menu}" 
+							converter="menuConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="url" value="URL:" />
+			<h:outputLabel for="urlAjuda" value="Url Ajuda:" />
 			<br />
-			<p:inputText id="url" required="true"
-				value="#{menuRaiz.instancia.url}"
-				title="Informe a URL do menu." />
+			<p:inputText id="urlAjuda" value="#{menuRaiz.instancia.urlAjuda}"
+				title="Informe a url da página de ajuda do menu" />
 		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="urlAjuda" value="URL de Ajuda:" />
-			<br />
-			<p:inputText id="urlAjuda" required="true"
-				value="#{menuRaiz.instancia.urlAjuda}"
-				title="Informe a url de ajuda." />
-		</h:panelGroup>
-
 
 
 	</h:panelGrid>
-
 </ui:composition>
