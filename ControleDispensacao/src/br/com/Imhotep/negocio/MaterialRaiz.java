@@ -77,10 +77,6 @@ public class MaterialRaiz extends PadraoHome<Material>{
 		familiaList.add(getInstancia().getFamilia());
 	}
 	
-	public Collection<Material> getListaMaterialAutoComplete(String sql){
-		return super.getBusca("select o from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
-	}
-	
 	public Collection<Material> getListaMaterialAntibioticoAutoComplete(String sql){
 		String sql2 = "select o from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) and ";
 		sql2 = sql2.concat("lower(o.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO')");

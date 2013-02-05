@@ -14,14 +14,14 @@
 				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
 					<h:panelGroup>
 						<font color="red">*</font>
-						<h:outputLabel for="material" value="Informe o material:" />
+						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
 						<br />
 						<p:autoComplete id="material"
 										value="#{relatorioMovimentacaoEstoqueFarmacia.material}"
 										minQueryLength="4"
 										required="true"
 										scrollHeight="300"
-										completeMethod="#{materialRaiz.getListaMaterialAutoComplete}"
+										completeMethod="#{materialMovimentacaoFarmaciaAutoComplete.autoComplete}"
 										var="material" 
 										forceSelection="true"
 										title="Informe o medicamento a ser prescrito"

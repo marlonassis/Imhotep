@@ -28,7 +28,7 @@
 			<p:selectOneMenu value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
 				effect="fade" converter="materialConversor" required="false">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{material}" />
-				<f:selectItems value="#{materialRaiz.getListaMaterialAutoComplete}"
+				<f:selectItems value="#{materialAutoComplete.autoComplete}"
 					var="material" itemLabel="#{material.descricao}"
 					itemValue="#{material}" />
 				
