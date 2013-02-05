@@ -10,39 +10,20 @@
 			<font color="red">*</font>
 			<h:outputLabel for="login" value="Login:" />
 			<br />
-			<p:inputText id="login" value="#{usuarioRaiz.instancia.login}"
-				required="true" disabled="#{usuarioRaiz.edicao}"
-				title="Informe o apelido de acesso" />
+			<p:inputText id="login" 
+						 value="#{usuarioRaiz.instancia.login}"
+						 required="true" 
+						 disabled="#{usuarioRaiz.edicao}"
+						 title="Informe o apelido de acesso" />
 		</h:panelGroup>
 
 		<h:panelGroup id="trocaSenhaPanelGroup"
-			rendered="#{usuarioRaiz.edicao}">
+					  rendered="#{usuarioRaiz.edicao}">
 			<h:outputLabel value="Deseja alterar a senha?" />
 			<br />
 			<p:selectBooleanCheckbox value="#{usuarioRaiz.trocaSenha}">
-				<p:ajax
-					update="trocaSenhaPanelGroup senhaConfirmaPanelGroup senhaPanelGroup" />
+				<p:ajax update=":#{p:component('senhaPanelGroup')} :#{p:component('senhaConfirmaPanelGroup')} :#{p:component('trocaSenhaPanelGroup')}" />
 			</p:selectBooleanCheckbox>
-		</h:panelGroup>
-
-		<h:panelGroup id="senhaPanelGroup">
-			<font color="red">*</font>
-			<h:outputLabel for="senha" value="Senha:" />
-			<br />
-			<p:inputText id="senha" value="#{usuarioRaiz.instancia.senha}"
-				label="Senha" required="true"
-				disabled="#{!usuarioRaiz.trocaSenha and usuarioRaiz.edicao}"
-				type="password" />
-		</h:panelGroup>
-
-		<h:panelGroup id="senhaConfirmaPanelGroup">
-			<h:outputLabel for="senhaConfirmacai"
-				value="Informe novamente a senha:" />
-			<br />
-			<p:inputText id="senhaConfirmacai"
-				value="#{usuarioRaiz.senhaConfirmacao}" label="Senha"
-				disabled="#{!usuarioRaiz.trocaSenha and usuarioRaiz.edicao}"
-				type="password" />
 		</h:panelGroup>
 
 	</h:panelGrid>

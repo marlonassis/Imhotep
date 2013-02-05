@@ -13,36 +13,43 @@
 		<p:tab id="tabProfissional" title="Profissional">
 			<h:form id="profissionalEditorForm" >
 				<p:fieldset legend="Novo Profissional"
-					collapsed="#{!profissionalRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
+							collapsed="#{!profissionalRaiz.edicao}" 
+							toggleable="true"
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="profissionalEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!profissionalRaiz.edicao}"
-						update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
-						action="#{profissionalRaiz.enviar}" />
+									 rendered="#{!profissionalRaiz.edicao}"
+									 update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
+									 action="#{profissionalRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{profissionalRaiz.edicao}"
-						update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
-						action="#{profissionalRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{profissionalRaiz.edicao}"
-						update=":#{p:component('profissionalEditorForm')}" action="#{profissionalRaiz.novaInstancia()}" />
+									 rendered="#{profissionalRaiz.edicao}"
+									 update=":#{p:component('profissionalEditorForm')} :#{p:component('profissionalPesquisaForm')}"
+									 action="#{profissionalRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{profissionalRaiz.edicao}"
+									 update=":#{p:component('profissionalEditorForm')}" 
+									 action="#{profissionalRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
 			<h:form id="profissionalPesquisaForm" >
-				<p:fieldset id="pesquisaProfissionalFieldSet" legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+				<p:fieldset id="pesquisaProfissionalFieldSet" 
+							legend="Pesquisa"
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
 					<ui:include src="profissionalConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update=":#{p:component('profissionalPesquisaForm')}"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+									 update=":#{p:component('profissionalPesquisaForm')}"
+									 image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
-						action="#{profissionalConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('profissionalPesquisaForm')}" />
-
+									 action="#{profissionalConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('profissionalPesquisaForm')}" />
 				</p:fieldset>
 				<p:growl />
 				<ui:include src="profissionalTabela.xhtml" />

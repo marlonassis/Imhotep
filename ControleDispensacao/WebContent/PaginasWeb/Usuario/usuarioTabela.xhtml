@@ -5,10 +5,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable id="tabelaUsuario" value="#{usuarioConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idUsuario}">
+	<p:dataTable id="usuarioTabela" 
+				 value="#{usuarioConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idUsuario}">
 
 		<p:column>
 			<f:facet name="header">
@@ -16,21 +21,30 @@
 			</f:facet>
 			<h:outputText value="#{linha.login}" />
 		</p:column>
-		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:usuarioForm" title="Editar"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{usuarioRaiz.instancia}" />
+		
+		<p:column style="width:180px; text-align: center;">
+			<p:commandLink update=":#{p:component('usuarioEditorForm')}" title="Editar"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{usuarioRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{usuarioRaiz.apagar()}"
-				update="tabelaUsuario padraoTabView:usuarioForm"
+				update=":#{p:component('usuarioTabela')} :#{p:component('usuarioEditorForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{usuarioRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+			
+			<p:commandLink action="#{usuarioRaiz.resetarSenha()}"
+						   update=":#{p:component('usuarioPesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente resetar?')) return false;"
+						   title="Resetar a senha" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{usuarioRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/refresh16.png" />
 			</p:commandLink>
 		</p:column>
 	</p:dataTable>

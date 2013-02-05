@@ -1,6 +1,5 @@
 package br.com.Imhotep.seguranca;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.controle.ControleSenha;
-import br.com.Imhotep.seguranca.Autenticador;
 
 @ManagedBean(name="gerenciadorRequisicao")
 @RequestScoped
@@ -34,7 +32,7 @@ public class GerenciadorRequisicao implements PhaseListener{
 			}
 			
 			boolean paginaTrocaSenha = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
-			if(!paginaLogin && !paginaTrocaSenha && autenticador != null && new ControleSenha().senhaIgualMatricula()){
+			if(!paginaLogin && !paginaTrocaSenha && autenticador != null && (new ControleSenha().senhaIgualMatricula() || new ControleSenha().senhaResetada())){
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
 			}
 			

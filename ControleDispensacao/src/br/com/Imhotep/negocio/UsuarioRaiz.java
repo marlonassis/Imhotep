@@ -28,6 +28,11 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	private String senhaNova;
 	private String senhaNovaConfirmacao;
 	
+	public void resetarSenha(){
+		getInstancia().setSenha(Utilities.encriptaParaMd5("123456"));
+		super.atualizar();
+	}
+	
 	@Override
 	public void novaInstancia() {
 		super.novaInstancia();

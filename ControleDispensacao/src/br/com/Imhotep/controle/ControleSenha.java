@@ -36,6 +36,18 @@ public class ControleSenha {
 		}
 	}
 	
+	public boolean senhaResetada() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		Autenticador autenticador = Autenticador.getInstancia();
+		if(autenticador.getProfissionalAtual() != null){
+			String senha = autenticador.getUsuarioAtual().getSenha();
+			String senhaPadraoReset = Utilities.encriptaParaMd5("123456");
+			if(senha.equals(senhaPadraoReset)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean senhaIgualMatricula() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Autenticador autenticador = Autenticador.getInstancia();
 		if(autenticador.getProfissionalAtual() != null){

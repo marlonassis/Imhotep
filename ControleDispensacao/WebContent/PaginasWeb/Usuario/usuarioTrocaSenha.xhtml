@@ -16,6 +16,9 @@
 				<h:panelGroup rendered="#{autenticador.precisaTrocarSenha()}" >
 					<font color="red" >Esse é o seu primeiro acesso. É necessário que você troque sua senha.</font>
 				</h:panelGroup>
+				<h:panelGroup rendered="#{autenticador.senhaResetada()}" >
+					<font color="red" >Sua senha foi resetada. É necessário que você troque sua senha para poder ter acesso ao sistema.</font>
+				</h:panelGroup>
 				<h:panelGrid columns="1">
 					<h:panelGroup>
 						<font color="red">*</font>

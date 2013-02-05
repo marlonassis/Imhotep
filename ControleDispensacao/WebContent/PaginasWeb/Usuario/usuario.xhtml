@@ -11,34 +11,42 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabUsuario" title="Usuário">
-			<h:form id="usuarioForm" >
-				<p:fieldset legend="Novo Usuário" collapsed="#{!usuarioRaiz.edicao}"
-					toggleable="true" toggleSpeed="500">
+			<h:form id="usuarioEditorForm" >
+				<p:fieldset legend="Novo Usuário" 
+							collapsed="#{!usuarioRaiz.edicao}"
+							toggleable="true" 
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="usuarioEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!usuarioRaiz.edicao}"
-						update="padraoTabView:tabelaUsuario usuarioForm"
-						action="#{usuarioRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{usuarioRaiz.edicao}"
-						update="padraoTabView:tabelaUsuario usuarioForm"
-						action="#{usuarioRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{usuarioRaiz.edicao}"
-						update="@parent" action="#{usuarioRaiz.novaInstancia()}" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!usuarioRaiz.edicao}"
+									 update=":#{p:component('usuarioEditorForm')} :#{p:component('usuarioPesquisaForm')}"
+									 action="#{usuarioRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{usuarioRaiz.edicao}"
+									 update=":#{p:component('usuarioEditorForm')} :#{p:component('usuarioPesquisaForm')}"
+									 action="#{usuarioRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{usuarioRaiz.edicao}"
+									 update=":#{p:component('usuarioEditorForm')}" 
+									 action="#{usuarioRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaUsuarioForm" >
+			<h:form id="usuarioPesquisaForm" >
 				<p:fieldset id="pesquisaUsuarioFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="usuarioConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaUsuario"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+									 update=":#{p:component('usuarioTabela')}"
+									 image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
-						action="#{usuarioConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaUsuarioForm " />
+									 action="#{usuarioConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('usuarioPesquisaForm')}" />
 
 				</p:fieldset>
 				<p:growl />

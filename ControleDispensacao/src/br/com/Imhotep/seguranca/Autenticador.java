@@ -217,6 +217,20 @@ public class Autenticador {
 		}
 	}
 
+	public boolean senhaResetada(){
+		try {
+			return new ControleSenha().senhaResetada();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	public boolean precisaTrocarSenha(){
 		try {
 			return new ControleSenha().senhaIgualMatricula();
