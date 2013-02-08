@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.Imhotep.auxiliar.Constantes;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -49,7 +50,7 @@ public class PadraoRelatorio implements Serializable {
         
         if(list != null){
         	//caso exista valor na lista deve-se usar seus itens 
-        	JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, new JRBeanCollectionDataSource(list));
+        	JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, (JRDataSource) new JRBeanCollectionDataSource(list));
         }else{
         	//caso a lista esteja nula os itens vem do próprio arquivo
         	JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, con);

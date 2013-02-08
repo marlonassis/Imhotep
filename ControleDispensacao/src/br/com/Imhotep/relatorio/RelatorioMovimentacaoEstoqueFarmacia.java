@@ -13,6 +13,8 @@ import javax.faces.bean.ViewScoped;
 import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
+import br.com.Imhotep.entidade.TipoMovimento;
+import br.com.Imhotep.entidade.Unidade;
 import br.com.Imhotep.negocio.MovimentoLivroRaiz;
 
 @ManagedBean(name="relatorioMovimentacaoEstoqueFarmacia")
@@ -24,11 +26,13 @@ public class RelatorioMovimentacaoEstoqueFarmacia extends PadraoRelatorio{
 	private Date dataIni;
 	private Date dataFim;
 	private Material material;
+	private TipoMovimento tipoMovimento;
+	private Unidade unidade;
 	
 	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueFarmacia.jasper";
 		String nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<MovimentoLivro> listaEstoqueRelatorioGeral = new MovimentoLivroRaiz().listaMovimentoLivroPeriodo(getMaterial(), dataIni, dataFim);
+		List<MovimentoLivro> listaEstoqueRelatorioGeral = new MovimentoLivroRaiz().listaMovimentoLivroPeriodo(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
@@ -57,6 +61,22 @@ public class RelatorioMovimentacaoEstoqueFarmacia extends PadraoRelatorio{
 
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	public TipoMovimento getTipoMovimento() {
+		return tipoMovimento;
+	}
+
+	public void setTipoMovimento(TipoMovimento tipoMovimento) {
+		this.tipoMovimento = tipoMovimento;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 	
 }

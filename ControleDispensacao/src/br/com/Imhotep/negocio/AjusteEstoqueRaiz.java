@@ -19,6 +19,7 @@ import br.com.Imhotep.entidade.ItensMovimentoGeral;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
+import br.com.Imhotep.entidade.Unidade;
 import br.com.Imhotep.enums.TipoOperacaoEnum;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
@@ -38,6 +39,7 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	private Material material;
 	//
 	private boolean ajusteDispensacao = false;
+	private Unidade unidade;
 	
 	private Estoque carregaEstoqueLote(String lote) {
 		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
@@ -178,6 +180,7 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
 		movimentoLivroAtual.setMovimentoGeral(itensMovimentoGeral.getMovimentoGeral());
 		movimentoLivroAtual.setTipoMovimento(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento());
+		movimentoLivroAtual.setUnidadeReceptora(getUnidade());
 		try {
 			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		} catch (Exception e) {
@@ -277,6 +280,14 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 
 	public void setAjusteDispensacao(boolean ajusteDispensacao) {
 		this.ajusteDispensacao = ajusteDispensacao;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 }

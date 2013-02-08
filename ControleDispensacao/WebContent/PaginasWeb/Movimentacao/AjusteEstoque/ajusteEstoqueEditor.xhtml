@@ -19,7 +19,24 @@
 					itemValue="#{tipoMovimento}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
-
+		
+		<h:panelGroup>
+			<h:outputLabel for="unidade" value="Unidade:" />
+			<br />
+			<p:autoComplete id="unidade" 
+							forceSelection="true"
+							minQueryLength="4" 
+							size="30"
+							value="#{ajusteEstoqueRaiz.unidade}"
+							completeMethod="#{unidadeAutoComplete.autoComplete}"
+							var="unidade" 
+							title="Informe a unidade para onde está sendo enviado o material."
+							scrollHeight="300" 
+							itemLabel="#{unidade.nome}"
+							itemValue="#{unidade}" 
+							converter="unidadeConversor" />
+		</h:panelGroup>
+		
 		<h:panelGroup id="hospitalPanelGroup">
 			<h:panelGrid columns="2" width="100%">
 				<h:panelGroup>

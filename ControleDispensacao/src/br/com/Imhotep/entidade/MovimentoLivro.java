@@ -30,6 +30,7 @@ public class MovimentoLivro {
 	private Date dataMovimento;
 	private String historico;
 	private Usuario usuarioMovimentacao;
+	private Unidade unidadeReceptora;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
 	@Id
@@ -144,6 +145,15 @@ public class MovimentoLivro {
 		this.historico = historico;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_unidade_receptora")
+	public Unidade getUnidadeReceptora() {
+		return unidadeReceptora;
+	}
+	public void setUnidadeReceptora(Unidade unidadeReceptora) {
+		this.unidadeReceptora = unidadeReceptora;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
