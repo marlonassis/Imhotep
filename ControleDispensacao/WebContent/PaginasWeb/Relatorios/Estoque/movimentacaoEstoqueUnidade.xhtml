@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório de movimentaçao por unidade">
+			<h:form id="relatoriosForm" style="text-align: left;">
+				<h:panelGrid id="formularioRelatorioPanelGrid" columns="2" width="100%">
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="unidade" value="Unidade:" />
+						<br />
+						<p:watermark value="Todos" for="unidade" />
+						<p:autoComplete id="unidade" 
+										forceSelection="true"
+										required="true"
+										minQueryLength="4" 
+										size="30"
+										value="#{relatorioMovimentacaoEstoqueUnidade.unidade}"
+										completeMethod="#{unidadeAutoComplete.autoComplete}"
+										var="unidade" 
+										title="Informe a unidade para onde está sendo enviado o material."
+										scrollHeight="300" 
+										itemLabel="#{unidade.nome}"
+										itemValue="#{unidade}" 
+										converter="unidadeConversor" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
+						<br />
+						<p:selectOneMenu
+							value="#{relatorioMovimentacaoEstoqueUnidade.tipoMovimento}"
+							effect="fade" 
+							converter="tipoMovimentoConversor" >
+							<f:selectItem itemLabel="Todos" itemValue="" />
+							<f:selectItems value="#{tipoMovimentoConsulta.list}"
+										   var="tipoMovimento" 
+										   itemLabel="#{tipoMovimento.descricao}"
+										   itemValue="#{tipoMovimento}" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
+						<p:calendar id="dataIni"
+							value="#{relatorioMovimentacaoEstoqueUnidade.dataIni}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
+						<p:calendar id="dataFim"
+							value="#{relatorioMovimentacaoEstoqueUnidade.dataFim}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<p:commandLink id="downloadRelatorio"
+							value="Gerar relatório por período" ajax="false"
+							action="#{relatorioMovimentacaoEstoqueUnidade.relatorioMovimentacao}">
+						</p:commandLink>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

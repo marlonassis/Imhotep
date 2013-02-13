@@ -181,6 +181,7 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setMovimentoGeral(itensMovimentoGeral.getMovimentoGeral());
 		movimentoLivroAtual.setTipoMovimento(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento());
 		movimentoLivroAtual.setUnidadeReceptora(getUnidade());
+		movimentoLivroAtual.setEstoque(getInstancia());
 		try {
 			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		} catch (Exception e) {

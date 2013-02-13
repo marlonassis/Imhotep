@@ -31,6 +31,7 @@ public class MovimentoLivro {
 	private String historico;
 	private Usuario usuarioMovimentacao;
 	private Unidade unidadeReceptora;
+	private Estoque estoque;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
 	@Id
@@ -152,6 +153,15 @@ public class MovimentoLivro {
 	}
 	public void setUnidadeReceptora(Unidade unidadeReceptora) {
 		this.unidadeReceptora = unidadeReceptora;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_estoque")
+	public Estoque getEstoque() {
+		return estoque;
+	}
+	public void setEstoque(Estoque estoque) {
+		this.estoque = estoque;
 	}
 	
 	@Override

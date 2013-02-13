@@ -194,6 +194,7 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setSaldoAtual(getItensMovimentoGeral().getQuantidade());
 		movimentoLivroAtual.setSaldoAnterior(0);
 		movimentoLivroAtual.setTipoMovimento(getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento());
+		movimentoLivroAtual.setEstoque(getInstancia());
 		try{
 			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());

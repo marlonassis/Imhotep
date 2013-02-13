@@ -12,6 +12,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.Material;
+import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
@@ -37,6 +38,18 @@ public class EstoqueRaiz extends PadraoHome<Estoque>{
 		String sql = "select o from Estoque o where o.dataValidade >= :dataIni and o.dataValidade <= :dataFim";
 		return new ArrayList<Estoque>(cg.consulta(new StringBuilder(sql), map));
 	}
+	
+	public List<Object> buscarMovimentoPorPeriodo(Date dataIni, Date dataFim) {
+		ConsultaGeral<MovimentoLivro> cg = new ConsultaGeral<MovimentoLivro>();
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("dataIni", dataIni);
+		map.put("dataFim", dataFim);
+		String sql = "select o.material.descricao, o.material.codigoMaterial, o.lote, o.valorUnitario,  from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim ";
+		
+		sql += " order by o.dataMovimento desc";
+		ArrayList<Object> list = new ArrayList<Object>(cg.consulta(new StringBuilder(sql), map));
+		return (list==null || list.size() == 0) ? null : list;
+	}	
 	
 	public List<Estoque> listaEstoqueRelatorioGeral(){
 		return getBusca("select o from Estoque o where o.bloqueado = 'N' order by to_ascii(o.material.descricao)"); 

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.TipoMovimento;
@@ -19,13 +20,15 @@ import br.com.remendo.PadraoHome;
 @ManagedBean(name="movimentoLivroRaiz")
 @SessionScoped
 public class MovimentoLivroRaiz extends PadraoHome<MovimentoLivro>{
+	
 	public List<MovimentoLivro> listaMovimentoLivroPeriodo(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
-		Calendar df = Calendar.getInstance();
-		df.setTime(dataFim);
-		df.set(Calendar.HOUR, 23);
-		df.set(Calendar.MINUTE, 59);
-		df.set(Calendar.SECOND, 59);
+		Calendar df = Utilities.ajustarUltimaHoraDia(dataFim);
 		return buscarMovimentoPorPeriodo(material, dataIni, df.getTime(), unidade, tipoMovimento);
+	}
+	
+	public List<MovimentoLivro> listaMovimentoLivroPeriodo(Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
+		Calendar df = Utilities.ajustarUltimaHoraDia(dataFim);
+		return buscarMovimentoPorPeriodo(null, dataIni, df.getTime(), unidade, tipoMovimento);
 	}
 
 	private List<MovimentoLivro> buscarMovimentoPorPeriodo(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento) {
@@ -33,8 +36,13 @@ public class MovimentoLivroRaiz extends PadraoHome<MovimentoLivro>{
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		map.put("idMaterial", material.getIdMaterial());
-		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim and o.material.idMaterial = :idMaterial ";
+		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim ";
+		
+		if(material != null){
+			sql += " and o.material.idMaterial = :idMaterial ";
+			map.put("idMaterial", material.getIdMaterial());
+		}
+		
 		if(unidade != null){
 			sql += " and o.unidadeReceptora.idUnidade = :idUnidade ";
 			map.put("idUnidade", unidade.getIdUnidade());
