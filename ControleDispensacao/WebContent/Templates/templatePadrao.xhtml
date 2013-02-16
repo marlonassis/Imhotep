@@ -23,72 +23,63 @@
 			src="#{request.contextPath}/js/basico.js"></script>
 		<script type="text/javascript"
 			src="#{request.contextPath}/js/concentrador.js"></script>
-
-		<script type="text/javascript">
-			PrimeFaces.locales['pt_BR'] = {
-			                closeText: 'Fechar',
-			                prevText: 'Anterior',
-			                nextText: 'Próximo',
-			                currentText: 'Começo',
-			                monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-			                monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Des'],
-			                dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-			                dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
-			                dayNamesMin: ['D','S','T','Q','Q','S','S'],
-			                weekHeader: 'Semana',
-			                firstDay: 1,
-			                isRTL: false,
-			                showMonthAfterYear: false,
-			                yearSuffix: '',
-			                timeOnlyTitle: 'Só Horas',
-			                timeText: 'Tempo',
-			                hourText: 'Hora',
-			                minuteText: 'Minuto',
-			                secondText: 'Segundo',
-			                currentText: 'Data Atual',
-			                ampm: false,
-			                month: 'Mês',
-			                week: 'Semana',
-			                day: 'Dia',
-			                allDayText : 'Todo Dia'
-			            };
-</script>
-
 	</h:head>
 
 
-<h:body id="body" >
-	
-		<div class="ui-widget ui-widget-header">
-			<div id="logo">
-				<h1>Imhotep</h1>
-			</div>
+<h:body id="body" style="background-color:#FFFFFF;" >
+				
+		<div>
+			<h:panelGrid border="0"
+						 width="100%"
+						 columns="3" >
+				<h:panelGroup>
+					<h:graphicImage height="130px"
+									width="312.5px"
+									value="/Imagens/Logo/logo_imhotep_5.gif" />
+					<br/>
+					Saiba mais sobre Imhotep em : <a target="_blank" href="http://pt.wikipedia.org/wiki/Imhotep">Imhotep</a>
+				</h:panelGroup>
+				<h:panelGroup>
+					<div align="center" >
+						<h:panelGroup id="unidadesPanelGroup"
+			 				  rendered="#{autenticador.usuarioAtivo}" >
+							<h:outputLabel for="unidadeSelectOneMenu" value="Unidade Atual:"  /><br />
+							<p:selectOneMenu id="unidadeSelectOneMenu"
+											 value="#{autenticador.unidadeAtual}"
+										 	 effect="fade" 
+										 	 converter="unidadeConversor">  
+								<f:ajax event="change" 
+										render="menuForm" />
+					            <f:selectItems value="#{autenticador.unidades}" 
+					            			   var="unidade" 
+					            			   itemLabel="#{unidade.nome}" 
+					            			   itemValue="#{unidade}"/>  
+				        	</p:selectOneMenu>
+				        	<br/>
+				        	<h:outputText value="#{autenticador.profissionalAtual.nome}"/>
+				        	#{': '}
+				        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" 
+				        				  style="font-weight: bold;"/>
+				        	<br/>
+				        	<br/>
+							<p:clock pattern="dd/MM/yyyy HH:mm:ss" mode="server" />
+						</h:panelGroup>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup style="float:right;" >
+					<h:graphicImage height="90px"
+									width="250px"
+									value="/Imagens/Logo/logo_hu.jpg" />
+				</h:panelGroup>
+			</h:panelGrid>  
+			
 		</div>
-		Saiba mais sobre Imhotep em : <a target="_blank" href="http://pt.wikipedia.org/wiki/Imhotep">Imhotep</a>
-		
 		<br/>
 		<div id="geral" 
 			 align="center" >
 			 <h:form id="menuForm" >
 			 	<h:panelGroup id="menuPanelGroup"
 			 				  rendered="#{autenticador.usuarioAtivo}" >
-					<h:outputLabel for="unidadeSelectOneMenu" value="Unidade Atual:"  /><br />
-					<p:selectOneMenu id="unidadeSelectOneMenu"
-									 value="#{autenticador.unidadeAtual}"
-								 	 effect="fade" 
-								 	 converter="unidadeConversor">  
-						<f:ajax event="change" 
-								render="menuForm" />
-			            <f:selectItems value="#{autenticador.unidades}" 
-			            			   var="unidade" 
-			            			   itemLabel="#{unidade.nome}" 
-			            			   itemValue="#{unidade}"/>  
-		        	</p:selectOneMenu>
-		        	<br/>
-		        	<h:outputText value="#{autenticador.profissionalAtual.nome}"/>
-		        	#{': '}
-		        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" 
-		        				  style="font-weight: bold;"/>
 					<ui:include src="menu.xhtml" />
 				</h:panelGroup>
 			</h:form>
