@@ -27,7 +27,7 @@
 					<h:outputText value="#{linha.material}" />
 				</p:column>
 				<p:column headerText="Data da validade"
-					style="#{util.dateAtual > linha.dataValidade ? 'background-color:#FFDAB9;' : ''}">
+					style="#{util.dateAtual > linha.dataValidade ? 'background-color:#FF0000;' : ''}">
 					<h:outputText value="#{linha.dataValidade}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
