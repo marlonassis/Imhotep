@@ -16,7 +16,7 @@ public class Constantes {
 	public static final String PRESCRICAO_CUIDADOS_TAB = "prescricaoCuidadosTab";
 	public static final String PRESCRICAO_CONFIRMACAO_TAB = "prescricaoConfirmacaoTab";
 	
-	
+	public static final String RELATORIO_CUSTO_ESTOQUE_PATH = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioCustoEstoque.jasper";
 	
 	public static final String URL_BANCO = "jdbc:postgresql://127.0.0.1:5432/db_imhotep";
 	public static final String NOME_BANCO = "db_imhotep";

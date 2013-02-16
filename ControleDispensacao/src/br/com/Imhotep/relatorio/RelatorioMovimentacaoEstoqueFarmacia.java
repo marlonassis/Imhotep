@@ -15,7 +15,7 @@ import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.negocio.MovimentoLivroRaiz;
+import br.com.Imhotep.raiz.MovimentoLivroRaiz;
 
 @ManagedBean(name="relatorioMovimentacaoEstoqueFarmacia")
 @ViewScoped

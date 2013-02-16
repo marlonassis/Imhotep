@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.Imhotep.entidade.Prescricao;
 import br.com.Imhotep.entidade.PrescricaoItem;
-import br.com.Imhotep.negocio.PrescricaoRaiz;
+import br.com.Imhotep.raiz.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 

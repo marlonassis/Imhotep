@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.entidade.TesteDoPezinho;
-import br.com.Imhotep.negocio.TesteDoPezinhoRaiz;
+import br.com.Imhotep.raiz.TesteDoPezinhoRaiz;
 
 @ManagedBean(name="relatorioQuantitativoPezinho")
 @ViewScoped

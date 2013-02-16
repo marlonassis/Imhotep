@@ -9,8 +9,8 @@ import javax.faces.bean.RequestScoped;
 import br.com.Imhotep.entidade.CuidadosPaciente;
 import br.com.Imhotep.entidade.CuidadosPrescricao;
 import br.com.Imhotep.entidade.Prescricao;
-import br.com.Imhotep.negocio.CuidadosPrescricaoRaiz;
-import br.com.Imhotep.negocio.PrescricaoRaiz;
+import br.com.Imhotep.raiz.CuidadosPrescricaoRaiz;
+import br.com.Imhotep.raiz.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 

@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="fornecedorPanelGrid" columns="3" width="100%">
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="true"
+				value="#{fornecedorRaiz.instancia.nome}"
+				title="Informe o nome/razão social do fornecedor" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cadastroPessoaFisicaJuridica" value="CNPJ/CPF:" />
+			<br />
+			<p:inputText id="cadastroPessoaFisicaJuridica" required="true"
+				value="#{fornecedorRaiz.instancia.cadastroPessoaFisicaJuridica}"
+				title="Informe o CPF ou CNPJ do fornecedor." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="endereco" value="Endereço:" />
+			<br />
+			<p:inputText id="endereco" required="true"
+				value="#{fornecedorRaiz.instancia.endereco}"
+				title="Informe o endereço do fornecedor." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cidade" value="Cidade:" />
+			<br />
+			<p:autoComplete id="cidade" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{fornecedorRaiz.instancia.cidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="inscricaoEstadual" value="Inscrição Estadual:" />
+			<br />
+			<p:inputText id="inscricaoEstadual" required="true"
+				value="#{fornecedorRaiz.instancia.inscricaoEstadual}"
+				title="Informe a inscrição estadual do fornecedor." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="inscricaoMunicipal" value="Inscrição Municipal:" />
+			<br />
+			<p:inputText id="inscricaoMunicipal" required="true"
+				value="#{fornecedorRaiz.instancia.inscricaoMunicipal}"
+				title="Informe a inscrição estadual do municipal." />
+		</h:panelGroup>
+
+	</h:panelGrid>
+
+</ui:composition>

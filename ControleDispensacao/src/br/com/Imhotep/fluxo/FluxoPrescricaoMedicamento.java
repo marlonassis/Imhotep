@@ -17,8 +17,8 @@ import br.com.Imhotep.entidade.PrescricaoItem;
 import br.com.Imhotep.entidade.PrescricaoItemDose;
 import br.com.Imhotep.entidadeExtra.Dose;
 import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
-import br.com.Imhotep.negocio.EstoqueRaiz;
-import br.com.Imhotep.negocio.PrescricaoRaiz;
+import br.com.Imhotep.raiz.EstoqueRaiz;
+import br.com.Imhotep.raiz.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 

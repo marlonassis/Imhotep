@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="fornecedorPanelGridConsulta" columns="3" width="100%">
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="false"
+				value="#{fornecedorConsulta.instancia.nome}"
+				title="Informe o nome/razão social do fornecedor" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="cadastroPessoaFisicaJuridica" value="CNPJ/CPF:" />
+			<br />
+			<p:inputText id="cadastroPessoaFisicaJuridica" required="false"
+				value="#{fornecedorConsulta.instancia.cadastroPessoaFisicaJuridica}"
+				title="Informe o CPF ou CNPJ do fornecedor." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="cidade" value="Cidade:" />
+			<br />
+			<p:autoComplete id="cidade" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{fornecedorConsulta.instancia.cidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="false"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />			
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+</ui:composition>

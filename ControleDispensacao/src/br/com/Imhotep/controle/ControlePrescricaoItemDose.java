@@ -11,7 +11,7 @@ import br.com.Imhotep.entidade.ErroAplicacao;
 import br.com.Imhotep.entidade.PrescricaoItemDose;
 import br.com.Imhotep.entidadeExtra.Dose;
 import br.com.Imhotep.enums.TipoStatusEnum;
-import br.com.Imhotep.negocio.ErroAplicacaoRaiz;
+import br.com.Imhotep.raiz.ErroAplicacaoRaiz;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoControle;
 

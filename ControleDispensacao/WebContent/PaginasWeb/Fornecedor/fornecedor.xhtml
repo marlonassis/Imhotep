@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Fornecedor">
+			<h:form id="fornecedorEditorForm">
+				<p:fieldset legend="Novo Fornecedor"
+					collapsed="#{!fornecedorRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="fornecedorEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!fornecedorRaiz.edicao}"
+						update=":#{p:component('fornecedorEditorForm')} :#{p:component('fornecedorPesquisaForm')}"
+						action="#{fornecedorRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{fornecedorRaiz.edicao}"
+						update=":#{p:component('fornecedorEditorForm')} :#{p:component('fornecedorPesquisaForm')}"
+						action="#{fornecedorRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{fornecedorRaiz.edicao}"
+						 update="@parent"
+						 action="#{fornecedorRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="fornecedorPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="fornecedorConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('fornecedorPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+						action="#{fornecedorConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update=":#{p:component('fornecedorPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="fornecedorTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

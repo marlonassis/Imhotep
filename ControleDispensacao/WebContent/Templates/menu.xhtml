@@ -22,6 +22,10 @@
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo de Exame')}" />
 		</p:submenu>
 
+		<p:menuitem value="Fornecedor"
+				url="/PaginasWeb/Fornecedor/fornecedor.jsf"
+				rendered="#{controleMenu.menuAutorizadoStringList.contains('Fornecedor')}" />
+
 		<p:submenu label="Material"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Material')}">
 			<p:menuitem value="Fabricante"
@@ -213,6 +217,9 @@
 		<p:menuitem value="Movimentação Por Unidade"
 			url="/PaginasWeb/Relatorios/Estoque/movimentacaoEstoqueUnidade.jsf"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação Por Unidade')}" />
+		<p:menuitem value="Custo dos Medicamentos da Farmácia"
+			url="/PaginasWeb/Relatorios/Estoque/custoEstoque.jsf"
+			rendered="#{controleMenu.menuAutorizadoStringList.contains('Custo dos Medicamentos da Farmácia')}" />
 	</p:submenu>
 
 	<p:submenu label="Serviço Social"

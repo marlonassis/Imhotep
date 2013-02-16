@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.negocio.EstoqueRaiz;
+import br.com.Imhotep.raiz.EstoqueRaiz;
 
 @ManagedBean(name="relatorioEstoque")
 @ViewScoped

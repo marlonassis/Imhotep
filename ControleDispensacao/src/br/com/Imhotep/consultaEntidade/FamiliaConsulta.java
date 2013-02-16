@@ -9,7 +9,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.Imhotep.entidade.Familia;
 import br.com.Imhotep.entidade.Grupo;
 import br.com.Imhotep.entidade.SubGrupo;
-import br.com.Imhotep.negocio.SubGrupoRaiz;
+import br.com.Imhotep.raiz.SubGrupoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 

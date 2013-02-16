@@ -6,7 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.entidade.PacienteEntrada;
-import br.com.Imhotep.negocio.PacienteEntradaRaiz;
+import br.com.Imhotep.raiz.PacienteEntradaRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
