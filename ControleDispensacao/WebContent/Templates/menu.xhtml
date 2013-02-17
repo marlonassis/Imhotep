@@ -126,15 +126,6 @@
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Autoriza Painel')}" />
 		<p:menuitem value="Menu" url="/PaginasWeb/Menu/menu.jsf"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Menu')}" />
-		<p:submenu label="Modelador"
-			rendered="#{controleMenu.menuAutorizadoStringList.contains('Modelador')}">
-			<p:menuitem value="Modelador do Banco de Dados"
-				url="/PaginasWeb/ModeladorBancoDados/modeladorBancoDados.jsf"
-				rendered="#{controleMenu.menuAutorizadoStringList.contains('Modelador do Banco de Dados')}" />
-			<p:menuitem value="Sql Executado"
-				url="/PaginasWeb/ModeladorBancoDados/sqlExecutado.jsf"
-				rendered="#{controleMenu.menuAutorizadoStringList.contains('Sql Executado')}" />
-		</p:submenu>
 		<p:menuitem value="Painel" url="/PaginasWeb/Painel/Painel/painel.jsf"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Painel')}" />
 		<p:menuitem value="Troca de Senha"
