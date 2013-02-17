@@ -70,6 +70,6 @@
   </listener>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>redmond</param-value>
+		<param-value>glass-x</param-value>
 	</context-param> 
 </web-app>
