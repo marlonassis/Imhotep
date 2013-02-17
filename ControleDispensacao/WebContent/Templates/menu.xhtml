@@ -147,6 +147,14 @@
 
 	<p:submenu label="Movimentação"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação')}">
+		
+		<p:submenu label="Nota Fiscal"
+			rendered="#{controleMenu.menuAutorizadoStringList.contains('Centro Cirúrgico')}">
+			<p:menuitem value="Entrada de Nota Fiscal"
+				url="/PaginasWeb/Movimentacao/NotaFiscal/notaFiscal.jsf"
+				rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Nota Fiscal')}" />
+		</p:submenu>
+		
 		<p:submenu label="Centro Cirúrgico"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Centro Cirúrgico')}">
 			<p:menuitem value="Cadastro de Estoque"

@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="NotaFiscal">
+			<h:form id="notaFiscalEditorForm">
+				<p:fieldset legend="Novo NotaFiscal"
+					collapsed="#{!notaFiscalRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="notaFiscalEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!notaFiscalRaiz.edicao}"
+						update=":#{p:component('notaFiscalEditorForm')} :#{p:component('notaFiscalPesquisaForm')}"
+						action="#{notaFiscalRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{notaFiscalRaiz.edicao}"
+						update=":#{p:component('notaFiscalEditorForm')} :#{p:component('notaFiscalPesquisaForm')}"
+						action="#{notaFiscalRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{notaFiscalRaiz.edicao}"
+						 update=":#{p:component('notaFiscalEditorForm')}"
+						 action="#{notaFiscalRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="notaFiscalPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="notaFiscalConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('notaFiscalPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+						action="#{notaFiscalConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update=":#{p:component('notaFiscalPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="notaFiscalTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

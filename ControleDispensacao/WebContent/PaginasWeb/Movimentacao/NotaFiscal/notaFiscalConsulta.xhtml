@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="notaFiscalPanelGridConsulta" columns="3" width="100%">
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="estoque" value="Lote:" />
+			<br />
+			<p:autoComplete id="estoque" 
+					scrollHeight="300" 
+					minQueryLength="3" 
+					forceSelection="true"
+					required="false"
+					title="Inorme o lote do material." 
+					immediate="true"
+					value="#{notaFiscalConsulta.instancia.estoque}"
+					completeMethod="#{estoqueAutoComplete.autoComplete}"
+					var="estoque" 
+					itemLabel="#{estoque.estoque.lote}" 
+					itemValue="#{estoque.estoque}"
+					converter="estoqueConversor" >
+				
+			</p:autoComplete>
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="fornecedor" value="Fornecedor::" />
+			<br />
+			<p:autoComplete id="fornecedor" 
+					scrollHeight="300" 
+					minQueryLength="3" 
+					forceSelection="true"
+					required="false"
+					title="Informe o fornecedor da nota fiscal." 
+					immediate="true"
+					value="#{notaFiscalConsulta.instancia.fornecedor}"
+					completeMethod="#{fornecedorAutoComplete.autoComplete}"
+					var="fornecedor" 
+					itemLabel="#{fornecedor.fornecedor.nome}" 
+					itemValue="#{fornecedor.fornecedor}"
+					converter="fornecedorConversor" >
+				
+			</p:autoComplete>
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+</ui:composition>
