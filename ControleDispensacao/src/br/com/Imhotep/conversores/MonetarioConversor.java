@@ -15,7 +15,7 @@ public class MonetarioConversor extends br.com.remendo.conversor.MonetarioConver
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		if(value != null && value != ""){
-			double v = Double.parseDouble((String) value);
+			double v = (Double) value;
 			if( v == 0.0){
 				return null;
 			}else{

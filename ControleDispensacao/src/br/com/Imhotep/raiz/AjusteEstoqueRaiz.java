@@ -91,6 +91,7 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		super.novaInstancia();
 		itensMovimentoGeral.setMovimentoGeral(new MovimentoGeral());
 		material = null;
+		unidade = null;
 	}
 	
 	public void carregaEstoqueMaterial(){

@@ -11,7 +11,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.enums.TipoStatusEnum;
+import br.com.Imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
@@ -39,6 +39,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	
 	public void bloqueioAutomaticoEstoque(){
 		getInstancia().setBloqueado(true);
+		getInstancia().setTipoBloqueio(TipoBloqueioLoteEnum.V);
 		getInstancia().setMotivoBloqueio("Lote vencido.");
 		atualizar();
 	}

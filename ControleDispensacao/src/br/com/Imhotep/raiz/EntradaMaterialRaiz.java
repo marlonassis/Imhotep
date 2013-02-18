@@ -22,7 +22,6 @@ import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.enums.TipoOperacaoEnum;
-import br.com.Imhotep.enums.TipoStatusEnum;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;

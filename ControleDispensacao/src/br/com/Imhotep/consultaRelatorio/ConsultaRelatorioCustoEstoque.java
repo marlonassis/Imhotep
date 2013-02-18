@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import br.com.Imhotep.entidade.ItensMovimentoGeral;
-import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidadeExtra.CustoEstoque;
 import br.com.remendo.ConsultaGeral;
 

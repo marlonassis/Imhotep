@@ -6,9 +6,9 @@ public class CustoEstoque {
 
 	private Material material;
 	private String lote;
-	private Float valorUnitario;
+	private Double valorUnitario;
 	private Integer quantidadeEntrada;
-	private Float total;
+	private Double total;
 	
 	
 	public Material getMaterial() {
@@ -25,10 +25,10 @@ public class CustoEstoque {
 		this.lote = lote;
 	}
 	
-	public Float getValorUnitario() {
+	public Double getValorUnitario() {
 		return valorUnitario;
 	}
-	public void setValorUnitario(Float valorUnitario) {
+	public void setValorUnitario(Double valorUnitario) {
 		this.valorUnitario = valorUnitario;
 	}
 	
@@ -39,10 +39,10 @@ public class CustoEstoque {
 		this.quantidadeEntrada = quantidadeEntrada;
 	}
 	
-	public Float getTotal() {
+	public Double getTotal() {
 		return total;
 	}
-	public void setTotal(Float total) {
+	public void setTotal(Double total) {
 		this.total = total;
 	}
 

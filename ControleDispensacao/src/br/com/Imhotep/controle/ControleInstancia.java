@@ -19,7 +19,7 @@ public class ControleInstancia {
 	public Object procuraInstancia(Class<?> classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		if(session != null){
-			Object attribute = session.getAttribute(classe.getSimpleName());
+			Object attribute = session.getAttribute(classe.getSimpleName().toLowerCase());
 			if(attribute == null)
 				attribute = criaInstancia(classe, session);
 			return attribute;
