@@ -36,7 +36,7 @@ public class MovimentoLivroRaiz extends PadraoHome<MovimentoLivro>{
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim ";
+		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim and o.estoque.dataBloqueio is null";
 		
 		if(material != null){
 			sql += " and o.material.idMaterial = :idMaterial ";

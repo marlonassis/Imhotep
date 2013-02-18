@@ -231,7 +231,7 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 			return true;
 		}else{
 			estoqueAtual = new Estoque();
-			estoqueAtual.setBloqueado(TipoStatusEnum.N);
+			estoqueAtual.setBloqueado(false);
 			estoqueAtual.setDataValidade(getInstancia().getDataValidade());
 			estoqueAtual.setFabricante(getInstancia().getFabricante());
 			estoqueAtual.setLote(getInstancia().getLote());

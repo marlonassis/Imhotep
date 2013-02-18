@@ -146,7 +146,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
 		hashMap.put("idMaterial", prescricaoItem.getMaterial().getIdMaterial());
 		StringBuilder sb = new StringBuilder("select sum(o.quantidade) from Estoque o where");
-		sb.append(" o.material.idMaterial = :idMaterial and o.bloqueado = 'N'");
+		sb.append(" o.material.idMaterial = :idMaterial and o.bloqueado = false");
 		Long quantidadeAtual = cg.consultaUnica(sb, hashMap);
 		return quantidadeAtual == null ? 0 : quantidadeAtual.intValue();
 	}
@@ -155,7 +155,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidade) = null THEN 0 ELSE sum(o.quantidade)END, ");
 		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
 		sb.append("from PrescricaoItemDose a where a.prescricaoItem.dispensado = 'N' and a.prescricaoItem.material.idMaterial = :idMaterial and a.prescricaoItem.prescricao.idPrescricao != :prescricao ) ");
-		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = 'N'");
+		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = false");
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("idMaterial", material.getIdMaterial());
 		map.put("prescricao", prescricao.getIdPrescricao());

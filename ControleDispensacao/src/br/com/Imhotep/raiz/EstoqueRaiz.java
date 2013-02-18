@@ -22,11 +22,11 @@ import br.com.remendo.PadraoHome;
 public class EstoqueRaiz extends PadraoHome<Estoque>{
 	
 	public List<Estoque> listaEstoqueMaterialDispensacao(Material material){
-		return getBusca("select o from Estoque o where o.dataValidade >= now() and o.quantidade > 0 and o.bloqueado = 'N' and o.material.idMaterial = " + material.getIdMaterial() + " order by o.dataValidade"); 
+		return getBusca("select o from Estoque o where o.dataValidade >= now() and o.quantidade > 0 and o.bloqueado = false and o.material.idMaterial = " + material.getIdMaterial() + " order by o.dataValidade"); 
 	}
 
 	public Collection<Estoque> getListaEstoqueCentroCirurgicoAutoComplete(String sql){
-		return super.getBusca("select o from Estoque as o where o.dataValidade >= now() and o.bloqueado = 'N' and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) order by o.material.descricao, o.lote ");
+		return super.getBusca("select o from Estoque as o where o.dataValidade >= now() and o.bloqueado = false and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) order by o.material.descricao, o.lote ");
 	}
 	
 	//lista do estoque que contém os medicamentos que estão com a data de vencimento dentro do período
@@ -52,7 +52,7 @@ public class EstoqueRaiz extends PadraoHome<Estoque>{
 	}	
 	
 	public List<Estoque> listaEstoqueRelatorioGeral(){
-		return getBusca("select o from Estoque o where o.bloqueado = 'N' order by to_ascii(o.material.descricao)"); 
+		return getBusca("select o from Estoque o where o.bloqueado = false order by to_ascii(o.material.descricao)"); 
 	}
 	
 	public List<Estoque> listaEstoqueMaterial(Material material){
@@ -82,7 +82,7 @@ public class EstoqueRaiz extends PadraoHome<Estoque>{
 		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidade) = null THEN 0 ELSE sum(o.quantidade)END, ");
 		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
 		sb.append("from PrescricaoItemDose a where a.prescricaoItem.dispensado = 'N' and a.prescricaoItem.status = 'S' and a.prescricaoItem.material.idMaterial = :idMaterial) ");
-		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = 'N' and o.dataValidade >= now()");
+		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = false and o.dataValidade >= now()");
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("idMaterial", material.getIdMaterial());
 		

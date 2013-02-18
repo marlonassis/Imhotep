@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
-import br.com.Imhotep.auxiliar.CustoEstoque;
 import br.com.Imhotep.entidade.ItensMovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
+import br.com.Imhotep.entidadeExtra.CustoEstoque;
 import br.com.remendo.ConsultaGeral;
 
 public class ConsultaRelatorioCustoEstoque extends ConsultaGeral<ItensMovimentoGeral> {
@@ -37,7 +37,7 @@ public class ConsultaRelatorioCustoEstoque extends ConsultaGeral<ItensMovimentoG
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("dataIni", ini);
 		hm.put("dataFim", fim);
-		StringBuilder stringB = new StringBuilder("select o from ItensMovimentoGeral o where o.dataCriacao >= :dataIni and o.dataCriacao <= :dataFim and o.estoque.bloqueado = 'N' and o.movimentoGeral.tipoMovimento.TipoOperacaoEnum = 'Entrada'");
+		StringBuilder stringB = new StringBuilder("select o from ItensMovimentoGeral o where o.dataCriacao >= :dataIni and o.dataCriacao <= :dataFim and o.estoque.bloqueado = false and o.movimentoGeral.tipoMovimento.TipoOperacaoEnum = 'Entrada'");
 		return super.consulta(stringB, hm);
 	}
 	

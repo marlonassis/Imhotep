@@ -18,7 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.Imhotep.enums.TipoStatusEnum;
+import br.com.Imhotep.enums.TipoBloqueioLoteEnum;
 
 @Entity
 @Table(name = "tb_estoque")
@@ -30,7 +30,7 @@ public class Estoque {
 	private String lote;
 	private Date dataValidade;
 	private Integer quantidade;
-	private TipoStatusEnum bloqueado;
+	private boolean bloqueado;
 	private String motivoBloqueio;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
@@ -38,6 +38,7 @@ public class Estoque {
 	private Usuario usuarioBloqueio;
 	private String fornecedor;
 	private Float valorUnitario;
+	private TipoBloqueioLoteEnum tipoBloqueio;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_id_estoque_seq")
 	@Id
@@ -102,12 +103,11 @@ public class Estoque {
 		this.quantidade = quantidade;
 	}
 	
-	@Column(name = "tp_bloqueado")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getBloqueado() {
+	@Column(name = "bl_bloqueado")
+	public boolean getBloqueado() {
 		return bloqueado;
 	}
-	public void setBloqueado(TipoStatusEnum bloqueado) {
+	public void setBloqueado(boolean bloqueado) {
 		this.bloqueado = bloqueado;
 	}
 	
@@ -169,6 +169,15 @@ public class Estoque {
 	}
 	public void setValorUnitario(Float valorUnitario) {
 		this.valorUnitario = valorUnitario;
+	}
+	
+	@Column(name = "tp_tipo_bloqueio")
+	@Enumerated(EnumType.STRING)
+	public TipoBloqueioLoteEnum getTipoBloqueio() {
+		return tipoBloqueio;
+	}
+	public void setTipoBloqueio(TipoBloqueioLoteEnum tipoBloqueio) {
+		this.tipoBloqueio = tipoBloqueio;
 	}
 	
 	@Transient
