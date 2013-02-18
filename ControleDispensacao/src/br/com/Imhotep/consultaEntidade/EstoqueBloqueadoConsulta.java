@@ -23,7 +23,7 @@ public class EstoqueBloqueadoConsulta extends PadraoConsulta<Estoque> {
 	@Override
 	public List<Estoque> getList() {
 		setConsultaGeral(new ConsultaGeral<Estoque>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Estoque o where o.bloqueado = 'S' "));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Estoque o where o.bloqueado = true "));
 		return super.getList();
 	}
 }

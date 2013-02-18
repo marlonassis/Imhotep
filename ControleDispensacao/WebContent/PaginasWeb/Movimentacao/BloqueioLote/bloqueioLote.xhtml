@@ -11,36 +11,44 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabBloqueioMaterial" title="Bloqueio de lote">
-			<h:form id="bloqueioLoteForm" >
+			<h:form id="bloqueioLoteEditorForm" >
 				<p:fieldset legend="Novo bloqueio de lote"
 					collapsed="#{!bloqueioLoteRaiz.edicao}" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="bloqueioLoteEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="false"
-						update="padraoTabView:tabelaBloqueioLote bloqueioMaterialForm"
-						action="#{bloqueioLoteRaiz.enviar}" />
+					<p:commandButton value="Salvar" 
+									 rendered="false"
+									 update=":#{p:component('bloqueioLoteEditorForm')} :#{p:component('bloqueioLotePesquisaForm')}"
+									 action="#{bloqueioLoteRaiz.enviar}" />
 					<p:commandButton value="Gravar"
-						rendered="#{bloqueioLoteRaiz.edicao}"
-						update="padraoTabView:tabelaBloqueioLote bloqueioLoteForm"
-						action="#{bloqueioLoteRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{bloqueioLoteRaiz.edicao}"
-						update="@parent" action="#{bloqueioLoteRaiz.novaInstancia()}" />
+									 rendered="#{bloqueioLoteRaiz.edicao}"
+									 update=":#{p:component('bloqueioLoteEditorForm')} :#{p:component('bloqueioLotePesquisaForm')}"
+									 action="#{bloqueioLoteRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{bloqueioLoteRaiz.edicao}"
+									 update=":#{p:component('bloqueioLoteEditorForm')}" 
+									 action="#{bloqueioLoteRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaBloqueioLoteForm" >
-				<p:fieldset id="pesquisaBloqueioLoteFieldSet" legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+			<h:form id="bloqueioLotePesquisaForm" >
+				<p:fieldset id="pesquisaBloqueioLoteFieldSet" 
+							legend="Pesquisa"
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
 					<ui:include src="bloqueioLoteConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update="tabelaBloqueioLote"
-						image="ui-icon ui-icon-search" />
+					<p:commandButton value="Pesquisar" 
+									 update=":#{p:component('bloqueioLotePesquisaForm')}"
+									 image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
-						action="#{estoqueConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update="pesquisaBloqueioLoteForm " />
+									 action="#{estoqueConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('bloqueioLotePesquisaForm')} " />
 
 				</p:fieldset>
 				<p:growl />

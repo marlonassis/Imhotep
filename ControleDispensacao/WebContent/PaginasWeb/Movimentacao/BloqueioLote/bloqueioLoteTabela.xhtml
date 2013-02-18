@@ -5,10 +5,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:dataTable id="tabelaBloqueioLote" value="#{estoqueConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idEstoque}">
+	<p:dataTable id="tabelaBloqueioLote" 
+				 value="#{estoqueConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idEstoque}">
 
 		<p:column>
 			<f:facet name="header">
@@ -26,22 +31,26 @@
 			<f:facet name="header">
 				<h:outputText value="Bloqueado" />
 			</f:facet>
-			<h:outputText value="#{linha.bloqueado.label}" />
+			<h:outputText value="#{linha.bloqueado ? 'Sim' : 'Não'}" />
 		</p:column>
 		<p:column style="width:60px; text-align: center;">
-			<p:commandLink update="padraoTabView:bloqueioLoteForm" title="Editar"
-				style="padding-right:10px;">
+		
+			<p:commandLink update=":#{p:component('bloqueioLoteEditorForm')}" 
+						   title="Editar"
+						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{bloqueioLoteRaiz.instancia}" />
+											 target="#{bloqueioLoteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{bloqueioLoteRaiz.apagar()}"
-				update="tabelaEstoque padraoTabView:estoqueForm"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" rendered="false" style="padding-right:10px;">
+						   update=":#{p:component('bloqueioLoteEditorForm')} :#{p:component('bloqueioLotePesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" 
+						   rendered="false" 
+						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
-					target="#{bloqueioMaterialRaiz.instancia}" />
+											 target="#{bloqueioMaterialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

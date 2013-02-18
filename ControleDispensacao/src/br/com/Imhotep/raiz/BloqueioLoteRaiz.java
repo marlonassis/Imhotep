@@ -22,7 +22,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	public List<Estoque> listaEstoqueVencido(){
 		Calendar dataFutura = Calendar.getInstance();
 		dataFutura.add(Calendar.DAY_OF_MONTH, 5);
-		return getBusca("select o from Estoque o where o.bloqueado = 'N' and o.dataValidade <= '"+new SimpleDateFormat("yyyy-MM-hh").format(dataFutura.getTime())+"' order by o.dataValidade"); 
+		return getBusca("select o from Estoque o where o.bloqueado = false and o.dataValidade <= '"+new SimpleDateFormat("yyyy-MM-hh").format(dataFutura.getTime())+"' order by o.dataValidade"); 
 	}
 	
 	@Override
@@ -38,14 +38,14 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	}
 	
 	public void bloqueioAutomaticoEstoque(){
-		getInstancia().setBloqueado(TipoStatusEnum.S);
-		getInstancia().setMotivoBloqueio("Bloqueio automático. Lote vencido.");
+		getInstancia().setBloqueado(true);
+		getInstancia().setMotivoBloqueio("Lote vencido.");
 		atualizar();
 	}
 	
 	@Override
 	public boolean atualizar() {
-		boolean bloqueado = getInstancia().getBloqueado().equals(TipoStatusEnum.S);
+		boolean bloqueado = getInstancia().getBloqueado();
 		if(bloqueado){
 			if(!getInstancia().getMotivoBloqueio().isEmpty()){
 				getInstancia().setDataBloqueio(new Date());
