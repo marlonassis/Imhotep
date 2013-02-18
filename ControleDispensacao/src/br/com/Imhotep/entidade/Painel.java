@@ -1,5 +1,7 @@
 package br.com.Imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_painel")
-public class Painel {
+public class Painel implements Serializable {
+	
+	private static final long serialVersionUID = 5609912718447999672L;
+	
 	private int idPainel;
 	private String url;
 	private String descricao;

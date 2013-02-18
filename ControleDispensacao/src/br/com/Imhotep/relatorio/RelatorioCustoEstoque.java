@@ -13,8 +13,8 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.auxiliar.Constantes;
-import br.com.Imhotep.auxiliar.CustoEstoque;
 import br.com.Imhotep.consultaRelatorio.ConsultaRelatorioCustoEstoque;
+import br.com.Imhotep.entidadeExtra.CustoEstoque;
 
 @ManagedBean(name="relatorioCustoEstoque")
 @ViewScoped
