@@ -5,79 +5,147 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="notaFiscalPanelGrid" columns="3" width="100%">
-
+	
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="estoque" value="Lote:" />
+			<h:outputLabel for="fornecedor" value="Fornecedor:" />
 			<br />
-			<p:autoComplete id="estoque" 
-					scrollHeight="300" 
-					minQueryLength="3" 
-					forceSelection="true"
-					required="true"
-					title="Inorme o lote do material." 
-					immediate="true"
-					value="#{notaFiscalRaiz.instancia.estoque}"
-					completeMethod="#{estoqueAutoComplete.autoComplete}"
-					var="estoque" 
-					itemLabel="#{estoque.estoque.lote}" 
-					itemValue="#{estoque.estoque}"
-					converter="estoqueConversor" >
-				
-			</p:autoComplete>
+			<p:autoComplete id="paciente"
+							scrollHeight="300" 
+							styleClass="autoCompletePesquisa"
+							required="true" 
+							minQueryLength="3" 
+							size="30"
+							forceSelection="true"
+							value="#{notaFiscalRaiz.instancia.fornecedor}"
+							completeMethod="#{fornecedorAutoComplete.autoComplete}"
+							var="fornecedor" 
+							itemLabel="#{fornecedor.nome}"
+							itemValue="#{fornecedor}" 
+							converter="fornecedorConversor" />
+			
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
 		</h:panelGroup>
-
+		
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="fornecedor" value="Fornecedor::" />
+			<h:outputLabel for="identificacaoNotaFiscal" value="Identificação da Nota:" />
 			<br />
-			<p:autoComplete id="fornecedor" 
-					scrollHeight="300" 
-					minQueryLength="3" 
-					forceSelection="true"
-					required="true"
-					title="Informe o fornecedor da nota fiscal." 
-					immediate="true"
-					value="#{notaFiscalRaiz.instancia.fornecedor}"
-					completeMethod="#{fornecedorAutoComplete.autoComplete}"
-					var="fornecedor" 
-					itemLabel="#{fornecedor.fornecedor.nome}" 
-					itemValue="#{fornecedor.fornecedor}"
-					converter="fornecedorConversor" >
-				
-			</p:autoComplete>
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="quantidade" value="Quantidade::" />
-			<br />
-			<p:inputText id="quantidade" required="true"
-				onkeyup="apenasNumero(this);"
-				value="#{notaFiscalRaiz.instancia.quantidade}"
-				title="Informe a quantidade de entrada do material." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="valorUnitario" value="Valor Unitário::" />
-			<br />
-			<p:inputText id="valorUnitario"
-				     value="#{notaFiscalRaiz.prescricaoAtual.valorUnitario}"
-				     required="true" onkeyup="apenasNumeroComVirgula(this);"
-				     converter="monetarioConversor" title="Informe o valor unitário do material.">
+			<p:inputText id="identificacaoNotaFiscal"
+				     value="#{notaFiscalRaiz.instancia.identificacaoNotaFiscal}"
+				     required="true"
+				     title="Informe o número da nota fiscal.">
 				
 			</p:inputText>
 		</h:panelGroup>
 
-
-
 	</h:panelGrid>
+	 
+	<p:separator id="separator"/>  
+	<h:outputText id="outPutTextItens"
+				  style="font-weight:bold;"
+				  value="Itens da Nota Fiscal" 
+				  rendered="#{notaFiscalRaiz.edicao}" />
+	
+	<h:panelGrid id="itensNotaFiscal"
+				 width="100%" 
+				 columns="3" 
+				 rendered="#{notaFiscalRaiz.edicao}" >
+				 
+		<h:panelGroup>
+			<h:panelGrid columns="2" width="100%">
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputLabel for="lote" value="Lote:" />
+					<br />
+					<p:inputText id="lote"
+						value="#{notaFiscalRaiz.instancia.estoque.lote}"
+						title="Informe o lote" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Material:" />
+			<br />
+			<p:autoComplete id="material" 
+							scrollHeight="300"
+							minQueryLength="4"
+							value="#{notaFiscalRaiz.instancia.estoque.material}"
+							completeMethod="#{materialAutoComplete.autoComplete}"
+							var="material" 
+							forceSelection="true" 
+							title="Informe o material"
+							itemLabel="#{material.descricaoUnidadeMaterial}"
+							itemValue="#{material}" converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="fabricante" value="Fabricante:" />
+			<br />
+			<p:autoComplete id="fabricante"
+							value="#{notaFiscalRaiz.instancia.estoque.fabricante}"
+							completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
+							var="fabricante" 
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe o fabricante" 
+							itemLabel="#{fabricante.descricao}"
+							itemValue="#{fabricante}" 
+							converter="fabricanteConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataValidade" value="Data de validade:" />
+			<br />
+			<p:inputMask id="dataValidade" mask="99/99/9999"
+				value="#{notaFiscalRaiz.instancia.estoque.dataValidade}"
+				title="Data de validade do lote">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</p:inputMask>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<br />
+			<p:inputText id="quantidade"
+				value="#{notaFiscalRaiz.instancia.estoque.quantidade}"
+				onkeyup="apenasNumero(this);" title="Informe a quantidade" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="valorUnitario" value="Valor unitário:" />
+			<br />
+			<p:inputText id="valorUnitario"
+				value="#{notaFiscalRaiz.instancia.estoque.valorUnitario}"
+				onkeyup="apenasNumeroComVirgula(this);"
+				converter="monetarioConversor"
+				title="Informe o valor unitário do medicamento" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<p:commandButton value="Adicionar"  />
+		</h:panelGroup>
+	</h:panelGrid>
+
+
+
+
+
+
+
 
 </ui:composition>

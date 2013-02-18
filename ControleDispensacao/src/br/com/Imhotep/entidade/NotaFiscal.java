@@ -21,10 +21,9 @@ public class NotaFiscal {
 	private int idNotaFiscal;
 	private Estoque estoque;
 	private Fornecedor fornecedor;
-	private Integer quantidade;
-	private Double valorUnitario;
-	private Boolean fechada;
-	private Boolean bloqueada;
+	private String identificacaoNotaFiscal;
+	private boolean fechada;
+	private boolean bloqueada;
 	private Profissional profissionalInsercao;
 
 	
@@ -60,22 +59,13 @@ public class NotaFiscal {
 		this.fornecedor = fornecedor;
 	}
 
-	@Column(name = "in_quantidade")	
-	public Integer getQuantidade() {
-		return quantidade;
+	@Column(name = "cv_identificacao_nota_fiscal")	
+	public String getIdentificacaoNotaFiscal() {
+		return identificacaoNotaFiscal;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	@Column(name = "db_valor_unitario")	
-	public Double getValorUnitario() {
-		return valorUnitario;
-	}
-
-	public void setValorUnitario(Double valorUnitario) {
-		this.valorUnitario = valorUnitario;
+	public void setIdentificacaoNotaFiscal(String identificacaoNotaFiscal) {
+		this.identificacaoNotaFiscal = identificacaoNotaFiscal;
 	}
 
 	@Column(name="bl_fechada", nullable=false) 	

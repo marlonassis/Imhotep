@@ -20,19 +20,19 @@
 			<f:facet name="header">
 				<h:outputText value="Fornecedor:" />
 			</f:facet>
-			<h:outputText value="#{linha.fornecedor}" />
+			<h:outputText value="#{linha.fornecedor.nome}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="" />
+				<h:outputText value="Fechada" />
 			</f:facet>
 			<h:outputText value="#{linha.fechada}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="" />
+				<h:outputText value="Bloqueada" />
 			</f:facet>
 			<h:outputText value="#{linha.bloqueada}" />
 		</p:column>

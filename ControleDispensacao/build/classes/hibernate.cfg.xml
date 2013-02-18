@@ -65,6 +65,7 @@
 		<mapping class="br.com.Imhotep.entidade.TipoExame" />
 		<mapping class="br.com.Imhotep.entidade.UnidadeSaude" />
 		<mapping class="br.com.Imhotep.entidade.Fornecedor" />
+		<mapping class="br.com.Imhotep.entidade.NotaFiscal" />
 
 	</session-factory>
 </hibernate-configuration>
