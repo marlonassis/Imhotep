@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import br.com.Imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.Imhotep.enums.TipoBooleanEnum;
 import br.com.Imhotep.enums.TipoCuidadosPacienteEnum;
 import br.com.Imhotep.enums.TipoEscolaridadeEnum;
@@ -180,4 +181,11 @@ public class ItensPadrao{
 		return tipoMotivosRejeicaoAmostraTestePezinhoEnumItens;
 	}
 	
+	public List<SelectItem> getTipoBloqueioLoteEnumItens(){
+		List<SelectItem> tipoBloqueioLoteEnumItens = new ArrayList<SelectItem>();
+		for(TipoBloqueioLoteEnum item : TipoBloqueioLoteEnum.values()){
+			tipoBloqueioLoteEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoBloqueioLoteEnumItens;
+	}
 }
