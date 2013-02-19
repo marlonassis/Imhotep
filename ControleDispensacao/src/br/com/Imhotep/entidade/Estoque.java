@@ -78,7 +78,7 @@ public class Estoque {
 		this.unidade = unidade;
 	}
 	
-	@Column(name = "ds_lote")
+	@Column(name = "cv_lote")
 	public String getLote() {
 		return lote;
 	}
@@ -111,7 +111,7 @@ public class Estoque {
 		this.bloqueado = bloqueado;
 	}
 	
-	@Column(name = "ds_motivo_bloqueio")
+	@Column(name = "cv_motivo_bloqueio")
 	public String getMotivoBloqueio() {
 		return motivoBloqueio;
 	}

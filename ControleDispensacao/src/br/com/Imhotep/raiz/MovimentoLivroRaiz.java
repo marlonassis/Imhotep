@@ -30,13 +30,24 @@ public class MovimentoLivroRaiz extends PadraoHome<MovimentoLivro>{
 		Calendar df = Utilities.ajustarUltimaHoraDia(dataFim);
 		return buscarMovimentoPorPeriodo(null, dataIni, df.getTime(), unidade, tipoMovimento);
 	}
-
+	
+	private List<MovimentoLivro> buscarMovimentoPorPeriodo(Date dataIni, Date dataFim) {
+		ConsultaGeral<MovimentoLivro> cg = new ConsultaGeral<MovimentoLivro>();
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("dataIni", dataIni);
+		map.put("dataFim", dataFim);
+		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim and o.estoque.dataBloqueio is not null ";
+		   	   sql += " or (o.estoque.dataBloqueio is null and o.estoque.tipoBloqueio != 'O')";
+		   	   sql += " order by o.dataMovimento desc";
+		return new ArrayList<MovimentoLivro>(cg.consulta(new StringBuilder(sql), map));
+	}
+	
 	private List<MovimentoLivro> buscarMovimentoPorPeriodo(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento) {
 		ConsultaGeral<MovimentoLivro> cg = new ConsultaGeral<MovimentoLivro>();
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim and o.estoque.dataBloqueio is null";
+		String sql = "select o from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim";
 		
 		if(material != null){
 			sql += " and o.material.idMaterial = :idMaterial ";
@@ -54,7 +65,7 @@ public class MovimentoLivroRaiz extends PadraoHome<MovimentoLivro>{
 		}
 		
 		sql += " order by o.dataMovimento desc";
-		ArrayList<MovimentoLivro> list = new ArrayList<MovimentoLivro>(cg.consulta(new StringBuilder(sql), map));
-		return (list==null || list.size() == 0) ? null : list;
+
+		return new ArrayList<MovimentoLivro>(cg.consulta(new StringBuilder(sql), map));
 	}
 }

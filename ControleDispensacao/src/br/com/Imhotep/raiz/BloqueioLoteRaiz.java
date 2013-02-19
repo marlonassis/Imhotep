@@ -48,7 +48,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	public boolean atualizar() {
 		boolean bloqueado = getInstancia().getBloqueado();
 		if(bloqueado){
-			if(!getInstancia().getMotivoBloqueio().isEmpty()){
+			if((getInstancia().getTipoBloqueio().equals(TipoBloqueioLoteEnum.O) && getInstancia().getMotivoBloqueio()!= null && !getInstancia().getMotivoBloqueio().isEmpty()) || !getInstancia().getTipoBloqueio().equals(TipoBloqueioLoteEnum.O)){
 				getInstancia().setDataBloqueio(new Date());
 				try {
 					getInstancia().setUsuarioBloqueio(Autenticador.getInstancia().getUsuarioAtual());
@@ -65,6 +65,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 			getInstancia().setDataBloqueio(null);
 			getInstancia().setUsuarioBloqueio(null);
 			getInstancia().setMotivoBloqueio(null);
+			getInstancia().setTipoBloqueio(null);
 		}
 		return super.atualizar();
 	}
