@@ -11,9 +11,16 @@
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Nome:" />
+				<h:outputText value="Nome Fantasia" />
 			</f:facet>
-			<h:outputText value="#{linha.nome}" />
+			<h:outputText value="#{linha.nomeFantasia}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Razão Social" />
+			</f:facet>
+			<h:outputText value="#{linha.razaoSocial}" />
 		</p:column>
 
 		<p:column>
@@ -25,9 +32,9 @@
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Cidade:" />
+				<h:outputText value="Telefone" />
 			</f:facet>
-			<h:outputText value="#{linha.cidade}" />
+			<h:outputText value="#{linha.telefone}" />
 		</p:column>
 
 

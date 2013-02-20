@@ -12,10 +12,10 @@ import br.com.Imhotep.entidade.Fornecedor;
 @SessionScoped
 public class FornecedorConsulta extends PadraoConsulta<Fornecedor> {
 	public FornecedorConsulta(){
-		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.nomeFantasia", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.cadastroPessoaFisicaJuridica", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.cidade", IGUAL);
-		setOrderBy("to_ascii(o.nome)");
+		setOrderBy("to_ascii(o.nomeFantasia)");
 	}
 	
 	@Override
