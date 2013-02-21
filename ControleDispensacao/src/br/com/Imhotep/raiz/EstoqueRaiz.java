@@ -21,6 +21,13 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class EstoqueRaiz extends PadraoHome<Estoque>{
 	
+	public EstoqueRaiz() {
+	}
+	
+	public EstoqueRaiz(Estoque estoque) {
+		setInstancia(estoque);
+	}
+	
 	public List<Estoque> listaEstoqueMaterialDispensacao(Material material){
 		return getBusca("select o from Estoque o where o.dataValidade >= now() and o.quantidade > 0 and o.bloqueado = false and o.material.idMaterial = " + material.getIdMaterial() + " order by o.dataValidade"); 
 	}

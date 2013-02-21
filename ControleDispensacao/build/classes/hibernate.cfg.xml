@@ -66,6 +66,7 @@
 		<mapping class="br.com.Imhotep.entidade.UnidadeSaude" />
 		<mapping class="br.com.Imhotep.entidade.Fornecedor" />
 		<mapping class="br.com.Imhotep.entidade.NotaFiscal" />
+		<mapping class="br.com.Imhotep.entidade.NotaFiscalEstoque" />
 
 	</session-factory>
 </hibernate-configuration>

@@ -9,30 +9,6 @@
 
 		<h:panelGroup>
 			
-			<h:outputLabel for="estoque" value="Lote:" />
-			<br />
-			<p:autoComplete id="estoque" 
-					scrollHeight="300" 
-					minQueryLength="3" 
-					forceSelection="true"
-					required="false"
-					title="Inorme o lote do material." 
-					immediate="true"
-					value="#{notaFiscalConsulta.instancia.estoque}"
-					completeMethod="#{estoqueAutoComplete.autoComplete}"
-					var="estoque" 
-					itemLabel="#{estoque.estoque.lote}" 
-					itemValue="#{estoque.estoque}"
-					converter="estoqueConversor" >
-				
-			</p:autoComplete>
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
 			<h:outputLabel for="fornecedor" value="Fornecedor::" />
 			<br />
 			<p:autoComplete id="fornecedor" 
@@ -45,8 +21,8 @@
 					value="#{notaFiscalConsulta.instancia.fornecedor}"
 					completeMethod="#{fornecedorAutoComplete.autoComplete}"
 					var="fornecedor" 
-					itemLabel="#{fornecedor.fornecedor.nome}" 
-					itemValue="#{fornecedor.fornecedor}"
+					itemLabel="#{fornecedor.nome}" 
+					itemValue="#{fornecedor}"
 					converter="fornecedorConversor" >
 				
 			</p:autoComplete>
@@ -55,7 +31,14 @@
 				style="padding-top:8px" />
 		</h:panelGroup>
 
-
-
+		<h:panelGroup>	
+			<h:outputLabel for="identificacaoNotaFiscal" value="Identificação:" />
+			<br />
+			<p:inputText id="identificacaoNotaFiscal" required="false"
+				value="#{notaFiscalConsulta.instancia.identificacaoNotaFiscal}"
+				title="Informe a identificação única da nota fiscal." />
+		</h:panelGroup>
+		
+	
 	</h:panelGrid>
 </ui:composition>

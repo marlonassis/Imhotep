@@ -9,32 +9,27 @@
 		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
 		selectionMode="single" rowKey="#{linha.idNotaFiscal}">
 
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Lote" />
-			</f:facet>
-			<h:outputText value="#{linha.estoque}" />
-		</p:column>
+		
 
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Fornecedor:" />
 			</f:facet>
-			<h:outputText value="#{linha.fornecedor.nome}" />
+			<h:outputText value="#{linha.fornecedor.nomeFantasia == null ? linha.fornecedor.razaoSocial : linha.fornecedor.nomeFantasia}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Fechada" />
 			</f:facet>
-			<h:outputText value="#{linha.fechada}" />
+			<h:outputText value="#{linha.fechada ? 'Sim' : 'Não'}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Bloqueada" />
 			</f:facet>
-			<h:outputText value="#{linha.bloqueada}" />
+			<h:outputText value="#{linha.bloqueada ? 'Sim' : 'Não'}" />
 		</p:column>
 
 
@@ -48,10 +43,10 @@
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{notaFiscalRaiz.apagar()}"
+			<p:commandLink action="#{notaFiscalRaiz.bloquearNotaFiscal()}"
 				update=":#{p:component('notaFiscalEditorForm')} :#{p:component('notaFiscalPesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
+				onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
+				title="Bloquear" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{notaFiscalRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />

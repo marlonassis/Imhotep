@@ -17,6 +17,14 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
+			<h:outputLabel for="prontuario" value="Prontuário:" />
+			<br />
+			<p:inputText id="prontuario"
+				value="#{pacienteRaiz.instancia.prontuario}" required="false"
+				title="Informe o número do prontuário do paciente" />
+		</h:panelGroup>
+
+		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />

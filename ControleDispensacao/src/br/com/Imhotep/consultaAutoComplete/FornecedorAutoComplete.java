@@ -13,7 +13,7 @@ import br.com.remendo.ConsultaGeral;
 public class FornecedorAutoComplete extends ConsultaGeral<Fornecedor> {
 	
 	public Collection<Fornecedor> autoComplete(String string){
-		StringBuilder stringB = new StringBuilder("select o from Fornecedor o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+string+"%'))");
+		StringBuilder stringB = new StringBuilder("select o from Fornecedor o where lower(to_ascii(o.nomeFantasia)) like lower(to_ascii('%"+string+"%')) or lower(to_ascii(o.razaoSocial)) like lower(to_ascii('%"+string+"%'))");
 		return super.consulta(stringB, null);
 	}
 	

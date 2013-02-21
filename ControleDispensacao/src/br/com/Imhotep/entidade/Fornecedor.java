@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -142,7 +143,10 @@ public class Fornecedor {
 		this.email = email;
 	}
 
-
+	@Transient
+	public String getNome(){
+		return nomeFantasia == null || nomeFantasia.isEmpty() ? razaoSocial : nomeFantasia;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {

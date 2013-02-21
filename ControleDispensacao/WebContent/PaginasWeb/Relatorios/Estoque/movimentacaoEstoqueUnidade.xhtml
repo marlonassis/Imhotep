@@ -14,13 +14,12 @@
 				<h:panelGrid id="formularioRelatorioPanelGrid" columns="2" width="100%">
 					
 					<h:panelGroup>
-						<font color="red">*</font>
 						<h:outputLabel for="unidade" value="Unidade:" />
 						<br />
 						<p:watermark value="Todos" for="unidade" />
 						<p:autoComplete id="unidade" 
 										forceSelection="true"
-										required="true"
+										required="false"
 										minQueryLength="4" 
 										size="30"
 										value="#{relatorioMovimentacaoEstoqueUnidade.unidade}"

@@ -12,8 +12,9 @@ import br.com.Imhotep.entidade.NotaFiscal;
 @SessionScoped
 public class NotaFiscalConsulta extends PadraoConsulta<NotaFiscal> {
 	public NotaFiscalConsulta(){
-//		getCamposConsulta().put("campo", tipo);
-		setOrderBy("");
+		getCamposConsulta().put("o.fornecedor", IGUAL);
+		getCamposConsulta().put("o.identificacaoNotaFiscal", CONTENDO);
+		setOrderBy("o.dataInsercao desc");
 	}
 	
 	@Override
