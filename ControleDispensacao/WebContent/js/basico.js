@@ -149,20 +149,13 @@ function avisoDelecao(){
  * Impede que o campo seja preenchido com caracteres que não sejam numéricos, mas permite a vírgula
  */
 function apenasNumeroComVirgula(obj){
-  a = obj.value;
-  a = a.replace(/\D/g,"");//remove todos os caracteres que não são números
-  a = a.replace(/^(0+)(\d)/g,"$2");//remove todos os zeros à esquerda
-
-  if(a.length == 1){
-    a = '0,0'.concat(a);
-  }else{
-    if(a.length == 2){
-      a = '0,'.concat(a);
-    }else{
-      a=a.replace(/(\d)(\d{2})$/,"$1,$2"); //adiciona a vírgula nos dois últimos caracteres
-    }
-  }
-  obj.value = a;
+	v = obj.value;
+	v=v.replace(/\D/g,""); //permite digitar apenas números
+	v=v.replace(/[0-9]{12}/,v.substr(0,11)); //limita pra máximo 999.999.999,99
+	v=v.replace(/(\d{1})(\d{8})$/,"$1.$2"); //coloca ponto antes dos últimos 8 digitos
+	v=v.replace(/(\d{1})(\d{5})$/,"$1.$2"); //coloca ponto antes dos últimos 5 digitos
+	v=v.replace(/(\d{1})(\d{1,2})$/,"$1,$2"); //coloca virgula antes dos últimos 2 digitos
+	obj.value = v;
 }
 
 /**
