@@ -10,10 +10,11 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRelatorios" title="Relatórios">
 			<h:form id="relatoriosForm" style="text-align: left;">
-				<p:commandLink id="downloadRelatorioGeral"
-					value="Relatório Geral do estoque" ajax="false"
-					action="#{relatorioEstoque.relatorioGeralEstoque}">
-				</p:commandLink>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{relatorioEstoque.relatorioGeralEstoque}"/>
+				</div>
 			</h:form>
 		</p:tab>
 	</ui:define>

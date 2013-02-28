@@ -12,14 +12,14 @@
 			title="Relatório de movimentaçao por unidade">
 			<h:form id="relatoriosForm" style="text-align: left;">
 				<h:panelGrid id="formularioRelatorioPanelGrid" columns="2" width="100%">
-					
+					<font color="red">*</font>
 					<h:panelGroup>
 						<h:outputLabel for="unidade" value="Unidade:" />
 						<br />
-						<p:watermark value="Todos" for="unidade" />
+						<p:watermark value="Todos" for="unidade" rendered="false" />
 						<p:autoComplete id="unidade" 
 										forceSelection="true"
-										required="false"
+										required="true"
 										minQueryLength="4" 
 										size="30"
 										value="#{relatorioMovimentacaoEstoqueUnidade.unidade}"
@@ -63,13 +63,12 @@
 							value="#{relatorioMovimentacaoEstoqueUnidade.dataFim}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
-					<h:panelGroup>
-						<p:commandLink id="downloadRelatorio"
-							value="Gerar relatório por período" ajax="false"
-							action="#{relatorioMovimentacaoEstoqueUnidade.relatorioMovimentacao}">
-						</p:commandLink>
-					</h:panelGroup>
 				</h:panelGrid>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{relatorioMovimentacaoEstoqueUnidade.relatorioMovimentacao}"/>
+				</div>
 			</h:form>
 		</p:tab>
 	</ui:define>

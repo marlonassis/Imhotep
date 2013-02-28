@@ -30,14 +30,12 @@
 							value="#{relatorioMovimentacaoEstoqueUnidade.dataFim}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
-					
-					<h:panelGroup>
-						<p:commandLink id="downloadRelatorio"
-							value="Gerar relatório por período" ajax="false"
-							action="#{relatorioCustoEstoque.relatorioMovimentacao}">
-						</p:commandLink>
-					</h:panelGroup>
 				</h:panelGrid>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{relatorioCustoEstoque.relatorioMovimentacao}"/>
+				</div>
 			</h:form>
 		</p:tab>
 	</ui:define>

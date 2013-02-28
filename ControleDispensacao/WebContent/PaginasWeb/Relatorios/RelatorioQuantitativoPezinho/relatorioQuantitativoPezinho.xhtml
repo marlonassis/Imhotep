@@ -27,13 +27,12 @@
 							value="#{relatorioQuantitativoPezinho.dataFim}"
 							pattern="dd/MM/yyyy" locale="pt" />
 					</h:panelGroup>
-					<h:panelGroup>
-						<p:commandLink id="downloadRelatorio" value="Gerar relatório"
-							ajax="false"
-							action="#{relatorioQuantitativoPezinho.relatorioQuantitativoPezinho}">
-						</p:commandLink>
-					</h:panelGroup>
 				</h:panelGrid>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{relatorioQuantitativoPezinho.relatorioQuantitativoPezinho}"/>
+				</div>
 			</h:form>
 		</p:tab>
 	</ui:define>

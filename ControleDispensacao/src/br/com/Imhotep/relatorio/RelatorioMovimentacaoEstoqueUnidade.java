@@ -34,6 +34,7 @@ public class RelatorioMovimentacaoEstoqueUnidade extends PadraoRelatorio{
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
+		map.put("nomeUnidade", unidade != null ? unidade.getNome() : "Todos");
 		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, map);
 	}
 

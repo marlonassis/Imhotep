@@ -28,13 +28,12 @@
 							value="#{relatorioEstoqueVencido.dataFim}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
-					<h:panelGroup>
-						<p:commandLink id="downloadRelatorio"
-							value="Gerar relatório por período" ajax="false"
-							action="#{relatorioEstoqueVencido.relatorioEstoqueVencidoPeriodo}">
-						</p:commandLink>
-					</h:panelGroup>
 				</h:panelGrid>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{relatorioEstoqueVencido.relatorioEstoqueVencidoPeriodo}"/>
+				</div>
 			</h:form>
 		</p:tab>
 	</ui:define>
