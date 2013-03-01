@@ -14,14 +14,14 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.raiz.EstoqueRaiz;
 
-@ManagedBean(name="relatorioEstoque")
+@ManagedBean(name="relatorioEstoqueCompleto")
 @ViewScoped
-public class RelatorioEstoque extends PadraoRelatorio{
+public class RelatorioEstoqueCompleto extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
 	
 	public void relatorioGeralEstoque() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/EstoqueRelatorio.jasper";
+		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioEstoqueCompleto.jasper";
 		String nomeRelatorio = "RelatorioDoEstoque-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<Estoque> listaEstoqueRelatorioGeral = new EstoqueRaiz().listaEstoqueRelatorioGeral();
 		HashMap<String, Object> map = new HashMap<String, Object>();
