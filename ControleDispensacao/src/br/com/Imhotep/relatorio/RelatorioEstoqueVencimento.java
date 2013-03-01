@@ -14,17 +14,17 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.raiz.EstoqueRaiz;
 
-@ManagedBean(name="relatorioEstoqueVencido")
+@ManagedBean(name="relatorioEstoqueVencimento")
 @ViewScoped
-public class RelatorioEstoqueVencido extends PadraoRelatorio{
+public class RelatorioEstoqueVencimento extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private Date dataIni;
 	private Date dataFim;
 	
-	public void relatorioEstoqueVencidoPeriodo() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/EstoqueVecidoPeriodo.jasper";
+	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
+		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioEstoqueVencimentoPeriodo.jasper";
 		String nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<Estoque> listaEstoqueRelatorioGeral = new EstoqueRaiz().listaEstoqueRelatorioVencimentoPeriodo(dataIni, dataFim);
 		HashMap<String, Object> map = new HashMap<String, Object>();
