@@ -54,16 +54,16 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 				getInstancia().getUsuario().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 			} catch (Exception e) {
 				e.printStackTrace();
-				super.mensagem("Erro ao pegar ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
+				super.mensagem("Erro ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
 				System.out.print("Erro em ProfissionalHome");
 			}
 			getInstancia().setDataInclusao(new Date());
 			getInstancia().getUsuario().setDataInclusao(new Date());
-			getInstancia().getUsuario().setSenha(Utilities.encriptaParaMd5(String.valueOf(getInstancia().getMatricula())));
+			getInstancia().getUsuario().setSenha(Utilities.encriptaParaMd5(String.valueOf("123456")));
 			if(super.enviar()){
 				boolean exibeMensagemInsercao = false;
-				new AutorizaUnidadeProfissionalRaiz().enviar(getInstancia(), getUnidade(), exibeMensagemInsercao);
-				return true;
+				boolean res = new AutorizaUnidadeProfissionalRaiz().enviar(getInstancia(), getUnidade(), exibeMensagemInsercao);
+				return res;
 			}
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este usuário já foi escolhido. informe outro login.", "Inserção não efetuada."));

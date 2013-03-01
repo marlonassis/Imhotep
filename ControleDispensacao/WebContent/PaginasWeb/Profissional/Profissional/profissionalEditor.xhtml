@@ -58,11 +58,10 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
 			<h:outputLabel for="matricula" value="Matrícula" />
 			<br />
 			<p:inputText id="matricula"
-				value="#{profissionalRaiz.instancia.matricula}" required="true"
+				value="#{profissionalRaiz.instancia.matricula}" required="false"
 				onkeyup="apenasNumero(this);"
 				title="Informe a matrícula do profissional" />
 		</h:panelGroup>

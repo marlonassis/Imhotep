@@ -22,7 +22,7 @@
 			<br />
 			<p:selectOneMenu value="#{especialidadeConsulta.instancia.tipoConselho}"
 				effect="fade" converter="tipoConselhoConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{tipoConselho}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{tipoConselhoConsulta.list}"
 					var="tipoConselho" itemLabel="#{tipoConselho.descricaoSigla}"
 					itemValue="#{tipoConselho}" />

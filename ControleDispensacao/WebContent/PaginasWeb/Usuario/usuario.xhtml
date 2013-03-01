@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabUsuario" title="Usuário">
-			<h:form id="usuarioEditorForm" >
+			<h:form id="usuarioEditorForm" rendered="false" >
 				<p:fieldset legend="Novo Usuário" 
 							collapsed="#{!usuarioRaiz.edicao}"
 							toggleable="true" 
@@ -35,7 +35,7 @@
 
 			<h:form id="usuarioPesquisaForm" >
 				<p:fieldset id="pesquisaUsuarioFieldSet" legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+					collapsed="false" toggleable="true" toggleSpeed="500">
 					<ui:include src="usuarioConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar" 

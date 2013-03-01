@@ -16,11 +16,10 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
 			<h:outputLabel for="tipoConselho" value="Conselho:" />
 			<br />
 			<p:selectOneMenu value="#{especialidadeRaiz.instancia.tipoConselho}"
-				effect="fade" converter="tipoConselhoConversor" required="true">
+				effect="fade" converter="tipoConselhoConversor" required="false">
 				<f:selectItem itemLabel="Selecione..." itemValue="#{tipoConselho}" />
 				<f:selectItems value="#{tipoConselhoConsulta.list}"
 					var="tipoConselho" itemLabel="#{tipoConselho.descricaoSigla}"
@@ -30,15 +29,15 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
 			<h:outputLabel for="especialidadePai" value="Especialidade Superior:" />
 			<br />
 			<p:selectOneMenu value="#{especialidadeRaiz.instancia.especialidadePai}"
-				effect="fade" converter="especialidadeConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
-				<f:selectItems value="#{especialidadeConsulta.list}"
-					var="especialidadePai" itemLabel="#{especialidade}"
-					itemValue="#{especialidade}" />
+				effect="fade" converter="especialidadeConversor" required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems  value="#{especialidadeConsulta.list}"
+								var="especialidadePai" 
+								itemLabel="#{especialidadePai.descricao}"
+								itemValue="#{especialidadePai}" />
 				
 			</p:selectOneMenu>
 		</h:panelGroup>
