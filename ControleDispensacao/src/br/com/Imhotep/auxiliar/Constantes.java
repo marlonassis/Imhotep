@@ -22,4 +22,6 @@ public class Constantes {
 	public static final String NOME_BANCO = "db_imhotep";
 	public static final String USUARIO_BANCO = "imhotep";
 	public static final String SENHA_BANCO = "!@#imhotep*()1237890";
+	
+	public static final String MENSAGEM_RELATORIO_VAZIO = "Nenhum registro encontrado.";
 }

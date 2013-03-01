@@ -11,10 +11,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
-import br.com.Imhotep.entidade.MovimentoLivro;
+import br.com.Imhotep.consultaRelatorio.ConsultaRelatorioMovimentacaoEstoqueUnidade;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.raiz.MovimentoLivroRaiz;
+import br.com.Imhotep.entidadeExtra.MovimentacaoEstoqueUnidade;
 
 @ManagedBean(name="relatorioMovimentacaoEstoqueUnidade")
 @ViewScoped
@@ -30,12 +30,12 @@ public class RelatorioMovimentacaoEstoqueUnidade extends PadraoRelatorio{
 	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueUnidade.jasper";
 		String nomeRelatorio = "EstoqueMovimentacaoUnidade-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<MovimentoLivro> listaEstoqueRelatorioGeral = new MovimentoLivroRaiz().listaMovimentoLivroPeriodo(dataIni, dataFim, getUnidade(), getTipoMovimento());
+		List<MovimentacaoEstoqueUnidade> lista = new ConsultaRelatorioMovimentacaoEstoqueUnidade().consultarResultados(dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
 		map.put("nomeUnidade", unidade != null ? unidade.getNome() : "Todos");
-		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, map);
+		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
 	}
 
 	public Date getDataIni() {
