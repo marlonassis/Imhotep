@@ -27,7 +27,7 @@ public class RelatorioMovimentacaoEstoqueUnidade extends PadraoRelatorio{
 	private TipoMovimento tipoMovimento;
 	private Unidade unidade;
 	
-	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
+	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueUnidade.jasper";
 		String nomeRelatorio = "EstoqueMovimentacaoUnidade-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<MovimentacaoEstoqueUnidade> lista = new ConsultaRelatorioMovimentacaoEstoqueUnidade().consultarResultados(dataIni, dataFim, getUnidade(), getTipoMovimento());
