@@ -28,7 +28,7 @@ public class RelatorioCustoEstoque extends PadraoRelatorio{
 	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String nomeRelatorio = "RelatorioCustoEstoque-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<CustoEstoque> listaCustoEstoque = new ConsultaRelatorioCustoEstoque().pegarResultados(dataIni, ajustaParaUltimaHora().getTime());
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>(); 
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim));
 		super.geraRelatorio(Constantes.RELATORIO_CUSTO_ESTOQUE_PATH, nomeRelatorio, listaCustoEstoque, map);
