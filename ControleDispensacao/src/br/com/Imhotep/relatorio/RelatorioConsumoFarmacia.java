@@ -32,7 +32,7 @@ public class RelatorioConsumoFarmacia extends PadraoRelatorio{
 	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueFarmacia.jasper";
 		String nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<MovimentoLivro> listaEstoqueRelatorioGeral = new MovimentoLivroRaiz().listaMovimentoLivroPeriodo(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
+		List<MovimentoLivro> listaEstoqueRelatorioGeral = null;//new MovimentoLivroRaiz().listaMovimentoLivroPeriodo(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );

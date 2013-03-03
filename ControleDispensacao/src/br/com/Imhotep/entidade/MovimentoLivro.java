@@ -26,6 +26,7 @@ public class MovimentoLivro {
 	private Integer quantidadeEntrada;
 	private Integer quantidadeSaida;
 	private Integer quantidadePerda;
+	private Integer quantidadeMovimentacao;
 	private Integer saldoAtual;
 	private Date dataMovimento;
 	private String historico;
@@ -63,7 +64,7 @@ public class MovimentoLivro {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade")
+	@JoinColumn(name = "id_unidade_cadastrante")
 	public Unidade getUnidade() {
 		return unidade;
 	}
@@ -138,7 +139,7 @@ public class MovimentoLivro {
 		this.dataMovimento = dataMovimento;
 	}
 	
-	@Column(name = "ds_historico", length = 200)
+	@Column(name = "cv_historico", length = 200)
 	public String getHistorico() {
 		return historico;
 	}
@@ -162,6 +163,14 @@ public class MovimentoLivro {
 	}
 	public void setEstoque(Estoque estoque) {
 		this.estoque = estoque;
+	}
+	
+	@Column(name = "in_quantidade_movimentacao")
+	public Integer getQuantidadeMovimentacao() {
+		return quantidadeMovimentacao;
+	}
+	public void setQuantidadeMovimentacao(Integer quantidadeMovimentacao) {
+		this.quantidadeMovimentacao = quantidadeMovimentacao;
 	}
 	
 	@Override

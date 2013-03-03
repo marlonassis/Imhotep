@@ -20,7 +20,7 @@ public class ConsultaRelatorioMovimentacaoEstoqueUnidade extends ConsultaGeral<O
 		return modeladorResultado(consultaMovimentoPeriodo(dataIni, df.getTime(), unidade, tipoMovimento));
 	}
 
-	public ArrayList<MovimentacaoEstoqueUnidade> modeladorResultado(List<Object[]> list){
+	private ArrayList<MovimentacaoEstoqueUnidade> modeladorResultado(List<Object[]> list){
 		List<MovimentacaoEstoqueUnidade> meul = new ArrayList<MovimentacaoEstoqueUnidade>();
 		for(Object[] meu : list){		
 			MovimentacaoEstoqueUnidade obj = new MovimentacaoEstoqueUnidade();
@@ -45,7 +45,7 @@ public class ConsultaRelatorioMovimentacaoEstoqueUnidade extends ConsultaGeral<O
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		String sql = "select o.tipoMovimento, o.material.descricao, o.estoque.lote, o.estoque.quantidade, o.dataMovimento, o.usuarioMovimentacao.login from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim";
+		String sql = "select o.tipoMovimento, o.estoque.material.descricao, o.estoque.lote, o.estoque.quantidade, o.dataMovimento, o.usuarioMovimentacao.login from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim";
 		
 		if(unidade != null){
 			sql += " and o.unidadeReceptora.idUnidade = :idUnidade ";
