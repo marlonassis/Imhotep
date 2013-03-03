@@ -1,10 +1,10 @@
-package br.com.Imhotep.entidade.extra;
+package br.com.imhotep.entidade.relatorio;
 
 import java.util.Date;
 
 import br.com.Imhotep.entidade.TipoMovimento;
 
-public class MovimentacaoEstoqueFarmacia {
+public class MovimentacaoEstoqueMaterial {
 	private String mensagemNaoEncontrado;
 	private TipoMovimento tipoMovimento;
 	private String lote;
@@ -14,11 +14,11 @@ public class MovimentacaoEstoqueFarmacia {
 	private String nomeUnidade;
 	private String nomeMaterial;
 
-	public MovimentacaoEstoqueFarmacia(){
+	public MovimentacaoEstoqueMaterial(){
 		
 	}
 	
-	public MovimentacaoEstoqueFarmacia(String mensagemNaoEncontrado){
+	public MovimentacaoEstoqueMaterial(String mensagemNaoEncontrado){
 		setMensagemNaoEncontrado(mensagemNaoEncontrado);
 	}
 	

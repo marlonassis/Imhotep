@@ -15,9 +15,8 @@ import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.raiz.MovimentoLivroRaiz;
 
-@ManagedBean(name="relatorioMovimentacaoEstoqueFarmacia")
+@ManagedBean(name="relatorioConsumoFarmacia")
 @ViewScoped
 public class RelatorioConsumoFarmacia extends PadraoRelatorio{
 	
@@ -30,7 +29,7 @@ public class RelatorioConsumoFarmacia extends PadraoRelatorio{
 	private Unidade unidade;
 	
 	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueFarmacia.jasper";
+		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueMaterial.jasper";
 		String nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<MovimentoLivro> listaEstoqueRelatorioGeral = null;//new MovimentoLivroRaiz().listaMovimentoLivroPeriodo(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();

@@ -10,7 +10,7 @@ import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.entidade.extra.MovimentacaoEstoqueUnidade;
+import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueUnidade;
 import br.com.remendo.ConsultaGeral;
 
 public class ConsultaRelatorioMovimentacaoEstoqueUnidade extends ConsultaGeral<Object[]> {

@@ -14,7 +14,7 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueUnidade;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.entidade.extra.MovimentacaoEstoqueUnidade;
+import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueUnidade;
 
 @ManagedBean(name="relatorioMovimentacaoEstoqueUnidade")
 @ViewScoped

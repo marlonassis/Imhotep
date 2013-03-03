@@ -1,23 +1,21 @@
-package br.com.Imhotep.entidade.extra;
+package br.com.imhotep.entidade.relatorio;
 
 import java.util.Date;
 
-import br.com.Imhotep.entidade.TipoMovimento;
-
-public class MovimentacaoEstoqueUnidade {
-	private String mensagemNaoEncontrado;
-	private TipoMovimento tipoMovimento;
+public class EstoqueVencimento {
+	private Integer codigoMaterial;
 	private String nomeMaterial;
 	private String lote;
+	private Date dataValidade;
 	private Integer quantidade;
-	private Date dataMovimento;
+	private String mensagemNaoEncontrado;
 	private String usuario;
-
-	public MovimentacaoEstoqueUnidade(){
+	
+	public EstoqueVencimento(){
 		
 	}
 	
-	public MovimentacaoEstoqueUnidade(String mensagemNaoEncontrado){
+	public EstoqueVencimento(String mensagemNaoEncontrado){
 		setMensagemNaoEncontrado(mensagemNaoEncontrado);
 	}
 	
@@ -27,14 +25,6 @@ public class MovimentacaoEstoqueUnidade {
 
 	public void setMensagemNaoEncontrado(String mensagemNaoEncontrado) {
 		this.mensagemNaoEncontrado = mensagemNaoEncontrado;
-	}
-
-	public TipoMovimento getTipoMovimento() {
-		return tipoMovimento;
-	}
-
-	public void setTipoMovimento(TipoMovimento tipoMovimento) {
-		this.tipoMovimento = tipoMovimento;
 	}
 
 	public String getNomeMaterial() {
@@ -61,20 +51,28 @@ public class MovimentacaoEstoqueUnidade {
 		this.quantidade = quantidade;
 	}
 
-	public Date getDataMovimento() {
-		return dataMovimento;
-	}
-
-	public void setDataMovimento(Date dataMovimento) {
-		this.dataMovimento = dataMovimento;
-	}
-
 	public String getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public Integer getCodigoMaterial() {
+		return codigoMaterial;
+	}
+
+	public void setCodigoMaterial(Integer codigoMaterial) {
+		this.codigoMaterial = codigoMaterial;
+	}
+
+	public Date getDataValidade() {
+		return dataValidade;
+	}
+
+	public void setDataValidade(Date dataValidade) {
+		this.dataValidade = dataValidade;
 	}
 	
 }

@@ -11,15 +11,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
-import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueFarmacia;
+import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueMaterial;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.entidade.extra.MovimentacaoEstoqueFarmacia;
+import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial;
 
-@ManagedBean(name="relatorioMovimentacaoEstoqueFarmacia")
+@ManagedBean(name="relatorioMovimentacaoEstoqueMaterial")
 @ViewScoped
-public class RelatorioMovimentacaoEstoqueFarmacia extends PadraoRelatorio{
+public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -30,9 +30,9 @@ public class RelatorioMovimentacaoEstoqueFarmacia extends PadraoRelatorio{
 	private Unidade unidade;
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueFarmacia.jasper";
+		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueMaterial.jasper";
 		String nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<MovimentacaoEstoqueFarmacia> lista = new ConsultaRelatorioMovimentacaoEstoqueFarmacia().consultarResultados(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
+		List<MovimentacaoEstoqueMaterial> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterial().consultarResultados(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );

@@ -11,8 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
-import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.raiz.EstoqueRaiz;
+import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioEstoqueVencimentoPeriodo;
+import br.com.imhotep.entidade.relatorio.EstoqueVencimento;
 
 @ManagedBean(name="relatorioEstoqueVencimento")
 @ViewScoped
@@ -26,11 +26,11 @@ public class RelatorioEstoqueVencimento extends PadraoRelatorio{
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioEstoqueVencimentoPeriodo.jasper";
 		String nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<Estoque> listaEstoqueRelatorioGeral = new EstoqueRaiz().listaEstoqueRelatorioVencimentoPeriodo(dataIni, dataFim);
+		List<EstoqueVencimento> lista = new ConsultaRelatorioEstoqueVencimentoPeriodo().consultarResultados(dataIni, dataFim);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
-		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, map);
+		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
 	}
 
 	public Date getDataIni() {

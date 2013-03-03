@@ -14,7 +14,7 @@ import javax.faces.bean.ViewScoped;
 import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioCustoEstoque;
-import br.com.Imhotep.entidade.extra.CustoEstoque;
+import br.com.imhotep.entidade.relatorio.CustoEstoque;
 
 @ManagedBean(name="relatorioCustoEstoque")
 @ViewScoped

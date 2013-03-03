@@ -11,20 +11,20 @@ import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.entidade.extra.MovimentacaoEstoqueFarmacia;
+import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial;
 import br.com.remendo.ConsultaGeral;
 
-public class ConsultaRelatorioMovimentacaoEstoqueFarmacia extends ConsultaGeral<Object[]> {
+public class ConsultaRelatorioMovimentacaoEstoqueMaterial extends ConsultaGeral<Object[]> {
 	
-	public ArrayList<MovimentacaoEstoqueFarmacia> consultarResultados(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
+	public ArrayList<MovimentacaoEstoqueMaterial> consultarResultados(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
 		Calendar df = Utilities.ajustarUltimaHoraDia(dataFim);
 		return modeladorResultado(consultaMovimentoPeriodo(material, dataIni, df.getTime(), unidade, tipoMovimento));
 	}
 
-	private ArrayList<MovimentacaoEstoqueFarmacia> modeladorResultado(List<Object[]> list){
-		List<MovimentacaoEstoqueFarmacia> meul = new ArrayList<MovimentacaoEstoqueFarmacia>();
+	private ArrayList<MovimentacaoEstoqueMaterial> modeladorResultado(List<Object[]> list){
+		List<MovimentacaoEstoqueMaterial> meul = new ArrayList<MovimentacaoEstoqueMaterial>();
 		for(Object[] meu : list){		
-			MovimentacaoEstoqueFarmacia obj = new MovimentacaoEstoqueFarmacia();
+			MovimentacaoEstoqueMaterial obj = new MovimentacaoEstoqueMaterial();
 			obj.setTipoMovimento((TipoMovimento) meu[0]);
 			obj.setNomeUnidade((String) meu[1]);
 			obj.setLote((String) meu[2]);
@@ -36,10 +36,10 @@ public class ConsultaRelatorioMovimentacaoEstoqueFarmacia extends ConsultaGeral<
 		}
 		
 		if(meul == null || meul.isEmpty()){
-			meul.add(new MovimentacaoEstoqueFarmacia(Constantes.MENSAGEM_RELATORIO_VAZIO));
+			meul.add(new MovimentacaoEstoqueMaterial(Constantes.MENSAGEM_RELATORIO_VAZIO));
 		}
 		
-		return new ArrayList<MovimentacaoEstoqueFarmacia>(meul);
+		return new ArrayList<MovimentacaoEstoqueMaterial>(meul);
 	}
 	
 	private List<Object[]> consultaMovimentoPeriodo(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento) {

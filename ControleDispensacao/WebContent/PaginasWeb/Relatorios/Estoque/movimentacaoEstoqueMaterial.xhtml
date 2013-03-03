@@ -9,7 +9,7 @@
 	</ui:define>
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRelatorios"
-			title="Relatório de Movimentaçao do Material">
+			title="Relatório de Movimentaçao por Material">
 			<h:form id="relatoriosForm" style="text-align: left;">
 				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
 					<h:panelGroup>
@@ -17,7 +17,7 @@
 						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
 						<br />
 						<p:autoComplete id="material"
-										value="#{relatorioMovimentacaoEstoqueFarmacia.material}"
+										value="#{relatorioMovimentacaoEstoqueMaterial.material}"
 										minQueryLength="4"
 										required="true"
 										scrollHeight="300"
@@ -34,7 +34,7 @@
 						<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
 						<br />
 						<p:selectOneMenu
-							value="#{relatorioMovimentacaoEstoqueFarmacia.tipoMovimento}"
+							value="#{relatorioMovimentacaoEstoqueMaterial.tipoMovimento}"
 							effect="fade" 
 							converter="tipoMovimentoConversor" >
 							<f:selectItem itemLabel="Todos" itemValue="" />
@@ -53,7 +53,7 @@
 										forceSelection="true"
 										minQueryLength="4" 
 										size="30"
-										value="#{relatorioMovimentacaoEstoqueFarmacia.unidade}"
+										value="#{relatorioMovimentacaoEstoqueMaterial.unidade}"
 										completeMethod="#{unidadeAutoComplete.autoComplete}"
 										var="unidade" 
 										title="Informe a unidade para onde está sendo enviado o material."
@@ -68,7 +68,7 @@
 						<h:outputLabel for="dataIni" value="Início:" />
 						<br />
 						<p:calendar id="dataIni"
-							value="#{relatorioMovimentacaoEstoqueFarmacia.dataIni}" pattern="dd/MM/yyyy"
+							value="#{relatorioMovimentacaoEstoqueMaterial.dataIni}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
 					<h:panelGroup>
@@ -76,14 +76,14 @@
 						<h:outputLabel for="dataFim" value="Fim:" />
 						<br />
 						<p:calendar id="dataFim"
-							value="#{relatorioMovimentacaoEstoqueFarmacia.dataFim}" pattern="dd/MM/yyyy"
+							value="#{relatorioMovimentacaoEstoqueMaterial.dataFim}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
 				</h:panelGrid>
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" ajax="false"
-								action="#{relatorioMovimentacaoEstoqueFarmacia.gerarRelatorio}"/>
+								action="#{relatorioMovimentacaoEstoqueMaterial.gerarRelatorio}"/>
 				</div>
 			</h:form>
 		</p:tab>
