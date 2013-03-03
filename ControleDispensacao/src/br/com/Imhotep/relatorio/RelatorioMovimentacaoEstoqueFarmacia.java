@@ -11,11 +11,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
-import br.com.Imhotep.consultaRelatorio.ConsultaRelatorioMovimentacaoEstoqueFarmacia;
+import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueFarmacia;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.entidadeExtra.MovimentacaoEstoqueFarmacia;
+import br.com.Imhotep.entidade.extra.MovimentacaoEstoqueFarmacia;
 
 @ManagedBean(name="relatorioMovimentacaoEstoqueFarmacia")
 @ViewScoped
