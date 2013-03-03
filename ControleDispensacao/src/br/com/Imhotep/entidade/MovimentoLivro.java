@@ -23,13 +23,9 @@ public class MovimentoLivro {
 	private Material material;
 	private TipoMovimento tipoMovimento;
 	private Integer saldoAnterior;
-	private Integer quantidadeEntrada;
-	private Integer quantidadeSaida;
-	private Integer quantidadePerda;
 	private Integer quantidadeMovimentacao;
 	private Integer saldoAtual;
 	private Date dataMovimento;
-	private String historico;
 	private Usuario usuarioMovimentacao;
 	private Unidade unidadeReceptora;
 	private Estoque estoque;
@@ -98,30 +94,6 @@ public class MovimentoLivro {
 		this.saldoAnterior = saldoAnterior;
 	}
 	
-	@Column(name = "in_quantidade_entrada")
-	public Integer getQuantidadeEntrada() {
-		return quantidadeEntrada;
-	}
-	public void setQuantidadeEntrada(Integer quantidadeEntrada) {
-		this.quantidadeEntrada = quantidadeEntrada;
-	}
-	
-	@Column(name = "in_quantidade_saida")
-	public Integer getQuantidadeSaida() {
-		return quantidadeSaida;
-	}
-	public void setQuantidadeSaida(Integer quantidadeSaida) {
-		this.quantidadeSaida = quantidadeSaida;
-	}
-	
-	@Column(name = "in_quantidade_perda")
-	public Integer getQuantidadePerda() {
-		return quantidadePerda;
-	}
-	public void setQuantidadePerda(Integer quantidadePerda) {
-		this.quantidadePerda = quantidadePerda;
-	}
-	
 	@Column(name = "in_saldo_atual")
 	public Integer getSaldoAtual() {
 		return saldoAtual;
@@ -139,14 +111,6 @@ public class MovimentoLivro {
 		this.dataMovimento = dataMovimento;
 	}
 	
-	@Column(name = "cv_historico", length = 200)
-	public String getHistorico() {
-		return historico;
-	}
-	public void setHistorico(String historico) {
-		this.historico = historico;
-	}
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_unidade_receptora")
 	public Unidade getUnidadeReceptora() {

@@ -187,10 +187,9 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
-		movimentoLivroAtual.setHistorico(getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento().getDescricao());
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
 		movimentoLivroAtual.setMovimentoGeral(getItensMovimentoGeral().getMovimentoGeral());
-		movimentoLivroAtual.setQuantidadeEntrada(getItensMovimentoGeral().getQuantidade());
+		movimentoLivroAtual.setQuantidadeMovimentacao(getItensMovimentoGeral().getQuantidade());
 		movimentoLivroAtual.setSaldoAtual(getItensMovimentoGeral().getQuantidade());
 		movimentoLivroAtual.setSaldoAnterior(0);
 		movimentoLivroAtual.setTipoMovimento(getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento());

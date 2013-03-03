@@ -71,13 +71,10 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		try {
 			return (AjusteEstoqueRaiz) Utilities.procuraInstancia(AjusteEstoqueRaiz.class);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -178,7 +175,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
-		movimentoLivroAtual.setHistorico(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getDescricao());
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
 		movimentoLivroAtual.setMovimentoGeral(itensMovimentoGeral.getMovimentoGeral());
 		movimentoLivroAtual.setTipoMovimento(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento());
@@ -194,15 +190,10 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		
 		Integer quantidadeMovimentacao = getItensMovimentoGeral().getQuantidade();
+		movimentoLivroAtual.setQuantidadeMovimentacao(quantidadeMovimentacao);
 		if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
-			movimentoLivroAtual.setQuantidadeEntrada(quantidadeMovimentacao);
 			movimentoLivroAtual.setSaldoAtual(quantidadeMovimentacao + saldoAnterior);
 		}else{
-			if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Perda)){
-				movimentoLivroAtual.setQuantidadePerda(quantidadeMovimentacao);
-			}else{
-				movimentoLivroAtual.setQuantidadeSaida(quantidadeMovimentacao);
-			}
 			movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeMovimentacao);
 		}
 		

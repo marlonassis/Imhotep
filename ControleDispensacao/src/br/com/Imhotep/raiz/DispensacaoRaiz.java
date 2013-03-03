@@ -254,7 +254,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 			System.out.print("Erro em DispensacaoHome");
 		}
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
-		movimentoLivroAtual.setQuantidadeSaida(quantidadeLiberada);
+		movimentoLivroAtual.setQuantidadeMovimentacao(quantidadeLiberada);
 		movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeLiberada);
 		session.save(movimentoLivroAtual);
 	}
