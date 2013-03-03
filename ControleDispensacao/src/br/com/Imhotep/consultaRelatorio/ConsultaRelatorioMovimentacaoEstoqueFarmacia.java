@@ -11,7 +11,7 @@ import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
-import br.com.Imhotep.entidadeExtra.MovimentacaoEstoqueFarmacia;
+import br.com.Imhotep.entidade.extra.MovimentacaoEstoqueFarmacia;
 import br.com.remendo.ConsultaGeral;
 
 public class ConsultaRelatorioMovimentacaoEstoqueFarmacia extends ConsultaGeral<Object[]> {

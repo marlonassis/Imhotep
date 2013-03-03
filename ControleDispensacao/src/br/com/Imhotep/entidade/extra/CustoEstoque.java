@@ -1,4 +1,4 @@
-package br.com.Imhotep.entidadeExtra;
+package br.com.Imhotep.entidade.extra;
 
 import br.com.Imhotep.entidade.Material;
 

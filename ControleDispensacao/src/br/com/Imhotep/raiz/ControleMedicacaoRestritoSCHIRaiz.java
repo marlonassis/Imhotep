@@ -14,7 +14,7 @@ import br.com.Imhotep.entidade.ControleMedicacaoRestritoSCHI;
 import br.com.Imhotep.entidade.Prescricao;
 import br.com.Imhotep.entidade.PrescricaoItem;
 import br.com.Imhotep.entidade.PrescricaoItemDose;
-import br.com.Imhotep.entidadeExtra.Dose;
+import br.com.Imhotep.entidade.extra.Dose;
 import br.com.Imhotep.enums.TipoBooleanEnum;
 import br.com.Imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.Imhotep.seguranca.Autenticador;

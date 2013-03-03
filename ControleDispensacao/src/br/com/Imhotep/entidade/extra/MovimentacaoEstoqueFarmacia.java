@@ -1,23 +1,24 @@
-package br.com.Imhotep.entidadeExtra;
+package br.com.Imhotep.entidade.extra;
 
 import java.util.Date;
 
 import br.com.Imhotep.entidade.TipoMovimento;
 
-public class MovimentacaoEstoqueUnidade {
+public class MovimentacaoEstoqueFarmacia {
 	private String mensagemNaoEncontrado;
 	private TipoMovimento tipoMovimento;
-	private String nomeMaterial;
 	private String lote;
 	private Integer quantidade;
 	private Date dataMovimento;
 	private String usuario;
+	private String nomeUnidade;
+	private String nomeMaterial;
 
-	public MovimentacaoEstoqueUnidade(){
+	public MovimentacaoEstoqueFarmacia(){
 		
 	}
 	
-	public MovimentacaoEstoqueUnidade(String mensagemNaoEncontrado){
+	public MovimentacaoEstoqueFarmacia(String mensagemNaoEncontrado){
 		setMensagemNaoEncontrado(mensagemNaoEncontrado);
 	}
 	
@@ -35,14 +36,6 @@ public class MovimentacaoEstoqueUnidade {
 
 	public void setTipoMovimento(TipoMovimento tipoMovimento) {
 		this.tipoMovimento = tipoMovimento;
-	}
-
-	public String getNomeMaterial() {
-		return nomeMaterial;
-	}
-
-	public void setNomeMaterial(String nomeMaterial) {
-		this.nomeMaterial = nomeMaterial;
 	}
 
 	public String getLote() {
@@ -75,6 +68,22 @@ public class MovimentacaoEstoqueUnidade {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getNomeUnidade() {
+		return nomeUnidade;
+	}
+
+	public void setNomeUnidade(String nomeUnidade) {
+		this.nomeUnidade = nomeUnidade;
+	}
+
+	public String getNomeMaterial() {
+		return nomeMaterial;
+	}
+
+	public void setNomeMaterial(String nomeMaterial) {
+		this.nomeMaterial = nomeMaterial;
 	}
 	
 }

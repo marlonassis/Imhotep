@@ -1,4 +1,4 @@
-package br.com.Imhotep.entidadeExtra;
+package br.com.Imhotep.entidade.extra;
 
 public class Ajuda {
 	private int idAjuda;

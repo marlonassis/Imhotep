@@ -15,7 +15,7 @@ import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.Prescricao;
 import br.com.Imhotep.entidade.PrescricaoItem;
 import br.com.Imhotep.entidade.PrescricaoItemDose;
-import br.com.Imhotep.entidadeExtra.Dose;
+import br.com.Imhotep.entidade.extra.Dose;
 import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 import br.com.Imhotep.raiz.EstoqueRaiz;
 import br.com.Imhotep.raiz.PrescricaoRaiz;

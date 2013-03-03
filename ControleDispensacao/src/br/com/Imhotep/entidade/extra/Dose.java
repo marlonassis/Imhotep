@@ -1,4 +1,4 @@
-package br.com.Imhotep.entidadeExtra;
+package br.com.Imhotep.entidade.extra;
 
 import java.util.Date;
 
