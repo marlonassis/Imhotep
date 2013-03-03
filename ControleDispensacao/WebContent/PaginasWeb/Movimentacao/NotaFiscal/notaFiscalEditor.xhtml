@@ -36,6 +36,7 @@
 			<p:inputText id="identificacaoNotaFiscal"
 				     value="#{notaFiscalRaiz.instancia.identificacaoNotaFiscal}"
 				     required="true"
+				     onkeyup="apenasNumeroSemZeroEsquerda(this);"
 				     title="Informe o número da nota fiscal.">
 				
 			</p:inputText>

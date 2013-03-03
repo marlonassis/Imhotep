@@ -35,8 +35,9 @@
 			<h:outputLabel for="identificacaoNotaFiscal" value="Identificação:" />
 			<br />
 			<p:inputText id="identificacaoNotaFiscal" required="false"
-				value="#{notaFiscalConsulta.instancia.identificacaoNotaFiscal}"
-				title="Informe a identificação única da nota fiscal." />
+						onkeyup="apenasNumeroSemZeroEsquerda(this);"
+						value="#{notaFiscalConsulta.instancia.identificacaoNotaFiscal}"
+						title="Informe a identificação única da nota fiscal." />
 		</h:panelGroup>
 		
 	

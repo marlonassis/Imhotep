@@ -138,6 +138,22 @@ function apenasNumero(obj){
 	return obj;
 }  
 
+function apenasNumeroSemZeroEsquerda(obj){
+	apenasNumero(obj);
+	valor = obj.value;
+	b = valor.split('');
+
+	i = 0;
+	parou = false;
+	while(!parou){
+		if(b[i] != '0'){
+			parou = true;
+		}
+		i++;
+	}
+	obj.value = valor.substring(i-1);
+}
+
 function avisoDelecao(){
 	if(!confirm('Deseja realmente excluir?')){
 		return false;
