@@ -4,63 +4,37 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="entradaMaterialPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup>
-			<h:panelGrid columns="2" width="100%">
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="lote" value="Lote:" />
-					<br />
-					<p:inputText id="lote"
-						value="#{entradaMaterialRaiz.instancia.lote}"
-						title="Informe o lote" />
-					<p:commandButton value="Procurar lote"
-						action="#{entradaMaterialRaiz.procurarLote}" />
-				</h:panelGroup>
-			</h:panelGrid>
-		</h:panelGroup>
-
-		<h:panelGroup id="hospitalPanelGroup">
-			<h:panelGrid columns="2" width="100%">
-				<h:panelGroup>
-					<h:outputLabel for="hospital" value="Hospital:" />
-					<br />
-					<p:selectOneMenu
-						value="#{entradaMaterialRaiz.itensMovimentoGeral.hospital}"
-						effect="fade" converter="hospitalConversor">
-						<f:ajax event="change" render="hospitalPanelGroup" />
-						<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
-						<f:selectItems value="#{hospitalConsulta.list}" var="hospital"
-							itemLabel="#{hospital.nome}" itemValue="#{hospital}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-
-				<h:panelGroup id="dataDoacaoPanelGroup"
-					rendered="#{entradaMaterialRaiz.itensMovimentoGeral.hospital != null}">
-					<font color="red">*</font>
-					<h:outputLabel for="dataDoacao" value="Data da doação:" />
-					<br />
-					<p:calendar id="dataDoacao" pattern="dd/MM/yyyy"
-						value="#{entradaMaterialRaiz.itensMovimentoGeral.dataDoacao}" />
-				</h:panelGroup>
-			</h:panelGrid>
-		</h:panelGroup>
-
+	<h:panelGrid columns="2" width="100%">
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="numeroDocumento" value="Número do documento:" />
+			<h:outputLabel for="lote" value="Lote:" />
 			<br />
-			<p:inputText id="numeroDocumento"
-				value="#{entradaMaterialRaiz.itensMovimentoGeral.movimentoGeral.numeroDocumento}"
-				onkeyup="apenasNumero(this);" title="Informe o múmero do documento" />
+			<p:inputText id="lote"
+				value="#{entradaMaterialRaiz.instancia.lote}"
+				title="Informe o lote" 
+				disabled="#{entradaMaterialRaiz.loteEncontrado != null and !entradaMaterialRaiz.loteEncontrado}"
+				required="true"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('entradaMaterialSemNotaFormulario')}"
+							 action="#{entradaMaterialRaiz.procurarLote}" 
+							 rendered="#{entradaMaterialRaiz.loteEncontrado == null || entradaMaterialRaiz.loteEncontrado}"
+							 title="Procurar lote." />
 		</h:panelGroup>
-
+		<h:panelGroup>
+			<h:outputText value="Este lote já está cadastrado. Verifique se esta entrada é uma doação ou uma devolução." 
+						  rendered="#{entradaMaterialRaiz.loteEncontrado}" />
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid id="entradaMaterialPanelGrid"
+				 rendered="#{entradaMaterialRaiz.loteEncontrado != null and !entradaMaterialRaiz.loteEncontrado}" 
+				 columns="3" 
+				 width="100%">
 		<h:panelGroup style="align:left;">
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
 			<br />
-			<p:autoComplete id="material" 
+			<p:autoComplete id="material"
+							required="true" 
 							scrollHeight="300"
 							minQueryLength="4"
 							value="#{entradaMaterialRaiz.instancia.material}"
@@ -69,7 +43,8 @@
 							forceSelection="true" 
 							title="Informe o material"
 							itemLabel="#{material.descricaoUnidadeMaterial}"
-							itemValue="#{material}" converter="materialConversor" />
+							itemValue="#{material}" 
+							converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
 				title="Ao digitar aparecerá algumas sugestões"
 				style="padding-top:8px" />
@@ -80,6 +55,7 @@
 			<h:outputLabel for="fabricante" value="Fabricante:" />
 			<br />
 			<p:autoComplete id="fabricante"
+							required="true"
 							value="#{entradaMaterialRaiz.instancia.fabricante}"
 							completeMethod="#{fabricanteRaiz.getListaFabricanteAutoComplete}"
 							var="fabricante" 
@@ -98,10 +74,12 @@
 			<font color="red">*</font>
 			<h:outputLabel for="dataValidade" value="Data de validade:" />
 			<br />
-			<p:inputMask id="dataValidade" mask="99/99/9999"
-				value="#{entradaMaterialRaiz.instancia.dataValidade}"
-				title="Data de validade do lote">
-				<f:convertDateTime pattern="dd/MM/yyyy" />
+			<p:inputMask id="dataValidade"
+						 required="true" 
+						 mask="99/9999"
+						 value="#{entradaMaterialRaiz.instancia.dataValidade}"
+						 title="Data de validade do lote">
+				<f:convertDateTime pattern="MM/yyyy" />
 			</p:inputMask>
 		</h:panelGroup>
 
@@ -110,8 +88,10 @@
 			<h:outputLabel for="quantidade" value="Quantidade:" />
 			<br />
 			<p:inputText id="quantidade"
-				value="#{entradaMaterialRaiz.itensMovimentoGeral.quantidade}"
-				onkeyup="apenasNumero(this);" title="Informe a quantidade" />
+						 required="true"
+						 value="#{entradaMaterialRaiz.itensMovimentoGeral.quantidade}"
+						 onkeyup="apenasNumero(this);" 
+						 title="Informe a quantidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -123,7 +103,6 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<font color="red">*</font>
 			<h:outputLabel for="valorUnitario" value="Valor unitário:" />
 			<br />
 			<p:inputText id="valorUnitario"

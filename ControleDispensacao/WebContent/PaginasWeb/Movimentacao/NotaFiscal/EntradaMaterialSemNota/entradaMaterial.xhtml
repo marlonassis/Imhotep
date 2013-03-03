@@ -10,27 +10,30 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabEntradaMaterial" title="Entrada de Material">
-			<h:form id="entradaMaterialForm" >
+		<p:tab id="tabEntradaMaterial" title="Entrada de Material Sem Nota Fiscal">
+			<h:form id="entradaMaterialSemNotaFormulario" >
 				<p:fieldset legend="Nova entrada de material"
-					collapsed="#{!entradaMaterialRaiz.edicao}" toggleable="true"
+					collapsed="false" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="entradaMaterialEditor.xhtml" />
 					<p:commandButton value="Salvar"
-						rendered="#{!entradaMaterialRaiz.edicao}"
-						update=":#{p:component('entradaMaterialForm')} :#{p:component('tabelaEntradaMaterial')}"
-						action="#{entradaMaterialRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="false"
-						update=":#{p:component('entradaMaterialForm')} :#{p:component('tabelaEntradaMaterial')}"
-						action="#{entradaMaterialRaiz.atualizar}" />
+									 rendered="#{!entradaMaterialRaiz.edicao}"
+									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
+									 action="#{entradaMaterialRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="false"
+									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
+									 action="#{entradaMaterialRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-						rendered="#{entradaMaterialRaiz.edicao}" update=":#{p:component('entradaMaterialForm')}"
-						action="#{entradaMaterialRaiz.novaInstancia()}" />
+									 rendered="true" 
+									 update=":#{p:component('entradaMaterialSemNotaFormulario')}"
+									 action="#{entradaMaterialRaiz.novaInstancia()}" 
+									 immediate="true" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaEntradaMaterialForm" >
+			<h:form id="pesquisaentradaMaterialFormulario" rendered="false" >
 				<p:fieldset id="pesquisaEntradaMaterialFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="entradaMaterialConsulta.xhtml" />
@@ -41,7 +44,7 @@
 					<p:commandButton value="Limpar"
 						action="#{estoqueDesbloqueadoConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						immediate="true" update=":#{p:component('pesquisaEntradaMaterialForm')}" />
+						immediate="true" update=":#{p:component('pesquisaentradaMaterialFormulario')}" />
 
 				</p:fieldset>
 				<p:growl />

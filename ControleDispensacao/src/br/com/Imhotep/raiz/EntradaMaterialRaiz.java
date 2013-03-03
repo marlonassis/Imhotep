@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
 
-import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.Doacao;
 import br.com.Imhotep.entidade.Estoque;
@@ -30,7 +29,7 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	private ItensMovimentoGeral itensMovimentoGeral;
-	private boolean loteEncontrado;
+	private Boolean loteEncontrado;
 
 	public void editRowEvent(RowEditEvent obj){
 		Estoque estoque = (Estoque) obj.getObject();
@@ -57,9 +56,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	public void procurarLote() throws IOException{
 		Estoque estoque = existeLote(getInstancia().getLote());
 		loteEncontrado = estoque != null;
-		if(loteEncontrado){
-			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_AJUSTE_ESTOQUE + "?lote="+estoque.getLote());
-		}
 	}
 	
 	private Estoque existeLote(String lote) {
@@ -99,6 +95,7 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		setItensMovimentoGeral(new ItensMovimentoGeral());
 		getItensMovimentoGeral().setMovimentoGeral(new MovimentoGeral());
 		getItensMovimentoGeral().getMovimentoGeral().setNumeroDocumento(numeroDocumento);
+		setLoteEncontrado(null);
 	}
 	
 	@Override
@@ -291,11 +288,11 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		this.itensMovimentoGeral = itensMovimentoGeral;
 	}
 
-	public boolean isLoteEncontrado() {
+	public Boolean getLoteEncontrado() {
 		return loteEncontrado;
 	}
 
-	public void setLoteEncontrado(boolean loteEncontrado) {
+	public void setLoteEncontrado(Boolean loteEncontrado) {
 		this.loteEncontrado = loteEncontrado;
 	}
 	
