@@ -1,6 +1,5 @@
 package br.com.Imhotep.raiz;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -13,9 +12,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.ItensMovimentoGeral;
 import br.com.Imhotep.entidade.Material;
-import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.Unidade;
 import br.com.Imhotep.enums.TipoOperacaoEnum;
@@ -32,7 +29,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	private Integer saldoAnterior;
 	//
 	//variáveis usadas no cadastro de ajuste
-	private ItensMovimentoGeral itensMovimentoGeral;
 	private List<Estoque> estoqueList;
 	private Material material;
 	//
@@ -61,7 +57,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	public void carregaAjusteAutomatico(Estoque estoque){
 		setInstancia(estoque);
 		material = getInstancia().getMaterial();
-		getItensMovimentoGeral().setEstoque(getInstancia());
 		carregaEstoqueMaterial();
 	}
 	
@@ -81,10 +76,8 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	@Override
 	public void novaInstancia() {
 		saldoAnterior = 0;
-		itensMovimentoGeral = new ItensMovimentoGeral();
 		setEstoqueList(null);
 		super.novaInstancia();
-		itensMovimentoGeral.setMovimentoGeral(new MovimentoGeral());
 		material = null;
 		unidade = null;
 	}
@@ -95,11 +88,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		}
 	}
 	
-	public AjusteEstoqueRaiz() {
-		itensMovimentoGeral = new ItensMovimentoGeral();
-		itensMovimentoGeral.setMovimentoGeral(new MovimentoGeral());
-	}
-
 	@Override
 	public boolean apagar() {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não é permitido apagar uma entrada de material", "Deleção não autorizada."));
@@ -113,8 +101,8 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	}
 	
 	private boolean verificaQuantidadeTipoOperacao(){
-		TipoOperacaoEnum tipoOperacao = itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getTipoOperacao();
-		if(!tipoOperacao.equals(TipoOperacaoEnum.Entrada) && itensMovimentoGeral.getQuantidade() > getInstancia().getQuantidade()){
+		TipoOperacaoEnum tipoOperacao = null;
+		if(!tipoOperacao.equals(TipoOperacaoEnum.Entrada) && 0 > getInstancia().getQuantidade()){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esta é uma operação de saída ou perda. Informe uma quantidade que esteja no estoque.", "Ajuste não efetuado!"));
 			return false;
 		}else{
@@ -130,12 +118,9 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		if(verificaQuantidadeTipoOperacao()){
 			try{
 				iniciarTransacao();
-				geraMovimentoGeral(data);
 				saldoAnterior = saldoAnterior();
 				atualizarEstoque();
-				carregaItem(data);
 				session.merge(getInstancia());
-				session.merge(itensMovimentoGeral);
 				geraMovimentoLivro(data);
 				String msg = "Ajuste de estoque realizada com sucesso!";
 				finalizaTransacao(msg);
@@ -152,17 +137,10 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		return ret;
 	}
 
-	private void carregaItem(Date data) {
-		itensMovimentoGeral.setDataCriacao(data);
-		itensMovimentoGeral.setEstoque(getInstancia());
-	}
-	
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
-		movimentoLivroAtual.setMovimentoGeral(itensMovimentoGeral.getMovimentoGeral());
-		movimentoLivroAtual.setTipoMovimento(itensMovimentoGeral.getMovimentoGeral().getTipoMovimento());
 		movimentoLivroAtual.setUnidadeReceptora(getUnidade());
 		movimentoLivroAtual.setEstoque(getInstancia());
 		try {
@@ -174,7 +152,7 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		}
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		
-		Integer quantidadeMovimentacao = getItensMovimentoGeral().getQuantidade();
+		Integer quantidadeMovimentacao = 0;
 		movimentoLivroAtual.setQuantidadeMovimentacao(quantidadeMovimentacao);
 		if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
 			movimentoLivroAtual.setSaldoAtual(quantidadeMovimentacao + saldoAnterior);
@@ -204,45 +182,20 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	}
 	
 	private void atualizarEstoque() {
-		TipoOperacaoEnum tipoOperacao = itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getTipoOperacao();
+		TipoOperacaoEnum tipoOperacao = null;
 		if(tipoOperacao.equals(TipoOperacaoEnum.Entrada)){
-			getInstancia().setQuantidade(getInstancia().getQuantidade() + itensMovimentoGeral.getQuantidade());
+			getInstancia().setQuantidade(getInstancia().getQuantidade() + 0);
 		}else{
-			getInstancia().setQuantidade(getInstancia().getQuantidade() - itensMovimentoGeral.getQuantidade());
+			getInstancia().setQuantidade(getInstancia().getQuantidade() - 0);
 		}
 	}
 	
-	private void geraMovimentoGeral(Date data) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-		String chaveUnica = null;
-		try{
-			chaveUnica = sdf.format(data).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
-			itensMovimentoGeral.getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-			itensMovimentoGeral.getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-		} catch (Exception e) {
-			e.printStackTrace();
-			super.mensagem("Erro ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
-			System.out.print("Erro em AjusteEstoqueHome");
-		}
-		itensMovimentoGeral.getMovimentoGeral().setNumeroControle(chaveUnica);
-		itensMovimentoGeral.getMovimentoGeral().setDataInclusao(data);
-		session.save(itensMovimentoGeral.getMovimentoGeral());
-	}
-
 	public Collection<Estoque> getEstoqueList() {
 		return estoqueList;
 	}
 
 	public void setEstoqueList(List<Estoque> estoqueList) {
 		this.estoqueList = estoqueList;
-	}
-
-	public ItensMovimentoGeral getItensMovimentoGeral() {
-		return itensMovimentoGeral;
-	}
-
-	public void setItensMovimentoGeral(ItensMovimentoGeral itensMovimentoGeral) {
-		this.itensMovimentoGeral = itensMovimentoGeral;
 	}
 
 	public Material getMaterial() {

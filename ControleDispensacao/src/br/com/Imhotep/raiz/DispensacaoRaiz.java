@@ -1,6 +1,5 @@
 package br.com.Imhotep.raiz;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,11 +15,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
-import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.ItensMovimentoGeral;
 import br.com.Imhotep.entidade.Material;
-import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.Prescricao;
 import br.com.Imhotep.entidade.PrescricaoItem;
@@ -71,10 +67,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	public void ajustarEstoqueDispensado(){
 		AjusteEstoqueRaiz aeh = new AjusteEstoqueRaiz();
 		aeh.setInstancia(prescricaoItemEstoqueSaida.getEstoque());
-		aeh.getItensMovimentoGeral().getMovimentoGeral().setTipoMovimento(tipoMovimento);
-		aeh.getItensMovimentoGeral().getMovimentoGeral().setMotivo("Ajuste de dispensação");
 		aeh.setMaterial(prescricaoItemEstoqueSaida.getEstoque().getMaterial());
-		aeh.getItensMovimentoGeral().setQuantidade(quantidadeAjuste);
 		if(aeh.enviar()){
 			try{
 				if(tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
@@ -187,13 +180,10 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 					Integer saldoAnterior = saldoAnterior(prescricaoItem);
 					prescricaoItem.setDispensado(TipoStatusEnum.S);
 					session.merge(prescricaoItem);
-					MovimentoGeral movimentoGeral = null;
 					
-					movimentoGeral = geraMovimentoGeral();
+					atualizaEstoque(prescricaoItem);
 					
-					atualizaEstoque(prescricaoItem, movimentoGeral);
-					
-					geraMovimentoLivro(movimentoGeral, saldoAnterior, prescricaoItem.getQuantidadeLiberada(), prescricaoItem.getMaterial());
+					geraMovimentoLivro(saldoAnterior, prescricaoItem.getQuantidadeLiberada(), prescricaoItem.getMaterial());
 					String msg = "Dispensação realizada com sucesso.";
 					finalizaTransacao(msg);
 				}catch(Exception e){
@@ -206,45 +196,10 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		}
 	}
 	
-	private MovimentoGeral geraMovimentoGeral() {
-		ConsultaGeral<MovimentoGeral> cg = new ConsultaGeral<MovimentoGeral>();
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("idPrescricao", getPrescricao().getIdPrescricao());
-		StringBuilder sb = new StringBuilder("select o from MovimentoGeral o where");
-		sb.append(" o.prescricao.idPrescricao = :idPrescricao");
-		MovimentoGeral movimentoGeral = cg.consultaUnica(sb, hashMap);
-		
-		if(movimentoGeral == null){
-			movimentoGeral = new MovimentoGeral();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-			String chaveUnica = null;
-			try{
-				chaveUnica = sdf.format(new Date()).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(super.getIdSessao());
-				movimentoGeral.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-				movimentoGeral.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-			} catch (Exception e) {
-				e.printStackTrace();
-				super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
-				System.out.print("Erro em DispensacaoHome");
-			}
-			movimentoGeral.setNumeroControle(chaveUnica);
-			movimentoGeral.setDataInclusao(new Date());
-			movimentoGeral.setMotivo("Dispensação de medicamento.");
-			movimentoGeral.setNumeroDocumento(chaveUnica);
-			movimentoGeral.setPrescricao(prescricao);
-			movimentoGeral.setTipoMovimento(Parametro.tipoMovimentoDispensacao());
-			session.save(movimentoGeral);
-		}
-		
-		return movimentoGeral;
-	}
-	
-	private void geraMovimentoLivro(MovimentoGeral movimentoGeral, Integer saldoAnterior, Integer quantidadeLiberada, Material material){
+	private void geraMovimentoLivro(Integer saldoAnterior, Integer quantidadeLiberada, Material material){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(new Date());
 		movimentoLivroAtual.setMaterial(material);
-		movimentoLivroAtual.setMovimentoGeral(movimentoGeral);
-		movimentoLivroAtual.setTipoMovimento(movimentoGeral.getTipoMovimento());
 		try{
 			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
@@ -259,19 +214,9 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		session.save(movimentoLivroAtual);
 	}
 	
-	private void geraItensMovimentoGeral(PrescricaoItem prescricaoItem, Estoque estoque, MovimentoGeral movimentoGeral) {
-		ItensMovimentoGeral img = new ItensMovimentoGeral();
-		img.setDataCriacao(new Date());
-		img.setEstoque(estoque);
-		img.setMovimentoGeral(movimentoGeral);
-		img.setPrescricaoItem(prescricaoItem);
-		img.setQuantidade(prescricaoItem.getQuantidadeLiberada());
-		session.merge(img);
-	}
-
-	private void atualizaEstoque(PrescricaoItem prescricaoItem, MovimentoGeral movimentoGeral) {
-		List<Estoque> list = new EstoqueRaiz().listaEstoqueMaterialDispensacao(prescricaoItem.getMaterial());
-		Integer quantidadeLiberada = prescricaoItem.getQuantidadeLiberada(), cont = 0, sobra = 0;
+	private void atualizaEstoque(PrescricaoItem prescricaoIteml) {
+		List<Estoque> list = new EstoqueRaiz().listaEstoqueMaterialDispensacao(null);
+		Integer quantidadeLiberada = 0, cont = 0, sobra = 0;
 		boolean atualizouEstoque = quantidadeLiberada == 0;
 		while(!atualizouEstoque){
 			Estoque estoque = list.get(cont);
@@ -288,9 +233,8 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 				estoque.setQuantidade(sobra);
 				atualizouEstoque = true;
 			}
-			geraPrescricaoItemEstoqueSaida(prescricaoItem, quantidadeDispensada, estoque);
+			geraPrescricaoItemEstoqueSaida(prescricaoIteml, quantidadeDispensada, estoque);
 			session.merge(estoque);
-			geraItensMovimentoGeral(prescricaoItem, estoque, movimentoGeral);
 		}
 	}
 

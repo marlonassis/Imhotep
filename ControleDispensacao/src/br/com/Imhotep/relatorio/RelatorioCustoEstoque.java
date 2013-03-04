@@ -25,38 +25,6 @@ public class RelatorioCustoEstoque extends PadraoRelatorio{
 	private Date dataIni;
 	private Date dataFim;
 	
-	public void relatorioMovimentacao() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String nomeRelatorio = "RelatorioCustoEstoque-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<CustoEstoque> listaCustoEstoque = new ConsultaRelatorioCustoEstoque().pegarResultados(dataIni, ajustaParaUltimaHora().getTime());
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim));
-		super.geraRelatorio(Constantes.RELATORIO_CUSTO_ESTOQUE_PATH, nomeRelatorio, listaCustoEstoque, map);
-	}
 
-	private Calendar ajustaParaUltimaHora() {
-		Calendar dtFim = Calendar.getInstance();
-		dtFim.setTime(dataFim);
-		dtFim.set(Calendar.HOUR, 23);
-		dtFim.set(Calendar.MINUTE, 59);
-		dtFim.set(Calendar.SECOND, 59);
-		return dtFim;
-	}
-
-	public Date getDataIni() {
-		return dataIni;
-	}
-
-	public void setDataIni(Date dataIni) {
-		this.dataIni = dataIni;
-	}
-
-	public Date getDataFim() {
-		return dataFim;
-	}
-
-	public void setDataFim(Date dataFim) {
-		this.dataFim = dataFim;
-	}
 	
 }

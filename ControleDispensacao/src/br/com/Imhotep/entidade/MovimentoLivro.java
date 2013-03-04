@@ -18,7 +18,6 @@ import javax.persistence.TemporalType;
 @Table(name = "tb_movimento_livro")
 public class MovimentoLivro {
 	private int idMovimentoLivro;
-	private MovimentoGeral movimentoGeral;
 	private Unidade unidade;
 	private Material material;
 	private TipoMovimento tipoMovimento;
@@ -39,15 +38,6 @@ public class MovimentoLivro {
 	}
 	public void setIdMovimentoLivro(int idMovimentoLivro) {
 		this.idMovimentoLivro = idMovimentoLivro;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_movimento_geral")
-	public MovimentoGeral getMovimentoGeral() {
-		return movimentoGeral;
-	}
-	public void setMovimentoGeral(MovimentoGeral movimentoGeral) {
-		this.movimentoGeral = movimentoGeral;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -1,7 +1,6 @@
 package br.com.Imhotep.raiz;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -12,10 +11,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
 
-import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.ItensMovimentoGeral;
-import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.imhotep.consulta.raiz.LoteExistenteConsultaRaiz;
@@ -25,7 +21,6 @@ import br.com.remendo.PadraoHome;
 @ManagedBean(name="entradaMaterialRaiz")
 @SessionScoped
 public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
-	private ItensMovimentoGeral itensMovimentoGeral;
 	private Boolean loteEncontrado;
 
 	public void editRowEvent(RowEditEvent obj){
@@ -54,11 +49,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		loteEncontrado = new LoteExistenteConsultaRaiz().consultar(getInstancia().getLote());
 	}
 	
-	public EntradaMaterialRaiz() {
-		setItensMovimentoGeral(new ItensMovimentoGeral());
-		getItensMovimentoGeral().setMovimentoGeral(new MovimentoGeral());
-	}
-
 	@Override
 	public boolean apagar() {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não é permitido apagar uma entrada de material", "Deleção não autorizada."));
@@ -72,30 +62,19 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	}
 	
 	@Override
-	public void novaInstancia() {
-		String numeroDocumento = getItensMovimentoGeral().getMovimentoGeral().getNumeroDocumento();
-		super.novaInstancia();
-		setItensMovimentoGeral(new ItensMovimentoGeral());
-		getItensMovimentoGeral().setMovimentoGeral(new MovimentoGeral());
-		getItensMovimentoGeral().getMovimentoGeral().setNumeroDocumento(numeroDocumento);
-		setLoteEncontrado(null);
-	}
-	
-	@Override
 	public boolean enviar() {
 		boolean ret=false;
 		Date data = new Date();
-		if(camposPreechidos() && carregaMovimentoGeral(data)){
+		if(camposPreechidos()){
 			try{
 				iniciarTransacao();
 				if(!existeEstoque(data)){
 					session.save(getInstancia());
-					geraItensMovimentoGeral(data);
 					geraMovimentoLivro(data);
 					session.flush();  
 					tx.commit(); 
 					ret = true;
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Entrada de material cadastrada com sucesso!", "Documento: ".concat(getItensMovimentoGeral().getMovimentoGeral().getNumeroDocumento()).concat(". Lote: ").concat(getInstancia().getLote()) ));
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Entrada de material cadastrada com sucesso!", "Lote: ".concat(getInstancia().getLote()) ));
 				}
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -110,18 +89,10 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	}
 	
 	private boolean camposPreechidos() {
-		if(itensMovimentoGeral.getHospital() != null && itensMovimentoGeral.getDataDoacao() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe a data da doação.", null));
-			return false;
-		}
 		if(getInstancia().getLote().isEmpty()){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o lote.", null));
 			return false;
 		}else{
-			if(itensMovimentoGeral.getMovimentoGeral().getNumeroDocumento().isEmpty()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o número do documento.", null));
-				return false;
-			}else{
 				if(getInstancia().getMaterial() == null){
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o material.", null));
 					return false;
@@ -133,12 +104,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 						if(getInstancia().getDataValidade() == null){
 							FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe a data de validade.", null));
 							return false;
-						}else{
-							if(itensMovimentoGeral.getQuantidade() == 0 || itensMovimentoGeral.getQuantidade() == null){
-								FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe a quantidade.", null));
-								return false;
-							}
-						}
 					}
 				}
 			}
@@ -146,21 +111,11 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		return true;
 	}
 
-	private void geraItensMovimentoGeral(Date data) {
-		getItensMovimentoGeral().setDataCriacao(data);
-		getItensMovimentoGeral().setEstoque(getInstancia());
-		session.save(getItensMovimentoGeral());
-	}
-
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
 		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
-		movimentoLivroAtual.setMovimentoGeral(getItensMovimentoGeral().getMovimentoGeral());
-		movimentoLivroAtual.setQuantidadeMovimentacao(getItensMovimentoGeral().getQuantidade());
-		movimentoLivroAtual.setSaldoAtual(getItensMovimentoGeral().getQuantidade());
 		movimentoLivroAtual.setSaldoAnterior(0);
-		movimentoLivroAtual.setTipoMovimento(getItensMovimentoGeral().getMovimentoGeral().getTipoMovimento());
 		movimentoLivroAtual.setEstoque(getInstancia());
 		try{
 			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
@@ -202,7 +157,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 			estoqueAtual.setFabricante(getInstancia().getFabricante());
 			estoqueAtual.setLote(getInstancia().getLote());
 			estoqueAtual.setMaterial(getInstancia().getMaterial());
-			estoqueAtual.setQuantidade(getItensMovimentoGeral().getQuantidade());
 			try{
 				estoqueAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 				estoqueAtual.setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
@@ -219,46 +173,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		return false;
 	}
 	
-	private boolean carregaMovimentoGeral(Date data) {
-		//procura algum movimento no banco de dados para associar ao item
-		ConsultaGeral<MovimentoGeral> cg = new ConsultaGeral<MovimentoGeral>();
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("numeroDocumento", getItensMovimentoGeral().getMovimentoGeral().getNumeroDocumento());
-		MovimentoGeral movimentoGeral = cg.consultaUnica(new StringBuilder("select o from MovimentoGeral o where o.numeroDocumento = :numeroDocumento"), hashMap);
-		getItensMovimentoGeral().getMovimentoGeral().setIdMovimentoGeral(0);
-		if(movimentoGeral == null){
-			//caso não encontre um movimento geral será gerado um novo
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-			String chaveUnica = null;
-			try{
-				chaveUnica = sdf.format(data).concat(String.valueOf(Autenticador.getInstancia().getUnidadeAtual().getIdUnidade())).concat(getIdSessao());
-				getItensMovimentoGeral().getMovimentoGeral().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
-				getItensMovimentoGeral().getMovimentoGeral().setUnidade(Autenticador.getInstancia().getUnidadeAtual());
-			} catch (Exception e) {
-				e.printStackTrace();
-				super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
-				System.out.print("Erro em EntradaMaterialHome");
-			}
-			getItensMovimentoGeral().getMovimentoGeral().setNumeroControle(chaveUnica);
-			getItensMovimentoGeral().getMovimentoGeral().setDataInclusao(data);
-			getItensMovimentoGeral().getMovimentoGeral().setTipoMovimento(Parametro.tipoMovimentoEntrada());
-		}else{
-			//como foi encontrado um movimento geral então a operacao é de atualização do movimento geral
-			getItensMovimentoGeral().setMovimentoGeral(movimentoGeral);
-		}
-		return true;
-	}
-
-	
-	public ItensMovimentoGeral getItensMovimentoGeral() {
-		return itensMovimentoGeral;
-	}
-
-
-	public void setItensMovimentoGeral(ItensMovimentoGeral itensMovimentoGeral) {
-		this.itensMovimentoGeral = itensMovimentoGeral;
-	}
-
 	public Boolean getLoteEncontrado() {
 		return loteEncontrado;
 	}

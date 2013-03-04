@@ -36,8 +36,6 @@
 		<mapping class="br.com.Imhotep.entidade.SituacaoPaciente" />
 		<mapping class="br.com.Imhotep.entidade.Paciente" />
 		<mapping class="br.com.Imhotep.entidade.TipoMovimento" />
-		<mapping class="br.com.Imhotep.entidade.MovimentoGeral" />
-		<mapping class="br.com.Imhotep.entidade.ItensMovimentoGeral" />
 		<mapping class="br.com.Imhotep.entidade.Estoque" />
 		<mapping class="br.com.Imhotep.entidade.MovimentoLivro" />
 		<mapping class="br.com.Imhotep.entidade.Especialidade" />

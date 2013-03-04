@@ -42,8 +42,6 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 	
 	public void gravarItemNotaFiscal(){
 		EntradaMaterialRaiz emr = new EntradaMaterialRaiz();
-		emr.getItensMovimentoGeral().setQuantidade(getEstoque().getQuantidade());
-		emr.getItensMovimentoGeral().getMovimentoGeral().setNumeroDocumento(getInstancia().getIdentificacaoNotaFiscal());
 		emr.setInstancia(getEstoque());
 		emr.enviar();
 		
