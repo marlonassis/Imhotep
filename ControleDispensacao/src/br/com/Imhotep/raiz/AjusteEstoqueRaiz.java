@@ -12,9 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import br.com.Imhotep.entidade.Doacao;
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.Hospital;
 import br.com.Imhotep.entidade.ItensMovimentoGeral;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoGeral;
@@ -139,7 +137,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 				session.merge(getInstancia());
 				session.merge(itensMovimentoGeral);
 				geraMovimentoLivro(data);
-				gerarDoacao();
 				String msg = "Ajuste de estoque realizada com sucesso!";
 				finalizaTransacao(msg);
 				novaInstancia();
@@ -153,18 +150,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 			}
 		}
 		return ret;
-	}
-
-	private void gerarDoacao() {
-		Hospital hospital = itensMovimentoGeral.getHospital();
-		if(hospital != null){
-			Date dataDoacao = itensMovimentoGeral.getDataDoacao();
-			Material material = getInstancia().getMaterial();
-			Integer quantidade = itensMovimentoGeral.getQuantidade();
-			TipoOperacaoEnum tipoOperacao = itensMovimentoGeral.getMovimentoGeral().getTipoMovimento().getTipoOperacao();
-			Doacao instancia = new DoacaoRaiz(dataDoacao, hospital, material, quantidade, tipoOperacao).getInstancia();
-			session.save(instancia);
-		}
 	}
 
 	private void carregaItem(Date data) {

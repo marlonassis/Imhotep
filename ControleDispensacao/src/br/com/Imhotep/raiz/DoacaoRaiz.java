@@ -9,9 +9,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.Imhotep.entidade.Doacao;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.Hospital;
-import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
-import br.com.Imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
@@ -31,12 +29,10 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 		setLoteEncontrado(null);
 	}
 	
-	public DoacaoRaiz(Date dataDoacao, Hospital hospital, Material material, Integer quantidade, TipoOperacaoEnum tipoEntrada) {
+	public DoacaoRaiz(Date dataDoacao, Hospital hospital, MovimentoLivro movimentoLivro) {
 		getInstancia().setDataDoacao(dataDoacao);
 		getInstancia().setHospital(hospital);
-		getInstancia().setMaterial(material);
-		getInstancia().setQuantidade(quantidade);
-		getInstancia().setTipoEntrada(tipoEntrada);
+		getInstancia().setMovimentoLivro(movimentoLivro);
 	}
 	
 	public void procurarLote() throws IOException{

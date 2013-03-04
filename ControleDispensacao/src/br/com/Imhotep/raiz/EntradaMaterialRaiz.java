@@ -13,14 +13,10 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 
 import br.com.Imhotep.auxiliar.Parametro;
-import br.com.Imhotep.entidade.Doacao;
 import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.Hospital;
 import br.com.Imhotep.entidade.ItensMovimentoGeral;
-import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
-import br.com.Imhotep.enums.TipoOperacaoEnum;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.imhotep.consulta.raiz.LoteExistenteConsultaRaiz;
 import br.com.remendo.ConsultaGeral;
@@ -96,7 +92,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 					session.save(getInstancia());
 					geraItensMovimentoGeral(data);
 					geraMovimentoLivro(data);
-					gerarDoacao();
 					session.flush();  
 					tx.commit(); 
 					ret = true;
@@ -157,17 +152,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 		session.save(getItensMovimentoGeral());
 	}
 
-	private void gerarDoacao() {
-		Hospital hospital = getItensMovimentoGeral().getHospital();
-		if(hospital != null){
-			Date dataDoacao = getItensMovimentoGeral().getDataDoacao();
-			Material material = getInstancia().getMaterial();
-			Integer quantidade = getItensMovimentoGeral().getQuantidade();
-			Doacao instancia = new DoacaoRaiz(dataDoacao, hospital, material, quantidade, TipoOperacaoEnum.Entrada).getInstancia();
-			session.save(instancia);
-		}
-	}
-	
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
