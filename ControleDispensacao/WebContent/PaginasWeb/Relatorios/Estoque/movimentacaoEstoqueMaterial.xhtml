@@ -21,10 +21,10 @@
 										minQueryLength="4"
 										required="true"
 										scrollHeight="300"
-										completeMethod="#{materialMovimentacaoFarmaciaAutoComplete.autoComplete}"
+										completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
 										var="material" 
 										forceSelection="true"
-										title="Informe o medicamento a ser prescrito"
+										title="Informe o código ou o nome do material"
 										itemLabel="#{material.descricao}" 
 										itemValue="#{material}"
 										converter="materialConversor" />
