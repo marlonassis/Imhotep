@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid columns="2" width="100%">
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:inputText id="lote"
+						 value="#{doacaoRaiz.instancia.movimentoLivro.estoque.lote}"
+						 title="Informe o lote" 
+						 disabled="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}"
+						 required="true"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('doacaoEditorForm')}"
+							 action="#{doacaoRaiz.procurarLote}" 
+							 rendered="#{doacaoRaiz.loteEncontrado == null or doacaoRaiz.edicao}"
+							 title="Procurar lote." />
+		</h:panelGroup>
+	</h:panelGrid>
+
+	<h:panelGrid id="doacaoPanelGrid" 
+				 columns="3" 
+				 width="100%" 
+				 rendered="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}" >
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="tipoOperacao" value="Tipo da Operação" />
+			<br />
+			<p:selectOneMenu id="tipoOperacao"
+							 disabled="#{doacaoRaiz.edicao}"
+							 value="#{doacaoRaiz.instancia.movimentoLivro.tipoMovimento}"
+							 effect="fade" 
+							 converter="tipoMovimentoConversor" 
+							 required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{tipoMovimentoDoacaoSelectOne.itens}"
+							   var="tipoMovimento" 
+							   itemLabel="#{tipoMovimento.descricao}"
+							   itemValue="#{tipoMovimento}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="hospital" value="Informe o Hospital:" />
+			<br />
+			<p:autoComplete id="hospital"
+							value="#{doacaoRaiz.instancia.hospital}"
+							minQueryLength="4"
+							required="true"
+							scrollHeight="300"
+							completeMethod="#{hospitalAutoComplete.autoComplete}"
+							var="hospital" 
+							forceSelection="true"
+							title="Informe o nome do hospital"
+							itemLabel="#{hospital.nome}" 
+							itemValue="#{hospital}"
+							converter="hospitalConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataDoacao" value="Data da Doação:" />
+			<br />
+			<p:calendar id="dataDoacao"
+						required="true"
+						value="#{doacaoRaiz.instancia.dataDoacao}" 
+						pattern="dd/MM/yyyy"
+						locale="pt" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
+			<br />
+			<p:autoComplete id="material"
+							disabled="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}"
+							size="35"
+							value="#{doacaoRaiz.instancia.movimentoLivro.estoque.material}"
+							minQueryLength="4"
+							required="true"
+							scrollHeight="300"
+							completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
+							var="material" 
+							forceSelection="true"
+							title="Informe o nome ou o código do material"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="fabricante" value="Fabricante:" />
+			<br />
+			<p:autoComplete id="fabricante"
+							required="true"
+							disabled="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}"
+							value="#{doacaoRaiz.instancia.movimentoLivro.estoque.fabricante}"
+							completeMethod="#{fabricanteAutoComplete.autoComplete}"
+							var="fabricante" 
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe o fabricante" 
+							itemLabel="#{fabricante.descricao}"
+							itemValue="#{fabricante}" 
+							converter="fabricanteConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataValidade" value="Data de Validade:" />
+			<br />
+			<p:inputMask id="dataValidade"
+						 required="true"
+						 disabled="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}" 
+						 mask="99/9999"
+						 value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+						 title="Data de validade do lote">
+				<f:convertDateTime pattern="MM/yyyy" />
+			</p:inputMask>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<br />
+			<p:inputText id="quantidade"
+						 disabled="#{doacaoRaiz.edicao}"
+						 required="true"
+						 value="#{doacaoRaiz.instancia.movimentoLivro.quantidadeMovimentacao}"
+						 onkeyup="apenasNumero(this);" 
+						 title="Informe a quantidade" />
+		</h:panelGroup>
+
+	</h:panelGrid>
+
+</ui:composition>

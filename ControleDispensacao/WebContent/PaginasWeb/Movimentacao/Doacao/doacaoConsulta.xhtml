@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="tipoMovimentoPanelGridConsulta" columns="3" width="100%">
+
+		<h:panelGroup>
+			
+			<h:outputLabel for="descricao" value="Descrição:" />
+			<br />
+			<p:inputText id="descricao" required="false"
+				value="#{tipoMovimentoConsulta.instancia.descricao}"
+				title="Descreva o tipo de movimento." />
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+</ui:composition>

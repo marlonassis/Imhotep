@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Doação">
+			<h:form id="doacaoEditorForm">
+				<p:fieldset legend="Nova Doação"
+					collapsed="#{!doacaoRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="doacaoEditor.xhtml" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!doacaoRaiz.edicao and doacaoRaiz.loteEncontrado != null}"
+									 update=":#{p:component('doacaoEditorForm')} :#{p:component('doacaoPesquisaForm')}"
+									 action="#{doacaoRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{doacaoRaiz.edicao}"
+									 update=":#{p:component('doacaoEditorForm')} :#{p:component('doacaoPesquisaForm')}"
+									 action="#{doacaoRaiz.atualizar}" />
+					<p:commandButton value="Novo"
+									 rendered="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}"
+									 update=":#{p:component('doacaoEditorForm')}"
+									 action="#{doacaoRaiz.novaInstancia()}" 
+									 immediate="true" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="doacaoPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="doacaoConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('doacaoPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+						action="#{doacaoConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update=":#{p:component('doacaoPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="doacaoTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

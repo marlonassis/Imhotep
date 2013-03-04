@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaDoacao" value="#{doacaoConsulta.list}"
+		var="linha" dblClickSelect="true"
+		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
+		selectionMode="single" rowKey="#{linha.idDoacao}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Hospital" />
+			</f:facet>
+			<h:outputText value="#{linha.hospital.nome}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Tipo do Movimento" />
+			</f:facet>
+			<h:outputText value="#{linha.movimentoLivro.tipoMovimento.descricao}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data da Doação" />
+			</f:facet>
+			<h:outputText value="#{linha.dataDoacao}">
+				<f:convertDateTime pattern="dd/MM/yyyy"/>
+			</h:outputText>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Lote" />
+			</f:facet>
+			<h:outputText value="#{linha.movimentoLivro.estoque.lote}"/>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Material" />
+			</f:facet>
+			<h:outputText value="#{linha.movimentoLivro.estoque.material}"/>
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('doacaoEditorForm')}"
+				style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{doacaoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{doacaoRaiz.apagar()}"
+				update=":#{p:component('doacaoEditorForm')} :#{p:component('doacaoPesquisaForm')}"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{doacaoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>
