@@ -18,8 +18,7 @@ import javax.persistence.TemporalType;
 @Table(name = "tb_movimento_livro")
 public class MovimentoLivro {
 	private int idMovimentoLivro;
-	private Unidade unidade;
-	private Material material;
+	private Unidade unidadeCadastrante;
 	private TipoMovimento tipoMovimento;
 	private Integer saldoAnterior;
 	private Integer quantidadeMovimentacao;
@@ -51,20 +50,11 @@ public class MovimentoLivro {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_unidade_cadastrante")
-	public Unidade getUnidade() {
-		return unidade;
+	public Unidade getUnidadeCadastrante() {
+		return unidadeCadastrante;
 	}
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_material")
-	public Material getMaterial() {
-		return material;
-	}
-	public void setMaterial(Material material) {
-		this.material = material;
+	public void setUnidadeCadastrante(Unidade unidadeCadastrante) {
+		this.unidadeCadastrante = unidadeCadastrante;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -140,11 +130,11 @@ public class MovimentoLivro {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + tipoMovimento.getDescricao().concat(material.getDescricao()).hashCode();
+	    return hash * 31 + estoque.hashCode() + usuarioMovimentacao.hashCode() + dataMovimento.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return tipoMovimento.getDescricao().concat(" - ").concat(material.getDescricao());
+		return tipoMovimento.getDescricao().concat(" - ").concat(estoque.getMaterial().getDescricao());
 	}
 }
