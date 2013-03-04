@@ -8,7 +8,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.entidade.Prescricao;
-import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 

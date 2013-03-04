@@ -21,7 +21,7 @@ public class EspecialidadeRaiz extends PadraoHome<Especialidade>{
 	
 	public void camelCase(){
 		List<Especialidade> list = new ArrayList<Especialidade>(getBusca("select o from Especialidade o where o.idEspecialidade > 54"));
-		int idEspecialidade = 55, cont = 0;
+		int cont = 0;
 		int size = list.size();
 		while(cont < size){
 			Especialidade obj = list.get(cont);
@@ -49,10 +49,9 @@ public class EspecialidadeRaiz extends PadraoHome<Especialidade>{
 			super.setInstancia(obj);
 			super.atualizar();
 			
-//			String update = "update Especialidade set descricao = '"+String.valueOf(charArray)+"' where idEspecialidade ="+idAntigo;
-//			super.executa(update);
+			String update = "update Especialidade set descricao = '"+String.valueOf(charArray)+"' where idEspecialidade ="+idAntigo;
+			super.executa(update);
 
-			idEspecialidade++;
 			cont++;
 		}
 	}

@@ -305,9 +305,9 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	public String quantidadeTotalDoses(Set<PrescricaoItemDose> prescricaoItens){
 		if(prescricaoItens != null){
 			Integer total = 0;
-			for(PrescricaoItemDose pid : prescricaoItens){
+//			for(PrescricaoItemDose pid : prescricaoItens){
 //				total += pid.getQuantidade();
-			}
+//			}
 			return String.valueOf(total);
 		}
 		return null;

@@ -20,10 +20,12 @@ public class FluxoPrescricaoCuidados extends PadraoFluxo{
 	
 	private Prescricao prescricaoAtual = PrescricaoRaiz.getInstanciaHome().getPrescricaoAtual();
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private List consultaCuidados(String sql){
 		return new ArrayList(new ConsultaGeral().consulta(new StringBuilder(sql), null));
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<CuidadosPaciente> consultaTipoCuidado(String tipoCuidado, Integer idPrescricao) {
 		String sql = "select a from CuidadosPaciente a"+ 
 				" left join a.cuidadosPrescricaoList cpl with cpl.prescricao.idPrescricao = "+ idPrescricao+
@@ -31,11 +33,13 @@ public class FluxoPrescricaoCuidados extends PadraoFluxo{
 		return consultaCuidados(sql);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CuidadosPrescricao> getCuidadosEscolhidos(){
 		String sql = "select a from CuidadosPrescricao a where a.prescricao.idPrescricao = "+prescricaoAtual.getIdPrescricao();
 		return consultaCuidados(sql);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<CuidadosPrescricao> getCuidadosEscolhidosVisualizacao(Prescricao prescricaoInformada){
 		String sql = "select a from CuidadosPrescricao a where a.prescricao.idPrescricao = "+prescricaoInformada.getIdPrescricao();
 		return consultaCuidados(sql);

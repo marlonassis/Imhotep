@@ -37,6 +37,7 @@ public class ChamadoRaiz extends PadraoHome<Chamado>{
 		super.aposEnviar();
 	}
 
+	@SuppressWarnings("unused")
 	private void enviarEmail() {
 		try {
 			HtmlEmail email = new HtmlEmail();  
