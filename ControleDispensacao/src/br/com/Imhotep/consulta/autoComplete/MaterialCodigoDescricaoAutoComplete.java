@@ -14,12 +14,12 @@ import br.com.remendo.ConsultaGeral;
 public class MaterialCodigoDescricaoAutoComplete extends ConsultaGeral<Material> {
 	
 	public Collection<Material> autoComplete(String string){
-		StringBuilder stringB = new StringBuilder("select distinct o.material from MovimentoLivro o where ");
+		StringBuilder stringB = new StringBuilder("select o from Material o where ");
 		
 		if(Utilities.isNumero(string)){
-			stringB.append("o.material.codigoMaterial = "+string);
+			stringB.append("o.codigoMaterial = "+string);
 		}else{
-			stringB.append("lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+string+"%'))");
+			stringB.append("lower(to_ascii(o.descricao)) like lower(to_ascii('%"+string+"%'))");
 		}
 		return super.consulta(stringB, null);
 	}
