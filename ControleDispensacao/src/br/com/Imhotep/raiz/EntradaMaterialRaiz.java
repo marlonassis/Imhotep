@@ -22,6 +22,7 @@ import br.com.Imhotep.entidade.MovimentoGeral;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.enums.TipoOperacaoEnum;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.consulta.raiz.LoteExistenteConsultaRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
@@ -54,21 +55,7 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	}
 
 	public void procurarLote() throws IOException{
-		Estoque estoque = existeLote(getInstancia().getLote());
-		loteEncontrado = estoque != null;
-	}
-	
-	private Estoque existeLote(String lote) {
-		ConsultaGeral<Estoque> cg = new ConsultaGeral<Estoque>();
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("lote", lote);
-		StringBuilder sb = new StringBuilder("select o from Estoque o where o.lote = :lote");
-		Estoque estoqueAtual = cg.consultaUnica(sb, hashMap);
-		
-		if(estoqueAtual != null){
-			return estoqueAtual;
-		}
-		return null;
+		loteEncontrado = new LoteExistenteConsultaRaiz().consultar(getInstancia().getLote());
 	}
 	
 	public EntradaMaterialRaiz() {
