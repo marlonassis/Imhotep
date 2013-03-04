@@ -36,7 +36,6 @@ public class Estoque {
 	private Usuario usuarioInclusao;
 	private Date dataBloqueio;
 	private Usuario usuarioBloqueio;
-	private String fornecedor;
 	private Double valorUnitario;
 	private TipoBloqueioLoteEnum tipoBloqueio;
 	
@@ -153,14 +152,6 @@ public class Estoque {
 	}
 	public void setUsuarioBloqueio(Usuario usuarioBloqueio) {
 		this.usuarioBloqueio = usuarioBloqueio;
-	}
-	
-	@Column(name = "cv_fornecedor")
-	public String getFornecedor() {
-		return fornecedor;
-	}
-	public void setFornecedor(String fornecedor) {
-		this.fornecedor = fornecedor;
 	}
 	
 	@Column(name = "db_valor_unitario")
