@@ -18,7 +18,7 @@
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="entradaMaterialEditor.xhtml" />
 					<p:commandButton value="Salvar"
-									 rendered="#{!entradaMaterialRaiz.edicao}"
+									 rendered="#{!entradaMaterialRaiz.edicao and !entradaMaterialRaiz.loteEncontrado and entradaMaterialRaiz.loteEncontrado != null}"
 									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
 									 action="#{entradaMaterialRaiz.enviar}" />
 					<p:commandButton value="Gravar" 
@@ -26,7 +26,7 @@
 									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
 									 action="#{entradaMaterialRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-									 rendered="true" 
+									 rendered="#{!entradaMaterialRaiz.edicao and !entradaMaterialRaiz.loteEncontrado and entradaMaterialRaiz.loteEncontrado != null}" 
 									 update=":#{p:component('entradaMaterialSemNotaFormulario')}"
 									 action="#{entradaMaterialRaiz.novaInstancia()}" 
 									 immediate="true" />
