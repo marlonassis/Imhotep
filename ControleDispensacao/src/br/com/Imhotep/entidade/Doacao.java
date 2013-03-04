@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,18 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.Imhotep.enums.TipoOperacaoEnum;
-
 @Entity
 @Table(name = "tb_doacao")
 public class Doacao {
 
 	private int idDoacao;
 	private Hospital hospital;
-	private Material material;
-	private Integer quantidade;
-	private TipoOperacaoEnum tipoEntrada;
 	private Date dataDoacao;
+	private MovimentoLivro movimentoLivro;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_doacao_id_doacao_seq")
 	@Id
@@ -50,32 +44,6 @@ public class Doacao {
 		this.hospital = hospital;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_material")
-	public Material getMaterial() {
-		return material;
-	}
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
-	
-	@Column(name = "in_quantidade")
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-	
-	@Column(name = "tp_tipo_entrada")
-	@Enumerated(EnumType.STRING)
-	public TipoOperacaoEnum getTipoEntrada() {
-		return tipoEntrada;
-	}
-	public void setTipoEntrada(TipoOperacaoEnum tipoEntrada) {
-		this.tipoEntrada = tipoEntrada;
-	}
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_doacao")
 	public Date getDataDoacao() {
@@ -83,6 +51,15 @@ public class Doacao {
 	}
 	public void setDataDoacao(Date dataDoacao) {
 		this.dataDoacao = dataDoacao;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_movimento_livro")
+	public MovimentoLivro getMovimentoLivro() {
+		return movimentoLivro;
+	}
+	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
+		this.movimentoLivro = movimentoLivro;
 	}
 	
 	@Override
@@ -98,11 +75,11 @@ public class Doacao {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + dataDoacao.hashCode() + hospital.hashCode() + material.hashCode();
+	    return hash * 31 + dataDoacao.hashCode() + hospital.hashCode() + movimentoLivro.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return "Hospital: " + hospital.getNome() + ", Material: " + material.getDescricao() + ", Quantidade: " + String.valueOf(quantidade) + ", Data: " + new SimpleDateFormat("dd/MM/yyyy").format(dataDoacao);
+		return "Hospital: " + hospital.getNome() + ", Data: " + new SimpleDateFormat("dd/MM/yyyy").format(dataDoacao);
 	}
 }
