@@ -1,5 +1,8 @@
 package br.com.Imhotep.auxiliar;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+
 public class Constantes {
 	public static final String PAGINA_TROCA_SENHA = "/Imhotep/PaginasWeb/Usuario/usuarioTrocaSenha.jsf";
 	public static final String PAGINA_HOME = "/Imhotep/PaginasWeb/home.jsf";
@@ -25,4 +28,10 @@ public class Constantes {
 	public static final String SENHA_BANCO = "!@#imhotep*()1237890";
 	
 	public static final String MENSAGEM_RELATORIO_VAZIO = "Nenhum registro encontrado.";
+	
+	public static final Severity ERROR  = FacesMessage.SEVERITY_ERROR;
+	public static final Severity FATAL = FacesMessage.SEVERITY_FATAL;
+	public static final Severity INFO  = FacesMessage.SEVERITY_INFO;
+	public static final Severity WARN  = FacesMessage.SEVERITY_WARN;
+	
 }
