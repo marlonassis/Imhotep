@@ -7,6 +7,7 @@ public class Constantes {
 	public static final String PAGINA_VIZUALIZA_PRESCRICAO = "/Imhotep/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.jsf";
 	public static final String PAGINA_AJUSTE_ESTOQUE = "/Imhotep/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf";
 	public static final String PAGINA_LOGIN = "/Imhotep/PaginasWeb/login.jsf";
+	public static final String PAGINA_MANUTENCAO = "/Imhotep/PaginasWeb/manutencao.jsf";
 	
 	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
 	

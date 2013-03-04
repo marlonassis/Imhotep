@@ -100,6 +100,10 @@ public class Parametro implements Serializable {
 		return cg.consultaUnica(sb, hashMap);
 	}
 	
+	public static boolean isManutencao(){
+		return Boolean.valueOf(tipoConfiguracao("Manutencao"));
+	}
+	
 	public static String getNomeBancoFarmacia(){
 		return tipoConfiguracao("NomeBancoPostgres");
 	}
