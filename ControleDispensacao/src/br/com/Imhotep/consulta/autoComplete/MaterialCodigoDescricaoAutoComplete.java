@@ -9,9 +9,9 @@ import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="materialMovimentacaoFarmaciaAutoComplete")
+@ManagedBean(name="materialCodigoDescricaoAutoComplete")
 @RequestScoped
-public class MaterialMovimentacaoFarmaciaAutoComplete extends ConsultaGeral<Material> {
+public class MaterialCodigoDescricaoAutoComplete extends ConsultaGeral<Material> {
 	
 	public Collection<Material> autoComplete(String string){
 		StringBuilder stringB = new StringBuilder("select distinct o.material from MovimentoLivro o where ");
