@@ -165,7 +165,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 				System.out.print("Erro em EntradaMaterialHome");
 			}
 			estoqueAtual.setDataInclusao(data);
-			estoqueAtual.setValorUnitario(getInstancia().getValorUnitario());
 			setInstancia(estoqueAtual);
 		}
 		return false;

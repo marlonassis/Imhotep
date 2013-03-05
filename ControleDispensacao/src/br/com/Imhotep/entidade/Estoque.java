@@ -36,7 +36,6 @@ public class Estoque {
 	private Usuario usuarioInclusao;
 	private Date dataBloqueio;
 	private Usuario usuarioBloqueio;
-	private Double valorUnitario;
 	private TipoBloqueioLoteEnum tipoBloqueio;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_id_estoque_seq")
@@ -152,14 +151,6 @@ public class Estoque {
 	}
 	public void setUsuarioBloqueio(Usuario usuarioBloqueio) {
 		this.usuarioBloqueio = usuarioBloqueio;
-	}
-	
-	@Column(name = "db_valor_unitario")
-	public Double getValorUnitario() {
-		return valorUnitario;
-	}
-	public void setValorUnitario(Double valorUnitario) {
-		this.valorUnitario = valorUnitario;
 	}
 	
 	@Column(name = "tp_tipo_bloqueio")
