@@ -14,7 +14,7 @@ import br.com.remendo.PadraoConsulta;
 public class DoacaoConsulta extends PadraoConsulta<Doacao> {
 	public DoacaoConsulta(){
 		getCamposConsulta().put("o.hospital", IGUAL);
-		setOrderBy("o.dataDoacao");
+		setOrderBy("o.dataDoacao desc");
 	}
 	
 	@Override
