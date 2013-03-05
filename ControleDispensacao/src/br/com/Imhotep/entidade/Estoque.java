@@ -29,7 +29,7 @@ public class Estoque {
 	private Unidade unidade;
 	private String lote;
 	private Date dataValidade;
-	private Integer quantidade;
+	private int quantidade;
 	private boolean bloqueado;
 	private String motivoBloqueio;
 	private Date dataInclusao;
@@ -95,10 +95,10 @@ public class Estoque {
 	}
 	
 	@Column(name = "in_quantidade")
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 	
@@ -201,7 +201,7 @@ public class Estoque {
 
 	@Override
 	public String toString() {
-		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(quantidade.toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
+		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidade).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
 	}
 	
 }
