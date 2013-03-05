@@ -31,7 +31,7 @@ public class ControleEstoque {
 		}else{
 			saldoAtualizado = saldoAtual - quantidadeMovimentada;
 		}
-		estoque.setQuantidade(saldoAtualizado);
+		estoque.setQuantidadeAtual(saldoAtualizado);
 	}
 	
 }

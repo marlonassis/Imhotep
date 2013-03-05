@@ -41,7 +41,7 @@ public class FluxoDoacao extends PadraoFluxoTemp{
 
 	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
 		ControleEstoque controleEstoque = new ControleEstoque();
-		controleEstoque.prepararEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getEstoque().getQuantidade(), movimentoLivro.getTipoMovimento());
+		controleEstoque.prepararEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getEstoque().getQuantidadeAtual(), movimentoLivro.getTipoMovimento());
 		controleEstoque.prepararMovimentoLivro(dataAtual, movimentoLivro);
 	}
 	

@@ -218,17 +218,17 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		boolean atualizouEstoque = quantidadeLiberada == 0;
 		while(!atualizouEstoque){
 			Estoque estoque = list.get(cont);
-			sobra = estoque.getQuantidade() - quantidadeLiberada;
+			sobra = estoque.getQuantidadeAtual() - quantidadeLiberada;
 			Integer quantidadeDispensada;
 			if(sobra < 0){
-				estoque.setQuantidade(0);
+				estoque.setQuantidadeAtual(0);
 				sobra *= -1;
 				quantidadeDispensada = quantidadeLiberada - sobra;
 				quantidadeLiberada = sobra;
 				cont++;
 			}else{
-				quantidadeDispensada = estoque.getQuantidade() - sobra; 
-				estoque.setQuantidade(sobra);
+				quantidadeDispensada = estoque.getQuantidadeAtual() - sobra; 
+				estoque.setQuantidadeAtual(sobra);
 				atualizouEstoque = true;
 			}
 			geraPrescricaoItemEstoqueSaida(prescricaoIteml, quantidadeDispensada, estoque);

@@ -102,7 +102,7 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	
 	private boolean verificaQuantidadeTipoOperacao(){
 		TipoOperacaoEnum tipoOperacao = null;
-		if(!tipoOperacao.equals(TipoOperacaoEnum.Entrada) && 0 > getInstancia().getQuantidade()){
+		if(!tipoOperacao.equals(TipoOperacaoEnum.Entrada) && 0 > getInstancia().getQuantidadeAtual()){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Esta é uma operação de saída ou perda. Informe uma quantidade que esteja no estoque.", "Ajuste não efetuado!"));
 			return false;
 		}else{
@@ -178,9 +178,9 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	private void atualizarEstoque() {
 		TipoOperacaoEnum tipoOperacao = null;
 		if(tipoOperacao.equals(TipoOperacaoEnum.Entrada)){
-			getInstancia().setQuantidade(getInstancia().getQuantidade() + 0);
+			getInstancia().setQuantidadeAtual(getInstancia().getQuantidadeAtual() + 0);
 		}else{
-			getInstancia().setQuantidade(getInstancia().getQuantidade() - 0);
+			getInstancia().setQuantidadeAtual(getInstancia().getQuantidadeAtual() - 0);
 		}
 	}
 	

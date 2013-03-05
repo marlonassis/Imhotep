@@ -29,7 +29,7 @@ public class Estoque {
 	private Unidade unidade;
 	private String lote;
 	private Date dataValidade;
-	private int quantidade;
+	private int quantidadeAtual;
 	private boolean bloqueado;
 	private String motivoBloqueio;
 	private Date dataInclusao;
@@ -94,12 +94,12 @@ public class Estoque {
 		this.dataValidade = dataValidade;
 	}
 	
-	@Column(name = "in_quantidade")
-	public int getQuantidade() {
-		return quantidade;
+	@Column(name = "in_quantidade_atual")
+	public int getQuantidadeAtual() {
+		return quantidadeAtual;
 	}
-	public void setQuantidade(int quantidade) {
-		this.quantidade = quantidade;
+	public void setQuantidadeAtual(int quantidadeAtual) {
+		this.quantidadeAtual = quantidadeAtual;
 	}
 	
 	@Column(name = "bl_bloqueado")
@@ -201,7 +201,7 @@ public class Estoque {
 
 	@Override
 	public String toString() {
-		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidade).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
+		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidadeAtual).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
 	}
 	
 }
