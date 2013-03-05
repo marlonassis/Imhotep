@@ -13,14 +13,27 @@ public class FluxoDoacao extends PadraoFluxoTemp{
 		super("Erro ao salvar a doação.", "Doação salva com sucesso.");
 	}
 	
+	public boolean atualizarDoacao(Doacao doacao) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+		Date dataAtual = new Date();
+		ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro());
+		enfileirarObjetosAtualizacao(doacao);
+		return super.processarFluxo();
+	}
+	
 	public boolean salvarNovaDoacao(Doacao doacao) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Date dataAtual = new Date();
 		ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro());
-		enfileirarObjetosPersistencia(doacao);
+		enfileirarObjetosNovaEntrada(doacao);
 		return super.processarFluxo();
 	}
 
-	private void enfileirarObjetosPersistencia(Doacao doacao) {
+	private void enfileirarObjetosAtualizacao(Doacao doacao) {
+		super.getObjetoAtualizar().put("Estoque", doacao.getMovimentoLivro().getEstoque());
+		super.getObjetoSalvar().put("MovimentoLivro", doacao.getMovimentoLivro());
+		super.getObjetoSalvar().put("Doacao", doacao);
+	}
+	
+	private void enfileirarObjetosNovaEntrada(Doacao doacao) {
 		super.getObjetoSalvar().put("Estoque", doacao.getMovimentoLivro().getEstoque());
 		super.getObjetoSalvar().put("MovimentoLivro", doacao.getMovimentoLivro());
 		super.getObjetoSalvar().put("Doacao", doacao);

@@ -58,7 +58,10 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 			boolean movimentoEntrada = getInstancia().getMovimentoLivro().getTipoMovimento().equals(Parametro.tipoMovimentoDoacaoRecebida());
 			if(movimentoEntrada || new StatusEstoqueConsultaRaiz().quantidadeAutorizada(material, quantidadeMovimentacao)){
 				FluxoDoacao fluxoDoacao = new FluxoDoacao();
-				return fluxoDoacao.salvarNovaDoacao(getInstancia());
+				if(loteEncontrado)
+					return fluxoDoacao.atualizarDoacao(getInstancia());
+				else
+					return fluxoDoacao.salvarNovaDoacao(getInstancia());
 			}
 		} catch (InstantiationException e) {
 			e.printStackTrace();

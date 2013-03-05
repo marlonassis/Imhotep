@@ -12,6 +12,7 @@ import br.com.remendo.PadraoFluxo;
 public class PadraoFluxoTemp extends PadraoFluxo {
 
 	private Map<String, Object> objetoSalvar = new HashMap<String, Object>();
+	private Map<String, Object> objetoAtualizar = new HashMap<String, Object>();
 	private String mensagemErro;
 	private String mensagemSucesso;
 	
@@ -30,11 +31,18 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		String posicao = "Iniciar Transação";
 		iniciarTransacao();
 		try{
-			Set<String> chaves = getObjetoSalvar().keySet();
-			for(String chave : chaves){
+			Set<String> chavesSalvar = getObjetoSalvar().keySet();
+			for(String chave : chavesSalvar){
 				posicao = "Save - ".concat(chave);
 				session.save(getObjetoSalvar().get(chave));
 			}
+			
+			Set<String> chavesAtualizar = getObjetoAtualizar().keySet();
+			for(String chave : chavesAtualizar){
+				posicao = "Merge - ".concat(chave);
+				session.merge(getObjetoAtualizar().get(chave));
+			}
+			
 			posicao = "Flush";
 			session.flush();  
 			posicao = "Commit";
@@ -81,6 +89,14 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 
 	public void setMensagemSucesso(String mensagemSucesso) {
 		this.mensagemSucesso = mensagemSucesso;
+	}
+
+	public Map<String, Object> getObjetoAtualizar() {
+		return objetoAtualizar;
+	}
+
+	public void setObjetoAtualizar(Map<String, Object> objetoAtualizar) {
+		this.objetoAtualizar = objetoAtualizar;
 	}
 	
 }
