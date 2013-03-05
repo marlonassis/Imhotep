@@ -31,8 +31,10 @@
 			<font color="red">*</font>
 			<h:outputLabel for="tipoOperacao" value="Tipo da Operação" />
 			<br />
+			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.tipoMovimento.descricao}" 
+						  rendered="#{doacaoRaiz.edicao or !doacaoRaiz.loteEncontrado}" />
 			<p:selectOneMenu id="tipoOperacao"
-							 disabled="#{doacaoRaiz.edicao}"
+							 rendered="#{!doacaoRaiz.edicao and doacaoRaiz.loteEncontrado}"
 							 value="#{doacaoRaiz.instancia.movimentoLivro.tipoMovimento}"
 							 effect="fade" 
 							 converter="tipoMovimentoConversor" 
@@ -78,8 +80,10 @@
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
 			<br />
+			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.material.descricao}" 
+						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}" />
 			<p:autoComplete id="material"
-							disabled="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}"
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
 							size="35"
 							value="#{doacaoRaiz.instancia.movimentoLivro.estoque.material}"
 							minQueryLength="4"
@@ -92,15 +96,21 @@
 							itemLabel="#{material.descricao}" 
 							itemValue="#{material}"
 							converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 		
 		<h:panelGroup style="align:left;">
 			<font color="red">*</font>
 			<h:outputLabel for="fabricante" value="Fabricante:" />
 			<br />
+			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.fabricante.descricao}" 
+						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}" />
 			<p:autoComplete id="fabricante"
 							required="true"
-							disabled="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}"
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
 							value="#{doacaoRaiz.instancia.movimentoLivro.estoque.fabricante}"
 							completeMethod="#{fabricanteAutoComplete.autoComplete}"
 							var="fabricante" 
@@ -111,22 +121,25 @@
 							itemValue="#{fabricante}" 
 							converter="fabricanteConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="dataValidade" value="Data de Validade:" />
 			<br />
-			<p:inputMask id="dataValidade"
-						 required="true"
-						 disabled="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}" 
-						 mask="99/9999"
-						 value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
-						 title="Data de validade do lote">
-				<f:convertDateTime pattern="MM/yyyy" />
-			</p:inputMask>
+			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}" 
+						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}">
+				<f:convertDateTime pattern="MM/yyyy"/>
+			</h:outputText>
+			<p:calendar id="dataValidade"
+						required="true"
+						rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}" 
+						pattern="MM/yyyy"
+						value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+						title="Data de validade do lote"/>
 		</h:panelGroup>
 
 		<h:panelGroup>
