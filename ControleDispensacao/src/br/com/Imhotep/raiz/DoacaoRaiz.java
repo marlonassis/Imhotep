@@ -6,11 +6,15 @@ import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.Doacao;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.Hospital;
+import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
+import br.com.Imhotep.fluxo.FluxoDoacao;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
+import br.com.imhotep.consulta.raiz.StatusEstoqueConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="doacaoRaiz")
@@ -41,7 +45,29 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 		loteEncontrado = estoque != null;
 		if(loteEncontrado){
 			getInstancia().getMovimentoLivro().setEstoque(estoque);
+		}else{
+			getInstancia().getMovimentoLivro().setTipoMovimento(Parametro.tipoMovimentoDoacaoRecebida());
 		}
+	}
+	
+	@Override
+	public boolean enviar() {
+		try {
+			Material material = getInstancia().getMovimentoLivro().getEstoque().getMaterial();
+			Integer quantidadeMovimentacao = getInstancia().getMovimentoLivro().getQuantidadeMovimentacao();
+			boolean movimentoEntrada = getInstancia().getMovimentoLivro().getTipoMovimento().equals(Parametro.tipoMovimentoDoacaoRecebida());
+			if(movimentoEntrada || new StatusEstoqueConsultaRaiz().quantidadeAutorizada(material, quantidadeMovimentacao)){
+				FluxoDoacao fluxoDoacao = new FluxoDoacao();
+				return fluxoDoacao.salvarNovaDoacao(getInstancia());
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	@Override

@@ -114,11 +114,10 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
-		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
 		movimentoLivroAtual.setSaldoAnterior(0);
 		movimentoLivroAtual.setEstoque(getInstancia());
 		try{
-			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			movimentoLivroAtual.setUnidadeCadastrante(Autenticador.getInstancia().getUnidadeAtual());
 			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -166,7 +165,6 @@ public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
 				System.out.print("Erro em EntradaMaterialHome");
 			}
 			estoqueAtual.setDataInclusao(data);
-			estoqueAtual.setFornecedor(getInstancia().getFornecedor());
 			estoqueAtual.setValorUnitario(getInstancia().getValorUnitario());
 			setInstancia(estoqueAtual);
 		}

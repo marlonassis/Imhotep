@@ -140,11 +140,10 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 	private void geraMovimentoLivro(Date data){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(data);
-		movimentoLivroAtual.setMaterial(getInstancia().getMaterial());
 		movimentoLivroAtual.setUnidadeReceptora(getUnidade());
 		movimentoLivroAtual.setEstoque(getInstancia());
 		try {
-			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			movimentoLivroAtual.setUnidadeCadastrante(Autenticador.getInstancia().getUnidadeAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
 			super.mensagem("Erro ao pegar a unidade atual.", null, FacesMessage.SEVERITY_ERROR);
@@ -154,11 +153,6 @@ public class AjusteEstoqueRaiz extends PadraoHome<Estoque>{
 		
 		Integer quantidadeMovimentacao = 0;
 		movimentoLivroAtual.setQuantidadeMovimentacao(quantidadeMovimentacao);
-		if(movimentoLivroAtual.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
-			movimentoLivroAtual.setSaldoAtual(quantidadeMovimentacao + saldoAnterior);
-		}else{
-			movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeMovimentacao);
-		}
 		
 		try {
 			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());

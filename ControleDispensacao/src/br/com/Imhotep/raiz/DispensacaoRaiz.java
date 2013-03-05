@@ -199,9 +199,8 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	private void geraMovimentoLivro(Integer saldoAnterior, Integer quantidadeLiberada, Material material){
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(new Date());
-		movimentoLivroAtual.setMaterial(material);
 		try{
-			movimentoLivroAtual.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
+			movimentoLivroAtual.setUnidadeCadastrante(Autenticador.getInstancia().getUnidadeAtual());
 			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,7 +209,6 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		}
 		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		movimentoLivroAtual.setQuantidadeMovimentacao(quantidadeLiberada);
-		movimentoLivroAtual.setSaldoAtual(saldoAnterior - quantidadeLiberada);
 		session.save(movimentoLivroAtual);
 	}
 	
