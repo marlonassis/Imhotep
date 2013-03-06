@@ -10,7 +10,7 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabEntradaMaterial" title="Entrada de Material Sem Nota Fiscal">
+		<p:tab id="tabEntradaMaterialSemNota" title="Entrada de Material Sem Nota Fiscal">
 			<h:form id="entradaMaterialSemNotaFormulario" >
 				<p:fieldset legend="Nova entrada de material"
 					collapsed="false" toggleable="true"
@@ -18,33 +18,33 @@
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="entradaMaterialSemNotaEditor.xhtml" />
 					<p:commandButton value="Salvar"
-									 rendered="#{!entradaMaterialRaiz.edicao and !entradaMaterialRaiz.loteEncontrado and entradaMaterialRaiz.loteEncontrado != null}"
-									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
-									 action="#{entradaMaterialRaiz.enviar}" />
+									 rendered="#{entradaMaterialSemNotaRaiz.loteEncontrado != null}"
+									 update=":#{p:component('entradaMaterialSemNotaFormulario')}"
+									 action="#{entradaMaterialSemNotaRaiz.enviar}" />
 					<p:commandButton value="Gravar" 
 									 rendered="false"
-									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
-									 action="#{entradaMaterialRaiz.atualizar}" />
+									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterialSemNota')}"
+									 action="#{entradaMaterialSemNotaRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-									 rendered="#{!entradaMaterialRaiz.edicao and !entradaMaterialRaiz.loteEncontrado and entradaMaterialRaiz.loteEncontrado != null}" 
+									 rendered="#{entradaMaterialSemNotaRaiz.loteEncontrado != null}" 
 									 update=":#{p:component('entradaMaterialSemNotaFormulario')}"
-									 action="#{entradaMaterialRaiz.novaInstancia()}" 
+									 action="#{entradaMaterialSemNotaRaiz.novaInstancia()}" 
 									 immediate="true" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="pesquisaentradaMaterialFormulario" rendered="false" >
-				<p:fieldset id="pesquisaEntradaMaterialFieldSet" legend="Pesquisa"
+			<h:form id="pesquisaentradaMaterialSemNotaFormulario" rendered="false" >
+				<p:fieldset id="pesquisaEntradaMaterialSemNotaFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
 					<ui:include src="entradaMaterialSemNotaConsulta.xhtml" />
 
-					<p:commandButton value="Pesquisar" update=":#{p:component('tabelaEntradaMaterial')}"
+					<p:commandButton value="Pesquisar" update=":#{p:component('tabelaEntradaMaterialSemNota')}"
 						image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
 						action="#{estoqueDesbloqueadoConsulta.novaInstancia()}"
 						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						immediate="true" update=":#{p:component('pesquisaentradaMaterialFormulario')}" />
+						immediate="true" update=":#{p:component('pesquisaentradaMaterialSemNotaFormulario')}" />
 
 				</p:fieldset>
 				<p:growl />

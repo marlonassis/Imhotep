@@ -10,23 +10,19 @@
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
 			<p:inputText id="lote"
-				value="#{entradaMaterialRaiz.instancia.lote}"
-				title="Informe o lote" 
-				disabled="#{entradaMaterialRaiz.loteEncontrado != null and !entradaMaterialRaiz.loteEncontrado}"
-				required="true"/>
+						 value="#{entradaMaterialSemNotaRaiz.instancia.lote}"
+						 title="Informe o lote" 
+						 disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado != null}"
+						 required="true"/>
 			<p:commandButton image="ui-icon ui-icon-search"
-							 update=":#{p:component('entradaMaterialSemNotaFormulario')}"
-							 action="#{entradaMaterialRaiz.procurarLote}" 
-							 rendered="#{entradaMaterialRaiz.loteEncontrado == null || entradaMaterialRaiz.loteEncontrado}"
+							 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('entradaMaterialPanelGrid')}"
+							 action="#{entradaMaterialSemNotaRaiz.procurarLote}" 
+							 rendered="#{entradaMaterialSemNotaRaiz.loteEncontrado == null}"
 							 title="Procurar lote." />
-		</h:panelGroup>
-		<h:panelGroup>
-			<h:outputText value="Este lote já está cadastrado. Verifique se esta entrada é uma doação ou uma devolução." 
-						  rendered="#{entradaMaterialRaiz.loteEncontrado}" />
 		</h:panelGroup>
 	</h:panelGrid>
 	<h:panelGrid id="entradaMaterialPanelGrid"
-				 rendered="#{entradaMaterialRaiz.loteEncontrado != null and !entradaMaterialRaiz.loteEncontrado}" 
+				 rendered="#{entradaMaterialSemNotaRaiz.loteEncontrado != null}" 
 				 columns="3" 
 				 width="100%">
 		<h:panelGroup style="align:left;">
@@ -34,10 +30,11 @@
 			<h:outputLabel for="material" value="Material:" />
 			<br />
 			<p:autoComplete id="material"
+							disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 							required="true" 
 							scrollHeight="300"
 							minQueryLength="4"
-							value="#{entradaMaterialRaiz.instancia.material}"
+							value="#{entradaMaterialSemNotaRaiz.instancia.material}"
 							completeMethod="#{materialAutoComplete.autoComplete}"
 							var="material" 
 							forceSelection="true" 
@@ -55,8 +52,9 @@
 			<h:outputLabel for="fabricante" value="Fabricante:" />
 			<br />
 			<p:autoComplete id="fabricante"
+							disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 							required="true"
-							value="#{entradaMaterialRaiz.instancia.fabricante}"
+							value="#{entradaMaterialSemNotaRaiz.instancia.fabricante}"
 							completeMethod="#{fabricanteAutoComplete.autoComplete}"
 							var="fabricante" 
 							minQueryLength="3" 
@@ -75,9 +73,10 @@
 			<h:outputLabel for="dataValidade" value="Data de validade:" />
 			<br />
 			<p:inputMask id="dataValidade"
+						 disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 						 required="true" 
 						 mask="99/9999"
-						 value="#{entradaMaterialRaiz.instancia.dataValidade}"
+						 value="#{entradaMaterialSemNotaRaiz.instancia.dataValidade}"
 						 title="Data de validade do lote">
 				<f:convertDateTime pattern="MM/yyyy" />
 			</p:inputMask>
@@ -89,29 +88,10 @@
 			<br />
 			<p:inputText id="quantidade"
 						 required="true"
-						 value="#{entradaMaterialRaiz.itensMovimentoGeral.quantidade}"
+						 value="#{entradaMaterialSemNotaRaiz.quantidadeMovimentacao}"
 						 onkeyup="apenasNumero(this);" 
 						 title="Informe a quantidade" />
 		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="fornecedor" value="Fornecedor:" />
-			<br />
-			<p:inputText id="fornecedor"
-				value="#{entradaMaterialRaiz.instancia.fornecedor}"
-				title="Informe o fornecedor" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="valorUnitario" value="Valor unitário:" />
-			<br />
-			<p:inputText id="valorUnitario"
-				value="#{entradaMaterialRaiz.instancia.valorUnitario}"
-				onkeyup="apenasNumeroComVirgula(this);"
-				converter="monetarioConversor"
-				title="Informe o valor unitário do medicamento" />
-		</h:panelGroup>
-
 
 	</h:panelGrid>
 </ui:composition>
