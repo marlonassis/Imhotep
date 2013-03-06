@@ -16,7 +16,7 @@
 					collapsed="false" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="entradaMaterialEditor.xhtml" />
+					<ui:include src="entradaMaterialSemNotaEditor.xhtml" />
 					<p:commandButton value="Salvar"
 									 rendered="#{!entradaMaterialRaiz.edicao and !entradaMaterialRaiz.loteEncontrado and entradaMaterialRaiz.loteEncontrado != null}"
 									 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('tabelaEntradaMaterial')}"
@@ -36,7 +36,7 @@
 			<h:form id="pesquisaentradaMaterialFormulario" rendered="false" >
 				<p:fieldset id="pesquisaEntradaMaterialFieldSet" legend="Pesquisa"
 					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="entradaMaterialConsulta.xhtml" />
+					<ui:include src="entradaMaterialSemNotaConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar" update=":#{p:component('tabelaEntradaMaterial')}"
 						image="ui-icon ui-icon-search" />
@@ -48,7 +48,7 @@
 
 				</p:fieldset>
 				<p:growl />
-				<ui:include src="entradaMaterialTabela.xhtml" />
+				<ui:include src="entradaMaterialSemNotaTabela.xhtml" />
 			</h:form>
 		</p:tab>
 	</ui:define>
