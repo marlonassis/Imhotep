@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid columns="2" width="100%">
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:inputText id="lote"
+						 value="#{dispensacaoSimplesRaiz.instancia.movimentoLivro.estoque.lote}"
+						 title="Informe o lote" 
+						 disabled="#{dispensacaoSimplesRaiz.loteEncontrado}"
+						 required="true"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('dispensacaoSimplesFormulario')} :#{p:component('dispensacaoPanelGrid')}"
+							 action="#{dispensacaoSimplesRaiz.procurarLote}" 
+							 rendered="#{!entradaMaterialSemNotaRaiz.loteEncontrado}"
+							 title="Procurar lote." />
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid id="dispensacaoPanelGrid"
+				 rendered="#{dispensacaoSimplesRaiz.loteEncontrado}" 
+				 columns="3" 
+				 width="100%">
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Material:" />
+			<br />
+			<p:autoComplete id="material"
+							disabled="true"
+							size="35"
+							required="true" 
+							scrollHeight="300"
+							minQueryLength="4"
+							value="#{dispensacaoSimplesRaiz.instancia.movimentoLivro.estoque.material}"
+							completeMethod="#{materialAutoComplete.autoComplete}"
+							var="material" 
+							forceSelection="true" 
+							title="Informe o material"
+							itemLabel="#{material.descricaoUnidadeMaterial}"
+							itemValue="#{material}" 
+							converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="fabricante" value="Fabricante:" />
+			<br />
+			<p:autoComplete id="fabricante"
+							disabled="true"
+							value="#{dispensacaoSimplesRaiz.instancia.movimentoLivro.estoque.fabricante}"
+							completeMethod="#{fabricanteAutoComplete.autoComplete}"
+							var="fabricante" 
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe o fabricante" 
+							itemLabel="#{fabricante.descricao}"
+							itemValue="#{fabricante}" 
+							converter="fabricanteConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+				title="Ao digitar aparecerá algumas sugestões"
+				style="padding-top:8px" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataValidade" value="Data de validade:" />
+			<br />
+			<p:inputMask id="dataValidade"
+						 disabled="true"
+						 required="true" 
+						 mask="99/9999"
+						 value="#{dispensacaoSimplesRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+						 title="Data de validade do lote">
+				<f:convertDateTime pattern="MM/yyyy" />
+			</p:inputMask>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<br />
+			<p:inputText id="quantidade"
+						 required="true"
+						 value="#{dispensacaoSimplesRaiz.quantidadeMovimentacao}"
+						 onkeyup="apenasNumero(this);" 
+						 title="Informe a quantidade" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="unidadeReceptora" value="Unidade:" />
+			<br />
+			<p:autoComplete id="unidadeReceptora"
+							required="true"
+							value="#{dispensacaoSimplesRaiz.instancia.unidadeDispensada}"
+							completeMethod="#{unidadeAutoComplete.autoComplete}"
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe a unidade receptora do medicamento." 
+							var="unidade" 
+							itemValue="#{unidade}" 
+							itemLabel="#{unidade.nome}"
+							converter="unidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+
+	</h:panelGrid>
+</ui:composition>

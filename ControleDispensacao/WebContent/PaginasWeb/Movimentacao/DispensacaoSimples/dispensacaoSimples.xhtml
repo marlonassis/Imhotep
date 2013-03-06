@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabDispensacaoSimples" title="Dispensação Simples">
+			<h:form id="dispensacaoSimplesFormulario" >
+				<p:fieldset legend="Nova dispensação"
+					collapsed="false" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="dispensacaoSimplesEditor.xhtml" />
+					<p:commandButton value="Salvar"
+									 rendered="#{dispensacaoSimplesRaiz.loteEncontrado}"
+									 update=":#{p:component('dispensacaoSimplesFormulario')}"
+									 action="#{dispensacaoSimplesRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="false"
+									 update=":#{p:component('dispensacaoSimplesFormulario')}"
+									 action="#{dispensacaoSimplesRaiz.atualizar}" />
+					<p:commandButton value="Novo"
+									 rendered="#{dispensacaoSimplesRaiz.loteEncontrado}" 
+									 update=":#{p:component('dispensacaoSimplesFormulario')}"
+									 action="#{dispensacaoSimplesRaiz.novaInstancia()}" 
+									 immediate="true" />
+				</p:fieldset>
+			</h:form>
+
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>
