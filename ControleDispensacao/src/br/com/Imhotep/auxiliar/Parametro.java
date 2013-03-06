@@ -87,6 +87,11 @@ public class Parametro implements Serializable {
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
 	}
 	
+	public static TipoMovimento tipoMovimentoDispensacaoSimples(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 21");
+		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
 	public static TipoMovimento tipoMovimentoDoacaoEnviada(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 16");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);

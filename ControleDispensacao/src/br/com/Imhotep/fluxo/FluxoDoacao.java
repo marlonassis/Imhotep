@@ -15,16 +15,20 @@ public class FluxoDoacao extends PadraoFluxoTemp{
 	
 	public boolean atualizarDoacao(Doacao doacao) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Date dataAtual = new Date();
-		ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro());
-		enfileirarObjetosAtualizacao(doacao);
-		return super.processarFluxo();
+		if(ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro())){
+			enfileirarObjetosAtualizacao(doacao);
+			return super.processarFluxo();
+		}
+		return false;
 	}
 	
 	public boolean salvarNovaDoacao(Doacao doacao) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Date dataAtual = new Date();
-		ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro());
-		enfileirarObjetosNovaEntrada(doacao);
-		return super.processarFluxo();
+		if(ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro())){
+			enfileirarObjetosNovaEntrada(doacao);
+			return super.processarFluxo();
+		}
+		return false;
 	}
 
 	private void enfileirarObjetosAtualizacao(Doacao doacao) {
@@ -39,9 +43,9 @@ public class FluxoDoacao extends PadraoFluxoTemp{
 		super.getObjetoSalvar().put("Doacao", doacao);
 	}
 
-	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
+	private boolean ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
 		ControleEstoque controleEstoque = new ControleEstoque();
-		controleEstoque.manipularEstoque(dataAtual, movimentoLivro);
+		return controleEstoque.manipularEstoque(dataAtual, movimentoLivro);
 	}
 	
 }

@@ -148,6 +148,10 @@
 	<p:submenu label="Movimentação"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação')}">
 		
+		<p:menuitem value="Dispensação Simples"
+			url="/PaginasWeb/Movimentacao/DispensacaoSimples/dispensacaoSimples.jsf"
+			rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação Simples')}" />
+			
 		<p:menuitem value="Doação"
 			url="/PaginasWeb/Movimentacao/Doacao/doacao.jsf"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Doação')}" />

@@ -1,6 +1,5 @@
 package br.com.Imhotep.raiz;
 
-import java.io.IOException;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
@@ -10,11 +9,9 @@ import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.Doacao;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.Hospital;
-import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.fluxo.FluxoDoacao;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
-import br.com.imhotep.consulta.raiz.StatusEstoqueConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="doacaoRaiz")
@@ -39,7 +36,7 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 		getInstancia().setMovimentoLivro(movimentoLivro);
 	}
 	
-	public void procurarLote() throws IOException{
+	public void procurarLote(){
 		String lote = getInstancia().getMovimentoLivro().getEstoque().getLote();
 		Estoque estoque = new EstoqueLoteConsultaRaiz().consultar(lote);
 		loteEncontrado = estoque != null;
@@ -53,16 +50,12 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 	@Override
 	public boolean enviar() {
 		try {
-			Material material = getInstancia().getMovimentoLivro().getEstoque().getMaterial();
-			Integer quantidadeMovimentacao = getInstancia().getMovimentoLivro().getQuantidadeMovimentacao();
-			boolean movimentoEntrada = getInstancia().getMovimentoLivro().getTipoMovimento().equals(Parametro.tipoMovimentoDoacaoRecebida());
-			if(movimentoEntrada || new StatusEstoqueConsultaRaiz().quantidadeAutorizada(material, quantidadeMovimentacao)){
-				FluxoDoacao fluxoDoacao = new FluxoDoacao();
-				if(loteEncontrado)
-					return fluxoDoacao.atualizarDoacao(getInstancia());
-				else
-					return fluxoDoacao.salvarNovaDoacao(getInstancia());
-			}
+			FluxoDoacao fluxoDoacao = new FluxoDoacao();
+			if(loteEncontrado){
+				procurarLote();
+				return fluxoDoacao.atualizarDoacao(getInstancia());
+			}else
+				return fluxoDoacao.salvarNovaDoacao(getInstancia());
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
