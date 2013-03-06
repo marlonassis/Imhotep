@@ -6,22 +6,22 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.controle.ControleInstancia;
-import br.com.Imhotep.entidade.Estoque;
+import br.com.Imhotep.entidade.NotaFiscalEstoque;
 import br.com.Imhotep.raiz.NotaFiscalRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="estoquePorNotaFiscalConsulta")
+@ManagedBean(name="notaFiscalEstoqueItensConsulta")
 @SessionScoped
-public class EstoquePorNotaFiscalConsulta extends PadraoConsulta<Estoque> {
-	public EstoquePorNotaFiscalConsulta(){
+public class NotaFiscalEstoqueItensConsulta extends PadraoConsulta<NotaFiscalEstoque> {
+	public NotaFiscalEstoqueItensConsulta(){
 		setOrderBy("o.estoque.lote, o.estoque.dataInclusao");
 	}
 	
 	@Override
-	public List<Estoque> getList() {
-		setConsultaGeral(new ConsultaGeral<Estoque>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o.estoque from NotaFiscalEstoque o where o.notaFiscal.identificacaoNotaFiscal = :identificacaoNotaFiscal"));
+	public List<NotaFiscalEstoque> getList() {
+		setConsultaGeral(new ConsultaGeral<NotaFiscalEstoque>());
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from NotaFiscalEstoque o where o.notaFiscal.identificacaoNotaFiscal = :identificacaoNotaFiscal"));
 		carregarValorConsulta();
 		return super.getList();
 	}

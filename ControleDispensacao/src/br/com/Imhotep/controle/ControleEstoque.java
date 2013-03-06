@@ -11,7 +11,12 @@ import br.com.imhotep.consulta.raiz.MovimentoLivroConsultaRaiz;
 
 public class ControleEstoque {
 	
-	public void prepararMovimentoLivro(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public void manipularEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
+		prepararEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getTipoMovimento());
+		prepararMovimentoLivro(dataAtual, movimentoLivro);
+	}
+	
+	private void prepararMovimentoLivro(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Autenticador autenticador = Autenticador.getInstancia();
 		int saldoAtualMaterial = new MovimentoLivroConsultaRaiz().saldoAtualMaterial(movimentoLivro.getEstoque().getMaterial());
 		movimentoLivro.setSaldoAnterior(saldoAtualMaterial);
@@ -20,12 +25,13 @@ public class ControleEstoque {
 		movimentoLivro.setUsuarioMovimentacao(autenticador.getUsuarioAtual());
 	}
 
-	public void prepararEstoque(Date dataAtual, Estoque estoque, int quantidadeMovimentada, int saldoAtual, TipoMovimento tipoMovimento) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	private void prepararEstoque(Date dataAtual, Estoque estoque, int quantidadeMovimentada, TipoMovimento tipoMovimento) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Autenticador autenticador = Autenticador.getInstancia();
 		estoque.setDataInclusao(dataAtual);
 		estoque.setUnidade(autenticador.getUnidadeAtual());
 		estoque.setUsuarioInclusao(autenticador.getUsuarioAtual());
 		int saldoAtualizado = 0;
+		int saldoAtual = estoque.getQuantidadeAtual();
 		if(tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
 			saldoAtualizado = saldoAtual + quantidadeMovimentada;
 		}else{

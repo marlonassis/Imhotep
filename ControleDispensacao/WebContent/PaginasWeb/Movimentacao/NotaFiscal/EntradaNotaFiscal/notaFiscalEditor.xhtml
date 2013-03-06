@@ -65,15 +65,29 @@
 			<h:outputLabel for="valorTotal" value="Valor Total:" />
 			<br />
 			<p:inputText id="valorTotal"
-				     value="#{notaFiscalRaiz.instancia.valorTotal}"
-				     required="true" onkeyup="apenasNumeroComVirgula(this);"
-				     converter="monetarioConversor" title="Informe o valor total da nota fiscal.">
+					     value="#{notaFiscalRaiz.instancia.valorTotal}"
+					     required="true" 
+					     onkeyup="apenasNumeroComVirgula(this);"
+					     converter="monetarioConversor" 
+					     title="Informe o valor total da nota fiscal.">
 				
 			</p:inputText>
 		</h:panelGroup>
-
+		
+		<h:panelGroup>
+			<h:outputLabel for="valorDesconto" value="Valor do Desconto:" />
+			<br />
+			<p:inputText id="valorDesconto"
+					     value="#{notaFiscalRaiz.instancia.valorDesconto}"
+					     required="false" 
+					     onkeyup="apenasNumeroComVirgula(this);"
+					     converter="monetarioConversor" 
+					     title="Informe o valor do desconto.">
+				
+			</p:inputText>
+		</h:panelGroup>
+		
 	</h:panelGrid>
-	 
 	<p:separator id="separator" rendered="#{notaFiscalRaiz.edicao}" />
 	  
 	<h:outputText id="outPutTextItens"
@@ -81,32 +95,39 @@
 				  value="Itens da Nota Fiscal" 
 				  rendered="#{notaFiscalRaiz.edicao}" />
 	
+	<h:panelGrid columns="2" width="100%" rendered="#{notaFiscalRaiz.edicao}">
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:inputText id="lote"
+						 value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.lote}"
+						 title="Informe o lote" 
+						 disabled="#{notaFiscalRaiz.loteEncontrado != null}"
+						 required="false"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('notaFiscalEditorForm')} :#{p:component('itensNotaFiscalPanelGrid')}"
+							 action="#{notaFiscalRaiz.procurarLote}" 
+							 rendered="#{notaFiscalRaiz.loteEncontrado == null}"
+							 title="Procurar lote." />
+		</h:panelGroup>
+	</h:panelGrid>
+
 	<h:panelGrid id="itensNotaFiscalPanelGrid"
 				 width="100%" 
 				 columns="3" 
-				 rendered="#{notaFiscalRaiz.edicao}" >
+				 rendered="#{notaFiscalRaiz.loteEncontrado != null and notaFiscalRaiz.edicao}" >
 				 
-		<h:panelGroup>
-			<h:panelGrid columns="2" width="100%">
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="lote" value="Lote:" />
-					<br />
-					<p:inputText id="lote"
-						value="#{notaFiscalRaiz.estoque.lote}"
-						title="Informe o lote" />
-				</h:panelGroup>
-			</h:panelGrid>
-		</h:panelGroup>
-
 		<h:panelGroup style="align:left;">
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
 			<br />
 			<p:autoComplete id="material" 
+							disabled="#{notaFiscalRaiz.loteEncontrado}"
+							size="35"
 							scrollHeight="300"
 							minQueryLength="4"
-							value="#{notaFiscalRaiz.estoque.material}"
+							value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.material}"
 							completeMethod="#{materialAutoComplete.autoComplete}"
 							var="material" 
 							forceSelection="true" 
@@ -114,8 +135,8 @@
 							itemLabel="#{material.descricaoUnidadeMaterial}"
 							itemValue="#{material}" converter="materialConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup style="align:left;">
@@ -123,7 +144,8 @@
 			<h:outputLabel for="fabricante" value="Fabricante:" />
 			<br />
 			<p:autoComplete id="fabricante"
-							value="#{notaFiscalRaiz.estoque.fabricante}"
+							disabled="#{notaFiscalRaiz.loteEncontrado}"
+							value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.fabricante}"
 							completeMethod="#{fabricanteAutoComplete.autoComplete}"
 							var="fabricante" 
 							minQueryLength="3" 
@@ -141,11 +163,13 @@
 			<font color="red">*</font>
 			<h:outputLabel for="dataValidade" value="Data de validade:" />
 			<br />
-			<p:inputMask id="dataValidade" mask="99/99/9999"
-				value="#{notaFiscalRaiz.estoque.dataValidade}"
-				title="Data de validade do lote">
-				<f:convertDateTime pattern="dd/MM/yyyy" />
-			</p:inputMask>
+			<p:calendar id="dataValidade"
+						disabled="#{notaFiscalRaiz.loteEncontrado}"
+						required="true"
+						rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}" 
+						pattern="MM/yyyy"
+						value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.dataValidade}"
+						title="Data de validade do lote"/>
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -153,9 +177,10 @@
 			<h:outputLabel for="quantidade" value="Quantidade:" />
 			<br />
 			<p:inputText id="quantidade"
-				disabled="#{notaFiscalRaiz.estoque.idEstoque != 0}"
-				value="#{notaFiscalRaiz.estoque.quantidade}"
-				onkeyup="apenasNumero(this);" title="Informe a quantidade" />
+						 disabled="#{notaFiscalRaiz.notaFiscalEstoque.idNotaFiscalEstoque != 0}"
+						 value="#{notaFiscalRaiz.notaFiscalEstoque.quantidadeEntrada}"
+						 onkeyup="apenasNumero(this);" 
+						 title="Informe a quantidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -163,34 +188,35 @@
 			<h:outputLabel for="valorUnitario" value="Valor unitário:" />
 			<br />
 			<p:inputText id="valorUnitario"
-						 value="#{notaFiscalRaiz.estoque.valorUnitario}"
+						 value="#{notaFiscalRaiz.notaFiscalEstoque.valorUnitario}"
 						 onkeyup="apenasNumeroComVirgula(this);"
 						 converter="monetarioConversor"
 						 title="Informe o valor unitário do medicamento" />
 		</h:panelGroup>
-
+	</h:panelGrid>
+	<h:panelGrid id="botoesNotaFiscalPanelGrid"
+				 width="100%" 
+				 columns="3" 
+				 rendered="#{notaFiscalRaiz.loteEncontrado != null and notaFiscalRaiz.edicao}" >
 		<h:panelGroup>
 			<p:commandButton value="Adicionar" 
 							 action="#{notaFiscalRaiz.gravarItemNotaFiscal}" 
-							 rendered="#{notaFiscalRaiz.estoque.idEstoque == 0}"
-							 update=":#{p:component('itensEstoqueDataGrid')} :#{p:component('itensNotaFiscalPanelGrid')} :#{p:component('itensEstoqueGrowl')}" />
-			<p:commandButton value="Atualizar" 
-							 action="#{notaFiscalRaiz.atualizarEstoque}" 
-							 rendered="#{notaFiscalRaiz.estoque.idEstoque != 0}"
-							 update=":#{p:component('itensEstoqueDataGrid')} :#{p:component('itensNotaFiscalPanelGrid')} :#{p:component('itensEstoqueGrowl')}" />
+							 rendered="#{notaFiscalRaiz.loteEncontrado != null}"
+							 update=":#{p:component('notaFiscalEditorForm')}" />
 			<p:commandButton value="Limpar" 
-							 action="#{notaFiscalRaiz.limparEstoqueAtual}" 
-							 update=":#{p:component('itensNotaFiscalPanelGrid')}" />
+							 immediate="true"
+							 action="#{notaFiscalRaiz.limpar}" 
+							 update=":#{p:component('notaFiscalEditorForm')}" />
 		</h:panelGroup>
 	</h:panelGrid>
 	<br/>
-	<p:growl id="itensEstoqueGrowl" />
+	
 	<div align="left">
 	
 	<p:dataGrid id="itensEstoqueDataGrid"
 				var="linha" 
 				emptyMessage="Não foi encontrado registros."
-				value="#{estoquePorNotaFiscalConsulta.list}"
+				value="#{notaFiscalEstoqueItensConsulta.list}"
 				columns="3"
 				rendered="#{notaFiscalRaiz.edicao}"
 				rows="5" 
@@ -198,28 +224,19 @@
         		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
         		rowsPerPageTemplate="5,10,15">
   
-  		
-  
 		<p:panel style="text-align:center;" >
 			<f:facet name="header" >
-				<h:panelGrid  width="100%" columns="2" style=" height:16px;">
-					Lote: #{linha.lote}
-					<h:panelGroup >
+				<h:panelGrid width="100%" 
+							 columns="2" 
+							 style=" 
+							 height:16px;" >
+					Lote: #{linha.estoque.lote}
+					<h:panelGroup rendered="#{!notaFiscalRaiz.instancia.bloqueada and !notaFiscalRaiz.instancia.fechada}" >
 						<div align="right">
-							<p:commandLink title="Editar"
-								update=":#{p:component('itensNotaFiscalPanelGrid')}"
-								style="padding-right:10px;">
-								<f:setPropertyActionListener value="#{linha}"
-									target="#{notaFiscalRaiz.estoque}" />
-								<h:graphicImage value="/Imagens/edit.gif" />
-							</p:commandLink>
-				
-							<p:commandLink action="#{estoqueRaiz.apagar()}"
-								update=":#{p:component('itensNotaFiscalPanelGrid')} :#{p:component('itensEstoqueDataGrid')}"
-								onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-								title="Apagar" style="padding-right:10px;">
-								<f:setPropertyActionListener value="#{linha}"
-									target="#{estoqueRaiz.instancia}" />
+							<p:commandLink  rendered="false"
+											update=":#{p:component('notaFiscalEditorForm')} :#{p:component('itensEstoqueDataGrid')}"
+											onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+											title="Apagar" style="padding-right:10px;">
 								<h:graphicImage value="/Imagens/delete.png" />
 							</p:commandLink>
 						</div>
@@ -229,26 +246,26 @@
 			<h:panelGrid columns="1" style="width:100%">
                 <h:panelGroup>
                 	<h:outputText value="Material: " style="font-weight:bold;" /><br/>
-  			       	<h:outputText value=" #{linha.material.descricao}"/>
+  			       	<h:outputText value=" #{linha.estoque.material.descricao}"/>
                 </h:panelGroup>
             </h:panelGrid>
             <h:panelGrid columns="3" style="width:100%">  
                 
                 <h:panelGroup>
                 	<h:outputText value="Fabricante: " style="font-weight:bold;" /><br/>
-			        <h:outputText value="#{linha.fabricante.descricao}" />
+			        <h:outputText value="#{linha.estoque.fabricante.descricao}" />
                 </h:panelGroup>
                 
                 <h:panelGroup>
                 	<h:outputText value="Validade:" style="font-weight:bold;" /><br/>
-               		<h:outputText value="#{linha.dataValidade}" style="margin-left:10px">
+               		<h:outputText value="#{linha.estoque.dataValidade}" style="margin-left:10px">
 		            	<f:convertDateTime pattern="MM/yyyy"/>
 		            </h:outputText>
 			    </h:panelGroup>
 			    
 			    <h:panelGroup>
                 	<h:outputText value="Quantidade: " style="font-weight:bold;" /><br/>
-  			       	<h:outputText value="#{linha.quantidade}"/>
+  			       	<h:outputText value="#{linha.quantidadeEntrada}"/>
                 </h:panelGroup>
                 
                  <h:panelGroup>
@@ -264,7 +281,7 @@
                 
                  <h:panelGroup>
                 	<h:outputText value="Total: " style="font-weight:bold;" /><br/>
-  			       	<h:outputText value="#{linha.quantidade * linha.valorUnitario}">
+  			       	<h:outputText value="#{linha.quantidadeEntrada * linha.valorUnitario}">
   			       		<f:convertNumber currencySymbol="R$" 
 					    				 groupingUsed="true"
 					                     maxFractionDigits="2" 

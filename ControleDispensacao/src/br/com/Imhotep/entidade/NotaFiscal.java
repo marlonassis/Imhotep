@@ -30,6 +30,7 @@ public class NotaFiscal {
 	private Date dataEmissao;
 	private Double valorTotal;
 	private Date dataInsercao;
+	private Double valorDesconto;
 
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_nota_fiscal_id_nota_fiscal_seq")
@@ -130,7 +131,14 @@ public class NotaFiscal {
 		this.dataInsercao = dataInsercao;
 	}
 
+	@Column(name = "db_valor_desconto")	
+	public Double getValorDesconto() {
+		return valorDesconto;
+	}
 
+	public void setValorDesconto(Double valorDesconto) {
+		this.valorDesconto = valorDesconto;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {

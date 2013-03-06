@@ -26,6 +26,9 @@ public class NotaFiscalEstoque {
 	private Profissional profissionalInsercao;
 	private Date dataInsercao;
 	private int idNotaFiscalEstoque;
+	private Double valorUnitario;
+	private int quantidadeEntrada;
+	private MovimentoLivro movimentoLivro;
 
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -79,8 +82,32 @@ public class NotaFiscalEstoque {
 	public void setIdNotaFiscalEstoque(int idNotaFiscalEstoque) {
 		this.idNotaFiscalEstoque = idNotaFiscalEstoque;
 	}
+	
+	@Column(name = "db_valor_unitario")
+	public Double getValorUnitario() {
+		return valorUnitario;
+	}
+	public void setValorUnitario(Double valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+	
+	@Column(name = "in_quantidade_entrada")
+	public int getQuantidadeEntrada() {
+		return quantidadeEntrada;
+	}
+	public void setQuantidadeEntrada(int quantidadeEntrada) {
+		this.quantidadeEntrada = quantidadeEntrada;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_movimento_livro")	
+	public MovimentoLivro getMovimentoLivro() {
+		return movimentoLivro;
+	}
 
-
+	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
+		this.movimentoLivro = movimentoLivro;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {

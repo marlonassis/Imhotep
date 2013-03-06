@@ -1,21 +1,39 @@
 package br.com.Imhotep.raiz;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.Imhotep.auxiliar.Constantes;
+import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.Estoque;
+import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.NotaFiscal;
 import br.com.Imhotep.entidade.NotaFiscalEstoque;
+import br.com.Imhotep.fluxo.FluxoNotaFiscalEstoque;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
+import br.com.imhotep.consulta.raiz.LoteExistenteNotaFiscalConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="notaFiscalRaiz")
 @SessionScoped
 public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 
-	private Estoque estoque = new Estoque();
+	private NotaFiscalEstoque notaFiscalEstoque = new NotaFiscalEstoque();
+	private Boolean loteEncontrado;
+	
+	public NotaFiscalRaiz() {
+		limpar();
+	}
+	
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
+		limpar();
+	}
 	
 	@Override
 	protected void preEnvio() {
@@ -32,25 +50,59 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 		super.preEnvio();
 	}
 	
-	public void limparEstoqueAtual() {
-		setEstoque(new Estoque());
+	public void procurarLote() throws IOException{
+		String lote = getNotaFiscalEstoque().getEstoque().getLote();
+		Estoque estoque = new LoteExistenteNotaFiscalConsultaRaiz().consultar(lote, getInstancia());
+		if(estoque == null){
+			estoque = new EstoqueLoteConsultaRaiz().consultar(lote);
+			setLoteEncontrado(estoque != null);
+			if(getLoteEncontrado()){
+				getNotaFiscalEstoque().setEstoque(estoque);
+			}
+		}else{
+			mensagem("Este lote já está cadastrado para essa nota fiscal.", lote, Constantes.INFO);
+			limpar();
+		}
 	}
 	
-	public void atualizarEstoque(){
-		new EstoqueRaiz(getEstoque()).atualizar();
+	public void limpar() {
+		setLoteEncontrado(null);
+		setNotaFiscalEstoque(new NotaFiscalEstoque());
+		getNotaFiscalEstoque().setEstoque(new Estoque());
+		getNotaFiscalEstoque().setNotaFiscal(new NotaFiscal());
 	}
 	
 	public void gravarItemNotaFiscal(){
-		EntradaMaterialRaiz emr = new EntradaMaterialRaiz();
-		emr.setInstancia(getEstoque());
-		emr.enviar();
-		
-		NotaFiscalEstoque nfe = new NotaFiscalEstoque();
-		nfe.setNotaFiscal(getInstancia());
-		nfe.setEstoque(emr.getInstancia());
-		if(new NotaFiscalEstoqueRaiz().enviar(nfe)){
-			limparEstoqueAtual();
+		try {
+			getNotaFiscalEstoque().setNotaFiscal(getInstancia());
+			MovimentoLivro movimentoLivro = prepararMovimentoLivro(getNotaFiscalEstoque());
+			getNotaFiscalEstoque().setMovimentoLivro(movimentoLivro);
+			if(getLoteEncontrado()){
+				FluxoNotaFiscalEstoque fluxoNotaFiscalEstoque = new FluxoNotaFiscalEstoque();
+				if(fluxoNotaFiscalEstoque.atualizarNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro)){
+					limpar();
+				}
+			}else{
+				FluxoNotaFiscalEstoque fluxoNotaFiscalEstoque = new FluxoNotaFiscalEstoque();
+				if(fluxoNotaFiscalEstoque.salvarNovaNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro)){
+					limpar();
+				}
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
+	}
+
+	private MovimentoLivro prepararMovimentoLivro(NotaFiscalEstoque notaFiscalEstoque) {
+		MovimentoLivro movimentoLivro = new MovimentoLivro();
+		movimentoLivro.setEstoque(notaFiscalEstoque.getEstoque());
+		movimentoLivro.setQuantidadeMovimentacao(notaFiscalEstoque.getQuantidadeEntrada());
+		movimentoLivro.setTipoMovimento(Parametro.tipoMovimentoNotaFiscalEntrada());
+		return movimentoLivro;
 	}
 	
 	public void bloquearNotaFiscal(){
@@ -59,12 +111,23 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 		novaInstancia();
 	}
 
-	public Estoque getEstoque() {
-		return estoque;
+	public NotaFiscalEstoque getNotaFiscalEstoque() {
+		return notaFiscalEstoque;
 	}
 
-	public void setEstoque(Estoque estoque) {
-		this.estoque = estoque;
+	public void setNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque) {
+		this.notaFiscalEstoque = notaFiscalEstoque;
 	}
 
+	public Boolean getLoteEncontrado() {
+		return loteEncontrado;
+	}
+
+	public void setLoteEncontrado(Boolean loteEncontrado) {
+		this.loteEncontrado = loteEncontrado;
+	}
+
+	
+	
+	
 }

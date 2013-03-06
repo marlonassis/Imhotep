@@ -92,6 +92,11 @@ public class Parametro implements Serializable {
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
 	}
 	
+	public static TipoMovimento tipoMovimentoNotaFiscalEntrada(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 19");
+		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
 	private static TipoMovimento tipoMovimento(String movimento){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
