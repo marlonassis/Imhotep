@@ -67,7 +67,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	public void ajustarEstoqueDispensado(){
 		AjusteEstoqueRaiz aeh = new AjusteEstoqueRaiz();
 		aeh.setInstancia(prescricaoItemEstoqueSaida.getEstoque());
-		aeh.setMaterial(prescricaoItemEstoqueSaida.getEstoque().getMaterial());
+//		aeh.setMaterial(prescricaoItemEstoqueSaida.getEstoque().getMaterial());
 		if(aeh.enviar()){
 			try{
 				if(tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
