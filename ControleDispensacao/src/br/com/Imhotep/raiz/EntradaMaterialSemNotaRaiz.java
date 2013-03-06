@@ -20,7 +20,7 @@ import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="entradaMaterialRaiz")
 @SessionScoped
-public class EntradaMaterialRaiz extends PadraoHome<Estoque>{
+public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
 	private Boolean loteEncontrado;
 
 	public void editRowEvent(RowEditEvent obj){
