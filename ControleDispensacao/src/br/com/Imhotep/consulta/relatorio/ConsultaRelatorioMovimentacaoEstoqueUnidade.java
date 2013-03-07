@@ -1,13 +1,11 @@
 package br.com.Imhotep.consulta.relatorio;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import br.com.Imhotep.auxiliar.Constantes;
-import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueUnidade;
@@ -16,8 +14,7 @@ import br.com.remendo.ConsultaGeral;
 public class ConsultaRelatorioMovimentacaoEstoqueUnidade extends ConsultaGeral<Object[]> {
 	
 	public ArrayList<MovimentacaoEstoqueUnidade> consultarResultados(Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
-		Calendar df = Utilities.ajustarUltimaHoraDia(dataFim);
-		return modeladorResultado(consultaMovimentoPeriodo(dataIni, df.getTime(), unidade, tipoMovimento));
+		return modeladorResultado(consultaMovimentoPeriodo(dataIni, dataFim, unidade, tipoMovimento));
 	}
 
 	private ArrayList<MovimentacaoEstoqueUnidade> modeladorResultado(List<Object[]> list){

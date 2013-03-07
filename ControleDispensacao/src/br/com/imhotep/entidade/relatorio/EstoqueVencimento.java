@@ -10,9 +10,20 @@ public class EstoqueVencimento {
 	private Integer quantidade;
 	private String mensagemNaoEncontrado;
 	private String usuario;
+	private boolean bloqueado;
 	
 	public EstoqueVencimento(){
 		
+	}
+	
+	public EstoqueVencimento(Integer codigoMaterial, String nomeMaterial, String lote, Date dataValidade, Integer quantidade, String usuario, boolean bloqueado){
+		this.codigoMaterial = codigoMaterial;
+		this.nomeMaterial = nomeMaterial;
+		this.lote = lote;
+		this.dataValidade = dataValidade;
+		this.quantidade = quantidade;
+		this.usuario = usuario;
+		this.bloqueado = bloqueado;
 	}
 	
 	public EstoqueVencimento(String mensagemNaoEncontrado){
@@ -73,6 +84,14 @@ public class EstoqueVencimento {
 
 	public void setDataValidade(Date dataValidade) {
 		this.dataValidade = dataValidade;
+	}
+
+	public boolean isBloqueado() {
+		return bloqueado;
+	}
+
+	public void setBloqueado(boolean bloqueado) {
+		this.bloqueado = bloqueado;
 	}
 	
 }

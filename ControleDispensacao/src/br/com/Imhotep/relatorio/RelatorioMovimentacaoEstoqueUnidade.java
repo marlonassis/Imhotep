@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
+import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueUnidade;
 import br.com.Imhotep.entidade.TipoMovimento;
 import br.com.Imhotep.entidade.Unidade;
@@ -30,6 +31,7 @@ public class RelatorioMovimentacaoEstoqueUnidade extends PadraoRelatorio{
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = "/WEB-INF/classes/br/com/Imhotep/relatorio/RelatorioMovimentacaoEstoqueUnidade.jasper";
 		String nomeRelatorio = "EstoqueMovimentacaoUnidade-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		dataFim = Utilities.ajustarUltimaHoraDia(dataFim);
 		List<MovimentacaoEstoqueUnidade> lista = new ConsultaRelatorioMovimentacaoEstoqueUnidade().consultarResultados(dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );

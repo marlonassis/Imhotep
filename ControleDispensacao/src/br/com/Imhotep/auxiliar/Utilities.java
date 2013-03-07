@@ -18,13 +18,26 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class Utilities extends br.com.remendo.utilidades.Utilities{
 
-	public static Calendar ajustarUltimaHoraDia(Date dataFim) {
+	public static Date ajustarUltimaHoraDia(Date dataFim) {
 		Calendar df = Calendar.getInstance();
 		df.setTime(dataFim);
 		df.set(Calendar.HOUR, 23);
 		df.set(Calendar.MINUTE, 59);
 		df.set(Calendar.SECOND, 59);
-		return df;
+		return df.getTime();
+	}
+	
+	public static Date ajustarDiaMes(Date dataFim) {
+		Calendar df = Calendar.getInstance();
+		df.setTime(dataFim);
+		df.set(Calendar.DAY_OF_MONTH, df.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return df.getTime();
+	}
+	
+	public static Date ajustarDiaMesHoraMaximo(Date dataFim) {
+		dataFim = Utilities.ajustarDiaMes(dataFim);
+		dataFim = Utilities.ajustarDiaMes(dataFim);
+		return dataFim;
 	}
 	
 	public static boolean isNumero(String texto) {  
