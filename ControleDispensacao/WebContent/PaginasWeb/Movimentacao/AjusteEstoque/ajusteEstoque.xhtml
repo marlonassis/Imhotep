@@ -10,24 +10,28 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabAjusteEstoque" title="Ajuste de Estoque">
-			#{ajusteEstoqueRaiz.carregaEstoqueString(param.lote)}
-			<h:form id="ajusteEstoqueForm">
-				<p:fieldset legend="Novo ajuste de estoque" collapsed="false"
-					toggleable="false" toggleSpeed="500">
+		<p:tab title="Ajuste do Estoque">
+			<h:form id="ajusteEstoqueEditorForm">
+				<p:fieldset legend="Novo Ajuste de Estoque"
+					collapsed="false" toggleable="true"
+					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="ajusteEstoqueEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="true"
-						update=":#{p:component('ajusteEstoqueForm')}"
-						action="#{ajusteEstoqueRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="false"
-						update=":#{p:component('ajusteEstoqueForm')}"
-						action="#{ajusteEstoqueRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="false" update=":#{p:component('ajusteEstoqueForm')}"
-						action="#{ajusteEstoqueRaiz.novaInstancia()}" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!ajusteEstoqueRaiz.edicao and ajusteEstoqueRaiz.loteEncontrado != null}"
+									 update=":#{p:component('ajusteEstoqueEditorForm')}"
+									 action="#{ajusteEstoqueRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{ajusteEstoqueRaiz.edicao}"
+									 update=":#{p:component('ajusteEstoqueEditorForm')}"
+									 action="#{ajusteEstoqueRaiz.atualizar}" />
+					<p:commandButton value="Novo"
+									 rendered="#{ajusteEstoqueRaiz.loteEncontrado != null or ajusteEstoqueRaiz.edicao}"
+									 update=":#{p:component('ajusteEstoqueEditorForm')}"
+									 action="#{ajusteEstoqueRaiz.novaInstancia()}" 
+									 immediate="true" />
 				</p:fieldset>
 			</h:form>
-
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -4,101 +4,105 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="ajusteEstoquePanelGrid" columns="3" width="100%">
-
+	<h:panelGrid columns="2" width="100%">
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
-			<br />
-			<p:selectOneMenu
-				value="#{ajusteEstoqueRaiz.itensMovimentoGeral.movimentoGeral.tipoMovimento}"
-				effect="fade" converter="tipoMovimentoConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{tipoMovimentoConsulta.list}"
-					var="tipoMovimento" itemLabel="#{tipoMovimento.descricao}"
-					itemValue="#{tipoMovimento}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
-		
-		<h:panelGroup>
-			<h:outputLabel for="unidade" value="Unidade:" />
-			<br />
-			<p:autoComplete id="unidade" 
-							forceSelection="true"
-							minQueryLength="4" 
-							size="30"
-							value="#{ajusteEstoqueRaiz.unidade}"
-							completeMethod="#{unidadeAutoComplete.autoComplete}"
-							var="unidade" 
-							title="Informe a unidade para onde está sendo enviado o material."
-							scrollHeight="300" 
-							itemLabel="#{unidade.nome}"
-							itemValue="#{unidade}" 
-							converter="unidadeConversor" />
-		</h:panelGroup>
-		
-		<h:panelGroup id="hospitalPanelGroup">
-			<h:panelGrid columns="2" width="100%">
-				<h:panelGroup>
-					<h:outputLabel for="hospital" value="Hospital:" />
-					<br />
-					<p:selectOneMenu
-						value="#{ajusteEstoqueRaiz.itensMovimentoGeral.hospital}"
-						effect="fade" converter="hospitalConversor" required="false">
-						<f:ajax event="change" render="hospitalPanelGroup" />
-						<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
-						<f:selectItems value="#{hospitalConsulta.list}" var="hospital"
-							itemLabel="#{hospital.nome}" itemValue="#{hospital}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-
-				<h:panelGroup id="dataDoacaoPanelGroup"
-					rendered="#{ajusteEstoqueRaiz.itensMovimentoGeral.hospital != null}">
-					<font color="red">*</font>
-					<h:outputLabel for="dataDoacao" value="Data da doação:" />
-					<br />
-					<p:calendar id="dataDoacao" pattern="dd/MM/yyyy" required="true"
-						value="#{ajusteEstoqueRaiz.itensMovimentoGeral.dataDoacao}" />
-				</h:panelGroup>
-			</h:panelGrid>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="motivo" value="Motivo:" />
-			<br />
-			<p:inputText id="motivo"
-				value="#{ajusteEstoqueRaiz.itensMovimentoGeral.movimentoGeral.motivo}"
-				required="true" title="Informe o motivo do ajuste" />
-		</h:panelGroup>
-
-		<h:panelGroup id="materialPanelGroup">
-			<font color="red">*</font>
-			<h:outputLabel for="material" value="Material:" />
-			<br />
-			<p:selectOneMenu value="#{ajusteEstoqueRaiz.material}" effect="fade"
-				converter="materialConversor" required="true">
-				<f:ajax event="change"
-					listener="#{ajusteEstoqueRaiz.carregaEstoqueMaterial()}"
-					render="estoquePanelGroup" />
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{materialRaiz.listaMaterialEstoque}"
-					var="material" itemLabel="#{material.descricaoUnidadeMaterial}"
-					itemValue="#{material}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup id="estoquePanelGroup">
 			<font color="red">*</font>
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
-			<p:selectOneMenu value="#{ajusteEstoqueRaiz.instancia}" effect="fade"
-				converter="estoqueConversor" required="true">
+			<p:inputText id="lote"
+						 value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.lote}"
+						 title="Informe o lote" 
+						 disabled="#{ajusteEstoqueRaiz.loteEncontrado}"
+						 required="true"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('ajusteEstoqueEditorForm')} :#{p:component('ajusteEstoquePanelGrid')}"
+							 action="#{ajusteEstoqueRaiz.procurarLote}" 
+							 rendered="#{!ajusteEstoqueRaiz.loteEncontrado}"
+							 title="Procurar lote." />
+		</h:panelGroup>
+	</h:panelGrid>
+
+	<h:panelGrid id="ajusteEstoquePanelGrid" 
+				 columns="3" 
+				 width="100%" 
+				 rendered="#{ajusteEstoqueRaiz.loteEncontrado}" >
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="tipoOperacao" value="Tipo do Movimento" />
+			<br />
+			<h:outputText value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.tipoMovimento.descricao}" 
+						  rendered="#{ajusteEstoqueRaiz.edicao or !ajusteEstoqueRaiz.loteEncontrado}" />
+			<p:selectOneMenu id="tipoOperacao"
+							 rendered="#{!ajusteEstoqueRaiz.edicao and ajusteEstoqueRaiz.loteEncontrado}"
+							 value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.tipoMovimento}"
+							 effect="fade" 
+							 converter="tipoMovimentoConversor" 
+							 required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{ajusteEstoqueRaiz.estoqueList}"
-					var="estoque" itemLabel="#{estoque.toString()}"
-					itemValue="#{estoque}" />
+				<f:selectItems value="#{tipoMovimentoAjusteEstoqueFarmaciaSelectOne.itens}"
+							   var="tipoMovimento" 
+							   itemLabel="#{tipoMovimento.descricao}"
+							   itemValue="#{tipoMovimento}" />
 			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
+			<br />
+			<p:autoComplete id="material"
+							disabled="true"
+							size="35"
+							value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.material}"
+							minQueryLength="4"
+							required="true"
+							scrollHeight="300"
+							completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
+							var="material" 
+							forceSelection="true"
+							title="Informe o nome ou o código do material"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							rendered="#{!ajusteEstoqueRaiz.loteEncontrado and !ajusteEstoqueRaiz.edicao}"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="fabricante" value="Fabricante:" />
+			<br />
+			<p:autoComplete id="fabricante"
+							required="true"
+							disabled="true"
+							value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.fabricante}"
+							completeMethod="#{fabricanteAutoComplete.autoComplete}"
+							var="fabricante" 
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe o fabricante" 
+							itemLabel="#{fabricante.descricao}"
+							itemValue="#{fabricante}" 
+							converter="fabricanteConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							rendered="#{!ajusteEstoqueRaiz.loteEncontrado and !ajusteEstoqueRaiz.edicao}"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataValidade" value="Data de Validade:" />
+			<br />
+			<p:calendar id="dataValidade"
+						required="true"
+						disabled="true" 
+						pattern="MM/yyyy"
+						value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+						title="Data de validade do lote"/>
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -106,9 +110,22 @@
 			<h:outputLabel for="quantidade" value="Quantidade:" />
 			<br />
 			<p:inputText id="quantidade"
-				value="#{ajusteEstoqueRaiz.itensMovimentoGeral.quantidade}"
-				required="true" onkeyup="apenasNumero(this);"
-				title="Informe a quantidade do ajuste" />
+						 required="true"
+						 value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.quantidadeMovimentacao}"
+						 onkeyup="apenasNumero(this);" 
+						 title="Informe a quantidade" />
 		</h:panelGroup>
+		<h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="justificativa" value="Justificava:" />
+			<br />
+			<p:editor id="justificativa" 
+					  required="true" 
+					  value="#{ajusteEstoqueRaiz.instancia.justificativa}" />
+		</h:panelGroup>
+
 	</h:panelGrid>
+
 </ui:composition>
