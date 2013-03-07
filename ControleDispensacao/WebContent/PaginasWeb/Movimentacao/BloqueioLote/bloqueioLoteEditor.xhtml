@@ -4,65 +4,60 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="bloqueioMaterialPanelGrid" columns="3" width="100%">
 
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="material" value="Material:" />
-			<br />
-			<h:outputText
-				value="#{bloqueioLoteRaiz.instancia.material.descricao}"
-				title="Nome do material" />
-		</h:panelGroup>
-
+	<h:panelGrid columns="2" width="100%">
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
-			<h:outputText value="#{bloqueioLoteRaiz.instancia.lote}"
-				title="Lote do material" />
+			<p:inputText id="lote"
+						 value="#{bloqueioLoteRaiz.instancia.lote}"
+						 title="Informe o lote" 
+						 disabled="#{bloqueioLoteRaiz.loteEncontrado}"
+						 required="true"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('bloqueioLoteEditorForm')} :#{p:component('bloqueioMaterialPanelGrid')}"
+							 action="#{bloqueioLoteRaiz.procurarLote}" 
+							 rendered="#{!bloqueioLoteRaiz.loteEncontrado}"
+							 title="Procurar lote." />
 		</h:panelGroup>
+	</h:panelGrid>
 
+	<h:panelGrid id="bloqueioMaterialPanelGrid" 
+				 columns="2" 
+				 width="100%" 
+				 rendered="#{bloqueioLoteRaiz.loteEncontrado}" >
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="quantidade" value="Quantidade:" />
+			<h:outputLabel for="bloqueio" value="Bloqueado" />
 			<br />
-			<h:outputText value="#{bloqueioLoteRaiz.instancia.quantidade}"
-				title="Quantidade em estoque" />
+			<p:selectOneRadio id="bloqueio"
+							  value="#{bloqueioLoteRaiz.instancia.bloqueado}" 
+							  required="true"
+							  title="Informe se o lote está bloqueado.">
+				<p:ajax event="change" update=":#{p:component('bloqueioMaterialPanelGrid')}" />
+				<f:selectItem itemValue="true" itemLabel="Sim" />
+				<f:selectItem itemValue="false" itemLabel="Não" />
+			</p:selectOneRadio>
 		</h:panelGroup>
-
-		<h:panelGroup>
+		<h:panelGroup rendered="#{bloqueioLoteRaiz.instancia.bloqueado}" >
 			<font color="red">*</font>
-			<h:outputLabel for="bloqueado" value="Lote bloqueado" />
+			<h:outputLabel for="tipoBloqueio" value="Tipo do bloqueio:" />
 			<br />
-			<p:selectBooleanCheckbox value="#{bloqueioLoteRaiz.instancia.bloqueado}" 
-									 required="true" >
-				<p:ajax event="change" update=":#{p:component('tipoBloqueioPanelGroup')}" />
-			</p:selectBooleanCheckbox>
+			<p:selectOneMenu id="tipoBloqueio"
+							 value="#{bloqueioLoteRaiz.instancia.tipoBloqueio}" 
+							 required="true"
+							 title="Informe se o motivo de o lote estar sendo bloqueado.">
+				<p:ajax event="change" update=":#{p:component('bloqueioMaterialPanelGrid')}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+				<f:selectItems value="#{itensPadrao.tipoBloqueioLoteEnumItens}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
-		<h:panelGroup id="tipoBloqueioPanelGroup" >
-			<h:panelGroup rendered="#{bloqueioLoteRaiz.instancia.bloqueado}">
-				<font color="red">*</font>
-				<h:outputLabel for="tipoBloqueio" value="Tipo do bloqueio." />
-				<br />
-				<h:selectOneRadio id="tipoBloqueio"
-								  value="#{bloqueioLoteRaiz.instancia.tipoBloqueio}" 
-								  required="true"
-								  title="Informe se o motivo de o lote estar sendo bloqueado.">
-					<p:ajax event="change" update=":#{p:component('motivoBloqueioPanelGroup')}" />
-					<f:selectItems value="#{itensPadrao.tipoBloqueioLoteEnumItens}" />
-				</h:selectOneRadio>
-			</h:panelGroup>
+		<h:panelGroup rendered="#{bloqueioLoteRaiz.instancia.bloqueado and bloqueioLoteRaiz.instancia.tipoBloqueio == 'O'}" >
+			<h:outputLabel for="motivo" value="Motivo:" />
+			<br />
+			<p:editor id="motivo"
+					  value="#{bloqueioLoteRaiz.instancia.motivoBloqueio}"/>
 		</h:panelGroup>
-		<h:panelGroup id="motivoBloqueioPanelGroup">
-			<h:panelGroup rendered="#{bloqueioLoteRaiz.instancia.tipoBloqueio == 'O'}" >
-				<h:outputLabel for="motivo" value="Motivo:" />
-				<br />
-				<p:inputTextarea id="motivo"
-					value="#{bloqueioLoteRaiz.instancia.motivoBloqueio}"
-					title="Informe o motivo do bloqueio" />
-			</h:panelGroup>
-		</h:panelGroup>
-		
 	</h:panelGrid>
 </ui:composition>

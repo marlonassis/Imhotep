@@ -23,9 +23,10 @@
 					<p:commandButton value="Gravar" rendered="#{notaFiscalRaiz.edicao}"
 						update=":#{p:component('notaFiscalEditorForm')} :#{p:component('notaFiscalPesquisaForm')}"
 						action="#{notaFiscalRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{notaFiscalRaiz.edicao}"
-						 update=":#{p:component('notaFiscalEditorForm')}"
-						 action="#{notaFiscalRaiz.novaInstancia()}" />
+					<p:commandButton value="Novo"
+									 rendered="#{notaFiscalRaiz.edicao}"
+									 update=":#{p:component('notaFiscalEditorForm')}"
+									 action="#{notaFiscalRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 

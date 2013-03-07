@@ -32,9 +32,20 @@ public class ControleEstoque extends PadraoGeralTemp {
 		}
 	}
 	
+	private boolean estoqueBloqueado(Estoque estoque){
+		if(estoque.getBloqueado()){
+			super.mensagem("Este estoque está bloqueado.", "", FacesMessage.SEVERITY_ERROR);
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean manipularEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
-		prepararMovimentoLivro(dataAtual, movimentoLivro);
-		return prepararEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getTipoMovimento());
+		if(!estoqueBloqueado(movimentoLivro.getEstoque())){
+			prepararMovimentoLivro(dataAtual, movimentoLivro);
+			return prepararEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getTipoMovimento());
+		}
+		return false;
 	}
 	
 	private void prepararMovimentoLivro(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -47,10 +58,8 @@ public class ControleEstoque extends PadraoGeralTemp {
 	}
 
 	private boolean prepararEstoque(Date dataAtual, Estoque estoque, int quantidadeMovimentada, TipoMovimento tipoMovimento) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		Autenticador autenticador = Autenticador.getInstancia();
-		estoque.setDataInclusao(dataAtual);
-		estoque.setUnidade(autenticador.getUnidadeAtual());
-		estoque.setUsuarioInclusao(autenticador.getUsuarioAtual());
+		if(estoque.getIdEstoque() == 0)
+			setarDadosNovoEstoque(estoque, dataAtual);
 		int saldoAtualizado = 0;
 		int saldoAtual = estoque.getQuantidadeAtual();
 		boolean movimentoEntrada = tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.Entrada);
@@ -64,6 +73,13 @@ public class ControleEstoque extends PadraoGeralTemp {
 			return true;
 		}
 		return false;
+	}
+
+	private void setarDadosNovoEstoque(Estoque estoque, Date dataAtual) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		Autenticador autenticador = Autenticador.getInstancia();
+		estoque.setDataInclusao(dataAtual);
+		estoque.setUnidade(autenticador.getUnidadeAtual());
+		estoque.setUsuarioInclusao(autenticador.getUsuarioAtual());
 	}
 	
 }

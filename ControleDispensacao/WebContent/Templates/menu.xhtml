@@ -145,12 +145,20 @@
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Alteração de Dispensação')}" />
 	</p:submenu>
 
-	<p:submenu label="Movimentação"
-		rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação')}">
+	<p:submenu label="Farmácia"
+		rendered="#{controleMenu.menuAutorizadoStringList.contains('Farmácia')}">
+		
+		<p:menuitem value="Ajuste do Estoque"
+					url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste do Estoque')}" />
+		
+		<p:menuitem value="Bloqueio de Estoque"
+					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Estoque')}" />
 		
 		<p:menuitem value="Dispensação Simples"
-			url="/PaginasWeb/Movimentacao/DispensacaoSimples/dispensacaoSimples.jsf"
-			rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação Simples')}" />
+					url="/PaginasWeb/Movimentacao/DispensacaoSimples/dispensacaoSimples.jsf"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação Simples')}" />
 			
 		<p:menuitem value="Doação"
 			url="/PaginasWeb/Movimentacao/Doacao/doacao.jsf"
@@ -166,15 +174,13 @@
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação do Estoque')}" />
 		</p:submenu>
 		
-		<p:submenu label="Farmácia"
-			rendered="#{controleMenu.menuAutorizadoStringList.contains('Farmácia')}">
-			<p:menuitem value="Ajuste de Estoque"
-				url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf"
-				rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste de Estoque')}" />
-			<p:menuitem value="Bloqueio de Lote"
-				url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf"
-				rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Lote')}" />
-		</p:submenu>
+		<p:menuitem value="Ajuste de Estoque"
+					url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste de Estoque')}" />
+			
+		<p:menuitem value="Bloqueio de Lote"
+					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Lote')}" />
 		
 		<p:submenu label="Nota Fiscal"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Nota Fiscal')}">

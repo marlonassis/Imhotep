@@ -4,7 +4,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.auxiliar.Constantes;
-import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.DispensacaoSimples;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.MovimentoLivro;
@@ -49,20 +48,11 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 		limpar();
 	}
 	
-	private MovimentoLivro prepararMovimentoLivro() {
-		MovimentoLivro movimentoLivro = new MovimentoLivro();
-		movimentoLivro.setEstoque(getInstancia().getMovimentoLivro().getEstoque());
-		movimentoLivro.setQuantidadeMovimentacao(getQuantidadeMovimentacao());
-		movimentoLivro.setTipoMovimento(Parametro.tipoMovimentoDispensacaoSimples());
-		return movimentoLivro;
-	}
-	
 	@Override
 	public boolean enviar() {
 		try {
-			MovimentoLivro movimentoLivro = prepararMovimentoLivro();
-			getInstancia().setMovimentoLivro(movimentoLivro);
-			getInstancia().setquantidadeDipensada(quantidadeMovimentacao);
+			getInstancia().getMovimentoLivro().setQuantidadeMovimentacao(getQuantidadeMovimentacao());
+			getInstancia().setquantidadeDipensada(getQuantidadeMovimentacao());
 			FluxoDispensacaoSimples fluxoDispensacaoSimples = new FluxoDispensacaoSimples();
 			if(getLoteEncontrado()){
 				procurarLote();

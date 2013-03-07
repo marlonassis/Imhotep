@@ -25,6 +25,24 @@
 				 rendered="#{dispensacaoSimplesRaiz.loteEncontrado}" 
 				 columns="3" 
 				 width="100%">
+				 
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="tipoOperacao" value="Tipo da Operação" />
+			<br />
+			<p:selectOneMenu id="tipoOperacao"
+							 value="#{dispensacaoSimplesRaiz.instancia.movimentoLivro.tipoMovimento}"
+							 effect="fade" 
+							 converter="tipoMovimentoConversor" 
+							 required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{tipoMovimentoDispensacaoSimplesSelectOne.itens}"
+							   var="tipoMovimento" 
+							   itemLabel="#{tipoMovimento.descricao}"
+							   itemValue="#{tipoMovimento}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+				 
 		<h:panelGroup style="align:left;">
 			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
