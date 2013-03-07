@@ -196,10 +196,10 @@ public class Autenticador {
 	private void carregaToolBarMenu() {
 		try {
 			//carrega o menu que pertence ao usuário
-			boolean usuarioAdmnistrador = getProfissionalAtual().getEspecialidade().getDescricao().equalsIgnoreCase("administrador");
-			String hqlUsuarioNaoAdministrador = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
-			String hqlUsuarioAdministrador = "select o from Menu o order by to_ascii(o.descricao)";
-			String hql = usuarioAdmnistrador ? hqlUsuarioAdministrador : hqlUsuarioNaoAdministrador;
+			boolean usuarioAdmnistrador = getProfissionalAtual().getEspecialidade().getDescricao().equalsIgnoreCase("Engenharia");
+			String hqlUsuarioNaoEngenharia = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
+			String hqlUsuarioEngenharia = "select o from Menu o order by to_ascii(o.descricao)";
+			String hql = usuarioAdmnistrador ? hqlUsuarioEngenharia : hqlUsuarioNaoEngenharia;
 			HashMap<Object, Object> hm = new HashMap<Object, Object>();
 			if(!usuarioAdmnistrador)
 				hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());

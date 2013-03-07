@@ -57,12 +57,12 @@ public class Parametro implements Serializable {
 		return isUsuarioTeste();
 	}
 	
-	public static boolean isUsuarioAdministrador(){
-		return getDescricaoEspecialidade().equalsIgnoreCase("Administrador");
+	public static boolean isUsuarioEngenheiro(){
+		return getDescricaoEspecialidade().equalsIgnoreCase("Engenharia");
 	}
 	
-	public boolean getUsuarioAdministrador(){
-		return isUsuarioAdministrador();
+	public boolean getUsuarioEngenheiro(){
+		return isUsuarioEngenheiro();
 	}
 	
 	public static boolean isUsuarioMedico(){

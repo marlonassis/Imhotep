@@ -6,7 +6,7 @@ package br.com.Imhotep.enums;
  */
 
 public enum UsuarioPapeisEnum {
-	ADMINISTRADOR ("administrador"), 
+	ENGENHARIA ("engenharia"), 
 	USUARIO("usuario"), 
 	USUARIO_PARTICIPANTE("usuarioparticipante"),
 	VISITANTE("visitante");
