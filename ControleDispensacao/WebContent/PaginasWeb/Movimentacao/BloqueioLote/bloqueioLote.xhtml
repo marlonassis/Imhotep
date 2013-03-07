@@ -13,7 +13,7 @@
 		<p:tab id="tabBloqueioMaterial" title="Bloqueio de lote">
 			<h:form id="bloqueioLoteEditorForm" >
 				<p:fieldset legend="Novo bloqueio de lote"
-					collapsed="#{!bloqueioLoteRaiz.edicao}" toggleable="true"
+					collapsed="false" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="bloqueioLoteEditor.xhtml" />
@@ -26,13 +26,14 @@
 									 update=":#{p:component('bloqueioLoteEditorForm')} :#{p:component('bloqueioLotePesquisaForm')}"
 									 action="#{bloqueioLoteRaiz.atualizar}" />
 					<p:commandButton value="Novo" 
+									 immediate="true"
 									 rendered="#{bloqueioLoteRaiz.edicao}"
 									 update=":#{p:component('bloqueioLoteEditorForm')}" 
 									 action="#{bloqueioLoteRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="bloqueioLotePesquisaForm" >
+			<h:form id="bloqueioLotePesquisaForm" rendered="false" >
 				<p:fieldset id="pesquisaBloqueioLoteFieldSet" 
 							legend="Pesquisa"
 							collapsed="true" 

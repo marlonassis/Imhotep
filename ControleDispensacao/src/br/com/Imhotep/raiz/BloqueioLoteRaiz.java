@@ -10,14 +10,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="bloqueioLoteRaiz")
 @SessionScoped
 public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
+	
+	private boolean loteEncontrado;
 	
 	public List<Estoque> listaEstoqueVencido(){
 		Calendar dataFutura = Calendar.getInstance();
@@ -40,33 +44,65 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	public void bloqueioAutomaticoEstoque(){
 		getInstancia().setBloqueado(true);
 		getInstancia().setTipoBloqueio(TipoBloqueioLoteEnum.V);
-		getInstancia().setMotivoBloqueio("Lote vencido.");
 		atualizar();
+	}
+
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
+		setLoteEncontrado(false);
+	}
+	
+	public void procurarLote(){
+		String lote = getInstancia().getLote();
+		Estoque estoque = new EstoqueLoteConsultaRaiz().consultar(lote);
+		loteEncontrado = estoque != null;
+		if(loteEncontrado){
+			setInstancia(estoque);
+		}else{
+			mensagem("Lote não encontrado.", lote, Constantes.WARN);
+		}
 	}
 	
 	@Override
 	public boolean atualizar() {
-		boolean bloqueado = getInstancia().getBloqueado();
-		if(bloqueado){
-			if((getInstancia().getTipoBloqueio().equals(TipoBloqueioLoteEnum.O) && getInstancia().getMotivoBloqueio()!= null && !getInstancia().getMotivoBloqueio().isEmpty()) || !getInstancia().getTipoBloqueio().equals(TipoBloqueioLoteEnum.O)){
-				getInstancia().setDataBloqueio(new Date());
-				try {
-					getInstancia().setUsuarioBloqueio(Autenticador.getInstancia().getUsuarioAtual());
-				} catch (Exception e) {
-					e.printStackTrace();
-					super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
-					System.out.print("Erro em BloqueioLoteHome");
-				}
-			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe o motivo do bloqueio", "Atualização não autorizada."));
-				return false;
+		try {
+			Autenticador autenticador = Autenticador.getInstancia();
+			getInstancia().setUsuarioBloqueio(autenticador.getUsuarioAtual());
+			getInstancia().setDataBloqueio(new Date());
+			procedimentoDesbloqueioEstoque();
+			if(getInstancia().getTipoBloqueio()!=null&&!getInstancia().getTipoBloqueio().equals(TipoBloqueioLoteEnum.O)){
+				getInstancia().setMotivoBloqueio(null);
 			}
-		}else{
-			getInstancia().setDataBloqueio(null);
-			getInstancia().setUsuarioBloqueio(null);
-			getInstancia().setMotivoBloqueio(null);
-			getInstancia().setTipoBloqueio(null);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 		return super.atualizar();
 	}
+
+	private void procedimentoDesbloqueioEstoque() {
+		if(!getInstancia().getBloqueado()){
+			getInstancia().setBloqueado(false);
+			getInstancia().setTipoBloqueio(null);
+			getInstancia().setMotivoBloqueio(null);
+			getInstancia().setTipoBloqueio(null);
+			getInstancia().setDataBloqueio(null);
+			getInstancia().setUsuarioBloqueio(null);
+		}
+	}
+	
+	public boolean isLoteEncontrado() {
+		return loteEncontrado;
+	}
+
+	public void setLoteEncontrado(boolean loteEncontrado) {
+		this.loteEncontrado = loteEncontrado;
+	}
+	
+	
+	
 }

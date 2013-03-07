@@ -4,7 +4,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.auxiliar.Constantes;
-import br.com.Imhotep.auxiliar.Parametro;
 import br.com.Imhotep.entidade.AjusteEstoque;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.MovimentoLivro;
