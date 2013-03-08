@@ -17,6 +17,16 @@ public class MovimentacaoEstoqueUnidade {
 		
 	}
 	
+	public MovimentacaoEstoqueUnidade(TipoMovimento tipoMovimento, String nomeMaterial, String lote, Integer quantidade, 
+			Date dataMovimento, String usuario){
+		this.tipoMovimento=tipoMovimento;
+		this.nomeMaterial=nomeMaterial;
+		this.lote=lote;
+		this.quantidade=quantidade;
+		this.dataMovimento=dataMovimento;
+		this.usuario=usuario;
+	}
+	
 	public MovimentacaoEstoqueUnidade(String mensagemNaoEncontrado){
 		setMensagemNaoEncontrado(mensagemNaoEncontrado);
 	}
