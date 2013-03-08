@@ -16,7 +16,6 @@ import br.com.remendo.PadraoHome;
 public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	
 	private boolean loteEncontrado;
-	private int quantidadeMovimentacao;
 	
 	public DispensacaoSimplesRaiz() {
 		limpar();
@@ -38,7 +37,6 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	private void limpar() {
 		getInstancia().setMovimentoLivro(new MovimentoLivro());
 		getInstancia().getMovimentoLivro().setEstoque(new Estoque());
-		setQuantidadeMovimentacao(0);
 		setLoteEncontrado(false);
 	}
 	
@@ -51,8 +49,6 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	@Override
 	public boolean enviar() {
 		try {
-			getInstancia().getMovimentoLivro().setQuantidadeMovimentacao(getQuantidadeMovimentacao());
-			getInstancia().setquantidadeDipensada(getQuantidadeMovimentacao());
 			FluxoDispensacaoSimples fluxoDispensacaoSimples = new FluxoDispensacaoSimples();
 			if(getLoteEncontrado()){
 				procurarLote();
@@ -80,13 +76,4 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 		this.loteEncontrado = loteEncontrado;
 	}
 
-	public int getQuantidadeMovimentacao() {
-		return quantidadeMovimentacao;
-	}
-
-	public void setQuantidadeMovimentacao(int quantidadeMovimentacao) {
-		this.quantidadeMovimentacao = quantidadeMovimentacao;
-	}
-	
-	
 }

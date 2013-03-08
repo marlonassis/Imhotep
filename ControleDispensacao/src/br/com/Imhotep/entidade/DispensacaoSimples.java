@@ -17,7 +17,6 @@ public class DispensacaoSimples {
 	private int idDispensacaoSimples;
 	private Unidade unidadeDispensada;
 	private MovimentoLivro movimentoLivro;
-	private int quantidadeDipensada;
 
 	  
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_dispensacao_simples_id_dispensacao_simples_seq")
@@ -50,15 +49,6 @@ public class DispensacaoSimples {
 
 	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
 		this.movimentoLivro = movimentoLivro;
-	}
-	
-	@Column(name = "in_quantidade_dipensada")
-	public int getquantidadeDipensada() {
-		return quantidadeDipensada;
-	}
-
-	public void setquantidadeDipensada(int quantidadeDipensada) {
-		this.quantidadeDipensada = quantidadeDipensada;
 	}
 	
 	@Override
