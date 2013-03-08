@@ -18,6 +18,17 @@ public class MovimentacaoEstoqueMaterial {
 		
 	}
 	
+	public MovimentacaoEstoqueMaterial(TipoMovimento tipoMovimento, String nomeUnidade, 
+			String lote, Integer quantidade, Date dataMovimento, String usuario, String nomeMaterial){
+		this.tipoMovimento = tipoMovimento;
+		this.nomeUnidade = nomeUnidade;
+		this.lote = lote;
+		this.quantidade = quantidade;
+		this.dataMovimento = dataMovimento;
+		this.usuario = usuario;
+		this.nomeMaterial = nomeMaterial;
+	}
+	
 	public MovimentacaoEstoqueMaterial(String mensagemNaoEncontrado){
 		setMensagemNaoEncontrado(mensagemNaoEncontrado);
 	}
@@ -86,4 +97,14 @@ public class MovimentacaoEstoqueMaterial {
 		this.nomeMaterial = nomeMaterial;
 	}
 	
+	@Override
+	public String toString() {
+		return this.tipoMovimento+" - "+
+		this.nomeUnidade +" - "+
+		this.lote+" - "+
+		this.quantidade +" - "+
+		this.dataMovimento +" - "+
+		this.usuario +" - "+
+		this.nomeMaterial;
+	}
 }

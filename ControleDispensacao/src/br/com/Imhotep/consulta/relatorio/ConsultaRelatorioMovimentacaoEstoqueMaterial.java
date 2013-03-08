@@ -14,40 +14,23 @@ import br.com.remendo.ConsultaGeral;
 
 public class ConsultaRelatorioMovimentacaoEstoqueMaterial extends ConsultaGeral<Object[]> {
 	
-	public ArrayList<MovimentacaoEstoqueMaterial> consultarResultados(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
-		return modeladorResultado(consultaMovimentoPeriodo(material, dataIni, dataFim, unidade, tipoMovimento));
-	}
-
-	private ArrayList<MovimentacaoEstoqueMaterial> modeladorResultado(List<Object[]> list){
-		List<MovimentacaoEstoqueMaterial> meul = new ArrayList<MovimentacaoEstoqueMaterial>();
-		for(Object[] meu : list){		
-			MovimentacaoEstoqueMaterial obj = new MovimentacaoEstoqueMaterial();
-			obj.setTipoMovimento((TipoMovimento) meu[0]);
-			obj.setNomeUnidade((String) meu[1]);
-			obj.setLote((String) meu[2]);
-			obj.setQuantidade((Integer) meu[3]);
-			obj.setDataMovimento((Date) meu[4]);
-			obj.setUsuario((String) meu[5]);
-			obj.setNomeMaterial((String) meu[6]);
-			meul.add(obj);
-		}
-		
-		if(meul == null || meul.isEmpty()){
-			meul.add(new MovimentacaoEstoqueMaterial(Constantes.MENSAGEM_RELATORIO_VAZIO));
-		}
-		
-		return new ArrayList<MovimentacaoEstoqueMaterial>(meul);
+	public List<MovimentacaoEstoqueMaterial> consultarResultados(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento){
+		return consultaMovimentoPeriodo(material, dataIni, dataFim, unidade, tipoMovimento);
 	}
 	
-	private List<Object[]> consultaMovimentoPeriodo(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento) {
-		ConsultaGeral<Object[]> cg = new ConsultaGeral<Object[]>();
+	private List<MovimentacaoEstoqueMaterial> consultaMovimentoPeriodo(Material material, Date dataIni, Date dataFim, Unidade unidade, TipoMovimento tipoMovimento) {
+		ConsultaGeral<MovimentacaoEstoqueMaterial> cg = new ConsultaGeral<MovimentacaoEstoqueMaterial>();
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		String sql = "select o.tipoMovimento, o.unidadeReceptora.nome, o.estoque.lote, o.quantidadeMovimentacao, o.dataMovimento, o.usuarioMovimentacao.login, o.estoque.material.descricao from MovimentoLivro o where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim";
+		String sql = "select new br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial(o.tipoMovimento, " +
+				"a.nome, o.estoque.lote, o.quantidadeMovimentacao, o.dataMovimento, " +
+				"o.usuarioMovimentacao.login, o.estoque.material.descricao) from MovimentoLivro o " +
+				"LEFT OUTER JOIN o.dispensacaoSimples.unidadeDispensada a "+
+				"where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim";
 		
 		if(unidade != null){
-			sql += " and o.unidadeReceptora.idUnidade = :idUnidade ";
+			sql += " and a.idUnidade = :idUnidade ";
 			map.put("idUnidade", unidade.getIdUnidade());
 		}
 		
@@ -63,7 +46,13 @@ public class ConsultaRelatorioMovimentacaoEstoqueMaterial extends ConsultaGeral<
 		
 		sql += " order by o.dataMovimento desc";
 		
-		return new ArrayList<Object[]>(cg.consulta(new StringBuilder(sql), map));
+		ArrayList<MovimentacaoEstoqueMaterial> list = new ArrayList<MovimentacaoEstoqueMaterial>(cg.consulta(new StringBuilder(sql), map));
+		
+		if(list == null || list.isEmpty()){
+			list.add(new MovimentacaoEstoqueMaterial(Constantes.MENSAGEM_RELATORIO_VAZIO));
+		}
+		
+		return list;
 	}
 	
 }
