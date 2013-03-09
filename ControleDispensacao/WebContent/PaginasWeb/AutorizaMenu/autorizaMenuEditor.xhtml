@@ -32,6 +32,7 @@
 			<font color="red">*</font>
 			<h:outputLabel for="menu" value="Menu:" />
 			<br />
+
 			<p:pickList id="pickList" 
 						value="#{autorizaMenuRaiz.menuDualList}"
 						addLabel="Adicionar" 
@@ -41,7 +42,24 @@
 						var="menu" 
 						itemLabel="#{menu}" 
 						itemValue="#{menu}" 
-						converter="menuConversor" />
+						converter="menuConversor"
+	                    effect="bounce"   
+	                    showSourceControls="true" 
+	                    showTargetControls="true" 
+	                    showCheckbox="true"  
+	                    showSourceFilter="true" 
+	                    showTargetFilter="true" 
+	                    filterMatchMode="contains" >  
+  
+		        <f:facet name="sourceCaption">Não Autorizados</f:facet>  
+		        <f:facet name="targetCaption">Autorizados</f:facet>  
+		  
+	            <p:column style="width:75%;">  
+		            #{menu.descricao}
+		        </p:column>  
+		  
+		    </p:pickList>
+		      
 		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>
