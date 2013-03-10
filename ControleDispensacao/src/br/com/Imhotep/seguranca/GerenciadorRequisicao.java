@@ -22,7 +22,7 @@ public class GerenciadorRequisicao implements PhaseListener{
 	}
 	
 	@Override
-	public void afterPhase(PhaseEvent event) {
+	public void beforePhase(PhaseEvent event) {
 		try {
 			FacesContext facesContext = event.getFacesContext();
 
@@ -54,16 +54,16 @@ public class GerenciadorRequisicao implements PhaseListener{
 	}
 
 	@Override
-	public void beforePhase(PhaseEvent event) {
-    }  
-		
-	@Override
 	public PhaseId getPhaseId() {
-		// TODO Auto-generated method stub
 		return PhaseId.ANY_PHASE;
 	}
 
 	public void login(){
+		
+	}
+
+	@Override
+	public void afterPhase(PhaseEvent arg0) {
 		
 	}
 	

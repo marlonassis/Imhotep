@@ -5,11 +5,25 @@ import javax.servlet.http.HttpSession;
 
 public class ControleInstancia {
 	
-	public Object instancia(String nome){
+	public static HttpSession getSessao(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession sessao = ((HttpSession) facesContext.getExternalContext().getSession(false));
+		return sessao;
+	}
+	
+	public static String getIdSessao(){
+		return ControleInstancia.getSessao().getId();
+	}
+	
+	public static int getTempoInativacaoSessao(){
+		return ControleInstancia.getSessao().getMaxInactiveInterval();
+	}
+	
+	public Object getAtributo(String att){
 		if(FacesContext.getCurrentInstance() != null){
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			if(session != null){
-				Object attribute = session.getAttribute(nome);
+				Object attribute = session.getAttribute(att);
 				return attribute;
 			}
 		}
@@ -17,15 +31,16 @@ public class ControleInstancia {
 	}
 	
 	public Object procuraInstancia(Class<?> classe) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-		if(session != null){
-			Object attribute = session.getAttribute(classe.getSimpleName().toLowerCase());
-			if(attribute == null)
-				attribute = criaInstancia(classe, session);
-			return attribute;
-		}else{
-			return null;
+		if(FacesContext.getCurrentInstance() != null){
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			if(session != null){
+				Object attribute = session.getAttribute(classe.getSimpleName().toLowerCase());
+				if(attribute == null)
+					attribute = criaInstancia(classe, session);
+				return attribute;
+			}
 		}
+		return null;
 	}
 
 	private Object criaInstancia(Class<?> classe, HttpSession session) throws InstantiationException, IllegalAccessException {

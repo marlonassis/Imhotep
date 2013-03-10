@@ -46,7 +46,7 @@ public class PadraoRelatorio implements Serializable {
         
         ctx.responseComplete();
         response.setContentType("application/pdf");
-        response.addHeader("Content-disposition", "attachment; filename="+nomeRelatorio);
+        response.addHeader("Content-disposition", "filename="+nomeRelatorio);
         
         if(list != null){
         	//caso exista valor na lista deve-se usar seus itens 

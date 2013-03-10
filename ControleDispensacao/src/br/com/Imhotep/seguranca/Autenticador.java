@@ -19,6 +19,7 @@ import br.com.Imhotep.entidade.Painel;
 import br.com.Imhotep.entidade.Profissional;
 import br.com.Imhotep.entidade.Unidade;
 import br.com.Imhotep.entidade.Usuario;
+import br.com.Imhotep.raiz.UsuarioAcessoLogRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.utilidades.Utilities;
 
@@ -92,6 +93,7 @@ public class Autenticador {
 	
 	public void logout(){
 		try{
+			new UsuarioAcessoLogRaiz().gerarLogLogout();
 			setUsuarioAtual(new Usuario());
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);  
 			session.invalidate();
@@ -101,7 +103,7 @@ public class Autenticador {
 		}catch (Exception e) {
 			e.printStackTrace();
 			if(getUsuarioAtual() != null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Login não realizado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Logout não realizado!"));
 			}
 		}
 	}
@@ -155,6 +157,7 @@ public class Autenticador {
 	    				carregaProfissional();
 	    				carregaToolBarMenu();
 	    				carregaPaineis();
+	    				new UsuarioAcessoLogRaiz().gerarLogLogin();
 	    				new ControleSenha().redirecionaPaginaConformeSenha();
 	    			}
 	    		}

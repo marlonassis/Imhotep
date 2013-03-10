@@ -1,3 +1,7 @@
+//comandos que devem ser executados no ato do carregamento da página
+setTimeout("window.location.reload();", (1000 * 60 * 30));
+//fim
+
 /**
  * Impede que o campo seja preenchido com caracteres que não sejam numéricos
  */

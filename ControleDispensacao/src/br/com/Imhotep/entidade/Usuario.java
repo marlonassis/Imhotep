@@ -23,6 +23,7 @@ public class Usuario {
 	private String senha;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
+	private boolean expiraSessao;
 	
 	public Usuario() {
 	}
@@ -81,6 +82,14 @@ public class Usuario {
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
+	}
+	
+	@Column(name = "bl_expira_sessao")
+	public boolean getExpiraSessao() {
+		return expiraSessao;
+	}
+	public void setExpiraSessao(boolean expiraSessao) {
+		this.expiraSessao = expiraSessao;
 	}
 	
 	@Override
