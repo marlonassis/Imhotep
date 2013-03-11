@@ -70,7 +70,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 //		aeh.setMaterial(prescricaoItemEstoqueSaida.getEstoque().getMaterial());
 		if(aeh.enviar()){
 			try{
-				if(tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.Entrada)){
+				if(tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.E)){
 					prescricaoItemEstoqueSaida.setQuantidadeSaida(prescricaoItemEstoqueSaida.getQuantidadeSaida() - getQuantidadeAjuste());
 				}else{
 					prescricaoItemEstoqueSaida.setQuantidadeSaida(prescricaoItemEstoqueSaida.getQuantidadeSaida() + getQuantidadeAjuste());

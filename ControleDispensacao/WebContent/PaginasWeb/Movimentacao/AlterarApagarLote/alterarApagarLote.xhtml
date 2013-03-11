@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabBloqueioMaterial" title="Alterar/Apagar Lote">
+			<h:form id="alterarApagarLoteEditorForm" >
+				<p:fieldset legend="Nova alteração de lote"
+					collapsed="false" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="alterarApagarLoteEditor.xhtml" />
+					<p:commandButton value="Apagar" 
+									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
+									 update=":#{p:component('alterarApagarLoteEditorForm')} :#{p:component('alterarApagarLotePesquisaForm')}"
+									 action="#{alterarApagarLoteRaiz.apagarLote}" />
+					<p:commandButton value="Gravar"
+									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
+									 update=":#{p:component('loteDuplicadoForm')} :#{p:component('alterarApagarLoteEditorForm')} :#{p:component('alterarApagarLotePesquisaForm')}"
+									 action="#{alterarApagarLoteRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 immediate="true"
+									 oncomplete="location.reload();"
+									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
+									 update=":#{p:component('alterarApagarLoteEditorForm')}" 
+									 action="#{alterarApagarLoteRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="alterarApagarLotePesquisaForm" rendered="false" >
+				<p:fieldset id="pesquisaAlterarApagarLoteFieldSet" 
+							legend="Pesquisa"
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="alterarApagarLoteConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+									 update=":#{p:component('alterarApagarLotePesquisaForm')}"
+									 image="ui-icon ui-icon-search" />
+
+					<p:commandButton value="Limpar"
+									 action="#{estoqueConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('alterarApagarLotePesquisaForm')} " />
+
+				</p:fieldset>
+				<p:growl />
+				<ui:include src="alterarApagarLoteTabela.xhtml" />
+			</h:form>
+			
+			<h:form id="loteDuplicadoForm" >
+				<p:dialog closable="false" 
+						  modal="true" 
+						  header="Fusão de lotes"
+						  visible="#{alterarApagarLoteRaiz.loteDuplicado}"
+						  widgetVar="loteDuplicado">
+					<h:panelGrid width="100%" 
+								 columns="3" >
+						<h:panelGroup>
+							<h:outputText value="Lote:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{alterarApagarLoteRaiz.estoqueDuplicado.lote}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Material:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{alterarApagarLoteRaiz.estoqueDuplicado.material.descricao}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Fabricante:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{alterarApagarLoteRaiz.estoqueDuplicado.fabricante.descricao}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Validade:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{alterarApagarLoteRaiz.estoqueDuplicado.dataValidade}" >
+								<f:convertDateTime pattern="MM/yyyy"/>
+							</h:outputText>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Quantidade Atual:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{alterarApagarLoteRaiz.estoqueDuplicado.quantidadeAtual}" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:outputText value="O lote #{alterarApagarLoteRaiz.estoqueDuplicado.lote} foi cadastrado para um material diferente. Não será possível efetuar a fusão." 
+								  style="color: #FF0000;" 
+								  rendered="#{alterarApagarLoteRaiz.estoqueDuplicado.material.idMaterial != alterarApagarLoteRaiz.instancia.material.idMaterial}" />
+					<h:outputText value="O lote #{alterarApagarLoteRaiz.loteAntigo} será substituído pelo lote #{alterarApagarLoteRaiz.estoqueDuplicado.lote}." 
+								  style="color: #FF0000;" 
+								  rendered="#{alterarApagarLoteRaiz.estoqueDuplicado.material.idMaterial == alterarApagarLoteRaiz.instancia.material.idMaterial}" />
+					<br/>
+					<p:commandButton value="Fundir"
+									 rendered="#{alterarApagarLoteRaiz.estoqueDuplicado.material.idMaterial == alterarApagarLoteRaiz.instancia.material.idMaterial}" 
+									 action="#{alterarApagarLoteRaiz.fundirLotes}" 
+									 update=":#{p:component('loteDuplicadoForm')} :#{p:component('alterarApagarLoteEditorForm')}" />
+					<p:commandButton value="Cancelar" 
+									 action="#{alterarApagarLoteRaiz.cancelarFusao}" 
+									 update=":#{p:component('loteDuplicadoForm')}" />
+				</p:dialog>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

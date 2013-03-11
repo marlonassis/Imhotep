@@ -6,11 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Properties;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.context.FacesContext;
+import java.util.Set;
 
 public class GerenciadorMecanico {
 	private String driver = "org.postgresql.Driver";
@@ -31,18 +29,12 @@ public class GerenciadorMecanico {
 		return null;
 	}
 	
-	
-	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
-	}
-	
 	private void registrarDriver() {
 		// Register the native JDBC driver. If the driver cannot 
         // be registered, the test cannot continue.
         try {
             Class.forName(driver);
         } catch (Exception e) {
-        	mensagem("Driver não encontrado", null, FacesMessage.SEVERITY_FATAL);
             System.out.println("Driver failed to register.");
             System.out.println(e.getMessage());
             System.exit(1);
@@ -69,7 +61,6 @@ public class GerenciadorMecanico {
 	        ps = c.prepareStatement(sql);
 	        rs = ps.executeQuery();
         } catch (SQLException e) {
-        	// TODO Auto-generated catch block
         	e.printStackTrace();
         }
         
@@ -87,16 +78,22 @@ public class GerenciadorMecanico {
         return rs;
 	}
 
-	protected boolean executarQuery(String query) {
+	private HashMap<String, String> fluxo = new HashMap<String, String>(); 
+	
+	public boolean executarQueryFluxo() {
 		registrarDriver();
 		boolean ret = true;
+		String chaveAtual = null;
         try {
         	c = createConnection((getNomeBanco() == null || getNomeBanco().isEmpty()) ? "postgres" : getNomeBanco());
         	s = c.createStatement();
-			s.executeUpdate(query);
-//			registrarSqlExecutado(query);
+        	Set<String> chaves = getFluxo().keySet();
+        	for(String chave : chaves){
+        		chaveAtual = chave;
+        		s.executeUpdate(getFluxo().get(chave));
+        	}
         } catch (SQLException sqle) {
-        	mensagem("Falha no processamento no banco de dados", null, FacesMessage.SEVERITY_FATAL);
+        	System.out.println("Erro durante a execução do fluxo: "+chaveAtual);
             System.out.println("Database processing has failed.");
             System.out.println("Reason: " + sqle.getMessage());
             ret = false;
@@ -109,7 +106,32 @@ public class GerenciadorMecanico {
                     c.close();
                 }
             } catch (SQLException e) {
-            	mensagem("Falha ao fechar o statement.", null, FacesMessage.SEVERITY_FATAL);
+                System.out.println("Cleanup failed to close Statement.");
+            }
+        }
+        return ret;
+	}
+	
+	protected boolean executarQuery(String query) {
+		registrarDriver();
+		boolean ret = true;
+        try {
+        	c = createConnection((getNomeBanco() == null || getNomeBanco().isEmpty()) ? "postgres" : getNomeBanco());
+        	s = c.createStatement();
+			s.executeUpdate(query);
+        } catch (SQLException sqle) {
+            System.out.println("Database processing has failed.");
+            System.out.println("Reason: " + sqle.getMessage());
+            ret = false;
+        } finally {
+            try {
+                if (s != null) {
+                    s.close();
+                }
+                if (c != null) {
+                    c.close();
+                }
+            } catch (SQLException e) {
                 System.out.println("Cleanup failed to close Statement.");
             }
         }
@@ -123,5 +145,15 @@ public class GerenciadorMecanico {
 
 	public void setNomeBanco(String nomeBanco) {
 		this.nomeBanco = nomeBanco;
+	}
+
+
+	public HashMap<String, String> getFluxo() {
+		return fluxo;
+	}
+
+
+	public void setFluxo(HashMap<String, String> fluxo) {
+		this.fluxo = fluxo;
 	}
 }

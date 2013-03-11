@@ -17,7 +17,7 @@ public class MovimentoLivroConsultaRaiz  extends ConsultaGeral<MovimentoLivro>{
 	public int saldoAtualMaterial(Material material){
 		MovimentoLivro ml = consultaMaiorMovimentoMaterial(material);
 		if(ml != null){
-			boolean tipoEntrada = ml.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.Entrada);
+			boolean tipoEntrada = ml.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.E);
 			return  tipoEntrada ? ml.getSaldoAnterior() + ml.getQuantidadeMovimentacao() : ml.getSaldoAnterior() - ml.getQuantidadeMovimentacao();
 		}
 		return 0;

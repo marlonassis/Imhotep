@@ -37,6 +37,7 @@ public class Estoque {
 	private Date dataBloqueio;
 	private Usuario usuarioBloqueio;
 	private TipoBloqueioLoteEnum tipoBloqueio;
+	private boolean lock;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_id_estoque_seq")
 	@Id
@@ -107,6 +108,14 @@ public class Estoque {
 	}
 	public void setBloqueado(boolean bloqueado) {
 		this.bloqueado = bloqueado;
+	}
+	
+	@Column(name = "bl_lock")
+	public boolean getLock() {
+		return lock;
+	}
+	public void setLock(boolean lock) {
+		this.lock = lock;
 	}
 	
 	@Column(name = "cv_motivo_bloqueio")

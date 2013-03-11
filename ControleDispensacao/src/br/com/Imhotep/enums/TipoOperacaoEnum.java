@@ -6,9 +6,9 @@ package br.com.Imhotep.enums;
  */
 
 public enum TipoOperacaoEnum {
-	Entrada("Entrada"), 
-	Saida("Saída"),
-	Perda("Perda");
+	E("Entrada"), 
+	S("Saída"),
+	P("Perda");
 	
 	private String label;
 	

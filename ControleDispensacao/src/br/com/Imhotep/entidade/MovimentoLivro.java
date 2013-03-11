@@ -27,7 +27,6 @@ public class MovimentoLivro {
 	private Integer quantidadeMovimentacao;
 	private Date dataMovimento;
 	private Usuario usuarioMovimentacao;
-	private Unidade unidadeReceptora;
 	private Estoque estoque;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
@@ -83,15 +82,6 @@ public class MovimentoLivro {
 	}
 	public void setDataMovimento(Date dataMovimento) {
 		this.dataMovimento = dataMovimento;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade_receptora")
-	public Unidade getUnidadeReceptora() {
-		return unidadeReceptora;
-	}
-	public void setUnidadeReceptora(Unidade unidadeReceptora) {
-		this.unidadeReceptora = unidadeReceptora;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

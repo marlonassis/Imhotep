@@ -1,9 +1,21 @@
 package br.com.Imhotep.controle;
 
+import java.io.IOException;
+
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class ControleInstancia {
+	
+	public static void recarregarPaginaAtual(){
+		try {
+			String paginaAtual = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI();
+			FacesContext.getCurrentInstance().getExternalContext().redirect(paginaAtual);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static HttpSession getSessao(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();

@@ -62,7 +62,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 			setarDadosNovoEstoque(estoque, dataAtual);
 		int saldoAtualizado = 0;
 		int saldoAtual = estoque.getQuantidadeAtual();
-		boolean movimentoEntrada = tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.Entrada);
+		boolean movimentoEntrada = tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.E);
 		if(movimentoEntrada || (!estoqueVazio(saldoAtual) && !estoqueInsuficiente(saldoAtual, quantidadeMovimentada))){
 			if(movimentoEntrada){
 				saldoAtualizado = saldoAtual + quantidadeMovimentada;

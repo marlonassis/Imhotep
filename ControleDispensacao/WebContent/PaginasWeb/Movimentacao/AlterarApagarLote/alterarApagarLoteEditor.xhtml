@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid columns="2" width="100%">
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="loteAntigo" value="Lote:" />
+			<br />
+			<p:inputText id="loteAntigo"
+						 value="#{alterarApagarLoteRaiz.loteAntigo}"
+						 title="Informe o lote" 
+						 disabled="#{alterarApagarLoteRaiz.loteEncontrado}"
+						 required="true"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('alterarApagarLoteEditorForm')} :#{p:component('alterarApagarLotePanelGrid')}"
+							 action="#{alterarApagarLoteRaiz.procurarLote}" 
+							 rendered="#{!alterarApagarLoteRaiz.loteEncontrado}"
+							 title="Procurar lote." />
+		</h:panelGroup>
+	</h:panelGrid>
+
+	<h:panelGrid id="alterarApagarLotePanelGrid" 
+				 columns="2" 
+				 width="100%" 
+				 rendered="#{alterarApagarLoteRaiz.loteEncontrado}" >
+		<h:panelGroup id="lotePanelGrid" >
+			<font color="red">*</font>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:inputText id="lote"
+						 value="#{alterarApagarLoteRaiz.instancia.lote}"
+						 title="Informe o lote" 
+						 required="true"/>
+		</h:panelGroup>
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="material" value="Material:" />
+			<br />
+			<p:autoComplete id="material"
+							disabled="true"
+							size="35"
+							value="#{alterarApagarLoteRaiz.instancia.material}"
+							minQueryLength="4"
+							required="true"
+							scrollHeight="300"
+							completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
+							var="material" 
+							forceSelection="true"
+							title="Informe o nome ou o código do material"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="fabricante" value="Fabricante:" />
+			<br />
+			<p:autoComplete id="fabricante"
+							required="true"
+							disabled="true"
+							value="#{alterarApagarLoteRaiz.instancia.fabricante}"
+							completeMethod="#{fabricanteAutoComplete.autoComplete}"
+							var="fabricante" 
+							minQueryLength="3" 
+							forceSelection="true"
+							title="Informe o fabricante" 
+							itemLabel="#{fabricante.descricao}"
+							itemValue="#{fabricante}" 
+							converter="fabricanteConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="dataValidade" value="Data de Validade:" />
+			<br />
+			<p:calendar id="dataValidade"
+						required="true"
+						pattern="MM/yyyy"
+						value="#{alterarApagarLoteRaiz.instancia.dataValidade}"
+						title="Data de validade do lote"/>
+		</h:panelGroup>
+	</h:panelGrid>
+</ui:composition>
