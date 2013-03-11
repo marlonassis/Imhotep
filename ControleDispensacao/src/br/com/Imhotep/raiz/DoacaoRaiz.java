@@ -24,6 +24,11 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 		limpar();
 	}
 
+	public void carregarEstoqueConsultaMaterial(Estoque estoque){
+		loteEncontrado = true;
+		getInstancia().getMovimentoLivro().setEstoque(estoque);
+	}
+	
 	private void limpar() {
 		getInstancia().setMovimentoLivro(new MovimentoLivro());
 		getInstancia().getMovimentoLivro().setEstoque(new Estoque());

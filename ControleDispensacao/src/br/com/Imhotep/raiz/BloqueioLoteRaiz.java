@@ -29,6 +29,11 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') <= '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') <= '"+new SimpleDateFormat("yyyy-MM").format(dataFutura.getTime())+"') order by o.dataValidade"); 
 	}
 	
+	public void carregarEstoqueConsultaMaterial(Estoque estoque){
+		loteEncontrado = true;
+		setInstancia(estoque);
+	}
+	
 	public boolean medicamentoVencido(Date validade){
 		Calendar atual = Calendar.getInstance();
 		Calendar vali = Calendar.getInstance();

@@ -21,6 +21,12 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	private Estoque estoqueDuplicado = new Estoque();
 	private String loteAntigo;
 	
+	public void carregarEstoqueConsultaMaterial(Estoque estoque){
+		loteEncontrado = true;
+		setInstancia(estoque);
+		setLoteAntigo(estoque.getLote());
+	}
+	
 	public void procurarLote(){
 		Estoque estoque = new EstoqueLoteConsultaRaiz().consultar(loteAntigo);
 		loteEncontrado = estoque != null;

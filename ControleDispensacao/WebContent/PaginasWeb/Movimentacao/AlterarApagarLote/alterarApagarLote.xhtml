@@ -19,11 +19,11 @@
 					<ui:include src="alterarApagarLoteEditor.xhtml" />
 					<p:commandButton value="Apagar" 
 									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
-									 update=":#{p:component('alterarApagarLoteEditorForm')} :#{p:component('alterarApagarLotePesquisaForm')}"
+									 update=":#{p:component('alterarApagarLoteEditorForm')}"
 									 action="#{alterarApagarLoteRaiz.apagarLote}" />
 					<p:commandButton value="Gravar"
 									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
-									 update=":#{p:component('loteDuplicadoForm')} :#{p:component('alterarApagarLoteEditorForm')} :#{p:component('alterarApagarLotePesquisaForm')}"
+									 update=":#{p:component('loteDuplicadoForm')} :#{p:component('alterarApagarLoteEditorForm')}"
 									 action="#{alterarApagarLoteRaiz.atualizar}" />
 					<p:commandButton value="Novo" 
 									 immediate="true"
@@ -34,28 +34,55 @@
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="alterarApagarLotePesquisaForm" rendered="false" >
-				<p:fieldset id="pesquisaAlterarApagarLoteFieldSet" 
-							legend="Pesquisa"
-							collapsed="true" 
-							toggleable="true" 
-							toggleSpeed="500">
-					<ui:include src="alterarApagarLoteConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-									 update=":#{p:component('alterarApagarLotePesquisaForm')}"
-									 image="ui-icon ui-icon-search" />
-
-					<p:commandButton value="Limpar"
-									 action="#{estoqueConsulta.novaInstancia()}"
-									 image="ui-icon ui-icon-arrowrefresh-1-s" 
-									 title="Limpar os campos"
-									 update=":#{p:component('alterarApagarLotePesquisaForm')} " />
-
+			<br/><br/>
+			<h:form id="buscaEstoqueMaterialForm"
+					rendered="#{!alterarApagarLoteRaiz.loteEncontrado}" style="text-align: left;" >
+				<p:fieldset legend="Busca de Lote por Material">  
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
+						<br />
+						<p:autoComplete id="material"
+										value="#{estoqueMaterialConsultaRaiz.material}"
+										minQueryLength="4"
+										scrollHeight="300"
+										size="35"
+										completeMethod="#{materialComMovimentoAutoComplete.autoComplete}"
+										var="material" 
+										forceSelection="true"
+										title="Informe o código ou o nome do material"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
+						<p:commandButton image="ui-icon ui-icon-search"
+										 update=":#{p:component('buscaEstoqueMaterialForm')}"
+										 action="#{estoqueMaterialConsultaRaiz.consultar}" 
+										 rendered="#{!ajusteEstoqueRaiz.loteEncontrado}"
+										 title="Procurar lote." />
+					</h:panelGroup>
+					<br/>
+					<h:panelGroup rendered="#{estoqueMaterialConsultaRaiz.listaEstoque.size() != 0}" >
+						<h3>Estoques encontrados</h3>  
+						<p:dataList value="#{estoqueMaterialConsultaRaiz.listaEstoque}" 
+									var="linha" 
+									type="ordered">  
+							<p:commandLink value="#{linha.lote}" 
+										   action="#{alterarApagarLoteRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();" />
+							#{' - '} 
+							<h:outputText value="#{linha.dataValidade}">
+								<f:convertDateTime pattern="MM/yyyy"/>
+							</h:outputText>
+							#{' '} 
+							<p:commandLink action="#{alterarApagarLoteRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();">
+								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
+												title="Clique aqui para editar o lote" />
+							</p:commandLink>
+						</p:dataList>
+					</h:panelGroup>
 				</p:fieldset>
-				<p:growl />
-				<ui:include src="alterarApagarLoteTabela.xhtml" />
-			</h:form>
+			</h:form> 
 			
 			<h:form id="loteDuplicadoForm" >
 				<p:dialog closable="false" 

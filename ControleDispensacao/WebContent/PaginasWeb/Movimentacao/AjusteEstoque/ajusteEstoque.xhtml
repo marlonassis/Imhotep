@@ -18,20 +18,70 @@
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="ajusteEstoqueEditor.xhtml" />
 					<p:commandButton value="Salvar" 
-									 rendered="#{!ajusteEstoqueRaiz.edicao and ajusteEstoqueRaiz.loteEncontrado != null}"
+									 rendered="#{ajusteEstoqueRaiz.loteEncontrado}"
 									 update=":#{p:component('ajusteEstoqueEditorForm')}"
 									 action="#{ajusteEstoqueRaiz.enviar}" />
 					<p:commandButton value="Gravar" 
-									 rendered="#{ajusteEstoqueRaiz.edicao}"
+									 rendered="#{ajusteEstoqueRaiz.loteEncontrado}"
 									 update=":#{p:component('ajusteEstoqueEditorForm')}"
 									 action="#{ajusteEstoqueRaiz.atualizar}" />
 					<p:commandButton value="Novo"
-									 rendered="#{ajusteEstoqueRaiz.loteEncontrado != null or ajusteEstoqueRaiz.edicao}"
-									 update=":#{p:component('ajusteEstoqueEditorForm')}"
+									 rendered="#{ajusteEstoqueRaiz.loteEncontrado}"
+									 update=":#{p:component('ajusteEstoqueEditorForm')} :#{p:component('buscaEstoqueMaterialForm')}"
 									 action="#{ajusteEstoqueRaiz.novaInstancia()}" 
-									 immediate="true" />
+									 immediate="true" 
+									 oncomplete="location.reload();" />
 				</p:fieldset>
 			</h:form>
+			<br/><br/>
+			<h:form id="buscaEstoqueMaterialForm"
+					rendered="#{!ajusteEstoqueRaiz.loteEncontrado}" style="text-align: left;" >
+				<p:fieldset legend="Busca de Lote por Material">  
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
+						<br />
+						<p:autoComplete id="material"
+										value="#{estoqueMaterialConsultaRaiz.material}"
+										minQueryLength="4"
+										size="35"
+										scrollHeight="300"
+										completeMethod="#{materialComMovimentoAutoComplete.autoComplete}"
+										var="material" 
+										forceSelection="true"
+										title="Informe o código ou o nome do material"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
+						<p:commandButton image="ui-icon ui-icon-search"
+										 update=":#{p:component('buscaEstoqueMaterialForm')}"
+										 action="#{estoqueMaterialConsultaRaiz.consultar}" 
+										 rendered="#{!ajusteEstoqueRaiz.loteEncontrado}"
+										 title="Procurar lote." />
+					</h:panelGroup>
+					<br/>
+					<h:panelGroup rendered="#{estoqueMaterialConsultaRaiz.listaEstoque.size() != 0}" >
+						<h3>Estoques encontrados</h3>  
+						<p:dataList value="#{estoqueMaterialConsultaRaiz.listaEstoque}" 
+									var="linha" 
+									type="ordered">  
+							<p:commandLink value="#{linha.lote}" 
+										   action="#{ajusteEstoqueRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();" />
+							#{' - '} 
+							<h:outputText value="#{linha.dataValidade}">
+								<f:convertDateTime pattern="MM/yyyy"/>
+							</h:outputText>
+							#{' '} 
+							<p:commandLink action="#{alterarApagarLoteRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();">
+								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
+												title="Clique aqui para editar o lote" />
+							</p:commandLink>
+						</p:dataList>
+					</h:panelGroup>
+				</p:fieldset>
+			</h:form> 
 		</p:tab>
 	</ui:define>
 </ui:composition>

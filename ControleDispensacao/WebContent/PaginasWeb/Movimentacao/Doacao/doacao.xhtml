@@ -13,44 +13,78 @@
 		<p:tab title="Doação">
 			<h:form id="doacaoEditorForm">
 				<p:fieldset legend="Nova Doação"
-					collapsed="#{!doacaoRaiz.edicao}" toggleable="true"
+					collapsed="false" toggleable="true"
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="doacaoEditor.xhtml" />
 					<p:commandButton value="Salvar" 
 									 rendered="#{!doacaoRaiz.edicao and doacaoRaiz.loteEncontrado != null}"
-									 update=":#{p:component('doacaoEditorForm')} :#{p:component('doacaoPesquisaForm')}"
+									 update=":#{p:component('doacaoEditorForm')}"
 									 action="#{doacaoRaiz.enviar}" />
 					<p:commandButton value="Gravar" 
 									 rendered="#{doacaoRaiz.edicao}"
-									 update=":#{p:component('doacaoEditorForm')} :#{p:component('doacaoPesquisaForm')}"
+									 update=":#{p:component('doacaoEditorForm')}"
 									 action="#{doacaoRaiz.atualizar}" />
 					<p:commandButton value="Novo"
 									 rendered="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}"
 									 update=":#{p:component('doacaoEditorForm')}"
 									 action="#{doacaoRaiz.novaInstancia()}" 
-									 immediate="true" />
+									 immediate="true" 
+									 oncomplete="location.reload();"/>
 				</p:fieldset>
 			</h:form>
 
-			<h:form id="doacaoPesquisaForm">
-				<p:growl />
-				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="doacaoConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('doacaoPesquisaForm')}"/>
-
-					<p:commandButton value="Limpar"
-						action="#{doacaoConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('doacaoPesquisaForm')}" />
-
+			<br/><br/>
+			<h:form id="buscaEstoqueMaterialForm"
+					rendered="#{!bloqueioLoteRaiz.loteEncontrado}" style="text-align: left;" >
+				<p:fieldset legend="Busca de Lote por Material">  
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
+						<br />
+						<p:autoComplete id="material"
+										value="#{estoqueMaterialConsultaRaiz.material}"
+										minQueryLength="4"
+										scrollHeight="300"
+										size="35"
+										completeMethod="#{materialComMovimentoAutoComplete.autoComplete}"
+										var="material" 
+										forceSelection="true"
+										title="Informe o código ou o nome do material"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
+						<p:commandButton image="ui-icon ui-icon-search"
+										 update=":#{p:component('buscaEstoqueMaterialForm')}"
+										 action="#{estoqueMaterialConsultaRaiz.consultar}" 
+										 rendered="#{!ajusteEstoqueRaiz.loteEncontrado}"
+										 title="Procurar lote." />
+					</h:panelGroup>
+					<br/>
+					<h:panelGroup rendered="#{estoqueMaterialConsultaRaiz.listaEstoque.size() != 0}" >
+						<h3>Estoques encontrados</h3>  
+						<p:dataList value="#{estoqueMaterialConsultaRaiz.listaEstoque}" 
+									var="linha" 
+									type="ordered">  
+							<p:commandLink value="#{linha.lote}" 
+										   action="#{doacaoRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();" />
+							#{' - '} 
+							<h:outputText value="#{linha.dataValidade}">
+								<f:convertDateTime pattern="MM/yyyy"/>
+							</h:outputText>
+							#{' '} 
+							<p:commandLink action="#{doacaoRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();">
+								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
+												title="Clique aqui para editar o lote" />
+							</p:commandLink>
+						</p:dataList>
+					</h:panelGroup>
 				</p:fieldset>
-				<ui:include src="doacaoTabela.xhtml" />
 			</h:form>
+			
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

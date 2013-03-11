@@ -28,11 +28,60 @@
 									 rendered="#{dispensacaoSimplesRaiz.loteEncontrado}" 
 									 update=":#{p:component('dispensacaoSimplesFormulario')}"
 									 action="#{dispensacaoSimplesRaiz.novaInstancia()}" 
-									 immediate="true" />
+									 immediate="true" 
+									 oncomplete="location.reload();" />
 				</p:fieldset>
 			</h:form>
 
-			
+			<br/><br/>
+			<h:form id="buscaEstoqueMaterialForm"
+					rendered="#{!dispensacaoSimplesRaiz.loteEncontrado}" style="text-align: left;" >
+				<p:fieldset legend="Busca de Lote por Material">  
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
+						<br />
+						<p:autoComplete id="material"
+										value="#{estoqueMaterialConsultaRaiz.material}"
+										minQueryLength="4"
+										scrollHeight="300"
+										size="35"
+										completeMethod="#{materialComMovimentoAutoComplete.autoComplete}"
+										var="material" 
+										forceSelection="true"
+										title="Informe o código ou o nome do material"
+										itemLabel="#{material.descricao}" 
+										itemValue="#{material}"
+										converter="materialConversor" />
+						<p:commandButton image="ui-icon ui-icon-search"
+										 update=":#{p:component('buscaEstoqueMaterialForm')}"
+										 action="#{estoqueMaterialConsultaRaiz.consultar}" 
+										 rendered="#{!ajusteEstoqueRaiz.loteEncontrado}"
+										 title="Procurar lote." />
+					</h:panelGroup>
+					<br/>
+					<h:panelGroup rendered="#{estoqueMaterialConsultaRaiz.listaEstoque.size() != 0}" >
+						<h3>Estoques encontrados</h3>  
+						<p:dataList value="#{estoqueMaterialConsultaRaiz.listaEstoque}" 
+									var="linha" 
+									type="ordered">  
+							<p:commandLink value="#{linha.lote}" 
+										   action="#{dispensacaoSimplesRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();" />
+							#{' - '} 
+							<h:outputText value="#{linha.dataValidade}">
+								<f:convertDateTime pattern="MM/yyyy"/>
+							</h:outputText>
+							#{' '} 
+							<p:commandLink action="#{dispensacaoSimplesRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+										   oncomplete="location.reload();">
+								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
+												title="Clique aqui para editar o lote" />
+							</p:commandLink>
+						</p:dataList>
+					</h:panelGroup>
+				</p:fieldset>
+			</h:form> 
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -21,6 +21,11 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 		limpar();
 	}
 
+	public void carregarEstoqueConsultaMaterial(Estoque estoque){
+		loteEncontrado = true;
+		getInstancia().getMovimentoLivro().setEstoque(estoque);
+	}
+	
 	public void procurarLote(){
 		String lote = getInstancia().getMovimentoLivro().getEstoque().getLote();
 		Estoque estoque = new EstoqueLoteConsultaRaiz().consultar(lote);

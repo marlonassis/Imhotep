@@ -57,6 +57,11 @@ public class AjusteEstoqueRaiz extends PadraoHome<AjusteEstoque>{
 		return false;
 	}
 	
+	public void carregarEstoqueConsultaMaterial(Estoque estoque){
+		loteEncontrado = true;
+		getInstancia().getMovimentoLivro().setEstoque(estoque);
+	}
+	
 	@Override
 	public void novaInstancia() {
 		super.novaInstancia();
