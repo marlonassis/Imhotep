@@ -41,6 +41,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 	}
 	
 	public boolean manipularEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
+		upperCaseLote(movimentoLivro.getEstoque().getLote());
 		if(!estoqueBloqueado(movimentoLivro.getEstoque())){
 			prepararMovimentoLivro(dataAtual, movimentoLivro);
 			return prepararEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getTipoMovimento());
@@ -48,6 +49,10 @@ public class ControleEstoque extends PadraoGeralTemp {
 		return false;
 	}
 	
+	private void upperCaseLote(String lote) {
+		lote = lote.toUpperCase();		
+	}
+
 	private void prepararMovimentoLivro(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Autenticador autenticador = Autenticador.getInstancia();
 		int saldoAtualMaterial = new MovimentoLivroConsultaRaiz().saldoAtualMaterial(movimentoLivro.getEstoque().getMaterial());

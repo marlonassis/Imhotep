@@ -5,14 +5,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.entidade.Estoque;
+import br.com.Imhotep.entidade.EstoqueLog;
 import br.com.Imhotep.enums.TipoBloqueioLoteEnum;
+import br.com.Imhotep.enums.TipoEstoqueLog;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.remendo.PadraoHome;
@@ -48,13 +48,13 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	
 	@Override
 	public boolean enviar() {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não é permitido inserir um estoque", "Inserção não autorizada."));
+		super.mensagem("Não é permitido inserir um estoque", "Inserção não autorizada.", Constantes.ERROR);
 		return false;
 	}
 	
 	@Override
 	public boolean apagar() {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não é permitido apagar um estoque", "Deleção não autorizada."));
+		super.mensagem("Não é permitido apagar um estoque", "Deleção não autorizada", Constantes.ERROR);
 		return false;
 	}
 	
@@ -98,7 +98,17 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return super.atualizar();
+		if(super.atualizar()){
+			if(getInstancia().getBloqueado()){
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.O);
+				new EstoqueLogRaiz().gerarLog(log);
+			}else{
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.P);
+				new EstoqueLogRaiz().gerarLog(log);
+			}
+			return true;
+		}
+		return false;
 	}
 
 	private void procedimentoDesbloqueioEstoque() {

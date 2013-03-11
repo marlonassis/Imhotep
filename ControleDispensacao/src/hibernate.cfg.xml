@@ -63,6 +63,7 @@
 		<mapping class="br.com.Imhotep.entidade.AjusteEstoque" />
 		<mapping class="br.com.Imhotep.entidade.DispensacaoSimples" />
 		<mapping class="br.com.Imhotep.entidade.UsuarioAcessoLog" />
+		<mapping class="br.com.Imhotep.entidade.EstoqueLog" />
 
 	</session-factory>
 </hibernate-configuration>

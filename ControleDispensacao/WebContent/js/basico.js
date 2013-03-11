@@ -1,5 +1,5 @@
 //comandos que devem ser executados no ato do carregamento da página
-setTimeout("window.location.reload();", (1000 * 60 * 30));
+setTimeout("window.location.reload();", 1800000);
 //fim
 
 /**

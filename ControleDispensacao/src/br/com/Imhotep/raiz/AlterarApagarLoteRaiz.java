@@ -1,10 +1,14 @@
 package br.com.Imhotep.raiz;
 
+import java.util.Date;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.auxiliar.Constantes;
 import br.com.Imhotep.entidade.Estoque;
+import br.com.Imhotep.entidade.EstoqueLog;
+import br.com.Imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.consulta.raiz.DoacaoEstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.consulta.raiz.MovimentoSaidaEstoqueConsultaRaiz;
@@ -54,13 +58,16 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		mensagemVerificacaoLoteNaoDeletado(existeMovimentoSaida, existeNotaFiscal, existeDoacao);
 	}
 
-	private void tentarDeletarEstoque(boolean existeMovimentoSaida,
-			boolean existeNotaFiscal, boolean existeDoacao) {
+	
+	private void tentarDeletarEstoque(boolean existeMovimentoSaida, boolean existeNotaFiscal, boolean existeDoacao) {
 		if(!existeMovimentoSaida && !existeNotaFiscal && !existeDoacao){
 			String hqlEstoque = "delete from Estoque o where o.idEstoque = "+getInstancia().getIdEstoque();
 			if(new LinhaMecanica().apagarMovimentoLivroEstoque(getInstancia().getIdEstoque()))
-				if(super.executa(hqlEstoque)>0)
+				if(super.executa(hqlEstoque)>0){
 					super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
+					EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D);
+					new EstoqueLogRaiz().gerarLog(log);
+				}
 				else
 					super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
 			else
@@ -85,6 +92,11 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	
 	public void fundirLotes(){
 		if(new LinhaMecanica().fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque())){
+			Date data = new Date();
+			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G),
+			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F)};
+			new EstoqueLogRaiz().gerarLog(log);
+			
 			mensagem("Fusão realizada com sucesso.", null, Constantes.INFO);
 			setInstancia(getEstoqueDuplicado());
 			limparFusao();
@@ -111,7 +123,15 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		setEstoqueDuplicado(new EstoqueLoteConsultaRaiz().consultar(getInstancia().getLote()));
 		setLoteDuplicado(getEstoqueDuplicado() != null && getEstoqueDuplicado().getIdEstoque() != getInstancia().getIdEstoque());
 		if(!isLoteDuplicado()){
-			return super.atualizar();
+			if(super.atualizar()){
+				Date data = new Date();
+				EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.B),
+				EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.A)};
+				new EstoqueLogRaiz().gerarLog(log);
+				return true;
+			}
+			else
+				return false;
 		}
 		return false;
 	}
