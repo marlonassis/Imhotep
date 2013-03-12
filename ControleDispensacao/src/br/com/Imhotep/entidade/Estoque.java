@@ -79,9 +79,15 @@ public class Estoque {
 	
 	@Column(name = "cv_lote")
 	public String getLote() {
+		if(lote != null){
+			lote = lote.toUpperCase();
+		}
 		return lote;
 	}
 	public void setLote(String lote) {
+		if(lote != null){
+			lote = lote.toUpperCase();
+		}
 		this.lote = lote;
 	}
 	
