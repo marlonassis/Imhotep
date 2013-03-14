@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.Imhotep.entidade.Especialidade;
 import br.com.Imhotep.entidade.Profissional;
 import br.com.Imhotep.entidade.TipoMovimento;
+import br.com.Imhotep.entidade.Unidade;
 import br.com.Imhotep.entidade.Usuario;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
@@ -85,6 +86,11 @@ public class Parametro implements Serializable {
 	public static TipoMovimento tipoMovimentoDoacaoRecebida(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 18");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
+	public static Unidade unidadeCPD(){
+		StringBuilder sb = new StringBuilder("select o from Unidade o where o.idUnidade = 27");
+		return new ConsultaGeral<Unidade>().consultaUnica(sb, null);
 	}
 	
 	public static TipoMovimento tipoMovimentoDispensacaoSimples(){

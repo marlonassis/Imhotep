@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Chamado">
+			<h:form id="chamadoEditorForm">
+				<p:fieldset legend="Novo Chamado"
+					collapsed="#{!chamadoRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="chamadoEditor.xhtml" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!chamadoRaiz.edicao}"
+									 update=":#{p:component('chamadoEditorForm')} :#{p:component('chamadoPesquisaForm')}"
+									 action="#{chamadoRaiz.abrirChamado}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{chamadoRaiz.edicao}"
+									 update=":#{p:component('chamadoEditorForm')} :#{p:component('chamadoPesquisaForm')}"
+									 action="#{chamadoRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{chamadoRaiz.edicao}"
+									 update=":#{p:component('chamadoEditorForm')}"
+									 action="#{chamadoRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="chamadoPesquisaForm" >
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="chamadoConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('chamadoPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+									 action="#{chamadoConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('chamadoPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="chamadoTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>
