@@ -41,6 +41,7 @@ public class Paciente {
 	private Date dataInclusao;
 	private Profissional profissionalInclusao;
 	private String numeroSus;
+	private String prontuario;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_id_paciente_seq")
 	@Id
@@ -71,7 +72,7 @@ public class Paciente {
 		this.cidade = cidade;
 	}
 	
-	@Column(name = "ds_nome", length = 70)
+	@Column(name = "cv_nome", length = 70)
 	public String getNome() {
 		return nome;
 	}
@@ -88,7 +89,7 @@ public class Paciente {
 		this.tipoLogradouro = tipoLogradouro;
 	}
 	
-	@Column(name = "ds_logradouro", length = 50)
+	@Column(name = "cv_logradouro", length = 50)
 	public String getNomeLogradouro() {
 		return nomeLogradouro;
 	}
@@ -96,7 +97,7 @@ public class Paciente {
 		this.nomeLogradouro = nomeLogradouro;
 	}
 	
-	@Column(name = "ds_numero", length = 7)
+	@Column(name = "cv_numero", length = 7)
 	public String getNumero() {
 		return numero;
 	}
@@ -104,7 +105,7 @@ public class Paciente {
 		this.numero = numero;
 	}
 	
-	@Column(name = "ds_complemento", length = 15)
+	@Column(name = "cv_complemento", length = 15)
 	public String getComplemento() {
 		return complemento;
 	}
@@ -112,7 +113,7 @@ public class Paciente {
 		this.complemento = complemento;
 	}
 	
-	@Column(name = "ds_bairro", length = 30)
+	@Column(name = "cv_bairro", length = 30)
 	public String getBairro() {
 		return bairro;
 	}
@@ -120,7 +121,7 @@ public class Paciente {
 		this.bairro = bairro;
 	}
 	
-	@Column(name = "ds_nome_mae", length = 70)
+	@Column(name = "cv_nome_mae", length = 70)
 	public String getNomeMae() {
 		return nomeMae;
 	}
@@ -146,7 +147,7 @@ public class Paciente {
 		this.dataNascimento = dataNascimento;
 	}
 	
-	@Column(name = "ds_telefone", length = 14)
+	@Column(name = "cv_telefone", length = 14)
 	public String getTelefone() {
 		return telefone;
 	}
@@ -154,7 +155,7 @@ public class Paciente {
 		this.telefone = telefone;
 	}
 	
-	@Column(name = "ds_cpf", length = 14)
+	@Column(name = "cv_cpf", length = 14)
 	public String getCpf() {
 		return cpf;
 	}
@@ -187,6 +188,14 @@ public class Paciente {
 	}
 	public void setNumeroSus(String numeroSus) {
 		this.numeroSus = numeroSus;
+	}
+	
+	@Column(name = "cv_prontuario")
+	public String getProntuario() {
+		return prontuario;
+	}
+	public void setProntuario(String prontuario) {
+		this.prontuario = prontuario;
 	}
 	
 	@Transient
