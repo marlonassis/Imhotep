@@ -3,7 +3,11 @@ package br.com.imhotep.linhaMecanica;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import br.com.Imhotep.entidade.Estoque;
 
 public class LinhaMecanica extends GerenciadorMecanico {
 	
@@ -79,7 +83,6 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		}
 	}
 	
-	
 	public static void main(String[] args) throws SQLException {
 		LinhaMecanica lm = new LinhaMecanica();
 
@@ -92,6 +95,28 @@ public class LinhaMecanica extends GerenciadorMecanico {
 			lm.reordenacaoMovimento(rs.getInt(1));
 		}
 		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+	}
+
+	public List<Estoque> estoquePorMaterial(int idMaterial){
+		try {
+			setNomeBanco(DB_BANCO_IMHOTEP);
+			ResultSet rs = consultar(utf8_to_latin1("select id_estoque, cv_lote from tb_estoque " +
+					"where id_material = "+idMaterial));
+			List<Estoque> list = new ArrayList<Estoque>();
+			while (rs.next()) { 
+				int idEstoque = rs.getInt(1);
+				String lote = rs.getString(2);
+				Estoque estoque = new Estoque();
+				estoque.setIdEstoque(idEstoque);
+				estoque.setLote(lote);
+				list.add(estoque);
+			}
+			
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public boolean reordenacaoMovimento(int idEstoque){
