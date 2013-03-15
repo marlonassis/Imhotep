@@ -91,7 +91,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	}
 	
 	public void fundirLotes(){
-		if(new LinhaMecanica().fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque())){
+		if(new LinhaMecanica().fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque(), getInstancia().getMaterial().getIdMaterial())){
 			Date data = new Date();
 			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G),
 			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F)};

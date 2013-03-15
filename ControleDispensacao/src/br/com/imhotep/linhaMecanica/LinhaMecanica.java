@@ -20,7 +20,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return executarQuery(sql);
 	}
 	
-	public boolean fluxoFusaoEstoque(int idEstoqueOrigem, int idEstoqueDestino){
+	public boolean fluxoFusaoEstoque(int idEstoqueOrigem, int idEstoqueDestino, int idMaterial){
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		
 		String sql = "update tb_estoque set bl_lock = true where id_estoque = "+idEstoqueOrigem+" or id_estoque = "+idEstoqueDestino;
@@ -40,7 +40,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		if(!executarQuery(sql))
 			return false;
 		
-		if(!reordenacaoMovimento(idEstoqueDestino))
+		if(!reordenacaoMovimento(idMaterial))
 			return false;
 		return true;
 	}
