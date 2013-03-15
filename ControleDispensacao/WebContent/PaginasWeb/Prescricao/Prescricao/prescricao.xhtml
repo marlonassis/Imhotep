@@ -13,14 +13,14 @@
 		<p:tab id="tabPrescricao" title="Prescrição">
 			<h:form id="prescricaoForm" >
 				<p:growl id="mensagemGlobal" showDetail="true" />
-				<p:wizard widgetVar="wiz" backLabel="Voltar" nextLabel="Avançar"
-					flowListener="#{prescricaoRaiz.onFlowProcess}">
-
+				<p:wizard widgetVar="wiz" 
+						  backLabel="Voltar" 
+						  nextLabel="Avançar"
+						  flowListener="#{prescricaoRaiz.onFlowProcess}">
 					<p:tab id="prescricaoPacienteTab" title="Paciente">
 						<p:panel header="Detalhes do paciente">
 							<p:growl showDetail="true" />
 							<h:panelGrid id="pacientePanelGrid" columns="4" width="100%">
-
 								<h:panelGroup>
 									<font color="red">*</font>
 									<h:outputLabel for="paciente" value="Paciente:" />
@@ -39,8 +39,8 @@
 													itemValue="#{paciente}" 
 													converter="pacienteConversor" />
 									<h:graphicImage value="/Imagens/list16.png"
-										title="Ao digitar aparecerá algumas sugestões"
-										style="padding-top:8px" />
+													title="Ao digitar aparecerá algumas sugestões"
+													style="padding-top:8px" />
 								</h:panelGroup>
 
 								<h:panelGroup>

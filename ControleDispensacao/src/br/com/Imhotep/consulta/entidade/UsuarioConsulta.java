@@ -14,7 +14,7 @@ import br.com.remendo.PadraoConsulta;
 public class UsuarioConsulta extends PadraoConsulta<Usuario> {
 	public UsuarioConsulta(){
 		getCamposConsulta().put("o.login", IGUAL);
-		setOrderBy("o.login");
+		setOrderBy("o.profissional.nome");
 	}
 	
 	@Override

@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,6 +26,7 @@ public class Usuario {
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	private boolean expiraSessao;
+	private Profissional profissional;
 	
 	public Usuario() {
 	}
@@ -90,6 +93,15 @@ public class Usuario {
 	}
 	public void setExpiraSessao(boolean expiraSessao) {
 		this.expiraSessao = expiraSessao;
+	}
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
+	public Profissional getProfissional() {
+		return profissional;
+	}
+	public void setProfissional(Profissional profissional) {
+		this.profissional = profissional;
 	}
 	
 	@Override

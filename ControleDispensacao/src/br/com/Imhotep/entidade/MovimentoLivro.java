@@ -2,7 +2,6 @@ package br.com.Imhotep.entidade;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -103,7 +102,7 @@ public class MovimentoLivro {
 	
 	private DispensacaoSimples dispensacaoSimples;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
     @PrimaryKeyJoinColumn
 	public DispensacaoSimples getDispensacaoSimples() {
 		return dispensacaoSimples;

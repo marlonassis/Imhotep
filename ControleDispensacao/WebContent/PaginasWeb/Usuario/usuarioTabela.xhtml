@@ -14,6 +14,13 @@
 				 paginator="true"
 				 selectionMode="single" 
 				 rowKey="#{linha.idUsuario}">
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional" />
+			</f:facet>
+			<h:outputText value="#{linha.profissional.nome}" />
+		</p:column>
 
 		<p:column>
 			<f:facet name="header">
