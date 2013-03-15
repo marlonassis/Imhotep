@@ -128,7 +128,6 @@ public class Autenticador {
 	public void continuaLogin() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		if(unidadeAtual != null){
 			mostraComboUnidade = false;
-			new ControleSenha().redirecionaPaginaConformeSenha();
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe uma unidade.", ""));
 		}
@@ -158,7 +157,6 @@ public class Autenticador {
 	    				carregaToolBarMenu();
 	    				carregaPaineis();
 	    				new UsuarioAcessoLogRaiz().gerarLogLogin();
-	    				new ControleSenha().redirecionaPaginaConformeSenha();
 	    			}
 	    		}
 	    	}

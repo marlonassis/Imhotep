@@ -33,15 +33,17 @@ public class GerenciadorRequisicao implements PhaseListener{
 				return;
 			}
 			
-			Autenticador autenticador = Autenticador.getInstancia();
 			boolean paginaLogin = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_LOGIN) == 0;
-			if(!paginaLogin && (autenticador == null || autenticador.getUsuarioAtual() == null)){
+			if(!paginaLogin && (Autenticador.getInstancia() == null || Autenticador.getInstancia().getUsuarioAtual() == null)){
 				facesContext.getExternalContext().redirect(Constantes.PAGINA_LOGIN);
 				return;
+			}else{
+				if(paginaLogin && Autenticador.getInstancia() != null && Autenticador.getInstancia().getUsuarioAtual() != null)
+					facesContext.getExternalContext().redirect(Constantes.PAGINA_HOME);
 			}
 			
 			boolean paginaTrocaSenha = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
-			if(!paginaLogin && !paginaTrocaSenha && autenticador != null && (new ControleSenha().senhaIgualMatricula() || new ControleSenha().senhaResetada())){
+			if(!paginaLogin && !paginaTrocaSenha && Autenticador.getInstancia() != null && (new ControleSenha().senhaIgualMatricula() || new ControleSenha().senhaResetada())){
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
 				return;
 			}

@@ -24,18 +24,6 @@ public class ControleSenha {
 		return null;
 	}
 	
-	public void redirecionaPaginaConformeSenha() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-		try {
-			if(!senhaIgualMatricula()){
-				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
-			}else{
-				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public boolean senhaResetada() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Autenticador autenticador = Autenticador.getInstancia();
 		if(autenticador.getProfissionalAtual() != null){
