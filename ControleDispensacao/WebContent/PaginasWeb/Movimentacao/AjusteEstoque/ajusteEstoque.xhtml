@@ -74,7 +74,7 @@
 							</h:outputText>
 							#{' '} 
 							<p:commandLink action="#{alterarApagarLoteRaiz.carregarEstoqueConsultaMaterial(linha)}" 
-										   oncomplete="location.reload();">
+										   update="#{p:component('ajusteEstoqueEditorForm')} ">
 								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
 												title="Clique aqui para editar o lote" />
 							</p:commandLink>

@@ -11,11 +11,12 @@ import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="estoqueMaterialConsultaRaiz")
+@ManagedBean
 @SessionScoped
 public class EstoqueMaterialConsultaRaiz extends ConsultaGeral<Estoque> implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3166628607140060111L;
+	
 	private List<Estoque> listaEstoque = new ArrayList<Estoque>();
 	private Material material;
 	
@@ -23,6 +24,7 @@ public class EstoqueMaterialConsultaRaiz extends ConsultaGeral<Estoque> implemen
 		String sql = "select o from Estoque o where o.material.idMaterial = "+material.getIdMaterial();
 		StringBuilder stringB = new StringBuilder(sql);
 		setListaEstoque(new ArrayList<Estoque>(super.consulta(stringB, null)));
+//		listaEstoque = new LinhaMecanica().estoquePorMaterial(material.getIdMaterial());
 	}
 
 	public List<Estoque> getListaEstoque() {
