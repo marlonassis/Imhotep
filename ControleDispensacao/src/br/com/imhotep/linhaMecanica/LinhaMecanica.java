@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -88,13 +89,16 @@ public class LinhaMecanica extends GerenciadorMecanico {
 
 //		lm.reordenacaoMovimento(517);
 		
-		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+		Calendar ini = Calendar.getInstance();
 		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_estoque from tb_estoque order by id_estoque"));
+		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_material from tb_material order by id_material"));
 		while (rs.next()) { 
 			lm.reordenacaoMovimento(rs.getInt(1));
 		}
-		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+		Calendar fim = Calendar.getInstance();
+		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(fim.getTime()));
+		System.out.println( ((fim.getTimeInMillis() - ini.getTimeInMillis()) / 1000 / 60) + "min e " + ((((fim.getTimeInMillis() - ini.getTimeInMillis()) / 1000)%60)*60) + "s" );
 	}
 
 	public List<Estoque> estoquePorMaterial(int idMaterial){
@@ -119,12 +123,14 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return null;
 	}
 	
-	public boolean reordenacaoMovimento(int idEstoque){
+	public boolean reordenacaoMovimento(int idMaterial){
 		try {
 			setNomeBanco(DB_BANCO_IMHOTEP);
 			ResultSet rs = consultar(utf8_to_latin1("select a.id_movimento_livro, a.in_saldo_anterior, a.in_quantidade_movimentacao, b.tp_operacao from tb_movimento_livro a " +
 					"inner join tb_tipo_movimento b on b.id_tipo_movimento = a.id_tipo_movimento " +
-					"where a.id_estoque = "+idEstoque+" order by a.dt_data_movimento asc"));
+					"inner join tb_estoque c on c.id_estoque = a.id_estoque " +
+					"inner join tb_material d on d.id_material = c.id_material " +
+					"where d.id_material = "+idMaterial+" order by a.dt_data_movimento asc"));
 			int saldoAnterior = 0;
 			int quantidadeMovimentacao = 0;
 			String tipoOperacao = null;
@@ -134,14 +140,14 @@ public class LinhaMecanica extends GerenciadorMecanico {
 				String sql = "update tb_movimento_livro set in_saldo_anterior = "+saldoAnterior+" where id_movimento_livro = "+idMovimentoLivro;
 				executarQuery(sql);
 				tipoOperacao = rs.getString(4);
-				System.out.println("idEstoque: "+idEstoque+" - SA: "+saldoAnterior+" - QM: "+quantidadeMovimentacao);
+				System.out.println("idMaterial: "+idMaterial+" - SA: "+saldoAnterior+" - QM: "+quantidadeMovimentacao);
 				if(tipoOperacao.equals("E"))
 					saldoAnterior += quantidadeMovimentacao;
 				else
 					saldoAnterior -= quantidadeMovimentacao;
 			}
 			
-			String sql = "update tb_estoque set in_quantidade_atual = "+saldoAnterior+" where id_estoque = "+idEstoque;
+			String sql = "update tb_estoque set in_quantidade_atual = "+saldoAnterior+" where id_estoque = "+idMaterial;
 			executarQuery(sql);
 			return true;
 		} catch (SQLException e) {
