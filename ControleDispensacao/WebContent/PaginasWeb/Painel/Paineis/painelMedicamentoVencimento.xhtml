@@ -6,13 +6,18 @@
 	template="/Templates/templateLimpo.xhtml">
 
 	<ui:define name="conteudoPadrao">
-		<p:fieldset legend="Medicamento vencido ou a vencer em 5 dias"
-			collapsed="false" toggleable="false">
+		<p:fieldset legend="Medicamentos a vencer ou vencidos"
+					collapsed="false" 
+					toggleable="false">
 			<p:dataTable id="tabelaEstoqueVencido"
-				value="#{bloqueioLoteRaiz.listaEstoqueVencido()}" var="linha"
-				dblClickSelect="true" emptyMessage="Não foi encontrado registros"
-				rows="5" paginator="true" selectionMode="single"
-				rowKey="#{linha.idEstoque}">
+						 value="#{bloqueioLoteRaiz.listaEstoqueVencido()}" 
+						 var="linha"
+						 dblClickSelect="true" 
+						 emptyMessage="Não foi encontrado registros"
+						 rows="5" 
+						 paginator="true" 
+						 selectionMode="single"
+						 rowKey="#{linha.idEstoque}">
 
 				<p:column>
 					<f:facet name="header">
@@ -26,24 +31,33 @@
 					</f:facet>
 					<h:outputText value="#{linha.material}" />
 				</p:column>
-				<p:column headerText="Data da validade"
-					style="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade) ? 'background-color:#FF0000;' : ''}">
+				<p:column headerText="Data de validade"
+						  style="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade) ? 'background-color:#FF0000;' : 'background-color:#FFFF00;'}">
 					<h:outputText value="#{linha.dataValidade}" style="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade) ? 'color:#FFFFFF;' : 'color:#000000;'} font-weight:bold;" >
 						<f:convertDateTime pattern="MM/yyyy" />
 					</h:outputText>
 				</p:column>
 				<p:column style="width:60px; text-align: center;">
-					<p:commandLink
-						action="#{bloqueioLoteRaiz.bloqueioAutomaticoEstoque()}"
-						onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
-						oncomplete="window.location.reload();" title="Bloquear Lote"
-						style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{linha}"
-							target="#{bloqueioLoteRaiz.instancia}" />
-						<h:graphicImage value="/Imagens/block.png" />
+					<p:commandLink action="#{bloqueioLoteRaiz.bloqueioAutomaticoEstoque()}"
+								   onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
+								   oncomplete="window.location.reload();" 
+								   title="Bloquear lote #{linha.lote}"
+								   rendered="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade)}"
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{bloqueioLoteRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/block.png" 
+										width="16px" 
+										height="16px" />
 					</p:commandLink>
 				</p:column>
 			</p:dataTable>
+			<h:graphicImage value="/Imagens/red-300x300.jpg" 
+							height="16px"
+							width="16px" />Medicações vencidas
+			<br/>
+			<h:graphicImage value="/Imagens/yellowsquare.png" 
+							height="16px"
+							width="16px" />Medicações que vencem no mês atual
 		</p:fieldset>
 	</ui:define>
 </ui:composition>

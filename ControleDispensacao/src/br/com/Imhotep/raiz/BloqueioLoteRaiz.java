@@ -24,9 +24,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	private boolean loteEncontrado;
 	
 	public List<Estoque> listaEstoqueVencido(){
-		Calendar dataFutura = Calendar.getInstance();
-		dataFutura.add(Calendar.DAY_OF_MONTH, 5);
-		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') <= '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') <= '"+new SimpleDateFormat("yyyy-MM").format(dataFutura.getTime())+"') order by o.dataValidade"); 
+		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"') order by o.dataValidade"); 
 	}
 	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){
@@ -38,8 +36,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 		Calendar atual = Calendar.getInstance();
 		Calendar vali = Calendar.getInstance();
 		vali.setTime(validade);
-		atual.set(Calendar.DAY_OF_MONTH, 01);
-		vali.set(Calendar.DAY_OF_MONTH, 01);
+		vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
 		if(vali.after(atual)){
 			return false;
 		}
