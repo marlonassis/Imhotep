@@ -28,6 +28,7 @@ public class EstoqueLog {
 	private Profissional profissionalAlteracao;
 	private Date dataLog;
 	private TipoEstoqueLog tipoAlteracao;
+	private String dataValidade;
 	  
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_log_id_estoque_log_seq")
 	@Id
@@ -86,6 +87,15 @@ public class EstoqueLog {
 	}
 	public void setTipoAlteracao(TipoEstoqueLog tipoAlteracao) {
 		this.tipoAlteracao = tipoAlteracao;
+	}
+	
+	@Column(name = "cv_data_validade")
+	public String getDataValidade(){
+		return dataValidade;
+	}
+	
+	public void setDataValidade(String dataValidade){
+		this.dataValidade = dataValidade;
 	}
 	
 	@Override

@@ -72,6 +72,8 @@
 							<h:outputText value="#{linha.dataValidade}">
 								<f:convertDateTime pattern="MM/yyyy"/>
 							</h:outputText>
+							#{' - '} 
+							<h:outputText value="#{linha.quantidadeAtual}"/>
 							#{' '} 
 							<p:commandLink action="#{dispensacaoSimplesRaiz.carregarEstoqueConsultaMaterial(linha)}" 
 										   oncomplete="location.reload();">

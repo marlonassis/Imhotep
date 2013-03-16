@@ -22,6 +22,7 @@ import br.com.remendo.PadraoHome;
 public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	
 	private boolean loteEncontrado;
+	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 	
 	public List<Estoque> listaEstoqueVencido(){
 		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"') order by o.dataValidade"); 
@@ -97,10 +98,10 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 		}
 		if(super.atualizar()){
 			if(getInstancia().getBloqueado()){
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.O);
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.O, sdf.format(getInstancia().getDataValidade()));
 				new EstoqueLogRaiz().gerarLog(log);
 			}else{
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.P);
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.P, sdf.format(getInstancia().getDataValidade()));
 				new EstoqueLogRaiz().gerarLog(log);
 			}
 			return true;

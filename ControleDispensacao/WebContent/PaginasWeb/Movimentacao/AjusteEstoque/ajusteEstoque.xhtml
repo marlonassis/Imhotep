@@ -72,9 +72,11 @@
 							<h:outputText value="#{linha.dataValidade}">
 								<f:convertDateTime pattern="MM/yyyy"/>
 							</h:outputText>
+							#{' - '} 
+							<h:outputText value="#{linha.quantidadeAtual}"/>
 							#{' '} 
 							<p:commandLink action="#{alterarApagarLoteRaiz.carregarEstoqueConsultaMaterial(linha)}" 
-										   update="#{p:component('ajusteEstoqueEditorForm')} ">
+										   oncomplete="location.reload();">
 								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
 												title="Clique aqui para editar o lote" />
 							</p:commandLink>
