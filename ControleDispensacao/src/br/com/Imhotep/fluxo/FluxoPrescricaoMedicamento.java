@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 import br.com.Imhotep.comparador.DoseDataComparador;
+import br.com.Imhotep.controle.ControleEstoque;
 import br.com.Imhotep.controle.ControlePrescricaoItem;
 import br.com.Imhotep.controle.ControlePrescricaoItemDose;
 import br.com.Imhotep.entidade.Material;
@@ -17,8 +17,10 @@ import br.com.Imhotep.entidade.PrescricaoItem;
 import br.com.Imhotep.entidade.PrescricaoItemDose;
 import br.com.Imhotep.entidade.extra.Dose;
 import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
-import br.com.Imhotep.raiz.EstoqueRaiz;
 import br.com.Imhotep.raiz.PrescricaoRaiz;
+import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
+import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
+import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
 
@@ -50,21 +52,20 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
-	public boolean inserirItem(Dose dose, Prescricao prescricao){
-			if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
-				dose.getPrescricaoItem().setPrescricao(prescricao);
-				if(gravaPrescricaoItem(dose.getPrescricaoItem())){
-					return gravaDose(dose);
-				}
-			}
-			return false;
-	}
-	
-	public boolean inserirDose(Dose dose){
-		if(!formularioDoseVazio(dose) && liberaDose(dose.getPrescricaoItem().getMaterial(), dose)){
+	public boolean inserirItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{
+		formularioDoseVazio(dose);
+		liberaDose(dose.getPrescricaoItem().getMaterial(), dose);
+		dose.getPrescricaoItem().setPrescricao(prescricao);
+		if(gravaPrescricaoItem(dose.getPrescricaoItem())){
 			return gravaDose(dose);
 		}
 		return false;
+	}
+	
+	public boolean inserirDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{
+		formularioDoseVazio(dose);
+		liberaDose(dose.getPrescricaoItem().getMaterial(), dose);
+		return gravaDose(dose);
 	}
 	
 	private boolean gravaDose(Dose dose){
@@ -83,51 +84,36 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return true;
 	}
 	
-	private boolean liberaDose(Material material, Dose dose) {
-		EstoqueRaiz eh = new EstoqueRaiz();
-		Object[] totais = eh.consultaEstoque(material);
-		Integer estoqueAtual = (Integer) totais[0] - (Integer) totais[1];
-		return !eh.estoqueVazio(estoqueAtual) && !eh.estoqueInsuficiente(estoqueAtual, dose.getQuantidadeDoses(), dose.getQuantidadePorDose());
+	private void liberaDose(Material material, Dose dose) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{
+		int quantidadeDose = dose.getQuantidadeDoses() * dose.getQuantidadePorDose();
+		ControleEstoque ce = new ControleEstoque();
+		ce.liberarDose(quantidadeDose, material);
 	}
 	
-	private boolean formularioDoseVazio(Dose dose){
-		if(dose.getDataInicio().before(Calendar.getInstance().getTime())){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A data de início da dose deve ser maior que a data atual.", ""));
-			return true;
-		}
+	private void formularioDoseVazio(Dose dose) throws ExcecaoFormularioNaoPreenchido {
+		if(dose.getDataInicio().before(Calendar.getInstance().getTime()))
+			throw new ExcecaoFormularioNaoPreenchido("A data de início da dose deve ser maior que a data atual.");
 		
-		if(dose.getPrescricaoItem().getMaterial() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o material.", ""));
-			return true;
-		}
-		if(dose.getQuantidadeDoses() == null || dose.getQuantidadeDoses() == 0){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a quantidade de doses diárias.", ""));
-			return true;
-		}
-		if(dose.getQuantidadePorDose() == null || dose.getQuantidadePorDose() == 0){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a quantidade do medicamento por dose.", ""));
-			return true;
-		}
-		if(dose.getIntervaloEntreDoses() == null || dose.getIntervaloEntreDoses() == 0){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o intervalo de tempo entre as doses.", ""));
-			return true;
-		}
-		if(dose.getDataInicio() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a hora de início da dosagem.", ""));
-			return true;
-		}
+		if(dose.getPrescricaoItem().getMaterial() == null)
+			throw new ExcecaoFormularioNaoPreenchido("Informe o material.");
 		
-		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe o tipo da via que o medicamento deve ser adminsitrado.", ""));
-			return true;
-		}
+		if(dose.getQuantidadeDoses() == null || dose.getQuantidadeDoses() == 0)
+			throw new ExcecaoFormularioNaoPreenchido("Informe a quantidade de doses diárias.");
 		
-		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() != null && dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento().equals(TipoViaAdministracaoMedicamentoEnum.OT) && dose.getPrescricaoItem().getOutraVia() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe a outra via de administração do medicamento.", ""));
-			return true;
-		}
+		if(dose.getQuantidadePorDose() == null || dose.getQuantidadePorDose() == 0)
+			throw new ExcecaoFormularioNaoPreenchido("Informe a quantidade do medicamento por dose.");
 		
-		return false;
+		if(dose.getIntervaloEntreDoses() == null || dose.getIntervaloEntreDoses() == 0)
+			throw new ExcecaoFormularioNaoPreenchido("Informe o intervalo de tempo entre as doses.");
+		
+		if(dose.getDataInicio() == null)
+			throw new ExcecaoFormularioNaoPreenchido("Informe a hora de início da dosagem.");
+		
+		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() == null)
+			throw new ExcecaoFormularioNaoPreenchido("Informe o tipo da via que o medicamento deve ser adminsitrado.");
+		
+		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() != null && dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento().equals(TipoViaAdministracaoMedicamentoEnum.OT) && dose.getPrescricaoItem().getOutraVia() == null)
+			throw new ExcecaoFormularioNaoPreenchido("Informe a outra via de administração do medicamento.");
 	}
 	
 	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){

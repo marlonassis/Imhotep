@@ -6,6 +6,12 @@ import br.com.Imhotep.controle.ControleEstoque;
 import br.com.Imhotep.entidade.MovimentoLivro;
 import br.com.Imhotep.entidade.NotaFiscalEstoque;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.excecoes.ExcecaoEstoqueBloqueado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
+import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
+import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
+import br.com.imhotep.temp.ExcecaoPadraoFluxo;
 import br.com.imhotep.temp.PadraoFluxoTemp;
 
 public class FluxoNotaFiscalEstoque extends PadraoFluxoTemp{
@@ -14,26 +20,26 @@ public class FluxoNotaFiscalEstoque extends PadraoFluxoTemp{
 		super("Erro ao salvar a nota fiscal.", "Nota fiscal salva com sucesso.");
 	}
 
-	private void prepararNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque, Date dataAtual) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+	private void prepararNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque, Date dataAtual) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Autenticador autenticador = Autenticador.getInstancia();
 		notaFiscalEstoque.setProfissionalInsercao(autenticador.getProfissionalAtual());
 		notaFiscalEstoque.setDataInsercao(dataAtual);
 	}
 	
-	public boolean atualizarNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void atualizarNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, ExcecaoPadraoFluxo{
 		Date dataAtual = new Date();
 		prepararNotaFiscalEstoque(notaFiscalEstoque, dataAtual);
 		ativarControladoraEstoque(dataAtual, movimentoLivro);
 		enfileirarObjetosAtualizacaoEstoque(notaFiscalEstoque, movimentoLivro);
-		return super.processarFluxo();
+		super.processarFluxo();
 	}
 	
-	public boolean salvarNovaNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void salvarNovaNotaFiscalEstoque(NotaFiscalEstoque notaFiscalEstoque, MovimentoLivro movimentoLivro) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		Date dataAtual = new Date();
 		prepararNotaFiscalEstoque(notaFiscalEstoque, dataAtual);
 		ativarControladoraEstoque(dataAtual, movimentoLivro);
 		enfileirarObjetosNovaEntrada(notaFiscalEstoque, movimentoLivro);
-		return super.processarFluxo();
+		super.processarFluxo();
 	}
 
 	private void enfileirarObjetosAtualizacaoEstoque(NotaFiscalEstoque notaFiscalEstoque, MovimentoLivro movimentoLivro) {
@@ -48,9 +54,9 @@ public class FluxoNotaFiscalEstoque extends PadraoFluxoTemp{
 		super.getObjetoSalvar().put("MovimentoLivro", movimentoLivro);
 	}
 
-	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException {
+	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		ControleEstoque controleEstoque = new ControleEstoque();
-		controleEstoque.manipularEstoque(dataAtual, movimentoLivro);
+		controleEstoque.liberarAjuste(dataAtual, movimentoLivro);
 	}
 	
 }
