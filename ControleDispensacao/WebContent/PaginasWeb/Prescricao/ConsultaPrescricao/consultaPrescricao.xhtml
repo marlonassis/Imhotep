@@ -13,8 +13,9 @@
 		<p:tab id="consultaPrecricao" title="Consulta da prescrição">
 			<h:form id="consultaPrescricaoForm" >
 				<p:fieldset legend="Informações da prescrição"
-					collapsed="#{prescricaoRaiz.prescricaoVisualizacao.idPrescricao == 0}"
-					toggleable="true" toggleSpeed="500">
+							collapsed="#{prescricaoRaiz.prescricaoVisualizacao.idPrescricao == 0}"
+							toggleable="true" 
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="consultaPrescricaoVisualizador.xhtml" />
 					<p:commandButton value="Limpar"
@@ -28,17 +29,20 @@
 
 			<h:form id="pesquisaConsultaPrescricaoForm" >
 				<p:fieldset id="pesquisaConsultaPrescricaoFieldSet"
-					legend="Pesquisa" collapsed="true" toggleable="true"
-					toggleSpeed="500">
+							legend="Pesquisa" 
+							collapsed="true" 
+							toggleable="true"
+							toggleSpeed="500">
 					<ui:include src="consultaPrescricaoConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar"
-						update=":#{p:component('tabelaConsultaPrescricao')}" image="ui-icon ui-icon-search" />
+									 update=":#{p:component('tabelaConsultaPrescricao')}" 
+									 image="ui-icon ui-icon-search" />
 
 					<p:commandButton value="Limpar"
-						action="#{consultaPrescricaoConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('pesquisaConsultaPrescricaoForm')} " />
+									 action="#{consultaPrescricaoConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+									 update=":#{p:component('pesquisaConsultaPrescricaoForm')} " />
 
 				</p:fieldset>
 				<p:growl />

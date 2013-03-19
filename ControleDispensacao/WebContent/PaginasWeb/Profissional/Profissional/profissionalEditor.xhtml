@@ -5,18 +5,18 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="profissionalPanelGrid" columns="3" width="100%">
-
 		<h:panelGroup>
 			<h:outputLabel for="tipoConselho" value="Tipo do conselho:" />
 			<br />
-			<p:selectOneMenu
-				value="#{profissionalRaiz.instancia.especialidade.tipoConselho}"
-				effect="fade" converter="tipoConselhoConversor">
+			<p:selectOneMenu value="#{profissionalRaiz.instancia.especialidade.tipoConselho}"
+							 effect="fade" 
+							 converter="tipoConselhoConversor">
 				<f:ajax event="change" render="profissionalPanelGrid" />
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{tipoConselhoConsulta.list}"
-					var="tipoConselho" itemLabel="#{tipoConselho.descricaoSigla}"
-					itemValue="#{tipoConselho}" />
+							   var="tipoConselho" 
+							   itemLabel="#{tipoConselho.descricaoSigla}"
+							   itemValue="#{tipoConselho}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
@@ -25,54 +25,62 @@
 			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
 			<p:selectOneMenu id="especialidade"
-				value="#{profissionalRaiz.instancia.especialidade}" effect="fade"
-				required="true" converter="especialidadeConversor">
+							 value="#{profissionalRaiz.instancia.especialidade}" 
+							 effect="fade"
+							 required="true" 
+							 converter="especialidadeConversor">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{profissionalRaiz.listaEspecialidade}"
-					var="especialidade" itemLabel="#{especialidade.descricao}"
-					itemValue="#{especialidade}" />
+							   var="especialidade" 
+							   itemLabel="#{especialidade.descricao}"
+							   itemValue="#{especialidade}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup id="estadoPanelGroup"
-			rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
+					  rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
 			<h:outputLabel for="estado" value="Estado:" />
 			<br />
 			<p:selectOneMenu id="estado"
-				value="#{profissionalRaiz.instancia.estado}" effect="fade"
-				converter="estadoConversor">
+							 value="#{profissionalRaiz.instancia.estado}" 
+							 effect="fade"
+							 converter="estadoConversor">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{estadoConsulta.list}" var="estado"
-					itemLabel="#{estado.nome}" itemValue="#{estado}" />
+				<f:selectItems value="#{estadoConsulta.list}" 
+							   var="estado"
+							   itemLabel="#{estado.nome}" 
+							   itemValue="#{estado}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup id="numeroRegistroPanelGroup"
-			rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
-			<font color="red">*</font>
+					  rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
 			<h:outputLabel for="numeroRegistro" value="Registro:" />
 			<br />
-			<p:inputText id="numeroRegistro" required="true"
-				value="#{profissionalRaiz.instancia.registroConselho}"
-				title="Informe o número do registro no conselho do profissional" />
+			<p:inputText id="numeroRegistro" 
+						 required="false"
+						 value="#{profissionalRaiz.instancia.registroConselho}"
+						 title="Informe o número do registro no conselho do profissional" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="matricula" value="Matrícula" />
 			<br />
 			<p:inputText id="matricula"
-				value="#{profissionalRaiz.instancia.matricula}" required="false"
-				onkeyup="apenasNumero(this);"
-				title="Informe a matrícula do profissional" />
+						 value="#{profissionalRaiz.instancia.matricula}" 
+						 required="false"
+						 onkeyup="apenasNumero(this);"
+						 title="Informe a matrícula do profissional" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
-			<p:inputText id="nome" required="true"
-				value="#{profissionalRaiz.instancia.nome}"
-				title="Informe o nome do profissional" />
+			<p:inputText id="nome" 
+						 required="true"
+						 value="#{profissionalRaiz.instancia.nome}"
+						 title="Informe o nome do profissional" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -80,8 +88,9 @@
 			<h:outputLabel for="situacao" value="Situação:" />
 			<br />
 			<h:selectOneRadio id="situacao"
-				value="#{profissionalRaiz.instancia.situacao}" required="true"
-				title="Informe se o profissional está ativo ou inativo">
+							  value="#{profissionalRaiz.instancia.situacao}" 
+							  required="true"
+							  title="Informe se o profissional está ativo ou inativo">
 				<f:selectItems value="#{itensPadrao.situacaoEnumItens}" />
 			</h:selectOneRadio>
 		</h:panelGroup>
@@ -91,9 +100,10 @@
 			<h:outputLabel for="login" value="Login:" />
 			<br />
 			<p:inputText id="login"
-				value="#{profissionalRaiz.instancia.usuario.login}" required="true"
-				disabled="#{profissionalRaiz.edicao}"
-				title="Informe o apelido de acesso" />
+						 value="#{profissionalRaiz.instancia.usuario.login}" 
+						 required="true"
+						 disabled="#{profissionalRaiz.edicao}"
+						 title="Informe o apelido de acesso" />
 		</h:panelGroup>
 
 		<h:panelGroup rendered="#{!profissionalRaiz.edicao}">
@@ -111,8 +121,8 @@
 							itemValue="#{unidade}"
 							converter="unidadeConversor" />
 			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 	</h:panelGrid>

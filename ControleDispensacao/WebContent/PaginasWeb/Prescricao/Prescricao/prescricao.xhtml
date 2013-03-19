@@ -33,7 +33,7 @@
 													size="30"
 													forceSelection="true"
 													value="#{prescricaoRaiz.prescricaoAtual.paciente}"
-													completeMethod="#{pacienteRaiz.getListaPacienteAutoComplete}"
+													completeMethod="#{pacienteSusAutoComplete.autoComplete}"
 													var="paciente" 
 													itemLabel="#{paciente.nomeIdade}"
 													itemValue="#{paciente}" 
@@ -48,9 +48,9 @@
 									<h:outputLabel for="massa" value="Peso:" />
 									<br />
 									<p:inputText id="massa"
-										value="#{prescricaoRaiz.prescricaoAtual.massa}"
-										required="true" onkeyup="apenasNumeroComVirgula(this);"
-										converter="monetarioConversor" title="Massa do paciente" />kg
+												 value="#{prescricaoRaiz.prescricaoAtual.massa}"
+												 required="true" onkeyup="apenasNumeroComVirgula(this);"
+												 converter="monetarioConversor" title="Massa do paciente" />kg
 								</h:panelGroup>
 
 								<h:panelGroup>
@@ -58,9 +58,9 @@
 									<h:outputLabel for="leito" value="Leito:" />
 									<br />
 									<p:inputText id="leito"
-										value="#{prescricaoRaiz.prescricaoAtual.leito}"
-										required="true"
-										title="Leito ao qual o paciente está em repouso" />
+												 value="#{prescricaoRaiz.prescricaoAtual.leito}"
+												 required="true"
+												 title="Leito ao qual o paciente está em repouso" />
 								</h:panelGroup>
 
 								<h:panelGroup>
@@ -103,7 +103,7 @@
 													value="#{prescricaoRaiz.dose.prescricaoItem.material}"
 													minQueryLength="4"
 													scrollHeight="300"
-													completeMethod="#{materialAutoComplete.autoComplete}"
+													completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
 													var="material" 
 													forceSelection="true"
 													title="Informe o medicamento a ser prescrito"

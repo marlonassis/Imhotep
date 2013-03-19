@@ -18,9 +18,7 @@
 					<f:facet name="header">
 						<h:outputText value="Data de inclusão" />
 					</f:facet>
-					<h:outputText value="#{linha.dataInclusao}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-					</h:outputText>
+					<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInclusao)}"/>
 				</p:column>
 				<p:column>
 					<f:facet name="header">
@@ -35,12 +33,13 @@
 					<h:outputText value="#{linha.leito}" />
 				</p:column>
 				<p:column style="width:60px; text-align: center;">
-					<p:commandLink
-						oncomplete="location.href='Prescricao/Prescricao/prescricao.jsf'"
-						title="Continuar prescrição" style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{linha}"
-							target="#{prescricaoRaiz.prescricaoAtual}" />
-						<h:graphicImage value="/Imagens/next.png" />
+					<p:commandLink oncomplete="location.href='Prescricao/Prescricao/prescricao.jsf'"
+								   title="Continuar prescrição" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{prescricaoRaiz.prescricaoAtual}" />
+						<h:graphicImage value="/Imagens/next.png" 
+										height="24px"
+										width="24px" />
 					</p:commandLink>
 				</p:column>
 			</p:dataTable>

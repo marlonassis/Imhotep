@@ -43,9 +43,7 @@
 			<f:facet name="header">
 				<h:outputText value="Data de conclusão" />
 			</f:facet>
-			<h:outputText value="#{linha.dataConclusao}">
-				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-			</h:outputText>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataConclusao)}"/>
 		</p:column>
 
 		<p:column style="width:120px; text-align: center;">
