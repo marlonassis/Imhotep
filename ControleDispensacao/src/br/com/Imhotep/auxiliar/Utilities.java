@@ -1,6 +1,7 @@
 package br.com.Imhotep.auxiliar;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -18,6 +19,10 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class Utilities extends br.com.remendo.utilidades.Utilities{
 
+	public String formatarDataHoraBrasil(Date date){
+		return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
+	}
+	
 	public static Date ajustarUltimaHoraDia(Date dataFim) {
 		Calendar df = Calendar.getInstance();
 		df.setTime(dataFim);
