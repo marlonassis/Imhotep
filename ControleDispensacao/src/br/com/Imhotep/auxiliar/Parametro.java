@@ -194,9 +194,11 @@ public class Parametro implements Serializable {
 	
 	public static boolean profissionalEnfermeiroMedico(Profissional profissional){
 		if(profissional.getEspecialidade().getEspecialidadePai() != null){
-			return profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Enfermagem") || profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Médico");
+			String especialidadePai = profissional.getEspecialidade().getEspecialidadePai().getDescricao();
+			return especialidadePai.equalsIgnoreCase("Enfermagem") || especialidadePai.equalsIgnoreCase("Médico");
 		}
-		return false;
+		String especialidade = profissional.getEspecialidade().getDescricao();
+		return especialidade.equalsIgnoreCase("Enfermagem") || especialidade.equalsIgnoreCase("Médico");
 	}
 	
 	public static boolean profissionalEnfermeiro(Profissional profissional){
