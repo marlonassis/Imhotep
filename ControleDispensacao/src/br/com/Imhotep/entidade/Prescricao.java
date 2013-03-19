@@ -33,7 +33,7 @@ public class Prescricao {
 	private Date dataInclusao;
 	private Date dataConclusao;
 	private String leito;
-	private Float massa;
+	private Double massa;
 	private TipoStatusEnum dispensavel;
 	private TipoStatusEnum dispensado;
 	private List<PrescricaoItem> prescricaoItens;
@@ -119,11 +119,11 @@ public class Prescricao {
 	}
 	
 	@Column(name = "db_massa")
-	public Float getMassa() {
+	public Double getMassa() {
 		return massa;
 	}
-	public void setMassa(Float peso) {
-		this.massa = peso;
+	public void setMassa(Double massa) {
+		this.massa = massa;
 	}
 	
 	@Column(name = "tp_dispensavel")

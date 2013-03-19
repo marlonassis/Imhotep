@@ -57,7 +57,7 @@ import br.com.Imhotep.enums.TipoSubIndicacaoTerapeuticaEnum;
 		
 		private Paciente paciente;
 		private String leito;
-		private Float massa;
+		private Double massa;
 		
 		private Prescricao prescricao;
 		
@@ -285,11 +285,11 @@ import br.com.Imhotep.enums.TipoSubIndicacaoTerapeuticaEnum;
 		}
 		
 		@Column(name = "db_massa")
-		public Float getMassa() {
+		public Double getMassa() {
 			return massa;
 		}
-		public void setMassa(Float peso) {
-			this.massa = peso;
+		public void setMassa(Double massa) {
+			this.massa = massa;
 		}
 		
 		@OneToMany(fetch = FetchType.LAZY, mappedBy = "controleMedicacaoRestritoSCHI", targetEntity = PrescricaoItem.class)
