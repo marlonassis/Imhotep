@@ -14,7 +14,7 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.imhotep.consulta.raiz.EstoqueCompletoConsultaRaiz;
 
-@ManagedBean(name="relatorioEstoqueCompleto")
+@ManagedBean
 @ViewScoped
 public class RelatorioEstoqueCompleto extends PadraoRelatorio{
 	

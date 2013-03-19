@@ -14,7 +14,7 @@ import br.com.remendo.ConsultaGeral;
 public class EstoqueCompletoConsultaRaiz  extends ConsultaGeral<Estoque>{
 
 	public List<Estoque> consultar() {
-		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder("select o from Estoque o"), null));
+		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder("select o from Estoque o order by o.material.descricao"), null));
 		return list;
 	}
 	
