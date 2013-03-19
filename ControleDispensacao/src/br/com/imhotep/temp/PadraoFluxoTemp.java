@@ -26,7 +26,7 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		setMensagemSucesso(mensagemSucesso);
 	}
 	
-	public boolean processarFluxo(){
+	public boolean processarFluxo() throws ExcecaoPadraoFluxo{
 		boolean status=false;
 		String posicao = "Iniciar Transação";
 		iniciarTransacao();
@@ -58,7 +58,8 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		}finally{
 			finallyTransacao();
 		}
-		
+		if(!status)
+			throw new ExcecaoPadraoFluxo();
 		return status;
 	}
 
