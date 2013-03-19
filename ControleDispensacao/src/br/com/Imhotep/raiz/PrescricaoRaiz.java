@@ -36,6 +36,11 @@ import br.com.Imhotep.fluxo.FluxoPrescricaoCuidados;
 import br.com.Imhotep.fluxo.FluxoPrescricaoLiberacaoMedicamento;
 import br.com.Imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItem;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
+import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
+import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
+import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
@@ -198,7 +203,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		}
 	}
 	
-	public void finalizarPrescricao() throws IOException{
+	public void finalizarPrescricao() {
 		getPrescricaoAtual().setDispensavel(TipoStatusEnum.S);
 		getPrescricaoAtual().setDataConclusao(new Date());
 		try {
@@ -211,11 +216,13 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		if(atualizarGenerico(getPrescricaoAtual()) != null){
 			setPrescricaoVisualizacao(getPrescricaoAtual());
 			setPrescricaoAtual(new Prescricao());
-			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_VIZUALIZA_PRESCRICAO);
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_VIZUALIZA_PRESCRICAO);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-
-
 	
 	public void adicionarCuidado(CuidadosPaciente cuidadosPaciente){
 		new CuidadosPrescricaoRaiz().enviar(cuidadosPaciente, getPrescricaoAtual());
@@ -243,33 +250,34 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		}
 	}
 	
-	public boolean adicionarItemFarmacoPrescricaoDoseControleSCHI(Prescricao prescricaoSCHI, Dose dose){
+	public void adicionarItemFarmacoPrescricaoDoseControleSCHI(Prescricao prescricaoSCHI, Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItemDose{
 		getDose().getPrescricaoItem().setPrescricao(prescricaoSCHI);
-		return gravarDose(dose);
+		gravarDose(dose);
 	}
 	
-	public boolean adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose){
-		return gravarPrescricaoMedicamento(dose, prescricaoSCHI);
+	public void adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose{
+		gravarPrescricaoMedicamento(dose, prescricaoSCHI);
 	}
 	
-	private boolean gravarDose(Dose dose) {
+	private void gravarDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItemDose {
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
-		return fpm.inserirDose(dose);
+		fpm.inserirDose(dose);
 	}
 	
 	public void adicionarItemFarmacoPrescricao(){
-		gravarPrescricaoMedicamento(getDose(), getPrescricaoAtual());
+		try {
+			gravarPrescricaoMedicamento(getDose(), getPrescricaoAtual());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private boolean gravarPrescricaoMedicamento(Dose doseFluxo, Prescricao prescricao) {
+	private void gravarPrescricaoMedicamento(Dose doseFluxo, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose {
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
-		if(fpm.inserirItem(doseFluxo, prescricao)){
-			carregaDoseFluxo();
-			carregaItensFarmacologicosFluxo();
-			doseFluxo = new Dose();
-			return true;
-		}
-		return false;
+		fpm.inserirItem(doseFluxo, prescricao);
+		carregaDoseFluxo();
+		carregaItensFarmacologicosFluxo();
+		setDose(new Dose());
 	}
 	
 	public List<Material> itensContidosLiberacao(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI){

@@ -79,20 +79,14 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 			getNotaFiscalEstoque().setMovimentoLivro(movimentoLivro);
 			if(getLoteEncontrado()){
 				FluxoNotaFiscalEstoque fluxoNotaFiscalEstoque = new FluxoNotaFiscalEstoque();
-				if(fluxoNotaFiscalEstoque.atualizarNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro)){
-					limpar();
-				}
+				fluxoNotaFiscalEstoque.atualizarNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro);
+				limpar();
 			}else{
 				FluxoNotaFiscalEstoque fluxoNotaFiscalEstoque = new FluxoNotaFiscalEstoque();
-				if(fluxoNotaFiscalEstoque.salvarNovaNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro)){
-					limpar();
-				}
+				fluxoNotaFiscalEstoque.salvarNovaNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro);
+				limpar();
 			}
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

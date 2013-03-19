@@ -58,14 +58,11 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 			FluxoDoacao fluxoDoacao = new FluxoDoacao();
 			if(loteEncontrado){
 				procurarLote();
-				return fluxoDoacao.atualizarDoacao(getInstancia());
+				fluxoDoacao.atualizarDoacao(getInstancia());
 			}else
-				return fluxoDoacao.salvarNovaDoacao(getInstancia());
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+				fluxoDoacao.salvarNovaDoacao(getInstancia());
+			return true;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

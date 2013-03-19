@@ -11,7 +11,7 @@ import br.com.Imhotep.fluxo.FluxoAjusteEstoque;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="ajusteEstoqueRaiz")
+@ManagedBean
 @SessionScoped
 public class AjusteEstoqueRaiz extends PadraoHome<AjusteEstoque>{
 	
@@ -44,16 +44,14 @@ public class AjusteEstoqueRaiz extends PadraoHome<AjusteEstoque>{
 			FluxoAjusteEstoque fluxoAjusteEstoque = new FluxoAjusteEstoque();
 			if(loteEncontrado){
 				procurarLote();
-				return fluxoAjusteEstoque.atualizarEstoque(getInstancia());
+				fluxoAjusteEstoque.atualizarEstoque(getInstancia());
 			}else
-				return fluxoAjusteEstoque.salvarNovaEstoque(getInstancia());
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+				fluxoAjusteEstoque.salvarNovoEstoque(getInstancia());
+			return true;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return false;
 	}
 	

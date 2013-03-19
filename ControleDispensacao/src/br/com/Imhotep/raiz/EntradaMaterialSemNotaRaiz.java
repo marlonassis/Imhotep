@@ -53,21 +53,12 @@ public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
 			MovimentoLivro movimentoLivro = prepararMovimentoLivro();
 			FluxoSemNotaFiscal fluxoSemNotaFiscal = new FluxoSemNotaFiscal();
 			if(getLoteEncontrado())
-				if(fluxoSemNotaFiscal.atualizarEstoque(getInstancia(), movimentoLivro))
-					novaInstancia();
-				else
-					return false;
+				fluxoSemNotaFiscal.atualizarEstoque(getInstancia(), movimentoLivro);
 			else
-				if(fluxoSemNotaFiscal.salvarNovoEstoque(getInstancia(), movimentoLivro))
-					novaInstancia();
-				else
-					return false;
+				fluxoSemNotaFiscal.salvarNovoEstoque(getInstancia(), movimentoLivro);
+			novaInstancia();
 			return true;
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

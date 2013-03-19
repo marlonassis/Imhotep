@@ -14,6 +14,9 @@ import br.com.imhotep.consulta.raiz.DoacaoEstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.consulta.raiz.MovimentoSaidaEstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.NotaFiscalEstoqueConsultaRaiz;
+import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteDoacao;
+import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteMovimentoSaida;
+import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteNotaFiscal;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.remendo.PadraoHome;
 
@@ -55,46 +58,44 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		estoqueDuplicado = new Estoque();
 	}
 	
-	public void apagarLote(){
-		boolean existeMovimentoSaida = new MovimentoSaidaEstoqueConsultaRaiz().existeMovimentoSaida(getInstancia());
-		boolean existeNotaFiscal = new NotaFiscalEstoqueConsultaRaiz().existeNotaFiscao(getInstancia());
-		boolean existeDoacao = new DoacaoEstoqueConsultaRaiz().existeDoacao(getInstancia());
-		tentarDeletarEstoque(existeMovimentoSaida, existeNotaFiscal, existeDoacao);
-		mensagemVerificacaoLoteNaoDeletado(existeMovimentoSaida, existeNotaFiscal, existeDoacao);
-	}
-
 	
-	private void tentarDeletarEstoque(boolean existeMovimentoSaida, boolean existeNotaFiscal, boolean existeDoacao) {
-		if(!existeMovimentoSaida && !existeNotaFiscal && !existeDoacao){
-			String hqlEstoque = "delete from Estoque o where o.idEstoque = "+getInstancia().getIdEstoque();
-			if(new LinhaMecanica().apagarMovimentoLivroEstoque(getInstancia().getIdEstoque()))
-				if(super.executa(hqlEstoque)>0){
-					super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
-					EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()));
-					new EstoqueLogRaiz().gerarLog(log);
-				}
-				else
-					super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
+	public void apagarLote(){
+		try {
+			validarAntesDelecao();
+			tentarDeletarEstoque();
+		} catch (ExcecaoApagarLoteExisteMovimentoSaida e) {
+			e.printStackTrace();
+		} catch (ExcecaoApagarLoteExisteNotaFiscal e) {
+			e.printStackTrace();
+		} catch (ExcecaoApagarLoteExisteDoacao e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void validarAntesDelecao() throws ExcecaoApagarLoteExisteMovimentoSaida, ExcecaoApagarLoteExisteNotaFiscal, ExcecaoApagarLoteExisteDoacao {
+		if(new MovimentoSaidaEstoqueConsultaRaiz().existeMovimentoSaida(getInstancia()))
+			throw new ExcecaoApagarLoteExisteMovimentoSaida();
+		
+		if(new NotaFiscalEstoqueConsultaRaiz().existeNotaFiscal(getInstancia()))
+			throw new ExcecaoApagarLoteExisteNotaFiscal();
+			
+		if(new DoacaoEstoqueConsultaRaiz().existeDoacao(getInstancia()))
+			throw new ExcecaoApagarLoteExisteDoacao();
+	}
+	
+	private void tentarDeletarEstoque() {
+		if(new LinhaMecanica().apagarMovimentoLivroEstoque(getInstancia().getIdEstoque()))
+			if(new LinhaMecanica().apagarEstoque(getInstancia().getIdEstoque())){
+				super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()));
+				new EstoqueLogRaiz().gerarLog(log);
+			}
 			else
 				super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
-		}
+		else
+			super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
 	}
 
-	private void mensagemVerificacaoLoteNaoDeletado(boolean existeMovimentoSaida,
-			boolean existeNotaFiscal, boolean existeDoacao) {
-		if(existeNotaFiscal){
-			super.mensagem("Esse lote está associado a alguma nota fiscal.", null, Constantes.ERROR);
-			return;
-		}
-		if(existeDoacao){
-			super.mensagem("Existem doações para esse lote.", "Não é permitido apagar algum lote que possua doação em seus registros.", Constantes.ERROR);
-			return;
-		}
-		if(existeMovimentoSaida){
-			super.mensagem("Esse lote tem movimentos de saída.", "Não é permitido apagar um lote que possua resgistros de saída.", Constantes.ERROR);
-		}
-	}
-	
 	public void fundirLotes(){
 		if(new LinhaMecanica().fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque(), getInstancia().getMaterial().getIdMaterial())){
 			Date data = new Date();

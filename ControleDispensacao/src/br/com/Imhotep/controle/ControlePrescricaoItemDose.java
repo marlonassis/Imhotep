@@ -13,11 +13,12 @@ import br.com.Imhotep.entidade.extra.Dose;
 import br.com.Imhotep.enums.TipoStatusEnum;
 import br.com.Imhotep.raiz.ErroAplicacaoRaiz;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
 import br.com.remendo.PadraoControle;
 
 public class ControlePrescricaoItemDose extends PadraoControle{
 	
-	public boolean gravaPrescricaoItemDose(Dose dose) {
+	public boolean gravaPrescricaoItemDose(Dose dose) throws ExcecaoControlePrescricaoItemDose {
 		boolean ret = false;
 		try{
 			iniciarTransacao();
@@ -43,6 +44,9 @@ public class ControlePrescricaoItemDose extends PadraoControle{
 		}finally{
 			super.finallyTransacao();
 		}
+		if(!ret)
+			throw new ExcecaoControlePrescricaoItemDose();
+		
 		return ret;
 	}
 	

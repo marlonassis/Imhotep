@@ -57,17 +57,11 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 			FluxoDispensacaoSimples fluxoDispensacaoSimples = new FluxoDispensacaoSimples();
 			if(getLoteEncontrado()){
 				procurarLote();
-				if(fluxoDispensacaoSimples.atualizarEstoque(getInstancia()))
-					novaInstancia();
-				else
-					return false;
+				fluxoDispensacaoSimples.atualizarEstoque(getInstancia());
+				novaInstancia();
 			}
 			return true;
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

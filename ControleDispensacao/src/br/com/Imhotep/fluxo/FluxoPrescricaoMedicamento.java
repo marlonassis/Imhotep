@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-
 import br.com.Imhotep.comparador.DoseDataComparador;
 import br.com.Imhotep.controle.ControleEstoque;
 import br.com.Imhotep.controle.ControlePrescricaoItem;
@@ -18,6 +16,8 @@ import br.com.Imhotep.entidade.PrescricaoItemDose;
 import br.com.Imhotep.entidade.extra.Dose;
 import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 import br.com.Imhotep.raiz.PrescricaoRaiz;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItem;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
 import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
@@ -52,36 +52,26 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
-	public boolean inserirItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{
+	public void inserirItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose{
 		formularioDoseVazio(dose);
 		liberaDose(dose.getPrescricaoItem().getMaterial(), dose);
 		dose.getPrescricaoItem().setPrescricao(prescricao);
-		if(gravaPrescricaoItem(dose.getPrescricaoItem())){
-			return gravaDose(dose);
-		}
-		return false;
+		gravaPrescricaoItem(dose.getPrescricaoItem());
+		gravaDose(dose);
 	}
 	
-	public boolean inserirDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{
+	public void inserirDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItemDose{
 		formularioDoseVazio(dose);
 		liberaDose(dose.getPrescricaoItem().getMaterial(), dose);
-		return gravaDose(dose);
+		gravaDose(dose);
 	}
 	
-	private boolean gravaDose(Dose dose){
-		if(!new ControlePrescricaoItemDose().gravaPrescricaoItemDose(dose)){
-			super.mensagem("Ocorrreu erro ao gravar a dose.", "", FacesMessage.SEVERITY_ERROR);
-			return false;
-		}
-		return true;
+	private void gravaDose(Dose dose) throws ExcecaoControlePrescricaoItemDose{
+		new ControlePrescricaoItemDose().gravaPrescricaoItemDose(dose);
 	}
 	
-	private boolean gravaPrescricaoItem(PrescricaoItem pi){
-		if(!new ControlePrescricaoItem().gravaPrescricaoItem(pi)){
-			super.mensagem("Ocorrreu erro ao gravar a prescrição item.", "", FacesMessage.SEVERITY_ERROR);
-			return false;
-		}
-		return true;
+	private void gravaPrescricaoItem(PrescricaoItem pi) throws ExcecaoControlePrescricaoItem{
+		new ControlePrescricaoItem().gravaPrescricaoItem(pi);
 	}
 	
 	private void liberaDose(Material material, Dose dose) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{

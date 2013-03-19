@@ -18,6 +18,11 @@ import br.com.Imhotep.entidade.extra.Dose;
 import br.com.Imhotep.enums.TipoBooleanEnum;
 import br.com.Imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItem;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
+import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
+import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
+import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
@@ -44,15 +49,23 @@ public class ControleMedicacaoRestritoSCHIRaiz extends PadraoHome<ControleMedica
 	public void gravaItem(){
 		Prescricao prescricao = getInstancia().getPrescricao();
 		if(getDose().getPrescricaoItem().getIdPrescricaoItem() == 0){
-			adicionaPrescricaoItem(getDose(), prescricao);
+			try {
+				adicionaPrescricaoItem(getDose(), prescricao);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}else{
-			new PrescricaoRaiz().adicionarItemFarmacoPrescricaoDoseControleSCHI(prescricao, getDose());
+			try {
+				new PrescricaoRaiz().adicionarItemFarmacoPrescricaoDoseControleSCHI(prescricao, getDose());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		carregaDose(getDose().getPrescricaoItem());
 		carregarMedicamentosPendentes(getInstancia());
 	}
 	
-	public void adicionaPrescricaoItem(Dose dose, Prescricao prescricao){
+	public void adicionaPrescricaoItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose{
 		dose.getPrescricaoItem().setControleMedicacaoRestritoSCHI(getInstancia());
 		new PrescricaoRaiz().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, dose);
 		carregaDose(dose.getPrescricaoItem());

@@ -11,10 +11,11 @@ import br.com.Imhotep.entidade.PrescricaoItem;
 import br.com.Imhotep.enums.TipoStatusEnum;
 import br.com.Imhotep.raiz.ErroAplicacaoRaiz;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItem;
 import br.com.remendo.PadraoHome;
 
 public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
-	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) {
+	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) throws ExcecaoControlePrescricaoItem {
 		boolean ret = false;
 		
 		try{
@@ -33,6 +34,10 @@ public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 		}finally{
 			super.finallyTransacao();
 		}
+		
+		if(!ret)
+			throw new ExcecaoControlePrescricaoItem();
+		
 		return ret;
 	}
 	
