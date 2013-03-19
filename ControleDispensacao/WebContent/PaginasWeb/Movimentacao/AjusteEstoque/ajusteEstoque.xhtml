@@ -21,10 +21,6 @@
 									 rendered="#{ajusteEstoqueRaiz.loteEncontrado}"
 									 update=":#{p:component('ajusteEstoqueEditorForm')}"
 									 action="#{ajusteEstoqueRaiz.enviar}" />
-					<p:commandButton value="Gravar" 
-									 rendered="#{ajusteEstoqueRaiz.loteEncontrado}"
-									 update=":#{p:component('ajusteEstoqueEditorForm')}"
-									 action="#{ajusteEstoqueRaiz.atualizar}" />
 					<p:commandButton value="Novo"
 									 rendered="#{ajusteEstoqueRaiz.loteEncontrado}"
 									 update=":#{p:component('ajusteEstoqueEditorForm')} :#{p:component('buscaEstoqueMaterialForm')}"
@@ -75,7 +71,7 @@
 							#{' - '} 
 							<h:outputText value="#{linha.quantidadeAtual}"/>
 							#{' '} 
-							<p:commandLink action="#{alterarApagarLoteRaiz.carregarEstoqueConsultaMaterial(linha)}" 
+							<p:commandLink action="#{ajusteEstoqueRaiz.carregarEstoqueConsultaMaterial(linha)}" 
 										   oncomplete="location.reload();">
 								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
 												title="Clique aqui para editar o lote" />
