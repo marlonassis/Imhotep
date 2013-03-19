@@ -45,10 +45,10 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return true;
 	}
 	
-	public void apagarEstoque(int idEstoque){
+	public boolean apagarEstoque(int idEstoque){
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		String sql = "delete from tb_estoque where id_estoque = "+idEstoque;
-		executarQuery(sql);
+		return executarQuery(sql);
 	}
 	
 	public void transfereMovimentacaoEstoque(int idEstoqueOrigem, int idEstoqueDestino){
@@ -140,7 +140,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 				String sql = "update tb_movimento_livro set in_saldo_anterior = "+saldoAnterior+" where id_movimento_livro = "+idMovimentoLivro;
 				executarQuery(sql);
 				tipoOperacao = rs.getString(4);
-				System.out.println("idMaterial: "+idMaterial+" - SA: "+saldoAnterior+" - QM: "+quantidadeMovimentacao);
+				System.out.println("idML: "+idMovimentoLivro+" - idMaterial: "+idMaterial+" - SA: "+saldoAnterior+" - QM: "+quantidadeMovimentacao);
 				if(tipoOperacao.equals("E"))
 					saldoAnterior += quantidadeMovimentacao;
 				else
