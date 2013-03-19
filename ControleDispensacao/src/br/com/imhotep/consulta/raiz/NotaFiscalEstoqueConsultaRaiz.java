@@ -15,7 +15,7 @@ import br.com.remendo.ConsultaGeral;
 @RequestScoped
 public class NotaFiscalEstoqueConsultaRaiz  extends ConsultaGeral<NotaFiscalEstoque>{
 
-	public boolean existeNotaFiscao(Estoque estoque){
+	public boolean existeNotaFiscal(Estoque estoque){
 		List<NotaFiscalEstoque> list = consultaEstoque(estoque);
 		return list != null && !list.isEmpty();
 	}
