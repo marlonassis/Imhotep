@@ -20,7 +20,7 @@ public class ConsultaRelatorioEstoqueVencimentoPeriodo extends ConsultaGeral<Obj
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
-		String sql = "select new br.com.imhotep.entidade.relatorio.EstoqueVencimento(o.material.codigoMaterial, o.material.descricao, o.lote, o.dataValidade, o.quantidadeAtual, o.usuarioInclusao.login, o.bloqueado) from Estoque o where o.dataValidade >= :dataIni and o.dataValidade <= :dataFim order by o.dataValidade";
+		String sql = "select new br.com.imhotep.entidade.relatorio.EstoqueVencimento(o.material.codigoMaterial, o.material.descricao, o.lote, o.dataValidade, o.quantidadeAtual, o.usuarioInclusao.login, o.bloqueado) from Estoque o where o.dataValidade >= :dataIni and o.dataValidade <= :dataFim and o.quantidadeAtual > 0 order by o.dataValidade";
 		
 		ArrayList<EstoqueVencimento> lista = new ArrayList<EstoqueVencimento>(cg.consulta(new StringBuilder(sql), map));
 		
