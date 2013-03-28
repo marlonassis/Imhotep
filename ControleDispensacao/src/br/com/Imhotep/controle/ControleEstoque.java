@@ -44,14 +44,14 @@ public class ControleEstoque extends PadraoGeralTemp {
 	
 	private void estoqueVencido(Estoque estoque) throws ExcecaoEstoqueVencido {
 		Calendar dataAtual = zerarHoraDataAtual();
-		Calendar dataVencimento = setarUltimoDiaMesVencimento(estoque, dataAtual);
+		Calendar dataVencimento = setarUltimoDiaMesVencimento(estoque.getDataValidade());
 		if(dataAtual.after(dataVencimento))
 			throw new ExcecaoEstoqueVencido();
 	}
 
-	private Calendar setarUltimoDiaMesVencimento(Estoque estoque, Calendar dataAtual) {
-		Calendar dataVencimento = dataAtual;
-		dataVencimento.setTime(estoque.getDataValidade());
+	private Calendar setarUltimoDiaMesVencimento(Date dataValidade) {
+		Calendar dataVencimento = Calendar.getInstance();
+		dataVencimento.setTime(dataValidade);
 		dataVencimento.set(Calendar.DAY_OF_MONTH, dataVencimento.getActualMaximum(Calendar.DAY_OF_MONTH));
 		return dataVencimento;
 	}
@@ -66,10 +66,10 @@ public class ControleEstoque extends PadraoGeralTemp {
 	
 	private Object[] consultaEstoqueMaterial(Material material) {
 		String mesAnoAtual = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidade) = null THEN 0 ELSE sum(o.quantidade)END, ");
+		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidadeAtual) = null THEN 0 ELSE sum(o.quantidadeAtual)END, ");
 		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
 		sb.append("from PrescricaoItemDose a where a.prescricaoItem.dispensado = 'N' and a.prescricaoItem.status = 'S' and a.prescricaoItem.material.idMaterial = :idMaterial) ");
-		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') > :dataAtual");
+		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= :dataAtual");
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		map.put("idMaterial", material.getIdMaterial());
 		map.put("dataAtual", mesAnoAtual);
