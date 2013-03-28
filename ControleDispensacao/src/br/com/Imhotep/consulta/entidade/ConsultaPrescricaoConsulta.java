@@ -16,8 +16,8 @@ import br.com.remendo.PadraoConsulta;
 public class ConsultaPrescricaoConsulta extends PadraoConsulta<Prescricao> {
 	public ConsultaPrescricaoConsulta(){
 		getCamposConsulta().put("o.paciente", IGUAL);
-		getCamposConsulta().put("o.leito", IGUAL);
-		getCamposConsulta().put("o.dataConclusao", IGUAL);
+		getCamposConsulta().put("o.unidade", IGUAL);
+		getCamposConsulta().put("o.dataConclusao", MAIOR_IGUAL);
 		setOrderBy("o.dataConclusao desc");
 	}
 	

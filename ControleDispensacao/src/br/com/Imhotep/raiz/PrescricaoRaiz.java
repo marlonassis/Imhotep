@@ -32,6 +32,7 @@ import br.com.Imhotep.fluxo.FluxoPrescricaoCuidados;
 import br.com.Imhotep.fluxo.FluxoPrescricaoLiberacaoMedicamento;
 import br.com.Imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.consulta.raiz.PrescricaoConsultaRaiz;
 import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItem;
 import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
@@ -211,7 +212,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 			System.out.print("Erro em PrescricaoHome");
 		}
 		if(atualizarGenerico(getPrescricaoAtual()) != null){
-			setPrescricaoVisualizacao(getPrescricaoAtual());
+			setPrescricaoVisualizacao(new PrescricaoConsultaRaiz().consultar(getPrescricaoAtual().getIdPrescricao()));
 			setPrescricaoAtual(new Prescricao());
 		}
 	}

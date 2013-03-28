@@ -22,5 +22,9 @@ public class PrescricaoConsultaRaiz  extends ConsultaGeral<Prescricao>{
 		return new ArrayList<Prescricao>(cg.consulta(sb, map));
 	}
 	
+	public Prescricao consultar(int idPrescricao) {
+		StringBuilder sb = new StringBuilder("select o from Prescricao o where o.idPrescricao = "+idPrescricao);
+		return new ConsultaGeral<Prescricao>().consultaUnica(sb);
+	}
 	
 }

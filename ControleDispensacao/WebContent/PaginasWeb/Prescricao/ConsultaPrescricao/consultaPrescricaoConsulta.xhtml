@@ -9,12 +9,54 @@
 		width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="descricaoConsulta" value="Descrição:" />
+			<h:outputLabel for="paciente" value="Paciente:" />
 			<br />
-			<p:inputText id="descricaoConsulta"
-				value="#{tipoMovimentoConsulta.instancia.descricao}"
-				title="Informe descrição do tipo do movimento" />
+			<p:autoComplete id="paciente"
+							scrollHeight="300" 
+							styleClass="autoCompletePesquisa"
+							required="false" 
+							minQueryLength="3" 
+							size="30"
+							forceSelection="true"
+							value="#{consultaPrescricaoConsulta.instancia.paciente}"
+							completeMethod="#{pacienteSusAutoComplete.autoComplete}"
+							var="paciente" 
+							itemLabel="#{paciente.nome}"
+							itemValue="#{paciente}" 
+							converter="pacienteConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
-
+		
+		<h:panelGroup>
+			<h:outputLabel for="unidade" value="Unidade de Alocação:" />
+			<br />
+			<p:autoComplete id="unidade" 
+							forceSelection="true"
+							minQueryLength="3" 
+							size="30"
+							value="#{consultaPrescricaoConsulta.instancia.unidade}"
+							completeMethod="#{unidadeAutoComplete.autoComplete}"
+							var="unidade" 
+							title="Unidade onde está alocado o paciente"
+							scrollHeight="300"
+							required="false" 
+							itemLabel="#{unidade.nome}"
+							itemValue="#{unidade}" 
+							converter="unidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="dataConclusao" value="Data:" />
+			<br />
+			<p:calendar id="dataConclusao"
+						value="#{consultaPrescricaoConsulta.instancia.dataConclusao}"
+						pattern="dd/MM/yyyy" />
+		</h:panelGroup>
+		
 	</h:panelGrid>
 </ui:composition>
