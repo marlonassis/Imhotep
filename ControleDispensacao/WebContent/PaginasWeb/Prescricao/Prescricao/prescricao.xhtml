@@ -155,22 +155,22 @@
 									<font color="red">*</font>
 									<h:outputLabel for="horaInicial" value="Início da dosagem:" />
 									<br />
-									<p:calendar id="dataIncial" pattern="dd/MM/yyyy HH:mm"
-										locale="pt" value="#{prescricaoRaiz.dose.dataInicio}" />
+									<p:calendar id="dataIncial" 
+												pattern="dd/MM/yyyy HH:mm"
+												locale="pt" 
+												value="#{prescricaoRaiz.dose.dataInicio}" />
 								</h:panelGroup>
 
 								<h:panelGroup>
 									<font color="red">*</font>
 									<h:outputLabel for="via" value="Via de administração:" />
 									<br />
-									<p:selectOneMenu
-										value="#{prescricaoRaiz.dose.prescricaoItem.tipoViaAdministracaoMedicamento}"
-										effect="fade">
+									<p:selectOneMenu value="#{prescricaoRaiz.dose.prescricaoItem.tipoViaAdministracaoMedicamento}"
+													 effect="fade">
 										<p:ajax event="change"
-											update=":#{p:component('outraViaPanelGroup')}" />
+												update=":#{p:component('outraViaPanelGroup')}" />
 										<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
-										<f:selectItems
-											value="#{itensPadrao.tipoViaAdministracaoMedicamentoEnumItens}" />
+										<f:selectItems value="#{itensPadrao.tipoViaAdministracaoMedicamentoEnumItens}" />
 									</p:selectOneMenu>
 								</h:panelGroup>
 
@@ -187,10 +187,9 @@
 								</h:panelGroup>
 
 								<h:panelGroup>
-									<p:commandButton
-										action="#{prescricaoRaiz.adicionarItemFarmacoPrescricao()}"
-										value="Adicionar dose"
-										update=":#{p:component('itensGrid')} :#{p:component('doseGrid')} :#{p:component('itemDosePanelGrid')} :#{p:component('mensagemGlobal')}" />
+									<p:commandButton action="#{prescricaoRaiz.adicionarItemFarmacoPrescricao()}"
+													 value="Adicionar dose"
+													 update=":#{p:component('itensGrid')} :#{p:component('doseGrid')} :#{p:component('itemDosePanelGrid')} :#{p:component('mensagemGlobal')}" />
 								</h:panelGroup>
 							</h:panelGrid>
 							<p:separator id="limiteGridSeparator1" style="height:8px" />
@@ -213,8 +212,9 @@
 															<h:panelGroup>
 																<h:outputText value="Período: " />
 																<h:outputText value="#{itemDose.dataDose}">
-																	<f:convertDateTime locale="pt,BR" dateStyle="long"
-																		pattern="dd/MM/yyyy HH:mm" />
+																	<f:convertDateTime locale="pt,BR" 
+																					   dateStyle="long"
+																					   pattern="dd/MM/yyyy HH:mm" />
 																</h:outputText>
 															</h:panelGroup>
 															<h:panelGroup>
@@ -223,17 +223,15 @@
 															</h:panelGroup>
 															<h:panelGroup>
 																<h:outputText value="Via: " />
-																<h:outputText
-																	value="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento.label}"
-																	rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento != 'OT'}" />
+																<h:outputText value="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento.label}"
+																			  rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento != 'OT'}" />
 																<h:outputText value="#{itemDose.outraVia}"
-																	rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}" />
+																			  rendered="#{itemDose.prescricaoItem.tipoViaAdministracaoMedicamento == 'OT'}" />
 															</h:panelGroup>
 															<h:panelGroup>
-																<p:commandLink
-																	action="#{prescricaoRaiz.removePrescricaoItemDose(itemDose)}"
-																	update=":#{p:component('doseGrid')}" title="Apagar"
-																	immediate="true" style="padding-right:10px;">
+																<p:commandLink action="#{prescricaoRaiz.removePrescricaoItemDose(itemDose)}"
+																			   update=":#{p:component('doseGrid')}" title="Apagar"
+																			   immediate="true" style="padding-right:10px;">
 																	<h:graphicImage value="/Imagens/delete.png" />
 																</p:commandLink>
 															</h:panelGroup>
@@ -904,8 +902,9 @@
 						<br />
 						<br />
 						<p:commandButton value="Finalizar Prescrição"
-							action="#{prescricaoRaiz.finalizarPrescricao}"
-							update=":#{p:component('itensEscolhidosPanelGroup')}" />
+										 action="#{prescricaoRaiz.finalizarPrescricao}"
+										 oncomplete="window.location.reload(); window.open('../ConsultaPrescricao/prescricaoImpressao.hu', 'prescricaoIndividualImpressa');"
+						   				 target="prescricaoIndividualImpressa"/>
 					</p:tab>
 
 				</p:wizard>
