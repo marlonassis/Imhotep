@@ -4,13 +4,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 
 public class Constantes {
-	public static final String PAGINA_TROCA_SENHA = "/Imhotep/PaginasWeb/Usuario/usuarioTrocaSenha.jsf";
-	public static final String PAGINA_HOME = "/Imhotep/PaginasWeb/home.jsf";
-	public static final String PAGINA_ENTRADA_PACIENTE = "/Imhotep/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.jsf";
-	public static final String PAGINA_VIZUALIZA_PRESCRICAO = "/Imhotep/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.jsf";
-	public static final String PAGINA_AJUSTE_ESTOQUE = "/Imhotep/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf";
-	public static final String PAGINA_LOGIN = "/Imhotep/PaginasWeb/login.jsf";
-	public static final String PAGINA_MANUTENCAO = "/Imhotep/PaginasWeb/manutencao.jsf";
+	public static final String PAGINA_TROCA_SENHA = "/Imhotep/PaginasWeb/Usuario/usuarioTrocaSenha.hu";
+	public static final String PAGINA_HOME = "/Imhotep/PaginasWeb/home.hu";
+	public static final String PAGINA_ENTRADA_PACIENTE = "/Imhotep/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.hu";
+	public static final String PAGINA_VIZUALIZA_PRESCRICAO = "/Imhotep/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.hu";
+	public static final String PAGINA_AJUSTE_ESTOQUE = "/Imhotep/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.hu";
+	public static final String PAGINA_LOGIN = "/Imhotep/PaginasWeb/login.hu";
+	public static final String PAGINA_MANUTENCAO = "/Imhotep/PaginasWeb/manutencao.hu";
 	
 	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
 	

@@ -1,110 +1,110 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/hu/html"
+	xmlns:f="http://java.sun.com/hu/core"
+	xmlns:ui="http://java.sun.com/hu/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
 <p:menubar id="principalMenuBar2" autoSubmenuDisplay="true">
-	<p:menuitem value="Home" url="/PaginasWeb/home.jsf" />
+	<p:menuitem value="Home" url="/PaginasWeb/home.hu" />
 
 	<p:submenu label="Cadastro"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Cadastro')}">
-		<p:menuitem value="Hospital" url="/PaginasWeb/Hospital/hospital.jsf"
+		<p:menuitem value="Hospital" url="/PaginasWeb/Hospital/hospital.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Hospital')}" />
 		<p:submenu label="Laboratório"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Laboratório')}">
 			<p:menuitem value="Teste do Pezinho"
-				url="/PaginasWeb/Laboratorio/TesteDoPezinho/testeDoPezinho.jsf"
+				url="/PaginasWeb/Laboratorio/TesteDoPezinho/testeDoPezinho.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Teste do Pezinho')}" />
 			<p:menuitem value="Tipo de Exame"
-				url="/PaginasWeb/Laboratorio/TipoExame/tipoExame.jsf"
+				url="/PaginasWeb/Laboratorio/TipoExame/tipoExame.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo de Exame')}" />
 		</p:submenu>
 
 		<p:menuitem value="Fornecedor"
-				url="/PaginasWeb/Fornecedor/fornecedor.jsf"
+				url="/PaginasWeb/Fornecedor/fornecedor.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Fornecedor')}" />
 
 		<p:submenu label="Material"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Material')}">
 			<p:menuitem value="Fabricante"
-				url="/PaginasWeb/Material/Fabricante/fabricante.jsf"
+				url="/PaginasWeb/Material/Fabricante/fabricante.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Fabricante')}" />
 			<p:menuitem value="Família"
-				url="/PaginasWeb/Material/Familia/familia.jsf"
+				url="/PaginasWeb/Material/Familia/familia.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Família')}" />
-			<p:menuitem value="Grupo" url="/PaginasWeb/Material/Grupo/grupo.jsf"
+			<p:menuitem value="Grupo" url="/PaginasWeb/Material/Grupo/grupo.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Grupo')}" />
 			<p:menuitem value="Lista Especial"
-				url="/PaginasWeb/ListaEspecial/listaEspecial.jsf"
+				url="/PaginasWeb/ListaEspecial/listaEspecial.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Lista Especial')}" />
 			<p:menuitem value="Materiais"
-				url="/PaginasWeb/Material/Material/material.jsf"
+				url="/PaginasWeb/Material/Material/material.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Materiais')}" />
 			<p:menuitem value="Subgrupo"
-				url="/PaginasWeb/Material/SubGrupo/subGrupo.jsf"
+				url="/PaginasWeb/Material/SubGrupo/subGrupo.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Subgrupo')}" />
 			<p:menuitem value="Tipo do Material"
-				url="/PaginasWeb/Material/TipoMaterial/tipoMaterial.jsf"
+				url="/PaginasWeb/Material/TipoMaterial/tipoMaterial.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo do Material')}" />
 		</p:submenu>
 
 		<p:submenu label="Movimento"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimento')}">
 			<p:menuitem value="Tipo de Movimento"
-				url="/PaginasWeb/Movimento/TipoMovimento/tipoMovimento.jsf"
+				url="/PaginasWeb/Movimento/TipoMovimento/tipoMovimento.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo de Movimento')}" />
 		</p:submenu>
 		<p:submenu label="Paciente"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Paciente')}">
 			<p:menuitem value="Entrada de Paciente"
-				url="/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.jsf"
+				url="/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Paciente')}" />
 			<p:menuitem value="Pacientes"
-				url="/PaginasWeb/Paciente/Paciente/paciente.jsf"
+				url="/PaginasWeb/Paciente/Paciente/paciente.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Pacientes')}" />
 		</p:submenu>
 
 		<p:submenu label="Prescrição"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição')}">
 			<p:menuitem value="Cuidados do paciente"
-				url="/PaginasWeb/Prescricao/CuidadosPaciente/cuidadosPaciente.jsf"
+				url="/PaginasWeb/Prescricao/CuidadosPaciente/cuidadosPaciente.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Cuidados do Paciente')}" />
 		</p:submenu>
 
 		<p:submenu label="Profissional"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Profissional')}">
 			<p:menuitem value="Profissionais"
-				url="/PaginasWeb/Profissional/Profissional/profissional.jsf"
+				url="/PaginasWeb/Profissional/Profissional/profissional.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Profissionais')}" />
 			<p:menuitem value="Conselho"
-				url="/PaginasWeb/Profissional/TipoConselho/tipoConselho.jsf"
+				url="/PaginasWeb/Profissional/TipoConselho/tipoConselho.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Conselho')}" />
 			<p:menuitem value="Especialidade"
-				url="/PaginasWeb/Profissional/Especialidade/especialidade.jsf"
+				url="/PaginasWeb/Profissional/Especialidade/especialidade.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Especialidade')}" />
 			<p:menuitem value="Liberação de Material"
-				url="/PaginasWeb/Profissional/LiberaMaterialEspecialidade/liberaMaterialEspecialidade.jsf"
+				url="/PaginasWeb/Profissional/LiberaMaterialEspecialidade/liberaMaterialEspecialidade.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Liberação de Material')}" />
 		</p:submenu>
 
 		<p:submenu label="Unidade"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade')}">
 			<p:menuitem value="Unidades"
-				url="/PaginasWeb/Unidade/Unidade/unidade.jsf"
+				url="/PaginasWeb/Unidade/Unidade/unidade.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidades')}" />
 			<p:menuitem value="Unidade do Profissional"
-				url="/PaginasWeb/Unidade/AutorizaUnidadeProfissional/autorizaUnidadeProfissional.jsf"
+				url="/PaginasWeb/Unidade/AutorizaUnidadeProfissional/autorizaUnidadeProfissional.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade do Profissional')}" />
 		</p:submenu>
 
 		<p:menuitem value="Unidade do Material"
-			url="/PaginasWeb/Material/UnidadeMaterial/unidadeMaterial.jsf"
+			url="/PaginasWeb/Material/UnidadeMaterial/unidadeMaterial.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade do Material')}" />
 
 		<p:menuitem value="Unidade de Saúde"
-			url="/PaginasWeb/UnidadeSaude/unidadeSaude.jsf"
+			url="/PaginasWeb/UnidadeSaude/unidadeSaude.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Unidade de Saúde')}" />
 
 	</p:submenu>
@@ -112,36 +112,36 @@
 	<p:submenu label="Chamado"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Chamado')}">
 		<p:menuitem value="Abrir Chamado"
-			url="/PaginasWeb/Chamado/AbrirChamado/chamado.jsf"
+			url="/PaginasWeb/Chamado/AbrirChamado/chamado.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Abrir Chamado')}" />
 	</p:submenu>
 
 	<p:submenu label="Controle"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Controle')}">
 		<p:menuitem value="Autoriza Menu"
-			url="/PaginasWeb/AutorizaMenu/autorizaMenu.jsf"
+			url="/PaginasWeb/AutorizaMenu/autorizaMenu.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Autoriza Menu')}" />
 		<p:menuitem value="Autoriza Painel"
-			url="/PaginasWeb/Painel/AutorizaPainel/autorizaPainel.jsf"
+			url="/PaginasWeb/Painel/AutorizaPainel/autorizaPainel.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Autoriza Painel')}" />
-		<p:menuitem value="Menu" url="/PaginasWeb/Menu/menu.jsf"
+		<p:menuitem value="Menu" url="/PaginasWeb/Menu/menu.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Menu')}" />
-		<p:menuitem value="Painel" url="/PaginasWeb/Painel/Painel/painel.jsf"
+		<p:menuitem value="Painel" url="/PaginasWeb/Painel/Painel/painel.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Painel')}" />
 		<p:menuitem value="Troca de Senha"
-			url="/PaginasWeb/Usuario/usuarioTrocaSenha.jsf"
+			url="/PaginasWeb/Usuario/usuarioTrocaSenha.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Troca de Senha')}" />
-		<p:menuitem value="Usuários" url="/PaginasWeb/Usuario/usuario.jsf"
+		<p:menuitem value="Usuários" url="/PaginasWeb/Usuario/usuario.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Usuários')}" />
 	</p:submenu>
 
 	<p:submenu label="Dispensação"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação')}">
 		<p:menuitem value="Dispensar"
-			url="/PaginasWeb/Farmacia/Dispensacao/dispensacao.jsf"
+			url="/PaginasWeb/Farmacia/Dispensacao/dispensacao.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensar')}" />
 		<p:menuitem value="Alteração de Dispensação"
-			url="/PaginasWeb/Farmacia/Dispensacao/dispensacaoAlteracao.jsf"
+			url="/PaginasWeb/Farmacia/Dispensacao/dispensacaoAlteracao.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Alteração de Dispensação')}" />
 	</p:submenu>
 
@@ -149,50 +149,50 @@
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Farmácia')}">
 		
 		<p:menuitem value="Ajuste do Estoque"
-					url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf"
+					url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste do Estoque')}" />
 		
 		<p:menuitem value="Alterar/Apagar Lote"
-					url="/PaginasWeb/Movimentacao/AlterarApagarLote/alterarApagarLote.jsf"
+					url="/PaginasWeb/Movimentacao/AlterarApagarLote/alterarApagarLote.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Alterar/Apagar Lote')}" />
 		
 		<p:menuitem value="Bloqueio de Estoque"
-					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf"
+					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Estoque')}" />
 		
 		<p:menuitem value="Dispensação Simples"
-					url="/PaginasWeb/Movimentacao/DispensacaoSimples/dispensacaoSimples.jsf"
+					url="/PaginasWeb/Movimentacao/DispensacaoSimples/dispensacaoSimples.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação Simples')}" />
 			
 		<p:menuitem value="Doação"
-			url="/PaginasWeb/Movimentacao/Doacao/doacao.jsf"
+			url="/PaginasWeb/Movimentacao/Doacao/doacao.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Doação')}" />
 		
 		<p:submenu label="Centro Cirúrgico"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Centro Cirúrgico')}">
 			<p:menuitem value="Cadastro de Estoque"
-				url="/PaginasWeb/Movimentacao/EstoqueCentroCirurgico/estoqueCentroCirurgico.jsf"
+				url="/PaginasWeb/Movimentacao/EstoqueCentroCirurgico/estoqueCentroCirurgico.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Cadastro de estoque')}" />
 			<p:menuitem value="Movimentação do Estoque"
-				url="/PaginasWeb/Movimentacao/AjusteEstoqueCentroCirurgico/ajusteEstoqueCentroCirurgico.jsf"
+				url="/PaginasWeb/Movimentacao/AjusteEstoqueCentroCirurgico/ajusteEstoqueCentroCirurgico.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação do Estoque')}" />
 		</p:submenu>
 		
 		<p:menuitem value="Ajuste de Estoque"
-					url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.jsf"
+					url="/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Ajuste de Estoque')}" />
 			
 		<p:menuitem value="Bloqueio de Lote"
-					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.jsf"
+					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Lote')}" />
 		
 		<p:submenu label="Nota Fiscal"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Nota Fiscal')}">
 			<p:menuitem value="Entrada de Nota Fiscal"
-				url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaNotaFiscal/notaFiscal.jsf"
+				url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaNotaFiscal/notaFiscal.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Nota Fiscal')}" />
 			<p:menuitem value="Entrada Sem Nota Fiscal"
-				url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaMaterialSemNota/entradaMaterialSemNota.jsf"
+				url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaMaterialSemNota/entradaMaterialSemNota.hu"
 				rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada Sem Nota Fiscal')}" />
 		</p:submenu>
 		
@@ -201,55 +201,55 @@
 	<p:submenu label="Laboratório HU"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Laboratório HU')}">
 		<p:menuitem value="Resultado do Pezinho"
-			url="/PaginasWeb/Laboratorio/TesteDoPezinhoResultado/testeDoPezinhoResultado.jsf"
+			url="/PaginasWeb/Laboratorio/TesteDoPezinhoResultado/testeDoPezinhoResultado.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Resultado do Pezinho')}" />
 	</p:submenu>
 	<p:submenu label="Prescrição Médica"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição Médica')}">
 		<p:menuitem value="Consulta da Prescrição"
-			url="/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.jsf"
+			url="/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Consulta da Prescrição')}" />
 		<p:menuitem value="Dosagem"
-			url="/PaginasWeb/Prescricao/Dosagem/dosagem.jsf"
+			url="/PaginasWeb/Prescricao/Dosagem/dosagem.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Dosagem')}" />
 		<p:menuitem value="Liberação SCHI"
-			url="/PaginasWeb/Prescricao/ControleMedicacaoRestritoSCHI/controleMedicacaoRestritoSCHI.jsf"
+			url="/PaginasWeb/Prescricao/ControleMedicacaoRestritoSCHI/controleMedicacaoRestritoSCHI.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Liberação SCHI')}" />
 		<p:menuitem value="Prescrever"
-			url="/PaginasWeb/Prescricao/Prescricao/prescricao.jsf"
+			url="/PaginasWeb/Prescricao/Prescricao/prescricao.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrever')}" />
 	</p:submenu>
 
 	<p:submenu label="Relatório"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Relatório')}">
 		<p:menuitem value="Estoque"
-			url="/PaginasWeb/Relatorios/Estoque/estoque.jsf"
+			url="/PaginasWeb/Relatorios/Estoque/estoque.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque')}" />
 		<p:menuitem value="Estoque por Data de Vencimento"
-			url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.jsf"
+			url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
 		<p:menuitem value="Quantitativo do Pezinho"
-			url="/PaginasWeb/Relatorios/RelatorioQuantitativoPezinho/relatorioQuantitativoPezinho.jsf"
+			url="/PaginasWeb/Relatorios/RelatorioQuantitativoPezinho/relatorioQuantitativoPezinho.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Quantitativo do Pezinho')}" />
 		<p:menuitem value="Movimentação por Material"
-			url="/PaginasWeb/Relatorios/Estoque/movimentacaoEstoqueMaterial.jsf"
+			url="/PaginasWeb/Relatorios/Estoque/movimentacaoEstoqueMaterial.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação por Material')}" />
 		<p:menuitem value="Movimentação Por Unidade"
-			url="/PaginasWeb/Relatorios/Estoque/movimentacaoEstoqueUnidade.jsf"
+			url="/PaginasWeb/Relatorios/Estoque/movimentacaoEstoqueUnidade.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Movimentação Por Unidade')}" />
 		<p:menuitem value="Custo dos Medicamentos da Farmácia"
-			url="/PaginasWeb/Relatorios/Estoque/custoEstoque.jsf"
+			url="/PaginasWeb/Relatorios/Estoque/custoEstoque.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Custo dos Medicamentos da Farmácia')}" />
 	</p:submenu>
 
 	<p:submenu label="Serviço Social"
 		rendered="#{controleMenu.menuAutorizadoStringList.contains('Serviço Social')}">
 		<p:menuitem value="Testes do Pezinho Alterados"
-			url="/PaginasWeb/ServicoSocial/TesteDoPezinhoRevisao/testeDoPezinhoRevisao.jsf"
+			url="/PaginasWeb/ServicoSocial/TesteDoPezinhoRevisao/testeDoPezinhoRevisao.hu"
 			rendered="#{controleMenu.menuAutorizadoStringList.contains('Testes do Pezinho Alterados')}" />
 	</p:submenu>
 
-	<p:menuitem value="Ajuda" url="/PaginasWeb/Ajuda/Ajuda/ajuda.jsf" />
+	<p:menuitem value="Ajuda" url="/PaginasWeb/Ajuda/Ajuda/ajuda.hu" />
 	<p:menuitem value="Sair" action="#{autenticador.logout()}"
 		oncomplete="window.location.reload();" />
 </p:menubar>
