@@ -11,26 +11,32 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="consultaPrecricao" title="Consulta da prescrição">
-			<h:form id="consultaPrescricaoForm" >
-				<p:fieldset legend="Informações da prescrição"
-							collapsed="#{prescricaoRaiz.prescricaoVisualizacao.idPrescricao == 0}"
-							toggleable="true" 
-							toggleSpeed="500">
-					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="consultaPrescricaoVisualizador.xhtml" />
-					<p:commandButton value="Limpar"
-						update=":#{p:component('consultaPrescricaoForm')}"
-						action="#{prescricaoRaiz.limparPrescricaoVizualizacao()}" />
-					<br />
-					<p:commandButton value="Imprimir prescrição"
-						onclick="window.open('prescricaoImpressao.jsf')" />
-				</p:fieldset>
-			</h:form>
+			<p:fieldset legend="Informações da prescrição"
+						collapsed="#{prescricaoRaiz.prescricaoVisualizacao.idPrescricao == 0}"
+						toggleable="true" 
+						toggleSpeed="500"
+						rendered="false">
+				<h:form id="consultaPrescricaoForm" >
+						<p:growl id="formGrowl" showDetail="true" />
+						<ui:include src="consultaPrescricaoVisualizador.xhtml" />
+						<p:commandButton value="Limpar"
+										 update=":#{p:component('consultaPrescricaoForm')} :#{p:component('prescricaoImpressaForm')} :#{p:component('prescricaoImpressaForm')}"
+										 action="#{prescricaoRaiz.limparPrescricaoVizualizacao()}" />
+				</h:form>
+				<h:form id="prescricaoImpressaForm"
+						target="_blank"
+						rendered="#{prescricaoRaiz.prescricaoVisualizacao != null and prescricaoRaiz.prescricaoVisualizacao.idPrescricao != 0}">
+						<p:commandButton id="downloadRelatorio"
+										 value="Imprimir" 
+										 ajax="false"
+										 action="#{relatorioPrescricaoCompleta.gerarRelatorio}"/>
+				</h:form>
+			</p:fieldset>
 
 			<h:form id="pesquisaConsultaPrescricaoForm" >
 				<p:fieldset id="pesquisaConsultaPrescricaoFieldSet"
 							legend="Pesquisa" 
-							collapsed="true" 
+							collapsed="false" 
 							toggleable="true"
 							toggleSpeed="500">
 					<ui:include src="consultaPrescricaoConsulta.xhtml" />

@@ -47,22 +47,24 @@
 		</p:column>
 
 		<p:column style="width:120px; text-align: center;">
-			<p:commandLink update=":#{p:component('consultaPrescricaoForm')}"
-				title="Editar"
-				action="#{prescricaoRaiz.carregarCuidadosEcolhidosPrescricaoVizualizacao()}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{prescricaoRaiz.prescricaoVisualizacao}" />
-				<h:graphicImage value="/Imagens/edit.gif" />
+			<p:commandLink title="Visualizar"
+						   action="#{prescricaoRaiz.setPrescricaoVisualizacao(linha)}"
+						   oncomplete="window.open('prescricaoImpressao.hu', 'prescricaoIndividualImpressa');"
+						   target="prescricaoIndividualImpressa"
+						   style="padding-right:10px;">
+				<h:graphicImage height="24px"
+								width="24px" 
+								value="/Imagens/PDF-icon.png" />
 			</p:commandLink>
 
 			<p:commandLink onclick="bloqueioDialog.show()"
-				update=":#{p:component('tabelaConsultaPrescricao')} :#{p:component('consultaPrescricaoForm')}"
-				title="Bloquear" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{prescricaoRaiz.prescricaoBloqueio}" />
-				<h:graphicImage value="/Imagens/block.png" width="16px"
-					height="16px" />
+						   update=":#{p:component('tabelaConsultaPrescricao')} :#{p:component('consultaPrescricaoForm')}"
+						   title="Bloquear" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{prescricaoRaiz.prescricaoBloqueio}" />
+				<h:graphicImage value="/Imagens/block.png" 
+								width="24px"
+								height="24px" />
 			</p:commandLink>
 		</p:column>
 	</p:dataTable>
