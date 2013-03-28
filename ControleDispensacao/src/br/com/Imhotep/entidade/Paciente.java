@@ -200,7 +200,7 @@ public class Paciente {
 	
 	@Transient
 	public String getNomeIdade(){
-		return nome.concat(" - ").concat(Utilities.idadeAtual(dataNascimento));
+		return nome.concat(" - ").concat(getIdade());
 	}
 	
 	@Transient
