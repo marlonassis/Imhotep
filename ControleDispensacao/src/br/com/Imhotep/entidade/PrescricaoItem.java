@@ -1,6 +1,7 @@
 package br.com.Imhotep.entidade;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import br.com.Imhotep.comparador.DoseDataComparador;
 import br.com.Imhotep.enums.TipoStatusEnum;
 import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 
@@ -150,6 +153,15 @@ public class PrescricaoItem {
 		this.outraVia = outraVia;
 	}
 	
+	@Transient
+	public Set<PrescricaoItemDose> getPrescricaoItemDosesOrdenado() {
+		if(prescricaoItemDoses != null){
+			TreeSet<PrescricaoItemDose> ts = new TreeSet<PrescricaoItemDose>(new DoseDataComparador());
+			ts.addAll(prescricaoItemDoses);
+			return ts;
+		}
+		return prescricaoItemDoses;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
