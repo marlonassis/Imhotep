@@ -1,6 +1,5 @@
 package br.com.Imhotep.raiz;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -11,8 +10,6 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.FlowEvent;
 
@@ -30,7 +27,6 @@ import br.com.Imhotep.entidade.Prescricao;
 import br.com.Imhotep.entidade.PrescricaoItem;
 import br.com.Imhotep.entidade.PrescricaoItemDose;
 import br.com.Imhotep.entidade.extra.Dose;
-import br.com.Imhotep.enums.TipoStatusEnum;
 import br.com.Imhotep.fluxo.FluxoPrescricaoConfirmacao;
 import br.com.Imhotep.fluxo.FluxoPrescricaoCuidados;
 import br.com.Imhotep.fluxo.FluxoPrescricaoLiberacaoMedicamento;
@@ -44,12 +40,14 @@ import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="prescricaoRaiz")
+@ManagedBean
 @SessionScoped
 public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 
 	private Prescricao prescricaoAtual = new Prescricao();
 	private Prescricao prescricaoBloqueio = new Prescricao();
+	private Prescricao prescricaoVisualizacao = new Prescricao();
+	
 	private ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI = new ControleMedicacaoRestritoSCHI();
 	private CuidadosPrescricao cuidadosPrescricao = new CuidadosPrescricao();
 	
@@ -70,7 +68,6 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 	private String usuario;
 	private String senha;
 	
-	private Prescricao prescricaoVisualizacao = new Prescricao();
 	
 	public void limparPrescricaoVizualizacao(){
 		setPrescricaoVisualizacao(new Prescricao());
@@ -196,7 +193,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 	}
 	
 	public void concluirPrescricao(){
-		getInstancia().setDispensavel(TipoStatusEnum.S);
+		getInstancia().setDispensavel(true);
 		getInstancia().setDataConclusao(new Date());
 		if(super.atualizar()){
 			novaInstancia();
@@ -204,7 +201,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 	}
 	
 	public void finalizarPrescricao() {
-		getPrescricaoAtual().setDispensavel(TipoStatusEnum.S);
+		getPrescricaoAtual().setDispensavel(true);
 		getPrescricaoAtual().setDataConclusao(new Date());
 		try {
 			getPrescricaoAtual().setProfissionalConclusao(Autenticador.getInstancia().getProfissionalAtual());
@@ -216,22 +213,12 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		if(atualizarGenerico(getPrescricaoAtual()) != null){
 			setPrescricaoVisualizacao(getPrescricaoAtual());
 			setPrescricaoAtual(new Prescricao());
-			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_VIZUALIZA_PRESCRICAO);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
 	public void adicionarCuidado(CuidadosPaciente cuidadosPaciente){
 		new CuidadosPrescricaoRaiz().enviar(cuidadosPaciente, getPrescricaoAtual());
 		carregaCuidadosFluxo();
-	}
-	
-	public void save(ActionEvent actionEvent) {
-		FacesMessage msg = new FacesMessage("Successful", "Welcome :" );
-		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
 	public void bloqueiarPrescricao(){
@@ -241,12 +228,12 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 				getPrescricaoBloqueio().setProfissionalBloqueio(Autenticador.getInstancia().getProfissionalAtual());
 			} catch (Exception e) {
 				e.printStackTrace();
-				super.mensagem("Erro ao pegar o profissional atual.", null, FacesMessage.SEVERITY_ERROR);
+				super.mensagem("Erro ao pegar o profissional atual.", null, Constantes.ERROR);
 				System.out.print("Erro em PrescricaoHome");
 			}
 			super.atualizarGenerico(getPrescricaoBloqueio());
 		}else{
-			super.mensagem("Informe o motivo do bloqueio.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Informe o motivo do bloqueio.", null, Constantes.ERROR);
 		}
 	}
 	
@@ -448,8 +435,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		return medicamentosPendentesLiberacaoList;
 	}
 
-	public void setMedicamentosPendentesLiberacaoList(
-			List<PrescricaoItem> medicamentosPendentesLiberacaoList) {
+	public void setMedicamentosPendentesLiberacaoList(List<PrescricaoItem> medicamentosPendentesLiberacaoList) {
 		this.medicamentosPendentesLiberacaoList = medicamentosPendentesLiberacaoList;
 	}
 
@@ -473,16 +459,14 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		return controleMedicacaoRestritoSCHI;
 	}
 
-	public void setControleMedicacaoRestritoSCHI(
-			ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
+	public void setControleMedicacaoRestritoSCHI(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
 		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
 	}
 
-	public void setControleMedicacaoRestritoSCHIComMensagem(
-			ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
+	public void setControleMedicacaoRestritoSCHIComMensagem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI) {
 		this.controleMedicacaoRestritoSCHI = controleMedicacaoRestritoSCHI;
 		if(this.controleMedicacaoRestritoSCHI != null){
-			super.mensagem("Anexado com sucesso", null, FacesMessage.SEVERITY_INFO);
+			super.mensagem("Anexado com sucesso", null, Constantes.INFO);
 		}
 	}
 	

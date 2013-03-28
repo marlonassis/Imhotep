@@ -7,8 +7,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,8 +17,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
-import br.com.Imhotep.enums.TipoStatusEnum;
+import br.com.Imhotep.auxiliar.Utilities;
 
 @Entity
 @Table(name = "tb_prescricao")
@@ -29,13 +28,12 @@ public class Prescricao {
 	private Unidade unidade;
 	private Profissional profissionalInclusao;
 	private Paciente paciente;
-	private Integer ano;
 	private Date dataInclusao;
 	private Date dataConclusao;
 	private String leito;
 	private Double massa;
-	private TipoStatusEnum dispensavel;
-	private TipoStatusEnum dispensado;
+	private boolean dispensavel;
+	private boolean dispensado;
 	private List<PrescricaoItem> prescricaoItens;
 	private Set<CuidadosPrescricao> cuidadosPrescricao;
 	private Date dataDipensacao;
@@ -84,14 +82,6 @@ public class Prescricao {
 		this.paciente = paciente;
 	}
 	
-	@Column(name = "in_ano")
-	public Integer getAno() {
-		return ano;
-	}
-	public void setAno(Integer ano) {
-		this.ano = ano;
-	}
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
@@ -126,21 +116,19 @@ public class Prescricao {
 		this.massa = massa;
 	}
 	
-	@Column(name = "tp_dispensavel")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getDispensavel() {
+	@Column(name = "bl_dispensavel")
+	public boolean getDispensavel() {
 		return dispensavel;
 	}
-	public void setDispensavel(TipoStatusEnum dispensavel) {
+	public void setDispensavel(boolean dispensavel) {
 		this.dispensavel = dispensavel;
 	}
 	
-	@Column(name = "tp_dispensado")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getDispensado() {
+	@Column(name = "bl_dispensado")
+	public boolean getDispensado() {
 		return dispensado;
 	}
-	public void setDispensado(TipoStatusEnum dispensado) {
+	public void setDispensado(boolean dispensado) {
 		this.dispensado = dispensado;
 	}
 	
@@ -221,6 +209,13 @@ public class Prescricao {
 	}
 	public void setProfissionalBloqueio(Profissional profissionalBloqueio) {
 		this.profissionalBloqueio = profissionalBloqueio;
+	}
+	
+	@Transient
+	public String getMassaFormatada(){
+		if(getMassa() != null)
+			return Utilities.doubleFormatadoBr(getMassa()).concat(" Kg");
+		return "";
 	}
 	
 	@Override

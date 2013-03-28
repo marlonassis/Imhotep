@@ -1,6 +1,5 @@
 package br.com.Imhotep.controle;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.faces.application.FacesMessage;
@@ -70,7 +69,6 @@ public class ControlePrescricao extends PadraoControle{
 	}
 	
 	private void completarPrescricao(Prescricao prescricao) {
-		prescricao.setAno(Calendar.getInstance().get(Calendar.YEAR));
 		prescricao.setDataInclusao(new Date());
 		try {
 			prescricao.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
@@ -79,8 +77,8 @@ public class ControlePrescricao extends PadraoControle{
 			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControlePrescricao");
 		}
-		prescricao.setDispensavel(TipoStatusEnum.N);
-		prescricao.setDispensado(TipoStatusEnum.N);
+		prescricao.setDispensavel(false);
+		prescricao.setDispensado(false);
 		try {
 			prescricao.setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
 		}  catch (Exception e) {

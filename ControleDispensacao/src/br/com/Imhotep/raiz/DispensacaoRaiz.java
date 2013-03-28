@@ -106,7 +106,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	}
 	
 	public void dispensar(){
-		prescricao.setDispensado(TipoStatusEnum.S);
+		prescricao.setDispensado(true);
 		prescricao.setDataDipensacao(new Date());
 		PrescricaoRaiz ph = new PrescricaoRaiz();
 		atualizaItens(prescricao);
