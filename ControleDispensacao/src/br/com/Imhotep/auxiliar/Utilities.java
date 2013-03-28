@@ -1,9 +1,11 @@
 package br.com.Imhotep.auxiliar;
 
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +21,13 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class Utilities extends br.com.remendo.utilidades.Utilities{
 
+	public static String doubleFormatadoBr(Double valor){
+		Locale BRASIL = new Locale ("pt", "BR");
+		NumberFormat nf = NumberFormat.getInstance(BRASIL);
+		nf.setMinimumFractionDigits(2);
+		return nf.format(valor);
+	}
+	
 	public String formatarDataHoraBrasil(Date date){
 		return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
 	}
