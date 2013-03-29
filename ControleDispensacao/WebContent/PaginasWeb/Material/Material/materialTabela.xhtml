@@ -4,10 +4,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaMaterial" value="#{materialConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idMaterial}">
+	<p:dataTable id="tabelaMaterial" 
+				 value="#{materialConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idMaterial}">
 
 		<p:column>
 			<f:facet name="header">
@@ -30,23 +34,19 @@
 			<h:outputText value="#{linha.codigoMaterial}" />
 		</p:column>
 
-
-		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('materialEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{materialRaiz.instancia}" />
+						   update=":#{p:component('materialEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{materialRaiz.apagar()}"
-				update=":#{p:component('materialEditorForm')} :#{p:component('materialPesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{materialRaiz.instancia}" />
+						   update=":#{p:component('materialEditorForm')} :#{p:component('materialPesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

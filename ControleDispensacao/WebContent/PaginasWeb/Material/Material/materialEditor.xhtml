@@ -10,10 +10,11 @@
 			<font color="red">*</font>
 			<h:outputLabel for="codigo" value="Código:" />
 			<br />
-			<p:inputText id="codigo" required="true"
-				onkeyup="apenasNumero(this);"
-				value="#{materialRaiz.instancia.codigoMaterial}"
-				title="Informe o código do material" />
+			<p:inputText id="codigo" 
+						 required="true"
+						 onkeyup="apenasNumero(this);"
+						 value="#{materialRaiz.instancia.codigoMaterial}"
+						 title="Informe o código do material" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -26,13 +27,13 @@
 							title="Informe descrição do material" 
 							immediate="true"
 							value="#{materialRaiz.instancia.descricao}"
-							completeMethod="#{materialRaiz.getListaMaterialDescricaoAutoComplete}"
+							completeMethod="#{materialAutoComplete.autoComplete}"
 							var="material" 
 							itemLabel="#{material}" 
 							itemValue="#{material}" />
 			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -40,23 +41,29 @@
 			<h:outputLabel for="unidadeDispensada" value="Unidade dispensada:" />
 			<br />
 			<p:selectOneMenu value="#{materialRaiz.instancia.unidadeMaterial}"
-				effect="fade" converter="unidadeMaterialConversor" required="true">
+							 effect="fade" 
+							 converter="unidadeMaterialConversor" 
+							 required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{unidadeMaterialConsulta.list}"
-					var="unidadeMaterial" itemLabel="#{unidadeMaterial.descricao}"
-					itemValue="#{unidadeMaterial}" />
+							   var="unidadeMaterial" 
+							   itemLabel="#{unidadeMaterial.descricao}"
+							   itemValue="#{unidadeMaterial}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="lista" value="Lista:" />
 			<br />
-			<p:selectOneMenu id="lista" converter="listaEspecialConversor"
-				value="#{materialRaiz.instancia.listaEspecial}" effect="fade">
+			<p:selectOneMenu id="lista" 
+							 converter="listaEspecialConversor"
+							 value="#{materialRaiz.instancia.listaEspecial}" 
+							 effect="fade">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{listaEspecialConsulta.list}"
-					var="listaEspecial" itemLabel="#{listaEspecial.lista}"
-					itemValue="#{listaEspecial}" />
+							   var="listaEspecial" 
+							   itemLabel="#{listaEspecial.lista}"
+							   itemValue="#{listaEspecial}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
@@ -66,15 +73,18 @@
 					<font color="red">*</font>
 					<h:outputLabel for="grupo" value="Grupo:" />
 					<br />
-					<p:selectOneMenu
-						value="#{materialRaiz.instancia.familia.subGrupo.grupo}"
-						effect="fade" required="true" converter="grupoConversor">
+					<p:selectOneMenu value="#{materialRaiz.instancia.familia.subGrupo.grupo}"
+									 effect="fade" 
+									 required="true" 
+									 converter="grupoConversor">
 						<f:ajax event="change"
-							listener="#{materialRaiz.carregaSubGrupoList()}"
-							render="grupoPanelGroup" />
+								listener="#{materialRaiz.carregaSubGrupoList()}"
+								render="grupoPanelGroup" />
 						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{grupoConsulta.list}" var="grupo"
-							itemLabel="#{grupo.descricao}" itemValue="#{grupo}" />
+						<f:selectItems value="#{grupoConsulta.list}" 
+									   var="grupo"
+									   itemLabel="#{grupo.descricao}" 
+									   itemValue="#{grupo}" />
 					</p:selectOneMenu>
 				</h:panelGroup>
 				<h:panelGroup>
@@ -82,14 +92,18 @@
 					<h:outputLabel for="subGrupo" value="Subgrupo:" />
 					<br />
 					<p:selectOneMenu value="#{materialRaiz.instancia.familia.subGrupo}"
-						effect="fade" required="true" converter="subGrupoConversor">
+									 effect="fade" 
+									 required="true" 
+									 converter="subGrupoConversor">
 						<f:ajax event="change"
-							listener="#{materialRaiz.carregaFamiliaList()}"
-							render="grupoPanelGroup" />
+								listener="#{materialRaiz.carregaFamiliaList()}"
+								render="grupoPanelGroup" />
 
 						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{materialRaiz.sugGrupoList}" var="subGrupo"
-							itemLabel="#{subGrupo.descricao}" itemValue="#{subGrupo}" />
+						<f:selectItems value="#{materialRaiz.sugGrupoList}" 
+									   var="subGrupo"
+									   itemLabel="#{subGrupo.descricao}" 
+									   itemValue="#{subGrupo}" />
 					</p:selectOneMenu>
 				</h:panelGroup>
 				<h:panelGroup>
@@ -97,11 +111,15 @@
 					<h:outputLabel for="familia" value="Família:" />
 					<br />
 					<p:selectOneMenu id="familia"
-						value="#{materialRaiz.instancia.familia}" effect="fade"
-						required="true" converter="familiaConversor">
+									 value="#{materialRaiz.instancia.familia}" 
+									 effect="fade"
+									 required="true" 
+									 converter="familiaConversor">
 						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{materialRaiz.familiaList}" var="familia"
-							itemLabel="#{familia.descricao}" itemValue="#{familia}" />
+						<f:selectItems value="#{materialRaiz.familiaList}" 
+									   var="familia"
+									   itemLabel="#{familia.descricao}" 
+									   itemValue="#{familia}" />
 					</p:selectOneMenu>
 				</h:panelGroup>
 
@@ -111,21 +129,25 @@
 		<h:panelGroup>
 			<h:outputLabel for="tipo" value="Tipo:" />
 			<br />
-			<p:selectOneMenu id="tipo" converter="tipoMaterialConversor"
-				value="#{materialRaiz.instancia.tipoMaterial}" effect="fade">
+			<p:selectOneMenu id="tipo" 
+							 converter="tipoMaterialConversor"
+							 value="#{materialRaiz.instancia.tipoMaterial}" 
+							 effect="fade">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{tipoMaterialConsulta.list}"
-					var="tipoMaterial" itemLabel="#{tipoMaterial.descricao}"
-					itemValue="#{tipoMaterial}" />
+							   var="tipoMaterial" 
+							   itemLabel="#{tipoMaterial.descricao}"
+							   itemValue="#{tipoMaterial}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="quantidadeMinima" value="Quantidade Mínima:" />
 			<br />
-			<p:inputText id="quantidadeMinima" onkeyup="apenasNumero(this);"
-				value="#{materialRaiz.instancia.quantidadeMinima}"
-				title="A quantidade mínima que é usada para avisar sobre nova compra" />
+			<p:inputText id="quantidadeMinima" 
+						 onkeyup="apenasNumero(this);"
+						 value="#{materialRaiz.instancia.quantidadeMinima}"
+						 title="A quantidade mínima que é usada para avisar sobre nova compra" />
 		</h:panelGroup>
 
 

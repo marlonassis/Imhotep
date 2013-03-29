@@ -40,7 +40,7 @@ public class Cidade {
 		this.estado = estado;
 	}
 	
-	@Column(name = "ds_nome", length = 60)
+	@Column(name = "cv_nome", length = 60)
 	public String getNome() {
 		return nome;
 	}
@@ -51,7 +51,7 @@ public class Cidade {
 	
 	@Transient
 	public String getNomeCidadeEstado(){
-		return nome.concat(" - ").concat(estado.getUf());
+		return nome.concat(" - ").concat(estado.getUnidadeFederativa());
 	}
 	
 	@Override

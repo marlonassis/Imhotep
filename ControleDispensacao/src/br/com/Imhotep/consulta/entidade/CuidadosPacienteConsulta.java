@@ -14,7 +14,7 @@ import br.com.remendo.PadraoConsulta;
 public class CuidadosPacienteConsulta extends PadraoConsulta<CuidadosPaciente> {
 	public CuidadosPacienteConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
-		setOrderBy("to_ascii(o.descricao)");
+		setOrderBy("to_ascii(lower(o.descricao))");
 	}
 	
 	@Override

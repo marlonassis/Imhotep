@@ -12,7 +12,7 @@
 			<br />
 			<p:selectOneMenu value="#{cidadeRaiz.instancia.estado}"
 				effect="fade" converter="estadoConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{estado}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{estadoConsulta.list}"
 					var="estado" itemLabel="#{estado.nome}"
 					itemValue="#{estado}" />

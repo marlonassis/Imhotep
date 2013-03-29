@@ -12,37 +12,44 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Unidade">
 			<h:form id="unidadeEditorForm">
-				<p:fieldset legend="Novo Unidade"
-					collapsed="#{!unidadeRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
+				<p:fieldset legend="Nova Unidade"
+							collapsed="#{!unidadeRaiz.edicao}" 
+							toggleable="true"
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="unidadeEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!unidadeRaiz.edicao}"
-						update=":#{p:component('unidadeEditorForm')} :#{p:component('unidadePesquisaForm')}"
-						action="#{unidadeRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{unidadeRaiz.edicao}"
-						update=":#{p:component('unidadeEditorForm')} :#{p:component('unidadePesquisaForm')}"
-						action="#{unidadeRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{unidadeRaiz.edicao}"
-						 update=":#{p:component('unidadeEditorForm')}"
-						 action="#{unidadeRaiz.novaInstancia()}" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!unidadeRaiz.edicao}"
+									 update=":#{p:component('unidadeEditorForm')} :#{p:component('unidadePesquisaForm')}"
+									 action="#{unidadeRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{unidadeRaiz.edicao}"
+									 update=":#{p:component('unidadeEditorForm')} :#{p:component('unidadePesquisaForm')}"
+									 action="#{unidadeRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{unidadeRaiz.edicao}"
+									 update=":#{p:component('unidadeEditorForm')}"
+									 action="#{unidadeRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
 			<h:form id="unidadePesquisaForm">
 				<p:growl />
 				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
 					<ui:include src="unidadeConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('unidadePesquisaForm')}"/>
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('unidadePesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
-						action="#{unidadeConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('unidadePesquisaForm')}" />
+									 action="#{unidadeConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('unidadePesquisaForm')}" />
 
 				</p:fieldset>
 				<ui:include src="unidadeTabela.xhtml" />

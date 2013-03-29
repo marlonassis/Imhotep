@@ -9,7 +9,7 @@ import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="materialComMovimentoAutoComplete")
+@ManagedBean
 @RequestScoped
 public class MaterialComMovimentoAutoComplete extends ConsultaGeral<Material> {
 	

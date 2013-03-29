@@ -39,7 +39,7 @@ public class SubGrupo {
 		this.grupo = grupo;
 	}
 	
-	@Column(name = "ds_descricao", length = 120)
+	@Column(name = "cv_descricao", length = 120)
 	public String getDescricao() {
 		return this.descricao;
 	}

@@ -1,11 +1,8 @@
 package br.com.Imhotep.raiz;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,10 +13,11 @@ import br.com.Imhotep.entidade.Grupo;
 import br.com.Imhotep.entidade.Material;
 import br.com.Imhotep.entidade.SubGrupo;
 import br.com.Imhotep.seguranca.Autenticador;
-import br.com.remendo.ConsultaGeral;
+import br.com.imhotep.consulta.raiz.FamiliaConsultaRaiz;
+import br.com.imhotep.consulta.raiz.SubGrupoConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="materialRaiz")
+@ManagedBean
 @SessionScoped
 public class MaterialRaiz extends PadraoHome<Material>{
 
@@ -46,7 +44,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	 */
 	public void carregaSubGrupoList(){
 		if(getInstancia().getFamilia().getSubGrupo().getGrupo() != null){
-			setSugGrupoList((List<SubGrupo>) new SubGrupoRaiz().getListaSubGrupoGrupo(getInstancia().getFamilia().getSubGrupo().getGrupo().getIdGrupo()));
+			setSugGrupoList(new SubGrupoConsultaRaiz().consultarSubGrupoGrupo(getInstancia().getFamilia().getSubGrupo().getGrupo().getIdGrupo()));
 			setFamiliaList(new ArrayList<Familia>());
 		}
 	}
@@ -56,7 +54,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	 */
 	public void carregaFamiliaList(){
 		if(getInstancia().getFamilia().getSubGrupo() != null){
-			setFamiliaList((List<Familia>) new FamiliaRaiz().getListaFamiliaSubGrupo(getInstancia().getFamilia().getSubGrupo().getIdSubGrupo()));
+			setFamiliaList(new FamiliaConsultaRaiz().consultarFamiliasSubGrupo(getInstancia().getFamilia().getSubGrupo().getIdSubGrupo()));
 		}
 	}
 	
@@ -75,30 +73,6 @@ public class MaterialRaiz extends PadraoHome<Material>{
 		super.setInstancia(instancia);
 		carregaSubGrupoList();
 		familiaList.add(getInstancia().getFamilia());
-	}
-	
-	public Collection<Material> getListaMaterialAntibioticoAutoComplete(String sql){
-		String sql2 = "select o from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) and ";
-		sql2 = sql2.concat("lower(o.familia.subGrupo.grupo.descricao) = lower('ANTIBIÓTICO')");
-		return super.getBusca(sql2);
-	}
-	
-	public Collection<String> getListaMaterialDescricaoAutoComplete(String sql){
-		ConsultaGeral<String> cg = new ConsultaGeral<String>();
-		return cg.consulta(new StringBuilder("select o.descricao from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql.toLowerCase()+"%')) "), null);
-	}
-	
-	public Collection<Material> getListaMaterialEstoque(){
-		return super.getBusca("select o from Material o where o.idMaterial in (select e.material.idMaterial from Estoque e) order by to_ascii(o.descricao)");
-	}
-	
-	public Collection<Material> getListaMaterialEstoqueAutoComplete(String sql){
-		return super.getBusca("select distinct o.material from Estoque o where o.quantidade > 0 and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) ");
-	}
-	
-	public Collection<Material> getListaMaterialPesquisaCentroCirurgicoAutoComplete(String sql){
-		Set<Material> buscaList = new HashSet<Material>(super.getBusca("select o.material from EstoqueCentroCirurgico as o where o.dataValidade >= now() and o.bloqueado = 'N' and lower(to_ascii(o.material.descricao)) like lower(to_ascii('%"+sql+"%')) order by o.material.descricao, o.lote "));
-		return new ArrayList<Material>(buscaList);
 	}
 	
 	@Override

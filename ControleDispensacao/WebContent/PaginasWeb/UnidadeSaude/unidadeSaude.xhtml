@@ -10,40 +10,46 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab title="UnidadeSaude">
+		<p:tab title="Unidade de Saúde">
 			<h:form id="unidadeSaudeEditorForm">
-				<p:fieldset legend="Novo UnidadeSaude"
-					collapsed="#{!unidadeSaudeRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
+				<p:fieldset legend="Nova Unidade de Saúde"
+							collapsed="#{!unidadeSaudeRaiz.edicao}" 
+							toggleable="true"
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="unidadeSaudeEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!unidadeSaudeRaiz.edicao}"
-						update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
-						action="#{unidadeSaudeRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{unidadeSaudeRaiz.edicao}"
-						update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
-						action="#{unidadeSaudeRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{unidadeSaudeRaiz.edicao}"
-						 update="@parent"
-						 action="#{unidadeSaudeRaiz.novaInstancia()}" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!unidadeSaudeRaiz.edicao}"
+									 update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
+									 action="#{unidadeSaudeRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{unidadeSaudeRaiz.edicao}"
+									 update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
+									 action="#{unidadeSaudeRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{unidadeSaudeRaiz.edicao}"
+									 update="@parent"
+									 action="#{unidadeSaudeRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
 			<h:form id="unidadeSaudePesquisaForm">
 				<p:growl />
 				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
 					<ui:include src="unidadeSaudeConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('unidadeSaudePesquisaForm')}"/>
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('unidadeSaudePesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
-						action="#{unidadeSaudeConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('unidadeSaudePesquisaForm')}" />
-
+									 action="#{unidadeSaudeConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('unidadeSaudePesquisaForm')}" />
 				</p:fieldset>
 				<ui:include src="unidadeSaudeTabela.xhtml" />
 			</h:form>

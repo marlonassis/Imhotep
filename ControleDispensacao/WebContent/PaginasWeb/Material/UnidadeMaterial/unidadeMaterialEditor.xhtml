@@ -10,21 +10,22 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{unidadeMaterialRaiz.instancia.descricao}"
-				title="Descreva o nome da unidade do material." />
+			<p:inputText id="descricao" 
+						 required="true"
+						 value="#{unidadeMaterialRaiz.instancia.descricao}"
+						 title="Descreva o nome da unidade do material." />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="sigla" required="true"
-				value="#{unidadeMaterialRaiz.instancia.sigla}"
-				title="Informe a sigla do material." />
+			<p:inputText id="sigla" 
+						 maxlength="2"
+						 required="true"
+						 value="#{unidadeMaterialRaiz.instancia.sigla}"
+						 title="Informe a sigla do material." />
 		</h:panelGroup>
-
-
 
 	</h:panelGrid>
 

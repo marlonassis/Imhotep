@@ -4,10 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaLiberaMaterialEspecialidade" value="#{liberaMaterialEspecialidadeConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idLiberaMaterialEspecialidade}">
+	<p:dataTable id="tabelaLiberaMaterialEspecialidade" 
+				 value="#{liberaMaterialEspecialidadeConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idLiberaMaterialEspecialidade}">
 
 		<p:column>
 			<f:facet name="header">
@@ -23,23 +28,20 @@
 			<h:outputText value="#{linha.material}" />
 		</p:column>
 
-
-		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('liberaMaterialEspecialidadeEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{liberaMaterialEspecialidadeRaiz.instancia}" />
+						   update=":#{p:component('liberaMaterialEspecialidadeEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{liberaMaterialEspecialidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{liberaMaterialEspecialidadeRaiz.apagar()}"
-				update=":#{p:component('liberaMaterialEspecialidadeEditorForm')} :#{p:component('liberaMaterialEspecialidadePesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{liberaMaterialEspecialidadeRaiz.instancia}" />
+						   update=":#{p:component('liberaMaterialEspecialidadeEditorForm')} :#{p:component('liberaMaterialEspecialidadePesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{liberaMaterialEspecialidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

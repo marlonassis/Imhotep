@@ -10,39 +10,46 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab title="SubGrupo">
+		<p:tab title="Subgrupo">
 			<h:form id="subGrupoEditorForm">
-				<p:fieldset legend="Novo SubGrupo"
-					collapsed="#{!subGrupoRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
+				<p:fieldset legend="Novo Subgrupo"
+							collapsed="#{!subGrupoRaiz.edicao}" 
+							toggleable="true"
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="subGrupoEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!subGrupoRaiz.edicao}"
-						update=":#{p:component('subGrupoEditorForm')} :#{p:component('subGrupoPesquisaForm')}"
-						action="#{subGrupoRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{subGrupoRaiz.edicao}"
-						update=":#{p:component('subGrupoEditorForm')} :#{p:component('subGrupoPesquisaForm')}"
-						action="#{subGrupoRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{subGrupoRaiz.edicao}"
-						 update="@parent"
-						 action="#{subGrupoRaiz.novaInstancia()}" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!subGrupoRaiz.edicao}"
+									 update=":#{p:component('subGrupoEditorForm')} :#{p:component('subGrupoPesquisaForm')}"
+									 action="#{subGrupoRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{subGrupoRaiz.edicao}"
+									 update=":#{p:component('subGrupoEditorForm')} :#{p:component('subGrupoPesquisaForm')}"
+									 action="#{subGrupoRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{subGrupoRaiz.edicao}"
+									 update="@parent"
+									 action="#{subGrupoRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
 			<h:form id="subGrupoPesquisaForm">
 				<p:growl />
 				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
 					<ui:include src="subGrupoConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('subGrupoPesquisaForm')}"/>
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('subGrupoPesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
-						action="#{subGrupoConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('subGrupoPesquisaForm')}" />
+									 action="#{subGrupoConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('subGrupoPesquisaForm')}" />
 
 				</p:fieldset>
 				<ui:include src="subGrupoTabela.xhtml" />

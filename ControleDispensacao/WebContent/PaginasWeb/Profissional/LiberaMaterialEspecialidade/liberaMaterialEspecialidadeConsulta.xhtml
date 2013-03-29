@@ -8,34 +8,46 @@
 	<h:panelGrid id="liberaMaterialEspecialidadePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
+			<font color="red">*</font>
 			<h:outputLabel for="especialidade" value="Especialidade:" />
 			<br />
-			<p:selectOneMenu value="#{liberaMaterialEspecialidadeConsulta.instancia.especialidade}"
-				effect="fade" converter="especialidadeConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{especialidade}" />
-				<f:selectItems value="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
-					var="especialidade" itemLabel="#{especialidade.descricao}"
-					itemValue="#{especialidade}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="especialidade"
+							value="#{liberaMaterialEspecialidadeConsulta.instancia.especialidade}"
+							minQueryLength="4"
+							size="30"
+							scrollHeight="300"
+							completeMethod="#{especialidadeAutoComplete.autoComplete}"
+							var="especialidade" 
+							forceSelection="true"
+							title="Informe a especialidade"
+							itemLabel="#{especialidade.descricao}" 
+							itemValue="#{especialidade}"
+							converter="especialidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
+			<font color="red">*</font>
 			<h:outputLabel for="material" value="Material:" />
 			<br />
-			<p:selectOneMenu value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
-				effect="fade" converter="materialConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{material}" />
-				<f:selectItems value="#{materialAutoComplete.autoComplete}"
-					var="material" itemLabel="#{material.descricao}"
-					itemValue="#{material}" />
-				
-			</p:selectOneMenu>
+			<p:autoComplete id="material"
+							value="#{liberaMaterialEspecialidadeConsulta.instancia.material}"
+							minQueryLength="4"
+							size="30"
+							scrollHeight="300"
+							completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
+							var="material" 
+							forceSelection="true"
+							title="Informe o medicamento a ser liberado"
+							itemLabel="#{material.descricao}" 
+							itemValue="#{material}"
+							converter="materialConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
-
-
 
 	</h:panelGrid>
 </ui:composition>

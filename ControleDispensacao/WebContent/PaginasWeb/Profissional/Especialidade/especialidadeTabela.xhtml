@@ -4,10 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaEspecialidade" value="#{especialidadeConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idEspecialidade}">
+	<p:dataTable id="tabelaEspecialidade" 
+				 value="#{especialidadeConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idEspecialidade}">
 
 		<p:column>
 			<f:facet name="header">
@@ -25,7 +30,7 @@
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Especialidade Superior" />
+				<h:outputText value="Especialidade Pai" />
 			</f:facet>
 			<h:outputText value="#{linha.especialidadePai}" />
 		</p:column>
@@ -34,19 +39,18 @@
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('especialidadeEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{especialidadeRaiz.instancia}" />
+						   update=":#{p:component('especialidadeEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{especialidadeRaiz.apagar()}"
-				update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{especialidadeRaiz.instancia}" />
+						   update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{especialidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

@@ -9,11 +9,13 @@
 
 		<h:panelGroup>
 			
-			<h:outputLabel for="unidadeFederativa" value="Unidade Federativa:" />
+			<h:outputLabel for="unidadeFederativa" value="Sigla:" />
 			<br />
-			<p:inputText id="unidadeFederativa" required="false"
-				value="#{estadoConsulta.instancia.unidadeFederativa}"
-				title="Informe a sigla do estado." />
+			<p:inputText id="unidadeFederativa" 
+						 required="false"
+						 maxlength="2"
+						 value="#{estadoConsulta.instancia.unidadeFederativa}"
+						 title="Informe a sigla do estado." />
 		</h:panelGroup>
 
 		<h:panelGroup>

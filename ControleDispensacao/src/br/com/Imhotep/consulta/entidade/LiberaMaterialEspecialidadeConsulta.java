@@ -9,11 +9,11 @@ import br.com.Imhotep.entidade.LiberaMaterialEspecialidade;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="liberaMaterialEspecialidadeConsulta")
+@ManagedBean
 @SessionScoped
 public class LiberaMaterialEspecialidadeConsulta extends PadraoConsulta<LiberaMaterialEspecialidade> {
 	public LiberaMaterialEspecialidadeConsulta(){
-		getCamposConsulta().put("o.material", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.material", IGUAL);
 		getCamposConsulta().put("o.especialidade", IGUAL);
 		setOrderBy("to_ascii(o.especialidade.descricao), to_ascii(o.material.descricao)");
 	}

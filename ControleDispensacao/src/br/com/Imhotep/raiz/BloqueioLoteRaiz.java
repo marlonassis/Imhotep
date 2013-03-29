@@ -25,7 +25,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 	
 	public List<Estoque> listaEstoqueVencido(){
-		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"') order by o.dataValidade"); 
+		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"') order by o.dataValidade, to_ascii(lower(o.material.descricao))"); 
 	}
 	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){

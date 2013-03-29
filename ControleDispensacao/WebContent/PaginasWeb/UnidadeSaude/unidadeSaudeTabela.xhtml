@@ -4,10 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaUnidadeSaude" value="#{unidadeSaudeConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idUnidadeSaude}">
+	<p:dataTable id="tabelaUnidadeSaude" 
+				 value="#{unidadeSaudeConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idUnidadeSaude}">
 
 		<p:column>
 			<f:facet name="header">
@@ -41,19 +46,18 @@
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('unidadeSaudeEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{unidadeSaudeRaiz.instancia}" />
+						   update=":#{p:component('unidadeSaudeEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{unidadeSaudeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{unidadeSaudeRaiz.apagar()}"
-				update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{unidadeSaudeRaiz.instancia}" />
+						   update=":#{p:component('unidadeSaudeEditorForm')} :#{p:component('unidadeSaudePesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{unidadeSaudeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

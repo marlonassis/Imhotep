@@ -49,7 +49,7 @@
 							 required="true"
 							 title="Informe se o motivo de o lote estar sendo bloqueado.">
 				<p:ajax event="change" update=":#{p:component('bloqueioMaterialPanelGrid')}" />
-				<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{itensPadrao.tipoBloqueioLoteEnumItens}" />
 			</p:selectOneMenu>
 		</h:panelGroup>

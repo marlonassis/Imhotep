@@ -9,13 +9,13 @@ import br.com.Imhotep.entidade.TipoConselho;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="tipoConselhoConsulta")
+@ManagedBean
 @SessionScoped
 public class TipoConselhoConsulta extends PadraoConsulta<TipoConselho> {
 	public TipoConselhoConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.sigla", IGUAL);
-		setOrderBy("o.descricao");
+		setOrderBy("lower(o.descricao)");
 	}
 	
 	@Override

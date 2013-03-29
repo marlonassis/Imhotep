@@ -12,11 +12,14 @@
 			<h:outputLabel for="subGrupo" value="SubGrupo:" />
 			<br />
 			<p:selectOneMenu value="#{familiaConsulta.instancia.subGrupo}"
-				effect="fade" converter="subGrupoConverter" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{subgrupo}" />
+							 effect="fade" 
+							 converter="subGrupoConversor" 
+							 required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{subGrupoConsulta.list}"
-					var="subGrupo" itemLabel="#{subGrupo.descricao}"
-					itemValue="#{subgrupo}" />
+							   var="subGrupo" 
+							   itemLabel="#{subGrupo.descricao}"
+							   itemValue="#{subgrupo}" />
 				
 			</p:selectOneMenu>
 		</h:panelGroup>
@@ -25,9 +28,10 @@
 			
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="false"
-				value="#{familiaConsulta.instancia.descricao}"
-				title="Descreva a família." />
+			<p:inputText id="descricao" 
+						 required="false"
+						 value="#{familiaConsulta.instancia.descricao}"
+						 title="Descreva a família." />
 		</h:panelGroup>
 
 

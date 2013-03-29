@@ -10,21 +10,22 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{cuidadosPacienteRaiz.instancia.descricao}"
-				title="Descreva o cuidado." />
+			<p:inputText id="descricao" 
+						 required="true"
+						 value="#{cuidadosPacienteRaiz.instancia.descricao}"
+						 title="Descreva o cuidado." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
 			<h:outputLabel for="tipoCuidadosPaciente" value="Tipo do cuidado" />
 			<br />
-			<p:selectOneRadio id="tipoCuidadosPaciente" required="false"
-				value="#{cuidadosPacienteRaiz.instancia.tipoCuidadosPaciente}"
-				title="Informe o tipo do cuidado">
-				<f:selectItems value="#{itensPadrao.tipoCuidadosPacienteEnum}" />
-				
-			</p:selectOneRadio>
+			<p:selectOneMenu id="tipoCuidadosPaciente" 
+							 required="false"
+							 value="#{cuidadosPacienteRaiz.instancia.tipoCuidadosPaciente}"
+							 title="Informe o tipo do cuidado">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{itensPadrao.tipoCuidadosPacienteEnumItens}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 

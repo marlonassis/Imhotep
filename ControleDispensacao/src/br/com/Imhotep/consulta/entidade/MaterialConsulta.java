@@ -9,7 +9,7 @@ import br.com.Imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="materialConsulta")
+@ManagedBean
 @SessionScoped
 public class MaterialConsulta extends PadraoConsulta<Material> {
 	public MaterialConsulta(){

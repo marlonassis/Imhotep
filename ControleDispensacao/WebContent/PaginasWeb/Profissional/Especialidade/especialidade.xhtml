@@ -12,38 +12,44 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Especialidade">
 			<h:form id="especialidadeEditorForm">
-				<p:fieldset legend="Novo Especialidade"
-					collapsed="#{!especialidadeRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
+				<p:fieldset legend="Nova Especialidade"
+							collapsed="#{!especialidadeRaiz.edicao}" 
+							toggleable="true"
+							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="especialidadeEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!especialidadeRaiz.edicao}"
-						update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
-						action="#{especialidadeRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{especialidadeRaiz.edicao}"
-						update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
-						action="#{especialidadeRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{especialidadeRaiz.edicao}"
-						 update="@parent"
-						 action="#{especialidadeRaiz.novaInstancia()}" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!especialidadeRaiz.edicao}"
+									 update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
+									 action="#{especialidadeRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{especialidadeRaiz.edicao}"
+									 update=":#{p:component('especialidadeEditorForm')} :#{p:component('especialidadePesquisaForm')}"
+									 action="#{especialidadeRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{especialidadeRaiz.edicao}"
+									 update="@parent"
+									 action="#{especialidadeRaiz.novaInstancia()}" />
 				</p:fieldset>
 			</h:form>
 
 			<h:form id="especialidadePesquisaForm">
 				<p:growl />
 				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
 					<ui:include src="especialidadeConsulta.xhtml" />
 
 					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('especialidadePesquisaForm')}"/>
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('especialidadePesquisaForm')}"/>
 
 					<p:commandButton value="Limpar"
-						action="#{especialidadeConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('especialidadePesquisaForm')}" />
-
+									 action="#{especialidadeConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('especialidadePesquisaForm')}" />
 				</p:fieldset>
 				<ui:include src="especialidadeTabela.xhtml" />
 			</h:form>

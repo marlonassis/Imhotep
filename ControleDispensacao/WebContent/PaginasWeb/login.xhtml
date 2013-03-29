@@ -36,7 +36,7 @@
 							<p:selectOneMenu id="unidadeParaLogar"
 								value="#{autenticador.unidadeAtual}" effect="fade"
 								converter="unidadeConversor">
-								<f:selectItem itemLabel="Selecione..." value="#{null}" />
+								<f:selectItem itemLabel="Selecione..." value="" />
 								<f:selectItems value="#{autenticador.unidades}" var="unidade"
 									itemLabel="#{unidade.nome}" itemValue="#{unidade}" />
 							</p:selectOneMenu>

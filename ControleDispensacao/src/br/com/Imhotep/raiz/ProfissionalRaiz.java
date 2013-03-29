@@ -13,10 +13,11 @@ import br.com.Imhotep.entidade.Profissional;
 import br.com.Imhotep.entidade.Unidade;
 import br.com.Imhotep.entidade.Usuario;
 import br.com.Imhotep.seguranca.Autenticador;
+import br.com.imhotep.consulta.raiz.EspecialidadeConsultaRaiz;
 import br.com.remendo.PadraoHome;
 import br.com.remendo.utilidades.Utilities;
 
-@ManagedBean(name="profissionalRaiz")
+@ManagedBean
 @SessionScoped
 public class ProfissionalRaiz extends PadraoHome<Profissional>{
 	
@@ -28,9 +29,9 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 	
 	public List<Especialidade> getListaEspecialidade(){
 		if(getInstancia().getEspecialidade() !=  null && getInstancia().getEspecialidade().getTipoConselho() != null){
-			return new EspecialidadeRaiz().listaEspecialidadePorTipoConselho(getInstancia().getEspecialidade().getTipoConselho().getIdTipoConselho());
+			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(getInstancia().getEspecialidade().getTipoConselho().getIdTipoConselho());
 		}else{
-			return new EspecialidadeRaiz().listaEspecialidadePorTipoConselho(null);
+			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(null);
 		}
 	}
 	

@@ -43,7 +43,7 @@ public class Material {
 		this.idMaterial = idMaterial;
 	}
 
-	@Column(name = "ds_descricao")
+	@Column(name = "cv_descricao")
 	public String getDescricao() {
 		return this.descricao;
 	}

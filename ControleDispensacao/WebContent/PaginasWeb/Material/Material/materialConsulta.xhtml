@@ -8,39 +8,23 @@
 	<h:panelGrid id="materialPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="false"
-				value="#{materialConsulta.instancia.descricao}"
-				title="Descreva o nome do material." />
+			<p:inputText id="descricao" 
+						 required="false"
+						 value="#{materialConsulta.instancia.descricao}"
+						 title="Descreva o nome do material." />
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
-			<h:outputLabel for="unidadeMaterial" value="Unidade do Material:" />
-			<br />
-			<p:selectOneMenu value="#{materialConsulta.instancia.unidadeMaterial}"
-				effect="fade" converter="unidadeMaterialConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{unidadeMaterial}" />
-				<f:selectItems value="#{unidadeMaterialConsulta.list}"
-					var="unidadeMaterial" itemLabel="#{unidadeMaterial.descricao}"
-					itemValue="#{unidadeMaterial}" />
-				
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			
 			<h:outputLabel for="codigoMaterial" value="Código do Material:" />
 			<br />
-			<p:inputText id="codigoMaterial" required="false"
-				onkeyup="apenasNumero(this);"
-				value="#{materialConsulta.instancia.codigoMaterial}"
-				title="Informe o código do material." />
+			<p:inputText id="codigoMaterial" 
+						 required="false"
+						 onkeyup="apenasNumero(this);"
+						 value="#{materialConsulta.instancia.codigoMaterial}"
+						 title="Informe o código do material." />
 		</h:panelGroup>
-
-
-
+		
 	</h:panelGrid>
 </ui:composition>

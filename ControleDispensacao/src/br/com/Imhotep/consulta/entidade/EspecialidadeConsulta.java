@@ -9,14 +9,14 @@ import br.com.Imhotep.entidade.Especialidade;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="especialidadeConsulta")
+@ManagedBean
 @SessionScoped
 public class EspecialidadeConsulta extends PadraoConsulta<Especialidade> {
 	public EspecialidadeConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.tipoConselho", IGUAL);
 		getCamposConsulta().put("o.especialidadePai", IGUAL);
-		setOrderBy("o.tipoConselho, to_ascii(o.descricao)");
+		setOrderBy("to_ascii(lower(o.descricao))");
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import javax.faces.bean.RequestScoped;
 import br.com.Imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="materialAutoComplete")
+@ManagedBean
 @RequestScoped
 public class MaterialAutoComplete extends ConsultaGeral<Material> {
 	

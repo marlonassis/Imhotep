@@ -20,7 +20,10 @@
 							title="Informe o nome do coordenador"
 							itemLabel="#{coordenador.nome}" 
 							itemValue="#{coordenador}"
-							converter="profissionalConversor" />				
+							converter="profissionalConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />				
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -36,26 +39,29 @@
 							var="unidade" 
 							itemLabel="#{unidade.nome}" 
 							itemValue="#{unidade}"
-							converter="unidadeConversor" />				
+							converter="unidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />		
 		</h:panelGroup>
 		
 		<h:panelGroup>
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
-			<p:inputText id="nome" required="false"
-				value="#{unidadeConsulta.instancia.nome}"
-				title="Informe o nome da unidade." />
+			<p:inputText id="nome" 
+						 required="false"
+						 value="#{unidadeConsulta.instancia.nome}"
+						 title="Informe o nome da unidade." />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="email" value="e-mail:" />
 			<br />
-			<p:inputText id="email" required="false"
-				value="#{unidadeConsulta.instancia.email}"
-				title="Informe o e-mail, caso exista para a unidade." />
+			<p:inputText id="email" 
+						 required="false"
+						 value="#{unidadeConsulta.instancia.email}"
+						 title="Informe o e-mail, caso exista para a unidade." />
 		</h:panelGroup>
-
-
 
 	</h:panelGrid>
 </ui:composition>

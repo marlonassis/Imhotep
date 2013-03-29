@@ -8,12 +8,13 @@ import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 import br.com.Imhotep.entidade.Cidade;
 
-@ManagedBean(name="cidadeConsulta")
+@ManagedBean
 @SessionScoped
 public class CidadeConsulta extends PadraoConsulta<Cidade> {
 	public CidadeConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		setOrderBy("to_ascii(o.nome)");
+		getCamposConsulta().put("o.estado", IGUAL);
+		setOrderBy("to_ascii(lower(o.nome))");
 	}
 	
 	@Override

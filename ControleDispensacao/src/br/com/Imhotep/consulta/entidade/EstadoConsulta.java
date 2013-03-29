@@ -14,7 +14,8 @@ import br.com.remendo.PadraoConsulta;
 public class EstadoConsulta extends PadraoConsulta<Estado> {
 	public EstadoConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		setOrderBy("to_ascii(o.nome)");
+		getCamposConsulta().put("o.unidadeFederativa", INCLUINDO_TUDO);
+		setOrderBy("to_ascii(lower(o.nome))");
 	}
 	
 	@Override

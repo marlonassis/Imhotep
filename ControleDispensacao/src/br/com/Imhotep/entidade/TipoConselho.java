@@ -27,7 +27,7 @@ public class TipoConselho {
 		this.idTipoConselho = idTipoConselho;
 	}
 	
-	@Column(name = "ds_descricao")
+	@Column(name = "cv_descricao")
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -36,7 +36,7 @@ public class TipoConselho {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "ds_sigla", length=10)
+	@Column(name = "cv_sigla", length=10)
 	public String getSigla() {
 		return this.sigla;
 	}

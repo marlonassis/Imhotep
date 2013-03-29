@@ -16,15 +16,15 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			
 			<h:outputLabel for="tipoUnidade" value="Tipo da Unidade" />
 			<br />
-			<p:selectOneRadio id="tipoUnidade" required="false"
-							  value="#{unidadeSaudeConsulta.instancia.tipoUnidade}"
-							  title="Informe o tipo da unidade de saúde.">
+			<p:selectOneMenu id="tipoUnidade" 
+							 required="false"
+							 value="#{unidadeSaudeConsulta.instancia.tipoUnidade}"
+							 title="Informe o tipo da unidade de saúde.">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{itensPadrao.tipoUnidadeSaudeEnumItens}" />
-				
-			</p:selectOneRadio>
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -32,6 +32,7 @@
 			<br />
 			<p:autoComplete id="cidade" 
 							scrollHeight="300"
+							minQueryLength="4"
 							forceSelection="true"
 							value="#{unidadeSaudeConsulta.instancia.cidade}"
 							completeMethod="#{cidadeAutoComplete.autoComplete}"
@@ -43,8 +44,6 @@
 							title="Ao digitar aparecerá algumas sugestões"
 							style="padding-top:8px" />
 		</h:panelGroup>
-
-
 
 	</h:panelGrid>
 </ui:composition>

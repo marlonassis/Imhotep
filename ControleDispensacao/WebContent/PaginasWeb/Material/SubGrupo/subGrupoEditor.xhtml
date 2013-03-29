@@ -12,7 +12,7 @@
 			<br />
 			<p:selectOneMenu value="#{subGrupoRaiz.instancia.grupo}"
 				effect="fade" converter="grupoConversor" required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{grupo}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{grupoConsulta.list}"
 					var="grupo" itemLabel="#{grupo.descricao}"
 					itemValue="#{grupo}" />

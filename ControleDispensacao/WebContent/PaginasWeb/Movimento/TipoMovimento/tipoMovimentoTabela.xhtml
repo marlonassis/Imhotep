@@ -20,26 +20,22 @@
 			<f:facet name="header">
 				<h:outputText value="Tipo da Operação" />
 			</f:facet>
-			<h:outputText value="#{linha.tipoOperacao}" />
+			<h:outputText value="#{linha.tipoOperacao.label}" />
 		</p:column>
-
-
 		
-		<p:column style="width:120px; text-align: center;">
+		<p:column style="width:120px; text-align: center;" rendered="false" >
 			<p:commandLink title="Editar"
-				update=":#{p:component('tipoMovimentoEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{tipoMovimentoRaiz.instancia}" />
+						   update=":#{p:component('tipoMovimentoEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{tipoMovimentoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{tipoMovimentoRaiz.apagar()}"
-				update=":#{p:component('tipoMovimentoEditorForm')} :#{p:component('tipoMovimentoPesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{tipoMovimentoRaiz.instancia}" />
+						   update=":#{p:component('tipoMovimentoEditorForm')} :#{p:component('tipoMovimentoPesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{tipoMovimentoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

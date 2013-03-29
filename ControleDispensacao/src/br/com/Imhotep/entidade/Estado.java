@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name = "tb_estado")
 public class Estado {
 	private int idEstado;
-	private String uf;
+	private String unidadeFederativa;
 	private String nome;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estado_id_estado_seq")
@@ -26,16 +26,16 @@ public class Estado {
 		this.idEstado = idEstado;
 	}
 	
-	@Column(name = "ds_unidade_federativa", length = 2)
-	public String getUf() {
-		return uf;
+	@Column(name = "cv_unidade_federativa", length = 2)
+	public String getUnidadeFederativa() {
+		return unidadeFederativa;
 	}
 	
-	public void setUf(String uf) {
-		this.uf = uf;
+	public void setUnidadeFederativa(String unidadeFederativa) {
+		this.unidadeFederativa = unidadeFederativa;
 	}
 	
-	@Column(name = "ds_nome", length = 40)
+	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;
 	}

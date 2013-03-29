@@ -26,7 +26,7 @@ public class UnidadeMaterial {
 		this.idUnidadeMaterial = idUnidadeMaterial;
 	}
 
-	@Column(name = "ds_unidade")
+	@Column(name = "cv_unidade")
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -35,7 +35,7 @@ public class UnidadeMaterial {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "ds_sigla")
+	@Column(name = "cv_sigla")
 	public String getSigla() {
 		return this.sigla;
 	}

@@ -10,31 +10,37 @@
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{especialidadeRaiz.instancia.descricao}"
-				title="Informe o nome da especialidade" />
+			<p:inputText id="descricao" 
+						 required="true"
+						 value="#{especialidadeRaiz.instancia.descricao}"
+						 title="Informe o nome da especialidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="tipoConselho" value="Conselho:" />
 			<br />
 			<p:selectOneMenu value="#{especialidadeRaiz.instancia.tipoConselho}"
-				effect="fade" converter="tipoConselhoConversor" required="false">
-				<f:selectItem itemLabel="Selecione..." itemValue="#{tipoConselho}" />
-				<f:selectItems value="#{tipoConselhoConsulta.list}"
-					var="tipoConselho" itemLabel="#{tipoConselho.descricaoSigla}"
-					itemValue="#{tipoConselho}" />
+							 effect="fade" 
+							 converter="tipoConselhoConversor" 
+							 required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{tipoConselhoConsultaRaiz.consultarTiposConselho()}"
+							   var="tipoConselho" 
+							   itemLabel="#{tipoConselho.descricaoSigla}"
+							   itemValue="#{tipoConselho}" />
 				
 			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="especialidadePai" value="Especialidade Superior:" />
+			<h:outputLabel for="especialidadePai" value="Especialidade Pai:" />
 			<br />
 			<p:selectOneMenu value="#{especialidadeRaiz.instancia.especialidadePai}"
-				effect="fade" converter="especialidadeConversor" required="false">
+							 effect="fade" 
+							 converter="especialidadeConversor" 
+							 required="false">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems  value="#{especialidadeConsulta.list}"
+				<f:selectItems  value="#{especialidadeConsultaRaiz.consultarEspecialidadesPai()}"
 								var="especialidadePai" 
 								itemLabel="#{especialidadePai.descricao}"
 								itemValue="#{especialidadePai}" />

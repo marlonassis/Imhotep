@@ -1,7 +1,6 @@
 package br.com.Imhotep.raiz;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -10,6 +9,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.Imhotep.entidade.Familia;
 import br.com.Imhotep.entidade.Grupo;
 import br.com.Imhotep.entidade.SubGrupo;
+import br.com.imhotep.consulta.raiz.SubGrupoConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean(name="familiaRaiz")
@@ -21,26 +21,8 @@ public class FamiliaRaiz extends PadraoHome<Familia>{
 	
 	public void carregaSubgGrupoList(){
 		if(grupo != null){
-			sugGrupoList = (List<SubGrupo>) new SubGrupoRaiz().getListaSubGrupoGrupo(grupo.getIdGrupo());
+			sugGrupoList = new SubGrupoConsultaRaiz().consultarSubGrupoGrupo(grupo.getIdGrupo());
 		}
-	}
-	
-	/**
-	 * Método que retorna uma lista de famílias de acordo com o subgrupo informado
-	 * @param id
-	 * @return Collection de família
-	 */
-	public Collection<Familia> getListaFamiliaSubGrupo(Integer id){
-		return super.getBusca("select o from Familia as o where o.subGrupo.idSubGrupo = "+id+" ");
-	}
-	
-	/**
-	 * Método que retorna uma lista de Famílias de acordo com a descrição informada
-	 * @param String sql
-	 * @return Collection Familia
-	 */
-	public Collection<Familia> getListaFamiliaSuggest(String sql){
-		return super.getBusca("select o from Familia as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+sql+"%')) ");
 	}
 	
 	@Override

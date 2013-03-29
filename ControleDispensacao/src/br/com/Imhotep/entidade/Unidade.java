@@ -41,7 +41,7 @@ public class Unidade {
 		this.unidadePai = unidadePai;
 	}
 	
-	@Column(name = "ds_sigla")
+	@Column(name = "cv_sigla")
 	public String getSigla() {
 		return sigla;
 	}
@@ -49,7 +49,7 @@ public class Unidade {
 		this.sigla = sigla;
 	}
 	
-	@Column(name = "ds_nome")
+	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;
 	}
@@ -66,7 +66,7 @@ public class Unidade {
 		this.coordenador = coordenador;
 	}
 	
-	@Column(name = "ds_telefone", unique = true, length = 13)
+	@Column(name = "cv_telefone", unique = true, length = 13)
 	public String getTelefone() {
 		return telefone;
 	}
@@ -74,7 +74,7 @@ public class Unidade {
 		this.telefone = telefone;
 	}
 	
-	@Column(name = "ds_email", unique = true, length = 100)
+	@Column(name = "cv_email", unique = true, length = 100)
 	public String getEmail() {
 		return email;
 	}

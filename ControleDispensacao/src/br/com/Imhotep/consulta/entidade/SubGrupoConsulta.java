@@ -9,7 +9,7 @@ import br.com.Imhotep.entidade.SubGrupo;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="subGrupoConsulta")
+@ManagedBean
 @SessionScoped
 public class SubGrupoConsulta extends PadraoConsulta<SubGrupo> {
 	public SubGrupoConsulta(){

@@ -10,33 +10,41 @@
 			<font color="red">*</font>
 			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="sigla" value="#{unidadeRaiz.instancia.sigla}"
-				required="true" title="Informe a descrição do unidade" />
+			<p:inputText id="sigla" 
+						 value="#{unidadeRaiz.instancia.sigla}"
+						 required="true" 
+						 title="Informe a descrição do unidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="sigla" value="Nome:" />
+			<h:outputLabel for="nome" value="Nome:" />
 			<br />
-			<p:inputText id="nome" value="#{unidadeRaiz.instancia.nome}"
-				required="true" title="Informe a descrição do unidade" />
+			<p:inputText id="nome" 
+						 value="#{unidadeRaiz.instancia.nome}"
+						 required="true" 
+						 title="Informe a descrição do unidade" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="telefone" value="Telefone:" />
 			<br />
-			<p:inputMask id="telefone" mask="(99)9999-9999"
-				value="#{unidadeRaiz.instancia.telefone}"
-				title="Campo texto com máscara para telefone"
-				converter="telefoneConversor" required="false" />
+			<p:inputMask id="telefone" 
+						 mask="(99)9999-9999"
+						 value="#{unidadeRaiz.instancia.telefone}"
+						 title="Campo texto com máscara para telefone"
+						 converter="telefoneConversor" 
+						 required="false" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<h:outputLabel for="email" value="e-mail:" />
 			<br />
-			<p:inputText id="email" value="#{unidadeRaiz.instancia.email}"
-				title="Informe o e-mail do cliente" onblur="validaEmail(this);"
-				required="false" />
+			<p:inputText id="email" 
+						 value="#{unidadeRaiz.instancia.email}"
+						 title="Informe o e-mail do cliente" 
+						 onblur="validaEmail(this);"
+						 required="false" />
 		</h:panelGroup>
 
 		<h:panelGroup style="align:left;">
@@ -52,6 +60,9 @@
 							itemLabel="#{unidade.nome}" 
 							itemValue="#{unidade}"
 							converter="unidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 		<h:panelGroup style="align:left;">
@@ -69,6 +80,9 @@
 							itemLabel="#{profissional.nome}" 
 							itemValue="#{profissional}"
 							converter="profissionalConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
 		</h:panelGroup>
 
 	</h:panelGrid>

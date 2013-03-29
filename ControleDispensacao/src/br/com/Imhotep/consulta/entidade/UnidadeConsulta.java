@@ -9,12 +9,15 @@ import br.com.Imhotep.entidade.Unidade;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="unidadeConsulta")
+@ManagedBean
 @SessionScoped
 public class UnidadeConsulta extends PadraoConsulta<Unidade> {
 	public UnidadeConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
-		setOrderBy("to_ascii(o.nome)");
+		getCamposConsulta().put("o.coordenador", IGUAL);
+		getCamposConsulta().put("o.unidadePai", IGUAL);
+		getCamposConsulta().put("o.email", INCLUINDO_TUDO);
+		setOrderBy("to_ascii(lower(o.nome))");
 	}
 	
 	@Override

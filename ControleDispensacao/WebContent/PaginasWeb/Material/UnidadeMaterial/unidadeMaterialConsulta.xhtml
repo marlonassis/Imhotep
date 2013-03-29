@@ -8,24 +8,24 @@
 	<h:panelGrid id="unidadeMaterialPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
 			<h:outputLabel for="descricao" value="Descrição:" />
 			<br />
-			<p:inputText id="descricao" required="false"
-				value="#{unidadeMaterialConsulta.instancia.descricao}"
-				title="Descreva o nome da unidade do material." />
+			<p:inputText id="descricao" 
+						 required="false"
+						 value="#{unidadeMaterialConsulta.instancia.descricao}"
+						 title="Descreva o nome da unidade do material." />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			
 			<h:outputLabel for="sigla" value="Sigla:" />
 			<br />
-			<p:inputText id="sigla" required="false"
-				value="#{unidadeMaterialConsulta.instancia.sigla}"
-				title="Informe a sigla do material." />
+			<p:inputText id="sigla" 
+						 maxlength="2"
+						 required="false"
+						 value="#{unidadeMaterialConsulta.instancia.sigla}"
+						 title="Informe a sigla do material." />
 		</h:panelGroup>
-
-
 
 	</h:panelGrid>
 </ui:composition>
