@@ -208,6 +208,11 @@ public class Paciente {
 		return Utilities.idadeAtual(dataNascimento);
 	}
 	
+	@Transient
+	public String getNomeSus(){
+		return nome.concat(" - ").concat(getNumeroSus());
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

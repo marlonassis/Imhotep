@@ -26,6 +26,11 @@ public class GerenciadorRequisicao implements PhaseListener{
 		try {
 			FacesContext facesContext = event.getFacesContext();
 
+			String pagina = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI();
+			if(pagina.indexOf("jsf") > 0){
+				FacesContext.getCurrentInstance().getExternalContext().redirect(pagina.replaceAll("jsf", "hu"));
+			}
+			
 			if(Parametro.isManutencao()){
 				boolean paginaManutencao = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_MANUTENCAO) == 0;
 				if(!paginaManutencao)

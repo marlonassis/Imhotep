@@ -87,7 +87,8 @@ public class Menu {
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "menuPai")
 	public List<Menu> getMenusFilho() {
-		Collections.sort(menusFilho, new MenuComparador());
+		if(menusFilho != null)
+			Collections.sort(menusFilho, new MenuComparador());
 		return menusFilho;
 	}
 	public void setMenusFilho(List<Menu> menusFilho) {

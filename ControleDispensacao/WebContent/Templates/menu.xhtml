@@ -214,6 +214,14 @@
 					url="/PaginasWeb/Laboratorio/TesteDoPezinhoResultado/testeDoPezinhoResultado.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Resultado do Pezinho')}" />
 	</p:submenu>
+	
+	<p:submenu label="Psicologia"
+			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Psicologia')}">
+		<p:menuitem value="Avaliação Psicológica"
+					url="/PaginasWeb/Psicologia/AvaliacaoPsicologica/psicologia.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Avaliação Psicológica')}" />
+	</p:submenu>
+	
 	<p:submenu label="Prescrição Médica"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrição Médica')}">
 		<p:menuitem value="Consulta da Prescrição"

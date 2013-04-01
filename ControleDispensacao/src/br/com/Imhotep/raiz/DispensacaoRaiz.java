@@ -213,7 +213,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	}
 	
 	private void atualizaEstoque(PrescricaoItem prescricaoIteml) {
-		List<Estoque> list = null;//new EstoqueRaiz().listaEstoqueMaterialDispensacao(null);
+		List<Estoque> list = new ArrayList<Estoque>();//new EstoqueRaiz().listaEstoqueMaterialDispensacao(null);
 		Integer quantidadeLiberada = 0, cont = 0, sobra = 0;
 		boolean atualizouEstoque = quantidadeLiberada == 0;
 		while(!atualizouEstoque){

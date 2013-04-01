@@ -32,6 +32,7 @@ public class Profissional {
 	private Usuario usuario;
 	private String registroConselho;
 	private Integer matricula;
+	private Date dataNascimento;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_profissional_id_profissional_seq")
 	@Id
@@ -132,6 +133,16 @@ public class Profissional {
 		this.usuario = usuario;
 	}
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_nascimento")
+	public Date getDataNascimento() {
+		return this.dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -145,7 +156,7 @@ public class Profissional {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + matricula.hashCode();
+	    return hash * 31 + especialidade.hashCode() + nome.hashCode() + usuario.hashCode();
 	}
 
 	@Override
