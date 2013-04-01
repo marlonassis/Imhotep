@@ -3,6 +3,7 @@ package br.com.Imhotep.auxiliar;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -21,6 +22,12 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class Utilities extends br.com.remendo.utilidades.Utilities{
 
+	public static Object[] addElemento(Object[] array, Object elemento) {
+		Object[] result = Arrays.copyOf(array, array.length+1);
+	    result[array.length] = elemento;
+	    return result;
+	}
+	
 	public static String doubleFormatadoBr(Double valor){
 		Locale BRASIL = new Locale ("pt", "BR");
 		NumberFormat nf = NumberFormat.getInstance(BRASIL);

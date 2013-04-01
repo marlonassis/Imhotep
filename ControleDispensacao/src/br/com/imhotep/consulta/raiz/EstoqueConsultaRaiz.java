@@ -1,0 +1,26 @@
+package br.com.imhotep.consulta.raiz;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
+import br.com.Imhotep.entidade.Estoque;
+import br.com.remendo.ConsultaGeral;
+
+@ManagedBean
+@RequestScoped
+public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
+
+	public List<Estoque> consultarEstoqueVencido() {
+		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+dataS+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+dataS+"') order by o.dataValidade, to_ascii(lower(o.material.descricao))";
+		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
+		return list;
+	}
+	
+	
+}

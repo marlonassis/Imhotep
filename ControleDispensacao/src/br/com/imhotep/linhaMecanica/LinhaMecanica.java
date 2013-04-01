@@ -8,11 +8,55 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.Imhotep.entidade.Especialidade;
 import br.com.Imhotep.entidade.Estoque;
+import br.com.Imhotep.entidade.Menu;
 
 public class LinhaMecanica extends GerenciadorMecanico {
 	
 	private static final String DB_BANCO_IMHOTEP = "db_imhotep";
+	
+	public void removerAutorizacaoMenuEspecialidade(Especialidade especialidade, Menu menu){
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		removerFilhos(especialidade, menu.getMenusFilho());
+		String sql = "delete from tb_autoriza_menu where id_especialidade = "+especialidade.getIdEspecialidade()+" and " +
+				"id_menu = "+menu.getIdMenu();
+		executarQuery(sql);
+	}
+	
+	private void removerFilhos(Especialidade especialidade, List<Menu> filhos) {
+		for(Menu filho : filhos){
+			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
+				removerFilhos(especialidade, filho.getMenusFilho());
+			String sql = "delete from tb_autoriza_menu where id_especialidade = "+especialidade.getIdEspecialidade()+" and " +
+					"id_menu = "+filho.getIdMenu();
+			executarQuery(sql);
+		}
+	}
+	
+	public void inserirAutorizacaoMenuEspecialidade(Especialidade especialidade, Menu menu){
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		liberarPaisMenu(especialidade, menu);
+		liberarFilhosMenu(especialidade, menu.getMenusFilho());
+	}
+
+	private void liberarFilhosMenu(Especialidade especialidade, List<Menu> filhos) {
+		for(Menu filho : filhos){
+			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
+				liberarFilhosMenu(especialidade, filho.getMenusFilho());
+			String sql = "insert into tb_autoriza_menu (id_especialidade, id_menu) " +
+					"values ("+especialidade.getIdEspecialidade()+", "+filho.getIdMenu()+")";
+			executarQuery(sql);
+		}
+	}
+	
+	private void liberarPaisMenu(Especialidade especialidade, Menu menu) {
+		if(menu.getMenuPai() != null)
+			liberarPaisMenu(especialidade, menu.getMenuPai());
+		String sql = "insert into tb_autoriza_menu (id_especialidade, id_menu) " +
+				"values ("+especialidade.getIdEspecialidade()+", "+menu.getIdMenu()+")";
+		executarQuery(sql);
+	}
 	
 	public boolean apagarMovimentoLivroEstoque(int idEstoque){
 		setNomeBanco(DB_BANCO_IMHOTEP);

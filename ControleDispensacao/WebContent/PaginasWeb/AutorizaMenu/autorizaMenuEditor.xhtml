@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="autorizaMenuPanelGrid" columns="3" width="100%">
+	<h:panelGrid id="autorizaMenuPanelGrid" columns="2" width="100%">
 
 		<h:panelGroup>
 			<font color="red">*</font>
@@ -13,53 +13,36 @@
 			<p:autoComplete id="especialidade" 
 							scrollHeight="300"
 							required="true"
+							minQueryLength="4"
 							forceSelection="true"
 							value="#{autorizaMenuRaiz.instancia.especialidade}"
-							completeMethod="#{especialidadeRaiz.getListaEspecialidadeAutoComplete}"
+							completeMethod="#{especialidadeAutoComplete.autoComplete}"
 							var="especialidade" 
 							itemLabel="#{especialidade.descricao}"
 							itemValue="#{especialidade}" 
 							converter="especialidadeConversor">
-				<p:ajax event="itemSelect"
-					update=":#{p:component('autorizaMenuPanelGrid')}" />
 			</p:autoComplete>
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('autorizaMenuEditorForm')}"
+							 action="#{autorizaMenuRaiz.carregarTreeMenu}" 
+							 title="Carregar menu." />
 		</h:panelGroup>
 
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="menu" value="Menu:" />
-			<br />
-
-			<p:pickList id="pickList" 
-						value="#{autorizaMenuRaiz.menuDualList}"
-						addLabel="Adicionar" 
-						addAllLabel="Adicionar todos"
-						removeLabel="Remover" 
-						removeAllLabel="Remover todos"
-						var="menu" 
-						itemLabel="#{menu}" 
-						itemValue="#{menu}" 
-						converter="menuConversor"
-	                    effect="bounce"   
-	                    showSourceControls="true" 
-	                    showTargetControls="true" 
-	                    showCheckbox="true"  
-	                    showSourceFilter="true" 
-	                    showTargetFilter="true" 
-	                    filterMatchMode="contains" >  
-  
-		        <f:facet name="sourceCaption">Não Autorizados</f:facet>  
-		        <f:facet name="targetCaption">Autorizados</f:facet>  
-		  
-	            <p:column style="width:75%;">  
-		            #{menu.descricao}
-		        </p:column>  
-		  
-		    </p:pickList>
-		      
+		<h:panelGroup id="menuTreePanelGrid" >
+			<p:tree id="checkboxTree"
+					value="#{autorizaMenuRaiz.root}"
+					var="node"
+					selectionMode="multiple" 
+					selection="#{autorizaMenuRaiz.selectedNodes}">
+				<p:treeNode>  
+					<h:outputText value="#{node}" />
+					<h:graphicImage value="/Imagens/feito16.png"
+									rendered="#{autorizaMenuRaiz.menusAutorizado.contains(node)}"
+									height="8px"
+									width="8px"/>
+				</p:treeNode>  
+			</p:tree>  
 		</h:panelGroup>
+		
 	</h:panelGrid>
 </ui:composition>

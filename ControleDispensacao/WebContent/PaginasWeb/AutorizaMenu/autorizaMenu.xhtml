@@ -10,20 +10,22 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab title="AutorizaMenu">
+		<p:tab title="Autorização de Menu">
 			<h:form id="autorizaMenuEditorForm">
-				<p:fieldset legend="Novo AutorizaMenu"
+				<p:fieldset legend="Nova Autorização"
 							collapsed="false" 
 							toggleable="true"
 							toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="autorizaMenuEditor.xhtml" />
-					<p:commandButton value="Gravar" 
-									 update=":#{p:component('autorizaMenuEditorForm')}"
-									 action="#{autorizaMenuRaiz.atualizar}" />
-					<p:commandButton value="Novo" 
-									 update=":#{p:component('autorizaMenuEditorForm')}"
-									 action="#{autorizaMenuRaiz.novaInstancia()}" />
+					<p:commandButton id="atualizar"
+									 value="Atualizar" 
+									 update=":#{p:component('autorizaMenuEditorForm')}"  
+        							 action="#{autorizaMenuRaiz.atualizarAutorizacao}" />
+        			<p:commandButton id="limpar"
+									 value="Novo" 
+									 update=":#{p:component('autorizaMenuEditorForm')}"  
+        							 action="#{autorizaMenuRaiz.novaInstancia}" />  
 				</p:fieldset>
 			</h:form>
 		</p:tab>

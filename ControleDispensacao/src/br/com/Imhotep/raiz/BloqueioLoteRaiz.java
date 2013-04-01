@@ -3,12 +3,12 @@ package br.com.Imhotep.raiz;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.auxiliar.Constantes;
+import br.com.Imhotep.auxiliar.Utilities;
 import br.com.Imhotep.entidade.Estoque;
 import br.com.Imhotep.entidade.EstoqueLog;
 import br.com.Imhotep.enums.TipoBloqueioLoteEnum;
@@ -17,16 +17,12 @@ import br.com.Imhotep.seguranca.Autenticador;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="bloqueioLoteRaiz")
+@ManagedBean
 @SessionScoped
 public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	
 	private boolean loteEncontrado;
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-	
-	public List<Estoque> listaEstoqueVencido(){
-		return getBusca("select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime())+"') order by o.dataValidade, to_ascii(lower(o.material.descricao))"); 
-	}
 	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){
 		loteEncontrado = true;
@@ -36,7 +32,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	public boolean medicamentoVencido(Date validade){
 		Calendar atual = Calendar.getInstance();
 		Calendar vali = Calendar.getInstance();
-		vali.setTime(validade);
+		vali.setTime(Utilities.ajustarUltimaHoraDia(validade));
 		vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
 		if(vali.after(atual)){
 			return false;

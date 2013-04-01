@@ -1,18 +1,20 @@
 package br.com.Imhotep.entidade;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import br.com.Imhotep.enums.TipoStatusEnum;
+import br.com.Imhotep.comparador.MenuComparador;
 
 @Entity
 @Table(name = "tb_menu")
@@ -20,9 +22,10 @@ public class Menu {
 	private int idMenu;
 	private Menu menuPai;
 	private String descricao;
-	private TipoStatusEnum bloqueado;
+	private boolean bloqueado;
 	private String url;
 	private String urlAjuda;
+	private List<Menu> menusFilho;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_menu_id_menu_seq")
 	@Id
@@ -46,7 +49,7 @@ public class Menu {
 		this.menuPai = menuPai;
 	}
 	
-	@Column(name = "ds_descricao")
+	@Column(name = "cv_descricao")
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -55,7 +58,7 @@ public class Menu {
 		this.descricao = descricao;
 	}
 
-	@Column(name = "ds_url")
+	@Column(name = "cv_url")
 	public String getUrl() {
 		return this.url;
 	}
@@ -64,7 +67,7 @@ public class Menu {
 		this.url = url;
 	}
 
-	@Column(name = "ds_url_ajuda")
+	@Column(name = "cv_url_ajuda")
 	public String getUrlAjuda() {
 		return this.urlAjuda;
 	}
@@ -73,14 +76,22 @@ public class Menu {
 		this.urlAjuda = urlAjuda;
 	}
 	
-	@Column(name = "tp_bloqueado")
-	@Enumerated(EnumType.STRING)
-	public TipoStatusEnum getBloqueado() {
+	@Column(name = "bl_bloqueado")
+	public boolean getBloqueado() {
 		return this.bloqueado;
 	}
 
-	public void setBloqueado(TipoStatusEnum bloqueado) {
+	public void setBloqueado(boolean bloqueado) {
 		this.bloqueado = bloqueado;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "menuPai")
+	public List<Menu> getMenusFilho() {
+		Collections.sort(menusFilho, new MenuComparador());
+		return menusFilho;
+	}
+	public void setMenusFilho(List<Menu> menusFilho) {
+		this.menusFilho = menusFilho;
 	}
 	
 	@Override
@@ -96,7 +107,7 @@ public class Menu {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
+	    return hash * 31 + descricao.hashCode() + idMenu;
 	}
 
 	@Override
