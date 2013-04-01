@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.context.FacesContext;
+
+import br.com.Imhotep.auxiliar.Constantes;
+
 public class GerenciadorMecanico {
 	private String driver = "org.postgresql.Driver";
 	private String url    = "jdbc:postgresql://127.0.0.1:5432/";
@@ -17,6 +23,10 @@ public class GerenciadorMecanico {
 
 	private Connection c = null;
 	private Statement s = null;
+	
+	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
+	}
 	
 	public String utf8_to_latin1(String str){
        try{
@@ -44,8 +54,8 @@ public class GerenciadorMecanico {
 	private Connection createConnection(String nomeBanco) throws SQLException {
 		// Create the connection properties.
 		Properties properties = new Properties ();
-		properties.put ("user", "postgres");
-		properties.put ("password", "postgres");
+		properties.put ("user", Constantes.USUARIO_BANCO);
+		properties.put ("password", Constantes.SENHA_BANCO);
 
 		// Connect to the local database.
 		return DriverManager.getConnection(url.concat(nomeBanco), properties);

@@ -56,6 +56,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		String sql = "insert into tb_autoriza_menu (id_especialidade, id_menu) " +
 				"values ("+especialidade.getIdEspecialidade()+", "+menu.getIdMenu()+")";
 		executarQuery(sql);
+		
 	}
 	
 	public boolean apagarMovimentoLivroEstoque(int idEstoque){
