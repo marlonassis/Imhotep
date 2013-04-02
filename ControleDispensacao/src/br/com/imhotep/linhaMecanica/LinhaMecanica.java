@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -131,21 +130,20 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	
 	public static void main(String[] args) throws SQLException {
 		LinhaMecanica lm = new LinhaMecanica();
-
-//		lm.reordenacaoMovimento(517);
-		
-		Calendar ini = Calendar.getInstance();
 		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_material from tb_material order by id_material"));
+		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_menu, cv_url, cv_descricao from tb_menu where cv_url is not null"));
 		while (rs.next()) { 
-			lm.reordenacaoMovimento(rs.getInt(1));
+			int idMenu = rs.getInt(1);
+			String url = rs.getString(2);
+			String descricao = rs.getString(3);
+//			String sql = "update tb_menu set cv_url = '"+url.replaceAll("jsf", "hu")+"' where id_menu = "+idMenu;
+//			lm.executarQuery(sql);
+//			System.out.println("idM: "+idMenu+" - urlAntiga: "+url+" - urlNova: "+url.replaceAll("jsf", "hu"));
+			if(url.indexOf(".") < 0)
+				System.out.println("idM: "+idMenu+" - nome: "+descricao+" - url: "+url);
 		}
-		Calendar fim = Calendar.getInstance();
-		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
-		System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(fim.getTime()));
-		System.out.println( ((fim.getTimeInMillis() - ini.getTimeInMillis()) / 1000 / 60) + "min e " + ((((fim.getTimeInMillis() - ini.getTimeInMillis()) / 1000)%60)*60) + "s" );
 	}
-
+	
 	public List<Estoque> estoquePorMaterial(int idMaterial){
 		try {
 			setNomeBanco(DB_BANCO_IMHOTEP);

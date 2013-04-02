@@ -10,7 +10,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.Imhotep.entidade.Menu;
 import br.com.remendo.utilidades.Utilities;
 
-@ManagedBean(name="controleMenu")
+@ManagedBean
 @SessionScoped
 public class ControleMenu implements Serializable {
 	
@@ -29,6 +29,18 @@ public class ControleMenu implements Serializable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public boolean urlAutorizada(String url){
+		url = url.toLowerCase().replaceAll("/imhotep", "");
+		for(Menu menu : menuAutorizadoList){
+			if(menu.getUrl() != null){
+				String url2 = menu.getUrl().toLowerCase();
+				if(url2.equals(url))
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public void converteMenuString(){

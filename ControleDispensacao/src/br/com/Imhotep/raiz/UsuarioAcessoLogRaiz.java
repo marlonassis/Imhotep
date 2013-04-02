@@ -34,6 +34,7 @@ public class UsuarioAcessoLogRaiz extends PadraoHome<UsuarioAcessoLog>{
 			usuarioAcessoLog.setSessao(ControleInstancia.getIdSessao());
 			usuarioAcessoLog.setTempoSessao(ControleInstancia.getTempoInativacaoSessao());
 			setInstancia(usuarioAcessoLog);
+			setExibeMensagemInsercao(false);
 			return super.enviar();
 		} catch (InstantiationException e) {
 			e.printStackTrace();

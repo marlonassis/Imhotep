@@ -75,8 +75,6 @@ public class Autenticador {
 	}
 	
 	
-	//////////////////////////////////////////////////////
-	
 	public Profissional profissionalPeloUsuario(Usuario usuario){
 		ConsultaGeral<Profissional> cg = new ConsultaGeral<Profissional>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
@@ -197,13 +195,9 @@ public class Autenticador {
 	private void carregaToolBarMenu() {
 		try {
 			//carrega o menu que pertence ao usuário
-			boolean usuarioAdmnistrador = getProfissionalAtual().getEspecialidade().getDescricao().equalsIgnoreCase("Engenharia");
-			String hqlUsuarioNaoEngenharia = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
-			String hqlUsuarioEngenharia = "select o from Menu o order by to_ascii(o.descricao)";
-			String hql = usuarioAdmnistrador ? hqlUsuarioEngenharia : hqlUsuarioNaoEngenharia;
+			String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
 			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			if(!usuarioAdmnistrador)
-				hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+			hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
 			ControleMenu controleMenu = new ControleMenu();
 			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm)));
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
