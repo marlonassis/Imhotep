@@ -23,6 +23,9 @@
 			src="#{request.contextPath}/js/basico.js"></script>
 		<script type="text/javascript"
 			src="#{request.contextPath}/js/concentrador.js"></script>
+		<style type="text/css">
+			.colStyle1 {width: 33%;}
+		</style>
 	</h:head>
 
 
@@ -31,6 +34,7 @@
 		<div>
 			<h:panelGrid border="0"
 						 width="100%"
+						 columnClasses="colStyle1, colStyle1, colStyle1"
 						 columns="3" >
 				<h:panelGroup>
 					<h:graphicImage height="130px"
@@ -42,7 +46,7 @@
 				<h:panelGroup>
 					<div align="center" >
 						<h:panelGroup id="unidadesPanelGroup"
-			 				  rendered="#{autenticador.usuarioAtivo}" >
+			 				  		  rendered="#{autenticador.usuarioAtivo}" >
 							<h:outputLabel for="unidadeSelectOneMenu" value="Unidade Atual:"  /><br />
 							<h:outputText value="#{autenticador.unidadeAtual.nome}" 
 				        				  style="font-weight: bold;"/>
@@ -54,12 +58,16 @@
 				        	<br/>
 				        	<br/>
 							<p:clock pattern="dd/MM/yyyy HH:mm:ss" mode="server" />
+							<br/>
+							<h:outputText value="Base de testes" 
+										  rendered="#{autenticador.usuarioAtual.baseTeste}" 
+										  style="font-weight: bold; color:#FF0000"/>
 						</h:panelGroup>
 					</div>
 				</h:panelGroup>
 				<h:panelGroup style="float:right;" >
-					<h:graphicImage height="90px"
-									width="250px"
+					<h:graphicImage height="130px"
+									width="312.5px"
 									value="/Imagens/Logo/logo_hu.jpg" />
 				</h:panelGroup>
 			</h:panelGrid>  

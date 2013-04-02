@@ -27,6 +27,7 @@ public class Usuario {
 	private Usuario usuarioInclusao;
 	private boolean expiraSessao;
 	private Profissional profissional;
+	private boolean baseTeste;
 	
 	public Usuario() {
 	}
@@ -93,6 +94,14 @@ public class Usuario {
 	}
 	public void setExpiraSessao(boolean expiraSessao) {
 		this.expiraSessao = expiraSessao;
+	}
+	
+	@Column(name = "bl_base_teste")
+	public boolean getBaseTeste() {
+		return baseTeste;
+	}
+	public void setBaseTeste(boolean baseTeste) {
+		this.baseTeste = baseTeste;
 	}
 	
 	@OneToOne
