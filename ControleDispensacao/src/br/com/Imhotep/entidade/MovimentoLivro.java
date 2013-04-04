@@ -27,6 +27,7 @@ public class MovimentoLivro {
 	private Date dataMovimento;
 	private Usuario usuarioMovimentacao;
 	private Estoque estoque;
+	private DispensacaoSimples dispensacaoSimples;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
 	@Id
@@ -100,7 +101,6 @@ public class MovimentoLivro {
 		this.quantidadeMovimentacao = quantidadeMovimentacao;
 	}
 	
-	private DispensacaoSimples dispensacaoSimples;
 	
 	@OneToOne
     @PrimaryKeyJoinColumn
