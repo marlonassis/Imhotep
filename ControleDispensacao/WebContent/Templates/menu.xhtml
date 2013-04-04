@@ -218,7 +218,7 @@
 	<p:submenu label="Psicologia"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Psicologia')}">
 		<p:menuitem value="Avaliação Psicológica"
-					url="/PaginasWeb/Psicologia/AvaliacaoPsicologica/psicologia.hu"
+					url="/PaginasWeb/Psicologia/AvaliacaoPsicologica/avaliacaoPsicologica.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Avaliação Psicológica')}" />
 	</p:submenu>
 	
@@ -236,6 +236,19 @@
 		<p:menuitem value="Prescrever"
 					url="/PaginasWeb/Prescricao/Prescricao/prescricao.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrever')}" />
+	</p:submenu>
+
+	<p:submenu label="Registrador"
+			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Registrador')}">
+		<p:menuitem value="Log da Avaliação Psicológica"
+					url="/PaginasWeb/Log/AvaliacaoPsicologicaLog/avaliacaoPsicologicaLog.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Log da Avaliação Psicológica')}" />
+		<p:menuitem value="Log do Estoque"
+					url="/PaginasWeb/Log/EstoqueLog/estoqueLog.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Log do Estoque')}" />
+		<p:menuitem value="Log do Login"
+					url="/PaginasWeb/Log/LoginLog/loginLog.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Log do Login')}" />
 	</p:submenu>
 
 	<p:submenu label="Relatório"
