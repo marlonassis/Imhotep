@@ -26,6 +26,7 @@ import br.com.Imhotep.enums.TipoStatusEnum;
 import br.com.Imhotep.enums.TipoSubIndicacaoProfilaxiaEnum;
 import br.com.Imhotep.enums.TipoSubIndicacaoTerapeuticaEnum;
 import br.com.Imhotep.enums.TipoUnidadeSaudeEnum;
+import br.com.Imhotep.enums.TipoUsuarioLogEnum;
 import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 
 
@@ -33,7 +34,7 @@ import br.com.Imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 /**
  * @author marlonassis
  */
-@ManagedBean(name="itensPadrao")
+@ManagedBean
 @RequestScoped
 public class ItensPadrao{
 	
@@ -187,5 +188,13 @@ public class ItensPadrao{
 			tipoBloqueioLoteEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return tipoBloqueioLoteEnumItens;
+	}
+	
+	public List<SelectItem> getTipoUsuarioLogEnumItens(){
+		List<SelectItem> tipoUsuarioLogEnumItens = new ArrayList<SelectItem>();
+		for(TipoUsuarioLogEnum item : TipoUsuarioLogEnum.values()){
+			tipoUsuarioLogEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoUsuarioLogEnumItens;
 	}
 }
