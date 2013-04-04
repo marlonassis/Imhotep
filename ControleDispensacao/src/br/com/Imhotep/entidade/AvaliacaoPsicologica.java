@@ -15,26 +15,29 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "tb_psicologia")
-public class Psicologia {
+@Table(name = "tb_avaliacao_psicologica")
+public class AvaliacaoPsicologica {
 	
-	private int idPsicologia;
+	private int idAvaliacaoPsicologica;
 	private Paciente paciente;
 	private String descricao;
 	private Date dataAvaliacao;
 	private Date dataCriacao;
 	private Profissional profissionalCriacao;
+	private Unidade unidade;
+	private String leito;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_psicologia_id_psicologia_seq")
+	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_avaliacao_psicologica_id_avaliacao_psicologica_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id_psicologia", unique = true, nullable = false)
-	public int getIdPsicologia() {
-		return this.idPsicologia;
+	@Column(name = "id_avaliacao_psicologica", unique = true, nullable = false)
+	public int getIdAvaliacaoPsicologica() {
+		return this.idAvaliacaoPsicologica;
 	}
 	
-	public void setIdPsicologia(int idPsicologia){
-		this.idPsicologia = idPsicologia;
+	public void setIdAvaliacaoPsicologica(int idAvaliacaoPsicologica){
+		this.idAvaliacaoPsicologica = idAvaliacaoPsicologica;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -86,14 +89,33 @@ public class Psicologia {
 		this.profissionalCriacao = profissionalCriacao;
 	}
 	
+	@Column(name = "cv_leito")
+	public String getLeito() {
+		return leito;
+	}
+	
+	public void setLeito(String leito) {
+		this.leito = leito;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_unidade")
+	public Unidade getUnidade(){
+		return unidade;
+	}
+	
+	public void setUnidade(Unidade unidade){
+		this.unidade = unidade;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
 			return false;
-		if(!(obj instanceof Psicologia))
+		if(!(obj instanceof AvaliacaoPsicologica))
 			return false;
 		
-		return ((Psicologia)obj).getIdPsicologia() == this.idPsicologia;
+		return ((AvaliacaoPsicologica)obj).getIdAvaliacaoPsicologica() == this.idAvaliacaoPsicologica;
 	}
 
 	@Override

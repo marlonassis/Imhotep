@@ -4,15 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaPsicologia" 
-				 value="#{psicologiaConsulta.list}"
+	<p:dataTable id="tabelaAvaliacaoPsicologica" 
+				 value="#{avaliacaoPsicologicaConsulta.list}"
 				 var="linha" 
 				 dblClickSelect="true"
 				 emptyMessage="Não foi encontrado registros" 
 				 rows="10" 
 				 paginator="true"
 				 selectionMode="single" 
-				 rowKey="#{linha.idPsicologia}">
+				 rowKey="#{linha.idAvaliacaoPsicologica}">
 
 		<p:column>
 			<f:facet name="header">
@@ -37,18 +37,18 @@
 
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-						   update=":#{p:component('psicologiaEditorForm')}"
+						   update=":#{p:component('avaliacaoPsicologicaEditorForm')}"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{psicologiaRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{avaliacaoPsicologicaRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{psicologiaRaiz.apagar()}"
-						   update=":#{p:component('psicologiaEditorForm')} :#{p:component('psicologiaPesquisaForm')}"
+			<p:commandLink action="#{avaliacaoPsicologicaRaiz.apagar()}"
+						   update=":#{p:component('avaliacaoPsicologicaEditorForm')} :#{p:component('avaliacaoPsicologicaPesquisaForm')}"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{psicologiaRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{avaliacaoPsicologicaRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Avaliação Psicológica">
+			<h:form id="avaliacaoPsicologicaEditorForm">
+				<p:fieldset legend="Nova Avaliação"
+							collapsed="#{!avaliacaoPsicologicaRaiz.edicao}" 
+							toggleable="true"
+							toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="avaliacaoPsicologicaEditor.xhtml" />
+					<p:commandButton value="Salvar" 
+									 rendered="#{!avaliacaoPsicologicaRaiz.edicao}"
+									 update=":#{p:component('avaliacaoPsicologicaEditorForm')} :#{p:component('avaliacaoPsicologicaPesquisaForm')}"
+									 action="#{avaliacaoPsicologicaRaiz.enviar}" />
+					<p:commandButton value="Gravar" 
+									 rendered="#{avaliacaoPsicologicaRaiz.edicao}"
+									 update=":#{p:component('avaliacaoPsicologicaEditorForm')} :#{p:component('avaliacaoPsicologicaPesquisaForm')}"
+									 action="#{avaliacaoPsicologicaRaiz.atualizar}" />
+					<p:commandButton value="Novo" 
+									 rendered="#{avaliacaoPsicologicaRaiz.edicao}"
+									 update="@parent"
+									 action="#{avaliacaoPsicologicaRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="avaliacaoPsicologicaPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+							collapsed="true" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="avaliacaoPsicologicaConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('avaliacaoPsicologicaPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+									 action="#{avaliacaoPsicologicaConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('avaliacaoPsicologicaPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="avaliacaoPsicologicaTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

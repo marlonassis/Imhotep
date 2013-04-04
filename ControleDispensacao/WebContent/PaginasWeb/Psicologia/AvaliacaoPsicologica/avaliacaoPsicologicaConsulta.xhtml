@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="psicologiaPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="avaliacaoPsicologicaPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
 			<font color="red">*</font>
@@ -18,7 +18,7 @@
 							minQueryLength="3" 
 							size="30"
 							forceSelection="true"
-							value="#{psicologiaConsulta.instancia.paciente}"
+							value="#{avaliacaoPsicologicaConsulta.instancia.paciente}"
 							completeMethod="#{pacienteSusAutoComplete.autoComplete}"
 							var="paciente" 
 							itemLabel="#{paciente.nomeSus}"

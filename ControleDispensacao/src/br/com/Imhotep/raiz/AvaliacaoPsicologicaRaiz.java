@@ -6,16 +6,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.Imhotep.entidade.Profissional;
-import br.com.Imhotep.entidade.Psicologia;
-import br.com.Imhotep.entidade.PsicologiaLog;
+import br.com.Imhotep.entidade.AvaliacaoPsicologica;
+import br.com.Imhotep.entidade.AvaliacaoPsicologicaLog;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean
 @SessionScoped
-public class PsicologiaRaiz extends PadraoHome<Psicologia>{
+public class AvaliacaoPsicologicaRaiz extends PadraoHome<AvaliacaoPsicologica>{
 	
-	private PsicologiaLog log;
+	private AvaliacaoPsicologicaLog log;
 	
 	@Override
 	public boolean enviar() {
@@ -38,8 +38,8 @@ public class PsicologiaRaiz extends PadraoHome<Psicologia>{
 	}
 	
 	@Override
-	public void setInstancia(Psicologia instancia) {
-		log = new PsicologiaLog();
+	public void setInstancia(AvaliacaoPsicologica instancia) {
+		log = new AvaliacaoPsicologicaLog();
 		log.setTextoOriginal(instancia.getDescricao());
 		super.setInstancia(instancia);
 	}
@@ -49,9 +49,9 @@ public class PsicologiaRaiz extends PadraoHome<Psicologia>{
 		if(super.atualizar()){
 			log.setDataModificacao(new Date());
 			log.setProfissionalModificador(profissionalAtual());
-			log.setPsicologia(getInstancia());
+			log.setAvaliacaoPsicologica(getInstancia());
 			log.setTextoAlterado(getInstancia().getDescricao());
-			return new PsicologiaLogRaiz().enviar(log);
+			return new AvaliacaoPsicologicaLogRaiz().enviar(log);
 		}
 		return false;
 	}

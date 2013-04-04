@@ -16,36 +16,36 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "tb_psicologia_log")
-public class PsicologiaLog {
+@Table(name = "tb_avaliacao_psicologica_log")
+public class AvaliacaoPsicologicaLog {
 	
-	private int idPsicologiaLog;
-	private Psicologia psicologia;
+	private int idAvaliacaoPsicologicaLog;
+	private AvaliacaoPsicologica avaliacaoPsicologica;
 	private String textoOriginal;
 	private String textoAlterado;
 	private Date dataModificacao;
 	private Profissional profissionalModificador;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_psicologia_log_id_psicologia_log_seq")
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_avaliacao_psicologica_log_id_avaliacao_psicologica_log_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id_psicologia_log", unique = true, nullable = false)
-	public int getIdPsicologiaLog() {
-		return this.idPsicologiaLog;
+	@Column(name = "id_avaliacao_psicologica_log", unique = true, nullable = false)
+	public int getIdAvaliacaoPsicologicaLog() {
+		return this.idAvaliacaoPsicologicaLog;
 	}
 	
-	public void setIdPsicologiaLog(int idPsicologiaLog){
-		this.idPsicologiaLog = idPsicologiaLog;
+	public void setIdAvaliacaoPsicologicaLog(int idAvaliacaoPsicologicaLog){
+		this.idAvaliacaoPsicologicaLog = idAvaliacaoPsicologicaLog;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_psicologia")
-	public Psicologia getPsicologia(){
-		return psicologia;
+	@JoinColumn(name = "id_avaliacao_psicologica")
+	public AvaliacaoPsicologica getAvaliacaoPsicologica(){
+		return avaliacaoPsicologica;
 	}
 	
-	public void setPsicologia(Psicologia psicologia){
-		this.psicologia = psicologia;
+	public void setAvaliacaoPsicologica(AvaliacaoPsicologica avaliacaoPsicologica){
+		this.avaliacaoPsicologica = avaliacaoPsicologica;
 	}
 	
 	@Column(name = "tx_texto_original")
@@ -90,10 +90,10 @@ public class PsicologiaLog {
 	public boolean equals(Object obj) {
 		if(obj == null)
 			return false;
-		if(!(obj instanceof PsicologiaLog))
+		if(!(obj instanceof AvaliacaoPsicologicaLog))
 			return false;
 		
-		return ((PsicologiaLog)obj).getIdPsicologiaLog() == this.idPsicologiaLog;
+		return ((AvaliacaoPsicologicaLog)obj).getIdAvaliacaoPsicologicaLog() == this.idAvaliacaoPsicologicaLog;
 	}
 
 	@Override

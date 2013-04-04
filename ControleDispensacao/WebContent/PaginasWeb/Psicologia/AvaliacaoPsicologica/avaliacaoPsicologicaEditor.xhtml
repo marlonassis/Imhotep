@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="psicologiaPanelGrid" columns="2" width="100%">
+	<h:panelGrid id="avaliacaoPsicologicaPanelGrid" columns="2" width="100%">
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="paciente" value="Paciente:" />
@@ -16,7 +16,7 @@
 							minQueryLength="3" 
 							size="30"
 							forceSelection="true"
-							value="#{psicologiaRaiz.instancia.paciente}"
+							value="#{avaliacaoPsicologicaRaiz.instancia.paciente}"
 							completeMethod="#{pacienteSusAutoComplete.autoComplete}"
 							var="paciente" 
 							itemLabel="#{paciente.nomeSus}"
@@ -35,15 +35,47 @@
 						pattern="dd/MM/yyyy HH:mm"
 						locale="pt" 
 						required="true"
-						value="#{psicologiaRaiz.instancia.dataAvaliacao}" />
+						value="#{avaliacaoPsicologicaRaiz.instancia.dataAvaliacao}" />
 		</h:panelGroup>
-								
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="unidade" value="Unidade de Alocação:" />
+			<br />
+			<p:autoComplete id="unidade" 
+							forceSelection="true"
+							minQueryLength="3" 
+							size="30"
+							value="#{avaliacaoPsicologicaRaiz.instancia.unidade}"
+							completeMethod="#{unidadeAutoComplete.autoComplete}"
+							var="unidade" 
+							title="Unidade onde está alocado o paciente"
+							scrollHeight="300"
+							required="true" 
+							itemLabel="#{unidade.nome}"
+							itemValue="#{unidade}" 
+							converter="unidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="leito" value="Leito:" />
+			<br />
+			<p:inputText id="leito" 
+						 required="true"
+						 value="#{avaliacaoPsicologicaRaiz.instancia.leito}"
+						 title="Informe o leito do paciente." />
+		</h:panelGroup>
+		
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="descricao" value="Avaliação:" />
 			<br />
 			<p:editor id="descricao"
-					  value="#{psicologiaRaiz.instancia.descricao}"
+					  value="#{avaliacaoPsicologicaRaiz.instancia.descricao}"
 					  required="true" 
 					  width="800"/>
 		</h:panelGroup>
