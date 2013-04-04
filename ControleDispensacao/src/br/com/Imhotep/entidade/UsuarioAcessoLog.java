@@ -91,11 +91,11 @@ public class UsuarioAcessoLog {
 	
 	@Column(name = "tp_tipo_log")
 	@Enumerated(EnumType.STRING)
-	public TipoUsuarioLogEnum getBloqueado() {
+	public TipoUsuarioLogEnum getTipoLog() {
 		return this.tipoLog;
 	}
 
-	public void setBloqueado(TipoUsuarioLogEnum tipoLog) {
+	public void setTipoLog(TipoUsuarioLogEnum tipoLog) {
 		this.tipoLog = tipoLog;
 	}
 	
