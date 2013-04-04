@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Log do acesso">
+			<h:form id="loginLogEditorForm">
+				<p:dialog id="log" 
+						  widgetVar="logMod" 
+						  header="Detalhamento"
+						  visible="#{usuarioAcessoLogRaiz.instancia.idUsuarioLog != 0}"
+						  modal="true"
+						  height="100" 
+						  width="500"  
+						  resizable="false" 
+						  showEffect="clip" 
+						  hideEffect="clip">  
+					<p:ajax event="close" 
+							update=":#{p:component('loginLogEditorForm')}" 
+							listener="#{usuarioAcessoLogRaiz.novaInstancia}"/>  
+					
+					<h:panelGrid columns="3"
+								 width="100%" >
+						<h:panelGroup>
+							<h:outputText value="Profissional:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{usuarioAcessoLogRaiz.instancia.usuario.profissional.nome}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Usuário:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{usuarioAcessoLogRaiz.instancia.usuario.login}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Tipo do log:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{usuarioAcessoLogRaiz.instancia.tipoLog.label}" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<h:outputText value="Data do log:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{util.formatarDataHoraBrasil(usuarioAcessoLogRaiz.instancia.dataLog)}" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{usuarioAcessoLogRaiz.instancia.dataUltimoMovimentoSessao != null}" >
+							<h:outputText value="Data do último movimento:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{util.formatarDataHoraBrasil(usuarioAcessoLogRaiz.instancia.dataUltimoMovimentoSessao)}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Tempo limite da sessão:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{usuarioAcessoLogRaiz.instancia.tempoSessao}" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<h:outputText value="Id da sessão:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{usuarioAcessoLogRaiz.instancia.sessao}" />
+						</h:panelGroup>
+						
+					</h:panelGrid>
+					  
+				</p:dialog>  
+			</h:form>
+
+			<h:form id="loginLogPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+							collapsed="false" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="loginLogConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('loginLogPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+									 action="#{usuarioAcessoLogConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('loginLogPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="loginLogTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

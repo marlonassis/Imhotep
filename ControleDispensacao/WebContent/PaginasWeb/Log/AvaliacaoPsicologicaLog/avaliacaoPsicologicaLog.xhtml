@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Log das Avaliações">
+			<h:form id="avaliacaoPsicologicaLogEditorForm">
+				<p:dialog id="log" 
+						  widgetVar="logMod" 
+						  header="Detalhamento"
+						  visible="#{avaliacaoPsicologicaLogRaiz.instancia.idAvaliacaoPsicologicaLog != 0}"
+						  modal="true"
+						  height="100" 
+						  width="500"  
+						  resizable="false" 
+						  showEffect="clip" 
+						  hideEffect="clip">  
+					<p:ajax event="close" 
+							update=":#{p:component('avaliacaoPsicologicaLogEditorForm')}" 
+							listener="#{usuarioAcessoLogRaiz.novaInstancia}"/>  
+					
+					<h:panelGrid columns="3"
+								 width="100%" >
+						<h:panelGroup>
+							<h:outputText value="Paciente:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{avaliacaoPsicologicaLogRaiz.instancia.avaliacaoPsicologica.paciente.nomeSus}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Quem alterou:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{avaliacaoPsicologicaLogRaiz.instancia.profissionalModificador.nome}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Data da alteração:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{util.formatarDataHoraBrasil(avaliacaoPsicologicaLogRaiz.instancia.dataModificacao)}" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<h:outputText value="Texto Original:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{avaliacaoPsicologicaLogRaiz.instancia.textoOriginal}" escape="false" />
+						</h:panelGroup>
+						<h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="Texto Alterado:" style="font-weight:bold" /><br/>
+							<h:outputText value="#{avaliacaoPsicologicaLogRaiz.instancia.textoAlterado}" escape="false" />
+						</h:panelGroup>
+						
+					</h:panelGrid>
+					  
+				</p:dialog>  
+			</h:form>
+
+			<h:form id="avaliacaoPsicologicaLogPesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+							collapsed="false" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="avaliacaoPsicologicaLogConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('avaliacaoPsicologicaLogPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+									 action="#{avaliacaoPsicologicaLogConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('avaliacaoPsicologicaLogPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="avaliacaoPsicologicaLogTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

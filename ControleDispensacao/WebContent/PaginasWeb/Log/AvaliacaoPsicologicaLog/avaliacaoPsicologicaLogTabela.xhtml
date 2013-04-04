@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaAvaliacaoPsicologicaLog" 
+				 value="#{avaliacaoPsicologicaLogConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idAvaliacaoPsicologicaLog}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data da Alteração" />
+			</f:facet>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataModificacao)}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Psicólogo" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalModificador.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Paciente" />
+			</f:facet>
+			<h:outputText value="#{linha.avaliacaoPsicologica.paciente.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data da Avaliação" />
+			</f:facet>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.avaliacaoPsicologica.dataAvaliacao)}" />
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Vizualizar"
+						   update=":#{p:component('avaliacaoPsicologicaLogEditorForm')}"
+						   action="#{avaliacaoPsicologicaLogRaiz.setInstancia(linha)}"
+						   oncomplete="logMod.show()"
+						   style="padding-right:10px;">
+				<h:graphicImage value="/Imagens/search-b-icon-24.png"/> 
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

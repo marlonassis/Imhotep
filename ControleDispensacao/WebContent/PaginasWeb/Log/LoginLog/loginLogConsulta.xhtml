@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="fabricantePanelGridConsulta" columns="3" width="100%">
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="profissional" value="Profissional:" />
+			<br />
+			<p:autoComplete id="profissional"
+							scrollHeight="300" 
+							styleClass="autoCompletePesquisa"
+							required="false" 
+							minQueryLength="3" 
+							size="30"
+							forceSelection="true"
+							value="#{usuarioAcessoLogConsulta.profissional}"
+							completeMethod="#{profissionalAutoComplete.autoComplete}"
+							var="profissional" 
+							itemLabel="#{profissional.nome}"
+							itemValue="#{profissional}" 
+							converter="profissionalConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="usuario" value="Usuário:" />
+			<br />
+			<p:autoComplete id="usuario"
+							scrollHeight="300" 
+							required="false" 
+							minQueryLength="3" 
+							size="30"
+							forceSelection="true"
+							value="#{usuarioAcessoLogConsulta.usuario}"
+							completeMethod="#{usuarioAutoComplete.autoComplete}"
+							var="usuarioC" 
+							itemLabel="#{usuarioC.login}"
+							itemValue="#{usuarioC}" 
+							converter="usuarioConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="tipoLog" value="Tipo do Log:" />
+			<br />
+			<p:selectOneMenu id="tipoLog"
+							 value="#{usuarioAcessoLogConsulta.instancia.tipoLog}"
+							 effect="fade" 
+							 required="false">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{itensPadrao.tipoUsuarioLogEnumItens}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="dataLog" value="Data do Log:" />
+			<br />
+			<p:calendar id="dataLog"
+						value="#{usuarioAcessoLogConsulta.instancia.dataLog}" 
+						pattern="dd/MM/yyyy"
+						required="false" 
+						title="Informe a data que deseja pesquisar."/>
+		</h:panelGroup>
+
+	</h:panelGrid>
+</ui:composition>
