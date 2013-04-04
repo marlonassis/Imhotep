@@ -65,8 +65,8 @@
 		<mapping class="br.com.Imhotep.entidade.UsuarioAcessoLog" />
 		<mapping class="br.com.Imhotep.entidade.EstoqueLog" />
 		<mapping class="br.com.Imhotep.entidade.Recursos" />
-		<mapping class="br.com.Imhotep.entidade.Psicologia" />
-		<mapping class="br.com.Imhotep.entidade.PsicologiaLog" />
+		<mapping class="br.com.Imhotep.entidade.AvaliacaoPsicologica" />
+		<mapping class="br.com.Imhotep.entidade.AvaliacaoPsicologicaLog" />
 
 	</session-factory>
 </hibernate-configuration>
