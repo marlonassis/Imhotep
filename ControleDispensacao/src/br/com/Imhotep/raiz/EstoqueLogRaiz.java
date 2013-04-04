@@ -10,7 +10,7 @@ import br.com.Imhotep.enums.TipoEstoqueLog;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="estoqueLogRaiz")
+@ManagedBean
 @SessionScoped
 public class EstoqueLogRaiz extends PadraoHome<EstoqueLog>{
 	

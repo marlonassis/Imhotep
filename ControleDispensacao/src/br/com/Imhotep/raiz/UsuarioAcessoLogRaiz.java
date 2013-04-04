@@ -12,9 +12,11 @@ import br.com.Imhotep.enums.TipoUsuarioLogEnum;
 import br.com.Imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="usuarioAcessoRaiz")
+@ManagedBean
 @SessionScoped
 public class UsuarioAcessoLogRaiz extends PadraoHome<UsuarioAcessoLog>{
+	
+	private UsuarioAcessoLog usuarioAcessoLog;
 	
 	public boolean gerarLogLogin(){
 		return gerarLog(TipoUsuarioLogEnum.I);
@@ -30,7 +32,7 @@ public class UsuarioAcessoLogRaiz extends PadraoHome<UsuarioAcessoLog>{
 			UsuarioAcessoLog usuarioAcessoLog = new UsuarioAcessoLog();
 			usuarioAcessoLog.setUsuario(usuario);
 			usuarioAcessoLog.setDataLog(new Date());
-			usuarioAcessoLog.setBloqueado(logEnum);
+			usuarioAcessoLog.setTipoLog(logEnum);
 			usuarioAcessoLog.setSessao(ControleInstancia.getIdSessao());
 			usuarioAcessoLog.setTempoSessao(ControleInstancia.getTempoInativacaoSessao());
 			setInstancia(usuarioAcessoLog);
@@ -44,6 +46,14 @@ public class UsuarioAcessoLogRaiz extends PadraoHome<UsuarioAcessoLog>{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public UsuarioAcessoLog getUsuarioAcessoLog() {
+		return usuarioAcessoLog;
+	}
+
+	public void setUsuarioAcessoLog(UsuarioAcessoLog usuarioAcessoLog) {
+		this.usuarioAcessoLog = usuarioAcessoLog;
 	}
 	
 }
