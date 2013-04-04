@@ -36,7 +36,9 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 	}
 	
 	public String formatarDataHoraBrasil(Date date){
-		return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
+		if(date != null)
+			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
+		return null;
 	}
 	
 	public static Date ajustarUltimaHoraDia(Date dataFim) {
