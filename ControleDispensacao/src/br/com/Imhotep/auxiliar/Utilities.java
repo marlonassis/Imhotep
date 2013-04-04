@@ -29,16 +29,34 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 	}
 	
 	public static String doubleFormatadoBr(Double valor){
-		Locale BRASIL = new Locale ("pt", "BR");
-		NumberFormat nf = NumberFormat.getInstance(BRASIL);
-		nf.setMinimumFractionDigits(2);
-		return nf.format(valor);
+		if(valor != null){
+			Locale BRASIL = new Locale ("pt", "BR");
+			NumberFormat nf = NumberFormat.getInstance(BRASIL);
+			nf.setMinimumFractionDigits(2);
+			return nf.format(valor);
+		}
+		return null;
+	}
+	
+	public String formatarDataHoraSegundoBrasil(Date date){
+		if(date != null)
+			return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+		return null;
 	}
 	
 	public String formatarDataHoraBrasil(Date date){
 		if(date != null)
 			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
 		return null;
+	}
+	
+	public static Date ajustarZeroHoraDia(Date dataFim) {
+		Calendar df = Calendar.getInstance();
+		df.setTime(dataFim);
+		df.set(Calendar.HOUR, 0);
+		df.set(Calendar.MINUTE, 0);
+		df.set(Calendar.SECOND, 0);
+		return df.getTime();
 	}
 	
 	public static Date ajustarUltimaHoraDia(Date dataFim) {

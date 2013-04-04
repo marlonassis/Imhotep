@@ -29,6 +29,7 @@ public class UsuarioAcessoLog {
 	private TipoUsuarioLogEnum tipoLog;
 	private int tempoSessao;
 	
+	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_usuario_acesso_log_id_usuario_acesso_log_seq")
 	@Id
 	@GeneratedValue(generator = "generator")

@@ -71,6 +71,14 @@
 						required="false" 
 						title="Informe a data que deseja pesquisar."/>
 		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="sessao" value="Sessão:" />
+			<br />
+			<p:inputText id="sessao"
+				value="#{usuarioAcessoLogConsulta.instancia.sessao}"
+				title="Informe a sessão do usuário" />
+		</h:panelGroup>
 
 	</h:panelGrid>
 </ui:composition>

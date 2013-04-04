@@ -31,10 +31,12 @@ public class UsuarioAcessoLogConsulta extends PadraoConsulta<UsuarioAcessoLog> {
 		getCamposConsulta().put("o.usuario", IGUAL);
 		getCamposConsulta().put("o.tipoLog", IGUAL);
 		getCamposConsulta().put("o.dataLog", MAIOR_IGUAL);
+		getCamposConsulta().put("o.sessao", IGUAL);
+		
 		if(getInstancia().getDataLog() != null)
-			setOrderBy("o.dataLog asc");
+			setOrderBy("o.dataLog asc, o.sessao");
 		else
-			setOrderBy("o.dataLog desc");
+			setOrderBy("o.dataLog desc, o.sessao");
 	}
 	
 	@Override

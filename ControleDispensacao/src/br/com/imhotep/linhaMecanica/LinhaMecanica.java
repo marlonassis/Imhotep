@@ -136,11 +136,11 @@ public class LinhaMecanica extends GerenciadorMecanico {
 			int idMenu = rs.getInt(1);
 			String url = rs.getString(2);
 			String descricao = rs.getString(3);
-//			String sql = "update tb_menu set cv_url = '"+url.replaceAll("jsf", "hu")+"' where id_menu = "+idMenu;
-//			lm.executarQuery(sql);
-//			System.out.println("idM: "+idMenu+" - urlAntiga: "+url+" - urlNova: "+url.replaceAll("jsf", "hu"));
-			if(url.indexOf(".") < 0)
-				System.out.println("idM: "+idMenu+" - nome: "+descricao+" - url: "+url);
+			String sql = "update tb_menu set cv_url = '"+url.replaceAll("jsf", "hu")+"' where id_menu = "+idMenu;
+			lm.executarQuery(sql);
+			System.out.println("idM: "+idMenu+" - urlAntiga: "+url+" - urlNova: "+url.replaceAll("jsf", "hu"));
+//			if(url.indexOf(".") < 0)
+//				System.out.println("idM: "+idMenu+" - nome: "+descricao+" - url: "+url);
 		}
 	}
 	

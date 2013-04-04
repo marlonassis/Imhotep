@@ -39,7 +39,14 @@
 			<f:facet name="header">
 				<h:outputText value="Data do log" />
 			</f:facet>
-			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataLog)}" />
+			<h:outputText value="#{util.formatarDataHoraSegundoBrasil(linha.dataLog)}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Sessão" />
+			</f:facet>
+			<h:outputText value="#{linha.sessao}" />
 		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
