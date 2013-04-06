@@ -6,7 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.Imhotep.entidade.Familia;
+import br.com.imhotep.entidade.Familia;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean

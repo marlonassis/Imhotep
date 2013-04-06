@@ -3,8 +3,8 @@ package br.com.imhotep.consulta.raiz;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.NotaFiscal;
+import br.com.imhotep.entidade.Estoque;
+import br.com.imhotep.entidade.NotaFiscal;
 import br.com.remendo.ConsultaGeral;
 
 /**

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.Imhotep.entidade.Material;
-import br.com.Imhotep.entidade.MovimentoLivro;
-import br.com.Imhotep.enums.TipoOperacaoEnum;
+import br.com.imhotep.entidade.Material;
+import br.com.imhotep.entidade.MovimentoLivro;
+import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean(name="ultimoMovimentoLivroConsultaRaiz")

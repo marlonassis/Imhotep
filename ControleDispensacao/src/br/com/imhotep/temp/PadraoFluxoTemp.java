@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.faces.application.FacesMessage.Severity;
 
-import br.com.Imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.remendo.PadraoFluxo;
 
 public class PadraoFluxoTemp extends PadraoFluxo {

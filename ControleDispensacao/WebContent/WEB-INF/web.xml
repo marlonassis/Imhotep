@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>Imhotep</display-name>
+  <display-name>imhotep.ufs.br</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -53,32 +53,32 @@
     <param-name>org.apache.myfaces.PRETTY_HTML</param-name>
     <param-value>true</param-value>
   </context-param>
-	<context-param>
-		<param-name>org.apache.myfaces.DETECT_JAVASCRIPT</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<description>
+  <context-param>
+    <param-name>org.apache.myfaces.DETECT_JAVASCRIPT</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <description>
 			If true, a javascript function will be rendered that is able to restore the
 			former vertical scroll on every request. Convenient feature if you have pages
 			with long lists and you do not want the browser page to always jump to the top
 			if you trigger a link or button action that stays on the same page.
 			Default is 'false'
 		</description>
-    	<param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
-    	<param-value>true</param-value>
-	</context-param>
-	<listener>
-		<listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>br.com.Imhotep.seguranca.GerenciadorSessao</listener-class>
-	</listener>
-	<context-param>
-		<param-name>primefaces.THEME</param-name>
-		<param-value>glass-x</param-value>
-	</context-param>
-	<session-config>
-		<session-timeout>30</session-timeout>
-	</session-config> 
+    <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>br.com.imhotep.seguranca.GerenciadorSessao</listener-class>
+  </listener>
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>glass-x</param-value>
+  </context-param>
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
 </web-app>

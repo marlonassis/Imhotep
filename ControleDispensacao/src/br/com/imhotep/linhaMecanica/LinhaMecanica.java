@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import br.com.Imhotep.entidade.Especialidade;
-import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.Menu;
+import br.com.imhotep.entidade.Especialidade;
+import br.com.imhotep.entidade.Estoque;
+import br.com.imhotep.entidade.Menu;
 
 public class LinhaMecanica extends GerenciadorMecanico {
 	

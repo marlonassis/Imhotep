@@ -2,7 +2,7 @@ package br.com.imhotep.entidade.relatorio;
 
 import java.util.Date;
 
-import br.com.Imhotep.entidade.TipoMovimento;
+import br.com.imhotep.entidade.TipoMovimento;
 
 public class MovimentacaoEstoqueUnidade {
 	private String mensagemNaoEncontrado;

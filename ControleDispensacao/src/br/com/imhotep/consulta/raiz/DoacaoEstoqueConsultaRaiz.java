@@ -7,8 +7,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.Imhotep.entidade.Doacao;
-import br.com.Imhotep.entidade.Estoque;
+import br.com.imhotep.entidade.Doacao;
+import br.com.imhotep.entidade.Estoque;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean(name="doacaoEstoqueConsultaRaiz")

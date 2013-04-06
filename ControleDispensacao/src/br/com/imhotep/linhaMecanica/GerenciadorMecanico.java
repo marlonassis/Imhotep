@@ -14,7 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
-import br.com.Imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Constantes;
 
 public class GerenciadorMecanico {
 	private String driver = "org.postgresql.Driver";

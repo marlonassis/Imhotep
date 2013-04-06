@@ -1,6 +1,6 @@
 package br.com.imhotep.entidade.relatorio;
 
-import br.com.Imhotep.entidade.Material;
+import br.com.imhotep.entidade.Material;
 
 public class CustoEstoque {
 

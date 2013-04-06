@@ -6,8 +6,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.Material;
+import br.com.imhotep.entidade.Estoque;
+import br.com.imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean(name="statusEstoqueConsultaRaiz")

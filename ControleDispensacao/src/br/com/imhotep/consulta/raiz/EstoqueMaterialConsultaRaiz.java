@@ -7,8 +7,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.Imhotep.entidade.Estoque;
-import br.com.Imhotep.entidade.Material;
+import br.com.imhotep.entidade.Estoque;
+import br.com.imhotep.entidade.Material;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean
