@@ -21,17 +21,29 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean(name="util")
 @RequestScoped
 public class Utilities extends br.com.remendo.utilidades.Utilities{
+	
+	private static Locale LOCALE_BRASIL = new Locale ("pt", "BR");
 
+	public static String doubleFormatadoDuasCasasDecimais(Double valor){
+		NumberFormat df = NumberFormat.getNumberInstance(LOCALE_BRASIL);
+		df.setMaximumFractionDigits(2);
+		return df.format(valor);   
+	}
+	
 	public static Object[] addElemento(Object[] array, Object elemento) {
-		Object[] result = Arrays.copyOf(array, array.length+1);
+		if(array==null){
+			Object[] array2 = {elemento};
+			array = array2;
+			return array;
+		}
+		Object[] result = Arrays.copyOf(array, array==null ? 1 : array.length+1);
 	    result[array.length] = elemento;
 	    return result;
 	}
 	
 	public static String doubleFormatadoBr(Double valor){
 		if(valor != null){
-			Locale BRASIL = new Locale ("pt", "BR");
-			NumberFormat nf = NumberFormat.getInstance(BRASIL);
+			NumberFormat nf = NumberFormat.getInstance(LOCALE_BRASIL);
 			nf.setMinimumFractionDigits(2);
 			return nf.format(valor);
 		}

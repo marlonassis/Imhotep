@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaPrescricaoAntiga" 
+				 value="#{prescricaoAntigaConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idPrescricaoAntiga}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Paciente" />
+			</f:facet>
+			<h:outputText value="#{linha.paciente.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Peso" />
+			</f:facet>
+			<h:outputText value="#{linha.massa}#{' '}Kg" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Idade" />
+			</f:facet>
+			<h:outputText value="#{linha.idade}#{' '}anos" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade" />
+			</f:facet>
+			<h:outputText value="#{linha.unidade.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data da Prescrição" />
+			</f:facet>
+			<h:outputText value="#{linha.dataPrescricao}" >
+				<f:convertDateTime pattern="dd/MM/yyyy"/>
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Arquivos" />
+			</f:facet>
+			<p:dataList id="filesList"
+						value="#{linha.prescricoesAntigasArquivo}" 
+						var="file" 
+						type="ordered">
+				<p:commandLink onclick="window.open('prescricaoAntigaPdf.hu?id=#{file.idPrescricaoAntigaArquivo}', 'pdfPrescricaoAntiga');">
+				    <h:outputText value="#{file.nomeArquivo}">
+				    	<f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputText>
+				    <h:graphicImage value="/Imagens/save.png" width="16px" height="16px" /> 
+				</p:commandLink>
+			</p:dataList>  
+		</p:column>
+		
+	</p:dataTable>
+
+</ui:composition>

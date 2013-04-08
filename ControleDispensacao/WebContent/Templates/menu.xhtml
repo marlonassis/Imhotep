@@ -5,8 +5,8 @@
 	xmlns:ui="http://java.sun.com/hu/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<p:menubar id="principalMenuBar2" autoSubmenuDisplay="true">
-	<p:menuitem value="Home" url="/PaginasWeb/home.hu" />
+<p:menubar id="principalMenuBar2" autoSubmenuDisplay="true" style="text-align:left;" >
+	<p:menuitem value="Home" url="/PaginasWeb/home.hu"/>
 
 	<p:submenu label="Cadastro"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Cadastro')}">
@@ -204,6 +204,16 @@
 			<p:menuitem value="Entrada Sem Nota Fiscal"
 						url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaMaterialSemNota/entradaMaterialSemNota.hu"
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada Sem Nota Fiscal')}" />
+		</p:submenu>
+		
+		<p:submenu label="Prescrições Antigas"
+				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Prescrições Antigas')}">
+			<p:menuitem value="Arquivamento de Prescrição"
+						url="/PaginasWeb/Farmacia/UploadPrescricaoAntiga/uploadPrescricaoAntiga.hu"
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Arquivamento de Prescrição')}" />
+			<p:menuitem value="Consulta de Prescrição Antiga"
+						url="/PaginasWeb/Farmacia/PrescricaoAntiga/prescricaoAntiga.hu"
+						rendered="#{controleMenu.menuAutorizadoStringList.contains('Consulta de Prescrição Antiga')}" />
 		</p:submenu>
 		
 	</p:submenu>

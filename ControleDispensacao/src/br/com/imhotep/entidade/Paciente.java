@@ -210,7 +210,7 @@ public class Paciente {
 	
 	@Transient
 	public String getNomeSus(){
-		return nome.concat(" - ").concat(getNumeroSus());
+		return nome.concat(" - ").concat(getNumeroSus() != null ? getNumeroSus() : "S/N");
 	}
 	
 	@Override

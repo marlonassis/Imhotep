@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Consulta das prescrições antigas">
+			<h:form id="prescricaoAntigaPesquisaForm" >
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+							collapsed="false" 
+							toggleable="true" 
+							toggleSpeed="500">
+					<ui:include src="prescricaoAntigaConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+									 image="ui-icon ui-icon-search" 
+									 update=":#{p:component('prescricaoAntigaPesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+									 action="#{prescricaoAntigaConsulta.novaInstancia()}"
+									 image="ui-icon ui-icon-arrowrefresh-1-s" 
+									 title="Limpar os campos"
+									 update=":#{p:component('prescricaoAntigaPesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="prescricaoAntigaTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

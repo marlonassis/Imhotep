@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Upload de Prescrição Antiga">
+			<h:form id="uploadPrescricaoAntigaForm" enctype="multipart/form-data">
+				<p:fieldset legend="Novo Upload"
+							collapsed="false" 
+							toggleable="true"
+							toggleSpeed="500">
+			
+					<h:panelGrid width="100%" 
+								 columns="3" >
+								 
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="paciente" value="Paciente:" />
+							<br />
+							<p:autoComplete id="paciente"
+											scrollHeight="300" 
+											styleClass="autoCompletePesquisa"
+											required="true" 
+											minQueryLength="3" 
+											size="30"
+											forceSelection="true"
+											value="#{prescricaoAntigaRaiz.instancia.paciente}"
+											completeMethod="#{pacienteSusAutoComplete.autoComplete}"
+											var="paciente" 
+											itemLabel="#{paciente.nomeSus}"
+											itemValue="#{paciente}" 
+											converter="pacienteConversor" />
+							<h:graphicImage value="/Imagens/list16.png"
+											title="Ao digitar aparecerá algumas sugestões"
+											style="padding-top:8px" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="massa" value="Peso:" />
+							<br />
+							<p:inputText id="massa"
+										 value="#{prescricaoAntigaRaiz.instancia.massa}"
+										 required="true" 
+										 onkeyup="apenasNumeroComVirgula(this);"
+										 converter="monetarioConversor" 
+										 title="Massa do paciente" />kg
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="idade" value="Idade:" />
+							<br />
+							<p:inputText id="idade"
+									 required="true"
+									 value="#{prescricaoAntigaRaiz.instancia.idade}"
+									 onkeyup="apenasNumero(this);" 
+									 title="Informe a idade" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="unidade" value="Unidade de Alocação:" />
+							<br />
+							<p:autoComplete id="unidade" 
+											forceSelection="true"
+											minQueryLength="3" 
+											size="30"
+											value="#{prescricaoAntigaRaiz.instancia.unidade}"
+											completeMethod="#{unidadeAutoComplete.autoComplete}"
+											var="unidade" 
+											title="Unidade onde está alocado o paciente"
+											scrollHeight="300"
+											required="true" 
+											itemLabel="#{unidade.nome}"
+											itemValue="#{unidade}" 
+											converter="unidadeConversor" />
+							<h:graphicImage value="/Imagens/list16.png"
+											title="Ao digitar aparecerá algumas sugestões"
+											style="padding-top:8px" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="leito" value="Leito:" />
+							<br />
+							<p:inputText id="leito" value="#{prescricaoAntigaRaiz.instancia.leito}"
+										 title="Leito do paciete" />
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="dataPrescricao" value="Data da Prescrição:" />
+							<br />
+							<p:calendar id="dataPrescricao" 
+										pattern="dd/MM/yyyy"
+										locale="pt" 
+										value="#{prescricaoAntigaRaiz.instancia.dataPrescricao}" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid width="50%" columns="2" columnClasses="colStyle1, colStyle1" >
+					    <p:fileUpload fileUploadListener="#{prescricaoAntigaRaiz.handleFileUpload}"
+					    			auto="false"
+					    			cancelLabel="Limpar"
+					    			label="Selecionar"
+						            mode="advanced"  
+						            invalidFileMessage="O arquivo deve ser um pdf."
+						            invalidSizeMessage="O arquivo deve ser de no máximo 100KB."
+						            update=":#{p:component('filesList')} :#{p:component('messages')}"
+						            multiple="true"  
+						            sizeLimit="100000"   
+						            allowTypes="/(\.|\/)(pdf)$/"/>
+						<p:dataList id="filesList"
+									value="#{prescricaoAntigaRaiz.files}" 
+									var="file" 
+									type="ordered">  
+						    #{file.fileName}, #{util.doubleFormatadoDuasCasasDecimais(file.size / 1024)}KB
+						    <p:commandLink action="#{prescricaoAntigaRaiz.removeItemFiles(file)}" 
+						    			   update=":#{p:component('filesList')} :#{p:component('messages')}" >
+						    	<h:graphicImage value="/Imagens/Close-icon.png" /> 
+						    </p:commandLink>
+						</p:dataList>  
+					</h:panelGrid>   
+					<p:commandButton value="Salvar" 
+									 update=":#{p:component('uploadPrescricaoAntigaForm')} :#{p:component('messages')}"
+									 action="#{prescricaoAntigaRaiz.enviar}" />
+				    <p:growl id="messages" showDetail="true"/>
+				</p:fieldset>  
+			</h:form>  
+		</p:tab>
+	</ui:define>
+</ui:composition>

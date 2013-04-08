@@ -9,7 +9,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.entidade.Menu;
 
-@ManagedBean(name="ajudaRaiz")
+@ManagedBean
 @SessionScoped
 public class AjudaRaiz{
 	
