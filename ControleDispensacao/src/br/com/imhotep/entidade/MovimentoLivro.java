@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -102,8 +101,7 @@ public class MovimentoLivro {
 	}
 	
 	
-	@OneToOne
-    @PrimaryKeyJoinColumn
+	@OneToOne(mappedBy="movimentoLivro")  
 	public DispensacaoSimples getDispensacaoSimples() {
 		return dispensacaoSimples;
 	}

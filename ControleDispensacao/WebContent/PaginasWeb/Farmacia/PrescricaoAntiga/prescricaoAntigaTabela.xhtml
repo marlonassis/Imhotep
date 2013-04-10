@@ -65,7 +65,12 @@
 				    </h:outputText>
 				    <h:graphicImage value="/Imagens/save.png" width="16px" height="16px" /> 
 				</p:commandLink>
-			</p:dataList>  
+			</p:dataList>
+			<p:commandLink action="#{prescricaoAntigaRaiz.setInstancia(linha)}" 
+						   oncomplete="location.href='../UploadPrescricaoAntiga/uploadPrescricaoAntiga.hu'" >
+			    <h:graphicImage value="/Imagens/add.png" width="16px" height="16px" /> 
+			    <h:outputText value="Adicionar"/>
+			</p:commandLink>  
 		</p:column>
 		
 	</p:dataTable>

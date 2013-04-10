@@ -1,5 +1,7 @@
 package br.com.imhotep.raiz;
 
+import java.util.Date;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -7,6 +9,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.imhotep.entidade.PrescricaoAntigaArquivo;
+import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean
@@ -19,6 +22,21 @@ public class PrescricaoAntigaArquivoRaiz extends PadraoHome<PrescricaoAntigaArqu
 	public PrescricaoAntigaArquivoRaiz(PrescricaoAntigaArquivo paa){
 		setInstancia(paa);
 		setExibeMensagemInsercao(false);
+		
+		inserirDataProfissional();
+	}
+
+	private void inserirDataProfissional() {
+		try {
+			getInstancia().setDataInsercao(new Date());
+			getInstancia().setProfissionalInsercao(Autenticador.getInstancia().getProfissionalAtual());
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private PrescricaoAntigaArquivo getArquivo(Integer id){

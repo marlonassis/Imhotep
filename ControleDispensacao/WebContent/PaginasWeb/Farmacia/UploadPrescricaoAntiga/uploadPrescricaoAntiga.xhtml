@@ -130,7 +130,10 @@
 					</h:panelGrid>   
 					<p:commandButton value="Salvar" 
 									 update=":#{p:component('uploadPrescricaoAntigaForm')} :#{p:component('messages')}"
-									 action="#{prescricaoAntigaRaiz.enviar}" />
+									 action="#{prescricaoAntigaRaiz.uploadFinal}" />
+					<p:commandButton value="Limpar" 
+									 update=":#{p:component('uploadPrescricaoAntigaForm')} :#{p:component('messages')}"
+									 action="#{prescricaoAntigaRaiz.novaInstancia}" />
 				    <p:growl id="messages" showDetail="true"/>
 				</p:fieldset>  
 			</h:form>  

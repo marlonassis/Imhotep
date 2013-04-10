@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_prescricao_antiga_arquivo")
@@ -21,6 +25,8 @@ public class PrescricaoAntigaArquivo {
 	private String nomeArquivo;
 	private long tamanho;
 	private PrescricaoAntiga prescricaoAntiga;
+	private Date dataInsercao;
+	private Profissional profissionalInsercao;
 	
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_prescricao_antiga_arquivo_id_prescricao_antiga_arquivo_seq")
@@ -67,6 +73,24 @@ public class PrescricaoAntigaArquivo {
 	}
 	public void setPrescricaoAntiga(PrescricaoAntiga prescricaoAntiga) {
 		this.prescricaoAntiga = prescricaoAntiga;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_insercao")
+	public Profissional getProfissionalInsercao() {
+		return profissionalInsercao;
+	}
+	public void setProfissionalInsercao(Profissional profissionalInsercao) {
+		this.profissionalInsercao = profissionalInsercao;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_insercao")
+	public Date getDataInsercao() {
+		return dataInsercao;
+	}
+	public void setDataInsercao(Date dataInsercao) {
+		this.dataInsercao = dataInsercao;
 	}
 	
 	@Override
