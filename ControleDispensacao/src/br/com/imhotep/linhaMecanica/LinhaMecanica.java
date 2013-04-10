@@ -15,6 +15,11 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	
 	private static final String DB_BANCO_IMHOTEP = "db_imhotep";
 	
+	public boolean executarCUD(String sql, String banco){
+		setNomeBanco(banco);
+		return super.executarQuery(sql);
+	}
+	
 	public void removerAutorizacaoMenuEspecialidade(Especialidade especialidade, Menu menu){
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		removerFilhos(especialidade, menu.getMenusFilho());

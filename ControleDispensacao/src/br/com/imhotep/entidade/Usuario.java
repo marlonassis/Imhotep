@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -104,8 +103,7 @@ public class Usuario {
 		this.baseTeste = baseTeste;
 	}
 	
-	@OneToOne
-    @PrimaryKeyJoinColumn
+	@OneToOne(mappedBy="usuario")  
 	public Profissional getProfissional() {
 		return profissional;
 	}
