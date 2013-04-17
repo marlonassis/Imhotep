@@ -21,7 +21,7 @@ import br.com.imhotep.excecoes.ExcessaoAcessoNaoAutorizado;
 import br.com.imhotep.excecoes.ExcessaoPaginaForaPadrao;
 import br.com.imhotep.excecoes.ExcessaoUsuarioTrocaSenha;
 
-@ManagedBean(name="gerenciadorRequisicao")
+@ManagedBean
 @RequestScoped
 public class GerenciadorRequisicao implements PhaseListener{
 
@@ -108,7 +108,11 @@ public class GerenciadorRequisicao implements PhaseListener{
 	}
 
 	private boolean paginaAcessoGeral(String pagina){
-		return pagina.equals(Constantes.PAGINA_HOME) || pagina.equals(Constantes.PAGINA_LOGIN) || pagina.equals(Constantes.PAGINA_MANUTENCAO);
+		boolean paginaHome = pagina.equals(Constantes.PAGINA_HOME);
+		boolean paginaLogin = pagina.equals(Constantes.PAGINA_LOGIN);
+		boolean paginaManutencao = pagina.equals(Constantes.PAGINA_MANUTENCAO);
+		boolean paginaTrocaSenha = pagina.equals(Constantes.PAGINA_TROCA_SENHA);
+		return paginaHome || paginaLogin || paginaManutencao || paginaTrocaSenha;
 	}
 	
 	
