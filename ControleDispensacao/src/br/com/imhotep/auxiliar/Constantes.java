@@ -1,5 +1,7 @@
 package br.com.imhotep.auxiliar;
 
+import java.util.Locale;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 
@@ -34,5 +36,7 @@ public class Constantes {
 	public static final Severity FATAL = FacesMessage.SEVERITY_FATAL;
 	public static final Severity INFO  = FacesMessage.SEVERITY_INFO;
 	public static final Severity WARN  = FacesMessage.SEVERITY_WARN;
+	
+	public static final Locale LOCALE_BRASIL = new Locale ("pt", "BR");
 	
 }
