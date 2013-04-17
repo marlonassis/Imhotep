@@ -7,6 +7,25 @@
 
 	<h:panelGrid id="usuarioPanelGridConsulta" columns="3" width="100%">
 
+		<h:panelGroup style="align:left;">
+			<h:outputLabel for="profissional" value="Profissional:" />
+			<br />
+			<p:autoComplete id="profissional" 
+							forceSelection="true"
+							scrollHeight="300"
+							value="#{usuarioConsulta.instancia.profissional}"
+							completeMethod="#{profissionalAutoComplete.autoComplete}"
+							required="false"
+							title="Informe o nome do profissional."
+							var="profissional" 
+							itemLabel="#{profissional.nome}" 
+							itemValue="#{profissional}"
+							converter="profissionalConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+
 		<h:panelGroup>
 			<h:outputLabel for="loginConsulta" value="Login:" />
 			<br />
@@ -14,6 +33,6 @@
 				value="#{usuarioConsulta.instancia.login}"
 				title="Informe o apelido de acesso" />
 		</h:panelGroup>
-
+		
 	</h:panelGrid>
 </ui:composition>

@@ -3,6 +3,8 @@ package br.com.imhotep.seguranca;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -194,12 +196,10 @@ public class Autenticador {
 	 */
 	private void carregaToolBarMenu() {
 		try {
-			//carrega o menu que pertence ao usuário
-			String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+			Set<Menu> menuAutorizadoSet = new HashSet<Menu>(carregarMenuEspecialidade());
+			menuAutorizadoSet.addAll(carregarMenuProfissional());
 			ControleMenu controleMenu = new ControleMenu();
-			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm)));
+			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(menuAutorizadoSet));
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
 			controleMenu.converteMenuString();
 			Utilities.atualizaInstancia(controleMenu);
@@ -210,6 +210,24 @@ public class Autenticador {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private ArrayList<Menu> carregarMenuProfissional() {
+		//carrega o menu que pertence ao profissional
+		String hql = "select o.menu from AutorizaMenuProfissional o where o.profissional.idProfissional = :idProfissional order by to_ascii(o.menu.descricao)";
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
+		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));
+		return menuAutorizadoList;
+	}
+	
+	private ArrayList<Menu> carregarMenuEspecialidade() {
+		//carrega o menu que pertence à especialidade do usuário
+		String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));
+		return menuAutorizadoList;
 	}
 
 	public boolean senhaResetada(){

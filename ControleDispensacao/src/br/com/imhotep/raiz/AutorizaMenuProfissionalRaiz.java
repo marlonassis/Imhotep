@@ -9,14 +9,15 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import br.com.imhotep.consulta.raiz.MenuConsultaRaiz;
-import br.com.imhotep.entidade.AutorizaMenu;
+import br.com.imhotep.entidade.AutorizaMenuProfissional;
 import br.com.imhotep.entidade.Menu;
+import br.com.imhotep.excecoes.ExcecaoProfissionalNaoEncontrado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean
 @SessionScoped
-public class AutorizaMenuRaiz extends PadraoHome<AutorizaMenu>{
+public class AutorizaMenuProfissionalRaiz extends PadraoHome<AutorizaMenuProfissional>{
 
 	private TreeNode root;
 	private List<Menu> menusAutorizado;
@@ -36,20 +37,24 @@ public class AutorizaMenuRaiz extends PadraoHome<AutorizaMenu>{
 			if(getMenusAutorizado().contains(menu)){
 				removeMenu(menu);
 			}else{
-				addMenu(menu);
+				try {
+					addMenu(menu);
+				} catch (ExcecaoProfissionalNaoEncontrado e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		carregarTreeMenu();
 	}
 	
-	private void addMenu(Menu menu){
+	private void addMenu(Menu menu) throws ExcecaoProfissionalNaoEncontrado{
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.inserirAutorizacaoMenu(getInstancia().getEspecialidade(), menu);
+		lm.inserirAutorizacaoMenu(getInstancia().getProfissional(), menu);
 	}
 	
 	private void removeMenu(Menu menu){
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.removerAutorizacaoMenu(getInstancia().getEspecialidade(), menu);
+		lm.removerAutorizacaoMenu(getInstancia().getProfissional(), menu);
 	}
 	
 	private void getNos(TreeNode root, List<Menu> menus){
@@ -62,10 +67,10 @@ public class AutorizaMenuRaiz extends PadraoHome<AutorizaMenu>{
 	}
 
 	public void carregarTreeMenu(){
-		if(getInstancia().getEspecialidade() != null){
+		if(getInstancia().getProfissional() != null){
 			root = new DefaultTreeNode("Root", null);
 			List<Menu> menusPai = new MenuConsultaRaiz().consultarMenuPai();
-			setMenusAutorizado(new MenuConsultaRaiz().consultarMenuAutorizado(getInstancia().getEspecialidade()));
+			setMenusAutorizado(new MenuConsultaRaiz().consultarMenuAutorizado(getInstancia().getProfissional()));
 			getNos(root, menusPai);
 		}
 	}

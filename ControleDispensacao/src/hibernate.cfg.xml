@@ -69,6 +69,7 @@
 		<mapping class="br.com.imhotep.entidade.AvaliacaoPsicologicaLog" />
 		<mapping class="br.com.imhotep.entidade.PrescricaoAntiga" />
 		<mapping class="br.com.imhotep.entidade.PrescricaoAntigaArquivo" />
+		<mapping class="br.com.imhotep.entidade.AutorizaMenuProfissional" />
 
 	</session-factory>
 </hibernate-configuration>

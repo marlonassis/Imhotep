@@ -10,6 +10,9 @@ import java.util.List;
 import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.Menu;
+import br.com.imhotep.entidade.Profissional;
+import br.com.imhotep.excecoes.ExcecaoProfissionalNaoEncontrado;
+import br.com.imhotep.seguranca.Autenticador;
 
 public class LinhaMecanica extends GerenciadorMecanico {
 	
@@ -20,12 +23,43 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return super.executarQuery(sql);
 	}
 	
-	public void removerAutorizacaoMenuEspecialidade(Especialidade especialidade, Menu menu){
+	private Profissional getProfissionalAtual() throws ExcecaoProfissionalNaoEncontrado{
+		try {
+			return Autenticador.getInstancia().getProfissionalAtual();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		};
+		throw new ExcecaoProfissionalNaoEncontrado();
+	}
+	
+	public void removerAutorizacaoMenu(Profissional profissional, Menu menu){
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		removerFilhos(profissional, menu.getMenusFilho());
+		String sql = "delete from tb_autoriza_menu_profissional where id_profissional = "+profissional.getIdProfissional()+" and " +
+				"id_menu = "+menu.getIdMenu();
+		executarQuery(sql);
+	}
+	
+	public void removerAutorizacaoMenu(Especialidade especialidade, Menu menu){
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		removerFilhos(especialidade, menu.getMenusFilho());
 		String sql = "delete from tb_autoriza_menu where id_especialidade = "+especialidade.getIdEspecialidade()+" and " +
 				"id_menu = "+menu.getIdMenu();
 		executarQuery(sql);
+	}
+	
+	private void removerFilhos(Profissional profissional, List<Menu> filhos) {
+		for(Menu filho : filhos){
+			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
+				removerFilhos(profissional, filho.getMenusFilho());
+			String sql = "delete from tb_autoriza_menu_profissional where id_profissional = "+profissional.getIdProfissional()+" and " +
+					"id_menu = "+filho.getIdMenu();
+			executarQuery(sql);
+		}
 	}
 	
 	private void removerFilhos(Especialidade especialidade, List<Menu> filhos) {
@@ -38,12 +72,28 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		}
 	}
 	
-	public void inserirAutorizacaoMenuEspecialidade(Especialidade especialidade, Menu menu){
+	public void inserirAutorizacaoMenu(Profissional profissional, Menu menu) throws ExcecaoProfissionalNaoEncontrado{
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		liberarPaisMenu(profissional, menu);
+		liberarFilhosMenu(profissional, menu.getMenusFilho());
+	}
+	
+	public void inserirAutorizacaoMenu(Especialidade especialidade, Menu menu){
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		liberarPaisMenu(especialidade, menu);
 		liberarFilhosMenu(especialidade, menu.getMenusFilho());
 	}
-
+	
+	private void liberarFilhosMenu(Profissional profissional, List<Menu> filhos) throws ExcecaoProfissionalNaoEncontrado {
+		for(Menu filho : filhos){
+			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
+				liberarFilhosMenu(profissional, filho.getMenusFilho());
+			String sql = "insert into tb_autoriza_menu_profissional (id_profissional, id_menu, id_profissional_insercao, dt_data_criacao) " +
+					"values ("+profissional.getIdProfissional()+", "+filho.getIdMenu()+", "+getProfissionalAtual().getIdProfissional() + ", '"+new SimpleDateFormat().format(new Date())+"')";
+			executarQuery(sql);
+		}
+	}
+	
 	private void liberarFilhosMenu(Especialidade especialidade, List<Menu> filhos) {
 		for(Menu filho : filhos){
 			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
@@ -52,6 +102,15 @@ public class LinhaMecanica extends GerenciadorMecanico {
 					"values ("+especialidade.getIdEspecialidade()+", "+filho.getIdMenu()+")";
 			executarQuery(sql);
 		}
+	}
+	
+	private void liberarPaisMenu(Profissional profissional, Menu menu) throws ExcecaoProfissionalNaoEncontrado {
+		if(menu.getMenuPai() != null)
+			liberarPaisMenu(profissional, menu.getMenuPai());
+		String sql = "insert into tb_autoriza_menu_profissional (id_profissional, id_menu, id_profissional_insercao, dt_data_criacao) " +
+				"values ("+profissional.getIdProfissional()+", "+menu.getIdMenu()+", "+getProfissionalAtual().getIdProfissional() + ", '"+new SimpleDateFormat().format(new Date())+"')";
+		executarQuery(sql);
+		
 	}
 	
 	private void liberarPaisMenu(Especialidade especialidade, Menu menu) {
@@ -140,7 +199,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		while (rs.next()) { 
 			int idMenu = rs.getInt(1);
 			String url = rs.getString(2);
-			String descricao = rs.getString(3);
+//			String descricao = rs.getString(3);
 			String sql = "update tb_menu set cv_url = '"+url.replaceAll("jsf", "hu")+"' where id_menu = "+idMenu;
 			lm.executarQuery(sql);
 			System.out.println("idM: "+idMenu+" - urlAntiga: "+url+" - urlNova: "+url.replaceAll("jsf", "hu"));

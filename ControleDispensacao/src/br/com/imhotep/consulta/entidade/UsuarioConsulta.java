@@ -9,11 +9,12 @@ import br.com.imhotep.entidade.Usuario;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="usuarioConsulta")
+@ManagedBean
 @SessionScoped
 public class UsuarioConsulta extends PadraoConsulta<Usuario> {
 	public UsuarioConsulta(){
-		getCamposConsulta().put("o.login", IGUAL);
+		getCamposConsulta().put("o.login", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.profissional", IGUAL);
 		setOrderBy("o.profissional.nome");
 	}
 	
