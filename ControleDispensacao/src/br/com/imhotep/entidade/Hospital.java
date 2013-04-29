@@ -26,7 +26,7 @@ public class Hospital {
 		this.idHospital = idHospital;
 	}
 	
-	@Column(name = "ds_descricao")
+	@Column(name = "cv_descricao")
 	public String getDescricao() {
 		return descricao;
 	}
@@ -34,7 +34,7 @@ public class Hospital {
 		this.descricao = descricao;
 	}
 	
-	@Column(name = "ds_nome")
+	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;
 	}
