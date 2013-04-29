@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.imhotep.enums.TipoLogradouroEnum;
+import br.com.imhotep.enums.TipoSanguineoEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
 import br.com.remendo.utilidades.Utilities;
 
@@ -26,22 +26,23 @@ import br.com.remendo.utilidades.Utilities;
 public class Paciente {
 	private int idPaciente;
 	private Unidade unidadeCadastro;
-	private Cidade cidade;
+	private Cidade cidadeNaturalidade;
 	private String nome;
-	private TipoLogradouroEnum tipoLogradouro;
-	private String nomeLogradouro;
-	private String numero;
-	private String complemento;
-	private String bairro;
 	private String nomeMae;
+	private String nomePai;
 	private TipoSexoEnum sexo;
 	private Date dataNascimento;
-	private String telefone;
 	private String cpf;
 	private Date dataInclusao;
 	private Profissional profissionalInclusao;
 	private String numeroSus;
 	private String prontuario;
+	private TipoSanguineoEnum tipoSanguineo;
+	private String registroGeral;
+	private String orgaoRegistroGeral;
+	private String nacionalidade;
+	private String naturalidade;
+	private String cor;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_id_paciente_seq")
 	@Id
@@ -64,15 +65,15 @@ public class Paciente {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_cidade")
-	public Cidade getCidade() {
-		return cidade;
+	@JoinColumn(name = "id_cidade_naturalidade")
+	public Cidade getCidadeNaturalidade() {
+		return cidadeNaturalidade;
 	}
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
+	public void setCidadeNaturalidade(Cidade cidade) {
+		this.cidadeNaturalidade = cidade;
 	}
 	
-	@Column(name = "cv_nome", length = 70)
+	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;
 	}
@@ -80,53 +81,20 @@ public class Paciente {
 		this.nome = nome;
 	}
 	
-	@Column(name = "tp_tipo_logradouro")
-	@Enumerated(EnumType.STRING)
-	public TipoLogradouroEnum getTipoLogradouro() {
-		return tipoLogradouro;
-	}
-	public void setTipoLogradouro(TipoLogradouroEnum tipoLogradouro) {
-		this.tipoLogradouro = tipoLogradouro;
-	}
-	
-	@Column(name = "cv_logradouro", length = 50)
-	public String getNomeLogradouro() {
-		return nomeLogradouro;
-	}
-	public void setNomeLogradouro(String nomeLogradouro) {
-		this.nomeLogradouro = nomeLogradouro;
-	}
-	
-	@Column(name = "cv_numero", length = 7)
-	public String getNumero() {
-		return numero;
-	}
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-	
-	@Column(name = "cv_complemento", length = 15)
-	public String getComplemento() {
-		return complemento;
-	}
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-	
-	@Column(name = "cv_bairro", length = 30)
-	public String getBairro() {
-		return bairro;
-	}
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-	
-	@Column(name = "cv_nome_mae", length = 70)
+	@Column(name = "cv_nome_mae")
 	public String getNomeMae() {
 		return nomeMae;
 	}
 	public void setNomeMae(String nomeMae) {
 		this.nomeMae = nomeMae;
+	}
+	
+	@Column(name = "cv_nome_pai")
+	public String getNomePai() {
+		return nomePai;
+	}
+	public void setNomePai(String nomePai) {
+		this.nomePai = nomePai;
 	}
 	
 	@Column(name = "tp_sexo")
@@ -145,14 +113,6 @@ public class Paciente {
 	}
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
-	}
-	
-	@Column(name = "cv_telefone", length = 14)
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 	
 	@Column(name = "cv_cpf", length = 14)
@@ -196,6 +156,56 @@ public class Paciente {
 	}
 	public void setProntuario(String prontuario) {
 		this.prontuario = prontuario;
+	}
+	
+	@Column(name = "tp_sangue")
+	@Enumerated(EnumType.STRING)
+	public TipoSanguineoEnum getTipoSanguineo() {
+		return tipoSanguineo;
+	}
+	public void setTipoSanguineo(TipoSanguineoEnum tipoSanguineo) {
+		this.tipoSanguineo = tipoSanguineo;
+	}
+	
+	@Column(name = "cv_registro_geral")
+	public String getRegistroGeral() {
+		return registroGeral;
+	}
+	public void setRegistroGeral(String registroGeral) {
+		this.registroGeral = registroGeral;
+	}
+	
+	
+	@Column(name = "cv_orgao_registro_geral")
+	public String getOrgaoRegistroGeral() {
+		return orgaoRegistroGeral;
+	}
+	public void setOrgaoRegistroGeral(String orgaoRegistroGeral) {
+		this.orgaoRegistroGeral = orgaoRegistroGeral;
+	}
+	
+	@Column(name = "cv_nacionalidade")
+	public String getNacionalidade() {
+		return nacionalidade;
+	}
+	public void setNacionalidade(String nacionalidade) {
+		this.nacionalidade = nacionalidade;
+	}
+	
+	@Column(name = "cv_cor")
+	public String getCor() {
+		return cor;
+	}
+	public void setCor(String cor) {
+		this.cor = cor;
+	}
+	
+	@Column(name = "cv_naturalidade")
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+	public void setNaturalidade(String naturalidade) {
+		this.naturalidade = naturalidade;
 	}
 	
 	@Transient

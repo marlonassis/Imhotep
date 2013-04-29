@@ -33,6 +33,20 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
+			<h:outputLabel for="nomeMae" value="Nome da mãe:" />
+			<br />
+			<p:inputText id="nomeMae" value="#{pacienteRaiz.instancia.nomeMae}"
+				title="Informe o nome da mãe do paciente" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="nomePai" value="Nome do Pai:" />
+			<br />
+			<p:inputText id="nomePai" value="#{pacienteRaiz.instancia.nomePai}"
+				title="Informe o nome do pai do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
 			<h:outputLabel for="dataNascimento" value="Data de nascimento:" />
 			<br />
 			<p:inputMask id="dataNascimento" mask="99/99/9999"
@@ -43,13 +57,6 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
-			<h:outputLabel for="nomeMae" value="Nome da mãe:" />
-			<br />
-			<p:inputText id="nomeMae" value="#{pacienteRaiz.instancia.nomeMae}"
-				title="Informe o nome da mãe do paciente" />
-		</h:panelGroup>
-
-		<h:panelGroup>
 			<h:outputLabel for="cpf" value="CPF:" />
 			<br />
 			<p:inputMask id="cpf" mask="999.999.999-99"
@@ -57,61 +64,12 @@
 				title="Informe o CPF do paciente" onblur="validaCPF(this);" />
 		</h:panelGroup>
 
-		<h:panelGroup>
-			<h:outputLabel for="telefone" value="Telefone:" />
-			<br />
-			<p:inputMask id="telefone" mask="(99)9999-9999"
-				value="#{pacienteRaiz.instancia.telefone}"
-				title="Informe o telefone do paciente" converter="telefoneConversor" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="tipoLogradouro" value="Tipo do Logradouro:" />
-			<br />
-			<p:selectOneMenu value="#{pacienteRaiz.instancia.tipoLogradouro}"
-				effect="fade">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{itensPadrao.logradouroEnumItens}" />
-
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="logradouro" value="Logradouro:" />
-			<br />
-			<p:inputText id="logradouro"
-				value="#{pacienteRaiz.instancia.nomeLogradouro}"
-				title="Informe o logradouro" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="numero" value="Numero:" />
-			<br />
-			<p:inputText id="numero" value="#{pacienteRaiz.instancia.numero}"
-						 title="Informe o número da casa" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="complemento" value="Complemento:" />
-			<br />
-			<p:inputText id="complemento"
-				value="#{pacienteRaiz.instancia.complemento}"
-				title="Informe o número da casa" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="bairro" value="Bairro:" />
-			<br />
-			<p:inputText id="bairro" value="#{pacienteRaiz.instancia.bairro}"
-				title="Informe o bairro da casa" />
-		</h:panelGroup>
-
 		<h:panelGroup style="align:left;">
-			<h:outputLabel for="cidade" value="Cidade:" />
+			<h:outputLabel for="cidadeNaturalidade" value="Naturalidade:" />
 			<br />
-			<p:autoComplete id="cidade" 
+			<p:autoComplete id="cidadeNaturalidade" 
 							minQueryLength="4"
-							value="#{pacienteRaiz.instancia.cidade}" 
+							value="#{pacienteRaiz.instancia.cidadeNaturalidade}" 
 							scrollHeight="300"
 							forceSelection="true"
 							completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
@@ -129,11 +87,56 @@
 			<font color="red">*</font>
 			<h:outputLabel for="sexo" value="Sexo:" />
 			<br />
-			<h:selectOneRadio id="sexo" value="#{pacienteRaiz.instancia.sexo}"
-				title="Informe se o cliente é homem ou mulher">
+			<p:selectOneMenu id="sexo" 
+							 value="#{pacienteRaiz.instancia.sexo}"
+							 effect="fade" 
+							 required="true" 
+							 title="Informe se o cliente é homem ou mulher">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems value="#{itensPadrao.sexoEnumItens}" />
-			</h:selectOneRadio>
+			</p:selectOneMenu>
 		</h:panelGroup>
-
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="tipoSanguineo" value="Tipo Sanguíneo:" />
+			<br />
+			<p:selectOneMenu id="tipoSanguineo" 
+							 value="#{pacienteRaiz.instancia.tipoSanguineo}"
+							 effect="fade" 
+							 required="false" 
+							 title="Informe o tipo sanguíneo do paciente">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{itensPadrao.tipoSanguineoEnumItens}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="registroGeral" value="Registro Geral:" />
+			<br />
+			<p:inputText id="registroGeral" value="#{pacienteRaiz.instancia.registroGeral}"
+				title="Informe o RG do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="orgaoRegistroGeral" value="Orgão:" />
+			<br />
+			<p:inputText id="orgaoRegistroGeral" value="#{pacienteRaiz.instancia.orgaoRegistroGeral}"
+				title="Informe o orgão do RG" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="nacionalidade" value="Nacionalidade:" />
+			<br />
+			<p:inputText id="nacionalidade" value="#{pacienteRaiz.instancia.nacionalidade}"
+				title="Informe a nacionalidade do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="cor" value="Cor:" />
+			<br />
+			<p:inputText id="cor" value="#{pacienteRaiz.instancia.cor}"
+				title="Informe a cor do paciente" />
+		</h:panelGroup>
 	</h:panelGrid>
 </ui:composition>

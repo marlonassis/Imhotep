@@ -1,7 +1,6 @@
 package br.com.imhotep.raiz;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -46,13 +45,25 @@ public class PacienteRaiz extends PadraoHome<Paciente>{
 		}
 	}
 	
-	/**
-	 * Método que retorna uma lista de Estado
-	 * @param String sql
-	 * @return Collection Estado
-	 */
-	public Collection<Paciente> getListaPacienteAutoComplete(String busca){
-		return super.getBusca("select o from Paciente as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+busca+"%')) ");
+	@Override
+	public boolean atualizar() {
+		if(getInstancia().getProfissionalInclusao() == null || getInstancia().getUnidadeCadastro() == null){
+			try {
+				getInstancia().setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
+				getInstancia().setUnidadeCadastro(Autenticador.getInstancia().getUnidadeAtual());
+				return super.atualizar();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}else{
+			return super.atualizar();
+		}
+		super.mensagem("Erro ao atualizar", null, Constantes.ERROR);
+		return false;
 	}
 	
 	@Override

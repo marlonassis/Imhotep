@@ -8,9 +8,9 @@
 	<h:panelGrid id="pacientePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			<h:outputLabel for="Cidade" value="Cidade:" />
+			<h:outputLabel for="naturalidade" value="Naturalidade:" />
 			<br />
-			<p:autoComplete id="cidade"
+			<p:autoComplete id="naturalidade"
 							scrollHeight="300"
 							dropdown="true" 
 							styleClass="autoCompletePesquisa"
@@ -18,7 +18,7 @@
 							minQueryLength="3" 
 							size="30"
 							forceSelection="true"
-							value="#{pacienteRaiz.instancia.cidade}"
+							value="#{pacienteRaiz.instancia.cidadeNaturalidade}"
 							completeMethod="#{cidadeRaiz.getListaCidadeAutoComplete}"
 							var="cidade" 
 							itemLabel="#{cidade.nomeCidadeEstado}"

@@ -4,10 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaPaciente" value="#{pacienteConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idPaciente}">
+	<p:dataTable id="tabelaPaciente" 
+				 value="#{pacienteConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idPaciente}">
 
 		<p:column>
 			<f:facet name="header">
@@ -20,7 +25,7 @@
 			<f:facet name="header">
 				<h:outputText value="Cidade" />
 			</f:facet>
-			<h:outputText value="#{linha.cidade.nomeCidadeEstado}" />
+			<h:outputText value="#{linha.cidadeNaturalidade.nomeCidadeEstado}" />
 		</p:column>
 
 		<p:column>
