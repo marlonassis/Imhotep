@@ -169,7 +169,8 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 			    Scanner scan = new Scanner(todos.toString());
 			    while(scan.hasNextLine()) {  
 			    	String sql = scan.nextLine();
-			       if(!lm.executarCUD(sql, "db_ehealth")){
+			    	lm.setNomeBanco("db_ehealth");
+			       if(!lm.executarCUD(sql)){
 						arquivo = new File("/home/desenvolvimento/ehealth/erroSQL.txt");
 						arquivoOutput = new FileOutputStream(arquivo, true); 
 						gravador = new PrintStream(arquivoOutput);
@@ -241,7 +242,8 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 						String momeMunicipio = Ehealth.buscaConteudoAncora(line);
 						String sql = "insert into tb_municipio (cv_nome, cv_link, id_estado) values('"+momeMunicipio.replace("'","")+"','"+link+"',"+estado.getIdEstados()+");";
 						sb.append(sql).append("\n");
-						if(!lm.executarCUD(sql, "db_ehealth")){
+						lm.setNomeBanco("db_ehealth");
+						if(!lm.executarCUD(sql)){
 							System.out.println(sql);
 							System.exit(1);
 						}
@@ -272,7 +274,9 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 						String link = Ehealth.buscaConteudoHref(line);
 						sb.append(link).append("\n");
 						String sql = "insert into tb_estados (cv_nome, cv_link) values('"+estado+"','"+link+"');";
-						new LinhaMecanica().executarCUD(sql, "db_ehealth");
+						LinhaMecanica lm = new LinhaMecanica();
+						lm.setNomeBanco("db_ehealth");
+						lm.executarCUD(sql);
 						System.out.println(sql);
 					}
 				}

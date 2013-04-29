@@ -1,5 +1,12 @@
 package br.com.imhotep.linhaMecanica;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.CharBuffer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,7 +25,8 @@ import br.com.imhotep.auxiliar.Constantes;
 
 public class GerenciadorMecanico {
 	private String driver = "org.postgresql.Driver";
-	private String url    = "jdbc:postgresql://127.0.0.1:5432/";
+	private String ip = "127.0.0.1";
+	private String url = "jdbc:postgresql://{ip}:5432/{banco}";
 	private String nomeBanco;
 
 	private Connection c = null;
@@ -28,14 +36,40 @@ public class GerenciadorMecanico {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
 	}
 	
+	public String ascii_to_latin1(String str) {
+		if(str != null){
+			try{
+				InputStream is = new ByteArrayInputStream(str.getBytes());
+			    String text = "";
+	
+			    // setup readers with Latin-1 (ISO 8859-1) encoding
+			    BufferedReader i = new BufferedReader(new InputStreamReader(is, "8859_1"));
+	
+			    int numBytes;
+			    CharBuffer buf = CharBuffer.allocate(512);
+			    while ((numBytes = i.read(buf)) != -1) {
+			        text += String.copyValueOf(buf.array(), 0, numBytes);
+			        buf.clear();
+			    }
+	
+			    return text;
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+	
 	public String utf8_to_latin1(String str){
-       try{
-          String stringToConvert = str;
-          byte[] convertStringToByte = stringToConvert.getBytes("UTF-8");
-          return new String(convertStringToByte, "ISO-8859-1");
-       }catch(Exception e){
-    	   System.out.println(e.getStackTrace());
-       }
+		if(str != null){
+	       try{
+	          String stringToConvert = str;
+	          byte[] convertStringToByte = stringToConvert.getBytes("UTF-8");
+	          return new String(convertStringToByte, "ISO-8859-1");
+	       }catch(Exception e){
+	    	   System.out.println(e.getStackTrace());
+	       }
+		}
 		return null;
 	}
 	
@@ -58,7 +92,8 @@ public class GerenciadorMecanico {
 		properties.put ("password", Constantes.SENHA_BANCO);
 
 		// Connect to the local database.
-		return DriverManager.getConnection(url.concat(nomeBanco), properties);
+		String urlCompleta = url.replace("{banco}", nomeBanco).replace("{ip}", ip);
+		return DriverManager.getConnection(urlCompleta, properties);
 	}
 	
 	public ResultSet consultar(String sql){
@@ -165,5 +200,13 @@ public class GerenciadorMecanico {
 
 	public void setFluxo(HashMap<String, String> fluxo) {
 		this.fluxo = fluxo;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 }

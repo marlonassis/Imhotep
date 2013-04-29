@@ -18,8 +18,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	
 	private static final String DB_BANCO_IMHOTEP = "db_imhotep";
 	
-	public boolean executarCUD(String sql, String banco){
-		setNomeBanco(banco);
+	public boolean executarCUD(String sql){
 		return super.executarQuery(sql);
 	}
 	
