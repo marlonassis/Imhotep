@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="convenioPanelGrid" columns="3" width="100%">
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="sigla" value="Sigla:" />
+			<br />
+			<p:inputText id="sigla" 
+						 required="true"
+						 value="#{convenioRaiz.instancia.sigla}"
+						 title="Informe a sigla" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" 
+						 required="true"
+						 value="#{convenioRaiz.instancia.nome}"
+						 title="Informe o nome do convenio." />
+		</h:panelGroup>
+
+	</h:panelGrid>
+</ui:composition>

@@ -10,7 +10,7 @@
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.username">imhotep</property>
 		<property name="hibernate.connection.password">!@#imhotep*()1237890</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_imhotep</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_imhotep_temp</property>
 
 		<mapping class="br.com.imhotep.entidade.Usuario" />
 		<mapping class="br.com.imhotep.entidade.Menu" />
@@ -70,6 +70,7 @@
 		<mapping class="br.com.imhotep.entidade.PrescricaoAntiga" />
 		<mapping class="br.com.imhotep.entidade.PrescricaoAntigaArquivo" />
 		<mapping class="br.com.imhotep.entidade.AutorizaMenuProfissional" />
+		<mapping class="br.com.imhotep.entidade.Convenio" />
 
 	</session-factory>
 </hibernate-configuration>
