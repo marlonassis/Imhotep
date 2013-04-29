@@ -6,10 +6,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.Paciente;
+import br.com.imhotep.temp.PadraoConsulta;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="pacienteConsulta")
+@ManagedBean
 @SessionScoped
 public class PacienteConsulta extends PadraoConsulta<Paciente> {
 	public PacienteConsulta(){
@@ -20,6 +20,7 @@ public class PacienteConsulta extends PadraoConsulta<Paciente> {
 	
 	@Override
 	public List<Paciente> getList() {
+		setPesquisaGuiada(true);
 		setConsultaGeral(new ConsultaGeral<Paciente>());
 		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Paciente o where 1=1"));
 		return super.getList();
