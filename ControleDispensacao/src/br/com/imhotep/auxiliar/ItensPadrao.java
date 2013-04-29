@@ -20,6 +20,7 @@ import br.com.imhotep.enums.TipoMotivosRejeicaoAmostraTestePezinhoEnum;
 import br.com.imhotep.enums.TipoMovimentacaoEnum;
 import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.enums.TipoPrescricaoInadequadaEnum;
+import br.com.imhotep.enums.TipoSanguineoEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
 import br.com.imhotep.enums.TipoSituacaoEnum;
 import br.com.imhotep.enums.TipoStatusEnum;
@@ -196,5 +197,13 @@ public class ItensPadrao{
 			tipoUsuarioLogEnumItens.add(new SelectItem(item, item.getLabel()));
 		}
 		return tipoUsuarioLogEnumItens;
+	}
+	
+	public List<SelectItem> getTipoSanguineoEnumItens(){
+		List<SelectItem> tipoSanguineoEnumItens = new ArrayList<SelectItem>();
+		for(TipoSanguineoEnum item : TipoSanguineoEnum.values()){
+			tipoSanguineoEnumItens.add(new SelectItem(item, item.getLabel()));
+		}
+		return tipoSanguineoEnumItens;
 	}
 }
