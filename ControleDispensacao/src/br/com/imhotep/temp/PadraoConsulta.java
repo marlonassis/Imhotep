@@ -28,6 +28,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	protected static final String INCLUINDO_TUDO = " like ";
 	private String orderBy;
 	private String groupBy;
+	private boolean pesquisaGuiada; 
 	
 	@SuppressWarnings("unchecked")
 	public PadraoConsulta() {
@@ -75,6 +76,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	public List<T> getList(){
 		List<T> resultadoBuscaList = null;
         try{
+        	boolean achouCampoPreenchidoPeloUsuario = false;
         	boolean adicionadoWhere=false;
         	//insere a clausula 'where' caso não exista ainda
         	if(!camposConsulta.isEmpty()){
@@ -102,6 +104,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	    			}
 	    			
     				if(campoNaoNulo(obj)){
+    					achouCampoPreenchidoPeloUsuario = true;
     					String operador = camposConsulta.get(campo);
     					consultaGeral.getAddValorConsulta().put(campoSubS, (operador.contains("like") ? "%" + obj.toString().toLowerCase() + "%" : obj));
 		    			String campo2 = addCast(campoSubS, obj);
@@ -127,7 +130,18 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         		consultaGeral.getSqlConsultaSB().append(" group by ").append(groupBy);
         	}
         	
-            resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
+        	
+        	if(achouCampoPreenchidoPeloUsuario){
+        		resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
+        	}else{
+        		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que não existe algum campo de pesquisa
+        		//essa restrição foi criada para evitar que entidades com muitos itens estourem o heap do java
+        		if(isPesquisaGuiada()){
+        			return null;
+        		}else{
+        			resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
+        		}
+        	}
             setRegistrosEncontrados(resultadoBuscaList.size());
         }catch (Exception e) {
         	e.printStackTrace();
@@ -211,5 +225,13 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	public void setGroupBy(String groupBy) {
 		this.groupBy = groupBy;
 	}
-	
+
+	public boolean isPesquisaGuiada() {
+		return pesquisaGuiada;
+	}
+
+	public void setPesquisaGuiada(boolean pesquisaGuiada) {
+		this.pesquisaGuiada = pesquisaGuiada;
+	}
+
 }
