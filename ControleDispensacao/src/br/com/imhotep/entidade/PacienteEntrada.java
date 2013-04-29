@@ -36,6 +36,7 @@ public class PacienteEntrada {
 	private Profissional profissionalInclusao;
 	private Date dataEntrada;
 	private Date dataInclusao;
+	private PacienteEntradaResponsavel pacienteEntradaResponsavel;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_entrada_id_paciente_entrada_seq")
 	@Id
@@ -158,6 +159,15 @@ public class PacienteEntrada {
 	}
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = dataInclusao;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_paciente_entrada_responsavel")
+	public PacienteEntradaResponsavel getPacienteEntradaResponsavel() {
+		return pacienteEntradaResponsavel;
+	}
+	public void setPacienteEntradaResponsavel(PacienteEntradaResponsavel pacienteEntradaResponsavel) {
+		this.pacienteEntradaResponsavel = pacienteEntradaResponsavel;
 	}
 	
 	@Override

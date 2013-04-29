@@ -71,6 +71,7 @@
 		<mapping class="br.com.imhotep.entidade.PrescricaoAntigaArquivo" />
 		<mapping class="br.com.imhotep.entidade.AutorizaMenuProfissional" />
 		<mapping class="br.com.imhotep.entidade.Convenio" />
+		<mapping class="br.com.imhotep.entidade.PacienteEntradaResponsavel" />
 
 	</session-factory>
 </hibernate-configuration>

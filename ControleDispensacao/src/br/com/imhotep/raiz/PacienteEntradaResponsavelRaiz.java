@@ -8,6 +8,7 @@ import br.com.remendo.PadraoHome;
 
 @ManagedBean
 @SessionScoped
-public class CidadeRaiz extends PadraoHome<Cidade>{
+public class PacienteEntradaResponsavelRaiz extends PadraoHome<Cidade>{
+	
 	
 }
