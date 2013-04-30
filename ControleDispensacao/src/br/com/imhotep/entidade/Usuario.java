@@ -24,6 +24,7 @@ public class Usuario {
 	private String senha;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
+	private Profissional profissionalInclusao;
 	private boolean expiraSessao;
 	private Profissional profissional;
 	private boolean baseTeste;
@@ -85,6 +86,16 @@ public class Usuario {
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_inclusao")
+	public Profissional getProfissionalInclusao() {
+		return this.profissionalInclusao;
+	}
+
+	public void setProfissionalInclusao(Profissional profissionalInclusao) {
+		this.profissionalInclusao = profissionalInclusao;
 	}
 	
 	@Column(name = "bl_expira_sessao")

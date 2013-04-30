@@ -66,7 +66,7 @@ public class Profissional {
 		this.especialidade = especialidade;
 	}
 	
-	@Column(name = "ds_nome", length = 60)
+	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;
 	}

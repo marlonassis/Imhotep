@@ -16,7 +16,7 @@ import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="parametro")
+@ManagedBean
 @ViewScoped
 public class Parametro implements Serializable {
 	

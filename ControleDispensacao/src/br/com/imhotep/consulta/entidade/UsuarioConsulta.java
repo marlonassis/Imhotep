@@ -14,8 +14,8 @@ import br.com.remendo.ConsultaGeral;
 public class UsuarioConsulta extends PadraoConsulta<Usuario> {
 	public UsuarioConsulta(){
 		getCamposConsulta().put("o.login", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.profissional", IGUAL);
-		setOrderBy("to_asscii(o.profissional.nome)");
+		getCamposConsulta().put("o.profissional.idProfissional", IGUAL);
+		setOrderBy("to_ascii(o.profissional.nome)");
 	}
 	
 	@Override

@@ -11,7 +11,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabUsuario" title="Usuário">
-			<h:form id="usuarioEditorForm" rendered="false" >
+			<h:form id="usuarioEditorForm" >
 				<p:fieldset legend="Novo Usuário" 
 							collapsed="#{!usuarioRaiz.edicao}"
 							toggleable="true" 
@@ -21,13 +21,13 @@
 					<p:commandButton value="Salvar" 
 									 rendered="#{!usuarioRaiz.edicao}"
 									 update=":#{p:component('usuarioEditorForm')} :#{p:component('usuarioPesquisaForm')}"
-									 action="#{usuarioRaiz.enviar}" />
+									 action="#{usuarioRaiz.enviarUsuarioPadrao}" />
 					<p:commandButton value="Gravar" 
-									 rendered="#{usuarioRaiz.edicao}"
+									 rendered="false"
 									 update=":#{p:component('usuarioEditorForm')} :#{p:component('usuarioPesquisaForm')}"
 									 action="#{usuarioRaiz.atualizar}" />
 					<p:commandButton value="Novo" 
-									 rendered="#{usuarioRaiz.edicao}"
+									 rendered="true"
 									 update=":#{p:component('usuarioEditorForm')}" 
 									 action="#{usuarioRaiz.novaInstancia()}" />
 				</p:fieldset>

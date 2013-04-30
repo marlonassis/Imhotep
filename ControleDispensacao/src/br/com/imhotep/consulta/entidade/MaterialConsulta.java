@@ -6,8 +6,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.Material;
+import br.com.imhotep.temp.PadraoConsulta;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoConsulta;
 
 @ManagedBean
 @SessionScoped
@@ -20,6 +20,7 @@ public class MaterialConsulta extends PadraoConsulta<Material> {
 	
 	@Override
 	public List<Material> getList() {
+		setPesquisaGuiada(true);
 		setConsultaGeral(new ConsultaGeral<Material>());
 		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Material o where 1=1 "));
 		return super.getList();

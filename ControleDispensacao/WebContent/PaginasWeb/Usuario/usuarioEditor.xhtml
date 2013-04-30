@@ -5,7 +5,25 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="usuarioPanelGrid" columns="3" width="100%">
-
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="profissional" value="Profissional:" />
+			<br />
+			<p:autoComplete id="profissional" 
+							forceSelection="true"
+							scrollHeight="300"
+							value="#{usuarioRaiz.instancia.profissional}"
+							completeMethod="#{profissionalAutoComplete.autoComplete}"
+							required="true"
+							title="Informe o nome do profissional."
+							var="profissional" 
+							itemLabel="#{profissional.nome}" 
+							itemValue="#{profissional}"
+							converter="profissionalConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="login" value="Login:" />
@@ -15,15 +33,6 @@
 						 required="true" 
 						 disabled="#{usuarioRaiz.edicao}"
 						 title="Informe o apelido de acesso" />
-		</h:panelGroup>
-
-		<h:panelGroup id="trocaSenhaPanelGroup"
-					  rendered="#{usuarioRaiz.edicao}">
-			<h:outputLabel value="Deseja alterar a senha?" />
-			<br />
-			<p:selectBooleanCheckbox value="#{usuarioRaiz.trocaSenha}">
-				<p:ajax update=":#{p:component('senhaPanelGroup')} :#{p:component('senhaConfirmaPanelGroup')} :#{p:component('trocaSenhaPanelGroup')}" />
-			</p:selectBooleanCheckbox>
 		</h:panelGroup>
 
 	</h:panelGrid>

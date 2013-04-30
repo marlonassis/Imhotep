@@ -1,6 +1,5 @@
 package br.com.imhotep.raiz;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
@@ -66,16 +66,6 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 		}
 	}
 	
-	/**
-	 * Método que retorna uma lista de Usuarios de acordo com o nome informado
-	 * @param String sql
-	 * @return Collection Usuario
-	 */
-	public Collection<Usuario> getListaUsuarioAutoComplete(String sql){
-		return super.getBusca("select o from Usuario as o where lower(to_ascii(o.login)) like lower(to_ascii('%"+sql+"%')) ");
-	}
-
-	
 	@Override
 	public boolean atualizar() {
 		//procura se existe algum usuário com o mesmo login
@@ -107,6 +97,33 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	public boolean enviar(Usuario usuario) {
 		setInstancia(usuario);
 		return super.enviar();
+	}
+	
+	private Profissional getProfissionalAtual(){
+		try {
+			return Autenticador.getInstancia().getProfissionalAtual();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public boolean enviarUsuarioPadrao(){
+		getInstancia().setSenha(Utilities.encriptaParaMd5("123456"));
+		getInstancia().setDataInclusao(new Date());
+		getInstancia().setExpiraSessao(true);
+		getInstancia().setProfissionalInclusao(getProfissionalAtual());
+		if(super.enviar()){
+			getInstancia().getProfissional().setUsuario(getInstancia());
+			ProfissionalRaiz pr = new ProfissionalRaiz();
+			pr.atualizar(getInstancia().getProfissional());
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
