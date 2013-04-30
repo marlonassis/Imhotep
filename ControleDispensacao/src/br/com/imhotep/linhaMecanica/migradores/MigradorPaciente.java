@@ -1,8 +1,11 @@
 package br.com.imhotep.linhaMecanica.migradores;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -56,7 +59,7 @@ public class MigradorPaciente extends PadraoHome<Paciente> {
 					totalCadastrado++;
 				}else{
 					File arquivo = new File("/home/desenvolvimento/Imhotep/erro.txt");
-					FileOutputStream arquivoOutput = new FileOutputStream(arquivo, false); 
+					FileOutputStream arquivoOutput = new FileOutputStream(arquivo, true); 
 					PrintStream gravador = new PrintStream(arquivoOutput);
 					gravador.println(sql);
 					gravador.close();
