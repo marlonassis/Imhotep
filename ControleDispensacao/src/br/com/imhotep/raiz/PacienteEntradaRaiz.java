@@ -15,11 +15,12 @@ import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.controle.ControleInstancia;
 import br.com.imhotep.entidade.Paciente;
 import br.com.imhotep.entidade.PacienteEntrada;
+import br.com.imhotep.entidade.PacienteEntradaResponsavel;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="pacienteEntradaRaiz")
+@ManagedBean
 @SessionScoped
 public class PacienteEntradaRaiz extends PadraoHome<PacienteEntrada>{
 	
@@ -30,6 +31,7 @@ public class PacienteEntradaRaiz extends PadraoHome<PacienteEntrada>{
 		Paciente paciente = getInstancia().getPaciente();
 		super.novaInstancia();
 		getInstancia().setPaciente(paciente);
+		getInstancia().setPacienteEntradaResponsavel(new PacienteEntradaResponsavel());
 	}
 	
 	public static PacienteEntradaRaiz getInstanciaHome(){
@@ -59,16 +61,26 @@ public class PacienteEntradaRaiz extends PadraoHome<PacienteEntrada>{
 		ConsultaGeral<Paciente> cg = new ConsultaGeral<Paciente>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("numeroSus", numeroSus);
-		Paciente paciente = cg.consultaUnica(new StringBuilder("select o from Paciente o where o.numeroSus = :numeroSus"), hm);
+		Paciente paciente = (Paciente) cg.consultaUnica(new StringBuilder("select o from Paciente o where o.numeroSus = :numeroSus"), hm);
 		if(paciente == null){
 			setInstancia(new PacienteEntrada());
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
 			super.mensagem("O número do SUS informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);
 		}else{
 			getInstancia().setPaciente(paciente);
+			carregarUltimoAntendimento();
 		}
 	}
-
+	
+	public void carregarUltimoAntendimento() {
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("paciente", getInstancia().getPaciente().getIdPaciente());
+		String sql = "select o from PacienteEntrada o where o.paciente.idPaciente = :paciente and o.dataInclusao = (select max(a.dataInclusao) from PacienteEntrada a where a.paciente.idPaciente = :paciente)";
+		ConsultaGeral<PacienteEntrada> cg = new ConsultaGeral<PacienteEntrada>();
+		PacienteEntrada pe = (PacienteEntrada) cg.consultaUnica(new StringBuilder(sql), hm);
+		setInstancia(pe.clone());
+	}
+	
 	public List<PacienteEntrada> getEntradasPaciente(){
 		if(getInstancia().getPaciente() != null){
 			ConsultaGeral<PacienteEntrada> cg = new ConsultaGeral<PacienteEntrada>();

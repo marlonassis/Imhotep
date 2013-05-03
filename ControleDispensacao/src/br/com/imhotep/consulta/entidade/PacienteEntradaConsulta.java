@@ -10,19 +10,20 @@ import br.com.imhotep.raiz.PacienteEntradaRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="pacienteEntradaConsulta")
+@ManagedBean
 @SessionScoped
 public class PacienteEntradaConsulta extends PadraoConsulta<PacienteEntrada> {
 	public PacienteEntradaConsulta(){
-		getCamposConsulta().put("o.dataEntrada", IGUAL);
+		getCamposConsulta().put("o.dataInclusao", IGUAL);
 		getCamposConsulta().put("o.unidadeAlocacao", IGUAL);
-		setOrderBy("o.dataEntrada desc");
+		setOrderBy("o.dataInclusao desc");
 	}
 	
 	@Override
 	public List<PacienteEntrada> getList() {
 		setConsultaGeral(new ConsultaGeral<PacienteEntrada>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from PacienteEntrada o where o.paciente.idPaciente = "+PacienteEntradaRaiz.getInstanciaHome().idPacienteAtual()));
+		PacienteEntradaRaiz peh = PacienteEntradaRaiz.getInstanciaHome();
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from PacienteEntrada o where o.paciente.idPaciente = "+(peh == null ? 0 : peh.idPacienteAtual()) +" " ));
 		return super.getList();
 	}
 }

@@ -8,6 +8,14 @@
 	<h:panelGrid id="pacientePanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
+			<h:outputLabel for="numeroSus" value="Número do SUS:" />
+			<br />
+			<p:inputText id="numeroSus"
+				value="#{pacienteConsulta.instancia.numeroSus}"
+				title="Informe o número do cartão do SUS" />
+		</h:panelGroup>
+
+		<h:panelGroup>
 			<h:outputLabel for="nomeConsulta" value="Nome:" />
 			<br />
 			<p:inputText id="nomeConsulta"

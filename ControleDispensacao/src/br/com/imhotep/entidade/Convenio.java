@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_convenio")
@@ -40,6 +41,13 @@ public class Convenio {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	@Transient
+	public String getSiglaNome(){
+		if(sigla != null && nome != null)
+			return sigla.concat(" - ").concat(nome);
+		return "";
 	}
 	
 	@Override

@@ -22,21 +22,61 @@ import br.com.imhotep.enums.TipoEstadoCivilEnum;
 @Entity
 @Table(name = "tb_paciente_entrada")
 public class PacienteEntrada {
+	
 	private int idPacienteEntrada;
 	private Paciente paciente;
 	private Unidade unidadeAlocacao;
-	private TipoEstadoCivilEnum tipoEstadoCivil;
+	private Profissional profissionalResponsavel;
+	private Convenio convenio;
+	private Profissional profissionalInclusao;
 	private Cidade naturalidade;
+	private TipoEstadoCivilEnum tipoEstadoCivil;
+	private TipoEscolaridadeEnum tipoEscolaridade;
+	private Date dataInclusao;
 	private String profissaoAtual;
 	private String profissaoAnterior;
-	private TipoEscolaridadeEnum tipoEscolaridade;
+	private String escolaridadeSerie;
 	private String religiao;
-	private String informante;
-	private String grauParentescoInformante;
-	private Profissional profissionalInclusao;
-	private Date dataEntrada;
-	private Date dataInclusao;
+	private String leito;
+	private String logradouro;
+	private String numero;
+	private String bairro;
+	private String cep;
+	private String telefone1;
+	private String telefone2;
+	private Cidade cidade;
 	private PacienteEntradaResponsavel pacienteEntradaResponsavel;
+	private String observacao;
+	
+	public PacienteEntrada() {
+		super();
+	}
+	
+	public PacienteEntrada(PacienteEntrada pacienteEntrada) {
+		this.paciente = pacienteEntrada.getPaciente();
+		this.unidadeAlocacao = pacienteEntrada.getUnidadeAlocacao();
+		this.profissionalResponsavel = pacienteEntrada.getProfissionalResponsavel();
+		this.convenio = pacienteEntrada.getConvenio();
+		this.profissionalInclusao = pacienteEntrada.getProfissionalInclusao();
+		this.naturalidade = pacienteEntrada.getNaturalidade();
+		this.tipoEstadoCivil = pacienteEntrada.getTipoEstadoCivil();
+		this.tipoEscolaridade = pacienteEntrada.getTipoEscolaridade();
+		this.dataInclusao = pacienteEntrada.getDataInclusao();
+		this.profissaoAtual = pacienteEntrada.getProfissaoAtual();
+		this.profissaoAnterior = pacienteEntrada.getProfissaoAnterior();
+		this.escolaridadeSerie = pacienteEntrada.getEscolaridadeSerie();
+		this.religiao = pacienteEntrada.getReligiao();
+		this.leito = pacienteEntrada.getLeito();
+		this.logradouro = pacienteEntrada.getLogradouro();
+		this.numero = pacienteEntrada.getNumero();
+		this.bairro = pacienteEntrada.getBairro();
+		this.cep = pacienteEntrada.getCep();
+		this.telefone1 = pacienteEntrada.getTelefone1();
+		this.telefone2 = pacienteEntrada.getTelefone2();
+		this.pacienteEntradaResponsavel = pacienteEntrada.getPacienteEntradaResponsavel().clone();
+	}
+	
+	
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_entrada_id_paciente_entrada_seq")
 	@Id
@@ -50,6 +90,15 @@ public class PacienteEntrada {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_convenio")
+	public Convenio getConvenio() {
+		return convenio;
+	}
+	public void setConvenio(Convenio convenio) {
+		this.convenio = convenio;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_paciente")
 	public Paciente getPaciente() {
 		return paciente;
@@ -57,7 +106,7 @@ public class PacienteEntrada {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
-
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_unidade_alocacao")
 	public Unidade getUnidadeAlocacao() {
@@ -101,6 +150,87 @@ public class PacienteEntrada {
 		this.profissaoAnterior = profissaoAnterior;
 	}
 	
+	@Column(name = "cv_escolaridade_serie")
+	public String getEscolaridadeSerie() {
+		return escolaridadeSerie;
+	}
+	public void setEscolaridadeSerie(String escolaridadeSerie) {
+		this.escolaridadeSerie = escolaridadeSerie;
+	}
+	
+	@Column(name = "cv_observacao")
+	public String getObservacao() {
+		return observacao;
+	}
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+	
+	@Column(name = "cv_logradouro")
+	public String getLogradouro() {
+		return logradouro;
+	}
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+	
+	@Column(name = "cv_leito")
+	public String getLeito() {
+		return leito;
+	}
+	public void setLeito(String leito) {
+		this.leito = leito;
+	}
+	
+	@Column(name = "cv_numero")
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+	
+	@Column(name = "cv_bairro")
+	public String getBairro() {
+		return bairro;
+	}
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	
+	@Column(name = "cv_cep")
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+	
+	@Column(name = "cv_telefone_1")
+	public String getTelefone1() {
+		return telefone1;
+	}
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+	
+	@Column(name = "cv_telefone_2")
+	public String getTelefone2() {
+		return telefone2;
+	}
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_cidade")
+	public Cidade getCidade() {
+		return cidade;
+	}
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+	
 	@Column(name = "tp_escolaridade")
 	@Enumerated(EnumType.STRING)
 	public TipoEscolaridadeEnum getTipoEscolaridade() {
@@ -118,22 +248,6 @@ public class PacienteEntrada {
 		this.religiao = religiao;
 	}
 	
-	@Column(name = "cv_informante")
-	public String getInformante() {
-		return informante;
-	}
-	public void setInformante(String informante) {
-		this.informante = informante;
-	}
-	
-	@Column(name = "cv_grau_parentesco_informante")
-	public String getGrauParentescoInformante() {
-		return grauParentescoInformante;
-	}
-	public void setGrauParentescoInformante(String grauParentescoInformante) {
-		this.grauParentescoInformante = grauParentescoInformante;
-	}
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_profissional_inclusao")
 	public Profissional getProfissionalInclusao() {
@@ -143,13 +257,13 @@ public class PacienteEntrada {
 		this.profissionalInclusao = profissionalInclusao;
 	}
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_data_entrada")
-	public Date getDataEntrada() {
-		return dataEntrada;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_responsavel")
+	public Profissional getProfissionalResponsavel() {
+		return profissionalResponsavel;
 	}
-	public void setDataEntrada(Date dataEntrada) {
-		this.dataEntrada = dataEntrada;
+	public void setProfissionalResponsavel(Profissional profissionalResponsavel) {
+		this.profissionalResponsavel = profissionalResponsavel;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -170,6 +284,10 @@ public class PacienteEntrada {
 		this.pacienteEntradaResponsavel = pacienteEntradaResponsavel;
 	}
 	
+	public PacienteEntrada clone(){
+		return new PacienteEntrada(this);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -183,7 +301,7 @@ public class PacienteEntrada {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + dataEntrada.hashCode() + dataInclusao.hashCode();
+	    return hash * 31 + profissionalResponsavel.hashCode() + dataInclusao.hashCode();
 	}
 
 }

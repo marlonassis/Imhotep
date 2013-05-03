@@ -35,6 +35,7 @@ public class PacienteRaiz extends PadraoHome<Paciente>{
 			if(paciente != null){
 				PacienteEntradaRaiz.getInstanciaHome().setNumeroSus(numeroSus);
 				PacienteEntradaRaiz.getInstanciaHome().getInstancia().setPaciente(paciente);
+				PacienteEntradaRaiz.getInstanciaHome().carregarUltimoAntendimento();
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
 			}else{
 				super.mensagem("O número do SUS informado não está cadastrado.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);

@@ -11,6 +11,7 @@
 			<br />
 			<p:autoComplete id="unidade" 
 							scrollHeight="300"
+							size="30"
 							forceSelection="true"
 							value="#{pacienteEntradaRaiz.instancia.unidadeAlocacao}"
 							completeMethod="#{unidadeAutoComplete.autoComplete}"
@@ -24,6 +25,53 @@
 				style="padding-top:8px" />
 		</h:panelGroup>
 
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="leito" value="Leito:" />
+			<br />
+			<p:inputText id="leito"
+				value="#{pacienteEntradaRaiz.instancia.leito}" required="true"
+				title="Informe o leito do paciente" />
+		</h:panelGroup>
+
+		<h:panelGroup style="align:left;">
+			<font color="red">*</font>
+			<h:outputLabel for="profissionalResponsavel" value="Profissional Responsável:" />
+			<br />
+			<p:autoComplete id="profissionalResponsavel" 
+							forceSelection="true"
+							scrollHeight="300"
+							size="30"
+							value="#{pacienteEntradaRaiz.instancia.profissionalResponsavel}"
+							completeMethod="#{profissionalMedicoResidenteAutoComplete.autoComplete}"
+							required="true"
+							title="Informe o nome do profissional."
+							var="profissional" 
+							itemLabel="#{profissional.nome}" 
+							itemValue="#{profissional}"
+							converter="profissionalConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup id="estoquePanelGroup">
+			<font color="red">*</font>
+			<h:outputLabel for="convenio" value="Convenio:" />
+			<br />
+			<p:selectOneMenu id="convenio"
+							 value="#{pacienteEntradaRaiz.instancia.convenio}"
+							 effect="fade" 
+							 converter="convenioConversor"
+							 required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{convenioConsulta.list}"
+							   var="convenio" 
+							   itemLabel="#{convenio.siglaNome}"
+							   itemValue="#{convenio}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+		
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="estadoCivil" value="Estado Civil:" />
@@ -49,11 +97,20 @@
 		</h:panelGroup>
 
 		<h:panelGroup>
+			<h:outputLabel for="serie" value="Série:" />
+			<br />
+			<p:inputText id="serie"
+						 value="#{pacienteEntradaRaiz.instancia.escolaridadeSerie}"
+						 title="Informe a série do paciente" />
+		</h:panelGroup>
+
+		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="naturalidade" value="Naturalidade:" />
 			<br />
 			<p:autoComplete id="naturalidade" 
 							scrollHeight="300"
+							size="30"
 							forceSelection="true"
 							value="#{pacienteEntradaRaiz.instancia.naturalidade}"
 							completeMethod="#{cidadeAutoComplete.autoComplete}"
@@ -72,8 +129,8 @@
 			<h:outputLabel for="profissaoAtual" value="Profissão Atual:" />
 			<br />
 			<p:inputText id="profissaoAtual"
-				value="#{pacienteEntradaRaiz.instancia.profissaoAtual}"
-				required="true" title="Informe a atual profissão do paciente" />
+						 value="#{pacienteEntradaRaiz.instancia.profissaoAtual}"
+						 required="true" title="Informe a atual profissão do paciente" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -81,8 +138,9 @@
 			<h:outputLabel for="profissaoAnterior" value="Profissão Anterior:" />
 			<br />
 			<p:inputText id="profissaoAnterior"
-				value="#{pacienteEntradaRaiz.instancia.profissaoAnterior}"
-				required="true" title="Informe a profissão anterior do paciente" />
+						 value="#{pacienteEntradaRaiz.instancia.profissaoAnterior}"
+						 required="true" 
+						 title="Informe a profissão anterior do paciente" />
 		</h:panelGroup>
 
 		<h:panelGroup>
@@ -90,35 +148,237 @@
 			<h:outputLabel for="religiao" value="Religião:" />
 			<br />
 			<p:inputText id="religiao"
-				value="#{pacienteEntradaRaiz.instancia.religiao}" required="true"
-				title="Informe a religião do paciente" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="informante" value="Informante:" />
-			<br />
-			<p:inputText id="informante"
-				value="#{pacienteEntradaRaiz.instancia.informante}"
-				title="Informe o nome da pessoa que está fornecendo as informações sobre o paciente" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="grauParentescoInformante"
-				value="Grau de Parentesco do Informante:" />
-			<br />
-			<p:inputText id="grauParentescoInformante"
-				value="#{pacienteEntradaRaiz.instancia.grauParentescoInformante}"
-				title="Informe o grau de parentesco da pessoa que está fornecendo as informações sobre o paciente" />
+						 value="#{pacienteEntradaRaiz.instancia.religiao}" 
+						 required="true"
+						 title="Informe a religião do paciente" />
 		</h:panelGroup>
 
 		<h:panelGroup>
 			<font color="red">*</font>
-			<h:outputLabel for="dataEntrada"
-				value="Data da entrada do paciente na unidade:" />
+			<h:outputLabel for="logradouro" value="Nome da Rua:" />
 			<br />
-			<p:calendar id="dataEntrada" pattern="dd/MM/yyyy HH:mm" locale="pt"
-				value="#{pacienteEntradaRaiz.instancia.dataEntrada}" />
+			<p:inputText id="logradouro"
+						 size="30"
+						 value="#{pacienteEntradaRaiz.instancia.logradouro}" 
+						 required="true"
+						 title="Informe o nome da rua" />
 		</h:panelGroup>
-
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="bairro" value="Bairro:" />
+			<br />
+			<p:inputText id="bairro"
+						 value="#{pacienteEntradaRaiz.instancia.bairro}" 
+						 required="true"
+						 title="Informe o bairro do endereço" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="numero" value="Número:" />
+			<br />
+			<p:inputText id="numero"
+						 value="#{pacienteEntradaRaiz.instancia.numero}" 
+						 required="true"
+						 title="Informe a religião do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cidade" value="Cidade:" />
+			<br />
+			<p:autoComplete id="cidade" 
+							scrollHeight="300"
+							size="30"
+							forceSelection="true"
+							value="#{pacienteEntradaRaiz.instancia.cidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="telefone1" value="Telefone:" />
+			<br />
+			<p:inputText id="telefone1"
+						 value="#{pacienteEntradaRaiz.instancia.telefone1}" 
+						 required="false"
+						 title="Informe a religião do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="telefone2" value="Telefone:" />
+			<br />
+			<p:inputText id="telefone2"
+						 value="#{pacienteEntradaRaiz.instancia.telefone2}" 
+						 required="false"
+						 title="Informe a religião do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cep" value="CEP:" />
+			<br />
+			<p:inputText id="cep"
+						 value="#{pacienteEntradaRaiz.instancia.cep}" 
+						 required="true"
+						 title="Informe o CEP do endereço do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="observacao" value="Observação:" />
+			<br />
+			<p:inputTextarea id="observacao"
+							 value="#{pacienteEntradaRaiz.instancia.observacao}" 
+							 required="true"
+							 title="Informe alguma observação do paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cid10" value="CID-10:" />
+			<br />
+			<p:autoComplete id="cid10" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{pacienteEntradaRaiz.instancia.naturalidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="procedimento" value="Procedimento:" />
+			<br />
+			<p:autoComplete id="procedimento" 
+							scrollHeight="300"
+							forceSelection="true"
+							value="#{pacienteEntradaRaiz.instancia.naturalidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade"  
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+	<p:separator style="margin-top:20px"/>
+	<div align="left" ><b>Responsável:</b></div>
+	
+	<h:panelGrid id="responsavelPanelGrid" columns="3" width="100%">
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cpfResponsavel" value="CPF:" />
+			<br />
+			<p:inputText id="cpfResponsavel"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.cpf}" 
+						 required="true"
+						 title="Informe o CPF do responsável" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="nomeResponsavel" value="Nome:" />
+			<br />
+			<p:inputText id="nomeResponsavel"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.nome}" 
+						 required="true"
+						 size="30"
+						 title="Informe o nome do responsável pelo paciente" />
+		</h:panelGroup>
+	
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="parentesco" value="Parentesco:" />
+			<br />
+			<p:inputText id="parentesco"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.parentesco}" 
+						 required="true"
+						 title="Informe o grau de parentesco do responsável pelo paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="logradouroResponsavel" value="Nome da Rua:" />
+			<br />
+			<p:inputText id="logradouroResponsavel"
+						 size="30"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.logradouro}" 
+						 required="true"
+						 title="Informe o grau de parentesco do responsável pelo paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="bairroResponsavel" value="Bairro:" />
+			<br />
+			<p:inputText id="bairroResponsavel"
+						 size="30"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.bairro}" 
+						 required="true"
+						 title="Informe o bairro do endereço do responsável pelo paciente" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="numeroResponsavel" value="Número:" />
+			<br />
+			<p:inputText id="numeroResponsavel"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.numero}" 
+						 required="true"
+						 title="Informe o número da casa" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cidadeResponsavel" value="Cidade:" />
+			<br />
+			<p:autoComplete id="cidadeResponsavel" 
+							scrollHeight="300"
+							size="30"
+							forceSelection="true"
+							value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.cidade}"
+							completeMethod="#{cidadeAutoComplete.autoComplete}"
+							required="true"
+							var="cidade" 
+							itemLabel="#{cidade.nomeCidadeEstado}"
+							itemValue="#{cidade}" 
+							converter="cidadeConversor" />
+			<h:graphicImage value="/Imagens/list16.png"
+							title="Ao digitar aparecerá algumas sugestões"
+							style="padding-top:8px" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="cepResponsavel" value="CEP:" />
+			<br />
+			<p:inputText id="cepResponsavel"
+						 value="#{pacienteEntradaRaiz.instancia.pacienteEntradaResponsavel.cep}" 
+						 required="true"
+						 title="Informe o CEP da casa" />
+		</h:panelGroup>
+		
 	</h:panelGrid>
 </ui:composition>

@@ -13,7 +13,7 @@
 		<p:tab id="tabPacienteEntrada" title="Entrada do Paciente">
 			<h:form id="dadosPacienteForm" >
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
+							closable="true" />
 				<p:panel header="Paciente">
 					<h:panelGroup>
 						<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
@@ -48,7 +48,7 @@
 								value="#{pacienteEntradaRaiz.instancia.paciente.sexo.label}" />
 						</h:panelGroup>
 						<h:panelGroup>
-							<b>Data de nascimento:</b>
+							<b>Data de Nascimento:</b>
 							<br />
 							<h:outputText
 								value="#{pacienteEntradaRaiz.instancia.paciente.dataNascimento}">
@@ -59,7 +59,22 @@
 							<b>Cidade:</b>
 							<br />
 							<h:outputText
-								value="#{pacienteEntradaRaiz.instancia.paciente.cidade.nome}-#{pacienteEntradaRaiz.instancia.paciente.cidade.estado.uf}" />
+								value="#{pacienteEntradaRaiz.instancia.paciente.cidadeNaturalidade.nome}-#{pacienteEntradaRaiz.instancia.paciente.cidadeNaturalidade.estado.unidadeFederativa}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<b>CPF:</b>
+							<br />
+							<h:outputText
+								value="#{pacienteEntradaRaiz.instancia.paciente.cpf}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<b>RG:</b>
+							<br />
+							<h:outputText
+								value="#{pacienteEntradaRaiz.instancia.paciente.registroGeral}" />
+								/
+								<h:outputText
+								value="#{pacienteEntradaRaiz.instancia.paciente.orgaoRegistroGeral}" />
 						</h:panelGroup>
 					</h:panelGrid>
 				</p:panel>

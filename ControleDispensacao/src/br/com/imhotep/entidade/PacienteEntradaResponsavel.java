@@ -23,9 +23,24 @@ public class PacienteEntradaResponsavel {
 	private String bairro;
 	private String cep;
 	private Cidade cidade;
+	private String cpf;
 	private PacienteEntrada pacienteEntrada;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_entrada_id_paciente_entrada_seq")
+	public PacienteEntradaResponsavel(){
+		super();
+	}
+	
+	public PacienteEntradaResponsavel(PacienteEntradaResponsavel pacienteEntradaResponsavel){
+		this.nome = pacienteEntradaResponsavel.getNome();
+		this.parentesco = pacienteEntradaResponsavel.getParentesco();
+		this.logradouro = pacienteEntradaResponsavel.getLogradouro();
+		this.numero = pacienteEntradaResponsavel.getNumero();
+		this.bairro = pacienteEntradaResponsavel.getBairro();
+		this.cep = pacienteEntradaResponsavel.getCep();
+		this.cidade = pacienteEntradaResponsavel.getCidade();
+	}
+	
+	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_entrada_responsav_id_paciente_entrada_responsav_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_paciente_entrada_responsavel", unique = true, nullable = false)
@@ -93,12 +108,24 @@ public class PacienteEntradaResponsavel {
 		this.cep = cep;
 	}
 	
+	@Column(name = "cv_cpf")
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	
 	@OneToOne(mappedBy="pacienteEntradaResponsavel")  
-	public PacienteEntrada getDispensacaoSimples() {
+	public PacienteEntrada getPacienteEntrada() {
 		return pacienteEntrada;
 	}
-	public void setDispensacaoSimples(PacienteEntrada pacienteEntrada) {
+	public void setPacienteEntrada(PacienteEntrada pacienteEntrada) {
 		this.pacienteEntrada = pacienteEntrada;
+	}
+	
+	public PacienteEntradaResponsavel clone(){
+		return new PacienteEntradaResponsavel(this);
 	}
 	
 	@Override

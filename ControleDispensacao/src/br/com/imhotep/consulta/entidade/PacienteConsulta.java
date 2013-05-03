@@ -15,6 +15,9 @@ public class PacienteConsulta extends PadraoConsulta<Paciente> {
 	public PacienteConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.cpf", IGUAL);
+		getCamposConsulta().put("o.numeroSus", IGUAL);
+		getCamposConsulta().put("o.dataNascimento", IGUAL);
+		getCamposConsulta().put("o.cidadeNaturalidade", IGUAL);
 		setOrderBy("to_ascii(o.nome)");
 	}
 	
