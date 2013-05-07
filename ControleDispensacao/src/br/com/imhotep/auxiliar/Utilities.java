@@ -71,7 +71,7 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 		return df.getTime();
 	}
 	
-	public static Date ajustarUltimaHoraDia(Date dataFim) {
+	public Date ajustarUltimaHoraDia(Date dataFim) {
 		Calendar df = Calendar.getInstance();
 		df.setTime(dataFim);
 		df.set(Calendar.HOUR, 23);
@@ -80,16 +80,16 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 		return df.getTime();
 	}
 	
-	public static Date ajustarDiaMes(Date dataFim) {
+	public Date ajustarUltimoDiaMes(Date dataFim) {
 		Calendar df = Calendar.getInstance();
 		df.setTime(dataFim);
 		df.set(Calendar.DAY_OF_MONTH, df.getActualMaximum(Calendar.DAY_OF_MONTH));
 		return df.getTime();
 	}
 	
-	public static Date ajustarDiaMesHoraMaximo(Date dataFim) {
-		dataFim = Utilities.ajustarDiaMes(dataFim);
-		dataFim = Utilities.ajustarDiaMes(dataFim);
+	public Date ajustarUltimoDiaMesHoraMaximo(Date dataFim) {
+		dataFim = ajustarUltimoDiaMes(dataFim);
+		dataFim = ajustarUltimaHoraDia(dataFim);
 		return dataFim;
 	}
 	

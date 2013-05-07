@@ -32,7 +32,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	public boolean medicamentoVencido(Date validade){
 		Calendar atual = Calendar.getInstance();
 		Calendar vali = Calendar.getInstance();
-		vali.setTime(Utilities.ajustarUltimaHoraDia(validade));
+		vali.setTime(new Utilities().ajustarUltimaHoraDia(validade));
 		vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
 		if(vali.after(atual)){
 			return false;

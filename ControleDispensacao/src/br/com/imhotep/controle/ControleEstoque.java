@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import br.com.imhotep.auxiliar.Utilities;
 import br.com.imhotep.consulta.raiz.MovimentoLivroConsultaRaiz;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.Material;
@@ -42,18 +43,12 @@ public class ControleEstoque extends PadraoGeralTemp {
 			throw new ExcecaoEstoqueBloqueado();
 	}
 	
-	private void estoqueVencido(Estoque estoque) throws ExcecaoEstoqueVencido {
+	private void estoqueVencido(Date dataValidade) throws ExcecaoEstoqueVencido {
 		Calendar dataAtual = zerarHoraDataAtual();
-		Calendar dataVencimento = setarUltimoDiaMesVencimento(estoque.getDataValidade());
+		Calendar dataVencimento = Calendar.getInstance();
+		dataVencimento.setTime(new Utilities().ajustarUltimoDiaMesHoraMaximo(dataValidade));
 		if(dataAtual.after(dataVencimento))
 			throw new ExcecaoEstoqueVencido();
-	}
-
-	private Calendar setarUltimoDiaMesVencimento(Date dataValidade) {
-		Calendar dataVencimento = Calendar.getInstance();
-		dataVencimento.setTime(dataValidade);
-		dataVencimento.set(Calendar.DAY_OF_MONTH, dataVencimento.getActualMaximum(Calendar.DAY_OF_MONTH));
-		return dataVencimento;
 	}
 
 	private Calendar zerarHoraDataAtual() {
@@ -78,7 +73,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 	}
 	
 	private void filtroEstoque(Estoque estoque, TipoOperacaoEnum tipoOperacao, int quantidadeSolicitada) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado{
-		estoqueVencido(estoque);
+		estoqueVencido(estoque.getDataValidade());
 		estoqueBloqueado(estoque);
 		if(!tipoOperacao.equals(TipoOperacaoEnum.E)){
 			estoqueVazio(estoque.getQuantidadeAtual());

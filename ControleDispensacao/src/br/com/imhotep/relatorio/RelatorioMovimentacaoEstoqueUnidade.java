@@ -32,7 +32,7 @@ public class RelatorioMovimentacaoEstoqueUnidade extends PadraoRelatorio{
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueUnidade.jasper";
 		String nomeRelatorio = "EstoqueMovimentacaoUnidade-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		dataFim = Utilities.ajustarUltimaHoraDia(dataFim);
+		dataFim = new Utilities().ajustarUltimaHoraDia(dataFim);
 		List<MovimentacaoEstoqueUnidade> lista = new ConsultaRelatorioMovimentacaoEstoqueUnidade().consultarResultados(dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );

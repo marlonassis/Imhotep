@@ -1,7 +1,6 @@
 package br.com.imhotep.enums;
 
 /**
- * Classe que contém todos os papéis possíveis a um usuário
  * @author marlonassis
  */
 
