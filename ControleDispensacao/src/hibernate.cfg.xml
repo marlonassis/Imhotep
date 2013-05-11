@@ -72,6 +72,8 @@
 		<mapping class="br.com.imhotep.entidade.AutorizaMenuProfissional" />
 		<mapping class="br.com.imhotep.entidade.Convenio" />
 		<mapping class="br.com.imhotep.entidade.PacienteEntradaResponsavel" />
+		<mapping class="br.com.imhotep.entidade.Cid" />
+		<mapping class="br.com.imhotep.entidade.ProcedimentoSaude" />
 
 	</session-factory>
 </hibernate-configuration>
