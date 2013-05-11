@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:co="http://java.sun.com/jsf/composite">
+	
+	<co:interface>
+		<co:attribute name="idForm"/>
+		<co:attribute name="srcConsulta"/>
+		<co:attribute name="srcTabela"/>
+		<co:attribute name="novoAction" method-signature="boolean novaInstancia()" />
+	</co:interface>
+	
+	<co:implementation>
+		<ui:param name="idFormulario" value="#{cc.attrs.idForm}PesquisaForm"/>
+		<h:form id="#{idFormulario}">
+			<p:fieldset legend="Pesquisa"
+						collapsed="true" 
+						toggleable="true" 
+						toggleSpeed="500">
+				<p:growl id="formGrowl" showDetail="true" />
+				<ui:include src="/PaginasWeb/#{cc.attrs.srcConsulta}" />
+				<p:commandButton value="Pesquisar" 
+								 image="ui-icon ui-icon-search" 
+								 update=":padraoTabView:#{cc.attrs.idForm}Pesquisa:#{idFormulario}"/>
+				<p:commandButton value="Novo" 
+								 image="ui-icon ui-icon-arrowrefresh-1-s" 
+								 update=":padraoTabView:#{cc.attrs.idForm}Pesquisa:#{idFormulario}"
+								 action="#{cc.attrs.novoAction}" />
+			</p:fieldset>
+			<ui:include src="/PaginasWeb/#{cc.attrs.srcTabela}" />
+		</h:form>
+	</co:implementation>
+	
+</html>
