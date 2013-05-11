@@ -15,6 +15,14 @@
 					url="/PaginasWeb/Cidade/cidade.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Cidade')}" />
 		
+		<p:menuitem value="CID" 
+					url="/PaginasWeb/CID/cid.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('CID')}" />
+		
+		<p:menuitem value="Convênio" 
+					url="/PaginasWeb/Convenio/convenio.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Convênio')}" />
+		
 		<p:menuitem value="Estado" 
 					url="/PaginasWeb/Estado/estado.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Estado')}" />
@@ -82,6 +90,11 @@
 						url="/PaginasWeb/Paciente/Paciente/paciente.hu"
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Pacientes')}" />
 		</p:submenu>
+
+		<p:menuitem value="Procedimento de Saúde" 
+					url="/PaginasWeb/ProcedimentoSaude/procedimentoSaude.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Procedimento de Saúde')}" />
+		
 
 		<p:submenu label="Profissional"
 				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Profissional')}">
