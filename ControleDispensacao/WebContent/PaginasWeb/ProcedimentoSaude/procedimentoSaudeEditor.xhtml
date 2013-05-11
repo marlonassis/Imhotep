@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="estadoPanelGrid" columns="3" width="100%">
+		<r:inputTextoSimples id="nome" 
+							 label="Nome:"
+							 required="true" 
+							 size="30" 
+							 title="Informe o nome do cid" 
+							 value="#{cidRaiz.instancia.nome}" />
+	</h:panelGrid>
+
+</ui:composition>

@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Procedimento de Saúde">
+			<h:form id="procedimentoSaudeEditorForm">
+				<p:fieldset legend="Novo Procedimento de Saúde"
+					collapsed="#{!procedimentoSaudeRaiz.edicao}" toggleable="true"
+					toggleSpeed="500">
+					<p:growl id="formGrowl" showDetail="true" />
+					<ui:include src="procedimentoSaudeEditor.xhtml" />
+					<p:commandButton value="Salvar" rendered="#{!procedimentoSaudeRaiz.edicao}"
+						update=":#{p:component('procedimentoSaudeEditorForm')} :#{p:component('procedimentoSaudePesquisaForm')}"
+						action="#{procedimentoSaudeRaiz.enviar}" />
+					<p:commandButton value="Gravar" rendered="#{procedimentoSaudeRaiz.edicao}"
+						update=":#{p:component('procedimentoSaudeEditorForm')} :#{p:component('procedimentoSaudePesquisaForm')}"
+						action="#{procedimentoSaudeRaiz.atualizar}" />
+					<p:commandButton value="Novo" rendered="#{procedimentoSaudeRaiz.edicao}"
+						 update="@parent"
+						 action="#{procedimentoSaudeRaiz.novaInstancia()}" />
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="procedimentoSaudePesquisaForm">
+				<p:growl />
+				<p:fieldset legend="Pesquisa"
+					collapsed="true" toggleable="true" toggleSpeed="500">
+					<ui:include src="procedimentoSaudeConsulta.xhtml" />
+
+					<p:commandButton value="Pesquisar" 
+						image="ui-icon ui-icon-search" 
+						update=":#{p:component('procedimentoSaudePesquisaForm')}"/>
+
+					<p:commandButton value="Limpar"
+						action="#{procedimentoSaudeConsulta.novaInstancia()}"
+						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
+						update=":#{p:component('procedimentoSaudePesquisaForm')}" />
+
+				</p:fieldset>
+				<ui:include src="procedimentoSaudeTabela.xhtml" />
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>
