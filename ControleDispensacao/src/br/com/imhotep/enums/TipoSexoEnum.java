@@ -1,13 +1,14 @@
 package br.com.imhotep.enums;
 
 /**
- * Classe que contém todos os papéis possíveis a um usuário
  * @author marlonassis
  */
 
 public enum TipoSexoEnum {
 	M("Masculino"), 
-	F("Feminino");
+	F("Feminino"),
+	I("Indiferente"),
+	N("Não se aplica");
 	
 	private String label;
 	
