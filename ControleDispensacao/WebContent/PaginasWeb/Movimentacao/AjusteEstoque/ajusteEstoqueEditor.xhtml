@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -94,15 +95,12 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="dataValidade" value="Data de Validade:" />
-			<br />
-			<p:calendar id="dataValidade"
-						required="true"
-						disabled="true" 
-						pattern="MM/yyyy"
-						value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.dataValidade}"
-						title="Data de validade do lote"/>
+			<r:inputDataMesAno id="dataValidade"
+							   label="Data de validade:"
+							   disabled="true"
+							   required="true" 
+							   value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+							   title="Data de validade do lote"/>
 		</h:panelGroup>
 
 		<h:panelGroup>

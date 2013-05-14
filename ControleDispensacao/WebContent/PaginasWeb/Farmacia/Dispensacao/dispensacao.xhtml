@@ -213,10 +213,14 @@
 										<td><h:outputText
 												value="#{item.prescricaoItem.material}" /></td>
 										<td><h:outputText value="#{item.quantidadeSaida}" /></td>
-										<td><h:outputText value="#{item.estoque.dataValidade}">
-												<f:convertDateTime pattern="dd/MM/yyyy" />
-											</h:outputText></td>
-										<td><h:outputText value="#{item.estoque.lote}" /></td>
+										<td>
+											<h:outputText value="#{item.estoque.dataValidade}">
+												<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+											</h:outputText>
+										</td>
+										<td>
+											<h:outputText value="#{item.estoque.lote}" />
+										</td>
 									</tr>
 								</ui:repeat>
 							</table>

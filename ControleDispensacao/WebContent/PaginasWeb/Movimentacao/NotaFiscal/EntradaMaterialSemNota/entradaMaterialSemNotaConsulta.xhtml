@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -52,14 +53,11 @@
 				title="Informe o lote do material" />
 		</h:panelGroup>
 
-		<h:panelGroup>
-			<h:outputLabel for="dataValidadeConsulta" value="Data de validade:" />
-			<br />
-			<p:inputMask id="dataValidadeConsulta" mask="99/99/9999"
-				value="#{estoqueDesbloqueadoConsulta.instancia.dataValidade}"
-				title="Data de validade do lote" required="false">
-				<f:convertDateTime pattern="dd/MM/yyyy" />
-			</p:inputMask>
+		<h:panelGroup>			
+			<r:inputDataMesAno id="dataValidadeConsulta"
+							   label="Data de validade:"
+							   value="#{estoqueDesbloqueadoConsulta.instancia.dataValidade}"
+							   title="Data de validade do lote"/>
 		</h:panelGroup>
 
 	</h:panelGrid>

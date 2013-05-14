@@ -71,7 +71,7 @@
 										   oncomplete="location.reload();" />
 							#{' - '} 
 							<h:outputText value="#{linha.dataValidade}">
-								<f:convertDateTime pattern="MM/yyyy"/>
+								<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3"  />
 							</h:outputText>
 							#{' - '} 
 							<h:outputText value="#{linha.quantidadeAtual}"/>
@@ -109,7 +109,7 @@
 						<h:panelGroup>
 							<h:outputText value="Validade:" style="font-weight:bold" /><br/>
 							<h:outputText value="#{alterarApagarLoteRaiz.estoqueDuplicado.dataValidade}" >
-								<f:convertDateTime pattern="MM/yyyy"/>
+								<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
 							</h:outputText>
 						</h:panelGroup>
 						<h:panelGroup>

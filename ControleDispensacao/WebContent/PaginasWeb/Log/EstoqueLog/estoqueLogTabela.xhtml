@@ -32,7 +32,9 @@
 			<f:facet name="header">
 				<h:outputText value="Data de Validade" />
 			</f:facet>
-			<h:outputText value="#{linha.dataValidade}" />
+			<h:outputText value="#{linha.dataValidade}">
+				<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
 		</p:column>
 		
 		<p:column>

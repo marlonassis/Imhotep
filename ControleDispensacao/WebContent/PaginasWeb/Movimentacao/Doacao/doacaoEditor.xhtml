@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -127,19 +128,17 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="dataValidade" value="Data de Validade:" />
-			<br />
 			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}" 
 						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}">
-				<f:convertDateTime pattern="MM/yyyy"/>
+				<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
 			</h:outputText>
-			<p:calendar id="dataValidade"
-						required="true"
-						rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}" 
-						pattern="MM/yyyy"
-						value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
-						title="Data de validade do lote"/>
+			<r:inputDataMesAno id="dataValidade"
+							   label="Data de validade:"
+							   disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
+							   required="true" 
+							   rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
+							   value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+							   title="Data de validade do lote"/>
 		</h:panelGroup>
 
 		<h:panelGroup>

@@ -2,8 +2,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:r="http://java.sun.com/jsf/composite/remendo/input">
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid columns="2" width="100%">
 		<h:panelGroup>
@@ -74,7 +74,6 @@
 							   label="Data de validade:"
 							   disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 							   required="true" 
-							   mask="99/9999"
 							   value="#{entradaMaterialSemNotaRaiz.instancia.dataValidade}"
 							   title="Data de validade do lote"/>
 		</h:panelGroup>
