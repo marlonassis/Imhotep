@@ -12,11 +12,10 @@
 	<co:interface>
 		<co:attribute name="label" required="true" />
 		<co:attribute name="id" required="true"/>
-		<co:attribute name="maxLength" default="255" />
 		<co:attribute name="value" required="true" />
 		<co:attribute name="title" required="true" />
 		<co:attribute name="required" default="false" />
-		<co:attribute name="size" default="30" />
+		<co:attribute name="disabled" default="false"/>
 	</co:interface>
 	
 	<co:implementation>
@@ -29,12 +28,12 @@
 			</h:panelGroup>
 			<h:panelGroup>
 				<p:inputText id="#{cc.attrs.id}"
-							 label="#{cc.attrs.label}"
-							 maxlength="#{cc.attrs.maxLength}" 
+							 disabled="#{cc.attrs.disabled}"
 							 required="#{cc.attrs.required}"
-							 size="#{cc.attrs.size}"
 							 value="#{cc.attrs.value}"
-							 title="#{cc.attrs.title}" >
+							 onkeyup="apenasNumero(this);" 
+						 	 title="#{cc.attrs.title}" 
+						 	 label="#{cc.attrs.label}">
 					<co:insertChildren/>
 				</p:inputText>
 			</h:panelGroup>

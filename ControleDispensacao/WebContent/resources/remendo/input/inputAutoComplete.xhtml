@@ -13,7 +13,7 @@
 		<co:attribute name="id" required="true" />
 		<co:attribute name="value" required="true" />
 		<co:attribute name="completeMethod" required="true"  method-signature="java.util.Collection autoComplete(java.lang.String)" />
-		<co:attribute name="required" required="true" />
+		<co:attribute name="required" default="false" />
 		<co:attribute name="var" required="true" />
 		<co:attribute name="itemLabel" required="true" />
 		<co:attribute name="itemValue" required="true" />
@@ -26,10 +26,11 @@
 				<c:if test="#{cc.attrs.required}">
 					<h:outputText value="*" style="color:red" />
 				</c:if>
-				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}" />
+				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
 				<p:autoComplete id="#{cc.attrs.id}" 
+								label="#{cc.attrs.label}"
 								scrollHeight="300"
 								size="30"
 								forceSelection="true"

@@ -10,14 +10,14 @@
       xmlns:co="http://java.sun.com/jsf/composite">
 	
 	<co:interface>
-		<co:attribute name="idForm"/>
+		<co:attribute name="id"/>
 		<co:attribute name="srcConsulta"/>
 		<co:attribute name="srcTabela"/>
 		<co:attribute name="novoAction" method-signature="boolean novaInstancia()" />
 	</co:interface>
 	
 	<co:implementation>
-		<ui:param name="idFormulario" value="#{cc.attrs.idForm}PesquisaForm"/>
+		<ui:param name="idFormulario" value="#{cc.attrs.id}Form"/>
 		<h:form id="#{idFormulario}">
 			<p:fieldset legend="Pesquisa"
 						collapsed="true" 
@@ -27,10 +27,10 @@
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcConsulta}" />
 				<p:commandButton value="Pesquisar" 
 								 image="ui-icon ui-icon-search" 
-								 update=":padraoTabView:#{cc.attrs.idForm}Pesquisa:#{idFormulario}"/>
+								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
 				<p:commandButton value="Novo" 
 								 image="ui-icon ui-icon-arrowrefresh-1-s" 
-								 update=":padraoTabView:#{cc.attrs.idForm}Pesquisa:#{idFormulario}"
+								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"
 								 action="#{cc.attrs.novoAction}" />
 			</p:fieldset>
 			<ui:include src="/PaginasWeb/#{cc.attrs.srcTabela}" />

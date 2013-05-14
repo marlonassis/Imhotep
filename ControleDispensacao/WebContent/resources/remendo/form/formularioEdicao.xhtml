@@ -10,29 +10,28 @@
       xmlns:co="http://java.sun.com/jsf/composite">
 	
 	<co:interface>
-		<co:attribute name="idForm"/>
-		<co:attribute name="fieldSetLegend"/>
-		<co:attribute name="fieldSetCollapsed"/>
-		<co:attribute name="fieldSetToggleable"/>
-		<co:attribute name="fieldSetToggleSpeed"/>
-		<co:attribute name="srcEditor"/>
-		<co:attribute name="salvarRendered"/>
-		<co:attribute name="salvarAction" method-signature="boolean enviar()" />
-		<co:attribute name="gravarRendered"/>
-		<co:attribute name="gravarAction" method-signature="boolean atualizar()" />
-		<co:attribute name="novoAction" method-signature="boolean novaInstancia()" />
+		<co:attribute name="id" required="true"/>
+		<co:attribute name="fieldSetLegend" required="true"/>
+		<co:attribute name="fieldSetCollapsed" required="true"/>
+		<co:attribute name="fieldSetToggleable" default="true"/>
+		<co:attribute name="fieldSetToggleSpeed" default="500"/>
+		<co:attribute name="srcEditor" required="true"/>
+		<co:attribute name="salvarRendered" required="true" />
+		<co:attribute name="salvarAction" method-signature="boolean enviar()" required="true" />
+		<co:attribute name="gravarRendered" required="true"/>
+		<co:attribute name="gravarAction" method-signature ="boolean atualizar()" required="true" />
+		<co:attribute name="novoAction" method-signature="boolean novaInstancia()" required="true" />
 	</co:interface>
 	
 	<co:implementation>
-		<ui:param name="idFormulario" value="#{cc.attrs.idForm}EditorForm"/>
-		<ui:param name="idFormularioPesquisa" value=":padraoTabView:#{cc.attrs.idForm}Pesquisa:#{cc.attrs.idForm}PesquisaForm"/>
-		<ui:param name="idFormularioEditor" value=":padraoTabView:#{cc.attrs.idForm}:#{idFormulario}"/>
-		<f:param name="update" value="p:component('#{idFormulario}')" />
+		<ui:param name="idFormulario" value="#{cc.attrs.id}EditorForm"/>
+		<ui:param name="idFormularioPesquisa" value=":padraoTabView:#{cc.attrs.id}Pesquisa:#{cc.attrs.id}PesquisaForm"/>
+		<ui:param name="idFormularioEditor" value=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
 		<h:form id="#{idFormulario}">
 			<p:fieldset legend="#{cc.attrs.fieldSetLegend}"
-						collapsed="#{cc.attrs.fielSet == null ? true : cc.attrs.fielSet}" 
-						toggleable="#{cc.attrs.fieldSetToggleable == null ? true : cc.attrs.fieldSetToggleable}"
-						toggleSpeed="#{cc.attrs.fieldSetToggleSpeed == null ? 500 : cc.attrs.fieldSetToggleSpeed}">
+						collapsed="#{cc.attrs.fieldSetCollapsed}" 
+						toggleable="#{cc.attrs.fieldSetToggleable}"
+						toggleSpeed="#{cc.attrs.fieldSetToggleSpeed}">
 				<p:growl id="formGrowl" showDetail="true" />
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcEditor}" />
 				<p:commandButton value="Salvar"

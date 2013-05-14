@@ -7,34 +7,39 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
-      xmlns:composite="http://java.sun.com/jsf/composite">
+      xmlns:co="http://java.sun.com/jsf/composite">
 	
-	<composite:interface>
-		<composite:attribute name="label"/>
-		<composite:attribute name="id"/>
-		<composite:attribute name="disabled"/>
-		<composite:attribute name="required"/>
-		<composite:attribute name="mask"/>
-		<composite:attribute name="converter"/>
-		<composite:attribute name="value"/>
-		<composite:attribute name="title"/>
-	</composite:interface>
+	<co:interface>
+		<co:attribute name="label" required="true" />
+		<co:attribute name="id" required="true" />
+		<co:attribute name="disabled" default="false" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="value" required="true" />
+		<co:attribute name="title" required="true" />
+		<co:attribute name="rendered"/>
+	</co:interface>
 	
-	<composite:implementation>
-		<c:if test="#{cc.attrs.required}">
-			<font color="red">*</font>
-		</c:if>
-		<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}" />
-		<br />
-		<p:inputMask id="#{cc.attrs.id}"
-					 disabled="#{cc.attrs.disabled}"
-					 required="#{cc.attrs.required}" 
-					 mask="#{cc.attrs.mask}"
-					 converter="#{cc.attrs.converter}"
-					 value="#{cc.attrs.value}"
-					 title="#{cc.attrs.title}">
-			<f:convertDateTime pattern="dd/MM/yyyy" type="date" locale="pt_BR" timeZone="GMT-3" />
-		</p:inputMask>
-	</composite:implementation>
-	
+	<co:implementation>
+		<h:panelGrid>
+			<h:panelGroup>
+				<c:if test="#{cc.attrs.required}">
+					<h:outputText value="*" style="color:red" />
+				</c:if>
+				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:inputMask id="#{cc.attrs.id}"
+							 label="#{cc.attrs.label}"
+							 disabled="#{cc.attrs.disabled}"
+							 required="#{cc.attrs.required}" 
+							 mask="99/9999"
+							 rendered="#{cc.attrs.rendered}"
+							 value="#{cc.attrs.value}"
+							 title="#{cc.attrs.title}">
+					<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+					<co:insertChildren/>
+				</p:inputMask>
+			</h:panelGroup>
+		</h:panelGrid>
+	</co:implementation>
 </html>

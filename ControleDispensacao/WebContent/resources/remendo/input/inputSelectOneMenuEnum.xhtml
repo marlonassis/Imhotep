@@ -8,15 +8,13 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
       xmlns:co="http://java.sun.com/jsf/composite">
-	
+      
 	<co:interface>
-		<co:attribute name="label" required="true" />
-		<co:attribute name="id" required="true"/>
-		<co:attribute name="maxLength" default="255" />
+		<co:attribute name="id" required="true" />
 		<co:attribute name="value" required="true" />
-		<co:attribute name="title" required="true" />
+		<co:attribute name="itens" required="true" />
 		<co:attribute name="required" default="false" />
-		<co:attribute name="size" default="30" />
+		<co:attribute name="label" required="true" />
 	</co:interface>
 	
 	<co:implementation>
@@ -28,17 +26,15 @@
 				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:inputText id="#{cc.attrs.id}"
-							 label="#{cc.attrs.label}"
-							 maxlength="#{cc.attrs.maxLength}" 
-							 required="#{cc.attrs.required}"
-							 size="#{cc.attrs.size}"
-							 value="#{cc.attrs.value}"
-							 title="#{cc.attrs.title}" >
-					<co:insertChildren/>
-				</p:inputText>
+				<p:selectOneMenu id="#{cc.attrs.id}"
+								 value="#{cc.attrs.value}"
+								 effect="fade"
+								 required="#{cc.attrs.required}">
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{cc.attrs.itens}" />
+					<co:insertChildren />
+				</p:selectOneMenu>
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>
-	
 </html>
