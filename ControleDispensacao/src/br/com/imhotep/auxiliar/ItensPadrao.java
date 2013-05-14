@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 
 import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.imhotep.enums.TipoBooleanEnum;
+import br.com.imhotep.enums.TipoComplexidadeEnum;
 import br.com.imhotep.enums.TipoCuidadosPacienteEnum;
 import br.com.imhotep.enums.TipoEscolaridadeEnum;
 import br.com.imhotep.enums.TipoEstadoCivilEnum;
@@ -38,6 +39,14 @@ import br.com.imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 @ManagedBean
 @RequestScoped
 public class ItensPadrao{
+	
+	public List<SelectItem> getComplexidadeEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoComplexidadeEnum item : TipoComplexidadeEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
 	
 	public List<SelectItem> getSexoEnumItens(){
 		List<SelectItem> melhorDiaEnumItens = new ArrayList<SelectItem>();
