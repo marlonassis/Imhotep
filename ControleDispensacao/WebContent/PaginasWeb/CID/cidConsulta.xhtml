@@ -8,8 +8,13 @@
 
 	<h:panelGrid id="estadoPanelGridConsulta" columns="3" width="100%">
 		<r:inputTextoSimples id="nomeConsulta" 
-							 label="Nome:"
+							 label="Nome"
 							 title="Informe o nome do cid" 
 							 value="#{cidConsulta.instancia.nome}" />
+		
+		<r:inputTextoSimples id="codigoConsulta" 
+							 label="Código"
+							 title="Informe o código do cid" 
+							 value="#{cidConsulta.instancia.codigo}" />
 	</h:panelGrid>
 </ui:composition>

@@ -21,16 +21,23 @@
 			<h:outputText value="#{linha.nome}" />
 		</p:column>
 		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Código" />
+			</f:facet>
+			<h:outputText value="#{linha.codigo}" />
+		</p:column>
+		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-						   update=":#{p:component('cidEditorForm')}"
+						   update=":padraoTabView:cid:cidEditorForm"
 						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{cidRaiz.apagar()}"
-						   update=":#{p:component('cidEditorForm')} :#{p:component('cidPesquisaForm')}"
+						   update=":padraoTabView:cidPesquisa:cidPesquisaForm :padraoTabView:cid:cidEditorForm"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">

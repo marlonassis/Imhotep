@@ -13,6 +13,7 @@ public class Cid {
 	
 	private int idCid;
 	private String nome;
+	private String codigo;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_cid_10_id_cid_10_seq")
 	@Id
@@ -31,6 +32,14 @@ public class Cid {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	@Column(name = "cv_codigo")
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	
 	@Override
