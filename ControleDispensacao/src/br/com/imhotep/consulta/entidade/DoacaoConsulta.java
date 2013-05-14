@@ -9,7 +9,7 @@ import br.com.imhotep.entidade.Doacao;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="doacaoConsulta")
+@ManagedBean
 @SessionScoped
 public class DoacaoConsulta extends PadraoConsulta<Doacao> {
 	public DoacaoConsulta(){
