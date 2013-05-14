@@ -6,12 +6,17 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="estadoPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="procedimentoSaudePanelGridConsulta" columns="3" width="100%">
 		<r:inputTextoSimples id="nomeConsulta" 
-							 label="Nome:"
-							 required="true" 
+							 label="Nome"
 							 size="30" 
 							 title="Informe o nome do cid" 
-							 value="#{cidConsulta.instancia.nome}" />
+							 value="#{procedimentoSaudeConsulta.instancia.nome}" />
+							 
+		<r:inputTextoSimples id="codigoProcedimentoConsulta" 
+							 label="Código"
+							 size="30" 
+							 title="Informe o código do procedimento" 
+							 value="#{procedimentoSaudeConsulta.instancia.codigoProcedimento}" />
 	</h:panelGrid>
 </ui:composition>

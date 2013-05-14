@@ -4,15 +4,22 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaCID" 
-				 value="#{cidConsulta.list}"
+	<p:dataTable id="tabelaProcedimentoSaude" 
+				 value="#{procedimentoSaudeConsulta.list}"
 				 var="linha" 
 				 dblClickSelect="true"
 				 emptyMessage="Não foi encontrado registros" 
 				 rows="10" 
 				 paginator="true"
 				 selectionMode="single" 
-				 rowKey="#{linha.idCid}">
+				 rowKey="#{linha.idProcedimentoSaude}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Código" />
+			</f:facet>
+			<h:outputText value="#{linha.codigoProcedimento}" />
+		</p:column>
 
 		<p:column>
 			<f:facet name="header">
@@ -23,18 +30,18 @@
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-						   update=":#{p:component('cidEditorForm')}"
+						   update=":#{p:component('procedimentoSaudeEditorForm')}"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{procedimentoSaudeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{cidRaiz.apagar()}"
-						   update=":#{p:component('cidEditorForm')} :#{p:component('cidPesquisaForm')}"
+			<p:commandLink action="#{procedimentoSaudeRaiz.apagar()}"
+						   update=":#{p:component('procedimentoSaudeEditorForm')} :#{p:component('procedimentoSaudePesquisaForm')}"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{procedimentoSaudeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>
