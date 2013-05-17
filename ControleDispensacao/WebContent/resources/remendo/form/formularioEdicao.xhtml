@@ -11,7 +11,7 @@
 	
 	<co:interface>
 		<co:attribute name="id" required="true"/>
-		<co:attribute name="fieldSetLegend" required="true"/>
+		<co:attribute name="fieldSetLegend" default="Nova Entrada"/>
 		<co:attribute name="fieldSetCollapsed" required="true"/>
 		<co:attribute name="fieldSetToggleable" default="true"/>
 		<co:attribute name="fieldSetToggleSpeed" default="500"/>
@@ -32,15 +32,14 @@
 						collapsed="#{cc.attrs.fieldSetCollapsed}" 
 						toggleable="#{cc.attrs.fieldSetToggleable}"
 						toggleSpeed="#{cc.attrs.fieldSetToggleSpeed}">
-				<p:growl id="formGrowl" showDetail="true" />
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcEditor}" />
 				<p:commandButton value="Salvar"
 								 rendered="#{cc.attrs.salvarRendered}"
-								 update="#{idFormularioPesquisa} #{idFormularioEditor}"
+								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl"
 								 action="#{cc.attrs.salvarAction}" />
 				<p:commandButton value="Gravar" 
 								 rendered="#{cc.attrs.gravarRendered}"
-								 update="#{idFormularioPesquisa} #{idFormularioEditor}"
+								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl"
 								 action="#{cc.attrs.gravarAction}" />
 				<p:commandButton value="Novo" 
 								 update="#{idFormularioPesquisa} #{idFormularioEditor}"

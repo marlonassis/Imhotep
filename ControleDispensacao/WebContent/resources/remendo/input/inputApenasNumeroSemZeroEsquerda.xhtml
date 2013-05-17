@@ -8,13 +8,14 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
       xmlns:co="http://java.sun.com/jsf/composite">
-      
+	
 	<co:interface>
-		<co:attribute name="id" required="true" />
-		<co:attribute name="value" required="true" />
-		<co:attribute name="itens" required="true" />
-		<co:attribute name="required" default="false" />
 		<co:attribute name="label" required="true" />
+		<co:attribute name="id" required="true"/>
+		<co:attribute name="value" required="true" />
+		<co:attribute name="title" required="true" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="disabled" default="false"/>
 	</co:interface>
 	
 	<co:implementation>
@@ -26,16 +27,17 @@
 				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:selectOneMenu id="#{cc.attrs.id}"
-								 value="#{cc.attrs.value}"
-								 effect="fade"
-								 label="#{cc.attrs.label}"
-								 required="#{cc.attrs.required}">
-					<f:selectItem itemLabel="Selecione..." itemValue="" />
-					<f:selectItems value="#{cc.attrs.itens}" />
-					<co:insertChildren />
-				</p:selectOneMenu>
+				<p:inputText id="#{cc.attrs.id}"
+							 disabled="#{cc.attrs.disabled}"
+							 required="#{cc.attrs.required}"
+							 value="#{cc.attrs.value}"
+							 onkeyup="apenasNumeroSemZeroEsquerda(this);" 
+						 	 title="#{cc.attrs.title}" 
+						 	 label="#{cc.attrs.label}">
+					<co:insertChildren/>
+				</p:inputText>
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>
+	
 </html>

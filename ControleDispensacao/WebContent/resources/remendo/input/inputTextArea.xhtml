@@ -8,13 +8,16 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
       xmlns:co="http://java.sun.com/jsf/composite">
-      
+	
 	<co:interface>
-		<co:attribute name="id" required="true" />
-		<co:attribute name="value" required="true" />
-		<co:attribute name="itens" required="true" />
-		<co:attribute name="required" default="false" />
 		<co:attribute name="label" required="true" />
+		<co:attribute name="id" required="true"/>
+		<co:attribute name="value" required="true" />
+		<co:attribute name="title" required="true" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="rendered" default="true" />
+		<co:attribute name="cols" />
+		<co:attribute name="rows" />
 	</co:interface>
 	
 	<co:implementation>
@@ -26,16 +29,18 @@
 				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:selectOneMenu id="#{cc.attrs.id}"
-								 value="#{cc.attrs.value}"
-								 effect="fade"
+				<p:inputTextarea id="#{cc.attrs.id}"
 								 label="#{cc.attrs.label}"
-								 required="#{cc.attrs.required}">
-					<f:selectItem itemLabel="Selecione..." itemValue="" />
-					<f:selectItems value="#{cc.attrs.itens}" />
-					<co:insertChildren />
-				</p:selectOneMenu>
+							 	 value="#{cc.attrs.value}" 
+							 	 required="#{cc.attrs.required}"
+							 	 cols="#{cc.attrs.cols}"
+							 	 rows="#{cc.attrs.rows}"
+							 	 rendered="#{cc.attrs.rendered}"
+							 	 title="#{cc.attrs.title}">
+					<co:insertChildren/>
+				</p:inputTextarea>
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>
+	
 </html>

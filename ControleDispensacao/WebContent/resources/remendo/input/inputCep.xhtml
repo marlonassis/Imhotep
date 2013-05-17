@@ -8,13 +8,15 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
       xmlns:co="http://java.sun.com/jsf/composite">
-      
+	
 	<co:interface>
-		<co:attribute name="id" required="true" />
-		<co:attribute name="value" required="true" />
-		<co:attribute name="itens" required="true" />
-		<co:attribute name="required" default="false" />
 		<co:attribute name="label" required="true" />
+		<co:attribute name="id" required="true" />
+		<co:attribute name="disabled" default="false" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="value" required="true" />
+		<co:attribute name="title" required="true" />
+		<co:attribute name="rendered"/>
 	</co:interface>
 	
 	<co:implementation>
@@ -26,15 +28,17 @@
 				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:selectOneMenu id="#{cc.attrs.id}"
-								 value="#{cc.attrs.value}"
-								 effect="fade"
-								 label="#{cc.attrs.label}"
-								 required="#{cc.attrs.required}">
-					<f:selectItem itemLabel="Selecione..." itemValue="" />
-					<f:selectItems value="#{cc.attrs.itens}" />
-					<co:insertChildren />
-				</p:selectOneMenu>
+				<p:inputMask id="#{cc.attrs.id}"
+							 label="#{cc.attrs.label}"
+							 disabled="#{cc.attrs.disabled}"
+							 required="#{cc.attrs.required}" 
+							 mask="99.999-999"
+							 converter="cepConversor"
+							 rendered="#{cc.attrs.rendered}"
+							 value="#{cc.attrs.value}"
+							 title="#{cc.attrs.title}">
+					<co:insertChildren/>
+				</p:inputMask>
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>

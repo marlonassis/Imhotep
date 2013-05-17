@@ -18,6 +18,12 @@
 		<co:attribute name="itemLabel" required="true" />
 		<co:attribute name="itemValue" required="true" />
 		<co:attribute name="label" required="true" />
+		<co:attribute name="multiple" required="false" />
+		<co:attribute name="disabled" required="false" />
+		<co:attribute name="size" default="30" />
+		<co:attribute name="valueTip" />
+		<co:attribute name="labelTip" />
+		<co:attribute name="title" />
 	</co:interface>
 	
 	<co:implementation>
@@ -29,20 +35,42 @@
 				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:autoComplete id="#{cc.attrs.id}" 
-								label="#{cc.attrs.label}"
-								scrollHeight="300"
-								size="30"
-								forceSelection="true"
-								value="#{cc.attrs.value}"
-								completeMethod="#{cc.attrs.completeMethod}"
-								var="#{cc.attrs.var}" 
-								required="#{cc.attrs.required}" 
-								itemLabel="#{cc.attrs.itemLabel}"
-								converter="entidadeConversor"
-								itemValue="#{cc.attrs.itemValue}" >
-					<co:insertChildren/>
-				</p:autoComplete>
+				<h:panelGrid columns="2" >
+					<p:autoComplete id="#{cc.attrs.id}"
+									disabled="#{cc.attrs.disabled}" 
+									queryDelay="1000"
+									global="false"
+									minQueryLength="4"
+									multiple="#{cc.attrs.multiple}"
+									label="#{cc.attrs.label}"
+									scrollHeight="300"
+									size="#{cc.attrs.size}"
+									forceSelection="true"
+									value="#{cc.attrs.value}"
+									completeMethod="#{cc.attrs.completeMethod}"
+									var="#{cc.attrs.var}" 
+									onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+									required="#{cc.attrs.required}" 
+									itemLabel="#{cc.attrs.itemLabel}"
+									converter="entidadeConversor"
+									title="#{cc.attrs.title}"
+									itemValue="#{cc.attrs.itemValue}" >
+						<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
+							<f:facet name="itemtip">  
+				                <h:panelGrid  columns="2" cellpadding="5">  
+				                    <h:outputText rendered="#{cc.attrs.labelTip != null}" value="#{cc.attrs.labelTip}" />  
+				                    <h:outputText rendered="#{cc.attrs.valueTip != null}" value="#{cc.attrs.valueTip}"/>
+				                </h:panelGrid>  
+				            </f:facet>
+				        </c:if>
+						<co:insertChildren/>
+					</p:autoComplete>
+					<h:panelGroup style="width: 20px;" layout="block" >
+						<div id="loadingImage#{cc.attrs.id}" style="display:none;" >
+							<h:graphicImage value="/Imagens/ajax-loader.gif" />
+						</div>
+					</h:panelGroup>
+				</h:panelGrid>
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>
