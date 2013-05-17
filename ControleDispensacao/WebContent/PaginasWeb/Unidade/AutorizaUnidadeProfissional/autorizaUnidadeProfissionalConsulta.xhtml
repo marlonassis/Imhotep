@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
@@ -7,23 +8,13 @@
 
 	<h:panelGrid id="autorizaUnidadeProfissionalPanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="unidade" value="Unidade:" />
-			<br />
-			<p:autoComplete id="unidade"
-							scrollHeight="300"
-							value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}" 
-							forceSelection="true"
-							completeMethod="#{unidadeAutoComplete.autoComplete}" 
-							title="Informe a unidade."
-							var="unidade"
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}"
-							converter="unidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="unidade" 
+							 label="Unidade"  
+							 completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							 itemValue="#{unidade}" 
+							 itemLabel="#{unidade.nome}" 
+							 var="unidade"
+							 value="#{autorizaUnidadeProfissionalConsulta.instancia.unidade}" />
 
 		<h:panelGroup style="align:left;">
 			<h:outputLabel for="profissional" value="Profissional:" />

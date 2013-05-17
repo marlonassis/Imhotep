@@ -1,30 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="autorizaUnidadeProfissionalPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
-			<h:outputLabel for="unidade" value="Unidade:" />
-			<br />
-			<p:autoComplete id="unidade"
-							scrollHeight="300"
-							value="#{autorizaUnidadeProfissionalRaiz.instancia.unidade}" 
-							forceSelection="true"
-							completeMethod="#{unidadeAutoComplete.autoComplete}" 
-							required="true"
-							title="Informe a unidade."
-							var="unidade"
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}"
-							converter="unidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		
+		<ri:inputAutoComplete id="unidade" 
+							 label="Unidade"  
+							 completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							 itemValue="#{unidade}" 
+							 itemLabel="#{unidade.nome}" 
+							 var="unidade"
+							 value="#{autorizaUnidadeProfissionalRaiz.instancia.unidade}" 
+							 required="true"/>
 
 		<h:panelGroup style="align:left;">
 			<font color="red">*</font>

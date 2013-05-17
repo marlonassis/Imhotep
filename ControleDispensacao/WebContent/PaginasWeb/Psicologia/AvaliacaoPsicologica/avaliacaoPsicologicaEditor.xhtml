@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -38,27 +39,14 @@
 						value="#{avaliacaoPsicologicaRaiz.instancia.dataAvaliacao}" />
 		</h:panelGroup>
 		
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="unidade" value="Unidade de Alocação:" />
-			<br />
-			<p:autoComplete id="unidade" 
-							forceSelection="true"
-							minQueryLength="3" 
-							size="30"
-							value="#{avaliacaoPsicologicaRaiz.instancia.unidade}"
-							completeMethod="#{unidadeAutoComplete.autoComplete}"
-							var="unidade" 
-							title="Unidade onde está alocado o paciente"
-							scrollHeight="300"
-							required="true" 
-							itemLabel="#{unidade.nome}"
-							itemValue="#{unidade}" 
-							converter="unidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="unidade" 
+							 label="Unidade"  
+							 completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							 itemValue="#{unidade}" 
+							 itemLabel="#{unidade.nome}"
+							 required="true"
+							 var="unidade"
+							 value="#{avaliacaoPsicologicaRaiz.instancia.unidade}" />
 		
 		<h:panelGroup>
 			<font color="red">*</font>

@@ -12,13 +12,7 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab title="CID-10">
 			<r:formularioEdicao id="cid"
-								fieldSetLegend="CID-10"
-								gravarAction="#{cidRaiz.atualizar()}"
-								gravarRendered="#{cidRaiz.edicao}"
-								novoAction="#{cidRaiz.novaInstancia()}"
-								salvarAction="#{cidRaiz.enviar()}"
-								salvarRendered="#{!cidRaiz.edicao}"
-								fieldSetCollapsed="#{!cidRaiz.edicao}" 
+								bean="#{cidRaiz}"
 								srcEditor="CID/cidEditor.xhtml" />
 								
 			<r:formularioPesquisa id="cidPesquisa" 
