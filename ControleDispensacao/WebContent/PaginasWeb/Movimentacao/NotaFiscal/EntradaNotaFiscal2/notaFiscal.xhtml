@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Entrada Com Nota Fiscal">
+			<rf:formularioEdicao id="notaFiscal"
+								raiz="#{notaFiscalRaiz}"
+								srcEditor="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalEditor.xhtml" />
+								
+			<rf:formularioPesquisa id="notaFiscalPesquisa" 
+								  novoAction="#{notaFiscalConsulta.novaInstancia()}"
+								  srcTabela="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalTabela.xhtml"
+								  srcConsulta="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalConsulta.xhtml" />
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

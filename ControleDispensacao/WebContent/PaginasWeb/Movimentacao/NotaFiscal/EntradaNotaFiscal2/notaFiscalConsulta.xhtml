@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="estadoPanelGridConsulta" columns="3" width="100%">
+		<r:inputTextoSimples id="numeroConsulta" 
+							 label="Número da Nota"
+							 title="Informe o número da nota fiscal" 
+							 value="#{notaFiscalConsulta.instancia.identificacaoNotaFiscal}" />
+		
+		<r:inputAutoComplete id="fornecedorConsulta" 
+							 completeMethod="#{fornecedorAutoComplete.autoComplete}" 
+							 itemValue="#{fornecedor}" 
+							 itemLabel="#{fornecedor.nome}" 
+							 var="fornecedor" 
+							 value="#{notaFiscalConsulta.instancia.fornecedor}" 
+							 label="Informe o nome do fornecedor da nota fiscal"/>
+	</h:panelGrid>
+</ui:composition>
