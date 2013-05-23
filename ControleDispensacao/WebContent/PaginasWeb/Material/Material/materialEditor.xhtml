@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -17,24 +18,16 @@
 						 title="Informe o código do material" />
 		</h:panelGroup>
 
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:autoComplete id="descricao" 
-							scrollHeight="300"
-							required="true"
-							title="Informe descrição do material" 
-							immediate="true"
-							value="#{materialRaiz.instancia.descricao}"
-							completeMethod="#{materialAutoComplete.autoComplete}"
-							var="material" 
-							itemLabel="#{material}" 
-							itemValue="#{material}" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="descricao"
+							  desativarConversor="true"
+							  required="true" 
+							  forceSelection="false"
+							  completeMethod="#{materialAutoComplete.autoCompleteApenasDescricao}" 
+							  itemValue="#{material}" 
+							  itemLabel="#{material}" 
+							  var="material" 
+							  value="#{materialRaiz.instancia.descricao}" 
+							  label="Descrição" />
 
 		<h:panelGroup>
 			<font color="red">*</font>
@@ -67,63 +60,55 @@
 			</p:selectOneMenu>
 		</h:panelGroup>
 
-		<h:panelGroup id="grupoPanelGroup">
-			<h:panelGrid columns="3" width="100%">
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="grupo" value="Grupo:" />
-					<br />
-					<p:selectOneMenu value="#{materialRaiz.instancia.familia.subGrupo.grupo}"
-									 effect="fade" 
-									 required="true" 
-									 converter="grupoConversor">
-						<f:ajax event="change"
-								listener="#{materialRaiz.carregaSubGrupoList()}"
-								render="grupoPanelGroup" />
-						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{grupoConsulta.list}" 
-									   var="grupo"
-									   itemLabel="#{grupo.descricao}" 
-									   itemValue="#{grupo}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="subGrupo" value="Subgrupo:" />
-					<br />
-					<p:selectOneMenu value="#{materialRaiz.instancia.familia.subGrupo}"
-									 effect="fade" 
-									 required="true" 
-									 converter="subGrupoConversor">
-						<f:ajax event="change"
-								listener="#{materialRaiz.carregaFamiliaList()}"
-								render="grupoPanelGroup" />
-
-						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{materialRaiz.sugGrupoList}" 
-									   var="subGrupo"
-									   itemLabel="#{subGrupo.descricao}" 
-									   itemValue="#{subGrupo}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-				<h:panelGroup>
-					<font color="red">*</font>
-					<h:outputLabel for="familia" value="Família:" />
-					<br />
-					<p:selectOneMenu id="familia"
-									 value="#{materialRaiz.instancia.familia}" 
-									 effect="fade"
-									 required="true" 
-									 converter="familiaConversor">
-						<f:selectItem itemLabel="Selecione..." itemValue="" />
-						<f:selectItems value="#{materialRaiz.familiaList}" 
-									   var="familia"
-									   itemLabel="#{familia.descricao}" 
-									   itemValue="#{familia}" />
-					</p:selectOneMenu>
-				</h:panelGroup>
-
-			</h:panelGrid>
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="grupo" value="Grupo:" />
+			<br />
+			<p:selectOneMenu value="#{materialRaiz.instancia.familia.subGrupo.grupo}"
+							 effect="fade" 
+							 required="true" 
+							 converter="grupoConversor">
+				<p:ajax update=":#{p:component('grupoPanelGroup')} :#{p:component('familiaPanelGroup')}" 
+						listener="#{materialRaiz.carregaSubGrupoList()}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{grupoConsulta.list}" 
+							   var="grupo"
+							   itemLabel="#{grupo.descricao}" 
+							   itemValue="#{grupo}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+		<h:panelGroup id="grupoPanelGroup" >
+			<font color="red">*</font>
+			<h:outputLabel for="subGrupo" value="Subgrupo:" />
+			<br />
+			<p:selectOneMenu value="#{materialRaiz.instancia.familia.subGrupo}"
+							 effect="fade" 
+							 required="true" 
+							 converter="subGrupoConversor">
+				<p:ajax update=":#{p:component('familiaPanelGroup')}" 
+						listener="#{materialRaiz.carregaFamiliaList()}" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{materialRaiz.sugGrupoList}" 
+							   var="subGrupo"
+							   itemLabel="#{subGrupo.descricao}" 
+							   itemValue="#{subGrupo}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+		<h:panelGroup id="familiaPanelGroup">
+			<font color="red">*</font>
+			<h:outputLabel for="familia" value="Família:" />
+			<br />
+			<p:selectOneMenu id="familia"
+							 value="#{materialRaiz.instancia.familia}" 
+							 effect="fade"
+							 required="true" 
+							 converter="familiaConversor">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{materialRaiz.familiaList}" 
+							   var="familia"
+							   itemLabel="#{familia.descricao}" 
+							   itemValue="#{familia}" />
+			</p:selectOneMenu>
 		</h:panelGroup>
 
 		<h:panelGroup>
