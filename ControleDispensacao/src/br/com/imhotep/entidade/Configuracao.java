@@ -1,9 +1,11 @@
 package br.com.imhotep.entidade;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -14,6 +16,7 @@ public class Configuracao {
 	private String nome;
 	private String valor;
 	private String descricao;
+	private byte[] valorByte;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_configuracao_id_configuracao_seq")
 	@Id
@@ -52,6 +55,16 @@ public class Configuracao {
 	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	@Lob
+	@Basic( optional=false )
+	@Column(name = "by_valor_byte")
+	public byte[] getValorByte() {
+		return valorByte;
+	}
+	public void setValorByte(byte[] valorByte) {
+		this.valorByte = valorByte;
 	}
 	
 	@Override

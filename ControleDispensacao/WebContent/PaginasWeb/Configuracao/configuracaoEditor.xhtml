@@ -1,38 +1,35 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="configuracaoPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{configuracaoRaiz.instancia.descricao}"
-				title="Desceva a configuração" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="nome" value="Nome:" />
-			<br />
-			<p:inputText id="nome" required="true"
-				value="#{configuracaoRaiz.instancia.nome}"
-				title="Informe o nome da configuração." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="valor" value="Valor:" />
-			<br />
-			<p:inputText id="valor" required="true"
-				value="#{configuracaoRaiz.instancia.valor}"
-				title="Informe o conteúdo da configuração." />
-		</h:panelGroup>
-
+		
+		<ri:inputTextoSimples id="nome" 
+							  title="Informe o nome da configuração"
+							  required="true" 
+							  value="#{configuracaoRaiz.instancia.nome}" 
+							  label="Nome"/>
+		
+		<ri:inputTextoSimples id="descricao" 
+							  title="Descreva a configuração"
+							  required="true" 
+							  value="#{configuracaoRaiz.instancia.descricao}" 
+							  label="Descrição"/>
+		
+		<ri:inputTextoSimples id="valor" 
+							  title="Informe o valor da configuração"
+							  required="false" 
+							  value="#{configuracaoRaiz.instancia.valor}" 
+							  label="Valor"/>
+		
+		<p:fileUpload fileUploadListener="#{configuracaoRaiz.handleFileUpload}"
+	    			  auto="true"
+	    			  cancelLabel="Limpar"
+	    			  label="Selecionar"
+		              mode="advanced"/>  
 
 
 	</h:panelGrid>

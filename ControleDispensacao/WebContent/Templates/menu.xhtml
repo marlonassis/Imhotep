@@ -147,6 +147,9 @@
 		<p:menuitem value="Autoriza Painel"
 					url="/PaginasWeb/Painel/AutorizaPainel/autorizaPainel.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Autoriza Painel')}" />
+		<p:menuitem value="Configuração"
+					url="/PaginasWeb/Configuracao/configuracao.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Configuração')}" />
 		<p:menuitem value="Menu" 
 					url="/PaginasWeb/Menu/menu.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Menu')}" />
@@ -215,7 +218,7 @@
 		<p:submenu label="Nota Fiscal"
 				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Nota Fiscal')}">
 			<p:menuitem value="Entrada de Nota Fiscal"
-						url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaNotaFiscal/notaFiscal.hu"
+						url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscal.hu"
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Entrada de Nota Fiscal')}" />
 			<p:menuitem value="Entrada Sem Nota Fiscal"
 						url="/PaginasWeb/Movimentacao/NotaFiscal/EntradaMaterialSemNota/entradaMaterialSemNota.hu"
@@ -285,6 +288,9 @@
 		<p:menuitem value="Estoque por Data de Vencimento"
 					url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
+		<p:menuitem value="Relatório dos Materiais Cadastrados"
+					url="/PaginasWeb/Relatorios/Material/material.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Relatório dos Materiais Cadastrados')}" /> />
 		<p:menuitem value="Quantitativo do Pezinho"
 					url="/PaginasWeb/Relatorios/RelatorioQuantitativoPezinho/relatorioQuantitativoPezinho.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Quantitativo do Pezinho')}" />
