@@ -1,6 +1,9 @@
 package br.com.imhotep.auxiliar;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
@@ -17,6 +20,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.Id;
 
+import br.com.imhotep.entidade.PacienteEntradaResponsavel;
+
 
 /**
  * @author marlonassis
@@ -32,6 +37,12 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 		NumberFormat df = NumberFormat.getNumberInstance(LOCALE_BRASIL);
 		df.setMaximumFractionDigits(2);
 		return df.format(valor);   
+	}
+	
+	public static InputStream getImagemLogoHU(){
+		byte[] logoTipoHU = Parametro.logoTipoHU();
+		InputStream logoTipoHUInput = new ByteArrayInputStream(logoTipoHU);
+		return logoTipoHUInput;
 	}
 	
 	public static Object[] addElemento(Object[] array, Object elemento) {
@@ -158,6 +169,41 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 		}
 		return null;
 	}
+	
+
+	/**
+	 * Esse método retornará o valor formatado de acordo com a máscara informada. Cada caracter a 
+	 * ser substituído na máscara deve ser simbolizado por '#'.
+	 * @param valor
+	 * @param mascara
+	 * @return String com o valor formatado de acordo com a máscara
+	 */
+	public static String formatarValorMascara(String valor, String mascara){
+		if(valor != null){
+			for(char c : valor.toCharArray()){
+				mascara = mascara.replaceFirst("#", String.valueOf(c));
+			}
+			return mascara;
+		}
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		
+		
+		Class<?> clazz;
+		try {
+			clazz = Class.forName(PacienteEntradaResponsavel.class.getName());
+			for(Field field : clazz.getDeclaredFields()){
+				System.out.println("<field name=\""+field.getName()+"\" class=\""+field.getType().getName()+"\"/>");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	
 	public static Object getValorPropriedadeId(Object obj){
 		Class<?> clazz;

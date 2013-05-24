@@ -77,12 +77,17 @@ public class Parametro implements Serializable {
 	public static TipoMovimento tipoMovimentoDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("dsTipoMovimento", "Dispensação".toLowerCase());
+		hashMap.put("tipoMovimento", "Dispensação".toLowerCase());
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
-		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:dsTipoMovimento)");
+		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:tipoMovimento)");
 		return cg.consultaUnica(sb, hashMap);
 	}
 
+	public static byte[] logoTipoHU(){
+		StringBuilder sb = new StringBuilder("select o.valorByte from Configuracao o where o.nome = 'Logo HU'");
+		return new ConsultaGeral<byte[]>().consultaUnica(sb, null);
+	}
+	
 	public static TipoMovimento tipoMovimentoDoacaoRecebida(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 18");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);

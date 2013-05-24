@@ -12,8 +12,10 @@ import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.imhotep.enums.TipoBooleanEnum;
 import br.com.imhotep.enums.TipoComplexidadeEnum;
 import br.com.imhotep.enums.TipoCuidadosPacienteEnum;
+import br.com.imhotep.enums.TipoEhealthNaturezaEnum;
 import br.com.imhotep.enums.TipoEscolaridadeEnum;
 import br.com.imhotep.enums.TipoEstadoCivilEnum;
+import br.com.imhotep.enums.TipoEstadoEnum;
 import br.com.imhotep.enums.TipoIndicacaoEnum;
 import br.com.imhotep.enums.TipoLogradouroEnum;
 import br.com.imhotep.enums.TipoMetodoExameEnum;
@@ -39,6 +41,22 @@ import br.com.imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 @ManagedBean
 @RequestScoped
 public class ItensPadrao{
+	
+	public List<SelectItem> getTipoEhealthNaturezaEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEhealthNaturezaEnum item : TipoEhealthNaturezaEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
+	
+	public List<SelectItem> getEstadoEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEstadoEnum item : TipoEstadoEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
 	
 	public List<SelectItem> getComplexidadeEnumItens(){
 		List<SelectItem> itens = new ArrayList<SelectItem>();
