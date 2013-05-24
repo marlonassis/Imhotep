@@ -4,15 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaCID" 
-				 value="#{cidConsulta.list}"
+	<p:dataTable id="tabelaEhealthEstabelecimento" 
+				 value="#{ehealthEstabelecimentoConsulta.list}"
 				 var="linha" 
 				 dblClickSelect="true"
 				 emptyMessage="Não foi encontrado registros" 
 				 rows="10" 
 				 paginator="true"
 				 selectionMode="single" 
-				 rowKey="#{linha.idCid}">
+				 rowKey="#{linha.idEhealthEstabelecimento}">
 
 		<p:column>
 			<f:facet name="header">
@@ -23,25 +23,32 @@
 		
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Código" />
+				<h:outputText value="Município" />
 			</f:facet>
-			<h:outputText value="#{linha.codigo}" />
+			<h:outputText value="#{linha.ehealthMunicipio.municipioEstado}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Natureza" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoNatureza.label}" />
 		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-						   update=":padraoTabView:cid:cidEditorForm"
+						   update=":padraoTabView:ehealthEstabelcimento:ehealthEstabelecimentoEditorForm"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{cidRaiz.apagar()}"
-						   update=":padraoTabView:cidPesquisa:cidPesquisaForm :padraoTabView:cid:cidEditorForm"
+			<p:commandLink action="#{ehealthEstabelecimentoRaiz.apagar()}"
+						   update=":padraoTabView:ehealthEstabelecimentoPesquisa:ehealthEstabelecimentoPesquisaForm :padraoTabView:ehealthEstabelecimento:ehealthEstabelecimentoEditorForm"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

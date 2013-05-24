@@ -2,6 +2,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
@@ -11,42 +13,27 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Paciente">
-			<h:form id="pacienteEditorForm">
-				<p:fieldset legend="Novo Paciente"
-					collapsed="#{!pacienteRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
-					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="pacienteEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!pacienteRaiz.edicao}"
-						update=":#{p:component('pacienteEditorForm')} :#{p:component('pacientePesquisaForm')}"
-						action="#{pacienteRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{pacienteRaiz.edicao}"
-						update=":#{p:component('pacienteEditorForm')} :#{p:component('pacientePesquisaForm')}"
-						action="#{pacienteRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{pacienteRaiz.edicao}"
-						 update="@parent"
-						 action="#{pacienteRaiz.novaInstancia()}" />
-				</p:fieldset>
+			<h:form id="pesquisaSusProntuario" rendered="#{!pacienteRaiz.edicao and (pacienteRaiz.achouPaciente or pacienteRaiz.achouPaciente == null)}" >
+				<ri:inputApenasNumero id="valor" 
+									  title="Informe o cartão do SUS ou o prontuário do paciente" 
+									  value="#{pacienteRaiz.valorPesquisa}"
+									  required="true" 
+									  label="SUS ou Prontuário" />
+				<p:commandButton action="#{pacienteRaiz.procurarPaciente()}"
+								 image="ui-icon ui-icon-search" 
+								 update=":padraoTabView"
+								 title="Procurar paciente" />
 			</h:form>
-
-			<h:form id="pacientePesquisaForm">
-				<p:growl />
-				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="pacienteConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('pacientePesquisaForm')}"/>
-
-					<p:commandButton value="Limpar"
-						action="#{pacienteConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('pacientePesquisaForm')}" />
-
-				</p:fieldset>
-				<ui:include src="pacienteTabela.xhtml" />
-			</h:form>
+			
+			<rf:formularioEdicao id="paciente"
+								 rendered="#{pacienteRaiz.edicao or (!pacienteRaiz.achouPaciente and pacienteRaiz.achouPaciente != null)}"
+								 raiz="#{pacienteRaiz}"
+								 srcEditor="Paciente/Paciente/pacienteEditor.xhtml" />
+								
+			<rf:formularioPesquisa id="pacientePesquisa" 
+								   novoAction="#{pacienteConsulta.novaInstancia()}"
+								   srcTabela="Paciente/Paciente/pacienteTabela.xhtml"
+								   srcConsulta="Paciente/Paciente/pacienteConsulta.xhtml" />
 		</p:tab>
 	</ui:define>
 </ui:composition>

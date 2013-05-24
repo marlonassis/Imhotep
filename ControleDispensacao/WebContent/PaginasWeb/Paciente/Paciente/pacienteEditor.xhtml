@@ -10,18 +10,19 @@
 			<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
 			<br />
 			<p:inputText id="numeroSus"
-				value="#{pacienteRaiz.instancia.numeroSus}" required="true"
-				title="Informe o número do cartão do SUS" />
-			<p:commandButton action="#{pacienteRaiz.procurarPaciente()}"
-				image="ui-icon ui-icon-search" title="Procurar paciente" />
+						 value="#{pacienteRaiz.instancia.numeroSus}"
+						 required="true"
+						 title="Informe o número do cartão do SUS" />
 		</h:panelGroup>
 
 		<h:panelGroup>
+			<font color="red">*</font>
 			<h:outputLabel for="prontuario" value="Prontuário:" />
 			<br />
 			<p:inputText id="prontuario"
-				value="#{pacienteRaiz.instancia.prontuario}" required="false"
-				title="Informe o número do prontuário do paciente" />
+						 value="#{pacienteRaiz.instancia.prontuario}" 
+						 required="true"
+						 title="Informe o número do prontuário do paciente" />
 		</h:panelGroup>
 
 		<h:panelGroup>

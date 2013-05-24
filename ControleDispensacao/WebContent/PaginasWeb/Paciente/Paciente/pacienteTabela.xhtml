@@ -62,14 +62,14 @@
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('pacienteEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{pacienteRaiz.instancia}" />
+						   oncomplete="window.location.reload();"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{pacienteRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{pacienteRaiz.apagar()}"
+				rendered="false"
 				update=":#{p:component('pacienteEditorForm')} :#{p:component('pacientePesquisaForm')}"
 				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 				title="Apagar" style="padding-right:10px;">
