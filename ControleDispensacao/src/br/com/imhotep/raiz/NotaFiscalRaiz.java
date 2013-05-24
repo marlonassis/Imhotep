@@ -18,14 +18,16 @@ import br.com.imhotep.fluxo.FluxoNotaFiscalEstoque;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="notaFiscalRaiz")
+@ManagedBean
 @SessionScoped
-public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
-
+public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{	
+	
 	private NotaFiscalEstoque notaFiscalEstoque = new NotaFiscalEstoque();
 	private Boolean loteEncontrado;
 	
+	
 	public NotaFiscalRaiz() {
+		super();
 		limpar();
 	}
 	

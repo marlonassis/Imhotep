@@ -22,17 +22,17 @@
 							 label="Identificação da Nota"
 							 required="true" />
 		
-		<ri:inputDataHora id="dataEntrega"
-						  required="true" 
-						  title="Informe a data de entrega da nota" 
-						  value="#{notaFiscalRaiz.instancia.dataEntrega}" 
-						  label="Data de Entrega" />
-						  
 		<ri:inputDataHora id="dataEmissao"
 						  required="true" 
 						  title="Informe a data de emissão da nota" 
 						  value="#{notaFiscalRaiz.instancia.dataEmissao}" 
 						  label="Data de Emissão" />
+						  
+		<ri:inputDataHora id="dataEntrega"
+						  required="true" 
+						  title="Informe a data de entrega da nota" 
+						  value="#{notaFiscalRaiz.instancia.dataEntrega}" 
+						  label="Data de Entrega" />
 		
 		<ri:inputValorFracionado id="valorTotal" 
 								 required="true"
@@ -52,7 +52,9 @@
 				  value="Itens da Nota Fiscal" 
 				  rendered="#{notaFiscalRaiz.edicao}" />
 	
-	<h:panelGrid columns="2" width="100%" rendered="#{notaFiscalRaiz.edicao}">
+	<h:panelGrid columns="2" 
+				 width="100%" 
+				 rendered="#{notaFiscalRaiz.edicao}">
 		<h:panelGroup>
 			<ri:inputTextoSimples id="lote" 
 							  title="Informe o lote" 

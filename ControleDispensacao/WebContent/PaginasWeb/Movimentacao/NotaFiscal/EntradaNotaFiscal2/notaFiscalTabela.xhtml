@@ -20,7 +20,14 @@
 			</f:facet>
 			<h:outputText value="#{linha.fornecedor.nomeFantasia == null ? linha.fornecedor.razaoSocial : linha.fornecedor.nomeFantasia}" />
 		</p:column>
-
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nota Fiscal" />
+			</f:facet>
+			<h:outputText value="#{linha.identificacaoNotaFiscal}" />
+		</p:column>
+		
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Fechada" />

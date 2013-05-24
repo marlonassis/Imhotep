@@ -6,44 +6,68 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="estadoPanelGrid" columns="3" width="100%">
-		<ri:inputAutoComplete id="fornecedor" 
-							 label="Fornecedor"  
-							 completeMethod="#{fornecedorAutoComplete.autoComplete}" 
-							 itemValue="#{fornecedor}" 
-							 itemLabel="#{fornecedor.nome}" 
-							 var="fornecedor"
-							 value="#{notaFiscalRaiz.instancia.fornecedor}" 
-							 required="true"/>
+	
+		<h:panelGroup>
+			Fornecedor: <br/>
+			<h:selectOneMenu id="fornecedor" 
+							  required="true" 
+							  value="#{notaFiscalRaiz.instancia.fornecedor}" 
+							  converter="entidadeConversor" >
+				<f:selectItem  itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{fornecedorConsultaRaiz.fornecedores}"
+							   itemValue="#{fornecedor}"
+							   itemLabel="#{fornecedor.nome}"
+							   var="fornecedor" />
+			</h:selectOneMenu>
+		</h:panelGroup>
 		
-		<ri:inputApenasNumeroSemZeroEsquerda 
-							 id="identificacaoNotaFiscal" 
-							 title="Informe o número da nota fiscal" 
-							 value="#{notaFiscalRaiz.instancia.identificacaoNotaFiscal}" 
-							 label="Identificação da Nota"
-							 required="true" />
+		<h:panelGroup>
+			Identificação da Nota: <br/>
+			<h:inputText id="identificacaoNotaFiscal" 
+						 title="Informe o número da nota fiscal" 
+						 value="#{notaFiscalRaiz.instancia.identificacaoNotaFiscal}" 
+						 label="Identificação da Nota"
+						 required="true" />
+		</h:panelGroup>
 		
-		<ri:inputDataHora id="dataEntrega"
-						  required="true" 
-						  title="Informe a data de entrega da nota" 
-						  value="#{notaFiscalRaiz.instancia.dataEntrega}" 
-						  label="Data de Entrega" />
-						  
-		<ri:inputDataHora id="dataEmissao"
-						  required="true" 
-						  title="Informe a data de emissão da nota" 
-						  value="#{notaFiscalRaiz.instancia.dataEmissao}" 
-						  label="Data de Emissão" />
+		<h:panelGroup>
+			Data da Entrega: <br/>
+			<h:inputText id="dataEntrega" 
+						 value="#{notaFiscalRaiz.instancia.dataEntrega}"
+						 size="11" 
+						 maxlength="11"
+						 converter="dataConversor" />
+		</h:panelGroup>
 		
-		<ri:inputValorFracionado id="valorTotal" 
-								 required="true"
-								 title="Informe o valor total da nota fiscal" 
-								 value="#{notaFiscalRaiz.instancia.valorTotal}" 
-								 label="Valor Total" />
+		<h:panelGroup>
+			Data da Emissão: <br/>
+			<h:inputText id="dataEmissao"
+						 size="11" 
+						 maxlength="11"
+						 value="#{notaFiscalRaiz.instancia.dataEmissao}"  
+						 converter="dataConversor" />
+		</h:panelGroup>
 		
-		<ri:inputValorFracionado id="valorDesconto" 
-								 title="Informe o valor do desconto" 
-								 value="#{notaFiscalRaiz.instancia.valorDesconto}" 
-								 label="Valor do Desconto" />
+		<h:panelGroup>
+			Valor Total: <br/>
+			<h:inputText id="valorTotal" 
+						 title="Informe o valor total da nota" 
+						 value="#{notaFiscalRaiz.instancia.valorTotal}" 
+						 label="Valor Total"
+						 converter="monetarioConversor"
+						 required="true" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			Valor do Desconto: <br/>
+			<h:inputText id="valorDesconto" 
+						 title="Informe o valor do desconto" 
+						 value="#{notaFiscalRaiz.instancia.valorDesconto}" 
+						 label="Valor do Desconto"
+						 converter="monetarioConversor"
+						 required="false" />
+		</h:panelGroup>
+		
 	</h:panelGrid>
 <p:separator id="separator" rendered="#{notaFiscalRaiz.edicao}" />
 	  
