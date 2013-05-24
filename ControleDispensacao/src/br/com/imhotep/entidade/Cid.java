@@ -6,19 +6,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name = "tb_cid_10")
+@Table(name = "tb_cid")
 public class Cid {
 	
 	private int idCid;
 	private String nome;
 	private String codigo;
+	private String versao;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_cid_10_id_cid_10_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id_cid_10", unique = true, nullable = false)
+	@Column(name = "id_cid", unique = true, nullable = false)
 	public int getIdCid() {
 		return idCid;
 	}
@@ -40,6 +42,25 @@ public class Cid {
 	}
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+	
+	@Column(name = "cv_versao")
+	public String getVersao() {
+		return versao;
+	}
+	public void setVersao(String versao) {
+		this.versao = versao;
+	}
+	
+	@Transient
+	public String getCodigoNome(){
+		if(nome != null && codigo != null){
+			if(nome.length() > 30){
+				return codigo.concat(" - ").concat(nome.substring(0,30).concat("..."));
+			}
+			return codigo.concat(" - ").concat(nome);
+		}
+		return "";
 	}
 	
 	@Override
