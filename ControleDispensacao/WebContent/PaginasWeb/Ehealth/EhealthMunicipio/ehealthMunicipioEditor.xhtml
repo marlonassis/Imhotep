@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="estadoPanelGrid" columns="3" width="100%">
+		<ri:inputTextoSimples id="nome" 
+							 label="Nome"
+							 title="Informe o nome do município" 
+							 value="#{ehealthMunicipioRaiz.instancia.nome}" 
+							 required="true" />
+		
+		<ri:inputTextoSimples id="link" 
+							 label="Link"
+							 title="Informe o link do município no DataSus" 
+							 value="#{ehealthMunicipioRaiz.instancia.link}" 
+							 required="true" />
+		
+		<ri:inputSelectOneMenuEnum id="estado" 
+								  value="#{ehealthMunicipioRaiz.instancia.estado}" 
+								  label="Estado" 
+								  itens="#{itensPadrao.getEstadoEnumItens()}"
+							 	  required="true"/>
+							 	  
+		<ri:inputTextoSimples id="linkEstado" 
+							 label="Link do Estado"
+							 title="Informe o link do estado no DataSus" 
+							 value="#{ehealthMunicipioRaiz.instancia.linkEstado}" 
+							 required="true" />
+	</h:panelGrid>
+
+</ui:composition>

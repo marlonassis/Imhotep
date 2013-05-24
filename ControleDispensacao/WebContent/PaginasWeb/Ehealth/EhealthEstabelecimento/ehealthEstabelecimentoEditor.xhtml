@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="ehealthEstabelecimentoPanelGrid" columns="3" width="100%">
+	
+		<ri:inputTextoSimples id="nome" 
+							 label="Nome"
+							 title="Informe o nome do município" 
+							 value="#{ehealthEstabelecimentoRaiz.instancia.nome}" 
+							 required="true" />
+		
+		<ri:inputTextoSimples id="razaoSocial" 
+							 label="Razão Social"
+							 title="Informe a razão social do estabelecimento" 
+							 value="#{ehealthEstabelecimentoRaiz.instancia.razaoSocial}" 
+							 required="true" />
+							 
+		<ri:inputTextoSimples id="endereco" 
+							 label="Endereço"
+							 title="Informe o endereco do estabelecimento" 
+							 value="#{ehealthEstabelecimentoRaiz.instancia.endereco}" 
+							 required="true" />
+		
+		<ri:inputSelectOneMenuEnum id="tipoNatureza" 
+								  value="#{ehealthEstabelecimentoRaiz.instancia.tipoNatureza}" 
+								  label="Tipo da Natureza" 
+								  itens="#{itensPadrao.getTipoEhealthNaturezaEnumItens()}"
+							 	  required="true"/>
+							 	  
+		<ri:inputAutoComplete id="ehealthMunicipio" 
+							 completeMethod="#{ehealthMunicipioAutoComplete.autoComplete}" 
+							 itemLabel="#{ehealthMunicipio.municipioEstado}" 
+							 itemValue="#{ehealthMunicipio}" 
+							 var="ehealthMunicipio" 
+							 value="#{ehealthEstabelecimentoRaiz.instancia.ehealthMunicipio}" 
+							 label="Município" 
+							 required="true" />
+		
+		<ri:inputTextoSimples id="link" 
+							 label="Link"
+							 title="Informe o link do estabelecimento no DataSus" 
+							 value="#{ehealthEstabelecimentoRaiz.instancia.link}" 
+							 required="false" />
+							 	  
+		<ri:inputTextoSimples id="linkDetalhado" 
+							 label="Link Detalhado"
+							 title="Informe o link de detalhamento do estabelecimento" 
+							 value="#{ehealthEstabelecimentoRaiz.instancia.linkDetalhado}" 
+							 required="false" />
+	</h:panelGrid>
+
+</ui:composition>

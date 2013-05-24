@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/form"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="ehealthMunicipio">
+			<r:formularioEdicao id="ehealthMunicipio"
+								raiz="#{ehealthMunicipioRaiz}"
+								srcEditor="Ehealth/EhealthMunicipio/ehealthMunicipioEditor.xhtml" />
+								
+			<r:formularioPesquisa id="ehealthMunicipioPesquisa" 
+								  novoAction="#{ehealthMunicipioConsulta.novaInstancia()}"
+								  srcTabela="Ehealth/EhealthMunicipio/ehealthMunicipioTabela.xhtml"
+								  srcConsulta="Ehealth/EhealthMunicipio/ehealthMunicipioConsulta.xhtml" />
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

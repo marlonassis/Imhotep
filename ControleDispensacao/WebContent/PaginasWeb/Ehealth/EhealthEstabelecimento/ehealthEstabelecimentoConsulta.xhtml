@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="estadoPanelGridConsulta" columns="3" width="100%">
+		
+		<ri:inputTextoSimples id="nomeConsulta" 
+							 label="Nome"
+							 title="Informe o nome do município" 
+							 value="#{ehealthEstabelecimentoConsulta.instancia.nome}" 
+							 required="false" />
+		
+		<ri:inputTextoSimples id="razaoSocialConsulta" 
+							 label="Razão Social"
+							 title="Informe a razão social do estabelecimento" 
+							 value="#{ehealthEstabelecimentoConsulta.instancia.razaoSocial}" 
+							 required="false" />
+							 
+		<ri:inputSelectOneMenuEnum id="tipoNaturezaConsulta" 
+								  value="#{ehealthEstabelecimentoConsulta.instancia.tipoNatureza}" 
+								  label="Tipo da Natureza" 
+								  itens="#{itensPadrao.getTipoEhealthNaturezaEnumItens()}"
+							 	  required="false"/>
+							 	  
+		<ri:inputAutoComplete id="ehealthMunicipioConsulta" 
+							 completeMethod="#{ehealthMunicipioAutoComplete.autoComplete}" 
+							 itemLabel="#{ehealthMunicipio.municipioEstado}" 
+							 itemValue="#{ehealthMunicipio}" 
+							 var="ehealthMunicipio" 
+							 value="#{ehealthEstabelecimentoConsulta.instancia.ehealthMunicipio}" 
+							 label="Município" 
+							 required="false" />
+		
+	</h:panelGrid>
+</ui:composition>
