@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.imhotep.enums.TipoEhealthNaturezaEnum;
+import br.com.imhotep.enums.TipoEstadoEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
       
     public class Ehealth{  
@@ -107,13 +109,77 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 				
 //				carregarEstados(linkDataSus);
 //				carregarCidades(linkDataSus);
-				carregarUnidadesSaude(linkDataSus);
-				
+//				carregarUnidadesSaude(linkDataSus);
+				migrarEstado();
+				migrarNatureza();
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 		
+		private static void migrarEstado(){
+			LinhaMecanica lm = new LinhaMecanica();
+    		lm.setNomeBanco("db_imhotep");
+    		lm.setIp("127.0.0.1");
+			String sql = "select a.id_ehealth_municipio, b.cv_nome as estado from tb_ehealth_municipio a " + 
+						"inner join tb_ehealth_estado b on b.id_ehealth_estado = a.id_ehealth_estado order by a.id_ehealth_municipio";
+			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
+			try {
+				while (rs.next()) {
+					int idEhealthMunicipio = rs.getInt("id_ehealth_municipio");
+					String estado = rs.getString("estado");
+					sql = "update tb_ehealth_municipio set tp_estado = "+converteNomeEstadoSigla(estado)+" where id_ehealth_municipio = "+idEhealthMunicipio;
+					System.out.println(sql);
+					LinhaMecanica lml = new LinhaMecanica();
+					lml.setNomeBanco("db_imhotep");
+					lml.setIp("127.0.0.1");
+					lml.executarCUD(sql);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private static String converteNomeEstadoSigla(String nome){
+			for(TipoEstadoEnum e : TipoEstadoEnum.values()){
+				if(e.getLabel().trim().equalsIgnoreCase(nome.trim())){
+					return "'".concat(e.name()).concat("'");
+				}
+			}
+			return null;
+		}
+		
+		private static void migrarNatureza(){
+			LinhaMecanica lm = new LinhaMecanica();
+    		lm.setNomeBanco("db_imhotep");
+    		lm.setIp("127.0.0.1");
+			String sql = "select id_ehealth_estabelecimento, cv_natureza from tb_ehealth_estabelecimento order by id_ehealth_estabelecimento";
+			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
+			try {
+				while (rs.next()) {
+					int idEhealthEstabelecimento = rs.getInt("id_ehealth_estabelecimento");
+					String natureza = rs.getString("cv_natureza");
+					sql = "update tb_ehealth_estabelecimento set tp_tipo_natureza = "+converterNatureza(natureza)+" where id_ehealth_estabelecimento = "+idEhealthEstabelecimento;
+					System.out.println(sql);
+					LinhaMecanica lml = new LinhaMecanica();
+					lml.setNomeBanco("db_imhotep");
+					lml.setIp("127.0.0.1");
+					lml.executarCUD(sql);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+    private static String converterNatureza(String nome){
+    	for(TipoEhealthNaturezaEnum n : TipoEhealthNaturezaEnum.values()){
+    		if(nome.equals(n.getLabel())){
+    			return "'".concat(n.name()).concat("'");
+    		}
+    	}
+    	return null;
+    }
+    
 		private static void carregarUnidadesSaude(String linkDataSus) throws SQLException, FileNotFoundException  {
 			Calendar ini = Calendar.getInstance();
 	    	LinhaMecanica lm = new LinhaMecanica();

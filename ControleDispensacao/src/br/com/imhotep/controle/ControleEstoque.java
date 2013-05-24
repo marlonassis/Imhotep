@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import br.com.imhotep.auxiliar.Utilities;
-import br.com.imhotep.consulta.raiz.MovimentoLivroConsultaRaiz;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.MovimentoLivro;
@@ -61,7 +60,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 	
 	private Object[] consultaEstoqueMaterial(Material material) {
 		String mesAnoAtual = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidadeAtual) = null THEN 0 ELSE sum(o.quantidadeAtual)END, ");
+		StringBuilder sb = new StringBuilder("select CASE WHEN sum(o.quantidadeAtual) = null THEN 0 ELSE sum(o.quantidadeAtual) END, ");
 		sb.append("(select CASE WHEN sum(a.quantidade) = null THEN 0 ELSE sum(a.quantidade) END ");
 		sb.append("from PrescricaoItemDose a where a.prescricaoItem.dispensado = 'N' and a.prescricaoItem.status = 'S' and a.prescricaoItem.material.idMaterial = :idMaterial) ");
 		sb.append("from Estoque o where o.material.idMaterial = :idMaterial and o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= :dataAtual");
@@ -76,11 +75,11 @@ public class ControleEstoque extends PadraoGeralTemp {
 		estoqueVencido(estoque.getDataValidade());
 		estoqueBloqueado(estoque);
 		if(!tipoOperacao.equals(TipoOperacaoEnum.E)){
-			estoqueVazio(estoque.getQuantidadeAtual());
 			Object[] qtds = consultaEstoqueMaterial(estoque.getMaterial());
 			int totalEstoque = (Integer) qtds[0];
 			int totalReservardo = (Integer) qtds[1];
-			estoqueInsuficiente(estoque.getQuantidadeAtual(), quantidadeSolicitada);
+			estoqueVazio(totalEstoque);
+			estoqueInsuficiente(totalEstoque, quantidadeSolicitada);
 			int sobra = totalEstoque-quantidadeSolicitada;
 			estoqueReservado(sobra, totalReservardo);
 		}
@@ -108,8 +107,6 @@ public class ControleEstoque extends PadraoGeralTemp {
 
 	private void prepararMovimentoLivro(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Autenticador autenticador = Autenticador.getInstancia();
-		int saldoAtualMaterial = new MovimentoLivroConsultaRaiz().saldoAtualMaterial(movimentoLivro.getEstoque().getMaterial());
-		movimentoLivro.setSaldoAnterior(saldoAtualMaterial);
 		movimentoLivro.setDataMovimento(dataAtual);
 		movimentoLivro.setUnidadeCadastrante(autenticador.getUnidadeAtual());
 		movimentoLivro.setUsuarioMovimentacao(autenticador.getUsuarioAtual());
