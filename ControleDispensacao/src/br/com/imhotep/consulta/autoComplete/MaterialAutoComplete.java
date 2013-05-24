@@ -17,4 +17,9 @@ public class MaterialAutoComplete extends ConsultaGeral<Material> {
 		return super.consulta(stringB, null);
 	}
 	
+	public Collection<String> autoCompleteApenasDescricao(String string){
+		StringBuilder stringB = new StringBuilder("select o.descricao from Material as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+string+"%'))");
+		return new ConsultaGeral<String>(stringB).consulta();
+	}
+	
 }
