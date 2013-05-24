@@ -179,7 +179,7 @@ public class Utilities extends br.com.remendo.utilidades.Utilities{
 	 * @return String com o valor formatado de acordo com a máscara
 	 */
 	public static String formatarValorMascara(String valor, String mascara){
-		if(valor != null){
+		if(valor != null && !valor.isEmpty()){
 			for(char c : valor.toCharArray()){
 				mascara = mascara.replaceFirst("#", String.valueOf(c));
 			}
