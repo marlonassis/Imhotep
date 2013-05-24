@@ -115,7 +115,7 @@ public class Paciente {
 		this.dataNascimento = dataNascimento;
 	}
 	
-	@Column(name = "cv_cpf", length = 14)
+	@Column(name = "cv_cpf")
 	public String getCpf() {
 		return cpf;
 	}
@@ -221,6 +221,18 @@ public class Paciente {
 	@Transient
 	public String getNomeSus(){
 		return nome.concat(" - ").concat(getNumeroSus() != null ? getNumeroSus() : "S/N");
+	}
+	
+	@Transient
+	public String getRg(){
+		if(registroGeral != null)
+			return registroGeral.concat(" / ").concat(orgaoRegistroGeral == null ? "?" : orgaoRegistroGeral);
+		return null;
+	}
+	
+	@Transient
+	public String getCpfFormatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(cpf, "###.###.###-##");
 	}
 	
 	@Override
