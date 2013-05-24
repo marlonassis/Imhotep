@@ -21,7 +21,6 @@ public class MovimentoLivro {
 	private int idMovimentoLivro;
 	private Unidade unidadeCadastrante;
 	private TipoMovimento tipoMovimento;
-	private Integer saldoAnterior;
 	private Integer quantidadeMovimentacao;
 	private Date dataMovimento;
 	private Usuario usuarioMovimentacao;
@@ -64,14 +63,6 @@ public class MovimentoLivro {
 	}
 	public void setTipoMovimento(TipoMovimento tipoMovimento) {
 		this.tipoMovimento = tipoMovimento;
-	}
-	
-	@Column(name = "in_saldo_anterior")
-	public Integer getSaldoAnterior() {
-		return saldoAnterior;
-	}
-	public void setSaldoAnterior(Integer saldoAnterior) {
-		this.saldoAnterior = saldoAnterior;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
