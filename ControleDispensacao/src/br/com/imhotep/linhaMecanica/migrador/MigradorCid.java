@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -195,17 +194,15 @@ public class MigradorCid {
 //			System.out.println("Nome: " + eElement.getElementsByTagName("nome").item(0).getTextContent());
 			
 			String nome = eElement.getElementsByTagName("nome").item(0).getTextContent();
-			String sql = "insert into tb_cid_10 (cv_nome, cv_codigo) values ('"+nome.replace("'", "")+"', '"+codigo+"');";
+			String sql = "insert into tb_cid (cv_nome, cv_codigo, cv_versao) values ('"+nome.replace("'", "")+"', '"+codigo+"', '10');";
 			System.out.println(sql);
 			
-			if(codigo.equals("T799")){
 				liberado = true;
-			}
 			if(liberado){
 				LinhaMecanica lm = new LinhaMecanica();
 				lm.setIp("200.133.41.8");
 				lm.setNomeBanco("db_imhotep");
-				if(lm.executarCUD(sql)){
+				if(!lm.executarCUD(sql)){
 					try {
 						File arquivo = new File("/Users/marlonassis/Documents/erroCid.txt");
 						FileOutputStream arquivoOutput;

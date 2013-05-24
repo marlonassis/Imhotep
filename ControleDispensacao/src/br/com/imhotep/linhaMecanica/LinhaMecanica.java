@@ -147,8 +147,8 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		if(!executarQuery(sql))
 			return false;
 		
-		if(!reordenacaoMovimento(idMaterial))
-			return false;
+		atualizarQuantidadeEstoque(idEstoqueDestino);
+		
 		return true;
 	}
 	
@@ -193,17 +193,75 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	
 	public static void main(String[] args) throws SQLException {
 		LinhaMecanica lm = new LinhaMecanica();
+		lm.setIp("127.0.0.1");
+		lm.setNomeBanco("db_ehealth");
+		ResultSet rs = lm.consultar("select a.id_estabelecimento, a.cv_link, a.cv_natureza, a.cv_razao_social, a.cv_endereco, a.cv_link_detalhado, a.cv_nome, b.cv_nome municipio, c.cv_nome as estado from tb_estabelecimento a " +
+									"inner join tb_municipio b on b.id_municipio = a.id_municipio " +
+									"inner join tb_estados c on c.id_estados = b.id_estado where a.id_estabelecimento > 56271 order by a.id_estabelecimento");
+		lm.setNomeBanco("db_imhotep");
+		int i = 0;
+		while(rs.next()){
+			String nome = rs.getString("cv_nome");
+			String link = rs.getString("cv_link");
+			String natureza = rs.getString("cv_natureza");
+			String razaoSocial = rs.getString("cv_razao_social");
+			String endereco = rs.getString("cv_endereco");
+			String linkDetalhado = rs.getString("cv_link_detalhado");
+			int idEstabelecimento = rs.getInt("id_estabelecimento");
+			String municipio = rs.getString("municipio");
+			String estado = rs.getString("estado");
+			
+			String sql = "insert into tb_ehealth_estabelecimento (cv_nome, cv_natureza, cv_razao_social, cv_endereco, cv_link, cv_link_detalhado, id_ehealth_municipio) " +
+					"values ("+adicionaAspas(nome)+", "+adicionaAspas(natureza)+", "+adicionaAspas(razaoSocial)+", "+adicionaAspas(endereco)+","+adicionaAspas(link)+", "+adicionaAspas(linkDetalhado)+",  " +
+							"( select a.id_ehealth_municipio from tb_ehealth_municipio a inner join tb_ehealth_estado b on b.cv_nome = '"+estado+"' and a.id_ehealth_estado = b.id_ehealth_estado where a.cv_nome='"+municipio+"'));";
+			System.out.println(sql);
+			if(!lm.executarCUD(sql)){
+				System.out.println("erro");
+				System.exit(1);
+			}
+			i++;
+			System.out.println(i+"/261994 : "+ idEstabelecimento);
+		}
+	}
+
+	private static String adicionaAspas(String valor){
+		if(valor == null){
+			return null;
+		}
+		
+		return "'".concat(valor).concat("'");
+	}
+	
+	private void atualizarQuantidadeEstoque() throws SQLException{
+		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_menu, cv_url, cv_descricao from tb_menu where cv_url is not null"));
+		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_estoque from tb_estoque order by id_estoque"));
 		while (rs.next()) { 
-			int idMenu = rs.getInt(1);
-			String url = rs.getString(2);
-//			String descricao = rs.getString(3);
-			String sql = "update tb_menu set cv_url = '"+url.replaceAll("jsf", "hu")+"' where id_menu = "+idMenu;
-			lm.executarQuery(sql);
-			System.out.println("idM: "+idMenu+" - urlAntiga: "+url+" - urlNova: "+url.replaceAll("jsf", "hu"));
-//			if(url.indexOf(".") < 0)
-//				System.out.println("idM: "+idMenu+" - nome: "+descricao+" - url: "+url);
+			int idEstoque = rs.getInt(1);
+			lm.atualizarQuantidadeEstoque(idEstoque);
+		}
+	}
+	
+	private void atualizarQuantidadeEstoque(int idEstoque) {
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		String sql = "update tb_estoque  set in_quantidade_atual = " +
+					"( " +
+					"select " +
+					"coalesce( " +
+					"( " +
+					"(select sum(a.in_quantidade_movimentacao) from tb_movimento_livro a " + 
+					"inner join tb_tipo_movimento d on d.id_tipo_movimento = a.id_tipo_movimento " +
+					"where a.id_estoque = "+ idEstoque + " and d.tp_operacao = 'E') " +
+					"- "+
+					"(select sum(b.in_quantidade_movimentacao) from tb_movimento_livro b " + 
+					"inner join tb_tipo_movimento e on e.id_tipo_movimento = b.id_tipo_movimento " +
+					"where b.id_estoque = "+ idEstoque + " and e.tp_operacao != 'E') " +
+					"), 0) " +
+					") " +
+					"where id_estoque = "+ idEstoque;
+		System.out.println(idEstoque);
+		if(!executarCUD(sql)){
+			System.exit(1);
 		}
 	}
 	
@@ -229,36 +287,4 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return null;
 	}
 	
-	public boolean reordenacaoMovimento(int idMaterial){
-		try {
-			setNomeBanco(DB_BANCO_IMHOTEP);
-			ResultSet rs = consultar(utf8_to_latin1("select a.id_movimento_livro, a.in_saldo_anterior, a.in_quantidade_movimentacao, b.tp_operacao from tb_movimento_livro a " +
-					"inner join tb_tipo_movimento b on b.id_tipo_movimento = a.id_tipo_movimento " +
-					"inner join tb_estoque c on c.id_estoque = a.id_estoque " +
-					"inner join tb_material d on d.id_material = c.id_material " +
-					"where d.id_material = "+idMaterial+" order by a.dt_data_movimento asc"));
-			int saldoAnterior = 0;
-			int quantidadeMovimentacao = 0;
-			String tipoOperacao = null;
-			while (rs.next()) { 
-				int idMovimentoLivro = rs.getInt(1);
-				quantidadeMovimentacao = rs.getInt(3);
-				String sql = "update tb_movimento_livro set in_saldo_anterior = "+saldoAnterior+" where id_movimento_livro = "+idMovimentoLivro;
-				executarQuery(sql);
-				tipoOperacao = rs.getString(4);
-				System.out.println("idML: "+idMovimentoLivro+" - idMaterial: "+idMaterial+" - SA: "+saldoAnterior+" - QM: "+quantidadeMovimentacao);
-				if(tipoOperacao.equals("E"))
-					saldoAnterior += quantidadeMovimentacao;
-				else
-					saldoAnterior -= quantidadeMovimentacao;
-			}
-			
-			String sql = "update tb_estoque set in_quantidade_atual = "+saldoAnterior+" where id_estoque = "+idMaterial;
-			executarQuery(sql);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
 }
