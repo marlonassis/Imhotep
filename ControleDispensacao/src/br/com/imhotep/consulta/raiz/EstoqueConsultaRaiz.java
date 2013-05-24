@@ -22,5 +22,9 @@ public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		return list;
 	}
 	
-	
+	public int consultarQuantidadeEstoque(Estoque estoque) {
+		String hql = "select o.quantidadeAtual from Estoque o where o.idEstoque = "+estoque.getIdEstoque();
+		Integer quantidade = new ConsultaGeral<Integer>().consultaUnica(new StringBuilder(hql), null);
+		return quantidade;
+	}
 }

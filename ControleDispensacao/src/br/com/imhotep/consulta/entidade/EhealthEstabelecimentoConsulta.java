@@ -18,7 +18,7 @@ public class EhealthEstabelecimentoConsulta extends PadraoConsulta<EhealthEstabe
 		getCamposConsulta().put("o.razaoSocial", INCLUINDO_TUDO);
 		getCamposConsulta().put("o.tipoNatureza", IGUAL);
 		getCamposConsulta().put("o.ehealthMunicipio", IGUAL);
-		setOrderBy("to_ascii(o.nome), to_ascii(o.especialidade.descricao)");
+		setOrderBy("to_ascii(o.nome)");
 	}
 	
 	@Override
