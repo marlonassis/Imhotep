@@ -24,6 +24,7 @@ public class PrescricaoAntigaRaiz extends PadraoHome<PrescricaoAntiga> {
 	
 	private List<UploadedFile> files = new ArrayList<UploadedFile>();
 	
+	
 	public void removeItemFiles(UploadedFile item){
 		getFiles().remove(item);
 	}

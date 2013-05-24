@@ -10,4 +10,6 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class ProcedimentoSaudeRaiz extends PadraoHome<ProcedimentoSaude>{
 	
+	
+	
 }

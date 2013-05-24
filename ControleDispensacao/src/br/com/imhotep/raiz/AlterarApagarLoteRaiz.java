@@ -89,6 +89,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 				super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
 				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()));
 				new EstoqueLogRaiz().gerarLog(log);
+				novaInstancia();
 			}
 			else
 				super.mensagem("Não foi possível deletar.", null, Constantes.WARN);

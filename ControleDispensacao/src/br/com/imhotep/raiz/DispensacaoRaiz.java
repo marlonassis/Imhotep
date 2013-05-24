@@ -207,7 +207,6 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 			super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em DispensacaoHome");
 		}
-		movimentoLivroAtual.setSaldoAnterior(saldoAnterior);
 		movimentoLivroAtual.setQuantidadeMovimentacao(quantidadeLiberada);
 		session.save(movimentoLivroAtual);
 	}
