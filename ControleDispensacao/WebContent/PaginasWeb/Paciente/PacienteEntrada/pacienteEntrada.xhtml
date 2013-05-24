@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -12,23 +13,23 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabPacienteEntrada" title="Entrada do Paciente">
 			<h:form id="dadosPacienteForm" >
-				<p:messages id="messages" showDetail="true" autoUpdate="true"
-							closable="true" />
 				<p:panel header="Paciente">
 					<h:panelGroup>
-						<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
+						<h:outputLabel for="numeroSus" value="Número do SUS ou Prontuário:" />
 						<br />
 						<p:inputText id="numeroSus"
-									 value="#{pacienteEntradaRaiz.numeroSus}"
+									 value="#{pacienteEntradaRaiz.valorPesquisa}"
 									 title="Informe o número do cartão do SUS" />
 						<p:commandButton action="#{pacienteEntradaRaiz.carregaPaciente()}"
 										 image="ui-icon ui-icon-search"
-										 update=":#{p:component('dadosPacienteForm')} :#{p:component('pacienteEntradaPesquisaForm')} :#{p:component('pacienteEntradaForm')}"
+										 oncomplete="window.location.reload();"
 										 title="Procurar paciente" />
 					</h:panelGroup>
 					<br />
-					<h:panelGrid id="pacienteEncontradoPanelGrid" columns="3"
-						width="100%">
+					<h:panelGrid id="pacienteEncontradoPanelGrid" 
+								 rendered="#{pacienteEntradaRaiz.instancia.paciente != null}"
+								 columns="3"
+								 width="100%">
 						<h:panelGroup>
 							<b>Nome:</b>
 							<br />
@@ -77,49 +78,26 @@
 								value="#{pacienteEntradaRaiz.instancia.paciente.orgaoRegistroGeral}" />
 						</h:panelGroup>
 					</h:panelGrid>
+					<p:commandButton value="Imprimir"
+									 rendered="#{pacienteEntradaRaiz.edicao}"
+									 oncomplete="window.open('pacienteEntradaImpressao.hu?idPacienteEntrada=#{pacienteEntradaRaiz.instancia.idPacienteEntrada}', 'admissaoImpressa');"
+					   				 target="admissaoImpressa"/>
 				</p:panel>
 			</h:form>
 
-			<h:form id="pacienteEntradaForm" >
-				<p:fieldset legend="Nova Entrada"
-					collapsed="#{!pacienteEntradaRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
-					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="pacienteEntradaEditor.xhtml" />
-					<p:commandButton value="Salvar"
-									 rendered="#{!pacienteEntradaRaiz.edicao}"
-									 update=":#{p:component('pacienteEntradaForm')} :#{p:component('pacienteEntradaPesquisaForm')}"
-									 action="#{pacienteEntradaRaiz.enviar}" />
-					<p:commandButton value="Gravar"
-									 rendered="#{pacienteEntradaRaiz.edicao}"
-									 update=":#{p:component('pacienteEntradaForm')} :#{p:component('pacienteEntradaPesquisaForm')}"
-									 action="#{pacienteEntradaRaiz.atualizar}" />
-					<p:commandButton value="Novo"
-									 rendered="#{pacienteEntradaRaiz.edicao}" 
-									 update=":#{p:component('pacienteEntradaPesquisaForm')} :#{p:component('pacienteEntradaForm')}"
-									 action="#{pacienteEntradaRaiz.novaInstancia()}" />
-				</p:fieldset>
-			</h:form>
-
-			<h:form id="pacienteEntradaPesquisaForm" >
-				<p:fieldset id="pesquisaPacienteEntradaFieldSet" legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="pacienteEntradaConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-									 update=":#{p:component('pacienteEntradaPesquisaForm')}"
-									 image="ui-icon ui-icon-search" />
-
-					<p:commandButton value="Limpar"
-						action="#{pacienteEntradaConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" 
-						title="Limpar os campos"
-						update=":#{p:component('pacienteEntradaPesquisaForm')}" />
-
-				</p:fieldset>
-				<p:growl />
-				<ui:include src="pacienteEntradaTabela.xhtml" />
-			</h:form>
+			<rf:formularioEdicao id="pacienteEntrada"
+								rendered="#{pacienteEntradaRaiz.instancia.paciente != null}"
+								raiz="#{pacienteEntradaRaiz}"
+								srcEditor="Paciente/PacienteEntrada/pacienteEntradaEditor.xhtml" 
+								updateSalvar=":#{p:component('dadosPacienteForm')}" 
+								renderedGravar="false" />
+			
+			<rf:formularioPesquisa id="pacienteEntradaPesquisa" 
+								  rendered="#{pacienteEntradaRaiz.instancia.paciente != null}"
+								  novoAction="#{pacienteEntradaConsulta.novaInstancia()}"
+								  srcTabela="Paciente/PacienteEntrada/pacienteEntradaTabela.xhtml"
+								  srcConsulta="Paciente/PacienteEntrada/pacienteEntradaConsulta.xhtml" />
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -8,13 +8,14 @@ import br.com.remendo.PadraoHome;
 
 @ManagedBean
 @SessionScoped
-public class PacienteEntradaResponsavelRaiz extends PadraoHome<PacienteEntradaResponsavel>{
+public class PacienteEntradaProcedimentoRaiz extends PadraoHome<PacienteEntradaResponsavel>{
 	
-	public PacienteEntradaResponsavelRaiz(){
+	public PacienteEntradaProcedimentoRaiz(){
 		super();
 	}
 	
-	public PacienteEntradaResponsavelRaiz(boolean exibeMensagemInsercao){
+	public PacienteEntradaProcedimentoRaiz(boolean exibeMensagemInsercao){
 		super.setExibeMensagemInsercao(exibeMensagemInsercao);
 	}
+	
 }

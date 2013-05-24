@@ -1,7 +1,9 @@
 package br.com.imhotep.entidade;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.imhotep.enums.TipoEscolaridadeEnum;
 import br.com.imhotep.enums.TipoEstadoCivilEnum;
@@ -29,9 +33,9 @@ public class PacienteEntrada {
 	private Profissional profissionalResponsavel;
 	private Convenio convenio;
 	private Profissional profissionalInclusao;
-	private Cidade naturalidade;
 	private TipoEstadoCivilEnum tipoEstadoCivil;
 	private TipoEscolaridadeEnum tipoEscolaridade;
+	private Date dataAtendimento;
 	private Date dataInclusao;
 	private String profissaoAtual;
 	private String profissaoAnterior;
@@ -47,6 +51,10 @@ public class PacienteEntrada {
 	private Cidade cidade;
 	private PacienteEntradaResponsavel pacienteEntradaResponsavel;
 	private String observacao;
+	private Integer numeroRegistro;
+	private Integer numeroAtendimento;
+	private Set<PacienteEntradaCid> cids;
+	private Set<PacienteEntradaProcedimentoSaude> procedimentos;
 	
 	public PacienteEntrada() {
 		super();
@@ -57,11 +65,8 @@ public class PacienteEntrada {
 		this.unidadeAlocacao = pacienteEntrada.getUnidadeAlocacao();
 		this.profissionalResponsavel = pacienteEntrada.getProfissionalResponsavel();
 		this.convenio = pacienteEntrada.getConvenio();
-		this.profissionalInclusao = pacienteEntrada.getProfissionalInclusao();
-		this.naturalidade = pacienteEntrada.getNaturalidade();
 		this.tipoEstadoCivil = pacienteEntrada.getTipoEstadoCivil();
 		this.tipoEscolaridade = pacienteEntrada.getTipoEscolaridade();
-		this.dataInclusao = pacienteEntrada.getDataInclusao();
 		this.profissaoAtual = pacienteEntrada.getProfissaoAtual();
 		this.profissaoAnterior = pacienteEntrada.getProfissaoAnterior();
 		this.escolaridadeSerie = pacienteEntrada.getEscolaridadeSerie();
@@ -73,7 +78,13 @@ public class PacienteEntrada {
 		this.cep = pacienteEntrada.getCep();
 		this.telefone1 = pacienteEntrada.getTelefone1();
 		this.telefone2 = pacienteEntrada.getTelefone2();
-		this.pacienteEntradaResponsavel = pacienteEntrada.getPacienteEntradaResponsavel().clone();
+		this.cidade = pacienteEntrada.getCidade();
+		this.observacao = pacienteEntrada.getObservacao();
+		if(pacienteEntrada.getPacienteEntradaResponsavel() == null){
+			this.pacienteEntradaResponsavel = new PacienteEntradaResponsavel();
+		}else{
+			this.pacienteEntradaResponsavel = pacienteEntrada.getPacienteEntradaResponsavel().clone();
+		}
 	}
 	
 	
@@ -123,15 +134,6 @@ public class PacienteEntrada {
 	}
 	public void setTipoEstadoCivil(TipoEstadoCivilEnum tipoEstadoCivil) {
 		this.tipoEstadoCivil = tipoEstadoCivil;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_naturalidade")
-	public Cidade getNaturalidade() {
-		return naturalidade;
-	}
-	public void setNaturalidade(Cidade naturalidade) {
-		this.naturalidade = naturalidade;
 	}
 	
 	@Column(name = "cv_profissao_atual")
@@ -267,6 +269,15 @@ public class PacienteEntrada {
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_atendimento")
+	public Date getDataAtendimento() {
+		return dataAtendimento;
+	}
+	public void setDataAtendimento(Date dataAtendimento) {
+		this.dataAtendimento = dataAtendimento;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_data_inclusao")
 	public Date getDataInclusao() {
 		return dataInclusao;
@@ -275,13 +286,68 @@ public class PacienteEntrada {
 		this.dataInclusao = dataInclusao;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name = "id_paciente_entrada_responsavel")
 	public PacienteEntradaResponsavel getPacienteEntradaResponsavel() {
 		return pacienteEntradaResponsavel;
 	}
 	public void setPacienteEntradaResponsavel(PacienteEntradaResponsavel pacienteEntradaResponsavel) {
 		this.pacienteEntradaResponsavel = pacienteEntradaResponsavel;
+	}
+	
+	@Column(name = "in_numero_registro")
+	public Integer getNumeroRegistro() {
+		return numeroRegistro;
+	}
+	public void setNumeroRegistro(Integer numeroRegistro) {
+		this.numeroRegistro = numeroRegistro;
+	}
+	
+	@Column(name = "in_numero_atendimento")
+	public Integer getNumeroAtendimento() {
+		return numeroAtendimento;
+	}
+	public void setNumeroAtendimento(Integer numeroAtendimento) {
+		this.numeroAtendimento = numeroAtendimento;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pacienteEntrada", targetEntity = PacienteEntradaCid.class, cascade=CascadeType.PERSIST)
+	public Set<PacienteEntradaCid> getCids() {
+		return cids;
+	}
+	public void setCids(Set<PacienteEntradaCid> cids) {
+		this.cids = cids;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pacienteEntrada", targetEntity = PacienteEntradaProcedimentoSaude.class, cascade=CascadeType.ALL)
+	public Set<PacienteEntradaProcedimentoSaude> getProcedimentos() {
+		return procedimentos;
+	}
+	public void setProcedimentos(
+			Set<PacienteEntradaProcedimentoSaude> procedimentos) {
+		this.procedimentos = procedimentos;
+	}
+
+	@Transient
+	public String getEndereco(){
+		if(logradouro != null)
+			return logradouro.concat(", ").concat(numero == null ? "" : numero).concat(", ").concat(bairro == null ? "" : bairro).concat(", ").concat(cidade == null ? "" : cidade.getNomeCidadeEstado());
+		return null;
+	}
+	
+	@Transient
+	public String getTelefone1Formatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(telefone1, "(##)####-####");
+	}
+	
+	@Transient
+	public String getTelefone2Formatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(telefone2, "(##)####-####");
+	}
+	
+	@Transient
+	public String getCepFormatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(cep, "##.###-###");
 	}
 	
 	public PacienteEntrada clone(){
@@ -296,12 +362,6 @@ public class PacienteEntrada {
 			return false;
 		
 		return ((PacienteEntrada)obj).getIdPacienteEntrada() == this.idPacienteEntrada;
-	}
-
-	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + profissionalResponsavel.hashCode() + dataInclusao.hashCode();
 	}
 
 }

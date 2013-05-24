@@ -10,9 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name = "tb_paciente_entrada")
+@Table(name = "tb_paciente_entrada_responsavel")
 public class PacienteEntradaResponsavel {
 	
 	private int idPacienteEntradaResponsavel;
@@ -24,6 +25,8 @@ public class PacienteEntradaResponsavel {
 	private String cep;
 	private Cidade cidade;
 	private String cpf;
+	private String telefone1;
+	private String telefone2;
 	private PacienteEntrada pacienteEntrada;
 	
 	public PacienteEntradaResponsavel(){
@@ -38,6 +41,9 @@ public class PacienteEntradaResponsavel {
 		this.bairro = pacienteEntradaResponsavel.getBairro();
 		this.cep = pacienteEntradaResponsavel.getCep();
 		this.cidade = pacienteEntradaResponsavel.getCidade();
+		this.cpf = pacienteEntradaResponsavel.getCpf();
+		this.telefone1 = pacienteEntradaResponsavel.getTelefone1();
+		this.telefone2 = pacienteEntradaResponsavel.getTelefone2();
 	}
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_paciente_entrada_responsav_id_paciente_entrada_responsav_seq")
@@ -122,6 +128,49 @@ public class PacienteEntradaResponsavel {
 	}
 	public void setPacienteEntrada(PacienteEntrada pacienteEntrada) {
 		this.pacienteEntrada = pacienteEntrada;
+	}
+	
+	@Column(name = "cv_telefone_1")
+	public String getTelefone1() {
+		return telefone1;
+	}
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+	
+	@Column(name = "cv_telefone_2")
+	public String getTelefone2() {
+		return telefone2;
+	}
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+	
+	@Transient
+	public String getEndereco(){
+		if(logradouro != null)
+			return logradouro.concat(", ").concat(numero == null ? "" : numero).concat(", ").concat(bairro == null ? "" : bairro).concat(", ").concat(cidade == null ? "" : cidade.getNomeCidadeEstado());
+		return null;	
+	}
+	
+	@Transient
+	public String getTelefone1Formatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(telefone1, "(##)####-####");
+	}
+	
+	@Transient
+	public String getTelefone2Formatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(telefone2, "(##)####-####");
+	}
+	
+	@Transient
+	public String getCpfFormatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(cpf, "###.###.###-##");
+	}
+	
+	@Transient
+	public String getCepFormatado(){
+		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(cep, "##.###-###");
 	}
 	
 	public PacienteEntradaResponsavel clone(){

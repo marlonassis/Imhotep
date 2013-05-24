@@ -11,7 +11,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Parametro;
+import br.com.imhotep.auxiliar.Utilities;
 import br.com.imhotep.entidade.PacienteEntrada;
 import br.com.remendo.ConsultaGeral;
 
@@ -41,8 +41,8 @@ public class RelatorioAdmissaoPacienteEntrada extends PadraoRelatorio{
 		//injetando o relatório de doses do(s) procedimento(s)
 		InputStream subInputStreamProcedimento = this.getClass().getResourceAsStream("AdmissaoPacienteEntradaProcedimento.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_PROCEDIMENTO_SAUDE", subInputStreamProcedimento);
-		byte[] logoTipoHU = Parametro.logoTipoHU();
-		map.put("LOGO_HU", logoTipoHU);
+		//inputstream 
+		map.put("LOGO_HU", Utilities.getImagemLogoHU());
 		
 		super.geraRelatorio(caminho, nomeRelatorio, pacienteEntrada, map);
 	}
