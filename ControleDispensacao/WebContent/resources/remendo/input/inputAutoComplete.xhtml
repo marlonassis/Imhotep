@@ -24,6 +24,10 @@
 		<co:attribute name="valueTip" />
 		<co:attribute name="labelTip" />
 		<co:attribute name="title" />
+		<co:attribute name="updateAjax" />
+		<co:attribute name="listenerAjax" method-signature="void metodo()" />
+		<co:attribute name="forceSelection" default="true" />
+		<co:attribute name="desativarConversor" default="false" />
 	</co:interface>
 	
 	<co:implementation>
@@ -36,35 +40,86 @@
 			</h:panelGroup>
 			<h:panelGroup>
 				<h:panelGrid columns="2" >
-					<p:autoComplete id="#{cc.attrs.id}"
-									disabled="#{cc.attrs.disabled}" 
-									queryDelay="1000"
-									global="false"
-									minQueryLength="4"
-									multiple="#{cc.attrs.multiple}"
-									label="#{cc.attrs.label}"
-									scrollHeight="300"
-									size="#{cc.attrs.size}"
-									forceSelection="true"
-									value="#{cc.attrs.value}"
-									completeMethod="#{cc.attrs.completeMethod}"
-									var="#{cc.attrs.var}" 
-									onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
-									required="#{cc.attrs.required}" 
-									itemLabel="#{cc.attrs.itemLabel}"
-									converter="entidadeConversor"
-									title="#{cc.attrs.title}"
-									itemValue="#{cc.attrs.itemValue}" >
-						<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
-							<f:facet name="itemtip">  
-				                <h:panelGrid  columns="2" cellpadding="5">  
-				                    <h:outputText rendered="#{cc.attrs.labelTip != null}" value="#{cc.attrs.labelTip}" />  
-				                    <h:outputText rendered="#{cc.attrs.valueTip != null}" value="#{cc.attrs.valueTip}"/>
-				                </h:panelGrid>  
-				            </f:facet>
-				        </c:if>
-						<co:insertChildren/>
-					</p:autoComplete>
+					<c:if test="#{cc.attrs.desativarConversor}">
+						<p:autoComplete id="#{cc.attrs.id}"
+										disabled="#{cc.attrs.disabled}" 
+										queryDelay="1000"
+										global="false"
+										minQueryLength="4"
+										multiple="#{cc.attrs.multiple}"
+										label="#{cc.attrs.label}"
+										scrollHeight="300"
+										size="#{cc.attrs.size}"
+										forceSelection="#{cc.attrs.forceSelection}"
+										value="#{cc.attrs.value}"
+										completeMethod="#{cc.attrs.completeMethod}"
+										var="#{cc.attrs.var}" 
+										onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+										required="#{cc.attrs.required}" 
+										itemLabel="#{cc.attrs.itemLabel}"
+										title="#{cc.attrs.title}"
+										itemValue="#{cc.attrs.itemValue}" >
+							<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
+								<f:facet name="itemtip">  
+					                <h:panelGrid  columns="2" cellpadding="5">  
+					                    <h:outputText rendered="#{cc.attrs.labelTip != null}" value="#{cc.attrs.labelTip}" />  
+					                    <h:outputText rendered="#{cc.attrs.valueTip != null}" value="#{cc.attrs.valueTip}"/>
+					                </h:panelGrid>  
+					            </f:facet>
+					        </c:if>
+					        
+					        <p:ajax event="itemSelect" 
+					        		global="false" 
+					        		onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		oncomplete="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		listener="#{cc.attrs.listenerAjax}" 
+					        		disabled="#{cc.attrs.listenerAjax == null or cc.attrs.updateAjax == null}" 
+					        		update="#{cc.attrs.updateAjax}" />
+					        
+							<co:insertChildren/>
+						</p:autoComplete>
+					</c:if>
+				
+					<c:if test="#{!cc.attrs.desativarConversor}">
+						<p:autoComplete id="#{cc.attrs.id}"
+										disabled="#{cc.attrs.disabled}" 
+										queryDelay="1000"
+										global="false"
+										minQueryLength="4"
+										multiple="#{cc.attrs.multiple}"
+										label="#{cc.attrs.label}"
+										scrollHeight="300"
+										size="#{cc.attrs.size}"
+										forceSelection="#{cc.attrs.forceSelection}"
+										value="#{cc.attrs.value}"
+										completeMethod="#{cc.attrs.completeMethod}"
+										var="#{cc.attrs.var}" 
+										onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+										required="#{cc.attrs.required}" 
+										itemLabel="#{cc.attrs.itemLabel}"
+										converter="entidadeConversor"
+										title="#{cc.attrs.title}"
+										itemValue="#{cc.attrs.itemValue}" >
+							<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
+								<f:facet name="itemtip">  
+					                <h:panelGrid  columns="2" cellpadding="5">  
+					                    <h:outputText rendered="#{cc.attrs.labelTip != null}" value="#{cc.attrs.labelTip}" />  
+					                    <h:outputText rendered="#{cc.attrs.valueTip != null}" value="#{cc.attrs.valueTip}"/>
+					                </h:panelGrid>  
+					            </f:facet>
+					        </c:if>
+					        
+					        <p:ajax event="itemSelect" 
+					        		global="false" 
+					        		onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		oncomplete="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		listener="#{cc.attrs.listenerAjax}" 
+					        		disabled="#{cc.attrs.listenerAjax == null or cc.attrs.updateAjax == null}" 
+					        		update="#{cc.attrs.updateAjax}" />
+					        
+							<co:insertChildren/>
+						</p:autoComplete>
+					</c:if>
 					<h:panelGroup style="width: 20px;" layout="block" >
 						<div id="loadingImage#{cc.attrs.id}" style="display:none;" >
 							<h:graphicImage value="/Imagens/ajax-loader.gif" />

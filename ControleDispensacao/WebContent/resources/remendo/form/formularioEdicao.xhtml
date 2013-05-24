@@ -11,16 +11,16 @@
 	
 	<co:interface>
 		<co:attribute name="id" required="true"/>
+		<co:attribute name="raiz" required="true" />
 		<co:attribute name="fieldSetLegend" default="Nova Entrada"/>
-		<co:attribute name="fieldSetCollapsed" required="true"/>
+		<co:attribute name="fieldSetCollapsed" default="#{!cc.attrs.raiz.edicao}" />
 		<co:attribute name="fieldSetToggleable" default="true"/>
 		<co:attribute name="fieldSetToggleSpeed" default="500"/>
 		<co:attribute name="srcEditor" required="true"/>
-		<co:attribute name="salvarRendered" required="true" />
-		<co:attribute name="salvarAction" method-signature="boolean enviar()" required="true" />
-		<co:attribute name="gravarRendered" required="true"/>
-		<co:attribute name="gravarAction" method-signature ="boolean atualizar()" required="true" />
-		<co:attribute name="novoAction" method-signature="boolean novaInstancia()" required="true" />
+		<co:attribute name="updateSalvar" />
+		<co:attribute name="renderedGravar" default="true" />
+		<co:attribute name="ajaxSalvar" default="true" />
+		<co:attribute name="renderedSalvar" default="true" />
 	</co:interface>
 	
 	<co:implementation>
@@ -34,16 +34,19 @@
 						toggleSpeed="#{cc.attrs.fieldSetToggleSpeed}">
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcEditor}" />
 				<p:commandButton value="Salvar"
-								 rendered="#{cc.attrs.salvarRendered}"
-								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl"
-								 action="#{cc.attrs.salvarAction}" />
+								 ajax="#{cc.attrs.ajaxSalvar}"
+								 rendered="#{!cc.attrs.raiz.edicao and cc.attrs.renderedSalvar}"
+								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl #{cc.attrs.updateSalvar}"
+								 action="#{cc.attrs.raiz.enviar}" />
 				<p:commandButton value="Gravar" 
-								 rendered="#{cc.attrs.gravarRendered}"
+								 rendered="#{cc.attrs.raiz.edicao and cc.attrs.renderedGravar}"
 								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl"
-								 action="#{cc.attrs.gravarAction}" />
+								 action="#{cc.attrs.raiz.atualizar}"/>
 				<p:commandButton value="Novo" 
+								 immediate="true"
 								 update="#{idFormularioPesquisa} #{idFormularioEditor}"
-								 action="#{cc.attrs.novoAction}" />
+								 action="#{cc.attrs.raiz.novaInstancia}" 
+								 oncomplete="window.location.reload();" />
 			</p:fieldset>
 		</h:form>
 	</co:implementation>

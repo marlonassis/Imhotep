@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:co="http://java.sun.com/jsf/composite">
+	
+	<co:interface>
+		<co:attribute name="label" required="true" />
+		<co:attribute name="id" required="true"/>
+		<co:attribute name="required" default="false" />
+		<co:attribute name="disabled" default="false"/>
+		<co:attribute name="fileUploadListener" method-signature="void handleFileUpload()"/>
+	</co:interface>
+	
+	<co:implementation>
+		<h:panelGrid>
+			<h:panelGroup>
+				<c:if test="#{cc.attrs.required}">
+					<h:outputText value="*" style="color:red" />
+				</c:if>
+				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:fileUpload id="#{cc.attrs.id}"
+					  disabled="#{cc.attrs.disabled}"
+					  required="#{cc.attrs.required}"
+					  fileUploadListener="#{prescricaoAntigaRaiz.handleFileUpload}"
+	    			  auto="false"
+	    			  cancelLabel="Limpar"
+	    			  label="Selecionar"
+		              mode="advanced"  
+		              invalidFileMessage="O arquivo deve ser um pdf."
+		              invalidSizeMessage="O arquivo deve ser de no máximo 100KB."
+		              sizeLimit="100000"   
+		              allowTypes="/(\.|\/)(pdf)$/">
+		         	<co:insertChildren></co:insertChildren>
+		         </p:fileUpload>
+			</h:panelGroup>
+		</h:panelGrid>
+	</co:implementation>
+	
+</html>
