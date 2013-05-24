@@ -173,7 +173,20 @@
 					url="/PaginasWeb/Farmacia/Dispensacao/dispensacaoAlteracao.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Alteração de Dispensação')}" />
 	</p:submenu>
-
+	
+	<p:submenu label="e-Health"
+			   rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health')}">
+		<p:menuitem value="e-Health Estado"
+					url="/PaginasWeb/Ehealth/EhealthEstado/ehealthEstado.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Estado')}" />
+		<p:menuitem value="e-Health Município"
+					url="/PaginasWeb/Ehealth/EhealthMunicipio/ehealthMunicipio.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Município')}" />
+		<p:menuitem value="e-Health Estabelecimento"
+					url="/PaginasWeb/Ehealth/EhealthEstabelecimento/ehealthEstabelecimento.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Estabelecimento')}" />
+	</p:submenu>
+	
 	<p:submenu label="Farmácia"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Farmácia')}">
 		
