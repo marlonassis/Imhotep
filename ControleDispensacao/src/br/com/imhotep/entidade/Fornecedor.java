@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -17,7 +19,10 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_fornecedor")
-public class Fornecedor {
+public class Fornecedor implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private int idFornecedor;
 	private String cadastroPessoaFisicaJuridica;
 	private String endereco;
