@@ -17,7 +17,7 @@ import br.com.remendo.gerenciador.GerenciadorConexao;
 
 @FacesConverter(value="entidadeConversor")
 public class EntidadeConversor extends GerenciadorConexao implements Converter {
-	
+
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
     	Object resultado = null;
         if (submittedValue != null && !submittedValue.trim().equals("")) {
@@ -42,7 +42,6 @@ public class EntidadeConversor extends GerenciadorConexao implements Converter {
 				finallyTransacao();
 			}
         }
-
         return resultado;
     }
 

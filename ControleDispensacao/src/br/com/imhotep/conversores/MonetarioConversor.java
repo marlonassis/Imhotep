@@ -12,11 +12,6 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(value="monetarioConversor")
 public class MonetarioConversor extends DoubleConverter {
 	
-	public static void main(String[] args) {
-		MonetarioConversor mc = new MonetarioConversor();
-		System.out.println(mc.getAsString(null, null, 0.4d));
-	}
-	
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
 		arg2 = arg2.replace(".", "");
