@@ -2,17 +2,17 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="estadoPanelGrid" columns="3" width="100%">
-		<r:inputTextoSimples id="nome" 
+		<ri:inputTextoSimples id="nome" 
 							 label="Nome"
 							 required="true" 
 							 title="Informe o nome do cid" 
 							 value="#{cidRaiz.instancia.nome}" />
 		
-		<r:inputTextoSimples id="codigo" 
+		<ri:inputTextoSimples id="codigo" 
 							 title="Informe o código do cid" 
 							 value="#{cidRaiz.instancia.codigo}" 
 							 label="Código"

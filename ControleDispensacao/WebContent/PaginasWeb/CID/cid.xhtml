@@ -3,7 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:r="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -11,11 +11,11 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab title="CID-10">
-			<r:formularioEdicao id="cid"
-								bean="#{cidRaiz}"
+			<rf:formularioEdicao id="cid"
+								raiz="#{cidRaiz}"
 								srcEditor="CID/cidEditor.xhtml" />
 								
-			<r:formularioPesquisa id="cidPesquisa" 
+			<rf:formularioPesquisa id="cidPesquisa" 
 								  novoAction="#{cidConsulta.novaInstancia()}"
 								  srcTabela="CID/cidTabela.xhtml"
 								  srcConsulta="CID/cidConsulta.xhtml" />
