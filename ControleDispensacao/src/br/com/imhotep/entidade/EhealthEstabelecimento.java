@@ -31,11 +31,11 @@ public class EhealthEstabelecimento {
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_ehealth_estabelecimento", unique = true, nullable = false)
-	public int getIdEhealthMunicipio() {
+	public int getIdEhealthEstabelecimento() {
 		return idEhealthEstabelecimento;
 	}
-	public void setIdEhealthMunicipio(int idEhealthEstado) {
-		this.idEhealthEstabelecimento = idEhealthEstado;
+	public void setIdEhealthEstabelecimento(int idEhealthEstabelecimento) {
+		this.idEhealthEstabelecimento = idEhealthEstabelecimento;
 	}
 	
 	@Column(name="cv_nome")
@@ -103,7 +103,7 @@ public class EhealthEstabelecimento {
 		if(!(obj instanceof EhealthEstabelecimento))
 			return false;
 		
-		return ((EhealthEstabelecimento)obj).getIdEhealthMunicipio() == this.idEhealthEstabelecimento;
+		return ((EhealthEstabelecimento)obj).getIdEhealthEstabelecimento() == this.idEhealthEstabelecimento;
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.imhotep.enums.TipoComplexidadeEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
@@ -192,6 +193,17 @@ public class ProcedimentoSaude {
 	}
 	public void setConvenio(Convenio convenio) {
 		this.convenio = convenio;
+	}
+	
+	@Transient
+	public String getCodigoNome(){
+		if(nome != null && codigoProcedimento != null){
+			if(nome.length() > 30){
+				return codigoProcedimento.concat(" - ").concat(nome.substring(0,30).concat("..."));
+			}
+			return codigoProcedimento.concat(" - ").concat(nome);
+		}
+		return "";
 	}
 	
 	@Override
