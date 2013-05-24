@@ -74,6 +74,11 @@
 		<mapping class="br.com.imhotep.entidade.PacienteEntradaResponsavel" />
 		<mapping class="br.com.imhotep.entidade.Cid" />
 		<mapping class="br.com.imhotep.entidade.ProcedimentoSaude" />
+		<mapping class="br.com.imhotep.entidade.PacienteEntradaCid" />
+		<mapping class="br.com.imhotep.entidade.PacienteEntradaProcedimentoSaude" />
+		<mapping class="br.com.imhotep.entidade.EhealthEstabelecimento" />
+		<mapping class="br.com.imhotep.entidade.EhealthEstado" />
+		<mapping class="br.com.imhotep.entidade.EhealthMunicipio" />
 
 	</session-factory>
 </hibernate-configuration>
