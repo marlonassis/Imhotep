@@ -3,6 +3,17 @@ Design by Free CSS Templates
 http://www.freecsstemplates.org
 Released for free under a Creative Commons Attribution 2.5 License
 */
+
+.ui-autocomplete-input { 
+						background: url(/imhotep/Imagens/text-list-bullets-icon.png) no-repeat scroll 1px !important; 
+						padding-left:18px;
+						}
+
+.ui-autocomplete-multiple-container { 
+						background: url(/imhotep/Imagens/text-list-bullets-icon.png) no-repeat scroll 1px !important; 
+						padding-left:18px !important;
+						}
+
 #body {
 	background-color: transparent;
 }

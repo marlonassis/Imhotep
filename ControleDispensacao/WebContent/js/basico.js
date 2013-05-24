@@ -2,6 +2,15 @@
 setTimeout("window.location.reload();", 1800000);
 //fim
 
+function exibicaoAlternadaItem(id) {
+    if (document.getElementById(id).style.display == 'none') {
+        document.getElementById(id).style.display = 'inline';
+    }
+    else {
+        document.getElementById(id).style.display = 'none';
+    }
+}
+
 /**
  * Impede que o campo seja preenchido com caracteres que não sejam numéricos
  */
