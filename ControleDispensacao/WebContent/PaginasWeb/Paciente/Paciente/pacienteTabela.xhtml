@@ -58,7 +58,12 @@
 			<h:outputText value="#{linha.numeroSus}" />
 		</p:column>
 
-
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Prontuário" />
+			</f:facet>
+			<h:outputText value="#{linha.prontuario}" />
+		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
