@@ -11,12 +11,29 @@ import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.Menu;
 import br.com.imhotep.entidade.Profissional;
+import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
+import br.com.imhotep.excecoes.ExcecaoFusaoNaoRealizada;
 import br.com.imhotep.excecoes.ExcecaoProfissionalNaoEncontrado;
 import br.com.imhotep.seguranca.Autenticador;
 
 public class LinhaMecanica extends GerenciadorMecanico {
 	
-	private static final String DB_BANCO_IMHOTEP = "db_imhotep";
+	public LinhaMecanica(){
+		super();
+	}
+	
+	public LinhaMecanica(String banco){
+		super();
+		setNomeBanco(banco);
+	}
+	
+	public LinhaMecanica(String banco, String ip){
+		super();
+		setNomeBanco(banco);
+		setIp(ip);
+	}
+	
+	public static final String DB_BANCO_IMHOTEP = "db_imhotep";
 	
 	public boolean executarCUD(String sql){
 		return super.executarQuery(sql);
@@ -127,29 +144,79 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return executarQuery(sql);
 	}
 	
-	public boolean fluxoFusaoEstoque(int idEstoqueOrigem, int idEstoqueDestino, int idMaterial){
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		
-		String sql = "update tb_estoque set bl_lock = true where id_estoque = "+idEstoqueOrigem+" or id_estoque = "+idEstoqueDestino;
-		if(!executarQuery(sql))
-			return false;
-		
-		sql = "update tb_movimento_livro set id_estoque = "+idEstoqueDestino+" where id_estoque = "+idEstoqueOrigem;
+	private void executarFluxoFusao(int idEstoqueOrigem, int idEstoqueDestino) throws ExcecaoFusaoNaoRealizada{
+		String sql = "update tb_movimento_livro set id_estoque = "+idEstoqueDestino+" where id_estoque = "+idEstoqueOrigem;
 		super.getFluxo().put("transfereMovimentacaoEstoque", sql);
 		
 		sql = "delete from tb_estoque where id_estoque = "+idEstoqueOrigem;
 		super.getFluxo().put("apagarEstoque", sql);
 		
 		if(!executarQueryFluxo())
-			return false;
+			throw new ExcecaoFusaoNaoRealizada();
+
+	}
+	
+	private void colocarEstoqueEmLockParaFusao(int idEstoqueOrigem, int idEstoqueDestino) throws SQLException, ExcecaoEstoqueLock{
+		if(verificarLockParaFusao(idEstoqueOrigem, idEstoqueDestino)){
+			String sql = "update tb_estoque set bl_lock = true where id_estoque = "+idEstoqueOrigem+" or id_estoque = "+idEstoqueDestino;
+			if(!executarQuery(sql)){
+				throw new ExcecaoEstoqueLock();
+			}
+		}else{
+			throw new ExcecaoEstoqueLock();
+		}
+	}
+
+	private boolean verificarLockParaFusao(int idEstoqueOrigem, int idEstoqueDestino) throws SQLException {
+		boolean unlock = false;
+		int cont = 0;
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		while(!unlock && cont < 4){
+			ResultSet rs = consultar(utf8_to_latin1("select bl_lock from tb_estoque where (id_estoque = "+idEstoqueOrigem+" or id_estoque = "+idEstoqueDestino+") and bl_lock is true"));
+			if(rs.next()){
+				unlock = false;
+				//TODO colocar o sleep;
+			}else{
+				unlock = true;
+			}
+			cont++;
+		}
+		return unlock;
+	}
+	
+	public void fluxoFusaoEstoque(int idEstoqueOrigem, int idEstoqueDestino) throws ExcecaoEstoqueLock{
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		boolean ocorreuErroFluxo = false;
+
+		try {
+			colocarEstoqueEmLockParaFusao(idEstoqueOrigem, idEstoqueDestino);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			ocorreuErroFluxo = true;
+			tirarEstoqueLock(idEstoqueOrigem, idEstoqueDestino, ocorreuErroFluxo);
+		}
 		
-		sql = "update tb_estoque set bl_lock = false where id_estoque = "+idEstoqueDestino;
-		if(!executarQuery(sql))
-			return false;
 		
-		atualizarQuantidadeEstoque(idEstoqueDestino);
+		try {
+			executarFluxoFusao(idEstoqueOrigem, idEstoqueDestino);
+		} catch (ExcecaoFusaoNaoRealizada e) {
+			e.printStackTrace();
+			ocorreuErroFluxo = true;
+			tirarEstoqueLock(idEstoqueOrigem, idEstoqueDestino, ocorreuErroFluxo);
+		}
 		
-		return true;
+		tirarEstoqueLock(idEstoqueOrigem, idEstoqueDestino, ocorreuErroFluxo);
+		
+	}
+
+	private void tirarEstoqueLock(int idEstoqueOrigem, int idEstoqueDestino, boolean ocorreuErroFluxo) throws ExcecaoEstoqueLock {
+		String sql = "update tb_estoque set bl_lock = false where id_estoque = "+idEstoqueOrigem+" or id_estoque = "+idEstoqueDestino;
+		if(executarQuery(sql))
+			if(!ocorreuErroFluxo){
+				atualizarQuantidadeEstoque(idEstoqueDestino);
+			}else{
+				throw new ExcecaoEstoqueLock();
+			}
 	}
 	
 	public boolean apagarEstoque(int idEstoque){
@@ -161,18 +228,6 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	public void transfereMovimentacaoEstoque(int idEstoqueOrigem, int idEstoqueDestino){
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		String sql = "update tb_movimento_livro set id_estoque = "+idEstoqueDestino+" where id_estoque = "+idEstoqueOrigem;
-		executarQuery(sql);
-	}
-	
-	public void lockEstoque(int idEstoque){
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		String sql = "update tb_estoque set bl_lock = true where id_estoque = "+idEstoque;
-		executarQuery(sql);
-	}
-	
-	public void unLockEstoque(int idEstoque){
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		String sql = "update tb_estoque set bl_lock = false where id_estoque = "+idEstoque;
 		executarQuery(sql);
 	}
 	
@@ -192,36 +247,52 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	}
 	
 	public static void main(String[] args) throws SQLException {
+//		LinhaMecanica lm = new LinhaMecanica();
+//		lm.setIp("127.0.0.1");
+//		lm.setNomeBanco("db_ehealth");
+//		ResultSet rs = lm.consultar("select a.id_estabelecimento, a.cv_link, a.cv_natureza, a.cv_razao_social, a.cv_endereco, a.cv_link_detalhado, a.cv_nome, b.cv_nome municipio, c.cv_nome as estado from tb_estabelecimento a " +
+//									"inner join tb_municipio b on b.id_municipio = a.id_municipio " +
+//									"inner join tb_estados c on c.id_estados = b.id_estado order by a.id_estabelecimento");
+//		lm.setNomeBanco("db_imhotep");
+//		int i = 0;
+//		while(rs.next()){
+//			String nome = rs.getString("cv_nome");
+//			String link = rs.getString("cv_link");
+//			String natureza = rs.getString("cv_natureza");
+//			String razaoSocial = rs.getString("cv_razao_social");
+//			String endereco = rs.getString("cv_endereco");
+//			String linkDetalhado = rs.getString("cv_link_detalhado");
+//			int idEstabelecimento = rs.getInt("id_estabelecimento");
+//			String municipio = rs.getString("municipio");
+//			String estado = rs.getString("estado");
+//			
+//			String sql = "insert into tb_ehealth_estabelecimento (cv_nome, cv_natureza, cv_razao_social, cv_endereco, cv_link, cv_link_detalhado, id_ehealth_municipio) " +
+//					"values ("+adicionaAspas(nome)+", "+adicionaAspas(natureza)+", "+adicionaAspas(razaoSocial)+", "+adicionaAspas(endereco)+","+adicionaAspas(link)+", "+adicionaAspas(linkDetalhado)+",  " +
+//							"( select a.id_ehealth_municipio from tb_ehealth_municipio a inner join tb_ehealth_estado b on b.cv_nome = '"+estado+"' and a.id_ehealth_estado = b.id_ehealth_estado where a.cv_nome='"+municipio+"'));";
+//			System.out.println(sql);
+//			if(!lm.executarCUD(sql)){
+//				System.out.println("erro");
+//				System.exit(1);
+//			}
+//			i++;
+//			System.out.println(i+"/261994 : "+ idEstabelecimento);
+//		}
+		
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp("127.0.0.1");
-		lm.setNomeBanco("db_ehealth");
-		ResultSet rs = lm.consultar("select a.id_estabelecimento, a.cv_link, a.cv_natureza, a.cv_razao_social, a.cv_endereco, a.cv_link_detalhado, a.cv_nome, b.cv_nome municipio, c.cv_nome as estado from tb_estabelecimento a " +
-									"inner join tb_municipio b on b.id_municipio = a.id_municipio " +
-									"inner join tb_estados c on c.id_estados = b.id_estado where a.id_estabelecimento > 56271 order by a.id_estabelecimento");
-		lm.setNomeBanco("db_imhotep");
+		lm.setNomeBanco(DB_BANCO_IMHOTEP);
+		String sql = "insert into tb_movimento_livro (id_unidade_cadastrante, id_tipo_movimento, dt_data_movimento, " +
+				"id_usuario_movimentacao, id_estoque, in_quantidade_movimentacao) values(2, 23, now(), 10, 522, 5)";
 		int i = 0;
-		while(rs.next()){
-			String nome = rs.getString("cv_nome");
-			String link = rs.getString("cv_link");
-			String natureza = rs.getString("cv_natureza");
-			String razaoSocial = rs.getString("cv_razao_social");
-			String endereco = rs.getString("cv_endereco");
-			String linkDetalhado = rs.getString("cv_link_detalhado");
-			int idEstabelecimento = rs.getInt("id_estabelecimento");
-			String municipio = rs.getString("municipio");
-			String estado = rs.getString("estado");
-			
-			String sql = "insert into tb_ehealth_estabelecimento (cv_nome, cv_natureza, cv_razao_social, cv_endereco, cv_link, cv_link_detalhado, id_ehealth_municipio) " +
-					"values ("+adicionaAspas(nome)+", "+adicionaAspas(natureza)+", "+adicionaAspas(razaoSocial)+", "+adicionaAspas(endereco)+","+adicionaAspas(link)+", "+adicionaAspas(linkDetalhado)+",  " +
-							"( select a.id_ehealth_municipio from tb_ehealth_municipio a inner join tb_ehealth_estado b on b.cv_nome = '"+estado+"' and a.id_ehealth_estado = b.id_ehealth_estado where a.cv_nome='"+municipio+"'));";
-			System.out.println(sql);
-			if(!lm.executarCUD(sql)){
-				System.out.println("erro");
-				System.exit(1);
-			}
+		while(i < 100000){
+			System.out.println(i);
+			lm.executarCUD(sql);
 			i++;
-			System.out.println(i+"/261994 : "+ idEstabelecimento);
 		}
+		
+//		LinhaMecanica lm = new LinhaMecanica();
+//		lm.setIp("200.133.41.8");
+//		lm.atualizarQuantidadeEstoque();
+		
 	}
 
 	private static String adicionaAspas(String valor){
@@ -233,12 +304,11 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	}
 	
 	private void atualizarQuantidadeEstoque() throws SQLException{
-		LinhaMecanica lm = new LinhaMecanica();
-		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_estoque from tb_estoque order by id_estoque"));
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		ResultSet rs = consultar(utf8_to_latin1("select id_estoque from tb_estoque order by id_estoque"));
 		while (rs.next()) { 
 			int idEstoque = rs.getInt(1);
-			lm.atualizarQuantidadeEstoque(idEstoque);
+			atualizarQuantidadeEstoque(idEstoque);
 		}
 	}
 	
@@ -247,17 +317,15 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		String sql = "update tb_estoque  set in_quantidade_atual = " +
 					"( " +
 					"select " +
-					"coalesce( " +
 					"( " +
-					"(select sum(a.in_quantidade_movimentacao) from tb_movimento_livro a " + 
+					"coalesce((select sum(a.in_quantidade_movimentacao) from tb_movimento_livro a " + 
 					"inner join tb_tipo_movimento d on d.id_tipo_movimento = a.id_tipo_movimento " +
-					"where a.id_estoque = "+ idEstoque + " and d.tp_operacao = 'E') " +
+					"where a.id_estoque = "+ idEstoque + " and d.tp_operacao = 'E'), 0) " +
 					"- "+
-					"(select sum(b.in_quantidade_movimentacao) from tb_movimento_livro b " + 
+					"coalesce((select sum(b.in_quantidade_movimentacao) from tb_movimento_livro b " + 
 					"inner join tb_tipo_movimento e on e.id_tipo_movimento = b.id_tipo_movimento " +
-					"where b.id_estoque = "+ idEstoque + " and e.tp_operacao != 'E') " +
-					"), 0) " +
-					") " +
+					"where b.id_estoque = "+ idEstoque + " and e.tp_operacao != 'E'), 0) " +
+					")) " +
 					"where id_estoque = "+ idEstoque;
 		System.out.println(idEstoque);
 		if(!executarCUD(sql)){

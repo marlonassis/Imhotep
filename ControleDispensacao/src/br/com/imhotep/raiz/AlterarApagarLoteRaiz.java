@@ -17,6 +17,7 @@ import br.com.imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteDoacao;
 import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteMovimentoSaida;
 import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteNotaFiscal;
+import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.remendo.PadraoHome;
 
@@ -98,17 +99,18 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	}
 
 	public void fundirLotes(){
-		if(new LinhaMecanica().fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque(), getInstancia().getMaterial().getIdMaterial())){
+		LinhaMecanica lm = new LinhaMecanica();
+		try{
+			lm.fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque());
 			Date data = new Date();
 			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G, sdf.format(getInstancia().getDataValidade())),
 			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F, sdf.format(getInstancia().getDataValidade()))};
 			new EstoqueLogRaiz().gerarLog(log);
-			
 			mensagem("Fusão realizada com sucesso.", null, Constantes.INFO);
 			setInstancia(getEstoqueDuplicado());
 			limparFusao();
-		}else{
-			mensagem("Fusão não realizada.", null, Constantes.ERROR);
+		}catch(ExcecaoEstoqueLock e){
+			e.printStackTrace();
 		}
 		
 	}
