@@ -6,6 +6,8 @@ import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.entidade.Doacao;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.excecoes.ExcecaoEstoqueBloqueado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueNaoAtualizado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueNaoCadastrado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
@@ -19,14 +21,14 @@ public class FluxoDoacao extends PadraoFluxoTemp{
 		super("Erro ao salvar a doação.", "Doação salva com sucesso.");
 	}
 	
-	public void atualizarDoacao(Doacao doacao) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void atualizarDoacao(Doacao doacao) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		Date dataAtual = new Date();
 		ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro());
 		enfileirarObjetosAtualizacao(doacao);
 		super.processarFluxo();
 	}
 	
-	public void salvarNovaDoacao(Doacao doacao) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void salvarNovaDoacao(Doacao doacao) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		Date dataAtual = new Date();
 		ativarControladoraEstoque(dataAtual, doacao.getMovimentoLivro());
 		enfileirarObjetosNovaEntrada(doacao);
@@ -34,18 +36,16 @@ public class FluxoDoacao extends PadraoFluxoTemp{
 	}
 
 	private void enfileirarObjetosAtualizacao(Doacao doacao) {
-		super.getObjetoAtualizar().put("Estoque", doacao.getMovimentoLivro().getEstoque());
 		super.getObjetoSalvar().put("MovimentoLivro", doacao.getMovimentoLivro());
 		super.getObjetoSalvar().put("Doacao", doacao);
 	}
 	
 	private void enfileirarObjetosNovaEntrada(Doacao doacao) {
-		super.getObjetoSalvar().put("Estoque", doacao.getMovimentoLivro().getEstoque());
 		super.getObjetoSalvar().put("MovimentoLivro", doacao.getMovimentoLivro());
 		super.getObjetoSalvar().put("Doacao", doacao);
 	}
 
-	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		ControleEstoque controleEstoque = new ControleEstoque();
 		controleEstoque.liberarAjuste(dataAtual, movimentoLivro);
 	}

@@ -77,7 +77,7 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	private void liberaDose(Material material, Dose dose) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque{
 		int quantidadeDose = dose.getQuantidadeDoses() * dose.getQuantidadePorDose();
 		ControleEstoque ce = new ControleEstoque();
-		ce.liberarDose(quantidadeDose, material);
+		ce.liberarReserva(quantidadeDose, material);
 	}
 	
 	private void formularioDoseVazio(Dose dose) throws ExcecaoFormularioNaoPreenchido {

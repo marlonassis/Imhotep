@@ -6,6 +6,8 @@ import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.excecoes.ExcecaoEstoqueBloqueado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueNaoAtualizado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueNaoCadastrado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
@@ -19,7 +21,7 @@ public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
 	}
 	
-	public void atualizarEstoque(DispensacaoSimples dispensacaoSimples) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void atualizarEstoque(DispensacaoSimples dispensacaoSimples) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		Date dataAtual = new Date();
 		ativarControladoraEstoque(dataAtual, dispensacaoSimples.getMovimentoLivro());
 		enfileirarObjetosAtualizacaoEstoque(dispensacaoSimples);
@@ -27,12 +29,11 @@ public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 	}
 	
 	private void enfileirarObjetosAtualizacaoEstoque(DispensacaoSimples dispensacaoSimples) {
-		super.getObjetoAtualizar().put("Estoque", dispensacaoSimples.getMovimentoLivro().getEstoque());
 		super.getObjetoSalvar().put("MovimentoLivro", dispensacaoSimples.getMovimentoLivro());
 		super.getObjetoSalvar().put("DispensacaoSimples", dispensacaoSimples);
 	}
 	
-	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		ControleEstoque controleEstoque = new ControleEstoque();
 		controleEstoque.liberarAjuste(dataAtual, movimentoLivro);
 	}
