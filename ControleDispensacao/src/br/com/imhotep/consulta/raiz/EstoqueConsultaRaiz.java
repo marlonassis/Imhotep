@@ -27,4 +27,8 @@ public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		Integer quantidade = new ConsultaGeral<Integer>().consultaUnica(new StringBuilder(hql), null);
 		return quantidade;
 	}
+	
+	public Estoque consultaEstoque(int id){
+		return new ConsultaGeral<Estoque>(new StringBuilder("select o from Estoque o where o.idEstoque = "+id)).consultaUnica();
+	}
 }
