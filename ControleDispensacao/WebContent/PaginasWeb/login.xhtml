@@ -20,14 +20,19 @@
 							<h:outputText value="Usuário: " />
 							<br />
 							<p:inputText value="#{autenticador.usuario.login}"
-								label="Usuário" required="true" />
+										 label="Usuário" 
+										 required="true" 
+										 size="30" />
 						</h:panelGroup>
 						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}">
 							<font color="red">*</font>
 							<h:outputText value="Senha: " />
 							<br />
-							<p:inputText value="#{autenticador.usuario.senha}" label="Senha"
-								required="true" type="password" />
+							<p:inputText value="#{autenticador.usuario.senha}" 
+										 label="Senha"
+										 required="true" 
+										 type="password" 
+										 size="30" />
 						</h:panelGroup>
 						<h:panelGroup rendered="#{autenticador.mostraComboUnidade}">
 							<font color="red">*</font>
