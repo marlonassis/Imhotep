@@ -14,7 +14,7 @@ import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.fluxo.FluxoDoacao;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="doacaoRaiz")
+@ManagedBean
 @SessionScoped
 public class DoacaoRaiz extends PadraoHome<Doacao>{
 	

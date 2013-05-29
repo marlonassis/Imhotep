@@ -12,7 +12,7 @@ import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="autorizaUnidadeProfissionalRaiz")
+@ManagedBean
 @SessionScoped
 public class AutorizaUnidadeProfissionalRaiz extends PadraoHome<AutorizaUnidadeProfissional>{
 	

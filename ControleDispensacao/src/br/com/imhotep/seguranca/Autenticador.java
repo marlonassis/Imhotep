@@ -21,6 +21,8 @@ import br.com.imhotep.entidade.Painel;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.utilidades.Utilities;
@@ -36,6 +38,34 @@ public class Autenticador {
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
 
+	public static Profissional getProfissionalLogado() throws ExcecaoProfissionalLogado{
+		try {
+			return Autenticador.getInstancia().getProfissionalAtual();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		throw new ExcecaoProfissionalLogado();
+	}
+	
+	public static Unidade getUnidadeProfissional() throws ExcecaoUnidadeAtual {
+		try {
+			return Autenticador.getInstancia().getUnidadeAtual();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		throw new ExcecaoUnidadeAtual();
+	}
+	
 	public static Autenticador getInstancia() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		return (Autenticador) new ControleInstancia().procuraInstancia(Autenticador.class);
 	}

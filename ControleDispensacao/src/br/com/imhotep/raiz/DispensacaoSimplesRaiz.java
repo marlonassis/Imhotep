@@ -11,7 +11,7 @@ import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.fluxo.FluxoDispensacaoSimples;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="dispensacaoSimplesRaiz")
+@ManagedBean
 @SessionScoped
 public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	

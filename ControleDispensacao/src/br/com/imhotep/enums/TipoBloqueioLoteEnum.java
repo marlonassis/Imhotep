@@ -5,8 +5,8 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoBloqueioLoteEnum {
-	V("Lote Vencido."), 
-	A("Lote Bloqueado Pela Anvisa."),
+	V("Lote Vencido"), 
+	A("Lote Bloqueado Pela Anvisa"),
 	O("Outro");
 	
 	private String label;

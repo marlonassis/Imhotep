@@ -16,9 +16,12 @@ public class ExcecaoSaldoInsuficienteEstoque extends ExcecaoPadrao {
 		
 	}
 	
+	public ExcecaoSaldoInsuficienteEstoque(long quantidadeAtual){
+		super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + quantidadeAtual + " unidade(s)", "");
+	}
+	
 	public ExcecaoSaldoInsuficienteEstoque(int quantidadeAtual){
-		super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + 
-				String.valueOf(quantidadeAtual) + " unidade(s)", "");
+		super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + quantidadeAtual + " unidade(s)", "");
 	}
 	
 }
