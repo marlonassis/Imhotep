@@ -11,7 +11,7 @@ import br.com.imhotep.entidade.Doacao;
 import br.com.imhotep.entidade.Estoque;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="doacaoEstoqueConsultaRaiz")
+@ManagedBean
 @RequestScoped
 public class DoacaoEstoqueConsultaRaiz  extends ConsultaGeral<Doacao>{
 

@@ -23,9 +23,6 @@
 			src="#{request.contextPath}/js/basico.js"></script>
 		<script type="text/javascript"
 			src="#{request.contextPath}/js/concentrador.js"></script>
-		<style type="text/css">
-			.colStyle1 {width: 33%;}
-		</style>
 	</h:head>
 
 
@@ -35,7 +32,7 @@
 			<h:panelGrid border="0"
 						 width="100%"
 						 columnClasses="colStyle1, colStyle1, colStyle1"
-						 columns="3" >
+						 columns="4" >
 				<h:panelGroup>
 					<h:graphicImage height="130px"
 									width="312.5px"
@@ -51,7 +48,7 @@
 							<h:outputText value="#{autenticador.unidadeAtual.nome}" 
 				        				  style="font-weight: bold;"/>
 				        	<br/>
-				        	<h:outputText value="#{autenticador.profissionalAtual.nome}:"/>
+				        	<h:outputText value="#{autenticador.profissionalAtual.nomeResumido}:"/>
 				     		#{' '}
 				        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" 
 				        				  style="font-weight: bold;"/>
@@ -62,8 +59,17 @@
 							<h:outputText value="Base de testes" 
 										  rendered="#{autenticador.usuarioAtual.baseTeste}" 
 										  style="font-weight: bold; color:#FF0000"/>
+							<br/>
 						</h:panelGroup>
 					</div>
+				</h:panelGroup>
+				<h:panelGroup id="painelAvisosPanelGroup" >
+					<p:panel styleClass="panelAvisos" header="Painel de Avisos" rendered="#{autenticador.usuarioAtivo}" >
+						#{solicitacaoMedicamentoUnidadeConsultaRaiz.quantidadeSolicitacoesPendentes()} solicitações pendentes.
+						<h:form rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}" >
+							<p:poll interval="60" update=":#{p:component('painelAvisosPanelGroup')}" global="false" />
+						</h:form>
+					</p:panel>
 				</h:panelGroup>
 				<h:panelGroup style="float:right;" >
 					<h:graphicImage height="130px"
@@ -71,7 +77,6 @@
 									value="/Imagens/Logo/logo_hu.jpg" />
 				</h:panelGroup>
 			</h:panelGrid>  
-			
 		</div>
 		<div id="geral" 
 			 align="center" >

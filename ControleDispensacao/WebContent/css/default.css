@@ -4,6 +4,10 @@ http://www.freecsstemplates.org
 Released for free under a Creative Commons Attribution 2.5 License
 */
 
+.colStyle1 { width: 25%; }
+
+.panelAvisos { height:125px; }
+
 .ui-autocomplete-input { 
 						background: url(/imhotep/Imagens/text-list-bullets-icon.png) no-repeat scroll 1px !important; 
 						padding-left:18px;

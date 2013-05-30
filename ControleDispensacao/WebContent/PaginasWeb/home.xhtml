@@ -12,7 +12,6 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRaiz" title="Home">
 			<h:form>
-			
 				<table width="100%">
 					<tr>
 						<td style="vertical-align: top"><h:panelGrid
@@ -22,7 +21,8 @@
 									<ui:include
 										src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
 								</h:panelGroup>
-							</h:panelGrid></td>
+							</h:panelGrid>
+						</td>
 						<td style="vertical-align: top"><h:panelGrid
 								rendered="#{controlePainel.painelAutorizadoStringList.contains('Prescrição Pendente')}"
 								width="100%" columns="1" border="0">
@@ -30,7 +30,17 @@
 									<ui:include
 										src="/PaginasWeb/Painel/Paineis/painelPrescricaoPendente.xhtml" />
 								</h:panelGroup>
-							</h:panelGrid></td>
+							</h:panelGrid>
+						</td>
+						<td style="vertical-align: top"><h:panelGrid
+								rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}"
+								width="100%" columns="1" border="0">
+								<h:panelGroup>
+									<ui:include
+										src="/PaginasWeb/Painel/Paineis/painelDispensacaoPendente.xhtml" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</td>
 					</tr>
 				</table>
 			</h:form>

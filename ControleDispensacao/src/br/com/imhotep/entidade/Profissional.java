@@ -143,6 +143,16 @@ public class Profissional {
 		this.dataNascimento = dataNascimento;
 	}
 	
+	public String getNomeResumido(){
+		if(nome != null){
+			String[] n = nome.split(" ");
+			String nomeResumido = n[0];
+			nomeResumido = nomeResumido.concat(" ").concat(n[n.length]);
+			return nomeResumido;
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

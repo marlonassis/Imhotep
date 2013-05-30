@@ -6,45 +6,47 @@
 	template="/Templates/templateLimpo.xhtml">
 
 	<ui:define name="conteudoPadrao">
-		<p:fieldset legend="Prescrição Pendente" collapsed="false"
-			toggleable="false">
-			<p:dataTable id="tabelaPrescricaoPendente"
-				value="#{prescricaoRaiz.listaPrescricaoPendente}" var="linha"
-				dblClickSelect="true" emptyMessage="Não foi encontrado registros"
-				rows="5" paginator="true" selectionMode="single"
-				rowKey="#{linha.idPrescricao}">
+		<p:fieldset id="dispensacoesPendentesFieldSet"
+					legend="Dispensações Pendentes - #{solicitacaoMedicamentoUnidadeConsultaRaiz.quantidadeSolicitacoesPendentes()}"
+					collapsed="false" 
+					toggleable="false">
+			<p:dataGrid id="dispensacoesPendentesDataGrid"
+						var="linha" 
+						emptyMessage="Não há solicitações"
+						value="#{solicitacaoMedicamentoUnidadeConsultaRaiz.consultarSolicitacoesPendentes()}" 
+						columns="1"  
+						paginator="true">  
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Data de inclusão" />
-					</f:facet>
-					<h:outputText value="#{linha.dataInclusao}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-					</h:outputText>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Paciente" />
-					</f:facet>
-					<h:outputText value="#{linha.paciente.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Leito" />
-					</f:facet>
-					<h:outputText value="#{linha.leito}" />
-				</p:column>
-				<p:column style="width:60px; text-align: center;">
-					<p:commandLink
-						action="#{bloqueioLoteRaiz.bloqueioAutomáticoEstoque()}"
-						oncomplete="location.href='Prescricao/Prescricao/prescricao.jsf'"
-						title="Continuar prescrição" style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{linha}"
-							target="#{prescricaoRaiz.instancia}" />
-						<h:graphicImage value="/Imagens/next.png" />
-					</p:commandLink>
-				</p:column>
-			</p:dataTable>
+			        <p:panel header="#{linha.unidade.nome}" style="text-align:center">  
+			            <h:panelGrid columns="1" style="width:100%">  
+			                <h:outputText value="#{linha.material.descricao}" />  
+							<h:outputText value="#{linha.quantidadeSolicitada}" />
+							<h:outputText value="#{linha.profissionalInsercao.nome}" />
+			                <p:commandLink  title="Dispensar" oncomplete="dispensarDialog.show()" >  
+			                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+			                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />  
+			                </p:commandLink>  
+			            </h:panelGrid>  
+			        </p:panel>  
+			  
+			</p:dataGrid>
+			
+			<p:dialog header="Dispensar" widgetVar="dispensarDialog" modal="true">  
+		        <p:outputPanel id="detalhes" style="text-align:center;" layout="block">  
+		            <h:panelGrid  columns="2" cellpadding="5">  
+		                <h:outputLabel for="#{solicitacaoMedicamentoUnidadeRaiz.instancia.material.descricao}" value="Model No: " />  
+		                <h:outputText id="modelNo" value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.material.descricao}" />  
+		                  
+		                <h:outputLabel for="year" value="Year: " />  
+		                <h:outputText id="year" value="#{tableBean.selectedCar.year}" />  
+		                  
+		                <h:outputLabel for="color" value="Color: " />  
+		                <h:outputText id="color" value="#{tableBean.selectedCar.color}" style="color:#{tableBean.selectedCar.color}"/>  
+		            </h:panelGrid>  
+		        </p:outputPanel>  
+			</p:dialog>  
+			
+			<p:poll interval="60" update=":#{p:component('dispensacoesPendentesFieldSet')}" global="false" />
 		</p:fieldset>
 	</ui:define>
 </ui:composition>
