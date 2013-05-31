@@ -80,6 +80,7 @@
 		<mapping class="br.com.imhotep.entidade.EhealthEstado" />
 		<mapping class="br.com.imhotep.entidade.EhealthMunicipio" />
 		<mapping class="br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade" />
+		<mapping class="br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem" />
 
 	</session-factory>
 </hibernate-configuration>

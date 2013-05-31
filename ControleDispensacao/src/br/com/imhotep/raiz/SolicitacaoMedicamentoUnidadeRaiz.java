@@ -5,12 +5,13 @@ import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.imhotep.controle.ControleEstoque;
+import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
+import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
+import br.com.imhotep.entidade.extra.SolicitacaoMedicamento;
 import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
-import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
-import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
@@ -19,24 +20,45 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMedicamentoUnidade>{
 	
-	private void validarQuantidade() throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque {
-		ControleEstoque ce = new ControleEstoque();
-		ce.liberarReserva(getInstancia().getQuantidadeSolicitada(), getInstancia().getMaterial());
+	public void setInstancia2(Object linha){
+		SolicitacaoMedicamentoUnidade obj = new SolicitacaoMedicamentoUnidadeConsultaRaiz().solicitacaoId(((SolicitacaoMedicamento)linha).getIdSolicitacaoMedicamentoUnidade());
+		setInstancia(obj);
+	}
+	
+	public boolean removerItem(SolicitacaoMedicamentoUnidadeItem item){
+		if(getInstancia().getItens().remove(item)){
+			return super.atualizar();
+		}
+		return false;
+	}
+	
+	public static SolicitacaoMedicamentoUnidadeRaiz getInstanciaAtual(){
+		try {
+			return (SolicitacaoMedicamentoUnidadeRaiz) Utilities.procuraInstancia(SolicitacaoMedicamentoUnidadeRaiz.class);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean atualizar() {
+		getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
+		getInstancia().setDataInsercao(new Date());
+		return super.atualizar();
 	}
 	
 	@Override
 	public boolean enviar() {
 		try {
-			validarQuantidade();
 			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
-			getInstancia().setDataInsercao(new Date());
-			getInstancia().setUnidadeProfissional(Autenticador.getUnidadeProfissional());
-			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
+			getInstancia().setUnidadeProfissionalInsercao(Autenticador.getUnidadeProfissional());
+			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.A);
 			return super.enviar();
-		} catch (ExcecaoEstoqueVazio e) {
-			e.printStackTrace();
-		} catch (ExcecaoSaldoInsuficienteEstoque e) {
-			e.printStackTrace();
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		} catch (ExcecaoUnidadeAtual e) {
@@ -44,5 +66,5 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 		}
 		return false;
 	}
-	
+
 }

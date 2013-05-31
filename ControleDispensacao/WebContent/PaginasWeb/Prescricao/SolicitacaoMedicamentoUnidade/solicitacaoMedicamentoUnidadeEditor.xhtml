@@ -4,34 +4,69 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-
-	<h:panelGrid id="solicitacaoMedicamentounidadePanelGrid" columns="3" width="100%">
-
-		<ri:inputAutoComplete id="unidade" 
-							  label="Unidade Solicitante"  
-							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
-							  itemValue="#{unidade}" 
-							  itemLabel="#{unidade.nome}" 
-							  var="unidade"
-							  value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.unidade}" 
-							  required="true"/>
-							  
-		<ri:inputAutoComplete id="material" 
-							  label="Material"
-							  size="45"
-							  completeMethod="#{materialAutoComplete.autoComplete}" 
-							  itemValue="#{material}" 
-							  itemLabel="#{material.descricaoUnidadeMaterial}" 
-							  var="material"
-							  value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.material}" 
-							  required="true"/>
-		
-		<ri:inputApenasNumero id="quantidadeSolicitada" 
-							  title="Quantidade" 
-							  value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.quantidadeSolicitada}" 
-							  label="Informe a quantidade desejada" 
-							  required="true" />
-
+	<h:panelGrid columns="1" width="100%">
+		<h:panelGrid id="solicitacaoMedicamentounidadePanelGrid" columns="3" width="100%">
+			<ri:inputAutoComplete id="unidade" 
+								  disabled="#{solicitacaoMedicamentoUnidadeRaiz.edicao}"
+								  label="Unidade Solicitante"  
+								  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+								  itemValue="#{unidade}" 
+								  itemLabel="#{unidade.nome}" 
+								  var="unidade"
+								  value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.unidadeDestino}" 
+								  required="true"/>
+		</h:panelGrid>
+		<h:panelGrid id="solicitacaoMedicamentounidadeItemPanelGrid" 
+					 rendered="#{solicitacaoMedicamentoUnidadeRaiz.edicao}" 
+					 columns="3">
+			<ri:inputAutoComplete id="material" 
+								  label="Material"
+								  size="45"
+								  completeMethod="#{materialAutoComplete.autoComplete}" 
+								  itemValue="#{material}" 
+								  itemLabel="#{material.descricaoUnidadeMaterial}" 
+								  var="material"
+								  value="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia.material}" 
+								  required="false"/>
+			
+			<ri:inputApenasNumero id="quantidadeSolicitada" 
+								  title="Informe a quantidade desejada" 
+								  value="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia.quantidadeSolicitada}" 
+								  label="Quantidade" 
+								  required="false" />
+			
+			<h:panelGroup>
+				<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.enviar}" 
+							   update=":#{p:component('listaItensPanelGrid')} :#{p:component('solicitacaoMedicamentoUnidadePesquisaForm')} :#{p:component('solicitacaoMedicamentounidadeItemPanelGrid')}" >
+					<h:graphicImage value="/Imagens/add.png" />
+				</p:commandLink>
+			</h:panelGroup>
+		</h:panelGrid>
+		<h:panelGrid id="listaItensPanelGrid" 
+					 columns="1" 
+					 width="100%"
+					 rendered="#{solicitacaoMedicamentoUnidadeRaiz.edicao}" >
+			<p:growl showDetail="true" />
+			<p:dataTable var="item" 
+						 value="#{solicitacaoMedicamentoUnidadeItemConsultaRaiz.itens}"
+						 emptyMessage="Não há itens cadastrados" >  
+		        <p:column headerText="Material">  
+		            <h:outputText value="#{item.material.descricaoUnidadeMaterial}" />  
+		        </p:column>  
+		        <p:column headerText="Quantidade">  
+		            <h:outputText value="#{item.quantidadeSolicitada}" />  
+		        </p:column> 
+		        <p:column style="width:60px; text-align: center;">
+					<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.apagar()}"
+								   update=":#{p:component('listaItensPanelGrid')} :#{p:component('solicitacaoMedicamentoUnidadePesquisaForm')}"
+								   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+								   title="Apagar #{item.material.descricaoUnidadeMaterial}" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+				</p:column> 
+		    </p:dataTable>  
+		</h:panelGrid>
 	</h:panelGrid>
-
 </ui:composition>

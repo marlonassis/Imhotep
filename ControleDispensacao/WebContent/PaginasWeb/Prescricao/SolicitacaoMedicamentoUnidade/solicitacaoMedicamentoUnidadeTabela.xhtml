@@ -4,42 +4,29 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaCuidadosPaciente" 
-				 value="#{solicitacaoMedicamentoUnidadeConsulta.list}"
-				 var="linha" 
-				 dblClickSelect="true"
-				 emptyMessage="Não foi encontrado registros" 
-				 rows="10" 
-				 paginator="true"
-				 selectionMode="single" 
-				 rowKey="#{linha.idSolicitacaoMedicamentoUnidade}">
+	<p:treeTable id="tabelaSolicitacoes" 
+				 value="#{solicitacaoMedicamentoUnidadeConsulta.root}"
+				 var="linha">
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Unidade" />
+				<h:outputText value="Nome" />
 			</f:facet>
-			<h:outputText value="#{linha.unidade.nome}" />
+			<h:outputText value="#{linha.descricao}" />
 		</p:column>
-		
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Medicamento" />
-			</f:facet>
-			<h:outputText value="#{linha.material.descricao}" />
-		</p:column>
-		
+
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Quantidade" />
 			</f:facet>
-			<h:outputText value="#{linha.quantidadeSolicitada}" />
+			<h:outputText value="#{linha.quantidadeItens}" />
 		</p:column>
 		
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Profissional" />
 			</f:facet>
-			<h:outputText value="#{linha.profissionalInsercao.nome}" />
+			<h:outputText value="#{linha.profissionalInsercao.nomeResumido}" />
 		</p:column>
 		
 		<p:column>
@@ -51,16 +38,23 @@
 			</h:outputText>
 		</p:column>
 		
-		<p:column style="width:120px; text-align: center;"
-				  rendered="false" >
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Status" />
+			</f:facet>
+			<h:outputText value="#{linha.statusDispensacao.label}"/>
+		</p:column>
+
+		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
 						   update=":padraoTabView:solicitacaoMedicamentoUnidade:solicitacaoMedicamentoUnidadeEditorForm"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia2}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.apagar()}"
+						   rendered="false"
 						   update=":padraoTabView:solicitacaoMedicamentoUnidade:solicitacaoMedicamentoUnidadeEditorForm :padraoTabView:solicitacaoMedicamentoUnidadePesquisa"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
@@ -69,6 +63,6 @@
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>
-	</p:dataTable>
+	</p:treeTable>
 
 </ui:composition>

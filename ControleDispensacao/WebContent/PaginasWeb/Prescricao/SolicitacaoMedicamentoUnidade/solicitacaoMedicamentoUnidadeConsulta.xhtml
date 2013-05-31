@@ -8,22 +8,13 @@
 
 	<h:panelGrid id="solicitacaoMedicamentoUnidadePanelGridConsulta" columns="3" width="100%">
 
-		<ri:inputAutoComplete id="materialConsulta" 
-							  label="Medicamento"  
-							  completeMethod="#{materialAutoComplete.autoComplete}" 
-							  itemValue="#{material}" 
-							  itemLabel="#{material.descricaoUnidadeMaterial}" 
-							  var="material"
-							  value="#{solicitacaoMedicamentoUnidadeConsulta.instancia.material}" 
-							  required="false"/>
-		
 		<ri:inputAutoComplete id="unidadeConsulta" 
 							  label="Unidade Solicitante"  
 							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
 							  itemValue="#{unidade}" 
 							  itemLabel="#{unidade.nome}" 
 							  var="unidade"
-							  value="#{solicitacaoMedicamentoUnidadeConsulta.instancia.unidade}" 
+							  value="#{solicitacaoMedicamentoUnidadeConsulta.instancia.unidadeDestino}" 
 							  required="false"/>
 							  
 		<ri:inputAutoComplete id="profissionalConsulta" 

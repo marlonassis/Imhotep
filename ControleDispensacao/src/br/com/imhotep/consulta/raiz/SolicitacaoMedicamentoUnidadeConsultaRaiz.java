@@ -25,4 +25,8 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		return cg.consultaUnica(sb, null);
 	}
 	
+	public SolicitacaoMedicamentoUnidade solicitacaoId(int id){
+		return new ConsultaGeral<SolicitacaoMedicamentoUnidade>().consultaUnica(new StringBuilder("select o from SolicitacaoMedicamentoUnidade o where o.idSolicitacaoMedicamentoUnidade = "+id));
+	}
+	
 }

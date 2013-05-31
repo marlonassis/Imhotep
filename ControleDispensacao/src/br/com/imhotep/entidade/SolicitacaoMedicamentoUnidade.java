@@ -1,7 +1,9 @@
 package br.com.imhotep.entidade;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,18 +26,12 @@ import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 public class SolicitacaoMedicamentoUnidade {
 	
 	private int idSolicitacaoMedicamentoUnidade;
-	private Integer quantidadeSolicitada;
-	private Material material;
-	private Unidade unidade;
-	private Unidade unidadeProfissional;
+	private Unidade unidadeDestino;
+	private Unidade unidadeProfissionalInsercao;
 	private Profissional profissionalInsercao;
 	private Date dataInsercao;
 	private TipoStatusDispensacaoEnum statusDispensacao;
-	private Integer quantidadeDipensada;
-	private MovimentoLivro movimentoLivro;
-	private Profissional profissionalLiberacao;
-	private Date dataLiberacao;
-	private String justificativa;
+	private List<SolicitacaoMedicamentoUnidadeItem> itens;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicitacao_medicamento_un_id_solicitacao_medicamento_un_seq")
 	@Id
@@ -49,23 +46,13 @@ public class SolicitacaoMedicamentoUnidade {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_material")
-	public Material getMaterial(){
-		return material;
+	@JoinColumn(name = "id_unidade_destino")
+	public Unidade getUnidadeDestino(){
+		return unidadeDestino;
 	}
 	
-	public void setMaterial(Material material){
-		this.material = material;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade")
-	public Unidade getUnidade(){
-		return unidade;
-	}
-	
-	public void setUnidade(Unidade unidade){
-		this.unidade = unidade;
+	public void setUnidadeDestino(Unidade unidadeDestino){
+		this.unidadeDestino = unidadeDestino;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -78,23 +65,14 @@ public class SolicitacaoMedicamentoUnidade {
 		this.profissionalInsercao = profissionalInsercao;
 	}
 	
-	@Column(name = "in_quantidade_solicitada")
-	public Integer getQuantidadeSolicitada(){
-		return quantidadeSolicitada;
-	}
-	
-	public void setQuantidadeSolicitada(Integer quantidadeSolicitada){
-		this.quantidadeSolicitada = quantidadeSolicitada;
-	}
-	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade_profissional")
-	public Unidade getUnidadeProfissional(){
-		return unidadeProfissional;
+	@JoinColumn(name = "id_unidade_profissional_insercao")
+	public Unidade getUnidadeProfissionalInsercao(){
+		return unidadeProfissionalInsercao;
 	}
 	
-	public void setUnidadeProfissional(Unidade unidadeProfissional){
-		this.unidadeProfissional = unidadeProfissional;
+	public void setUnidadeProfissionalInsercao(Unidade unidadeProfissionalInsercao){
+		this.unidadeProfissionalInsercao = unidadeProfissionalInsercao;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -117,54 +95,14 @@ public class SolicitacaoMedicamentoUnidade {
 		this.statusDispensacao = statusDispensacao;
 	}
 
-	@Column(name="in_quantidade_dipensada")
-	public Integer getQuantidadeDipensada() {
-		return quantidadeDipensada;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacaoMedicamentoUnidade", cascade=CascadeType.ALL, orphanRemoval=true)
+	public List<SolicitacaoMedicamentoUnidadeItem> getItens() {
+		return itens;
 	}
-
-	public void setQuantidadeDipensada(Integer quantidadeDipensada) {
-		this.quantidadeDipensada = quantidadeDipensada;
+	public void setItens(List<SolicitacaoMedicamentoUnidadeItem> itens) {
+		this.itens = itens;
 	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_movimento_livro")
-	public MovimentoLivro getMovimentoLivro() {
-		return movimentoLivro;
-	}
-
-	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
-		this.movimentoLivro = movimentoLivro;
-	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_profissional_liberacao")
-	public Profissional getProfissionalLiberacao() {
-		return profissionalLiberacao;
-	}
-
-	public void setProfissionalLiberacao(Profissional profissionalLiberacao) {
-		this.profissionalLiberacao = profissionalLiberacao;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_data_liberacao")
-	public Date getDataLiberacao() {
-		return dataLiberacao;
-	}
-
-	public void setDataLiberacao(Date dataLiberacao) {
-		this.dataLiberacao = dataLiberacao;
-	}
-
-	@Column(name="cv_justificativa")
-	public String getJustificativa() {
-		return justificativa;
-	}
-
-	public void setJustificativa(String justificativa) {
-		this.justificativa = justificativa;
-	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
@@ -178,12 +116,12 @@ public class SolicitacaoMedicamentoUnidade {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    return hash * 31 + profissionalInsercao.hashCode() + unidade.hashCode();
+	    return hash * 31 + profissionalInsercao.hashCode() + dataInsercao.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return material.getDescricao();
+		return unidadeDestino.getNome();
 	}
 	
 }

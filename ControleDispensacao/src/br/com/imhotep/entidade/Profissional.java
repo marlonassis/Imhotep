@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.imhotep.enums.TipoSituacaoEnum;
 
@@ -143,11 +144,12 @@ public class Profissional {
 		this.dataNascimento = dataNascimento;
 	}
 	
+	@Transient
 	public String getNomeResumido(){
 		if(nome != null){
 			String[] n = nome.split(" ");
 			String nomeResumido = n[0];
-			nomeResumido = nomeResumido.concat(" ").concat(n[n.length]);
+			nomeResumido = nomeResumido.concat(" ").concat(n[n.length-1]);
 			return nomeResumido;
 		}
 		return null;

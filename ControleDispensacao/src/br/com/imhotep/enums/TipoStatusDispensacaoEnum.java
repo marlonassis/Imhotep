@@ -5,6 +5,7 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoStatusDispensacaoEnum {
+	A("Aberta"),
 	P("Pendente"),
 	D("Dispensado"),  
 	DP("Dispensado em parte"),
@@ -12,8 +13,8 @@ public enum TipoStatusDispensacaoEnum {
 	
 	private String label;
 	
-	TipoStatusDispensacaoEnum(String sexo){
-		label = sexo;
+	TipoStatusDispensacaoEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){
