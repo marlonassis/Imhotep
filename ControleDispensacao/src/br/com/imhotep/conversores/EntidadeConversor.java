@@ -8,7 +8,7 @@ import javax.faces.convert.FacesConverter;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.remendo.gerenciador.GerenciadorConexao;
 
 /**
@@ -23,7 +23,7 @@ public class EntidadeConversor extends GerenciadorConexao implements Converter {
         if (submittedValue != null && !submittedValue.trim().equals("")) {
         	try {
         		Object obj = component.getValueExpression("value").getType(facesContext.getELContext()).newInstance();
-        		String nomePropriedadeId = Utilities.getNomePropriedadeId(obj);
+        		String nomePropriedadeId = Utilitarios.getNomePropriedadeId(obj);
         		iniciarTransacao();
         		int id = Integer.parseInt(submittedValue);
         		Criteria cr = session.createCriteria(obj.getClass());
@@ -47,7 +47,7 @@ public class EntidadeConversor extends GerenciadorConexao implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
     	if (value != null && !value.equals("")) {
-			return String.valueOf(Utilities.getValorPropriedadeId(value));
+			return String.valueOf(Utilitarios.getValorPropriedadeId(value));
         }
     	
     	return "";

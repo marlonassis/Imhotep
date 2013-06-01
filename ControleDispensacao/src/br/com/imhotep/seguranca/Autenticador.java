@@ -12,6 +12,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.controle.ControleInstancia;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.controle.ControlePainel;
@@ -25,7 +26,6 @@ import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean(name="autenticador")
 @SessionScoped
@@ -94,7 +94,7 @@ public class Autenticador {
 	}
 	
 	public Profissional profissionalPeloNomeUsuario(String nome, String senha){
-		senha = Utilities.encriptaParaMd5(senha);
+		senha = Utilitarios.encriptaParaMd5(senha);
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		String sqlSenha = "Select o.senha from Usuario o where o.login = :login";
 		hm.put("login", nome);
@@ -164,7 +164,7 @@ public class Autenticador {
 	}
 	
 	public boolean verificaSenha(Usuario usuarioLogado, String senha){
-		if(usuarioLogado.getSenha().equals(Utilities.encriptaParaMd5(senha))){
+		if(usuarioLogado.getSenha().equals(Utilitarios.encriptaParaMd5(senha))){
 			return true;
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Login não realizado!"));
@@ -210,7 +210,7 @@ public class Autenticador {
 			controlePainel.setPainelAutorizadoList(new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap)));
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
 			controlePainel.convertePainelString();
-			Utilities.atualizaInstancia(controlePainel);
+			Utilitarios.atualizaInstancia(controlePainel);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -232,7 +232,7 @@ public class Autenticador {
 			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(menuAutorizadoSet));
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
 			controleMenu.converteMenuString();
-			Utilities.atualizaInstancia(controleMenu);
+			Utilitarios.atualizaInstancia(controleMenu);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

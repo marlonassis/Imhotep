@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 public class MigradorProcedimentoSus {
@@ -90,7 +90,7 @@ public class MigradorProcedimentoSus {
 		}else{
 			if(regra[4].equalsIgnoreCase("VARCHAR2")){
 				if(regra[0].split("_")[0].equalsIgnoreCase("tp")){
-					if(Utilities.isNumero(substring)){
+					if(Utilitarios.isNumero(substring)){
 						substring = "T".concat(substring);
 					}
 				}
@@ -98,7 +98,7 @@ public class MigradorProcedimentoSus {
 				substring = "'".concat(substring.concat("'"));
 			}else{
 				if(regra[4].equalsIgnoreCase("NUMBER") && regra[0].split("_")[0].equalsIgnoreCase("vl")){
-					substring =  String.valueOf(Utilities.StringParaDoubleDiv100(substring));
+					substring =  String.valueOf(Utilitarios.StringParaDoubleDiv100(substring));
 				}else{
 					if(regra[4].equalsIgnoreCase("CHAR") && regra[0].split("_")[0].equalsIgnoreCase("dt")){
 						substring = substring.substring(0, 4).concat("-").concat(substring.substring(4, 6)).concat("-01") ;

@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EspecialidadeConsultaRaiz;
 import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Profissional;
@@ -15,7 +16,6 @@ import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
-import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean
 @SessionScoped
@@ -60,7 +60,7 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 			}
 			getInstancia().setDataInclusao(new Date());
 			getInstancia().getUsuario().setDataInclusao(new Date());
-			getInstancia().getUsuario().setSenha(Utilities.encriptaParaMd5(String.valueOf("123456")));
+			getInstancia().getUsuario().setSenha(Utilitarios.encriptaParaMd5(String.valueOf("123456")));
 			if(super.enviar()){
 				boolean exibeMensagemInsercao = false;
 				boolean res = new AutorizaUnidadeProfissionalRaiz().enviar(getInstancia(), getUnidade(), exibeMensagemInsercao);

@@ -17,9 +17,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.enums.TipoSanguineoEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
-import br.com.remendo.utilidades.Utilities;
 
 @Entity
 @Table(name = "tb_paciente")
@@ -215,7 +215,7 @@ public class Paciente {
 	
 	@Transient
 	public String getIdade(){
-		return Utilities.idadeAtual(dataNascimento);
+		return Utilitarios.idadeAtual(dataNascimento);
 	}
 	
 	@Transient
@@ -232,7 +232,7 @@ public class Paciente {
 	
 	@Transient
 	public String getCpfFormatado(){
-		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(cpf, "###.###.###-##");
+		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(cpf, "###.###.###-##");
 	}
 	
 	@Override

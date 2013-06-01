@@ -7,13 +7,13 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.utilidades.Utilities;
 
 public class ControleSenha {	
 	public static ControleSenha getInstancia(){
 		try {
-			return (ControleSenha) Utilities.procuraInstancia(ControleSenha.class);
+			return (ControleSenha) Utilitarios.procuraInstancia(ControleSenha.class);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -28,7 +28,7 @@ public class ControleSenha {
 		Autenticador autenticador = Autenticador.getInstancia();
 		if(autenticador.getProfissionalAtual() != null){
 			String senha = autenticador.getUsuarioAtual().getSenha();
-			String senhaPadraoReset = Utilities.encriptaParaMd5("123456");
+			String senhaPadraoReset = Utilitarios.encriptaParaMd5("123456");
 			if(senha.equals(senhaPadraoReset)){
 				return true;
 			}
@@ -40,7 +40,7 @@ public class ControleSenha {
 		Autenticador autenticador = Autenticador.getInstancia();
 		if(autenticador.getProfissionalAtual() != null){
 			String senha = autenticador.getUsuarioAtual().getSenha();
-			String matriculaCriptografada = Utilities.encriptaParaMd5(String.valueOf(autenticador.getProfissionalAtual().getMatricula()));
+			String matriculaCriptografada = Utilitarios.encriptaParaMd5(String.valueOf(autenticador.getProfissionalAtual().getMatricula()));
 			if(senha.equals(matriculaCriptografada)){
 				return true;
 			}

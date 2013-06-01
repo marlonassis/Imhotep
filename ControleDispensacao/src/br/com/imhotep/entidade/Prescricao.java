@@ -19,7 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 
 @Entity
 @Table(name = "tb_prescricao")
@@ -214,7 +214,7 @@ public class Prescricao {
 	@Transient
 	public String getMassaFormatada(){
 		if(getMassa() != null)
-			return Utilities.doubleFormatadoBr(getMassa()).concat(" Kg");
+			return Utilitarios.doubleFormatadoBr(getMassa()).concat(" Kg");
 		return "";
 	}
 	

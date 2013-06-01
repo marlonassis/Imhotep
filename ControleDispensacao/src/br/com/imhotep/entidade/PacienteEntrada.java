@@ -337,17 +337,17 @@ public class PacienteEntrada {
 	
 	@Transient
 	public String getTelefone1Formatado(){
-		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(telefone1, "(##)####-####");
+		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(telefone1, "(##)####-####");
 	}
 	
 	@Transient
 	public String getTelefone2Formatado(){
-		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(telefone2, "(##)####-####");
+		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(telefone2, "(##)####-####");
 	}
 	
 	@Transient
 	public String getCepFormatado(){
-		return br.com.imhotep.auxiliar.Utilities.formatarValorMascara(cep, "##.###-###");
+		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(cep, "##.###-###");
 	}
 	
 	public PacienteEntrada clone(){

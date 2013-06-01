@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.relatorio.ConsultaRelatorioEstoqueVencimentoPeriodo;
 import br.com.imhotep.entidade.relatorio.EstoqueVencimento;
 
@@ -28,7 +28,7 @@ public class RelatorioEstoqueVencimento extends PadraoRelatorio{
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioEstoqueVencimentoPeriodo.jasper";
 		String nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		dataFim = new Utilities().ajustarUltimoDiaMesHoraMaximo(dataFim);
+		dataFim = new Utilitarios().ajustarUltimoDiaMesHoraMaximo(dataFim);
 		List<EstoqueVencimento> lista = new ConsultaRelatorioEstoqueVencimentoPeriodo().consultarResultados(dataIni, dataFim);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );

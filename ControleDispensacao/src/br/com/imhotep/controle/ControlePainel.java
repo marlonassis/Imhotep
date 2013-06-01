@@ -7,8 +7,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.Painel;
-import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean(name="controlePainel")
 @SessionScoped
@@ -20,7 +20,7 @@ public class ControlePainel implements Serializable {
 	
 	public static ControlePainel getInstancia(){
 		try {
-			return (ControlePainel) Utilities.procuraInstancia(ControlePainel.class);
+			return (ControlePainel) Utilitarios.procuraInstancia(ControlePainel.class);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

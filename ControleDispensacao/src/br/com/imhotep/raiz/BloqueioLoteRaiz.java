@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.EstoqueLog;
@@ -32,7 +32,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	public boolean medicamentoVencido(Date validade){
 		Calendar atual = Calendar.getInstance();
 		Calendar vali = Calendar.getInstance();
-		vali.setTime(new Utilities().ajustarUltimaHoraDia(validade));
+		vali.setTime(new Utilitarios().ajustarUltimaHoraDia(validade));
 		vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
 		if(vali.after(atual)){
 			return false;

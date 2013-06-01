@@ -7,8 +7,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.Menu;
-import br.com.remendo.utilidades.Utilities;
 
 @ManagedBean
 @SessionScoped
@@ -20,7 +20,7 @@ public class ControleMenu implements Serializable {
 	
 	public static ControleMenu getInstancia(){
 		try {
-			return (ControleMenu) Utilities.procuraInstancia(ControleMenu.class);
+			return (ControleMenu) Utilitarios.procuraInstancia(ControleMenu.class);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

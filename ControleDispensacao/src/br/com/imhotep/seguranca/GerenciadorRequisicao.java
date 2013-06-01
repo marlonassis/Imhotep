@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.controle.ControleSenha;
 import br.com.imhotep.excecoes.ExcecaoAcessoNaoAutorizado;
@@ -31,7 +31,7 @@ public class GerenciadorRequisicao implements PhaseListener{
 	}
 	
 	private void acessoPaginaNaoAutorizado(String pagina) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, ExcecaoAcessoNaoAutorizado{
-		ControleMenu controleMenu = (ControleMenu) Utilities.procuraInstancia(ControleMenu.class);
+		ControleMenu controleMenu = (ControleMenu) Utilitarios.procuraInstancia(ControleMenu.class);
 		if(existeUsuarioLogado() && !paginaAcessoGeral(pagina) && !controleMenu.urlAutorizada(pagina)){
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
 			throw new ExcecaoAcessoNaoAutorizado(pagina);

@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Utilities;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueUnidade;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.entidade.Unidade;
@@ -32,7 +32,7 @@ public class RelatorioMovimentacaoEstoqueUnidade extends PadraoRelatorio{
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueUnidade.jasper";
 		String nomeRelatorio = "EstoqueMovimentacaoUnidade-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		dataFim = new Utilities().ajustarUltimaHoraDia(dataFim);
+		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
 		List<MovimentacaoEstoqueUnidade> lista = new ConsultaRelatorioMovimentacaoEstoqueUnidade().consultarResultados(dataIni, dataFim, getUnidade(), getTipoMovimento());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );

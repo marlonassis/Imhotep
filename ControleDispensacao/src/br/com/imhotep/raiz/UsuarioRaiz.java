@@ -9,12 +9,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
-import br.com.remendo.utilidades.Utilities;
 
 
 @ManagedBean(name="usuarioRaiz")
@@ -29,7 +29,7 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	private String senhaNovaConfirmacao;
 	
 	public void resetarSenha(){
-		getInstancia().setSenha(Utilities.encriptaParaMd5("123456"));
+		getInstancia().setSenha(Utilitarios.encriptaParaMd5("123456"));
 		super.atualizar();
 	}
 	
@@ -50,10 +50,10 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em EstoqueCentroCirurgico");
 		}
-		String senhaCriptografada = Utilities.encriptaParaMd5(senhaAntiga);
+		String senhaCriptografada = Utilitarios.encriptaParaMd5(senhaAntiga);
 		if(senhaNova.equals(senhaNovaConfirmacao)){
 			if(usuario.getSenha().equals(senhaCriptografada)){
-				String senha = Utilities.encriptaParaMd5(senhaNova);
+				String senha = Utilitarios.encriptaParaMd5(senhaNova);
 				usuario.setSenha(senha);
 				setInstancia(usuario);
 				super.atualizar();
@@ -72,7 +72,7 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 		//se o usuário informou a senha de confirmação então devemos validar a senha
 		if(trocaSenha && !getSenhaConfirmacao().equals("") && getSenhaConfirmacao() != null){
 			if (getInstancia().getSenha().equals(getSenhaConfirmacao())){
-				getInstancia().setSenha(Utilities.encriptaParaMd5(getInstancia().getSenha()));
+				getInstancia().setSenha(Utilitarios.encriptaParaMd5(getInstancia().getSenha()));
 				return super.atualizar();
 			}else{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas não conferem!", "Informe duas senhas iguais."));
@@ -113,7 +113,7 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	}
 	
 	public boolean enviarUsuarioPadrao(){
-		getInstancia().setSenha(Utilities.encriptaParaMd5("123456"));
+		getInstancia().setSenha(Utilitarios.encriptaParaMd5("123456"));
 		getInstancia().setDataInclusao(new Date());
 		getInstancia().setExpiraSessao(true);
 		getInstancia().setProfissionalInclusao(getProfissionalAtual());
@@ -132,7 +132,7 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 		try{
 			if(getInstancia().getSenha().equals(getSenhaConfirmacao())){
 				if(procurarUsuario(getInstancia().getLogin()) == null){
-					getInstancia().setSenha(Utilities.encriptaParaMd5(getInstancia().getSenha()));
+					getInstancia().setSenha(Utilitarios.encriptaParaMd5(getInstancia().getSenha()));
 					getInstancia().setDataInclusao(new Date());
 					getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 					if(super.enviar()){
