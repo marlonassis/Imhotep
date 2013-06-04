@@ -1,52 +1,422 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templateLimpo.xhtml">
 
 	<ui:define name="conteudoPadrao">
 		<p:fieldset id="dispensacoesPendentesFieldSet"
-					legend="Dispensações Pendentes - #{solicitacaoMedicamentoUnidadeConsultaRaiz.quantidadeSolicitacoesPendentes()}"
+					legend="Dispensações Pendentes"
 					collapsed="false" 
 					toggleable="false">
 			<p:dataGrid id="dispensacoesPendentesDataGrid"
 						var="linha" 
 						emptyMessage="Não há solicitações"
-						value="#{solicitacaoMedicamentoUnidadeConsultaRaiz.consultarSolicitacoesPendentes()}" 
+						value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacoesPendentes}" 
 						columns="1"  
 						paginator="true">  
 
-			        <p:panel header="#{linha.unidade.nome}" style="text-align:center">  
-			            <h:panelGrid columns="1" style="width:100%">  
-			                <h:outputText value="#{linha.material.descricao}" />  
-							<h:outputText value="#{linha.quantidadeSolicitada}" />
+			        <p:panel header="#{linha.unidadeDestino.nome}" style="text-align:center">  
+			            <h:panelGrid id="solicitacoesPendentesPanelGrid" columns="1" style="width:100%">  
 							<h:outputText value="#{linha.profissionalInsercao.nome}" />
-			                <p:commandLink  title="Dispensar" oncomplete="dispensarDialog.show()" >  
-			                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
-			                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />  
-			                </p:commandLink>  
+							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInsercao)}" />
+			                <h:outputText value="#{linha.itens.size()} item(ns)" />
+			                <h:panelGroup>
+			                	<h:panelGrid width="100%" columns="2" >			                
+					                <p:commandLink  title="Dispensar"
+					                				action="#{solicitacaoMedicamentoUnidadeRaiz.iniciarDispensacao}"
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();"
+					                				rendered="#{!solicitacaoMedicamentoUnidadeRaiz.edicao}"
+					                				update=":#{p:component('dispensacoesPendentesDataGrid')} :#{p:component('dispensarDialog')}" >  
+					                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />  
+					                </p:commandLink>
+					                <p:commandLink  title="Recusar" 
+					                				action="#{solicitacaoMedicamentoUnidadeRaiz.preRecusaSolicitacao}" 
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();" 
+					                				rendered="#{!solicitacaoMedicamentoUnidadeRaiz.edicao}" 
+					                				update=":#{p:component('dispensacoesPendentesDataGrid')} :#{p:component('recusarSolicitacaoDialog')} :#{p:component('solicitacaoRecusadaOutPutPanel')}" > 
+					                    <h:graphicImage value="/Imagens/Close-icon.png" /> 
+					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />  
+					                </p:commandLink>
+					        	</h:panelGrid>
+				            </h:panelGroup>
+			                <h:graphicImage value="/Imagens/pill16.png" rendered="#{solicitacaoMedicamentoUnidadeRaiz.edicao and solicitacaoMedicamentoUnidadeRaiz.instancia.idSolicitacaoMedicamentoUnidade == linha.idSolicitacaoMedicamentoUnidade}" />
 			            </h:panelGrid>  
 			        </p:panel>  
 			  
 			</p:dataGrid>
 			
-			<p:dialog header="Dispensar" widgetVar="dispensarDialog" modal="true">  
-		        <p:outputPanel id="detalhes" style="text-align:center;" layout="block">  
-		            <h:panelGrid  columns="2" cellpadding="5">  
-		                <h:outputLabel for="#{solicitacaoMedicamentoUnidadeRaiz.instancia.material.descricao}" value="Model No: " />  
-		                <h:outputText id="modelNo" value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.material.descricao}" />  
-		                  
-		                <h:outputLabel for="year" value="Year: " />  
-		                <h:outputText id="year" value="#{tableBean.selectedCar.year}" />  
-		                  
-		                <h:outputLabel for="color" value="Color: " />  
-		                <h:outputText id="color" value="#{tableBean.selectedCar.color}" style="color:#{tableBean.selectedCar.color}"/>  
-		            </h:panelGrid>  
+			<p:dialog id="recusarSolicitacaoDialog"
+					  header="Recusar Solicitação" 
+					  widgetVar="profissionalReceptorDialog" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.solicitarJustificativaRecusaSolicitacao}" >
+				<p:outputPanel id="solicitacaoRecusadaOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesSolicitacaoRecusada" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da recusa da solicitação</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaRecusaSolicitacao" value="#{solicitacaoMedicamentoUnidadeRaiz.justificativaRecusa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMedicamentoUnidadeRaiz.recusarSolicitacao}" 
+												 update=":#{p:component('recusarSolicitacaoDialog')} :#{p:component('solicitacaoRecusadaOutPutPanel')} :#{p:component('messagesSolicitacaoRecusada')} :#{p:component('dispensacoesPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMedicamentoUnidadeRaiz.cancelarRecusa}" 
+							    				 update=":#{p:component('recusarSolicitacaoDialog')} :#{p:component('dispensacoesPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="profissionalReceptorDialog"
+					  header="Receptor" 
+					  widgetVar="profissionalReceptorDialog" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.solicitarProfissionalRecepcao}" >
+				<p:outputPanel id="profissionalReceptorOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesReceptor" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o nome do profissional que está recebendo a dispensação</b>
+					<br/>
+					<center>
+						<ri:inputAutoComplete id="profissionalResponsavel" 
+											  completeMethod="#{profissionalAutoComplete.autoComplete}" 
+											  itemLabel="#{profissional.nome}" 
+											  itemValue="#{profissional}" 
+											  var="profissional" 
+											  value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalReceptor}" 
+											  label="Profissional Responsável" 
+											  required="false" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Dispensar" 
+												 global="false" 
+				                				 onclick="statusDialog.show();" 
+				                				 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMedicamentoUnidadeRaiz.fecharDispensacao}" 
+												 update=":#{p:component('messagesReceptor')} :#{p:component('profissionalReceptorDialog')} :#{p:component('detalhes')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMedicamentoUnidadeRaiz.fecharConfirmacaoReceptor}" 
+							    				 update=":#{p:component('profissionalReceptorDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="justificativaRecusaItemDialog"
+					  header="Justificativa" 
+					  widgetVar="justificativaRecusaItemDialog" 
+					  modal="true" 
+					  width="700px" 
+					  height="340px" 
+					  closable="false" 
+					  visible="#{solicitacaoMedicamentoUnidadeItemRaiz.itemRecusado}" >
+				<p:outputPanel id="justificativaRecusaOutPutPanel" style="text-align:center;" layout="block">
+					<b>Justifique o motivo de você estar recusando #{solicitacaoMedicamentoUnidadeItemRaiz.instancia.material.descricao}</b>
+					<br/>
+					<center>
+						<p:editor id="tests" value="#{solicitacaoMedicamentoUnidadeItemRaiz.justificativaRecusa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.recusarItem}" 
+												 update=":#{p:component('justificativaRecusaItemDialog')} :#{p:component('detalhes')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarRecusaItem}" 
+							    				 update=":#{p:component('justificativaRecusaItemDialog')} :#{p:component('dispensarDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="justificativaDialog"
+					  header="Justificativa" 
+					  widgetVar="justificativaDialog" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMedicamentoUnidadeItemRaiz.quantidadeDispensadaDiferenteSolicitada}" >
+				<p:outputPanel id="justificativaOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messages" showDetail="false" autoUpdate="false" closable="true" />  
+					<b>Justifique o motivo de você está liberando uma quantidade diferente da quantidade solicitada por #{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalInsercao.nomeResumido}</b>
+					<br/>
+					<center>
+						<p:editor value="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia.justificativa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Liberar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.fecharItemLiberadoComJustificativa}" 
+												 update=":#{p:component('justificativaDialog')} :#{p:component('dispensarDialog')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarJustificativa}" 
+							    				 update=":#{p:component('justificativaDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="dispensarDialog"
+					  header="Dispensar" 
+					  widgetVar="dispensarDialog" 
+					  modal="false" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.iniciarDispensacao}" >  
+		        <p:outputPanel id="detalhes" style="text-align:center;" layout="block">
+		        	<b>#{solicitacaoMedicamentoUnidadeRaiz.instancia.unidadeDestino}</b>  
+		            <h:panelGrid columns="1" width="90%">
+						<h:panelGrid id="solicitacaoMedicamentoSolicitadoItemPanelGrid" 
+									 rendered="#{solicitacaoMedicamentoUnidadeRaiz.edicao}" 
+									 columns="2"
+									 cellpadding="10px" >
+							<h:panelGroup>
+								<p:growl id="mensagemDispensacaoGrowl" showDetail="true"  />  
+								<p:dataTable var="item" 
+											 value="#{solicitacaoMedicamentoUnidadeItemRaiz.itens}"
+											 emptyMessage="Não há itens cadastrados" > 
+									<f:facet name="header">  
+								            Material(is) Soliciatado(s)
+								    </f:facet>  
+								    
+								    <p:column style="width:60px; text-align: center;" rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'P'}" >
+										<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.preRecusarItem}"
+													   global="false" 
+			                						   onclick="statusDialog.show();" 
+			                						   onsuccess="statusDialog.hide();"
+													   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')} :#{p:component('justificativaRecusaItemDialog')}"
+													   rendered="#{item.statusItem != 'R' and !solicitacaoMedicamentoUnidadeItemRaiz.edicao}" 
+													   title="Recusar #{item.material.descricaoUnidadeMaterial}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+											<h:graphicImage value="/Imagens/Close-icon.png" />
+										</p:commandLink>
+									</p:column>
+								    
+							        <p:column headerText="Material" width="">  
+							            <h:outputText value="#{item.material.descricaoUnidadeMaterial}" />  
+							        </p:column>  
+							        
+							        <p:column headerText="Quantidade Solicitada">  
+							            <h:outputText value="#{item.quantidadeSolicitada}" />  
+							        </p:column> 
+							        
+							        <p:column headerText="Quantidade Dispensada">  
+							            <h:outputText value="#{solicitacaoMedicamentoUnidadeItemRaiz.somaTotalDispensadaItem(item)}" />  
+							        </p:column> 
+							        
+							        <p:column style="width:60px; text-align: center;" rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'P'}" >
+										<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.iniciarDispensacao}"
+													   global="false" 
+			                						   onclick="statusDialog.show();" 
+			                						   onsuccess="statusDialog.hide();"
+													   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}"
+													   rendered="#{!solicitacaoMedicamentoUnidadeItemRaiz.edicao and item.statusItem != 'R'}" 
+													   title="Dispensar #{item.material.descricaoUnidadeMaterial}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+											<h:graphicImage value="/Imagens/borrownext16.png" />
+										</p:commandLink>
+										<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarRecusaItem}"
+													   global="false" 
+			                						   onclick="statusDialog.show();" 
+			                						   onsuccess="statusDialog.hide();"
+													   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}"
+													   rendered="#{item.statusItem == 'R' and !solicitacaoMedicamentoUnidadeItemRaiz.edicao}" 
+													   title="Recusar #{item.material.descricaoUnidadeMaterial}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+											<h:graphicImage value="/Imagens/undoBlue16.png" />
+										</p:commandLink>
+										<h:graphicImage value="/Imagens/pill16.png" 
+														rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao and solicitacaoMedicamentoUnidadeItemRaiz.instancia.idSolicitacaoMedicamentoUnidadeItem == item.idSolicitacaoMedicamentoUnidadeItem}" 
+														title="Este medicamento está em edição" />
+									</p:column> 
+							    </p:dataTable>
+							</h:panelGroup>
+						    <h:panelGroup>
+							    <p:dataTable id="lotes" 
+											 var="lote" 
+											 emptyMessage="Escolha um material para iniciar a dispensação"
+											 value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoquesDispensacao}">  
+	  
+							        <f:facet name="header">  
+							            Lote(s) - #{solicitacaoMedicamentoUnidadeItemRaiz.instancia.material.descricao}
+							        </f:facet>  
+							  
+							        <p:column headerText="Lote">  
+							            <h:outputText value="#{lote.estoque.lote}" />  
+							        </p:column>  
+							  		
+							  		<p:column headerText="Quantidade em Estoque" style="width:25%">  
+							                <h:outputText value="#{lote.estoque.quantidadeAtual}" />  
+							        </p:column>  
+							  		
+							        <p:column headerText="Quantidade Dispensada" style="width:25%">  
+							                <h:outputText value="#{lote.quantidadeDispensada}" />  
+							        </p:column>  
+							        
+							        <p:column style="width:60px; text-align: center;">
+										<p:commandLink update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}"
+													   global="false" 
+					                				   onclick="statusDialog.show();" 
+					                				   onsuccess="statusDialog.hide();"
+													   rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao == null}"
+													   title="Editar #{lote.estoque.lote}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{lote}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao}" />
+											<h:graphicImage value="/Imagens/borrownext16.png" />
+										</p:commandLink>
+										<h:graphicImage value="/Imagens/pill16.png" rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.estoque.idEstoque == lote.estoque.idEstoque}" />
+									</p:column> 
+							    </p:dataTable>
+							    <br/>
+							    <h:panelGrid columns="2" width="100%" >
+							    	<h:panelGroup>
+							    		<center>
+										    <p:commandButton value="Liberar" 
+										    				 global="false" 
+			                								 onclick="statusDialog.show();" 
+			                								 onsuccess="statusDialog.hide();"
+										    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.preFechamentoItemLiberado}" 
+										    				 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')} :#{p:component('justificativaDialog')}" 
+										    				 rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao}" />
+										</center>
+									</h:panelGroup>
+									<h:panelGroup>
+							    		<center>
+										    <p:commandButton value="Cancelar" 
+										    				 global="false" 
+							                				 onclick="statusDialog.show();" 
+							                				 onsuccess="statusDialog.hide();"
+										    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarItemLiberado}" 
+										    				 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" 
+										    				 rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao}" />
+										</center>
+									</h:panelGroup>
+							    </h:panelGrid>
+							</h:panelGroup>
+							  
+							<h:panelGroup/>
+							
+							<h:panelGroup id="loteEdicao" rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao != null}" >
+								<h:outputText style="font-weight:bold;" value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.estoque.lote}" /><br/>
+								Quantidade:<br/>
+								<p:inputText value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.quantidadeDispensada}" /><br/>
+								<p:commandButton value="Atualizar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.atualizarEstoqueDispensacaoEdicao}" 
+												 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarEstoqueEdicao}" 
+												 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<p:separator id="separator" />
+						<h:panelGrid id="botoesPanelGrid" 
+									 columns="3" 
+									 width="100%" >
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Dispensar" 
+								    				 global="false" 
+			                						 onclick="statusDialog.show();" 
+			                						 onsuccess="statusDialog.hide();"
+								    				 action="#{solicitacaoMedicamentoUnidadeRaiz.preFechamentoDispensacao}" 
+													 update=":#{p:component('profissionalReceptorDialog')} :#{p:component('mensagemDispensacaoGrowl')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Fechar"
+								    				 global="false" 
+					                				 onclick="statusDialog.show();" 
+					                				 onsuccess="statusDialog.hide();"	
+								    				 action="#{solicitacaoMedicamentoUnidadeRaiz.fecharTelaDispensacaoAtual}" 
+													 update=":#{p:component('dispensarDialog')} :#{p:component('dispensacoesPendentesDataGrid')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+									<p:commandButton value="Imprimir"
+								    			     onclick="window.open('/imhotep/PaginasWeb/Prescricao/SolicitacaoMedicamentoUnidade/solicitacaoImpressa.hu', 'dispensacaoImpressa');" 
+								    			     rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'D'}" />
+								</center>
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGrid>
 		        </p:outputPanel>  
 			</p:dialog>  
 			
-			<p:poll interval="60" update=":#{p:component('dispensacoesPendentesFieldSet')}" global="false" />
+			<p:poll interval="60" 
+					update=":#{p:component('dispensacoesPendentesDataGrid')}" 
+					listener="#{solicitacaoMedicamentoUnidadeConsultaRaiz.consultarSolicitacoesPendentes}"
+					global="false" />
 		</p:fieldset>
 	</ui:define>
 </ui:composition>

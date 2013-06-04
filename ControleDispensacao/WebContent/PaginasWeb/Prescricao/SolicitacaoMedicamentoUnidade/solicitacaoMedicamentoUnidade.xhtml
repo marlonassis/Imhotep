@@ -14,7 +14,9 @@
 		<p:tab title="Solicitação de Medicamento por Unidade">
 			<rf:formularioEdicao id="solicitacaoMedicamentoUnidade"
 								raiz="#{solicitacaoMedicamentoUnidadeRaiz}"
-								srcEditor="Prescricao/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidadeEditor.xhtml" />
+								srcEditor="Prescricao/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidadeEditor.xhtml" 
+								valueSalvar="Abrir Solicitação" 
+								valueGravar="Fechar Solicitação" />
 								
 			<rf:formularioPesquisa id="solicitacaoMedicamentoUnidadePesquisa" 
 								  novoAction="#{solicitacaoMedicamentoUnidadeConsulta.novaInstancia()}"

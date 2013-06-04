@@ -16,11 +16,20 @@ import br.com.remendo.PadraoHome;
 public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	
 	private boolean loteEncontrado;
+	private boolean ativarMensagem = true; 
 	
 	public DispensacaoSimplesRaiz() {
+		super();
 		limpar();
 	}
-
+	
+	public DispensacaoSimplesRaiz(boolean exibeMensagemInsercao, boolean exibeMensagemAtualizacao){
+		super();
+		setExibeMensagemAtualizacao(exibeMensagemAtualizacao);
+		setExibeMensagemInsercao(exibeMensagemInsercao);
+		limpar();
+	}
+	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){
 		loteEncontrado = true;
 		getInstancia().getMovimentoLivro().setEstoque(estoque);
@@ -54,7 +63,8 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	@Override
 	public boolean enviar() {
 		try {
-			FluxoDispensacaoSimples fluxoDispensacaoSimples = new FluxoDispensacaoSimples();
+			FluxoDispensacaoSimples fluxoDispensacaoSimples = new FluxoDispensacaoSimples(isAtivarMensagem());
+			
 			if(getLoteEncontrado()){
 				procurarLote();
 				fluxoDispensacaoSimples.atualizarEstoque(getInstancia());
@@ -73,6 +83,14 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 
 	public void setLoteEncontrado(boolean loteEncontrado) {
 		this.loteEncontrado = loteEncontrado;
+	}
+
+	public boolean isAtivarMensagem() {
+		return ativarMensagem;
+	}
+
+	public void setAtivarMensagem(boolean ativarMensagem) {
+		this.ativarMensagem = ativarMensagem;
 	}
 
 }

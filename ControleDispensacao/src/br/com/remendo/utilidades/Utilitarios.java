@@ -314,6 +314,10 @@ public class Utilitarios{
 		return Calendar.getInstance().getTime();
 	}
 	
+	public String getDataHoraAtual(){
+		return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+	}
+	
 	public String getDataAtual(){
 		return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 	}

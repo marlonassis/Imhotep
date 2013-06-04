@@ -12,6 +12,8 @@ public abstract class PadraoFluxo extends PadraoGeral implements IPadraoHome {
 	private boolean exibeMensagemAtualizacao = true;
 	private boolean exibeMensagemDelecao = true;
 	private boolean exibeMensagemInsercao = true;
+	private String mensagemErro="Ocorrreu um erro ao cadastrar";
+	private String mensagemSucesso="Cadastro realizado com sucesso";
 	
 	public boolean enviar() {
 		boolean ret = false;
@@ -22,14 +24,14 @@ public abstract class PadraoFluxo extends PadraoGeral implements IPadraoHome {
 			tx.commit();  
 			ret = true;
 			if(isExibeMensagemInsercao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Cadastro realizado com sucesso", "Registro cadastrado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, getMensagemSucesso(), null));
 			}
 			aposEnviar();
 		}
 		catch (Exception e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorrreu um erro ao cadastrar", e.getCause().getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagemErro(), e.getCause().getMessage()));
 		}finally{
 			finallyTransacao();
 		}
@@ -149,5 +151,21 @@ public abstract class PadraoFluxo extends PadraoGeral implements IPadraoHome {
 
 	public void setExibeMensagemInsercao(boolean exibeMensagemInsercao) {
 		this.exibeMensagemInsercao = exibeMensagemInsercao;
+	}
+
+	public String getMensagemErro() {
+		return mensagemErro;
+	}
+
+	public void setMensagemErro(String mensagemErro) {
+		this.mensagemErro = mensagemErro;
+	}
+
+	public String getMensagemSucesso() {
+		return mensagemSucesso;
+	}
+
+	public void setMensagemSucesso(String mensagemSucesso) {
+		this.mensagemSucesso = mensagemSucesso;
 	}
 }

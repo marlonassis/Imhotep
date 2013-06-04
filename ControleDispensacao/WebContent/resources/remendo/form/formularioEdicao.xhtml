@@ -21,6 +21,8 @@
 		<co:attribute name="renderedGravar" default="true" />
 		<co:attribute name="ajaxSalvar" default="true" />
 		<co:attribute name="renderedSalvar" default="true" />
+		<co:attribute name="valueSalvar" default="Salvar" />
+		<co:attribute name="valueGravar" default="Gravar" />
 	</co:interface>
 	
 	<co:implementation>
@@ -33,12 +35,12 @@
 						toggleable="#{cc.attrs.fieldSetToggleable}"
 						toggleSpeed="#{cc.attrs.fieldSetToggleSpeed}">
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcEditor}" />
-				<p:commandButton value="Salvar"
+				<p:commandButton value="#{cc.attrs.valueSalvar}"
 								 ajax="#{cc.attrs.ajaxSalvar}"
 								 rendered="#{!cc.attrs.raiz.edicao and cc.attrs.renderedSalvar}"
 								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl #{cc.attrs.updateSalvar}"
 								 action="#{cc.attrs.raiz.enviar}" />
-				<p:commandButton value="Gravar" 
+				<p:commandButton value="#{cc.attrs.valueGravar}" 
 								 rendered="#{cc.attrs.raiz.edicao and cc.attrs.renderedGravar}"
 								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl"
 								 action="#{cc.attrs.raiz.atualizar}"/>

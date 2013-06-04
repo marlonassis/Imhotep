@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+	<h:form>
+		<table border="0" width="100%" >
+			<tr>
+				<td>
+					<h2>Universidade Federal de Sergipe</h2>
+					<h3>Hospital Universitário</h3>
+					<h4>Dispensação de Medicamentos</h4>
+					<h5>Setor: Farmácia</h5>
+				</td>
+				<td>
+					<div align="right">
+						<h:graphicImage value="/Imagens/logo_hu_simples.png" />
+			            <br/>
+						Data da impressão: <h:outputText value="#{util.dataHoraAtual}" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"/>
+			</tr>
+			<tr>
+				<td>
+					<b>Solicitação:</b>
+				</td>
+				<td>
+					<b>Dispensação:</b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Data: <h:outputText value="#{util.formatarDataHoraBrasil(solicitacaoMedicamentoUnidadeRaiz.instancia.dataInsercao)}"/>
+				</td>
+				<td>
+					Data:<h:outputText value="#{util.formatarDataHoraBrasil(solicitacaoMedicamentoUnidadeRaiz.instancia.dataDispensacao)}"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Nome:#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalDispensacao.nome}
+				</td>
+				<td>
+					Nome:#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalDispensacao.nome}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Unidade:#{solicitacaoMedicamentoUnidadeRaiz.instancia.unidadeDestino.nome}
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<b>Itens</b>
+				</td>
+			</tr>
+			<ui:repeat value="#{solicitacaoMedicamentoUnidadeItemRaiz.itens}" var="item" >
+				<tr>
+					<td colspan="2" >
+						<h:panelGroup rendered="#{item.statusItem == 'R'}" >
+							<b>x</b> #{item.material.descricao} - Recusado
+						</h:panelGroup>
+						<h:panelGroup rendered="#{item.statusItem != 'R'}" >
+							•#{item.material.descricao} • Dis.:#{solicitacaoMedicamentoUnidadeItemRaiz.somaTotalDispensadaItem(item)}<br/>
+							<ui:repeat value="#{solicitacaoMedicamentoUnidadeItemRaiz.itensLiberados.get(item)}" var="itemLiberado" >
+								Lote: #{itemLiberado.estoque.lote} - Dis.:#{itemLiberado.quantidadeDispensada} - Vali.:<h:outputText value="#{itemLiberado.estoque.dataValidade}" ><f:convertDateTime pattern="MMMM/yyyy"  locale="pt_BR" timeZone="GMT-3" /></h:outputText>
+								••
+							</ui:repeat>
+						</h:panelGroup>
+					</td>
+				</tr>
+			</ui:repeat>
+		</table>
+		<br/><br/>
+	    <h:panelGrid border="0" columns="2" width="100%" >
+	    	<h:panelGroup>
+	    	<center>
+	    		-----------------------------------------------------<br/>
+	    		#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalInsercao.nome}
+	    	</center>
+	    	</h:panelGroup>
+	    	<h:panelGroup>
+	    	<center>
+	    		-----------------------------------------------------<br/>
+	    		#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalReceptor.nome}
+	    	</center>
+	    	</h:panelGroup>
+	    </h:panelGrid>
+	</h:form>
+	</ui:define>
+</ui:composition>

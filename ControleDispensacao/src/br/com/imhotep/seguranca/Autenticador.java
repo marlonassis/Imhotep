@@ -12,7 +12,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
+import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.controle.ControleInstancia;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.controle.ControlePainel;
@@ -24,6 +27,7 @@ import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
+import br.com.imhotep.raiz.EstoqueRaiz;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
 import br.com.remendo.ConsultaGeral;
 
@@ -182,11 +186,12 @@ public class Autenticador {
 	    				setUsuarioAtual(usuarioLogado);
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
 	    				setUsuarioAtual(usuarioLogado);
+	    				new UsuarioAcessoLogRaiz().gerarLogLogin();
 	    				carregaUnidadesUsuario();
 	    				carregaProfissional();
 	    				carregaToolBarMenu();
 	    				carregaPaineis();
-	    				new UsuarioAcessoLogRaiz().gerarLogLogin();
+	    				carregarRestricoesUsuario();
 	    			}
 	    		}
 	    	}
@@ -198,6 +203,15 @@ public class Autenticador {
 			}
 		}
 		setUsuario(new Usuario());
+	}
+	
+	private void carregarRestricoesUsuario(){
+		ControlePainel cp = ControlePainel.getInstancia();
+		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_MEDICAMENTO_VENCIDO)){
+			EstoqueRaiz.getInstanciaAtual().setEstoqueVencido(new EstoqueConsultaRaiz().consultarEstoqueVencidoLimiteSeteDias());
+			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesPendentes();
+			new SolicitacaoMedicamentoUnidadeConsultaRaiz().quantidadeSolicitacoesPendentes();
+		}
 	}
 	
 	private void carregaPaineis() {

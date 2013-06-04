@@ -15,6 +15,8 @@ public class Constantes {
 	public static final String PAGINA_LOGIN = "/imhotep/PaginasWeb/login.hu";
 	public static final String PAGINA_MANUTENCAO = "/imhotep/PaginasWeb/manutencao.hu";
 	
+	public static final String PAINEL_MEDICAMENTO_VENCIDO = "Medicamentos Vencidos";
+	
 	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
 	
 	public static final String PRESCRICAO_PACIENTE_TAB = "prescricaoPacienteTab";

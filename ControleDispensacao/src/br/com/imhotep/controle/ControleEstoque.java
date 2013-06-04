@@ -94,7 +94,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 		sb.append("(select coalesce(sum(a.quantidade), 0) from PrescricaoItemDose a where a.prescricaoItem.dispensado = 'N' "); 
 		sb.append("and a.prescricaoItem.status = 'S' and a.prescricaoItem.material.idMaterial = :idMaterial) as quantidadeReservadaPrescricao, "); 
 		sb.append("(select coalesce(sum(b.quantidadeSolicitada), 0) from SolicitacaoMedicamentoUnidadeItem b "); 
-		sb.append("where (b.solicitacaoMedicamentoUnidade.statusDispensacao = 'P' or b.solicitacaoMedicamentoUnidade.statusDispensacao = 'A') and b.material.idMaterial = :idMaterial) as quantidadeReservadaSolicitacao, ");
+		sb.append("where b.statusItem = 'P' and b.material.idMaterial = :idMaterial) as quantidadeReservadaSolicitacao, ");
 		sb.append("(select coalesce(sum(c.quantidadeAtual), 0)  from Estoque c where c.idEstoque != :idEstoque and c.material.idMaterial = :idMaterial and c.bloqueado = false and to_char(c.dataValidade, 'yyyy-MM') >= :dataAtual) as quantidadeOutrosEstoques ");
 		sb.append("from Estoque o where o.idEstoque = :idEstoque and o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= :dataAtual ");
 		return sb;

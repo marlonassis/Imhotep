@@ -65,9 +65,12 @@
 				</h:panelGroup>
 				<h:panelGroup id="painelAvisosPanelGroup" >
 					<p:panel styleClass="panelAvisos" header="Painel de Avisos" rendered="#{autenticador.usuarioAtivo}" >
-						#{solicitacaoMedicamentoUnidadeConsultaRaiz.quantidadeSolicitacoesPendentes()} solicitações pendentes.
 						<h:form rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}" >
-							<p:poll interval="60" update=":#{p:component('painelAvisosPanelGroup')}" global="false" />
+							#{solicitacaoMedicamentoUnidadeRaiz.qtdSolicitacoesPendentes} solicitação(ões) pendente(s).
+							<p:poll interval="60" 
+									update=":#{p:component('painelAvisosPanelGroup')}" 
+									listener="#{solicitacaoMedicamentoUnidadeConsultaRaiz.quantidadeSolicitacoesPendentes()}" 
+									global="false" />
 						</h:form>
 					</p:panel>
 				</h:panelGroup>

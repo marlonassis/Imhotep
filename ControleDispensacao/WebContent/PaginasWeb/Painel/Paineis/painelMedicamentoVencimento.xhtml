@@ -10,7 +10,7 @@
 					collapsed="false" 
 					toggleable="false">
 			<p:dataTable id="tabelaEstoqueVencido"
-						 value="#{estoqueConsultaRaiz.consultarEstoqueVencido()}" 
+						 value="#{estoqueRaiz.estoqueVencido}" 
 						 var="linha"
 						 dblClickSelect="true" 
 						 emptyMessage="Não foi encontrado registros"
@@ -45,8 +45,8 @@
 				</p:column>
 				<p:column style="width:60px; text-align: center;">
 					<p:commandLink action="#{bloqueioLoteRaiz.bloqueioAutomaticoEstoque()}"
+								   update=":#{p:component('tabelaEstoqueVencido')}"
 								   onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
-								   oncomplete="window.location.reload();" 
 								   title="Bloquear lote #{linha.lote}"
 								   rendered="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade)}"
 								   style="padding-right:10px;">

@@ -13,17 +13,35 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 
 	private Map<String, Object> objetoSalvar = new HashMap<String, Object>();
 	private Map<String, Object> objetoAtualizar = new HashMap<String, Object>();
-	private String mensagemErro;
-	private String mensagemSucesso;
 	
-	public PadraoFluxoTemp() {
+	public PadraoFluxoTemp(){
+		super();
 		setMensagemErro("Erro ao salvar!");
 		setMensagemSucesso("Cadastro realizado com sucesso!");
 	}
 	
 	public PadraoFluxoTemp(String mensagemErro, String mensagemSucesso) {
+		super();
 		setMensagemErro(mensagemErro);
 		setMensagemSucesso(mensagemSucesso);
+	}
+	
+	public PadraoFluxoTemp(boolean exibeMensagemDelecao, boolean exibeMensagemInsercao, boolean exibeMensagemAtualizacao) {
+		super();
+		setMensagemErro("Erro ao salvar!");
+		setMensagemSucesso("Cadastro realizado com sucesso!");
+		setExibeMensagemAtualizacao(exibeMensagemAtualizacao);
+		setExibeMensagemDelecao(exibeMensagemDelecao);
+		setExibeMensagemInsercao(exibeMensagemInsercao);
+	}
+	
+	public PadraoFluxoTemp(String mensagemErro, String mensagemSucesso, boolean exibeMensagemDelecao, boolean exibeMensagemInsercao, boolean exibeMensagemAtualizacao) {
+		super();
+		setMensagemErro(mensagemErro);
+		setMensagemSucesso(mensagemSucesso);
+		setExibeMensagemAtualizacao(exibeMensagemAtualizacao);
+		setExibeMensagemDelecao(exibeMensagemDelecao);
+		setExibeMensagemInsercao(exibeMensagemInsercao);
 	}
 	
 	public boolean processarFluxo() throws ExcecaoPadraoFluxo{
@@ -47,7 +65,9 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 			session.flush();  
 			posicao = "Commit";
 			tx.commit();
-			mensagemInsercao(getMensagemSucesso(), null, Constantes.INFO);
+			if(isExibeMensagemInsercao()){
+				mensagemInsercao(getMensagemSucesso(), null, Constantes.INFO);
+			}
 			status = true;
 			aposEnviar();
 		}catch(Exception e){
@@ -76,22 +96,6 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		this.objetoSalvar = objetoSalvar;
 	}
 
-	public String getMensagemErro() {
-		return mensagemErro;
-	}
-
-	public void setMensagemErro(String mensagemErro) {
-		this.mensagemErro = mensagemErro;
-	}
-
-	public String getMensagemSucesso() {
-		return mensagemSucesso;
-	}
-
-	public void setMensagemSucesso(String mensagemSucesso) {
-		this.mensagemSucesso = mensagemSucesso;
-	}
-
 	public Map<String, Object> getObjetoAtualizar() {
 		return objetoAtualizar;
 	}
@@ -99,5 +103,5 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 	public void setObjetoAtualizar(Map<String, Object> objetoAtualizar) {
 		this.objetoAtualizar = objetoAtualizar;
 	}
-	
+
 }

@@ -14,7 +14,7 @@ import br.com.remendo.ConsultaGeral;
 @RequestScoped
 public class SolicitacaoMedicamentoUnidadeItemConsultaRaiz  extends ConsultaGeral<SolicitacaoMedicamentoUnidadeItem>{
 
-	public List<SolicitacaoMedicamentoUnidadeItem> getItens() {
+	public List<SolicitacaoMedicamentoUnidadeItem> getItensSolicitacao() {
 		String hql = "select o from SolicitacaoMedicamentoUnidadeItem o where o.solicitacaoMedicamentoUnidade.idSolicitacaoMedicamentoUnidade = "
 						+SolicitacaoMedicamentoUnidadeRaiz.getInstanciaAtual().getInstancia().getIdSolicitacaoMedicamentoUnidade()+" order by o.material.descricao";
 		return new ArrayList<SolicitacaoMedicamentoUnidadeItem>(new ConsultaGeral<SolicitacaoMedicamentoUnidadeItem>().consulta(new StringBuilder(hql), null));

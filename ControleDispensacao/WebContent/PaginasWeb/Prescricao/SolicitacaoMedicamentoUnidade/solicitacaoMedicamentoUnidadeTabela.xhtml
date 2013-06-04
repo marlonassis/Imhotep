@@ -47,6 +47,7 @@
 
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
+						   rendered="#{linha.statusDispensacao == 'A'}"
 						   update=":padraoTabView:solicitacaoMedicamentoUnidade:solicitacaoMedicamentoUnidadeEditorForm"
 						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia2}" />

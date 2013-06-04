@@ -20,9 +20,9 @@
 					 rendered="#{solicitacaoMedicamentoUnidadeRaiz.edicao}" 
 					 columns="3">
 			<ri:inputAutoComplete id="material" 
-								  label="Material"
+								  label="Material ou Código"
 								  size="45"
-								  completeMethod="#{materialAutoComplete.autoComplete}" 
+								  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
 								  itemValue="#{material}" 
 								  itemLabel="#{material.descricaoUnidadeMaterial}" 
 								  var="material"
@@ -38,7 +38,7 @@
 			<h:panelGroup>
 				<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.enviar}" 
 							   update=":#{p:component('listaItensPanelGrid')} :#{p:component('solicitacaoMedicamentoUnidadePesquisaForm')} :#{p:component('solicitacaoMedicamentounidadeItemPanelGrid')}" >
-					<h:graphicImage value="/Imagens/add.png" />
+					<h:graphicImage value="/Imagens/add.png" alt="Adicionar" />
 				</p:commandLink>
 			</h:panelGroup>
 		</h:panelGrid>
@@ -48,8 +48,11 @@
 					 rendered="#{solicitacaoMedicamentoUnidadeRaiz.edicao}" >
 			<p:growl showDetail="true" />
 			<p:dataTable var="item" 
-						 value="#{solicitacaoMedicamentoUnidadeItemConsultaRaiz.itens}"
-						 emptyMessage="Não há itens cadastrados" >  
+						 value="#{solicitacaoMedicamentoUnidadeItemRaiz.itens}"
+						 emptyMessage="Não há itens cadastrados" >
+				<p:column headerText="Código">  
+		            <h:outputText value="#{item.material.codigoMaterial}" />  
+		        </p:column>  
 		        <p:column headerText="Material">  
 		            <h:outputText value="#{item.material.descricaoUnidadeMaterial}" />  
 		        </p:column>  

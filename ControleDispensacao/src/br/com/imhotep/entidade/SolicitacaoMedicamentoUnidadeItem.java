@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +15,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 
 @Entity
 @Table(name = "tb_solicitacao_medicamento_unidade_item")
@@ -30,7 +34,7 @@ public class SolicitacaoMedicamentoUnidadeItem {
 	private Date dataLiberacao;
 	private String justificativa;
 	private SolicitacaoMedicamentoUnidade solicitacaoMedicamentoUnidade;
-	
+	private TipoStatusSolicitacaoItemEnum statusItem;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicitacao_medicamento_un_id_solicitacao_medicamento_u_seq1")
 	@Id
@@ -149,6 +153,16 @@ public class SolicitacaoMedicamentoUnidadeItem {
 
 	public void setSolicitacaoMedicamentoUnidade(SolicitacaoMedicamentoUnidade solicitacaoMedicamentoUnidade) {
 		this.solicitacaoMedicamentoUnidade = solicitacaoMedicamentoUnidade;
+	}
+
+	@Column(name="tp_tipo_status_item")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusSolicitacaoItemEnum getStatusItem() {
+		return statusItem;
+	}
+
+	public void setStatusItem(TipoStatusSolicitacaoItemEnum statusItem) {
+		this.statusItem = statusItem;
 	}
 
 	@Override

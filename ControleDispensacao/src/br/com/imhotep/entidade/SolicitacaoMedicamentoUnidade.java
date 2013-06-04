@@ -3,7 +3,6 @@ package br.com.imhotep.entidade;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -32,6 +31,11 @@ public class SolicitacaoMedicamentoUnidade {
 	private Date dataInsercao;
 	private TipoStatusDispensacaoEnum statusDispensacao;
 	private List<SolicitacaoMedicamentoUnidadeItem> itens;
+	private Date dataDispensacao;
+	private Profissional profissionalDispensacao;
+	private String justificativa;
+	private Profissional profissionalReceptor;
+	
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicitacao_medicamento_un_id_solicitacao_medicamento_un_seq")
 	@Id
@@ -95,7 +99,7 @@ public class SolicitacaoMedicamentoUnidade {
 		this.statusDispensacao = statusDispensacao;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacaoMedicamentoUnidade", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacaoMedicamentoUnidade")
 	public List<SolicitacaoMedicamentoUnidadeItem> getItens() {
 		return itens;
 	}
@@ -103,6 +107,46 @@ public class SolicitacaoMedicamentoUnidade {
 		this.itens = itens;
 	}
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_dispensacao")
+	public Date getDataDispensacao() {
+		return dataDispensacao;
+	}
+
+	public void setDataDispensacao(Date dataDispensacao) {
+		this.dataDispensacao = dataDispensacao;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_dispensacao")
+	public Profissional getProfissionalDispensacao() {
+		return profissionalDispensacao;
+	}
+
+	public void setProfissionalDispensacao(
+			Profissional profissionalDispensacao) {
+		this.profissionalDispensacao = profissionalDispensacao;
+	}
+	
+	@Column(name="cv_justificativa")
+	public String getJustificativa() {
+		return justificativa;
+	}
+
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_receptor")
+	public Profissional getProfissionalReceptor() {
+		return profissionalReceptor;
+	}
+
+	public void setProfissionalReceptor(Profissional profissionalReceptor) {
+		this.profissionalReceptor = profissionalReceptor;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

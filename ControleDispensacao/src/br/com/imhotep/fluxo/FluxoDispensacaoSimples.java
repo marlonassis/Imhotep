@@ -21,6 +21,15 @@ public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
 	}
 	
+	public FluxoDispensacaoSimples(boolean exibirMensagem) {
+		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
+		if(!exibirMensagem){
+			setExibeMensagemAtualizacao(false);
+			setExibeMensagemDelecao(false);
+			setExibeMensagemInsercao(false);
+		}
+	}
+	
 	public void atualizarEstoque(DispensacaoSimples dispensacaoSimples) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		Date dataAtual = new Date();
 		ativarControladoraEstoque(dataAtual, dispensacaoSimples.getMovimentoLivro());
