@@ -19,6 +19,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Utilitarios;
 
 public class PadraoRelatorio implements Serializable {
 
@@ -60,6 +61,7 @@ public class PadraoRelatorio implements Serializable {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void geraRelatorio(String caminho, String nomeRelatorio, Object obj, Map<String, Object> map) throws ClassNotFoundException, IOException, JRException, SQLException {
+		map.put("LOGO_HU", Utilitarios.getImagemLogoHU());
     	String url = Constantes.URL_BANCO;
 		String usuario = Constantes.USUARIO_BANCO;
 		String senha = Constantes.SENHA_BANCO;

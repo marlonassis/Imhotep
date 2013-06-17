@@ -17,14 +17,14 @@ import br.com.imhotep.entidade.Material;
 
 @ManagedBean
 @ViewScoped
-public class RelatorioMaterialCompleto extends PadraoRelatorio{
+public class RelatorioMaterialPadronizado extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
 	
 	public void gerarRalatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMaterialCompleto.jasper";
 		String nomeRelatorio = "RelatorioMaterial-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		List<Material> listaEstoqueRelatorioGeral = new MaterialCompletoConsultaRaiz().consultar();
+		List<Material> listaEstoqueRelatorioGeral = new MaterialCompletoConsultaRaiz().materialPadronizado();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("data", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
 		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, map);

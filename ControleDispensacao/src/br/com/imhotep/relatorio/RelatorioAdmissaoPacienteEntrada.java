@@ -41,8 +41,6 @@ public class RelatorioAdmissaoPacienteEntrada extends PadraoRelatorio{
 		//injetando o relatório de doses do(s) procedimento(s)
 		InputStream subInputStreamProcedimento = this.getClass().getResourceAsStream("AdmissaoPacienteEntradaProcedimento.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_PROCEDIMENTO_SAUDE", subInputStreamProcedimento);
-		//inputstream 
-		map.put("LOGO_HU", Utilitarios.getImagemLogoHU());
 		
 		super.geraRelatorio(caminho, nomeRelatorio, pacienteEntrada, map);
 	}
