@@ -38,6 +38,7 @@ public class Estoque {
 	private Usuario usuarioBloqueio;
 	private TipoBloqueioLoteEnum tipoBloqueio;
 	private boolean lock;
+	private String codigoBarras;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_id_estoque_seq")
 	@Id
@@ -177,6 +178,14 @@ public class Estoque {
 		this.tipoBloqueio = tipoBloqueio;
 	}
 	
+	@Column(name="cv_codigo_barras")
+	public String getCodigoBarras() {
+		return codigoBarras;
+	}
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
+	}
+
 	@Transient
 	public String getDescricaoEstoqueCentroCirurgico(){
 		if(getMaterial() != null){

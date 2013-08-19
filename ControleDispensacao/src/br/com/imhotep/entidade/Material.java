@@ -36,6 +36,8 @@ public class Material implements Serializable {
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	private Integer quantidadeMinima;
+	private Boolean bloqueado;
+	private Boolean padronizado;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_id_material_seq")
 	@Id
@@ -147,20 +149,67 @@ public class Material implements Serializable {
 		return getDescricao().concat(" - ").concat(getUnidadeMaterial().getSigla());
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Material))
-			return false;
-		
-		return ((Material)obj).getIdMaterial() == this.idMaterial;
+	@Column(name="bl_bloqueado")
+	public Boolean getBloqueado() {
+		return bloqueado;
 	}
+
+	public void setBloqueado(Boolean bloqueado) {
+		this.bloqueado = bloqueado;
+	}
+
+	@Column(name="bl_padronizado")
+	public Boolean getPadronizado() {
+		return padronizado;
+	}
+
+	public void setPadronizado(Boolean padronizado) {
+		this.padronizado = padronizado;
+	}
+	
+	
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((codigoMaterial == null) ? 0 : codigoMaterial.hashCode());
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idMaterial;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Material other = (Material) obj;
+		if (codigoMaterial == null) {
+			if (other.codigoMaterial != null)
+				return false;
+		} else if (!codigoMaterial.equals(other.codigoMaterial))
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idMaterial != other.idMaterial)
+			return false;
+		return true;
 	}
 
 	@Override

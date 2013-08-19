@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import br.com.imhotep.comparador.MenuComparador;
 
 @Entity
 @Table(name = "tb_menu")
-public class Menu {
+public class Menu implements Serializable {
+	private static final long serialVersionUID = 7307010015392256068L;
+	
 	private int idMenu;
 	private Menu menuPai;
 	private String descricao;

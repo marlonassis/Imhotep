@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_estado")
-public class Estado {
+public class Estado implements Serializable {
+	private static final long serialVersionUID = 5879254265304964043L;
+	
 	private int idEstado;
 	private String unidadeFederativa;
 	private String nome;

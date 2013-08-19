@@ -25,6 +25,7 @@ public class EstoqueLog {
 	private int idEstoqueLog;
 	private String lote;
 	private String material;
+	private String codigoBarras;
 	private Profissional profissionalAlteracao;
 	private Date dataLog;
 	private TipoEstoqueLog tipoAlteracao;
@@ -98,6 +99,15 @@ public class EstoqueLog {
 		this.dataValidade = dataValidade;
 	}
 	
+	@Column(name="cv_codigo_barras")
+	public String getCodigoBarras() {
+		return codigoBarras;
+	}
+
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

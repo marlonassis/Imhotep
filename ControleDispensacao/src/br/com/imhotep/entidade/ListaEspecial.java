@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +18,9 @@ import br.com.imhotep.enums.TipoStatusEnum;
 
 @Entity
 @Table(name = "tb_lista_especial")
-public class ListaEspecial {
+public class ListaEspecial implements Serializable {
+	private static final long serialVersionUID = -6189344216323087406L;
+	
 	private int idListaEspecial;
 	private Livro livro;
 	private String lista;
