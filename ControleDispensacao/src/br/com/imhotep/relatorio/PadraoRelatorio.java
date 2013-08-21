@@ -27,6 +27,7 @@ public class PadraoRelatorio implements Serializable {
 
 	@SuppressWarnings("rawtypes")
     protected void geraRelatorio(String caminho, String nomeRelatorio, List list, Map<String, Object> map) throws ClassNotFoundException, IOException, JRException, SQLException {
+		map.put("LOGO_HU", Utilitarios.getImagemLogoHU());
     	String url = Constantes.URL_BANCO;
 		String usuario = Constantes.USUARIO_BANCO;
 		String senha = Constantes.SENHA_BANCO;
