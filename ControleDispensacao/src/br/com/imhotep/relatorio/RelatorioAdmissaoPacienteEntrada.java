@@ -11,7 +11,6 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.PacienteEntrada;
 import br.com.remendo.ConsultaGeral;
 

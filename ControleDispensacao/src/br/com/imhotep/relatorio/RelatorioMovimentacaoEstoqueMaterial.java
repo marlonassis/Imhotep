@@ -13,11 +13,13 @@ import javax.faces.bean.ViewScoped;
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.consulta.entidade.TipoMovimentoConsulta;
 import br.com.imhotep.consulta.relatorio.ConsultaRelatorioMovimentacaoEstoqueMaterial;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial;
+import br.com.imhotep.enums.TipoOperacaoEnum;
 
 @ManagedBean(name="relatorioMovimentacaoEstoqueMaterial")
 @ViewScoped
@@ -30,12 +32,13 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 	private Material material;
 	private TipoMovimento tipoMovimento;
 	private Unidade unidade;
+	private TipoOperacaoEnum tipoOperacao;
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueMaterial.jasper";
 		String nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
-		List<MovimentacaoEstoqueMaterial> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterial().consultarResultados(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento());
+		List<MovimentacaoEstoqueMaterial> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterial().consultarResultados(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento(), getTipoOperacao());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
@@ -43,6 +46,14 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
 	}
 
+	public List<TipoMovimento> getListaTipoMovimento(){
+		TipoMovimentoConsulta tmc = new TipoMovimentoConsulta();
+		if(getTipoOperacao() != null){
+			tmc.getInstancia().setTipoOperacao(getTipoOperacao());
+		}
+		return tmc.getList();
+	}
+	
 	public Date getDataIni() {
 		return dataIni;
 	}
@@ -81,6 +92,14 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
+	}
+
+	public TipoOperacaoEnum getTipoOperacao() {
+		return tipoOperacao;
+	}
+
+	public void setTipoOperacao(TipoOperacaoEnum tipoOperacao) {
+		this.tipoOperacao = tipoOperacao;
 	}
 	
 }
