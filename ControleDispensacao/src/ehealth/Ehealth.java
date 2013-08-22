@@ -30,9 +30,14 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 "Piaui","Rio de Janeiro","Rio Grande do Norte","Rondonia","Rio Grande do Sul",
 "Roraima","Santa Catarina","Sergipe","Sao Paulo","Tocantins"));
 
+        static List<String> estadosSigla = new ArrayList<String>(Arrays.asList(
+        		"AC","AL","AM","AP","BA","CE","DF","ES",
+        		"GO","MA","MT","MS","MG","PA","PB","PR","PE",
+        		"PI","RJ","RN","RO","RS",
+        		"RR","SC","SE","SP","TO"));
         
-        private static String buscarNatureza(String string){
-            int posFont = string.indexOf("font");
+        private static String buscarConteudoTag(String string, String tag){
+            int posFont = string.indexOf(tag);
             String href = string.substring(posFont);
             char[] hrefq = href.toCharArray();
             String link = "";
@@ -110,13 +115,81 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 //				carregarEstados(linkDataSus);
 //				carregarCidades(linkDataSus);
 //				carregarUnidadesSaude(linkDataSus);
-				migrarEstado();
-				migrarNatureza();
+//				migrarEstado();
+//				migrarNatureza();
+				atualizarTipoUnidade(linkDataSus);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 		
+		private static void atualizarTipoUnidade(String linkDataSus) {
+			LinhaMecanica lm = new LinhaMecanica();
+    		lm.setNomeBanco("db_imhotep");
+    		lm.setIp("127.0.0.1");
+			String sql = "select * from tb_ehealth_estabelecimento where cv_tipo_unidade is null "+ 
+						 "order by id_ehealth_estabelecimento ";
+			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
+			try {
+				while (rs.next()) {
+					int idEhealthEstabelecimento = rs.getInt("id_ehealth_estabelecimento");
+					String link = rs.getString("cv_link");
+					String tipoUnidade = buscaTipoUnidade(linkDataSus.concat(link));
+					if(tipoUnidade != null && !tipoUnidade.isEmpty()){
+						sql = "update tb_ehealth_estabelecimento set cv_tipo_unidade = '"+tipoUnidade+"' where id_ehealth_estabelecimento = "+idEhealthEstabelecimento;
+						System.out.println(sql);
+						if(!lm.executarCUD(sql)){
+							gerarErro("/Users/marlonassis/Programacao/Banco/erroTipoUnidade.txt", String.valueOf(idEhealthEstabelecimento)); 
+						}
+					}else{
+						gerarErro("/Users/marlonassis/Programacao/Banco/erroTipoUnidade.txt", String.valueOf(idEhealthEstabelecimento)); 
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		private static void gerarErro(String caminho, String conteudo) {
+			try {
+				PrintStream gravador;
+				File arquivo = new File(caminho);
+				FileOutputStream arquivoOutput;
+				arquivoOutput = new FileOutputStream(arquivo, true);
+				gravador = new PrintStream(arquivoOutput);
+				gravador.println(conteudo);
+				gravador.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+
+		private static String buscaTipoUnidade(String linkDataSusEstabelecimento) {
+			InputStream siteEstado;
+			try {
+				siteEstado = new URL(linkDataSusEstabelecimento).openStream();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(siteEstado, "ISO-8859-1"));
+				String line = null;
+				boolean achouTipoUnidade=false;
+				int cont = 0;
+				String tipoUnidade = "";
+				while ((line = reader.readLine()) != null) {
+					if(line.contains("Tipo Unidade:"))
+						achouTipoUnidade = true;
+					if(achouTipoUnidade)
+						cont++;
+					if(cont == 8){
+						tipoUnidade = Ehealth.buscarConteudoTag(line, "font");
+						break;
+					}
+				}
+				return tipoUnidade;
+			} catch (Exception e) {
+				System.out.println("erro");;
+			}
+			return null;
+		}
+
 		private static void migrarEstado(){
 			LinhaMecanica lm = new LinhaMecanica();
     		lm.setNomeBanco("db_imhotep");
@@ -274,7 +347,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 						if(achouNatureza){
 							i++;
 							if(i==5){
-								String natureza = buscarNatureza(line);
+								String natureza = buscarConteudoTag(line, "font");
 								return natureza;
 							}
 						}
