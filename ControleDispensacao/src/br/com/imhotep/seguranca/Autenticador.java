@@ -1,5 +1,6 @@
 package br.com.imhotep.seguranca;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,21 +15,22 @@ import javax.servlet.http.HttpSession;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
-import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
-import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.controle.ControleInstancia;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.controle.ControlePainel;
+import br.com.imhotep.controle.ControlePainelAviso;
 import br.com.imhotep.controle.ControleSenha;
 import br.com.imhotep.entidade.Menu;
 import br.com.imhotep.entidade.Painel;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.enums.TipoSituacaoEnum;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
-import br.com.imhotep.raiz.EstoqueRaiz;
+import br.com.imhotep.raiz.ConfiguracaoRaiz;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
+import br.com.imhotep.raiz.UsuarioRaiz;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean(name="autenticador")
@@ -41,7 +43,14 @@ public class Autenticador {
 	private Profissional profissionalAtual;
 	private boolean mostraComboUnidade;
 	private Collection<Unidade> unidades;
+	private Profissional profissionalRecuperacao = new Profissional();
+	private boolean exibirFormularioAtual=true;
+	private boolean exibirMensagemUsuarioBloqueado;
 
+	public void fecharFormularioAtual(){
+		setExibirFormularioAtual(false);
+	}
+	
 	public static Profissional getProfissionalLogado() throws ExcecaoProfissionalLogado{
 		try {
 			return Autenticador.getInstancia().getProfissionalAtual();
@@ -72,6 +81,34 @@ public class Autenticador {
 	
 	public static Autenticador getInstancia() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		return (Autenticador) new ControleInstancia().procuraInstancia(Autenticador.class);
+	}
+	
+	public void recuperarSenha(){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		String valor = Utilitarios.getPatternChaveUnicaPreparada(getProfissionalRecuperacao());
+		valor = Utilitarios.encriptaParaMd5(valor);
+		map.put("chaveVerificacao", valor);
+		StringBuilder sb = new StringBuilder("select o from Profissional o where o.chaveVerificacao = :chaveVerificacao ");
+		Profissional profRec = new ConsultaGeral<Profissional>(sb, map).consultaUnica();
+		if(profRec != null && profRec.getIdProfissional() != 0){
+			UsuarioRaiz ur = new UsuarioRaiz();
+			profRec.getUsuario().setQuantidadeErroLogin(0);
+			ur.setInstancia(profRec.getUsuario());
+			ur.resetarSenha();
+			setUsuario(profRec.getUsuario());
+			getUsuario().setSenha("123456");
+			logarUsuario();
+			UsuarioRaiz.getInstanciaAtual().setSenhaAntiga("123456");
+			UsuarioRaiz.getInstanciaAtual().setExibeCampoSenhaAntiga(false);
+			setExibirMensagemUsuarioBloqueado(false);
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Dados não conferem", ""));
+		}
 	}
 	
 	private void carregaUnidadesUsuario(){
@@ -152,7 +189,12 @@ public class Autenticador {
 		hm.put("login", nome.trim());
 		Usuario resultado = cg.consultaUnica(new StringBuilder("select o from Usuario o where o.login = :login"), hm);
 		if(resultado != null){
-			return resultado;
+			if(resultado.getProfissional().getSituacao().equals(TipoSituacaoEnum.A))
+				return resultado;
+			else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Usuário inativo", ""));
+				return null;
+			}
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Usuário não encontrado!"));
 			return null;
@@ -172,16 +214,24 @@ public class Autenticador {
 			return true;
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Login não realizado!"));
+			String sql = "update Usuario set quantidadeErroLogin = quantidadeErroLogin + 1 where login = '"+usuarioLogado.getLogin()+"'";
+			new UsuarioRaiz().executa(sql);
 			return false;
 		}
 	}
 	
 	public void logarUsuario(){
+		setExibirMensagemUsuarioBloqueado(false);
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		try{
 			if(!getUsuario().getLogin().isEmpty()){
 	    		Usuario usuarioLogado = procurarUsuario(getUsuario().getLogin());
 	    		if(usuarioLogado != null && usuarioLogado.getIdUsuario() != 0){
+	    			if(usuarioLogado.getQuantidadeErroLogin() > 5){
+	    				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_RECUPERACAO_SENHA);
+	    				setExibirMensagemUsuarioBloqueado(true);
+	    				return;
+	    			}
 	    			if(verificaSenha(usuarioLogado, getUsuario().getSenha())){
 	    				setUsuarioAtual(usuarioLogado);
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
@@ -191,7 +241,7 @@ public class Autenticador {
 	    				carregaProfissional();
 	    				carregaToolBarMenu();
 	    				carregaPaineis();
-	    				carregarRestricoesUsuario();
+	    				ControlePainelAviso.getInstancia().atualizarAvisos();
 	    			}
 	    		}
 	    	}
@@ -205,21 +255,12 @@ public class Autenticador {
 		setUsuario(new Usuario());
 	}
 	
-	private void carregarRestricoesUsuario(){
-		ControlePainel cp = ControlePainel.getInstancia();
-		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_MEDICAMENTO_VENCIDO)){
-			EstoqueRaiz.getInstanciaAtual().setEstoqueVencido(new EstoqueConsultaRaiz().consultarEstoqueVencidoLimiteSeteDias());
-			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesPendentes();
-			new SolicitacaoMedicamentoUnidadeConsultaRaiz().quantidadeSolicitacoesPendentes();
-		}
-	}
-	
 	private void carregaPaineis() {
 		try {
 			//carrega o menu que pertence ao usuário
 			HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-			hashMap.put("idEspecialidade", Autenticador.getInstancia().getProfissionalAtual().getEspecialidade().getIdEspecialidade());
-			StringBuilder hql = new StringBuilder("select o.painel from AutorizaPainel o where o.especialidade.idEspecialidade = :idEspecialidade)");
+			hashMap.put("idProfissional", Autenticador.getInstancia().getProfissionalAtual().getIdProfissional());
+			StringBuilder hql = new StringBuilder("select b.painel from Profissional o  join o.especialidades a join a.paineis b where o.idProfissional = :idProfissional");
 			ControlePainel controlePainel = new ControlePainel();
 			controlePainel.setPainelAutorizadoList(new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap)));
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
@@ -267,13 +308,19 @@ public class Autenticador {
 	
 	private ArrayList<Menu> carregarMenuEspecialidade() {
 		//carrega o menu que pertence à especialidade do usuário
-		String hql = "select o.menu from AutorizaMenu o where o.especialidade.idEspecialidade = :idEspecialidade order by to_ascii(o.menu.descricao)";
+		String hql = "select b.menu from Profissional o join o.especialidades a join a.menus b where o.idProfissional = :idProfissional";
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idEspecialidade", getProfissionalAtual().getEspecialidade().getIdEspecialidade());
+		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
 		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));
 		return menuAutorizadoList;
 	}
 
+	public void sairManutencao(){
+		StringBuilder sb = new StringBuilder("update Configuracao set valor = 'false' where ");
+		sb.append("nome = 'Manutencao'");
+		new ConfiguracaoRaiz().executa(sb.toString());
+	}
+	
 	public boolean senhaResetada(){
 		try {
 			return new ControleSenha().senhaResetada();
@@ -344,6 +391,31 @@ public class Autenticador {
 
 	public void setMostraComboUnidade(boolean mostraComboUnidade) {
 		this.mostraComboUnidade = mostraComboUnidade;
+	}
+
+	public Profissional getProfissionalRecuperacao() {
+		return profissionalRecuperacao;
+	}
+
+	public void setProfissionalRecuperacao(Profissional profissionalRecuperacao) {
+		this.profissionalRecuperacao = profissionalRecuperacao;
+	}
+
+	public boolean getExibirFormularioAtual() {
+		return exibirFormularioAtual;
+	}
+
+	public void setExibirFormularioAtual(boolean exibirFormularioAtual) {
+		this.exibirFormularioAtual = exibirFormularioAtual;
+	}
+
+	public boolean getExibirMensagemUsuarioBloqueado() {
+		return exibirMensagemUsuarioBloqueado;
+	}
+
+	public void setExibirMensagemUsuarioBloqueado(
+			boolean exibirMensagemUsuarioBloqueado) {
+		this.exibirMensagemUsuarioBloqueado = exibirMensagemUsuarioBloqueado;
 	}
 
 }

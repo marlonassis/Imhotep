@@ -16,10 +16,9 @@ import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.controle.ControleSenha;
 import br.com.imhotep.excecoes.ExcecaoAcessoNaoAutorizado;
+import br.com.imhotep.excecoes.ExcecaoPaginaForaPadrao;
 import br.com.imhotep.excecoes.ExcecaoSistemaManutencao;
-import br.com.imhotep.excecoes.ExcessaoAcessoNaoAutorizado;
-import br.com.imhotep.excecoes.ExcessaoPaginaForaPadrao;
-import br.com.imhotep.excecoes.ExcessaoUsuarioTrocaSenha;
+import br.com.imhotep.excecoes.ExcecaoUsuarioTrocaSenha;
 
 @ManagedBean
 @RequestScoped
@@ -47,11 +46,12 @@ public class GerenciadorRequisicao implements PhaseListener{
 		}
 	}
 	
-	private void verificacaoPaginaLogin(String pagina) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcessaoAcessoNaoAutorizado {
+	private void verificacaoPaginaLogin(String pagina) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoAcessoNaoAutorizado {
 		boolean paginaLogin = pagina.indexOf(Constantes.PAGINA_LOGIN) == 0;
-		if(!paginaLogin && !existeUsuarioLogado()){
+		boolean paginaRecusaIExplorer = pagina.equals(Constantes.PAGINA_RECUSA_IEXPLORER);
+		if(!paginaLogin && !existeUsuarioLogado() && !paginaRecusaIExplorer){
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_LOGIN);
-			throw new ExcessaoAcessoNaoAutorizado();
+			throw new ExcecaoAcessoNaoAutorizado();
 		}else{
 			if(paginaLogin && existeUsuarioLogado())
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
@@ -64,11 +64,14 @@ public class GerenciadorRequisicao implements PhaseListener{
 		try {
 			FacesContext facesContext = event.getFacesContext();
 			String pagina = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI();
-			verificarPadraoPagina(pagina);
-			acessoPaginaNaoAutorizado(pagina);
-			sistemaEmManutencao(pagina);
-			verificacaoPaginaLogin(pagina);			
-			verificaUsuarioNovaSenha(pagina);
+			boolean paginaPublica = pagina.contains("/PaginasWeb/Publico/");
+			if(!paginaPublica){
+				verificarPadraoPagina(pagina);
+				acessoPaginaNaoAutorizado(pagina);
+				sistemaEmManutencao(pagina);
+				verificacaoPaginaLogin(pagina);			
+				verificaUsuarioNovaSenha(pagina);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -81,29 +84,27 @@ public class GerenciadorRequisicao implements PhaseListener{
 			e.printStackTrace();
 		} catch (ExcecaoSistemaManutencao e) {
 			e.printStackTrace();
-		} catch (ExcessaoAcessoNaoAutorizado e) {
+		} catch (ExcecaoUsuarioTrocaSenha e) {
 			e.printStackTrace();
-		} catch (ExcessaoUsuarioTrocaSenha e) {
-			e.printStackTrace();
-		} catch (ExcessaoPaginaForaPadrao e) {
+		} catch (ExcecaoPaginaForaPadrao e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	private void verificarPadraoPagina(String pagina) throws IOException, ExcessaoPaginaForaPadrao {
+	private void verificarPadraoPagina(String pagina) throws IOException, ExcecaoPaginaForaPadrao {
 		if(pagina.indexOf("jsf") > 0){
 			FacesContext.getCurrentInstance().getExternalContext().redirect(pagina.replaceAll("jsf", "hu"));
-			throw new ExcessaoPaginaForaPadrao();
+			throw new ExcecaoPaginaForaPadrao();
 		}
 	}
 
-	private void verificaUsuarioNovaSenha(String pagina) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcessaoUsuarioTrocaSenha, IOException {
+	private void verificaUsuarioNovaSenha(String pagina) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoUsuarioTrocaSenha, IOException {
 		boolean paginaLogin = pagina.indexOf(Constantes.PAGINA_LOGIN) == 0;
 		boolean paginaTrocaSenha = pagina.indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
 		if(!paginaLogin && !paginaTrocaSenha && Autenticador.getInstancia() != null && (new ControleSenha().senhaIgualMatricula() || new ControleSenha().senhaResetada())){
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
-			throw new ExcessaoUsuarioTrocaSenha();
+			throw new ExcecaoUsuarioTrocaSenha();
 		}
 	}
 
@@ -112,7 +113,8 @@ public class GerenciadorRequisicao implements PhaseListener{
 		boolean paginaLogin = pagina.equals(Constantes.PAGINA_LOGIN);
 		boolean paginaManutencao = pagina.equals(Constantes.PAGINA_MANUTENCAO);
 		boolean paginaTrocaSenha = pagina.equals(Constantes.PAGINA_TROCA_SENHA);
-		return paginaHome || paginaLogin || paginaManutencao || paginaTrocaSenha;
+		boolean paginaRecusaIExplorer = pagina.equals(Constantes.PAGINA_RECUSA_IEXPLORER);
+		return paginaHome || paginaLogin || paginaManutencao || paginaTrocaSenha || paginaRecusaIExplorer;
 	}
 	
 	
