@@ -46,18 +46,11 @@ public class PadraoRelatorio implements Serializable {
         response.setContentType("application/pdf");
         response.addHeader("Content-disposition", "filename="+nomeRelatorio);
         
-        if(list != null){
-        	//caso exista valor na lista deve-se usar seus itens 
-        	JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, (JRDataSource) new JRBeanCollectionDataSource(list));
-        }else{
-        	//caso a lista esteja nula os itens vem do próprio arquivo
-        	JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, con);
-        }
+		JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, (JRDataSource) new JRBeanCollectionDataSource(list));
         
         con.close();
         servletOutputStream.flush();
         servletOutputStream.close();
-
     }
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
