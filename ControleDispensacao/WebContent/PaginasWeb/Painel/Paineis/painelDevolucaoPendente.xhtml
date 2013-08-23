@@ -1,0 +1,307 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset id="devolucoesPendentesFieldSet"
+					legend="Devoluções Pendentes"
+					collapsed="false" 
+					toggleable="false">
+			<p:commandLink action="#{devolucaoMedicamentoConsultaRaiz.consultarDevolucoesPendentes}" 
+						   update=":#{p:component('devolucoesPendentesDataGrid')}" 
+						   global="false" 
+              			   onclick="statusDialog.show();" 
+              			   onsuccess="statusDialog.hide();">
+				<h:graphicImage value="/Imagens/refresh16.png" />
+			</p:commandLink>
+			
+			<p:dataGrid id="devolucoesPendentesDataGrid"
+						var="linha" 
+						emptyMessage="Não há devoluções"
+						value="#{devolucaoMedicamentoRaiz.devolucoesPendentes}" 
+						columns="1"  
+						paginator="true">  
+
+			        <p:panel header="#{linha.unidadeDevolucao.nome}" style="text-align:center">  
+			            <h:panelGrid id="devolucoesPendentesPanelGrid" columns="1" style="width:100%">  
+							<h:outputText value="#{linha.profissionalInsercao.nome}" />
+							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInsercao)}" />
+			                <h:outputText value="#{linha.itens.size()} item(ns)" />
+			                <h:panelGroup>
+			                	<h:panelGrid width="100%" columns="2" >			                
+					                <p:commandLink  title="Devolver"
+					                				action="#{devolucaoMedicamentoRaiz.exibirDialogDevolucao}"
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();"
+					                				update=":#{p:component('devolucoesPendentesDataGrid')} :#{p:component('devolucaoDialog')}" >  
+					                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+					                    <f:setPropertyActionListener value="#{linha}" target="#{devolucaoMedicamentoRaiz.instancia}" />  
+					                </p:commandLink>
+					                <p:commandLink  title="Recusar" 
+					                				action="#{devolucaoMedicamentoRaiz.preRecusaDevolucao}" 
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+						                			update=":#{p:component('recusarDevolucaoDialog')}"
+					                				onsuccess="statusDialog.hide();" > 
+					                    <h:graphicImage value="/Imagens/Close-icon.png" /> 
+					                    <f:setPropertyActionListener value="#{linha}" target="#{devolucaoMedicamentoRaiz.instancia}" />  
+					                </p:commandLink>
+					        	</h:panelGrid>
+				            </h:panelGroup>
+			                <h:graphicImage value="/Imagens/pill16.png" rendered="#{devolucaoMedicamentoRaiz.edicao and devolucaoMedicamentoRaiz.instancia.idDevolucaoMedicamento == linha.idDevolucaoMedicamento}" />
+			            </h:panelGrid>  
+			        </p:panel>  
+			  
+			</p:dataGrid>
+			
+			<p:dialog id="devolucaoDialog" 
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogDevolucao}" 
+					  resizable="true"
+					  closable="false" 
+					  width="1024px"
+					  modal="false" >
+				<p:growl/>
+				<p:outputPanel id="detalhesDevolucao" style="text-align:center;" layout="block">
+		        	<b>#{devolucaoMedicamentoRaiz.instancia.unidadeDevolucao}</b>  
+		            <h:panelGrid columns="1" width="90%">
+						<h:panelGrid id="devolucaoMedicamentoItemPanelGrid" 
+									 rendered="#{devolucaoMedicamentoRaiz.edicao}" 
+									 columns="2"
+									 cellpadding="10px" >
+							<h:panelGroup>
+								<p:growl id="mensagemDevolucaoGrowl" showDetail="true"  />  
+					        	<div style="height:400px; overflow:scroll;" >
+									<p:dataTable var="item" 
+												 value="#{devolucaoMedicamentoRaiz.instancia.itens}"
+												 emptyMessage="Não há itens cadastrados" > 
+										<f:facet name="header">  
+									            Material(is) Devolvido(s)
+									    </f:facet>  
+									    
+									    <p:column style="width:60px; text-align: center;" rendered="#{devolucaoMedicamentoRaiz.instancia.status == 'P'}" >
+											<p:commandLink action="#{devolucaoMedicamentoRaiz.preRecusarItem}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('devolucaoMedicamentoItemPanelGrid')} :#{p:component('recusarDevolucaoItemDialog')}"
+														   rendered="#{item.status != 'RE' and !devolucaoMedicamentoItemRaiz.edicao}" 
+														   title="Recusar #{item.material.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoRaiz.itemRecusado}" />
+												<h:graphicImage value="/Imagens/Close-icon.png" />
+											</p:commandLink>
+										</p:column>
+									    
+								        <p:column headerText="Material" width="">  
+								            <h:outputText value="#{item.material.descricaoUnidadeMaterial}" />  
+								        </p:column>  
+								        
+								        <p:column headerText="Quantidade Devolvida">  
+								            <h:outputText value="#{item.quantidadeDevolvida}" />  
+								        </p:column> 
+								        
+								        <p:column headerText="Quantidade Atestada">  
+								            <h:outputText rendered="#{item.status != 'RE'}" value="#{devolucaoMedicamentoRaiz.quantidadeTotalRecebida(item)}" />  
+								        </p:column> 
+								        
+								        <p:column headerText="Estoques">  
+								            <h:outputText rendered="#{item.status != 'RE'}" value="#{devolucaoMedicamentoRaiz.stringLotesDevolvidos(item)}" escape="false" />  
+								        </p:column> 
+								        
+								        <p:column style="width:60px; text-align: center;" rendered="#{devolucaoMedicamentoRaiz.instancia.status == 'P'}" >
+											<p:commandLink action="#{devolucaoMedicamentoRaiz.recuperarItem}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('detalhesDevolucao')}"
+														   rendered="#{item.status == 'RE' and devolucaoMedicamentoRaiz.itemRecusado.idDevolucaoMedicamentoItem == 0}" 
+														   title="Recuperar #{item.material.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoRaiz.itemRecusado}" />
+												<h:graphicImage value="/Imagens/undoBlue16.png" />
+											</p:commandLink>
+										</p:column> 
+								    </p:dataTable>
+								</div>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{devolucaoMedicamentoRaiz.instancia.status == 'P'}" >
+								<ri:inputTextArea id="codigos" 
+												  title="Insira o lote ou código de barras" 
+												  value="#{devolucaoMedicamentoRaiz.codigos}" 
+												  label="Lote/Código de Barras" 
+												  rows="15" 
+												  cols="40" />
+								<p:commandButton value="Validar" 
+												 global="false" 
+	                						     onclick="statusDialog.show();" 
+	                						     onsuccess="statusDialog.hide();"
+	                						     update=":#{p:component('devolucaoMedicamentoItemPanelGrid')}"
+												 action="#{devolucaoMedicamentoRaiz.validarCodigos}" />
+							</h:panelGroup>
+						</h:panelGrid>						   
+						<p:separator id="separatorDevolucao" />
+						<h:panelGrid id="botoesDevolucaoPanelGrid" 
+									 global="false" 
+        						     onclick="statusDialog.show();" 
+        						     onsuccess="statusDialog.hide();"
+									 columns="3" 
+									 width="100%" >
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Devolver" 
+								    				 rendered="#{devolucaoMedicamentoRaiz.instancia.status == 'P'}"
+								    				 global="false" 
+			                						 onclick="statusDialog.show();" 
+			                						 onsuccess="statusDialog.hide();"
+								    				 action="#{devolucaoMedicamentoRaiz.preFinalizarDevolucao}" 
+													 update=":#{p:component('devolucoesPendentesDataGrid')} :#{p:component('detalhesDevolucao')} :#{p:component('mensagemDevolucaoGrowl')} :#{p:component('justificativaDevolucaoParcialDialog')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Fechar"
+								    				 global="false" 
+					                				 onclick="statusDialog.show();" 
+					                				 onsuccess="statusDialog.hide();"	
+								    				 action="#{devolucaoMedicamentoRaiz.fecharDialogDevolucaoPendente}" 
+													 update=":#{p:component('devolucaoDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{devolucaoMedicamentoRaiz.instancia.status == 'R' or devolucaoMedicamentoRaiz.instancia.status == 'RP'}" >
+								<center>
+									<p:commandButton value="Imprimir"
+													 rendered="#{devolucaoMedicamentoRaiz.instancia.status != 'P'}"
+								    			     onclick="window.open('/imhotep/PaginasWeb/Enfermagem/DevolucaoMedicamento/devolucaoMedicamentoImpressa.hu', 'devolucaoImpressa');"/>
+								</center>
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGrid>
+		        </p:outputPanel>  
+			
+			</p:dialog>
+			
+			<p:dialog id="justificativaDevolucaoParcialDialog"
+					  header="Justificar Devolução Parcial" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativaDevolucaoParcial}" >
+				<p:outputPanel id="devolucaoParcialOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesDevolucaoParcial" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da devolução ser parcial</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaDevolucaoParcial" value="#{devolucaoMedicamentoRaiz.justificativa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Finalizar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{devolucaoMedicamentoRaiz.finalizarDevolucao}" 
+												 update=":#{p:component('devolucoesPendentesDataGrid')} :#{p:component('justificativaDevolucaoParcialDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 update=":#{p:component('devolucaoDialog')} :#{p:component('justificativaDevolucaoParcialDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="recusarDevolucaoDialog"
+					  header="Recusar Devolução" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativa}" >
+				<p:outputPanel id="devolucaoRecusadaOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesDevolucaoRecusada" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da recusa da devolução de #{devolucaoMedicamentoRaiz.instancia.profissionalInsercao.nomeResumido}</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaRecusaDevolucao" value="#{devolucaoMedicamentoRaiz.instancia.justificativa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{devolucaoMedicamentoRaiz.recusarDevolucao}" 
+												 update=":#{p:component('recusarDevolucaoDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{devolucaoMedicamentoRaiz.cancelarRecusa}" 
+							    				 update=":#{p:component('recusarDevolucaoDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="recusarDevolucaoItemDialog"
+					  header="Recusar Item da Devolução" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogRecusaItem}" >
+				<p:outputPanel id="devolucaoItemRecusadaOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesDevolucaoItemRecusada" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da recusa do #{devolucaoMedicamentoRaiz.itemRecusado.material.descricaoUnidadeMaterial}</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaRecusaItemDevolucao" value="#{devolucaoMedicamentoRaiz.itemRecusado.justificativa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{devolucaoMedicamentoRaiz.recusarItemDevolvido}" 
+												 update=":#{p:component('recusarDevolucaoItemDialog')} :#{p:component('devolucaoDialog')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{devolucaoMedicamentoRaiz.cancelarRecusaItem}" 
+							    				 update=":#{p:component('recusarDevolucaoItemDialog')} :#{p:component('devolucaoDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:poll interval="60" 
+					update=":#{p:component('devolucoesPendentesDataGrid')}" 
+					listener="#{devolucaoMedicamentoConsultaRaiz.consultarDevolucoesPendentes}"
+					global="false" />
+		</p:fieldset>
+	</ui:define>
+</ui:composition>
