@@ -19,6 +19,7 @@
 		</h:panelGroup>
 
 		<ri:inputAutoComplete id="descricao"
+							  disabled="true"
 							  desativarConversor="true"
 							  required="true" 
 							  forceSelection="false"
@@ -125,6 +126,14 @@
 							   itemValue="#{tipoMaterial}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
+
+		<ri:inputSelectOneRadioBoolean id="bloqueado" 
+									   value="#{materialRaiz.instancia.bloqueado}" 
+									   label="Bloqueado" />
+
+		<ri:inputSelectOneRadioBoolean id="padronizado" 
+									   value="#{materialRaiz.instancia.padronizado}" 
+									   label="Padronizado" />
 
 		<h:panelGroup>
 			<h:outputLabel for="quantidadeMinima" value="Quantidade Mínima:" />
