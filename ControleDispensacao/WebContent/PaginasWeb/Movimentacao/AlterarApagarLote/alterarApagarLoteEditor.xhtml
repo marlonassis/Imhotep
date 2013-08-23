@@ -1,21 +1,20 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 
 	<h:panelGrid columns="2" width="100%">
 		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="loteAntigo" value="Lote:" />
-			<br />
-			<p:inputText id="loteAntigo"
-						 value="#{alterarApagarLoteRaiz.loteAntigo}"
-						 title="Informe o lote" 
-						 disabled="#{alterarApagarLoteRaiz.loteEncontrado}"
-						 required="true"/>
+			<ri:inputTextoSimples id="loteAntigo" 
+							  title="Informe o lote" 
+							  disabled="#{alterarApagarLoteRaiz.loteEncontrado}"
+							  value="#{alterarApagarLoteRaiz.loteAntigo}" 
+							  label="Lote"
+							  required="true" />
+						 
 			<p:commandButton image="ui-icon ui-icon-search"
 							 update=":#{p:component('alterarApagarLoteEditorForm')} :#{p:component('alterarApagarLotePanelGrid')}"
 							 action="#{alterarApagarLoteRaiz.procurarLote}" 
@@ -28,67 +27,42 @@
 				 columns="2" 
 				 width="100%" 
 				 rendered="#{alterarApagarLoteRaiz.loteEncontrado}" >
-		<h:panelGroup id="lotePanelGrid" >
-			<font color="red">*</font>
-			<h:outputLabel for="lote" value="Lote:" />
-			<br />
-			<p:inputText id="lote"
-						 value="#{alterarApagarLoteRaiz.instancia.lote}"
-						 title="Informe o lote" 
-						 required="true"/>
-		</h:panelGroup>
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="material" value="Material:" />
-			<br />
-			<p:autoComplete id="material"
-							disabled="true"
-							size="35"
-							value="#{alterarApagarLoteRaiz.instancia.material}"
-							minQueryLength="4"
-							required="true"
-							scrollHeight="300"
-							completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
-							var="material" 
-							forceSelection="true"
-							title="Informe o nome ou o código do material"
-							itemLabel="#{material.descricao}" 
-							itemValue="#{material}"
-							converter="materialConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
 		
-		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
-			<h:outputLabel for="fabricante" value="Fabricante:" />
-			<br />
-			<p:autoComplete id="fabricante"
-							required="true"
-							disabled="true"
-							value="#{alterarApagarLoteRaiz.instancia.fabricante}"
-							completeMethod="#{fabricanteAutoComplete.autoComplete}"
-							var="fabricante" 
-							minQueryLength="3" 
-							forceSelection="true"
-							title="Informe o fabricante" 
-							itemLabel="#{fabricante.descricao}"
-							itemValue="#{fabricante}" 
-							converter="fabricanteConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputTextoSimples id="lote" 
+							  title="Informe o lote" 
+							  value="#{alterarApagarLoteRaiz.instancia.lote}" 
+							  label="Lote"
+							  required="true" />
 		
-		<h:panelGroup>
-			<r:inputDataMesAno id="dataValidade"
-							   label="Data de validade:"
-							   required="true" 
-							   value="#{alterarApagarLoteRaiz.instancia.dataValidade}"
-							   title="Data de validade do lote"/>
-		</h:panelGroup>
+		<ri:inputAutoComplete id="material" 
+							 label="Material"  
+							 disabled="true"
+							 completeMethod="#{materialAutoComplete.autoComplete}" 
+							 itemValue="#{material}" 
+							 itemLabel="#{material.descricaoUnidadeMaterial}" 
+							 var="material"
+							 value="#{alterarApagarLoteRaiz.instancia.material}" 
+							 required="true"/>
+		
+		<ri:inputAutoComplete id="fabricante" 
+							 label="Fabricante"  
+							 disabled="true"
+							 completeMethod="#{fabricanteAutoComplete.autoComplete}" 
+							 itemValue="#{fabricante}" 
+							 itemLabel="#{fabricante.descricao}" 
+							 var="fabricante"
+							 value="#{alterarApagarLoteRaiz.instancia.fabricante}" 
+							 required="true"/>
+		
+		<ri:inputDataMesAno id="dataValidade"
+						   label="Data de validade:"
+						   required="true" 
+						   value="#{alterarApagarLoteRaiz.instancia.dataValidade}"
+						   title="Data de validade do lote"/>
+		
+		<ri:inputTextoSimples id="codigoBarras" 
+							  title="Informe o código de barras" 
+							  value="#{alterarApagarLoteRaiz.instancia.codigoBarras}" 
+							  label="Código de Barras" />
 	</h:panelGrid>
 </ui:composition>

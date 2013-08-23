@@ -12,12 +12,14 @@
 			<br />
 			<p:selectOneMenu
 				value="#{estoqueCentroCirurgicoLivroRaiz.instancia.estoqueCentroCirurgico}"
-				effect="fade" converter="estoqueCentroCirurgicoConversor"
+				effect="fade" 
+				converter="estoqueCentroCirurgicoConversor"
 				required="true">
 				<f:selectItem itemLabel="Selecione..." itemValue="" />
 				<f:selectItems
 					value="#{estoqueCentroCirurgicoRaiz.estoqueCentroCirurgicoList}"
-					var="estoque" itemLabel="#{estoque.descricaoGeral}"
+					var="estoque" 
+					itemLabel="#{estoque.descricaoGeral}"
 					itemValue="#{estoque}" />
 			</p:selectOneMenu>
 		</h:panelGroup>

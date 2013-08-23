@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -17,14 +18,14 @@
 					toggleSpeed="500">
 					<p:growl id="formGrowl" showDetail="true" />
 					<ui:include src="alterarApagarLoteEditor.xhtml" />
-					<p:commandButton value="Apagar" 
-									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
-									 update=":#{p:component('alterarApagarLoteEditorForm')}"
-									 action="#{alterarApagarLoteRaiz.apagarLote}" />
 					<p:commandButton value="Gravar"
 									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
 									 update=":#{p:component('loteDuplicadoForm')} :#{p:component('alterarApagarLoteEditorForm')}"
 									 action="#{alterarApagarLoteRaiz.atualizar}" />
+					<p:commandButton value="Apagar" 
+									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
+									 update=":#{p:component('alterarApagarLoteEditorForm')}"
+									 action="#{alterarApagarLoteRaiz.apagarLote}" />
 					<p:commandButton value="Novo" 
 									 immediate="true"
 									 oncomplete="location.reload();"
@@ -39,21 +40,13 @@
 					rendered="#{!alterarApagarLoteRaiz.loteEncontrado}" style="text-align: left;" >
 				<p:fieldset legend="Busca de Lote por Material">  
 					<h:panelGroup>
-						<font color="red">*</font>
-						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
-						<br />
-						<p:autoComplete id="material"
-										value="#{estoqueMaterialConsultaRaiz.material}"
-										minQueryLength="4"
-										scrollHeight="300"
-										size="35"
-										completeMethod="#{materialComMovimentoAutoComplete.autoComplete}"
-										var="material" 
-										forceSelection="true"
-										title="Informe o código ou o nome do material"
-										itemLabel="#{material.descricao}" 
-										itemValue="#{material}"
-										converter="materialConversor" />
+						<ri:inputAutoComplete id="material" 
+											  label="Material"  
+											  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
+											  itemValue="#{material}" 
+											  itemLabel="#{material.descricaoUnidadeMaterial}" 
+											  var="material"
+											  value="#{estoqueMaterialConsultaRaiz.material}"/>
 						<p:commandButton image="ui-icon ui-icon-search"
 										 update=":#{p:component('buscaEstoqueMaterialForm')}"
 										 action="#{estoqueMaterialConsultaRaiz.consultar}" 

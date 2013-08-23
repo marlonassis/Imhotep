@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
@@ -39,21 +40,13 @@
 					rendered="#{!doacaoRaiz.loteEncontrado}" style="text-align: left;" >
 				<p:fieldset legend="Busca de Lote por Material">  
 					<h:panelGroup>
-						<font color="red">*</font>
-						<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
-						<br />
-						<p:autoComplete id="material"
-										value="#{estoqueMaterialConsultaRaiz.material}"
-										minQueryLength="4"
-										scrollHeight="300"
-										size="35"
-										completeMethod="#{materialComMovimentoAutoComplete.autoComplete}"
-										var="material" 
-										forceSelection="true"
-										title="Informe o código ou o nome do material"
-										itemLabel="#{material.descricao}" 
-										itemValue="#{material}"
-										converter="materialConversor" />
+						<ri:inputAutoComplete id="material" 
+											  label="Material"  
+											  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
+											  itemValue="#{material}" 
+											  itemLabel="#{material.descricaoUnidadeMaterial}" 
+											  var="material"
+											  value="#{estoqueMaterialConsultaRaiz.material}"/>
 						<p:commandButton image="ui-icon ui-icon-search"
 										 update=":#{p:component('buscaEstoqueMaterialForm')}"
 										 action="#{estoqueMaterialConsultaRaiz.consultar}" 

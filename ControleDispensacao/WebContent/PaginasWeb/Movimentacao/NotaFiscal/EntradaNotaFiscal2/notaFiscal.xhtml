@@ -13,14 +13,14 @@
 		<p:tab title="Entrada Com Nota Fiscal">
 			<rf:formularioEdicao id="notaFiscal"
 								raiz="#{notaFiscalRaiz}"
-								ajaxSalvar="false"
 								srcEditor="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalEditor.xhtml" />
-								
+			
 			<rf:formularioPesquisa id="notaFiscalPesquisa" 
+								  novoPadraoPesquisa="true"
+								  raizConsulta="#{notaFiscalConsulta}"
 								  novoAction="#{notaFiscalConsulta.novaInstancia()}"
 								  srcTabela="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalTabela.xhtml"
 								  srcConsulta="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalConsulta.xhtml" />
-			
 		</p:tab>
 	</ui:define>
 </ui:composition>

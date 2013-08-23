@@ -2,7 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid columns="2" width="100%">
@@ -17,6 +17,7 @@
 						 required="true"/>
 			<p:commandButton image="ui-icon ui-icon-search"
 							 update=":#{p:component('entradaMaterialSemNotaFormulario')} :#{p:component('entradaMaterialPanelGrid')}"
+							 oncomplete="location.reload();"
 							 action="#{entradaMaterialSemNotaRaiz.procurarLote}" 
 							 rendered="#{entradaMaterialSemNotaRaiz.loteEncontrado == null}"
 							 title="Procurar lote." />
@@ -26,68 +27,45 @@
 				 rendered="#{entradaMaterialSemNotaRaiz.loteEncontrado != null}" 
 				 columns="3" 
 				 width="100%">
-		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
-			<h:outputLabel for="material" value="Material:" />
-			<br />
-			<p:autoComplete id="material"
+		
+		<ri:inputAutoComplete id="material" 
+							 label="Material"  
+							 disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
+							 completeMethod="#{materialAutoComplete.autoComplete}" 
+							 itemValue="#{material}" 
+							 itemLabel="#{material.descricaoUnidadeMaterial}" 
+							 var="material"
+							 value="#{entradaMaterialSemNotaRaiz.instancia.material}" 
+							 required="true"/>
+		
+		<ri:inputAutoComplete id="fabricante" 
+							 label="Fabricante"  
+							 disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
+							 completeMethod="#{fabricanteAutoComplete.autoComplete}" 
+							 itemValue="#{fabricante}" 
+							 itemLabel="#{fabricante.descricao}" 
+							 var="fabricante"
+							 value="#{entradaMaterialSemNotaRaiz.instancia.fabricante}" 
+							 required="true"/>
+		
+		<ri:inputDataMesAno id="dataValidade"
+							label="Data de Validade"
+							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
 							disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 							required="true" 
-							scrollHeight="300"
-							minQueryLength="4"
-							value="#{entradaMaterialSemNotaRaiz.instancia.material}"
-							completeMethod="#{materialAutoComplete.autoComplete}"
-							var="material" 
-							forceSelection="true" 
-							title="Informe o material"
-							itemLabel="#{material.descricaoUnidadeMaterial}"
-							itemValue="#{material}" 
-							converter="materialConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
+							value="#{entradaMaterialSemNotaRaiz.instancia.dataValidade}"
+							title="Data de validade do lote"/>
 
-		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
-			<h:outputLabel for="fabricante" value="Fabricante:" />
-			<br />
-			<p:autoComplete id="fabricante"
-							disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
-							required="true"
-							value="#{entradaMaterialSemNotaRaiz.instancia.fabricante}"
-							completeMethod="#{fabricanteAutoComplete.autoComplete}"
-							var="fabricante" 
-							minQueryLength="3" 
-							forceSelection="true"
-							title="Informe o fabricante" 
-							itemLabel="#{fabricante.descricao}"
-							itemValue="#{fabricante}" 
-							converter="fabricanteConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputApenasNumero id="quantidade" 
+							  required="true"
+							  title="Informe a quantidade informada na nota" 
+							  value="#{entradaMaterialSemNotaRaiz.quantidadeMovimentacao}" 
+							  label="Quantidade"/>
 
-		<h:panelGroup> 
-			<r:inputDataMesAno id="dataValidade"
-							   label="Data de validade:"
-							   disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
-							   required="true" 
-							   value="#{entradaMaterialSemNotaRaiz.instancia.dataValidade}"
-							   title="Data de validade do lote"/>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="quantidade" value="Quantidade:" />
-			<br />
-			<p:inputText id="quantidade"
-						 required="true"
-						 value="#{entradaMaterialSemNotaRaiz.quantidadeMovimentacao}"
-						 onkeyup="apenasNumero(this);" 
-						 title="Informe a quantidade" />
-		</h:panelGroup>
-
+		<ri:inputTextoSimples id="codigoBarras" 
+							  title="Informe o código de barras" 
+							  value="#{entradaMaterialSemNotaRaiz.instancia.codigoBarras}" 
+							  label="Código de Barras" />
+		
 	</h:panelGrid>
 </ui:composition>
