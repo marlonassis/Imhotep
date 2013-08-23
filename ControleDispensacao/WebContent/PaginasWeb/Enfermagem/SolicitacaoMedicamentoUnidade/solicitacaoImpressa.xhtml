@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<h:form>
+			<table border="0" width="100%" style="font-size:14px" >
+				<tr>
+					<td>
+						<div style="font-size:20px">
+							<b>Universidade Federal de Sergipe</b><br/>
+							Hospital Universitário<br/>
+							Dispensação de Medicamentos<br/>
+							Setor: Farmácia
+						</div>
+					</td>
+					<td>
+						<table width="100%">
+							<tr>
+								<td>
+						            Nº da Requisição: <h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.idSolicitacaoMedicamentoUnidade}" />
+						            <br/>
+									Data da impressão: <h:outputText value="#{util.dataHoraAtual}" />
+								</td>
+								<td>
+									<div align="right">
+										<h:graphicImage width="150" value="/Imagens/logo_hu_simples.png" />
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><center>--------------------------------------------------------------------------------------------------------</center></td>
+				</tr>
+				<tr>
+					<td>
+						<b>Solicitação:</b>
+					</td>
+					<td>
+						<b>Dispensação:</b>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Data: <h:outputText value="#{util.formatarDataHoraBrasil(solicitacaoMedicamentoUnidadeRaiz.instancia.dataInsercao)}"/>
+					</td>
+					<td>
+						Data:<h:outputText value="#{util.formatarDataHoraBrasil(solicitacaoMedicamentoUnidadeRaiz.instancia.dataDispensacao)}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Nome:#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalInsercao.nome}
+					</td>
+					<td>
+						Nome:#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalDispensacao.nome}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Unidade:#{solicitacaoMedicamentoUnidadeRaiz.instancia.unidadeDestino.nome}
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><center>--------------------------------------------------------------------------------------------------------</center></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<b>Itens</b>
+					</td>
+				</tr>
+					<ui:repeat value="#{solicitacaoMedicamentoUnidadeItemRaiz.itens}" var="item" >
+						<tr>
+							<td colspan="2" >
+								<h:panelGroup rendered="#{item.statusItem == 'R'}" >
+									<b>x#{item.material.codigoMaterial}#{' - '}#{item.material.descricao} - Recusado</b><br/>
+									Motivo: <h:outputText value="#{item.justificativa}" escape="false" />
+								</h:panelGroup>
+								<h:panelGroup rendered="#{item.statusItem != 'R'}" >
+									•<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b>  <h:outputText value="•" style="padding-right:10px; padding-left:10px;" /> Soli.:#{item.quantidadeSolicitada}  <h:outputText value="•" style="padding-right:10px; padding-left:10px;" />  Dis.:#{solicitacaoMedicamentoUnidadeItemRaiz.somaTotalDispensadaItem(item)}<br/>
+									<ui:repeat value="#{solicitacaoMedicamentoUnidadeItemRaiz.pegarEstoqueItensLiberados(item)}" var="itemLiberado" >
+										Lote: #{itemLiberado.estoque.lote} - Dis.:#{itemLiberado.quantidadeDispensada} - Vali.:<h:outputText value="#{itemLiberado.estoque.dataValidade}" ><f:convertDateTime pattern="MMMM/yyyy"  locale="pt_BR" timeZone="GMT-3" /></h:outputText>
+										••
+									</ui:repeat>
+								</h:panelGroup>
+							</td>
+						</tr>
+					</ui:repeat>
+			</table>
+			<br/><br/>
+			<h:panelGroup rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.justificativa != null and solicitacaoMedicamentoUnidadeRaiz.instancia.justificativa != ''}" >
+				Observação: <h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.justificativa}" escape="false" />
+			</h:panelGroup>
+			<br/><br/>
+		    <h:panelGrid border="0" columns="2" width="100%" style="font-size:16px" >
+		    	<h:panelGroup>
+		    	<center>
+		    		-------------------------------------<br/>
+		    		#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalDispensacao.nome}
+		    	</center>
+		    	</h:panelGroup>
+		    	<h:panelGroup>
+		    	<center>
+		    		-------------------------------------<br/>
+		    		#{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalReceptor.nome}
+		    	</center>
+		    	</h:panelGroup>
+		    </h:panelGrid>
+		    <h:commandButton onclick="print();" value="Imprimir" style="" />
+			<div align="right" style="font-size:20px">
+				Sistema Imhotep
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

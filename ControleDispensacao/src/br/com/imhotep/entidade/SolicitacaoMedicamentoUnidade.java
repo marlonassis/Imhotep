@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,12 @@ import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 
 @Entity
 @Table(name = "tb_solicitacao_medicamento_unidade")
-public class SolicitacaoMedicamentoUnidade {
+public class SolicitacaoMedicamentoUnidade implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private int idSolicitacaoMedicamentoUnidade;
 	private Unidade unidadeDestino;
@@ -35,7 +41,7 @@ public class SolicitacaoMedicamentoUnidade {
 	private Profissional profissionalDispensacao;
 	private String justificativa;
 	private Profissional profissionalReceptor;
-	
+	private Date dataFechamento;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicitacao_medicamento_un_id_solicitacao_medicamento_un_seq")
 	@Id
@@ -147,6 +153,16 @@ public class SolicitacaoMedicamentoUnidade {
 		this.profissionalReceptor = profissionalReceptor;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_fechamento")
+	public Date getDataFechamento() {
+		return dataFechamento;
+	}
+
+	public void setDataFechamento(Date dataFechamento) {
+		this.dataFechamento = dataFechamento;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

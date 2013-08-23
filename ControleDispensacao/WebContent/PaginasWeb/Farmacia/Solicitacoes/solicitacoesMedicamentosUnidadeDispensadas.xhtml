@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Solicitações Dispensadas">
+			<rf:formularioPesquisa id="solicitacoesDispensadasPesquisa" 
+								  raizConsulta="#{solicitacaoMedicamentoUnidadeDispensadoConsulta}"
+								  fieldSetCollapsed="false"
+								  novoPadraoPesquisa="true"
+								  novoAction="#{solicitacaoMedicamentoUnidadeDispensadoConsulta.novaInstancia()}"
+								  srcTabela="Farmacia/Solicitacoes/solicitacoesMedicamentosUnidadeDispensadasTabela.xhtml"
+								  srcConsulta="Farmacia/Solicitacoes/solicitacoesMedicamentosUnidadeDispensadasConsulta.xhtml" />
+		</p:tab>
+	</ui:define>
+</ui:composition>

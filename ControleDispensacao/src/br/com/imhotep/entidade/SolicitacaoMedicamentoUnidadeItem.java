@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,12 @@ import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 
 @Entity
 @Table(name = "tb_solicitacao_medicamento_unidade_item")
-public class SolicitacaoMedicamentoUnidadeItem {
+public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private int idSolicitacaoMedicamentoUnidadeItem;
 	private Integer quantidadeSolicitada;
@@ -35,6 +41,15 @@ public class SolicitacaoMedicamentoUnidadeItem {
 	private String justificativa;
 	private SolicitacaoMedicamentoUnidade solicitacaoMedicamentoUnidade;
 	private TipoStatusSolicitacaoItemEnum statusItem;
+	
+	public SolicitacaoMedicamentoUnidadeItem(){
+		super();
+	}
+	
+	public SolicitacaoMedicamentoUnidadeItem(Integer quantidadeSolicitada, Material material){
+		this.quantidadeSolicitada = quantidadeSolicitada;
+		this.material = material;
+	}
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicitacao_medicamento_un_id_solicitacao_medicamento_u_seq1")
 	@Id
