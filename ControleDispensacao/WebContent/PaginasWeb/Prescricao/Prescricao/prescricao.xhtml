@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -153,17 +154,13 @@
 										value="#{prescricaoRaiz.dose.intervaloEntreDoses}"
 										title="Intervalo de uma dose para a outra" />h
 								</h:panelGroup>
-
-								<h:panelGroup>
-									<font color="red">*</font>
-									<h:outputLabel for="horaInicial" value="Início da dosagem:" />
-									<br />
-									<p:calendar id="dataIncial" 
-												pattern="dd/MM/yyyy HH:mm"
-												locale="pt" 
-												value="#{prescricaoRaiz.dose.dataInicio}" />
-								</h:panelGroup>
-
+								
+								<ri:inputDataHora id="dataIncial" 
+												  required="false" 
+												  title="Informe a data de início da dose" 
+												  value="#{prescricaoRaiz.dose.dataInicio}" 
+												  label="Início da dosagem" />
+								
 								<h:panelGroup>
 									<font color="red">*</font>
 									<h:outputLabel for="via" value="Via de administração:" />
@@ -906,8 +903,7 @@
 						<br />
 						<p:commandButton value="Finalizar Prescrição"
 										 action="#{prescricaoRaiz.finalizarPrescricao}"
-										 oncomplete="window.location.reload(); window.open('../ConsultaPrescricao/prescricaoImpressao.hu', 'prescricaoIndividualImpressa');"
-						   				 target="prescricaoIndividualImpressa"/>
+						   				 />
 					</p:tab>
 
 				</p:wizard>
