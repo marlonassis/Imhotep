@@ -25,6 +25,20 @@ public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		return list;
 	}
 	
+	public Estoque consultarEstoqueLoteCodigoBarras(String codigo) {
+		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		StringBuilder stringB = new StringBuilder("select o from Estoque o where ");
+		stringB.append("o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '");
+		stringB.append(dataS);
+		stringB.append("' and (lower(o.lote) = lower('");
+		stringB.append(codigo);
+		stringB.append("') or codigoBarras = '");
+		stringB.append(codigo);
+		stringB.append("') order by o.dataValidade asc, to_ascii(lower(o.lote))");
+		Estoque estoque = new ConsultaGeral<Estoque>().consultaUnica(stringB, null);
+		return estoque;
+	}
+	
 	public List<Estoque> consultarEstoqueVencidoLimiteSeteDias() {
 		Calendar dataMesAnterior = Calendar.getInstance();
 		dataMesAnterior.add(Calendar.MONTH, -1);
@@ -35,6 +49,13 @@ public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
 		Collections.sort(list, new EstoqueDataVencimentoComparador());
 		return list;
+	}
+	
+	public Estoque consultarEstoqueLivre(String lote) {
+		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and o.lote = '"+lote+"'";
+		Estoque estoque = (Estoque) new ConsultaGeral<Estoque>().consultaUnica(new StringBuilder(hql), null);
+		return estoque;
 	}
 	
 	public List<Estoque> consultarEstoqueVencido() {

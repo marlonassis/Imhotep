@@ -6,7 +6,7 @@ import javax.faces.bean.RequestScoped;
 import br.com.imhotep.entidade.NotaFiscalEstoque;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="notaFiscaEstoqueLoteConsultaRaiz")
+@ManagedBean
 @RequestScoped
 public class NotaFiscaEstoqueLoteConsultaRaiz extends ConsultaGeral<NotaFiscalEstoque> {
 	

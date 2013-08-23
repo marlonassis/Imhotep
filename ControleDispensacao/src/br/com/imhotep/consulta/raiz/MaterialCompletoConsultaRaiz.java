@@ -14,9 +14,13 @@ import br.com.remendo.ConsultaGeral;
 public class MaterialCompletoConsultaRaiz  extends ConsultaGeral<Material>{
 
 	public List<Material> consultar() {
-		List<Material> list = new ArrayList<Material>(new ConsultaGeral<Material>().consulta(new StringBuilder("select o from Material o order by o.descricao"), null));
+		List<Material> list = new ArrayList<Material>(new ConsultaGeral<Material>().consulta(new StringBuilder("select o from Material o order by to_ascii(lower(o.descricao))"), null));
 		return list;
 	}
 	
-	
+	public List<Material> materialPadronizado() {
+		StringBuilder stringB = new StringBuilder("select o from Material o where o.padronizado = true order by to_ascii(lower(o.descricao))");
+		List<Material> list = new ArrayList<Material>(new ConsultaGeral<Material>().consulta(stringB, null));
+		return list;
+	}
 }
