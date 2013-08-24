@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_autoriza_painel")
-public class AutorizaPainel {
+public class AutorizaPainel implements Serializable {
+	private static final long serialVersionUID = -2736603988543503648L;
+	
 	private int idAutorizaPainel;
 	private Painel painel;
 	private Especialidade especialidade;

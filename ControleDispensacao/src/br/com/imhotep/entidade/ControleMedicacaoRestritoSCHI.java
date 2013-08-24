@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +28,10 @@ import br.com.imhotep.enums.TipoSubIndicacaoTerapeuticaEnum;
 
 	@Entity
 	@Table(name = "tb_controle_medicacao_restrito_schi")
-	public class ControleMedicacaoRestritoSCHI {
+	public class ControleMedicacaoRestritoSCHI implements Serializable {
+		private static final long serialVersionUID = 8482552584004013190L;
+
 		private int idControleMedicacaoRestritoSCHI;
-		
 		private String via;
 		private Integer frequencia;
 		private Integer dose;

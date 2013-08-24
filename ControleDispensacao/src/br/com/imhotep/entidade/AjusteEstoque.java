@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_ajuste_estoque")
-public class AjusteEstoque {
+public class AjusteEstoque  implements Serializable{
+	private static final long serialVersionUID = 8038451118277498809L;
 	
 	private int idAjusteEstoque;
 	private MovimentoLivro movimentoLivro;

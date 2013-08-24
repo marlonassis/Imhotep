@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,10 +21,10 @@ import br.com.imhotep.enums.TipoChamadoStatusEnum;
 
 @Entity
 @Table(name = "tb_chamado")
-public class Chamado {
-	
+public class Chamado implements Serializable {
+	private static final long serialVersionUID = -2670641880435020436L;
+
 	private int idChamado;
-	
 	private String assunto;
 	private String descricao;
 	private Unidade unidadeSolicitante;

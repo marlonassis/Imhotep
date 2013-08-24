@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_autoriza_menu")
-public class AutorizaMenu {
+public class AutorizaMenu implements Serializable {
+	private static final long serialVersionUID = -7494687434887943929L;
+	
 	private int idAutorizaMenu;
 	private Especialidade especialidade;
 	private Menu menu;
@@ -48,7 +52,7 @@ public class AutorizaMenu {
 	public void setEspecialidade(Especialidade especialidade){
 		this.especialidade = especialidade;
 	}
-		
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

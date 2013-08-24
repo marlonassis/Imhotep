@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +15,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_cidade")
-public class Cidade {
+public class Cidade implements Serializable {
+	private static final long serialVersionUID = -6763020084712263778L;
+	
 	private int idCidade;
 	private Estado estado;
 	private String nome;

@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,7 +17,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_autoriza_menu_profissional")
-public class AutorizaMenuProfissional {
+public class AutorizaMenuProfissional implements Serializable {
+	private static final long serialVersionUID = -3392823047080000857L;
+	
 	private int idAutorizaMenuProfissional;
 	private Profissional profissional;
 	private Menu menu;

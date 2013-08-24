@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_sub_grupo")
-public class SubGrupo {
+public class SubGrupo implements Serializable{
+	private static final long serialVersionUID = -8867697129594122260L;
+	
 	private int idSubGrupo;
 	private Grupo grupo;
 	private String descricao;
