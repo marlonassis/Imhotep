@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid columns="1" width="100%">
+		
+		<h:panelGrid id="solicitacaoMedicamentounidadePanelGrid" columns="3" width="100%">
+			<ri:inputAutoComplete id="unidade" 
+								  disabled="#{devolucaoMedicamentoRaiz.edicao}"
+								  label="Unidade Devolução"  
+								  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+								  itemValue="#{unidade}" 
+								  itemLabel="#{unidade.nome}" 
+								  var="unidade"
+								  value="#{devolucaoMedicamentoRaiz.instancia.unidadeDevolucao}" 
+								  required="true"/>
+		</h:panelGrid>
+		<h:panelGrid id="devolucaoMedicamentoItemPanelGrid" 
+					 rendered="#{devolucaoMedicamentoRaiz.edicao}" 
+					 columns="3">
+			<ri:inputAutoComplete id="material" 
+								  label="Medicamento ou Código"
+								  size="45"
+								  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
+								  itemValue="#{material}" 
+								  itemLabel="#{material.descricaoUnidadeMaterial}" 
+								  var="material"
+								  value="#{devolucaoMedicamentoItemRaiz.instancia.material}" 
+								  required="false"/>
+			
+			<ri:inputApenasNumero id="quantidadeSolicitada" 
+								  title="Informe a quantidade desejada" 
+								  value="#{devolucaoMedicamentoItemRaiz.instancia.quantidadeDevolvida}" 
+								  label="Quantidade" 
+								  required="false" />
+			
+			<h:panelGroup>
+				<p:commandLink action="#{devolucaoMedicamentoItemRaiz.enviar}" 
+							   update=":#{p:component('listaItensPanelGrid')} :#{p:component('devolucaoMedicamentoPesquisaForm')} :#{p:component('devolucaoMedicamentoItemPanelGrid')}" 
+							   global="false" 
+	              			   onclick="statusDialog.show();" 
+	              			   onsuccess="statusDialog.hide();">
+					<h:graphicImage value="/Imagens/add.png" alt="Adicionar" />
+				</p:commandLink>
+			</h:panelGroup>
+		</h:panelGrid>
+		<h:panelGrid id="listaItensPanelGrid" 
+					 columns="1" 
+					 width="100%"
+					 rendered="#{devolucaoMedicamentoRaiz.edicao}" >
+			<p:growl showDetail="true" />
+			<p:dataTable var="item" 
+						 selectionMode="single" 
+				 		 rowKey="#{item.idDevolucaoMedicamentoItem}"
+						 value="#{devolucaoMedicamentoItemRaiz.itens}"
+						 emptyMessage="Não há itens cadastrados" >
+				<p:column headerText="Código">  
+		            <h:outputText value="#{item.material.codigoMaterial}" />  
+		        </p:column>  
+		        <p:column headerText="Material">  
+		            <h:outputText value="#{item.material.descricaoUnidadeMaterial}" />  
+		        </p:column>  
+		        <p:column headerText="Quantidade">  
+		            <h:outputText value="#{item.quantidadeDevolvida}" />  
+		        </p:column> 
+		        <p:column style="width:60px; text-align: center;">
+		        	<p:commandLink action="#{devolucaoMedicamentoItemRaiz.abrirDialogAlterarQuantidade}"
+								   update=":#{p:component('alteracaoQuantidadeDialog')} :#{p:component('listaItensPanelGrid')} :#{p:component('devolucaoMedicamentoPesquisaForm')}"
+								   title="Alterar quantidade" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoItemRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/edit.gif" />
+					</p:commandLink>
+		        
+					<p:commandLink action="#{devolucaoMedicamentoItemRaiz.apagar()}"
+								   update=":#{p:component('listaItensPanelGrid')} :#{p:component('devolucaoMedicamentoPesquisaForm')}"
+								   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+								   title="Apagar #{item.material.descricaoUnidadeMaterial}" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoItemRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+				</p:column> 
+		    </p:dataTable>  
+		</h:panelGrid>
+	</h:panelGrid>
+</ui:composition>
