@@ -16,6 +16,7 @@
 		<co:attribute name="title" required="true" />
 		<co:attribute name="required" default="false" />
 		<co:attribute name="disabled" default="false"/>
+		<co:attribute name="autocomplete" default="true"/>
 	</co:interface>
 	
 	<co:implementation>
@@ -30,6 +31,7 @@
 				<p:inputText id="#{cc.attrs.id}"
 							 disabled="#{cc.attrs.disabled}"
 							 required="#{cc.attrs.required}"
+							 autocomplete="#{cc.attrs.autocomplete}"
 							 value="#{cc.attrs.value}"
 							 onkeyup="apenasNumero(this);" 
 						 	 title="#{cc.attrs.title}" 

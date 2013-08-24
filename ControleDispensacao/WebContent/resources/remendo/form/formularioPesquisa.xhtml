@@ -13,22 +13,41 @@
 		<co:attribute name="id"/>
 		<co:attribute name="srcConsulta"/>
 		<co:attribute name="srcTabela"/>
+		<co:attribute name="fieldSetCollapsed" default="true" />
 		<co:attribute name="novoAction" method-signature="boolean novaInstancia()" />
+		<co:attribute name="novoPadraoPesquisa" default="false" />
+		<co:attribute name="raizConsulta" />
+		<co:attribute name="labelNovo" default="Novo" />
 	</co:interface>
 	
 	<co:implementation>
 		<ui:param name="idFormulario" value="#{cc.attrs.id}Form"/>
 		<h:form id="#{idFormulario}">
 			<p:fieldset legend="Pesquisa"
-						collapsed="true" 
+						collapsed="#{cc.attrs.fieldSetCollapsed}" 
 						toggleable="true" 
 						toggleSpeed="500">
 				<p:growl id="formGrowl" showDetail="true" />
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcConsulta}" />
-				<p:commandButton value="Pesquisar" 
+				<p:commandButton global="false" 
+                				 onclick="statusDialog.show();"  
+                				 onsuccess="statusDialog.hide();"
+								 value="Pesquisar" 
 								 image="ui-icon ui-icon-search" 
+								 rendered="#{!cc.attrs.novoPadraoPesquisa}"
 								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
-				<p:commandButton value="Novo" 
+				<p:commandButton global="false" 
+                				 onclick="statusDialog.show();"  
+                				 onsuccess="statusDialog.hide();"
+								 value="Pesquisar" 
+								 action="#{cc.attrs.raizConsulta.carregarResultado}"
+								 image="ui-icon ui-icon-search"
+								 rendered="#{cc.attrs.novoPadraoPesquisa}" 
+								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
+				<p:commandButton global="false" 
+                				 onclick="statusDialog.show();"  
+                				 onsuccess="statusDialog.hide();"
+								 value="#{cc.attrs.labelNovo}" 
 								 image="ui-icon ui-icon-arrowrefresh-1-s" 
 								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"
 								 action="#{cc.attrs.novoAction}" />

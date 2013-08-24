@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -12,10 +11,8 @@
 	<co:interface>
 		<co:attribute name="id" required="true" />
 		<co:attribute name="value" required="true" />
-		<co:attribute name="itens" required="true" />
 		<co:attribute name="required" default="false" />
 		<co:attribute name="label" required="true" />
-		<co:attribute name="onchange" />
 	</co:interface>
 	
 	<co:implementation>
@@ -27,16 +24,14 @@
 				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<p:selectOneMenu id="#{cc.attrs.id}"
-								 value="#{cc.attrs.value}"
-								 effect="fade"
-								 label="#{cc.attrs.label}"
-								 onchange="#{cc.attrs.onchange}"
-								 required="#{cc.attrs.required}">
-					<f:selectItem itemLabel="Selecione..." itemValue="" />
-					<f:selectItems value="#{cc.attrs.itens}"/>
-					<co:insertChildren />
-				</p:selectOneMenu>
+				<p:selectOneRadio id="#{cc.attrs.id}"
+								  value="#{cc.attrs.value}"
+								  effect="fade"
+								  label="#{cc.attrs.label}"
+								  required="#{cc.attrs.required}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</p:selectOneRadio>
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>

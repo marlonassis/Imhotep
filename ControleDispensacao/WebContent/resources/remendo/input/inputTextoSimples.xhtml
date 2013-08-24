@@ -17,6 +17,8 @@
 		<co:attribute name="title" required="true" />
 		<co:attribute name="required" default="false" />
 		<co:attribute name="size" default="30" />
+		<co:attribute name="disabled" default="false" />
+		<co:attribute name="autoComplete" default="true" />
 	</co:interface>
 	
 	<co:implementation>
@@ -30,8 +32,10 @@
 			<h:panelGroup>
 				<p:inputText id="#{cc.attrs.id}"
 							 label="#{cc.attrs.label}"
+							 autocomplete="#{cc.attrs.autoComplete}"
 							 maxlength="#{cc.attrs.maxLength}" 
 							 required="#{cc.attrs.required}"
+							 disabled="#{cc.attrs.disabled}"
 							 size="#{cc.attrs.size}"
 							 value="#{cc.attrs.value}"
 							 title="#{cc.attrs.title}" >

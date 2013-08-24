@@ -19,10 +19,13 @@
 		<co:attribute name="srcEditor" required="true"/>
 		<co:attribute name="updateSalvar" />
 		<co:attribute name="renderedGravar" default="true" />
+		<co:attribute name="renderedNovo" default="true" />
 		<co:attribute name="ajaxSalvar" default="true" />
 		<co:attribute name="renderedSalvar" default="true" />
 		<co:attribute name="valueSalvar" default="Salvar" />
 		<co:attribute name="valueGravar" default="Gravar" />
+		<co:attribute name="actionNovo" default="#{cc.attrs.raiz.novaInstancia()}" method-signature="void novaInstancia()" />
+		<co:attribute name="updateAtualizar"/>
 	</co:interface>
 	
 	<co:implementation>
@@ -35,20 +38,33 @@
 						toggleable="#{cc.attrs.fieldSetToggleable}"
 						toggleSpeed="#{cc.attrs.fieldSetToggleSpeed}">
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcEditor}" />
-				<p:commandButton value="#{cc.attrs.valueSalvar}"
+				<p:commandButton id="salvarButtonEdicao"
+								 value="#{cc.attrs.valueSalvar}"
 								 ajax="#{cc.attrs.ajaxSalvar}"
 								 rendered="#{!cc.attrs.raiz.edicao and cc.attrs.renderedSalvar}"
 								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl #{cc.attrs.updateSalvar}"
-								 action="#{cc.attrs.raiz.enviar}" />
-				<p:commandButton value="#{cc.attrs.valueGravar}" 
+								 action="#{cc.attrs.raiz.enviar}" 
+								 global="false" 
+	              			     onclick="statusDialog.show();" 
+	              			     onsuccess="statusDialog.hide();"/>
+				<p:commandButton id="gravarButtonEdicao"
+								 value="#{cc.attrs.valueGravar}" 
 								 rendered="#{cc.attrs.raiz.edicao and cc.attrs.renderedGravar}"
-								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl"
-								 action="#{cc.attrs.raiz.atualizar}"/>
-				<p:commandButton value="Novo" 
+								 update="#{idFormularioPesquisa} #{idFormularioEditor} :padraoTabView:messages :padraoTabView:growl #{cc.attrs.updateAtualizar}"
+								 action="#{cc.attrs.raiz.atualizar}"
+								 global="false" 
+	              			     onclick="statusDialog.show();" 
+	              			     onsuccess="statusDialog.hide();"/>
+				<p:commandButton id="novoButtonEdicao"
+								 value="Novo" 
 								 immediate="true"
 								 update="#{idFormularioPesquisa} #{idFormularioEditor}"
-								 action="#{cc.attrs.raiz.novaInstancia}" 
-								 oncomplete="window.location.reload();" />
+								 action="#{cc.attrs.actionNovo}" 
+								 oncomplete="window.location.reload();" 
+								 rendered="#{cc.attrs.renderedNovo}" 
+								 global="false" 
+	              			     onclick="statusDialog.show();" 
+	              			     onsuccess="statusDialog.hide();" />
 			</p:fieldset>
 		</h:form>
 	</co:implementation>

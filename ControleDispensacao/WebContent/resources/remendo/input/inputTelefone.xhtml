@@ -17,6 +17,7 @@
 		<co:attribute name="value" required="true" />
 		<co:attribute name="title" required="true" />
 		<co:attribute name="rendered"/>
+		<co:attribute name="autoComplete" default="true" />
 	</co:interface>
 	
 	<co:implementation>
@@ -29,6 +30,7 @@
 			</h:panelGroup>
 			<h:panelGroup>
 				<p:inputMask id="#{cc.attrs.id}"
+							 autocomplete="#{cc.attrs.autoComplete}"
 							 label="#{cc.attrs.label}"
 							 disabled="#{cc.attrs.disabled}"
 							 required="#{cc.attrs.required}" 
