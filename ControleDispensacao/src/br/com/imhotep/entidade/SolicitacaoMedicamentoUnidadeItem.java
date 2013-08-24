@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,13 +35,12 @@ public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
 	private Unidade unidadeProfissionalLiberacao;
 	private Profissional profissionalInsercao;
 	private Date dataInsercao;
-	private Integer quantidadeDipensada;
-	private MovimentoLivro movimentoLivro;
 	private Profissional profissionalLiberacao;
 	private Date dataLiberacao;
 	private String justificativa;
 	private SolicitacaoMedicamentoUnidade solicitacaoMedicamentoUnidade;
 	private TipoStatusSolicitacaoItemEnum statusItem;
+	private DispensacaoSimples dispensacaoSimples;
 	
 	public SolicitacaoMedicamentoUnidadeItem(){
 		super();
@@ -112,25 +112,6 @@ public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
 		this.dataInsercao = dataInsercao;
 	}
 	
-	@Column(name="in_quantidade_dipensada")
-	public Integer getQuantidadeDipensada() {
-		return quantidadeDipensada;
-	}
-
-	public void setQuantidadeDipensada(Integer quantidadeDipensada) {
-		this.quantidadeDipensada = quantidadeDipensada;
-	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_movimento_livro")
-	public MovimentoLivro getMovimentoLivro() {
-		return movimentoLivro;
-	}
-
-	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
-		this.movimentoLivro = movimentoLivro;
-	}
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_profissional_liberacao")
 	public Profissional getProfissionalLiberacao() {
@@ -180,6 +161,15 @@ public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
 		this.statusItem = statusItem;
 	}
 
+	@OneToOne(mappedBy="solicitacaoMedicamentoUnidadeItem")  
+	public DispensacaoSimples getDispensacaoSimples() {
+		return dispensacaoSimples;
+	}
+	public void setDispensacaoSimples(DispensacaoSimples dispensacaoSimples) {
+		this.dispensacaoSimples = dispensacaoSimples;
+	}
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
