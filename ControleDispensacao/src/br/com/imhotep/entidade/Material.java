@@ -2,6 +2,7 @@ package br.com.imhotep.entidade;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,6 +40,7 @@ public class Material implements Serializable {
 	private Integer quantidadeMinima;
 	private Boolean bloqueado;
 	private Boolean padronizado;
+	private Set<Estoque> estoques;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_id_material_seq")
 	@Id
@@ -167,7 +170,13 @@ public class Material implements Serializable {
 		this.padronizado = padronizado;
 	}
 	
-	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "material")
+	public Set<Estoque> getEstoques() {
+		return estoques;
+	}
+	public void setEstoques(Set<Estoque> estoques) {
+		this.estoques = estoques;
+	}
 
 	@Override
 	public int hashCode() {
