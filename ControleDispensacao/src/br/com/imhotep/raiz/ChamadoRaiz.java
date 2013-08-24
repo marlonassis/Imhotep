@@ -14,7 +14,7 @@ import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="chamadoRaiz")
+@ManagedBean
 @SessionScoped
 public class ChamadoRaiz extends PadraoHome<Chamado>{
 	
