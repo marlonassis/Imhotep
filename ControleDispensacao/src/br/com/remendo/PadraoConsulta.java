@@ -2,12 +2,14 @@ package br.com.remendo;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import br.com.remendo.interfaces.IPadraoConsulta;
+import br.com.remendo.ConsultaGeral;
 import br.com.remendo.gerenciador.GerenciadorConexao;
+import br.com.remendo.interfaces.IPadraoConsulta;
 
 public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IPadraoConsulta {
 
@@ -16,17 +18,23 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	private HashMap<String, String> camposConsulta =  new HashMap<String, String>();
 	private boolean contendoTodosCampos = true;
 	private int registrosEncontrados;
-	public static final String IGUAL = " = ";
-	public static final String DIFERENTE = " != ";
-	public static final String MAIOR = " > ";
-	public static final String MAIOR_IGUAL = " >= ";
-	public static final String MENOR = "<";
-	public static final String MENOR_IGUAL = " <= ";
-	public static final String CONTENDO = "between valor and valor2";
-	public static final String NAO_CONTENDO = "not between valor and valor2";
-	public static final String INCLUINDO_TUDO = " like ";
+	protected static final String IGUAL = " = ";
+	protected static final String DIFERENTE = " != ";
+	protected static final String MAIOR = " > ";
+	protected static final String MAIOR_IGUAL = " >= ";
+	protected static final String MENOR = "<";
+	protected static final String MENOR_IGUAL = " <= ";
+	protected static final String CONTENDO = "between valor and valor2";
+	protected static final String NAO_CONTENDO = "not between valor and valor2";
+	protected static final String INCLUINDO_TUDO = " like ";
 	private String orderBy;
 	private String groupBy;
+	private boolean pesquisaGuiada; 
+	private List<T> lista = new ArrayList<T>();
+	
+	public void carregarResultado(){
+		setLista(getList());
+	}
 	
 	@SuppressWarnings("unchecked")
 	public PadraoConsulta() {
@@ -74,6 +82,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	public List<T> getList(){
 		List<T> resultadoBuscaList = null;
         try{
+        	boolean achouCampoPreenchidoPeloUsuario = false;
         	boolean adicionadoWhere=false;
         	//insere a clausula 'where' caso não exista ainda
         	if(!camposConsulta.isEmpty()){
@@ -101,6 +110,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	    			}
 	    			
     				if(campoNaoNulo(obj)){
+    					achouCampoPreenchidoPeloUsuario = true;
     					String operador = camposConsulta.get(campo);
     					consultaGeral.getAddValorConsulta().put(campoSubS, (operador.contains("like") ? "%" + obj.toString().toLowerCase() + "%" : obj));
 		    			String campo2 = addCast(campoSubS, obj);
@@ -126,7 +136,18 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         		consultaGeral.getSqlConsultaSB().append(" group by ").append(groupBy);
         	}
         	
-            resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
+        	
+        	if(achouCampoPreenchidoPeloUsuario){
+        		resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
+        	}else{
+        		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que não existe algum campo de pesquisa
+        		//essa restrição foi criada para evitar que entidades com muitos itens estourem o heap do java
+        		if(isPesquisaGuiada()){
+        			return null;
+        		}else{
+        			resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
+        		}
+        	}
             setRegistrosEncontrados(resultadoBuscaList.size());
         }catch (Exception e) {
         	e.printStackTrace();
@@ -210,5 +231,21 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	public void setGroupBy(String groupBy) {
 		this.groupBy = groupBy;
 	}
-	
+
+	public boolean isPesquisaGuiada() {
+		return pesquisaGuiada;
+	}
+
+	public void setPesquisaGuiada(boolean pesquisaGuiada) {
+		this.pesquisaGuiada = pesquisaGuiada;
+	}
+
+	public List<T> getLista() {
+		return lista;
+	}
+
+	public void setLista(List<T> lista) {
+		this.lista = lista;
+	}
+
 }

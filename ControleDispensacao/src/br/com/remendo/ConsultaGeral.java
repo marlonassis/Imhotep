@@ -15,6 +15,7 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 
 	private StringBuilder sqlConsultaSB = new StringBuilder();
 	private HashMap<Object, Object> addValorConsulta =  new HashMap<Object, Object>();
+	private Integer maximoResultados;
 	
 	public ConsultaGeral() {
 
@@ -78,6 +79,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 			
 			if(consultaUnica){
 				query.setMaxResults(1);
+			}else{
+				if(getMaximoResultados() != null && getMaximoResultados() != 0){
+					query.setMaxResults(getMaximoResultados());
+				}
 			}
 			
 			objects = (List<E>) query.list();
@@ -120,6 +125,14 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 
 	public StringBuilder getSqlConsultaSB() {
 		return sqlConsultaSB;
+	}
+
+	public Integer getMaximoResultados() {
+		return maximoResultados;
+	}
+
+	public void setMaximoResultados(Integer maximoResultados) {
+		this.maximoResultados = maximoResultados;
 	}
 	
 }

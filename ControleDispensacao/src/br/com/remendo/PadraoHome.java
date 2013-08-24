@@ -12,8 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
 
-import br.com.imhotep.auxiliar.Utilitarios;
-import br.com.imhotep.raiz.SolicitacaoMedicamentoUnidadeRaiz;
 import br.com.remendo.gerenciador.GerenciadorConexao;
 import br.com.remendo.interfaces.IPadraoHome;
 
@@ -228,6 +226,7 @@ public abstract class PadraoHome<T> extends GerenciadorConexao implements IPadra
 		try{
 			iniciarTransacao();
 			res = session.createQuery(sql).executeUpdate();
+			tx.commit();
 //			novaInstancia();
 		}catch (Exception e) {
 			if(session != null){
