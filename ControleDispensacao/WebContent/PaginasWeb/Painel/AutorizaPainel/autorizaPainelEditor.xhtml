@@ -1,49 +1,28 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="autorizaPainelPanelGrid" columns="3" width="100%">
 
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="especialidade" value="Especialidade:" />
-			<br />
-			<p:autoComplete id="especialidade" 
-							scrollHeight="300"
-							required="true"
-							forceSelection="true"
-							value="#{autorizaPainelRaiz.instancia.especialidade}"
-							completeMethod="#{especialidadeAutoComplete.autoComplete}"
-							var="especialidade" 
-							itemLabel="#{especialidade.descricao}"
-							itemValue="#{especialidade}" 
-							converter="especialidadeConversor"/>
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="painel" value="Painel:" />
-			<br />
-			<p:autoComplete id="painel" 
-							scrollHeight="300"
-							required="true"
-							forceSelection="true"
-							value="#{autorizaPainelRaiz.instancia.painel}"
-							completeMethod="#{painelAutoComplete.autoComplete}"
-							var="painel" 
-							itemLabel="#{painel.descricao}"
-							itemValue="#{painel}" 
-							converter="painelConversor"/>
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="especialidade" 
+							  completeMethod="#{especialidadeAutoComplete.autoComplete}" 
+							  itemValue="#{especialidade}" 
+							  itemLabel="#{especialidade.descricao}" 
+							  var="especialidade" 
+							  value="#{autorizaPainelRaiz.instancia.especialidade}" 
+							  label="Especialidade"/>
 		
+		<ri:inputAutoComplete id="painel" 
+							  completeMethod="#{painelAutoComplete.autoComplete}" 
+							  itemValue="#{painel}" 
+							  itemLabel="#{painel.descricao}" 
+							  var="painel" 
+							  value="#{autorizaPainelRaiz.instancia.painel}" 
+							  label="Especialidade"/>
+
 	</h:panelGrid>
 
 </ui:composition>
