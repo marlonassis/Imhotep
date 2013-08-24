@@ -8,6 +8,7 @@
 	<h:panelGrid id="autorizaPainelPanelGrid" columns="3" width="100%">
 
 		<ri:inputAutoComplete id="especialidade" 
+							  required="true"
 							  completeMethod="#{especialidadeAutoComplete.autoComplete}" 
 							  itemValue="#{especialidade}" 
 							  itemLabel="#{especialidade.descricao}" 
@@ -16,12 +17,13 @@
 							  label="Especialidade"/>
 		
 		<ri:inputAutoComplete id="painel" 
+							  required="true"
 							  completeMethod="#{painelAutoComplete.autoComplete}" 
 							  itemValue="#{painel}" 
 							  itemLabel="#{painel.descricao}" 
 							  var="painel" 
 							  value="#{autorizaPainelRaiz.instancia.painel}" 
-							  label="Especialidade"/>
+							  label="Painel"/>
 
 	</h:panelGrid>
 
