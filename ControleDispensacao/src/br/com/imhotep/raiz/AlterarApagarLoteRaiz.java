@@ -8,6 +8,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.consulta.raiz.DoacaoEstoqueConsultaRaiz;
+import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.consulta.raiz.MovimentoSaidaEstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.NotaFiscalEstoqueConsultaRaiz;
@@ -21,7 +22,7 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="alterarApagarLoteRaiz")
+@ManagedBean
 @SessionScoped
 public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	
@@ -30,6 +31,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	private Estoque estoqueDuplicado = new Estoque();
 	private String loteAntigo;
 	private Date dataAntiga;
+	private String codigoBarrasAntigo;
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){
@@ -40,11 +42,12 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	}
 	
 	public void procurarLote(){
-		Estoque estoque = new EstoqueLoteConsultaRaiz().consultar(loteAntigo);
+		Estoque estoque = new EstoqueConsultaRaiz().consultarEstoqueLivre(loteAntigo);
 		loteEncontrado = estoque != null;
 		if(loteEncontrado){
 			setInstancia(estoque);
 			setDataAntiga(getInstancia().getDataValidade());
+			setCodigoBarrasAntigo(getInstancia().getCodigoBarras());
 		}else{
 			mensagem("Lote não encontrado.", loteAntigo, Constantes.WARN);
 		}
@@ -88,7 +91,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		if(new LinhaMecanica().apagarMovimentoLivroEstoque(getInstancia().getIdEstoque()))
 			if(new LinhaMecanica().apagarEstoque(getInstancia().getIdEstoque())){
 				super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()));
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
 				new EstoqueLogRaiz().gerarLog(log);
 				novaInstancia();
 			}
@@ -103,8 +106,8 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		try{
 			lm.fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque());
 			Date data = new Date();
-			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G, sdf.format(getInstancia().getDataValidade())),
-			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F, sdf.format(getInstancia().getDataValidade()))};
+			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras()),
+			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F, sdf.format(getInstancia().getDataValidade()), getEstoqueDuplicado().getCodigoBarras())};
 			new EstoqueLogRaiz().gerarLog(log);
 			mensagem("Fusão realizada com sucesso.", null, Constantes.INFO);
 			setInstancia(getEstoqueDuplicado());
@@ -120,6 +123,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		loteEncontrado=false;
 		loteAntigo=null;
 		dataAntiga=null;
+		codigoBarrasAntigo=null;
 	}
 	
 	@Override
@@ -135,8 +139,8 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 		if(!isLoteDuplicado()){
 			if(super.atualizar()){
 				Date data = new Date();
-				EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.B, sdf.format(getInstancia().getDataValidade())),
-				EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.A, sdf.format(getDataAntiga()))};
+				EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.B, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras()),
+				EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.A, sdf.format(getDataAntiga()), getCodigoBarrasAntigo())};
 				new EstoqueLogRaiz().gerarLog(log);
 				return true;
 			}
@@ -184,6 +188,14 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 
 	public void setDataAntiga(Date dataAntiga) {
 		this.dataAntiga = dataAntiga;
+	}
+
+	public String getCodigoBarrasAntigo() {
+		return codigoBarrasAntigo;
+	}
+
+	public void setCodigoBarrasAntigo(String codigoBarrasAntigo) {
+		this.codigoBarrasAntigo = codigoBarrasAntigo;
 	}
 	
 }
