@@ -8,12 +8,15 @@ import javax.faces.bean.RequestScoped;
 import br.com.imhotep.entidade.Unidade;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="unidadeAutoComplete")
+@ManagedBean
 @RequestScoped
 public class UnidadeAutoComplete extends ConsultaGeral<Unidade> {
 	
 	public Collection<Unidade> autoComplete(String string){
-		StringBuilder stringB = new StringBuilder("select o from Unidade as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+string+"%')) or lower(o.sigla) like lower('%"+string+"%')");
+		if(string != null){
+			string = string.trim();
+		}
+		StringBuilder stringB = new StringBuilder("select o from Unidade as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+string+"%')) or lower(o.sigla) like lower(to_ascii('%"+string+"%'))");
 		return super.consulta(stringB, null);
 	}
 	
