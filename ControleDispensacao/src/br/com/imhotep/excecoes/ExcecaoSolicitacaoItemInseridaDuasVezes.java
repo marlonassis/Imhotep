@@ -13,7 +13,7 @@ public class ExcecaoSolicitacaoItemInseridaDuasVezes extends ExcecaoPadrao {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2650011058186986498L;
+	private static final long serialVersionUID = 1L;
 
 	
 	
