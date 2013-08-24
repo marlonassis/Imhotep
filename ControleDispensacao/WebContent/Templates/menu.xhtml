@@ -170,16 +170,6 @@
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Usuários')}" />
 	</p:submenu>
 
-	<p:submenu label="Dispensação"
-			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação')}">
-		<p:menuitem value="Dispensar"
-					url="/PaginasWeb/Farmacia/Dispensacao/dispensacao.hu"
-					rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensar')}" />
-		<p:menuitem value="Alteração de Dispensação"
-					url="/PaginasWeb/Farmacia/Dispensacao/dispensacaoAlteracao.hu"
-					rendered="#{controleMenu.menuAutorizadoStringList.contains('Alteração de Dispensação')}" />
-	</p:submenu>
-	
 	<p:submenu label="Enfermagem"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Enfermagem')}">
 		<p:menuitem value="Solicitação de Medicamento"
@@ -325,6 +315,9 @@
 		<p:menuitem value="Estoque por Data de Vencimento"
 					url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
+		<p:menuitem value="Materiais Abaixo da Quantidade Mínima"
+					url="/PaginasWeb/Relatorios/Material/materialAbaixoQuantidadeMinima.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Materiais Abaixo da Quantidade Mínima')}" /> />
 		<p:menuitem value="Materiais Cadastrados"
 					url="/PaginasWeb/Relatorios/Material/material.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Materiais Cadastrados')}" /> />
