@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.excecoes.ExcecaoUsuarioDuplicado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
@@ -27,6 +28,46 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	private String senhaAntiga;
 	private String senhaNova;
 	private String senhaNovaConfirmacao;
+	private String login;
+	private boolean exibeCampoSenhaAntiga = true;
+	
+	public static UsuarioRaiz getInstanciaAtual(){
+		try {
+			return (UsuarioRaiz) Utilitarios.procuraInstancia(UsuarioRaiz.class);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private void procuraLogin() throws ExcecaoUsuarioDuplicado{
+		List<Usuario> usuarios = super.getBusca("select o from Usuario o where o.login = '"+getInstancia().getLogin()+"'");
+		if(usuarios.size() > 0){
+			throw new ExcecaoUsuarioDuplicado();
+		}
+	}
+	
+	public void trocaLogin(){
+		try {
+			procuraLogin();
+			setInstancia(Autenticador.getInstancia().getUsuarioAtual());
+			getInstancia().setLogin(getLogin());
+			super.atualizar();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (ExcecaoUsuarioDuplicado e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public void resetarSenha(){
 		getInstancia().setSenha(Utilitarios.encriptaParaMd5("123456"));
@@ -58,6 +99,7 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 				setInstancia(usuario);
 				super.atualizar();
 				novaInstancia();
+				setExibeCampoSenhaAntiga(true);
 			}else{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"A senha antiga está errada!", ""));
 			}
@@ -210,6 +252,22 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 
 	public void setSenhaNovaConfirmacao(String senhaNovaConfirmacao) {
 		this.senhaNovaConfirmacao = senhaNovaConfirmacao;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public boolean getExibeCampoSenhaAntiga() {
+		return exibeCampoSenhaAntiga;
+	}
+
+	public void setExibeCampoSenhaAntiga(boolean exibeCampoSenhaAntiga) {
+		this.exibeCampoSenhaAntiga = exibeCampoSenhaAntiga;
 	}
 	
 
