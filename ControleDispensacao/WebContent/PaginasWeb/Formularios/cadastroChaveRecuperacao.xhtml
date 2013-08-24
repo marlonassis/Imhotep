@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+			<h:panelGroup >
+				Prezado(a) #{autenticador.profissionalAtual.nomeResumido},<br/>
+				<div style="width: 500px;" align="justify">
+					estamos implantando a <b>recuperação de senhas</b>. Por isso, será necessário que você informe 
+					os dados abaixo para gerar sua chave criptografada. Ela servirá para uma futura recuperação de senha.
+				</div>
+				<br/>
+				Att, Núcleo de Processamento de Dados
+			</h:panelGroup>
+			<br/>
+			<br/>
+			<h:form id="formAtualizarChave" >
+				<p:growl/>
+				<h:panelGrid columns="3" >
+					<ri:inputApenasNumero id="cpf" 
+										  required="true"
+										  autocomplete="false"
+										  title="Informe o seu CPF" 
+										  value="#{autenticador.profissionalRecuperacao.cpf}" 
+										  label="CPF" />
+					
+					<h:panelGroup>
+						<h:outputText value="*" style="color:red" />
+						<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
+						<br/>
+						<p:calendar id="dataNascimento" 
+									required="true"
+									autocomplete="false"
+									value="#{autenticador.profissionalRecuperacao.dataNascimento}" 
+									pattern="dd/MM/yyyy" 
+									title="Informe sua data de nascimento" />
+					</h:panelGroup>
+								
+				</h:panelGrid>
+				<p:commandButton value="Enviar" 
+							     action="#{profissionalRaiz.gerarChave}"
+							     oncomplete="location.reload();"
+							     update=":#{p:component('formAtualizarChave')}" />
+				<p:commandButton value="Deixar para depois" 
+								 immediate="true" 
+								 action="#{autenticador.fecharFormularioAtual}" 
+								 oncomplete="location.reload();" 
+								 update=":#{p:component('formAtualizarChave')}" />
+			</h:form>
+			<br/>
+			<br/>
+			<h:panelGroup style="color:#FF0000; font-weight:bold;" >  
+				Seu CPF será usado apenas para gerar a chave. Após a atualização ele será descartado.  
+			</h:panelGroup>
+	</ui:define>
+</ui:composition>
