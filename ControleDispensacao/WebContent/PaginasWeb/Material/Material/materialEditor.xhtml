@@ -12,6 +12,7 @@
 			<h:outputLabel for="codigo" value="Código:" />
 			<br />
 			<p:inputText id="codigo" 
+						 disabled="#{materialRaiz.edicao}"
 						 required="true"
 						 onkeyup="apenasNumero(this);"
 						 value="#{materialRaiz.instancia.codigoMaterial}"
