@@ -18,8 +18,8 @@ public class DispensacaoSimples {
 	private Unidade unidadeDispensada;
 	private MovimentoLivro movimentoLivro;
 	private SolicitacaoMedicamentoUnidadeItem solicitacaoMedicamentoUnidadeItem;
-
-	  
+	private DevolucaoMedicamentoItem devolucaoMedicamentoItem;
+	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_dispensacao_simples_id_dispensacao_simples_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
@@ -63,6 +63,16 @@ public class DispensacaoSimples {
 		this.solicitacaoMedicamentoUnidadeItem = solicitacaoMedicamentoUnidadeItem;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_devolucao_medicamento_item")
+	public DevolucaoMedicamentoItem getDevolucaoMedicamentoItem() {
+		return devolucaoMedicamentoItem;
+	}
+
+	public void setDevolucaoMedicamentoItem(DevolucaoMedicamentoItem devolucaoMedicamentoItem) {
+		this.devolucaoMedicamentoItem = devolucaoMedicamentoItem;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)
