@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="painelAvisoPanelGrid" columns="3" width="100%">
+		
+		<ri:inputDataHora id="dataInicio" 
+						  title="Informe a data e hora de início do aviso" 
+						  value="#{painelAvisoRaiz.instancia.dataInicio}" 
+						  label="Data de Início"/>
+		
+		<ri:inputDataHora id="dataFim" 
+						  title="Informe a data e hora do fim do aviso" 
+						  value="#{painelAvisoRaiz.instancia.dataFim}" 
+						  label="Data de Fim"/>
+						  
+		<h:panelGroup/>
+		
+		<p:editor value="#{painelAvisoRaiz.instancia.descricao}" />
+		
+	</h:panelGrid>
+
+
+
+	<p:separator id="separator" rendered="#{painelAvisoRaiz.edicao}" />
+	  
+	<h:outputText id="outPutTextItens"
+				  style="font-weight:bold;"
+				  value="Especialidades" 
+				  rendered="#{painelAvisoRaiz.edicao}" />
+	<div align="left" > 
+		<h:panelGrid columns="2" rendered="#{painelAvisoRaiz.edicao}" >
+			<h:panelGroup id="especialidadePanelGroup">
+				<h:outputLabel for="especialidade" value="Especialidade:" />
+				<br />
+				<p:selectOneMenu id="especialidade"
+								 value="#{painelAvisoRaiz.especialidade}" 
+								 effect="fade"
+								 converter="especialidadeConversor">
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{especialidadeConsultaRaiz.consultarEspecialidadesFilha}"
+								   var="especialidade" 
+								   itemLabel="#{especialidade.descricao}"
+								   itemValue="#{especialidade}" />
+					<p:ajax event="change" listener="#{painelAvisoRaiz.addEspecialidadeProfissional}" update=":#{p:component('especialidadePanelGroup')} :#{p:component('especialidadesAviso')}" />
+				</p:selectOneMenu>
+			</h:panelGroup>
+			
+			<h:panelGroup/>
+			
+			<h:panelGroup id="especialidadesAviso" >		
+				<p:dataList value="#{painelAvisoRaiz.instancia.especialidadesList}" var="e" type="ordered">  
+				    #{e.especialidade.descricao}#{' - '}<h:graphicImage value="/Imagens/delete32.png" width="16" height="16">
+						    					   		    <p:ajax event="click" listener="#{painelAvisoRaiz.remEspecialidadeProfissional(e)}" update=":#{p:component('especialidadePanelGroup')} :#{p:component('especialidadesAviso')}" />
+						    						    </h:graphicImage>
+				</p:dataList>
+			</h:panelGroup>
+		</h:panelGrid>
+	</div>
+
+</ui:composition>
