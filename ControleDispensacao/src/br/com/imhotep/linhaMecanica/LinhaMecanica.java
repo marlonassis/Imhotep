@@ -280,14 +280,9 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		String sql = "insert into tb_movimento_livro (id_unidade_cadastrante, id_tipo_movimento, dt_data_movimento, " +
-				"id_usuario_movimentacao, id_estoque, in_quantidade_movimentacao) values(2, 23, now(), 10, 522, 5)";
-		int i = 0;
-		while(i < 100000){
-			System.out.println(i);
-			lm.executarCUD(sql);
-			i++;
-		}
+		lm.setIp("200.133.41.8");
+		lm.inserirProfissionalEspecialidade();
+		
 		
 //		LinhaMecanica lm = new LinhaMecanica();
 //		lm.setIp("200.133.41.8");
@@ -301,6 +296,19 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		}
 		
 		return "'".concat(valor).concat("'");
+	}
+	
+	private void inserirProfissionalEspecialidade() throws SQLException{
+		setNomeBanco(DB_BANCO_IMHOTEP);
+		ResultSet rs = consultar(utf8_to_latin1("select id_profissional, id_especialidade from tb_profissional order by id_profissional"));
+		while (rs.next()) { 
+			int idProfissional = rs.getInt(1);
+			int idEspecialidade = rs.getInt(2);
+			String sql = "insert into tb_profissional_especialidade (id_profissional, id_especialidade) values("+idProfissional+","+idEspecialidade+");";
+			System.out.println(idProfissional);
+			if(!executarCUD(sql))
+				System.exit(1);
+		}
 	}
 	
 	private void atualizarQuantidadeEstoque() throws SQLException{
