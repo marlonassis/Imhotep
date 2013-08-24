@@ -18,8 +18,13 @@ import br.com.remendo.ConsultaGeral;
 public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 
 	public void atualizaMateriaisQuantidadeAbaixoPermitido() {
+		List<MaterialFaltaEstoque> list = consultarMateriaisAbaixoQuantidadeMinima();
+		MaterialRaiz.getInstanciaAtual().setMateriaisAbaixoQuantidadeMinima(list);
+	}
+	
+	public List<MaterialFaltaEstoque> consultarMateriaisAbaixoQuantidadeMinima(){
 		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		StringBuilder stringB = new StringBuilder("select new br.com.imhotep.entidade.extra.MaterialFaltaEstoque(o.descricao, o.quantidadeMinima, sum(a.quantidadeAtual)) ");
+		StringBuilder stringB = new StringBuilder("select new br.com.imhotep.entidade.extra.MaterialFaltaEstoque(o.idMaterial, o.codigoMaterial, o.descricao, o.quantidadeMinima, sum(a.quantidadeAtual)) ");
 		stringB.append("from Material o ");
 		stringB.append("join o.estoques a  ");
 		stringB.append("where o.quantidadeMinima is not null and o.quantidadeMinima != 0 and ");
@@ -27,10 +32,10 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 		stringB.append("(select sum(b.quantidadeAtual) from Estoque b where b.material.idMaterial = o.idMaterial ");
 		stringB.append("and b.bloqueado = false and to_char(b.dataValidade, 'yyyy-MM') >= '"+dataS+"') ");
 		stringB.append("and a.bloqueado = false and to_char(a.dataValidade, 'yyyy-MM') >= '"+dataS+"' ");
-		stringB.append("group by o.descricao, o.quantidadeMinima ");
+		stringB.append("group by o.descricao, o.quantidadeMinima, o.idMaterial, o.codigoMaterial ");
 		stringB.append("order by to_ascii(o.descricao) ");
 		
 		List<MaterialFaltaEstoque> list = new ArrayList<MaterialFaltaEstoque>(new ConsultaGeral<MaterialFaltaEstoque>().consulta(stringB, null));
-		MaterialRaiz.getInstanciaAtual().setMateriaisAbaixoQuantidadeMinima(list);
+		return list;
 	}
 }
