@@ -5,7 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
 	<p:dataTable id="tabelaNotaFiscal" 
-				 value="#{notaFiscalConsulta.list}"
+				 value="#{notaFiscalConsulta.lista}"
 				 var="linha" 
 				 dblClickSelect="true"
 				 emptyMessage="Não foi encontrado registros" 
@@ -60,6 +60,15 @@
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{notaFiscalRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+			
+			<p:commandLink title="Visualizar"
+						   onclick="window.open('notaFiscalImpressa.hu?id=#{linha.idNotaFiscal}', 'notaFiscalImpressa');"
+						   target="notaFiscalImpressa"
+						   style="padding-right:10px;">
+				<h:graphicImage height="16px"
+								width="16px" 
+								value="/Imagens/PDF-icon.png" />
 			</p:commandLink>
 		</p:column>
 	</p:dataTable>

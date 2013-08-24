@@ -22,6 +22,13 @@
 							 label="Identificação da Nota"
 							 required="true" />
 		
+		<ri:inputApenasNumeroSemZeroEsquerda 
+							 id="serieNotaFiscal" 
+							 title="Informe o número de série da nota fiscal" 
+							 value="#{notaFiscalRaiz.instancia.serie}" 
+							 label="Série"
+							 required="true" />
+		
 		<ri:inputDataHora id="dataEmissao"
 						  required="true" 
 						  title="Informe a data de emissão da nota" 
@@ -34,6 +41,12 @@
 						  value="#{notaFiscalRaiz.instancia.dataEntrega}" 
 						  label="Data de Entrega" />
 		
+		<ri:inputDataHora id="dataContabil"
+						  required="true" 
+						  title="Informe a data em que o financeiro irá computar a nota-fiscal" 
+						  value="#{notaFiscalRaiz.instancia.dataContabil}" 
+						  label="Data Contábil" />
+		
 		<ri:inputValorFracionado id="valorTotal" 
 								 required="true"
 								 title="Informe o valor total da nota fiscal" 
@@ -44,6 +57,16 @@
 								 title="Informe o valor do desconto" 
 								 value="#{notaFiscalRaiz.instancia.valorDesconto}" 
 								 label="Valor do Desconto" />
+		
+		<ri:inputSelectOneRadioBoolean id="doacao" 
+									   value="#{notaFiscalRaiz.instancia.doacao}" 
+									   label="Doação" />
+		
+		<ri:inputTextoSimples id="chave" 
+							  title="Informe a chave única da nota fiscal" 
+							  value="#{notaFiscalRaiz.instancia.chaveAcesso}" 
+							  label="Chave"
+							  required="true"/>
 	</h:panelGrid>
 <p:separator id="separator" rendered="#{notaFiscalRaiz.edicao}" />
 	  
@@ -51,23 +74,22 @@
 				  style="font-weight:bold;"
 				  value="Itens da Nota Fiscal" 
 				  rendered="#{notaFiscalRaiz.edicao}" />
-	
-	<h:panelGrid columns="2" 
-				 width="100%" 
-				 rendered="#{notaFiscalRaiz.edicao}">
-		<h:panelGroup>
+	<div align="left" > 
+		<h:panelGrid columns="2"
+					 rendered="#{notaFiscalRaiz.edicao}">
 			<ri:inputTextoSimples id="lote" 
 							  title="Informe o lote" 
+							  disabled="#{notaFiscalRaiz.loteEncontrado != null}"
 							  value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.lote}" 
 							  label="Lote"
-							  required="true" />
+							  required="false" />
 			<p:commandButton image="ui-icon ui-icon-search"
 							 update=":#{p:component('notaFiscalEditorForm')} :#{p:component('itensNotaFiscalPanelGrid')}"
 							 action="#{notaFiscalRaiz.procurarLote}" 
 							 rendered="#{notaFiscalRaiz.loteEncontrado == null}"
 							 title="Procurar lote." />
-		</h:panelGroup>
-	</h:panelGrid>
+		</h:panelGrid>
+	</div>
 
 	<h:panelGrid id="itensNotaFiscalPanelGrid"
 				 width="100%" 
@@ -111,6 +133,11 @@
 								 title="Informe o valor unitário do medicamento" 
 								 value="#{notaFiscalRaiz.notaFiscalEstoque.valorUnitario}" 
 								 label="Valor Unitário" />
+		
+		<ri:inputTextoSimples id="codigoBarras" 
+							  title="Informe o código de barras" 
+							  value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.codigoBarras}" 
+							  label="Código de Barras" />
 	</h:panelGrid>
 	<h:panelGrid id="botoesNotaFiscalPanelGrid"
 				 width="100%" 

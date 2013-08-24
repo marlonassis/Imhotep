@@ -19,5 +19,13 @@
 							 var="fornecedor" 
 							 value="#{notaFiscalConsulta.instancia.fornecedor}" 
 							 label="Informe o nome do fornecedor da nota fiscal"/>
+							 
+		<r:inputAutoComplete id="materialConsulta" 
+							 completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
+							 itemValue="#{material}" 
+							 itemLabel="#{material.descricaoUnidadeMaterial}" 
+							 var="material" 
+							 value="#{notaFiscalConsulta.material}" 
+							 label="Informe o nome ou o código do material"/>
 	</h:panelGrid>
 </ui:composition>
