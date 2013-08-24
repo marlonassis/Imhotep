@@ -26,6 +26,7 @@ public class MovimentoLivro {
 	private Usuario usuarioMovimentacao;
 	private Estoque estoque;
 	private DispensacaoSimples dispensacaoSimples;
+	private Integer quantidadeAtual;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
 	@Id
@@ -91,6 +92,13 @@ public class MovimentoLivro {
 		this.quantidadeMovimentacao = quantidadeMovimentacao;
 	}
 	
+	@Column(name = "in_quantidade_atual")
+	public Integer getQuantidadeAtual() {
+		return quantidadeAtual;
+	}
+	public void setQuantidadeAtual(Integer quantidadeAtual) {
+		this.quantidadeAtual = quantidadeAtual;
+	}
 	
 	@OneToOne(mappedBy="movimentoLivro")  
 	public DispensacaoSimples getDispensacaoSimples() {
