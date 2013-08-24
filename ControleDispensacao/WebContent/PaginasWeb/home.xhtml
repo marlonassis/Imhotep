@@ -12,38 +12,39 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRaiz" title="Home">
 			<h:form>
-				<table width="100%">
-					<tr>
-						<td style="vertical-align: top"><h:panelGrid
-								rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Vencidos')}"
-								columns="1" border="0">
-								<h:panelGroup>
-									<ui:include
-										src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
-								</h:panelGroup>
-							</h:panelGrid>
-						</td>
-						<td style="vertical-align: top"><h:panelGrid
-								rendered="#{controlePainel.painelAutorizadoStringList.contains('Prescrição Pendente')}"
-								width="100%" columns="1" border="0">
-								<h:panelGroup>
-									<ui:include
-										src="/PaginasWeb/Painel/Paineis/painelPrescricaoPendente.xhtml" />
-								</h:panelGroup>
-							</h:panelGrid>
-						</td>
-						<td style="vertical-align: top"><h:panelGrid
-								rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}"
-								width="100%" columns="1" border="0">
-								<h:panelGroup>
-									<ui:include
-										src="/PaginasWeb/Painel/Paineis/painelDispensacaoPendente.xhtml" />
-								</h:panelGroup>
-							</h:panelGrid>
-						</td>
-					</tr>
-				</table>
+				<h:panelGrid columns="2" 
+							 style="vertical-align: top" 
+							 columnClasses="colStyle2 ,colStyle2, colStyle2" >
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Vencidos')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Prescrição Pendente')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelPrescricaoPendente.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Devoluções Pendentes')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelDevolucaoPendente.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelDispensacaoPendente.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Solicitações de Medicamento pelo Usuário')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelConsultaSolicitacaoProfissional.xhtml" />
+					</h:panelGroup>
+				</h:panelGrid>
 			</h:form>
+			<p:dialog header="Atualização cadastral"
+					  modal="true" 
+					  closable="false" 
+					  width="1000px"
+					  visible="#{autenticador.exibirFormularioAtual and autenticador.profissionalAtual.chaveVerificacao == null}" >
+				<ui:include src="/PaginasWeb/Formularios/cadastroChaveRecuperacao.xhtml" />
+			</p:dialog>
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>
