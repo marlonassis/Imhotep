@@ -199,21 +199,44 @@ public class Estoque {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Estoque))
-			return false;
-		
-		return ((Estoque)obj).getIdEstoque() == this.idEstoque;
-	}
-
-	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + lote.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idEstoque;
+		result = prime * result + ((lote == null) ? 0 : lote.hashCode());
+		result = prime * result
+				+ ((usuarioInclusao == null) ? 0 : usuarioInclusao.hashCode());
+		return result;
 	}
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Estoque other = (Estoque) obj;
+		if (idEstoque != other.idEstoque)
+			return false;
+		if (lote == null) {
+			if (other.lote != null)
+				return false;
+		} else if (!lote.equals(other.lote))
+			return false;
+		if (material == null) {
+			if (other.material != null)
+				return false;
+		} else if (!material.equals(other.material))
+			return false;
+		if (usuarioInclusao == null) {
+			if (other.usuarioInclusao != null)
+				return false;
+		} else if (!usuarioInclusao.equals(other.usuarioInclusao))
+			return false;
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidadeAtual).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
