@@ -2,40 +2,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="profissionalPanelGrid" columns="3" width="100%">
-		<h:panelGroup>
-			<h:outputLabel for="tipoConselho" value="Tipo do conselho:" />
-			<br />
-			<p:selectOneMenu value="#{profissionalRaiz.instancia.especialidade.tipoConselho}"
-							 effect="fade" 
-							 converter="tipoConselhoConversor">
-				<f:ajax event="change" render="profissionalPanelGrid" />
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{tipoConselhoConsulta.list}"
-							   var="tipoConselho" 
-							   itemLabel="#{tipoConselho.descricaoSigla}"
-							   itemValue="#{tipoConselho}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup id="especialidadePanelGroup">
-			<font color="red">*</font>
-			<h:outputLabel for="especialidade" value="Especialidade:" />
-			<br />
-			<p:selectOneMenu id="especialidade"
-							 value="#{profissionalRaiz.instancia.especialidade}" 
-							 effect="fade"
-							 required="true" 
-							 converter="especialidadeConversor">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{profissionalRaiz.listaEspecialidade}"
-							   var="especialidade" 
-							   itemLabel="#{especialidade.descricao}"
-							   itemValue="#{especialidade}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
 
 		<h:panelGroup id="estadoPanelGroup"
 					  rendered="#{profissionalRaiz.instancia.especialidade.tipoConselho != null}">
@@ -106,25 +76,64 @@
 						 title="Informe o apelido de acesso" />
 		</h:panelGroup>
 
-		<h:panelGroup rendered="#{!profissionalRaiz.edicao}">
-			<font color="red">*</font>
-			<h:outputLabel for="unidade" value="Unidade:" />
-			<br />
-			<p:autoComplete id="unidade" 
-							scrollHeight="300"
-							value="#{profissionalRaiz.unidade}"
-							completeMethod="#{unidadeAutoComplete.autoComplete}"
-							var="unidade" 
-							forceSelection="true" 
-							required="true"
-							itemLabel="#{unidade.nome}" 
-							itemValue="#{unidade}"
-							converter="unidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="unidade"
+							  required="true" 
+							  forceSelection="true"
+							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							  itemValue="#{unidade}" 
+							  itemLabel="#{unidade.nome}" 
+							  var="unidade" 
+							  value="#{profissionalRaiz.unidade}" 
+							  label="Unidade" />
+		
 
 	</h:panelGrid>
-
+	<p:separator id="separator" rendered="#{profissionalRaiz.edicao}" />
+	  
+	<h:outputText id="outPutTextItens"
+				  style="font-weight:bold;"
+				  value="Especialidades" 
+				  rendered="#{profissionalRaiz.edicao}" />
+	<div align="left" > 
+		<h:panelGrid columns="2" rendered="#{profissionalRaiz.edicao}" >
+			<h:panelGroup>
+				<h:outputLabel for="tipoConselho" value="Tipo do conselho:" />
+				<br />
+				<p:selectOneMenu value="#{profissionalRaiz.especialidade.tipoConselho}"
+								 effect="fade" 
+								 converter="tipoConselhoConversor">
+					<p:ajax event="change" update=":#{p:component('especialidadePanelGroup')}" />
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{tipoConselhoConsulta.list}"
+								   var="tipoConselho" 
+								   itemLabel="#{tipoConselho.descricaoSigla}"
+								   itemValue="#{tipoConselho}" />
+				</p:selectOneMenu>
+			</h:panelGroup>
+			
+			<h:panelGroup id="especialidadePanelGroup">
+				<h:outputLabel for="especialidade" value="Especialidade:" />
+				<br />
+				<p:selectOneMenu id="especialidade"
+								 value="#{profissionalRaiz.especialidade}" 
+								 effect="fade"
+								 converter="especialidadeConversor">
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{profissionalRaiz.listaEspecialidade}"
+								   var="especialidade" 
+								   itemLabel="#{especialidade.descricao}"
+								   itemValue="#{especialidade}" />
+					<p:ajax event="change" listener="#{profissionalRaiz.addEspecialidadeProfissional}" update=":#{p:component('especialidadesProfissional')} :#{p:component('especialidadePanelGroup')}" />
+				</p:selectOneMenu>
+			</h:panelGroup>
+			
+			<h:panelGroup id="especialidadesProfissional" >		
+				<p:dataList value="#{profissionalRaiz.instancia.especialidadesList}" var="e" type="ordered">  
+				    #{e.descricao}#{' - '}<h:graphicImage value="/Imagens/delete32.png" width="16" height="16">
+				    					   		<p:ajax event="click" listener="#{profissionalRaiz.remEspecialidadeProfissional(e)}" update=":#{p:component('especialidadesProfissional')}" />
+				    						  </h:graphicImage>
+				</p:dataList>
+			</h:panelGroup>
+		</h:panelGrid>
+	</div>
 </ui:composition>
