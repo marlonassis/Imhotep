@@ -18,6 +18,7 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueNaoCadastrado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
+import br.com.imhotep.excecoes.ExcecaoReservaVazia;
 import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.raiz.EstoqueRaiz;
@@ -146,9 +147,10 @@ public class ControleEstoque extends PadraoGeralTemp {
 		}
 	}
 	
-	private void atualizarEstoque(MovimentoLivro movimentoLivro) {
+	private void atualizarEstoqueNoMovimento(MovimentoLivro movimentoLivro) {
 		int id = movimentoLivro.getEstoque().getIdEstoque();
 		movimentoLivro.setEstoque(new EstoqueConsultaRaiz().consultaEstoque(id));
+		movimentoLivro.setQuantidadeAtual(movimentoLivro.getEstoque().getQuantidadeAtual());
 	}
 	
 	/**
@@ -171,10 +173,13 @@ public class ControleEstoque extends PadraoGeralTemp {
 		filtroEstoque(movimentoLivro.getEstoque(), movimentoLivro.getTipoMovimento().getTipoOperacao(), movimentoLivro.getQuantidadeMovimentacao());
 		prepararMovimentoLivro(dataAtual, movimentoLivro);
 		manipularEstoque(dataAtual, movimentoLivro.getEstoque(), movimentoLivro.getQuantidadeMovimentacao(), movimentoLivro.getTipoMovimento());
-		atualizarEstoque(movimentoLivro);
+		atualizarEstoqueNoMovimento(movimentoLivro);
 	}
 
-	public void liberarReserva(int quantidadeDose, Material material) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque {
+	public void liberarReserva(int quantidadeDose, Material material) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoReservaVazia {
+		if(quantidadeDose == 0){
+			throw new ExcecaoReservaVazia();
+		}
 		Object[] qtds = consultaEstoqueMaterial(material);
 		long totalTodosEstoque = (Long) qtds[0];
 		long totalReservardo = (Long) qtds[1] + (Long) qtds[2];
@@ -192,9 +197,10 @@ public class ControleEstoque extends PadraoGeralTemp {
 
 	private void manipularEstoque(Date dataAtual, Estoque estoque, int quantidadeMovimentada, TipoMovimento tipoMovimento) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueVazio, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
 		if(estoque.getIdEstoque() == 0){
+			estoque.setQuantidadeAtual(quantidadeMovimentada);
 			inserirNovoEstoque(dataAtual, estoque);
 		}else{
-			String sql = montarSqlAtualizacaoEstoque(estoque.getIdEstoque(), quantidadeMovimentada, tipoMovimento);
+			String sql = montarSqlAtualizacaoEstoque(estoque.getIdEstoque(), quantidadeMovimentada, tipoMovimento, estoque.getCodigoBarras());
 			atualizarEstoque(sql, estoque.getIdEstoque());
 		}
 	}
@@ -222,8 +228,8 @@ public class ControleEstoque extends PadraoGeralTemp {
 		}
 	}
 
-	private String montarSqlAtualizacaoEstoque(int idEstoque, int quantidadeMovimentada, TipoMovimento tipoMovimento) {
-		String sql = "update tb_estoque set in_quantidade_atual = (in_quantidade_atual :tipoOperacao "+quantidadeMovimentada+" ) " +
+	private String montarSqlAtualizacaoEstoque(int idEstoque, int quantidadeMovimentada, TipoMovimento tipoMovimento, String codigoBarras) {
+		String sql = "update tb_estoque set in_quantidade_atual = (in_quantidade_atual :tipoOperacao "+quantidadeMovimentada+" ), cv_codigo_barras = '"+codigoBarras+"' " +
 				"where id_estoque = "+idEstoque + " and bl_lock = false";
 		boolean movimentoEntrada = tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.E);
 		if(movimentoEntrada){
