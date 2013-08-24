@@ -20,7 +20,7 @@
 					<font color="red" >Sua senha foi resetada. É necessário que você troque sua senha para poder ter acesso ao sistema.</font>
 				</h:panelGroup>
 				<h:panelGrid columns="1">
-					<h:panelGroup>
+					<h:panelGroup rendered="#{usuarioRaiz.exibeCampoSenhaAntiga}" >
 						<font color="red">*</font>
 						<h:outputLabel for="senhaAntiga" value="Senha antiga:" />
 						<br />
@@ -50,6 +50,7 @@
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
+			<h:outputText value="Sua senha é pessoal e intransferível" style="color:#FF0000; font-weigth:bold;" />
 		</p:tab>
 	</ui:define>
 </ui:composition>

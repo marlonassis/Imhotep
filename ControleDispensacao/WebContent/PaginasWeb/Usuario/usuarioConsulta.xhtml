@@ -1,31 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 
 	<h:panelGrid id="usuarioPanelGridConsulta" columns="3" width="100%">
-
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="profissional" value="Profissional:" />
-			<br />
-			<p:autoComplete id="profissional" 
-							forceSelection="true"
-							scrollHeight="300"
-							value="#{usuarioConsulta.instancia.profissional}"
-							completeMethod="#{profissionalAutoComplete.autoComplete}"
-							required="false"
-							title="Informe o nome do profissional."
-							var="profissional" 
-							itemLabel="#{profissional.nome}" 
-							itemValue="#{profissional}"
-							converter="profissionalConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
-
+		
+		<ri:inputAutoComplete id="profissionalConsulta" 
+							  completeMethod="#{profissionalAutoComplete.autoComplete}" 
+							  itemValue="#{profissional}" 
+							  itemLabel="#{profissional.nome}" 
+							  var="profissional" 
+							  value="#{usuarioConsulta.instancia.profissional}" 
+							  label="Profissional" />
+		
 		<h:panelGroup>
 			<h:outputLabel for="loginConsulta" value="Login:" />
 			<br />
