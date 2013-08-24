@@ -14,6 +14,7 @@ import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
@@ -22,29 +23,66 @@ import br.com.remendo.PadraoHome;
 public class ProfissionalRaiz extends PadraoHome<Profissional>{
 	
 	private Unidade unidade;
+	private Especialidade especialidade;
 	
 	public ProfissionalRaiz() {
 		novaInstancia();
 	}
 	
+	public void gerarChave(){
+		String chaveAberta;
+		try {
+			chaveAberta = Utilitarios.getPatternChaveUnicaPreparada(Autenticador.getInstancia().getProfissionalRecuperacao());;
+			String chave = Utilitarios.encriptaParaMd5(chaveAberta);
+			Profissional p = Autenticador.getProfissionalLogado();
+			p.setChaveVerificacao(chave);
+			p.setDataNascimento(Autenticador.getInstancia().getProfissionalRecuperacao().getDataNascimento());
+			setInstancia(p);
+			super.atualizar();
+			super.novaInstancia();
+			Autenticador.getInstancia().setProfissionalRecuperacao(new Profissional());
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
+		getInstancia().setUsuario(new Usuario());
+		setEspecialidade(new Especialidade());
+	}
+	
 	public List<Especialidade> getListaEspecialidade(){
-		if(getInstancia().getEspecialidade() !=  null && getInstancia().getEspecialidade().getTipoConselho() != null){
-			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(getInstancia().getEspecialidade().getTipoConselho().getIdTipoConselho());
+		if(getEspecialidade() !=  null && getEspecialidade().getTipoConselho() != null){
+			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(getEspecialidade().getTipoConselho().getIdTipoConselho());
 		}else{
 			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(null);
 		}
 	}
 	
-	@Override
-	public void novaInstancia() {
-		super.novaInstancia();
-		getInstancia().setUsuario(new Usuario());
-		getInstancia().setEspecialidade(new Especialidade());
-	}
-	
 	public boolean atualizar(Profissional profissional) {
 		setInstancia(profissional);
 		return super.atualizar();
+	}
+	
+	public void addEspecialidadeProfissional(){
+		if(new ProfissionalEspecialidadeRaiz().enviar(getEspecialidade(), getInstancia())){
+			getInstancia().getEspecialidades().add(getEspecialidade());
+			setEspecialidade(null);
+		}
+	}
+	
+	public void remEspecialidadeProfissional(Especialidade linha){
+		if(new ProfissionalEspecialidadeRaiz().executa("delete from ProfissionalEspecialidade where especialidade.idEspecialidade = "+linha.getIdEspecialidade()+" and profissional.idProfissional = "+getInstancia().getIdProfissional()).equals(1)){
+			getInstancia().getEspecialidades().remove(linha);
+		}
 	}
 	
 	@Override
@@ -58,8 +96,11 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 				super.mensagem("Erro ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
 				System.out.print("Erro em ProfissionalHome");
 			}
+			getInstancia().setEspecialidade(new Especialidade());
+			getInstancia().getEspecialidade().setIdEspecialidade(1);
 			getInstancia().setDataInclusao(new Date());
 			getInstancia().getUsuario().setDataInclusao(new Date());
+			getInstancia().getUsuario().setQuantidadeErroLogin(0);
 			getInstancia().getUsuario().setSenha(Utilitarios.encriptaParaMd5(String.valueOf("123456")));
 			if(super.enviar()){
 				boolean exibeMensagemInsercao = false;
@@ -78,6 +119,14 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
+	}
+
+	public Especialidade getEspecialidade() {
+		return especialidade;
+	}
+
+	public void setEspecialidade(Especialidade especialidade) {
+		this.especialidade = especialidade;
 	}
 
 }
