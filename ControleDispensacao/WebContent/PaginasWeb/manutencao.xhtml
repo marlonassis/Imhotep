@@ -12,8 +12,9 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRaiz" title="Manutenção">
 			<h:form>
-				<h1>O Sistema Imhotep está em manutenção. Em breve voltaremos ao ar.</h1>
+				<h1>O Sistema Imhotep está em manutenção. Em breve voltaremos.</h1>
 				<h:graphicImage value="/Imagens/construcao_piramide.png" />				
+				<h:commandLink action="#{autenticador.sairManutencao}" value="." />
 			</h:form>
 		</p:tab>
 	</ui:define>
