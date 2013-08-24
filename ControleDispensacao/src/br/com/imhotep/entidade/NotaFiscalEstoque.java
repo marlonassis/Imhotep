@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import java.util.Date;
+
 import javax.persistence.Temporal;
 import javax.persistence.Id;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.TemporalType;
 import javax.persistence.Column;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.NotaFiscal;
@@ -109,6 +111,14 @@ public class NotaFiscalEstoque {
 
 	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
 		this.movimentoLivro = movimentoLivro;
+	}
+	
+	@Transient
+	public Double getTotal(){
+		if(getValorUnitario() != null){
+			return getQuantidadeEntrada() * getValorUnitario();
+		}
+		return 0d;
 	}
 	
 	@Override
