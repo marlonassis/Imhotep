@@ -13,6 +13,7 @@ import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 
@@ -74,6 +75,25 @@ public class Parametro implements Serializable {
 		return isUsuarioMedico();
 	}
 
+	public boolean isEspecialidade(String especialidade){
+		Profissional p;
+		try {
+			p = Autenticador.getProfissionalLogado();
+			for(Especialidade e : p.getEspecialidades()){
+				if(e.getDescricao().equals(especialidade)){
+					return true;
+				}
+			}
+		} catch (ExcecaoProfissionalLogado e1) {
+			e1.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static boolean isEngenharia(){
+		return new Parametro().isEspecialidade("Engenharia");
+	}
+	
 	public static TipoMovimento tipoMovimentoDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
@@ -100,6 +120,11 @@ public class Parametro implements Serializable {
 	
 	public static TipoMovimento tipoMovimentoDispensacaoSimples(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 21");
+		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimento tipoMovimentoDevolucaoDispensacao(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 22");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
 	}
 	
