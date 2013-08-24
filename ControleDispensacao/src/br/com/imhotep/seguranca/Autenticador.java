@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
+import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.controle.ControleInstancia;
 import br.com.imhotep.controle.ControleMenu;
 import br.com.imhotep.controle.ControlePainel;
@@ -29,6 +31,7 @@ import br.com.imhotep.enums.TipoSituacaoEnum;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.raiz.ConfiguracaoRaiz;
+import br.com.imhotep.raiz.EstoqueRaiz;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
 import br.com.imhotep.raiz.UsuarioRaiz;
 import br.com.remendo.ConsultaGeral;
@@ -241,6 +244,7 @@ public class Autenticador {
 	    				carregaProfissional();
 	    				carregaToolBarMenu();
 	    				carregaPaineis();
+	    				atualizarPaineis();
 	    				ControlePainelAviso.getInstancia().atualizarAvisos();
 	    			}
 	    		}
@@ -253,6 +257,16 @@ public class Autenticador {
 			}
 		}
 		setUsuario(new Usuario());
+	}
+	
+	private void atualizarPaineis(){
+		ControlePainel cp = ControlePainel.getInstancia();
+		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_MEDICAMENTO_VENCIDO)){
+			EstoqueRaiz.getInstanciaAtual().setEstoqueVencido(new EstoqueConsultaRaiz().consultarEstoqueVencidoLimiteSeteDias());
+		}
+		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO)){
+			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesProfissional();
+		}
 	}
 	
 	private void carregaPaineis() {
