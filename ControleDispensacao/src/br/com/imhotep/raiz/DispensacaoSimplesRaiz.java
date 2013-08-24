@@ -4,7 +4,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
+import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
 import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
@@ -37,7 +37,7 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 	
 	public void procurarLote(){
 		String lote = getInstancia().getMovimentoLivro().getEstoque().getLote();
-		Estoque estoque = new EstoqueLoteConsultaRaiz().consultar(lote);
+		Estoque estoque = new EstoqueConsultaRaiz().consultarEstoqueLivre(lote);
 		loteEncontrado = estoque != null;
 		if(loteEncontrado){
 			getInstancia().getMovimentoLivro().setEstoque(estoque);
