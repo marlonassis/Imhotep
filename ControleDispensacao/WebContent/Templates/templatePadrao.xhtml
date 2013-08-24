@@ -44,14 +44,7 @@
 					<div align="center" >
 						<h:panelGroup id="unidadesPanelGroup"
 			 				  		  rendered="#{autenticador.usuarioAtivo}" >
-							<h:outputLabel for="unidadeSelectOneMenu" value="Unidade Atual:"  /><br />
-							<h:outputText value="#{autenticador.unidadeAtual.nome}" 
-				        				  style="font-weight: bold;"/>
-				        	<br/>
-				        	<h:outputText value="#{autenticador.profissionalAtual.nomeResumido}:"/>
-				     		#{' '}
-				        	<h:outputText value="#{autenticador.profissionalAtual.especialidade.descricao}" 
-				        				  style="font-weight: bold;"/>
+				        	<h:outputText value="#{autenticador.profissionalAtual.nomeResumido}"/>
 				        	<br/>
 				        	<br/>
 							<p:clock pattern="dd/MM/yyyy HH:mm:ss" mode="server" />
@@ -65,11 +58,14 @@
 				</h:panelGroup>
 				<h:panelGroup id="painelAvisosPanelGroup" >
 					<p:panel styleClass="panelAvisos" header="Painel de Avisos" rendered="#{autenticador.usuarioAtivo}" >
-						<h:form rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}" >
-							#{solicitacaoMedicamentoUnidadeRaiz.qtdSolicitacoesPendentes} solicitação(ões) pendente(s).
+						<h:form>
+							<ui:repeat value="#{controlePainelAviso.avisosList}" var="aviso" >
+								#{'• '}
+								<h:outputText value="#{aviso.descricao}" escape="false" /><br/>
+							</ui:repeat>
 							<p:poll interval="60" 
 									update=":#{p:component('painelAvisosPanelGroup')}" 
-									listener="#{solicitacaoMedicamentoUnidadeConsultaRaiz.quantidadeSolicitacoesPendentes()}" 
+									listener="#{controlePainelAviso.atualizarAvisos}" 
 									global="false" />
 						</h:form>
 					</p:panel>

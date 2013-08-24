@@ -156,6 +156,12 @@
 		<p:menuitem value="Painel" 
 					url="/PaginasWeb/Painel/Painel/painel.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Painel')}" />
+		<p:menuitem value="Painel de Avisos" 
+					url="/PaginasWeb/Painel/PainelAviso/painelAviso.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Painel de Avisos')}" />
+		<p:menuitem value="Troca de Login"
+					url="/PaginasWeb/Usuario/usuarioTrocaLogin.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Troca de Login')}" />
 		<p:menuitem value="Troca de Senha"
 					url="/PaginasWeb/Usuario/usuarioTrocaSenha.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Troca de Senha')}" />
@@ -177,21 +183,27 @@
 	<p:submenu label="Enfermagem"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Enfermagem')}">
 		<p:menuitem value="Solicitação de Medicamento"
-					url="/PaginasWeb/Prescricao/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidade.hu"
+					url="/PaginasWeb/Enfermagem/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidade.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Solicitação de Medicamento')}" />
+		<p:menuitem value="Devolução de Medicamento"
+					url="/PaginasWeb/Enfermagem/DevolucaoMedicamento/devolucaoMedicamento.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Devolução de Medicamento')}" />
 	</p:submenu>
 	
 	<p:submenu label="e-Health"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health')}">
+		<p:menuitem value="e-Health Estabelecimento"
+					url="/PaginasWeb/Ehealth/EhealthEstabelecimento/ehealthEstabelecimento.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Estabelecimento')}" />
 		<p:menuitem value="e-Health Estado"
 					url="/PaginasWeb/Ehealth/EhealthEstado/ehealthEstado.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Estado')}" />
 		<p:menuitem value="e-Health Município"
 					url="/PaginasWeb/Ehealth/EhealthMunicipio/ehealthMunicipio.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Município')}" />
-		<p:menuitem value="e-Health Estabelecimento"
-					url="/PaginasWeb/Ehealth/EhealthEstabelecimento/ehealthEstabelecimento.hu"
-					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Estabelecimento')}" />
+		<p:menuitem value="e-Health Controle de Pesquisa"
+					url="/PaginasWeb/Ehealth/EhealthControlePesquisa/ehealthControlePesquisa.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('e-Health Controle de Pesquisa')}" />
 	</p:submenu>
 	
 	<p:submenu label="Farmácia"
@@ -255,6 +267,10 @@
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Consulta de Prescrição Antiga')}" />
 		</p:submenu>
 		
+		<p:menuitem value="Solicitações Dispensadas"
+					url="/PaginasWeb/Farmacia/Solicitacoes/solicitacoesMedicamentosUnidadeDispensadas.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Solicitações Dispensadas')}" />
+		
 	</p:submenu>
 	
 	<p:submenu label="Laboratório HU"
@@ -309,9 +325,15 @@
 		<p:menuitem value="Estoque por Data de Vencimento"
 					url="/PaginasWeb/Relatorios/EstoqueDataVencimento/estoqueDataVencimento.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque por Data de Vencimento')}" />
-		<p:menuitem value="Relatório dos Materiais Cadastrados"
+		<p:menuitem value="Materiais Cadastrados"
 					url="/PaginasWeb/Relatorios/Material/material.hu"
-					rendered="#{controleMenu.menuAutorizadoStringList.contains('Relatório dos Materiais Cadastrados')}" /> />
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Materiais Cadastrados')}" /> />
+		<p:menuitem value="Materiais Padronizados"
+					url="/PaginasWeb/Relatorios/Material/materialPadronizado.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Materiais Padronizados')}" /> />
+		<p:menuitem value="Nota Fiscal Cadastrada"
+					url="/PaginasWeb/Relatorios/NotaFiscal/entradaNotaFiscal.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Nota Fiscal Cadastrada')}" />
 		<p:menuitem value="Quantitativo do Pezinho"
 					url="/PaginasWeb/Relatorios/RelatorioQuantitativoPezinho/relatorioQuantitativoPezinho.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Quantitativo do Pezinho')}" />
