@@ -25,7 +25,8 @@ public class EhealthEstabelecimento {
 	private String endereco;
 	private String linkDetalhado;
 	private EhealthMunicipio ehealthMunicipio;
-
+	private Profissional profissionalPesquisador;
+	private String tipoUnidade;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_ehealth_estabelecimento_id_ehealth_estabelecimento_seq")
 	@Id
@@ -94,6 +95,23 @@ public class EhealthEstabelecimento {
 	}
 	public void setTipoNatureza(TipoEhealthNaturezaEnum tipoNatureza) {
 		this.tipoNatureza = tipoNatureza;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_pesquisador")
+	public Profissional getProfissionalPesquisador() {
+		return profissionalPesquisador;
+	}
+	public void setProfissionalPesquisador(Profissional profissionalPesquisador) {
+		this.profissionalPesquisador = profissionalPesquisador;
+	}
+	
+	@Column(name="cv_tipo_unidade")
+	public String getTipoUnidade() {
+		return tipoUnidade;
+	}
+	public void setTipoUnidade(String tipoUnidade) {
+		this.tipoUnidade = tipoUnidade;
 	}
 	
 	@Override
