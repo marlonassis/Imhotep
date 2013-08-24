@@ -1,30 +1,25 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="painelPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="url" value="URL:" />
-			<br />
-			<p:inputText id="url" required="true"
-				value="#{painelRaiz.instancia.url}"
-				title="Informe a URL do painel." />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{painelRaiz.instancia.descricao}"
-				title="Descreva o painel" />
-		</h:panelGroup>
-
-
+	
+	
+		<ri:inputTextoSimples id="descricao"
+							  required="true"
+							  disabled="#{painelRaiz.edicao}"
+							  title="Informe o nome do painel" 
+							  value="#{painelRaiz.instancia.descricao}" 
+							  label="Nome"/>
+	
+		<ri:inputTextoSimples id="url"
+							  required="true" 
+							  title="Informe o caminho do painel" 
+							  value="#{painelRaiz.instancia.url}" 
+							  label="URL"/>
 
 	</h:panelGrid>
 
