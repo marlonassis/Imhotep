@@ -2,31 +2,24 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="autorizaMenuPanelGrid" columns="2" width="100%">
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="especialidade" value="Especialidade:" />
-			<br />
-			<p:autoComplete id="especialidade" 
-							scrollHeight="300"
-							required="true"
-							minQueryLength="4"
-							forceSelection="true"
-							value="#{autorizaMenuRaiz.instancia.especialidade}"
-							completeMethod="#{especialidadeAutoComplete.autoComplete}"
-							var="especialidade" 
-							itemLabel="#{especialidade.descricao}"
-							itemValue="#{especialidade}" 
-							converter="especialidadeConversor">
-			</p:autoComplete>
+		
+		<h:panelGrid columns="2" >
+			<ri:inputAutoComplete id="especialidade" 
+								  completeMethod="#{especialidadeAutoComplete.autoComplete}" 
+								  itemValue="#{especialidade}" 
+								  itemLabel="#{especialidade.descricao}" 
+								  var="especialidade" 
+								  value="#{autorizaMenuRaiz.instancia.especialidade}" 
+								  label="Especialidade"/>
 			<p:commandButton image="ui-icon ui-icon-search"
 							 update=":#{p:component('autorizaMenuEditorForm')}"
 							 action="#{autorizaMenuRaiz.carregarTreeMenu}" 
 							 title="Carregar menu." />
-		</h:panelGroup>
+		</h:panelGrid>
 
 		<h:panelGroup id="menuTreePanelGrid" >
 			<p:tree id="checkboxTree"
