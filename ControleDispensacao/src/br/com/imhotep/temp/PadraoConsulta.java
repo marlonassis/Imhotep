@@ -2,13 +2,14 @@ package br.com.imhotep.temp;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.interfaces.IPadraoConsulta;
 import br.com.remendo.gerenciador.GerenciadorConexao;
+import br.com.remendo.interfaces.IPadraoConsulta;
 
 public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IPadraoConsulta {
 
@@ -29,6 +30,11 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	private String orderBy;
 	private String groupBy;
 	private boolean pesquisaGuiada; 
+	private List<T> lista = new ArrayList<T>();
+	
+	public void carregarResultado(){
+		setLista(getList());
+	}
 	
 	@SuppressWarnings("unchecked")
 	public PadraoConsulta() {
@@ -232,6 +238,14 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 
 	public void setPesquisaGuiada(boolean pesquisaGuiada) {
 		this.pesquisaGuiada = pesquisaGuiada;
+	}
+
+	public List<T> getLista() {
+		return lista;
+	}
+
+	public void setLista(List<T> lista) {
+		this.lista = lista;
 	}
 
 }
