@@ -7,9 +7,12 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeItemConsultaRaiz;
+import br.com.imhotep.controle.ControlePainelAviso;
+import br.com.imhotep.entidade.PainelAviso;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
 import br.com.imhotep.entidade.extra.SolicitacaoMedicamento;
@@ -17,7 +20,8 @@ import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 import br.com.imhotep.excecoes.ExcecaoDispensacaoSolicitacaoItemPendente;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
-import br.com.imhotep.excecoes.ExcecaoProfissionalReceptorNaoInformado;
+import br.com.imhotep.excecoes.ExcecaoForaRedeHU;
+import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoSemItens;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoRecusadaSemJustificativa;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.seguranca.Autenticador;
@@ -26,16 +30,55 @@ import br.com.remendo.PadraoHome;
 @ManagedBean
 @SessionScoped
 public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMedicamentoUnidade>{
-	//essas variáveis são alteradas na classe SolicitacaoMedicamentoUnidadeConsultaRaiz.java
-	private Long qtdSolicitacoesPendentes = 0L;
+	private SolicitacaoMedicamentoUnidade solicitacaoVizualizacao = new SolicitacaoMedicamentoUnidade();
+	private boolean exibirConsultaSolicitacao;
+	
+	//lista usada pela farmácia para vizualizar as solicitações não dispensadas
 	private List<SolicitacaoMedicamentoUnidade> solicitacoesPendentes = new ArrayList<SolicitacaoMedicamentoUnidade>();
 	/////////////
 	private Boolean solicitarProfissionalRecepcao;
 	private Boolean solicitarJustificativaRecusaSolicitacao;
 	private Boolean iniciarDispensacao;
 	private String justificativaRecusa;
-	//TODO remover a dispensacao item da sessao e criar uma varivel de solicitacao item aqui dentro
 	
+	private List<SolicitacaoMedicamentoUnidade> solicitacoesProfissional = new ArrayList<SolicitacaoMedicamentoUnidade>();
+	
+	public void setInstanciaSolicitacaoAberta(SolicitacaoMedicamentoUnidade smu){
+		setInstancia(smu);
+		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(smu.getItens());
+	}
+	
+	@Override
+	public boolean apagar() {
+		if(super.apagar()){
+			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesProfissional();
+			return true;
+		}
+		return false;
+	}
+	
+	public void exibirDialogConsultaSolicitacao(){
+		setExibirConsultaSolicitacao(true);
+	}
+	
+	public void ocultarDialogConsultaSolicitacao(){
+		setExibirConsultaSolicitacao(false);
+	}
+	
+	public void setCarregarImpressao(SolicitacaoMedicamentoUnidade linha){
+		super.novaInstancia();
+		setInstancia(linha);
+		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
+		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().montarImpressao();
+	}
+	
+	public void setCarregarDispensacao(SolicitacaoMedicamentoUnidade linha){
+		setInstancia(linha);
+		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
+		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().montarSugestao();
+	}
+	
+	//TODO remover a dispensacao item da sessao e criar uma varivel de solicitacao item aqui dentro
 	public void iniciarDispensacao(){
 		setIniciarDispensacao(true);
 	}
@@ -106,6 +149,7 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	public void preFechamentoDispensacao(){
 		try {
 			SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().verificaItensPendentes();
+			getInstancia().setProfissionalReceptor(getInstancia().getProfissionalInsercao());
 			setSolicitarProfissionalRecepcao(true);
 		} catch (ExcecaoDispensacaoSolicitacaoItemPendente e) {
 			e.printStackTrace();
@@ -114,20 +158,17 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	
 	public void fecharDispensacao(){
 		try {
-			if(getInstancia().getProfissionalReceptor() == null)
-				throw new ExcecaoProfissionalReceptorNaoInformado();
 			setSolicitarProfissionalRecepcao(false);
 			SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().fecharSolicitacaoItens();
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.D);
 			getInstancia().setDataDispensacao(new Date());
 			getInstancia().setProfissionalDispensacao(Autenticador.getProfissionalLogado());
 			super.atualizar();
-			setIniciarDispensacao(false);
+			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesPendentes();
+			ControlePainelAviso.getInstancia().atualizarAvisos();
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		} catch (ExcecaoDispensacaoSolicitacaoItemPendente e) {
-			e.printStackTrace();
-		} catch (ExcecaoProfissionalReceptorNaoInformado e) {
 			e.printStackTrace();
 		}
 	}
@@ -135,12 +176,6 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	public void setInstancia2(SolicitacaoMedicamento linha){
 		SolicitacaoMedicamentoUnidade obj = new SolicitacaoMedicamentoUnidadeConsultaRaiz().solicitacaoId(linha.getIdSolicitacaoMedicamentoUnidade());
 		setInstancia(obj);
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
-	}
-	
-	@Override
-	public void setInstancia(SolicitacaoMedicamentoUnidade instancia) {
-		super.setInstancia(instancia);
 		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
 	}
 	
@@ -166,11 +201,20 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	
 	@Override
 	public boolean atualizar() {
-		getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
-		getInstancia().setDataInsercao(new Date());
-		if(super.atualizar()){
-			novaInstancia();
-			return true;
+		try{
+			if(new SolicitacaoMedicamentoUnidadeConsultaRaiz().quantidadeItens(getInstancia()) < 1){
+				throw new ExcecaoSolicitacaoMedicamentoSemItens();
+			}
+			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
+			getInstancia().setDataFechamento(new Date());
+			if(super.atualizar()){
+				ControlePainelAviso.getInstancia().setAvisosNaoMonitorado(new ArrayList<PainelAviso>());
+				ControlePainelAviso.getInstancia().gerarAvisoRM(getInstancia().getIdSolicitacaoMedicamentoUnidade(), getInstancia().getUnidadeDestino());
+				novaInstancia();
+				return true;
+			}
+		}catch(ExcecaoSolicitacaoMedicamentoSemItens e){
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -178,24 +222,21 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	@Override
 	public boolean enviar() {
 		try {
+		    new RestringirAcessoRedeHU().validarAcessoRedeHU();
+			SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().limparInstancia();
 			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
 			getInstancia().setUnidadeProfissionalInsercao(Autenticador.getUnidadeProfissional());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.A);
-			return super.enviar();
+			getInstancia().setDataInsercao(new Date());
+			super.enviar();
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		} catch (ExcecaoUnidadeAtual e) {
 			e.printStackTrace();
+		} catch (ExcecaoForaRedeHU e) {
+			e.printStackTrace();
 		}
 		return false;
-	}
-
-	public Long getQtdSolicitacoesPendentes() {
-		return qtdSolicitacoesPendentes;
-	}
-
-	public void setQtdSolicitacoesPendentes(Long qtdSolicitacoesPendentes) {
-		this.qtdSolicitacoesPendentes = qtdSolicitacoesPendentes;
 	}
 
 	public List<SolicitacaoMedicamentoUnidade> getSolicitacoesPendentes() {
@@ -239,5 +280,31 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	public void setJustificativaRecusa(String justificativaRecusa) {
 		this.justificativaRecusa = justificativaRecusa;
 	}
+
+	public List<SolicitacaoMedicamentoUnidade> getSolicitacoesProfissional() {
+		return solicitacoesProfissional;
+	}
+
+	public void setSolicitacoesProfissional(
+			List<SolicitacaoMedicamentoUnidade> solicitacoesPendentesProfissional) {
+		this.solicitacoesProfissional = solicitacoesPendentesProfissional;
+	}
+
+	public SolicitacaoMedicamentoUnidade getSolicitacaoVizualizacao() {
+		return solicitacaoVizualizacao;
+	}
+
+	public void setSolicitacaoVizualizacao(SolicitacaoMedicamentoUnidade solicitacaoVizualizacao) {
+		this.solicitacaoVizualizacao = solicitacaoVizualizacao;
+	}
+
+	public boolean isExibirConsultaSolicitacao() {
+		return exibirConsultaSolicitacao;
+	}
+
+	public void setExibirConsultaSolicitacao(boolean exibirConsultaSolicitacao) {
+		this.exibirConsultaSolicitacao = exibirConsultaSolicitacao;
+	}
+
 
 }
