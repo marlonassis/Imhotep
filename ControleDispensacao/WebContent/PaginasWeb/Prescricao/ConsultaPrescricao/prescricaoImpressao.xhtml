@@ -12,7 +12,7 @@
 	<ui:define name="conteudoPadraoSemTab">
 	
 	    <f:metadata>  
-        	<f:event type="preRenderView" listener="#{relatorioPrescricaoCompleta.gerarRelatorio}"/>  
+        	<f:event type="preRenderView" listener="#{relatorioPrescricaoCompleta.gerarRelatorio(param.id)}"/>  
     	</f:metadata>  
 	
 	</ui:define>
