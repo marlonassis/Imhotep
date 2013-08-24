@@ -6,6 +6,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 
 public class Constantes {
+	public static final String PATTERN_CHAVE_VERIFICACAO_PROFISSIONAL = "{cpf}{dataNascimento}";
+	
 	public static final String DIR_RELATORIO = "/WEB-INF/classes/br/com/imhotep/relatorio/";
 	public static final String PAGINA_TROCA_SENHA = "/imhotep/PaginasWeb/Usuario/usuarioTrocaSenha.hu";
 	public static final String PAGINA_HOME = "/imhotep/PaginasWeb/home.hu";
@@ -14,8 +16,11 @@ public class Constantes {
 	public static final String PAGINA_AJUSTE_ESTOQUE = "/imhotep/PaginasWeb/Movimentacao/AjusteEstoque/ajusteEstoque.hu";
 	public static final String PAGINA_LOGIN = "/imhotep/PaginasWeb/login.hu";
 	public static final String PAGINA_MANUTENCAO = "/imhotep/PaginasWeb/manutencao.hu";
+	public static final String PAGINA_RECUSA_IEXPLORER = "/imhotep/PaginasWeb/recusaIExplorer.hu";
+	public static final String PAGINA_RECUPERACAO_SENHA = "/imhotep/PaginasWeb/Publico/recuperarSenha.hu";
 	
 	public static final String PAINEL_MEDICAMENTO_VENCIDO = "Medicamentos Vencidos";
+	public static final String PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO = "Solicitações de Medicamento pelo Usuário";
 	
 	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
 	
@@ -30,7 +35,10 @@ public class Constantes {
 	public static final String URL_BANCO = "jdbc:postgresql://127.0.0.1:5432/db_imhotep";
 	public static final String NOME_BANCO = "db_imhotep";
 	public static final String USUARIO_BANCO = "imhotep";
-	public static final String SENHA_BANCO = "!@#imhotep*()1237890";
+	public static final String SENHA_BANCO = "##Imhotep09*123789!@#*()";
+	
+	public static final String IP_HU = "200.133.41.5";
+	public static final String IP_LOCAL = "127.0.0.1";
 	
 	public static final String MENSAGEM_RELATORIO_VAZIO = "Nenhum registro encontrado.";
 	

@@ -13,6 +13,9 @@ import br.com.imhotep.enums.TipoBooleanEnum;
 import br.com.imhotep.enums.TipoComplexidadeEnum;
 import br.com.imhotep.enums.TipoCuidadosPacienteEnum;
 import br.com.imhotep.enums.TipoEhealthNaturezaEnum;
+import br.com.imhotep.enums.TipoEhealthPresencaWebEnum;
+import br.com.imhotep.enums.TipoEhealthRedeSocialEnum;
+import br.com.imhotep.enums.TipoEhealthTipoTecnologiaEnum;
 import br.com.imhotep.enums.TipoEscolaridadeEnum;
 import br.com.imhotep.enums.TipoEstadoCivilEnum;
 import br.com.imhotep.enums.TipoEstadoEnum;
@@ -41,6 +44,30 @@ import br.com.imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 @ManagedBean
 @RequestScoped
 public class ItensPadrao{
+	
+	public List<SelectItem> getTipoEhealthRedeSocialEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEhealthRedeSocialEnum item : TipoEhealthRedeSocialEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
+	
+	public List<SelectItem> getTipoEhealthTipoTecnologiaEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEhealthTipoTecnologiaEnum item : TipoEhealthTipoTecnologiaEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
+	
+	public List<SelectItem> getTipoEhealthPresencaWebEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEhealthPresencaWebEnum item : TipoEhealthPresencaWebEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
 	
 	public List<SelectItem> getTipoEhealthNaturezaEnumItens(){
 		List<SelectItem> itens = new ArrayList<SelectItem>();
