@@ -8,12 +8,20 @@
 	<h:panelGrid id="fornecedorPanelGridConsulta" columns="3" width="100%">
 
 		<h:panelGroup>
-			
 			<h:outputLabel for="nome" value="Nome:" />
 			<br />
 			<p:inputText id="nome" required="false"
 				value="#{fornecedorConsulta.instancia.nomeFantasia}"
-				title="Informe o nome/razão social do fornecedor" />
+				title="Informe o nome do fornecedor" />
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:outputLabel for="razaoSocial" value="Razão Social:" />
+			<br />
+			<p:inputText id="razaoSocial" 
+						 required="false"
+						 value="#{fornecedorConsulta.instancia.razaoSocial}"
+						 title="Informe a razão social do fornecedor" />
 		</h:panelGroup>
 
 		<h:panelGroup>
