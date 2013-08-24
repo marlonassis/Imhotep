@@ -1,6 +1,6 @@
-//comandos que devem ser executados no ato do carregamento da página
-setTimeout("window.location.reload();", 1800000);
-//fim
+if(navigator.appName.indexOf("Internet Explorer") >= 0 && window.location.toString().indexOf("recusaIExplorer") < 0) {
+	window.location = "/imhotep/PaginasWeb/recusaIExplorer.hu";
+}
 
 function exibicaoAlternadaItem(id) {
     if (document.getElementById(id).style.display == 'none') {
@@ -9,6 +9,13 @@ function exibicaoAlternadaItem(id) {
     else {
         document.getElementById(id).style.display = 'none';
     }
+}
+
+function exibicaoAlternadaItemGuiado(id, janela, display) {
+	alert('entrou');
+	alert(janela);
+    janela.document.getElementById(id).style.display = display;
+    alert('saiu');
 }
 
 /**
