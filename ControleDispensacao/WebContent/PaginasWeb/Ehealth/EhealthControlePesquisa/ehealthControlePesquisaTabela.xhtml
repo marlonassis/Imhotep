@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaSolicitacaoMedicamentoUnidadeDispensada" 
+				 value="#{ehealthEstabelecimentoControlePesquisaConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idEhealthEstabelecimento}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nome" />
+			</f:facet>
+			<p:commandLink target="_blank" onclick="window.open('https://www.google.com.br/search?q=#{linha.nome}', '#{linha.nome}');" >
+				<h:outputText value="#{linha.nome}" />
+			</p:commandLink>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Tipo" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoUnidade}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Natureza" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoNatureza.label}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Município" />
+			</f:facet>
+			<h:outputText value="#{linha.ehealthMunicipio.nome}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Link" />
+			</f:facet>
+			<p:commandLink target="_blank" onclick="window.open('http://cnes.datasus.gov.br/#{linha.link}', '#{linha.nome}');" >
+				<h:outputText value="link" />
+			</p:commandLink>
+		</p:column>
+
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Rejeitar"
+						   rendered="#{linha.profissionalPesquisador.idProfissional==autenticador.profissionalAtual.idProfissional}"
+						   update=":padraoTabView:solicitacoesDispensadasPesquisa:solicitacoesDispensadasPesquisaForm:tabelaSolicitacaoMedicamentoUnidadeDispensada"
+						   action="#{ehealthEstabelecimentoRaiz.rejeitarEstabelecimento}"
+						   style="padding-right:10px;"
+						   global="false" 
+      				       onclick="statusDialog.show();"  
+      				       onsuccess="statusDialog.hide();">
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
+				Rejeitar
+			</p:commandLink>
+			<p:commandLink title="Registrar"
+						   rendered="#{linha.profissionalPesquisador.idProfissional==autenticador.profissionalAtual.idProfissional}"
+						   update=":padraoTabView:formularioEstabelecimento :#{p:component('formDialog')}"
+						   action="#{ehealthFormularioRaiz.iniciarPreenchimento}"
+						   style="padding-right:10px;"
+						   global="false" 
+       				       onclick="statusDialog.show();"  
+       				       onsuccess="statusDialog.hide();">
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
+				Formulário
+			</p:commandLink>
+			<h:outputText value="#{linha.profissionalPesquisador.nome}" 
+						  rendered="#{linha.profissionalPesquisador!=null and linha.profissionalPesquisador.idProfissional!=autenticador.profissionalAtual.idProfissional}" />
+				
+			<p:commandLink title="Pegar"
+						   update=":padraoTabView:solicitacoesDispensadasPesquisa:solicitacoesDispensadasPesquisaForm:tabelaSolicitacaoMedicamentoUnidadeDispensada :#{p:component('formDialog')}"
+						   action="#{ehealthEstabelecimentoRaiz.pegarEstabelecimento}"
+						   rendered="#{linha.profissionalPesquisador==null}"
+						   style="padding-right:10px;"
+						   global="false" 
+      				       onclick="statusDialog.show();"  
+      				       onsuccess="statusDialog.hide();">
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
+				Pegar
+			</p:commandLink>
+		</p:column>
+		
+	</p:dataTable>
+
+</ui:composition>

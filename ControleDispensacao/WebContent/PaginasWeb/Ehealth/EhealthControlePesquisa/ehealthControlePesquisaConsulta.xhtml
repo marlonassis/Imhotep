@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="estadoPanelGridConsulta" columns="4" >
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="grupo" value="Estado:" />
+			<br />
+			<p:selectOneMenu value="#{ehealthEstabelecimentoControlePesquisaConsulta.estado}"
+							 effect="fade" 
+							 required="true" >
+				<p:ajax update=":padraoTabView:solicitacoesDispensadasPesquisa:solicitacoesDispensadasPesquisaForm:municipioConsulta:municipioConsulta" />
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{itensPadrao.estadoEnumItens}"/> 
+			</p:selectOneMenu>
+		</h:panelGroup>
+		
+		<ri:inputSelectOneMenuEntidade id="municipioConsulta" 
+									   itemLabel="#{municipio.nome}" 
+									   itemValue="#{municipio}" 
+									   var="municipio" 
+									   value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.ehealthMunicipio}" 
+									   list="#{ehealthEstabelecimentoControlePesquisaConsulta.municipios}" 
+									   label="Municípios"/>
+									   
+		<ri:inputTextoSimples id="nomeConsulta" 
+							  title="Nome ou parte do nome" 
+							  value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.nome}" 
+							  label="Nome" />
+							  
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="tipo" value="Tipo:" />
+			<br />
+			<p:selectOneMenu id="tipo"
+							 value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.tipoUnidade}"
+							 effect="fade" 
+							 required="true" >
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItem itemLabel="HOSPITAL ESPECIALIZADO" itemValue="HOSPITAL ESPECIALIZADO" />
+				<f:selectItem itemLabel="HOSPITAL GERAL" itemValue="HOSPITAL GERAL" />
+				<f:selectItem itemLabel="HOSPITAL/DIA - ISOLADO" itemValue="HOSPITAL/DIA - ISOLADO" />
+			</p:selectOneMenu>
+		</h:panelGroup>	  
+						
+									   
+	</h:panelGrid>
+	
+</ui:composition>
