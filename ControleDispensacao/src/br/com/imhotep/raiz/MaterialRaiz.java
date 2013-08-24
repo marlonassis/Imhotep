@@ -8,25 +8,39 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.FamiliaConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SubGrupoConsultaRaiz;
 import br.com.imhotep.entidade.Familia;
 import br.com.imhotep.entidade.Grupo;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.SubGrupo;
+import br.com.imhotep.entidade.extra.MaterialFaltaEstoque;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
 @ManagedBean
 @SessionScoped
 public class MaterialRaiz extends PadraoHome<Material>{
-
-	
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();
 	private List<Familia> familiaList = new ArrayList<Familia>();
+	private List<MaterialFaltaEstoque> materiaisAbaixoQuantidadeMinima = new ArrayList<MaterialFaltaEstoque>();
 
 	public MaterialRaiz() {
 		inicializaVariaveis();
+	}
+	
+	public static MaterialRaiz getInstanciaAtual(){
+		try {
+			return (MaterialRaiz) Utilitarios.procuraInstancia(MaterialRaiz.class);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override
@@ -107,6 +121,15 @@ public class MaterialRaiz extends PadraoHome<Material>{
 
 	public void setFamiliaList(List<Familia> familiaList) {
 		this.familiaList = familiaList;
+	}
+
+	public List<MaterialFaltaEstoque> getMateriaisAbaixoQuantidadeMinima() {
+		return materiaisAbaixoQuantidadeMinima;
+	}
+
+	public void setMateriaisAbaixoQuantidadeMinima(
+			List<MaterialFaltaEstoque> materiaisAbaixoQuantidadeMinima) {
+		this.materiaisAbaixoQuantidadeMinima = materiaisAbaixoQuantidadeMinima;
 	}
 	
 }
