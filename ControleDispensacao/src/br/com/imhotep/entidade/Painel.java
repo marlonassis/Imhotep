@@ -30,7 +30,7 @@ public class Painel implements Serializable {
 		this.idPainel = idPainel;
 	}
 	
-	@Column(name = "ds_url")
+	@Column(name = "cv_url")
 	public String getUrl() {
 		return url;
 	}
@@ -38,7 +38,7 @@ public class Painel implements Serializable {
 		this.url = url;
 	}
 	
-	@Column(name = "ds_descricao")
+	@Column(name = "cv_descricao")
 	public String getDescricao() {
 		return descricao;
 	}
