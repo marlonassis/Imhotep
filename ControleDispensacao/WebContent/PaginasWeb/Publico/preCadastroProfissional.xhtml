@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRaiz" title="Pré-Cadastro">
+			<h:form id="preCadastroForm" >
+				<p:growl/>
+				<h:panelGrid columns="3" >
+					<ri:inputTextoSimples id="nome" 
+										  autoComplete="false"
+										  title="Informe o seu nome"
+										  required="true" 
+										  value="#{preCadastroProfissionalRaiz.instancia.nome}" 
+										  label="Nome"/>
+					
+					<ri:inputTelefone id="telefone" 
+									  autoComplete="false"
+									  title="Informe um telefone seu para contato" 
+									  value="#{preCadastroProfissionalRaiz.instancia.telefone}" 
+									  label="Telefone"/>
+									  
+					<ri:inputTextoSimples id="unidade" 
+										  autoComplete="false"
+										  required="true"
+										  title="Informe a unidade em que você pode ser encontrado(a)" 
+										  value="#{preCadastroProfissionalRaiz.instancia.unidade}" 
+										  label="Unidade" />
+					
+					<h:panelGroup>
+						<h:outputText value="*" style="color:red" />
+						<h:outputLabel for="dataProximoPlantao" value="Data do próximo plantão" />
+						<br/>
+						<p:calendar id="dataProximoPlantao" 
+									autocomplete="false"
+									value="#{preCadastroProfissionalRaiz.instancia.proximoPlantao}" 
+									pattern="dd/MM/yyyy HH:mm" 
+									title="Informe a próxima vez que você estará de plantão" />
+					</h:panelGroup>
+								
+					<ri:inputTextArea id="observacao" 
+									  title="Informe algo que você considere importante" 
+									  value="#{preCadastroProfissionalRaiz.instancia.observacao}" 
+									  label="Observação" />
+								
+				</h:panelGrid>
+				<p:commandButton value="Cadastrar" 
+								 action="#{preCadastroProfissionalRaiz.enviar}" 
+								 update=":#{p:component('preCadastroForm')}" />
+			</h:form>
+			
+			<h:panelGroup style="color:#FF0000; font-weight:bold;" >  
+				Em breve entraremos em contato  
+			</h:panelGroup>
+		</p:tab>
+	</ui:define>
+</ui:composition>
