@@ -39,19 +39,6 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		return new ConsultaGeral<Long>(new StringBuilder(sql)).consultaUnica();
 	}
 	
-	public void atualizarSolicitacoesPendentesProfissional(){
-		String sql;
-		try {
-			sql = "select o from SolicitacaoMedicamentoUnidade o " +
-					"where o.unidadeProfissionalInsercao.idUnidadeProfissionalInsercao = "+Autenticador.getProfissionalLogado().getIdProfissional();
-			StringBuilder sb = new StringBuilder(sql);
-			ConsultaGeral<SolicitacaoMedicamentoUnidade> cg = new ConsultaGeral<SolicitacaoMedicamentoUnidade>();
-			SolicitacaoMedicamentoUnidadeRaiz.getInstanciaAtual().setSolicitacoesPendentes(new ArrayList<SolicitacaoMedicamentoUnidade>(cg.consulta(sb, null)));
-		} catch (ExcecaoProfissionalLogado e) {
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Este método retorna apenas os últimos 10 pedidos do profissional
 	 */
@@ -60,10 +47,12 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		try {
 			sql = "select o from SolicitacaoMedicamentoUnidade o "+ 
 						 "where o.profissionalInsercao.idProfissional = "+Autenticador.getProfissionalLogado().getIdProfissional() +
-						 " order by o.statusDispensacao, o.dataFechamento, o.dataInsercao";
-			Collection<SolicitacaoMedicamentoUnidade> consulta = new ConsultaGeral<SolicitacaoMedicamentoUnidade>(new StringBuilder(sql)).consulta();
+						 " order by o.idSolicitacaoMedicamentoUnidade desc, o.statusDispensacao, o.dataFechamento, o.dataInsercao";
+			ConsultaGeral<SolicitacaoMedicamentoUnidade> consultaGeral = new ConsultaGeral<SolicitacaoMedicamentoUnidade>(new StringBuilder(sql));
+			consultaGeral.setMaximoResultados(10);
+			Collection<SolicitacaoMedicamentoUnidade> consulta = consultaGeral.consulta();
 			List<SolicitacaoMedicamentoUnidade> solicitacoesPendentesProfissional =  new ArrayList<SolicitacaoMedicamentoUnidade>(consulta);
-			SolicitacaoMedicamentoUnidadeRaiz.getInstanciaAtual().setSolicitacoesPendentesProfissional(solicitacoesPendentesProfissional);
+			SolicitacaoMedicamentoUnidadeRaiz.getInstanciaAtual().setSolicitacoesProfissional(solicitacoesPendentesProfissional);
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		}
