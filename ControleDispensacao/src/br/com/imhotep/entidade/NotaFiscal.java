@@ -3,13 +3,20 @@ package br.com.imhotep.entidade;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.Fornecedor;
 import br.com.imhotep.entidade.Profissional;
 
@@ -21,7 +28,11 @@ import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "tb_nota_fiscal")
-public class NotaFiscal {
+public class NotaFiscal implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int idNotaFiscal;
 	private boolean fechada;
 	private boolean bloqueada;
@@ -32,8 +43,12 @@ public class NotaFiscal {
 	private Date dataEmissao;
 	private Double valorTotal;
 	private Date dataInsercao;
+	private Date dataContabil;
 	private Double valorDesconto;
-
+	private String serie;
+	private List<NotaFiscalEstoque> itens;
+	private boolean doacao;
+	private String chaveAcesso;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_nota_fiscal_id_nota_fiscal_seq")
 	@Id
@@ -133,6 +148,16 @@ public class NotaFiscal {
 		this.dataInsercao = dataInsercao;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_contabil")	
+	public Date getDataContabil() {
+		return dataContabil;
+	}
+
+	public void setDataContabil(Date dataContabil) {
+		this.dataContabil = dataContabil;
+	}
+	
 	@Column(name = "db_valor_desconto")	
 	public Double getValorDesconto() {
 		return valorDesconto;
@@ -140,6 +165,58 @@ public class NotaFiscal {
 
 	public void setValorDesconto(Double valorDesconto) {
 		this.valorDesconto = valorDesconto;
+	}
+	
+	@Column(name="cv_serie")
+	public String getSerie() {
+		return serie;
+	}
+
+	public void setSerie(String serie) {
+		this.serie = serie;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notaFiscal")
+	public List<NotaFiscalEstoque> getItens() {
+		return itens;
+	}
+	public void setItens(List<NotaFiscalEstoque> itens) {
+		this.itens = itens;
+	}
+	
+	@Column(name="bl_doacao") 	
+	public Boolean getDoacao() {
+		return doacao;
+	}
+
+	public void setDoacao(Boolean doacao) {
+		this.doacao = doacao;
+	}
+	
+	@Column(name = "cv_chave_acesso")	
+	public String getChaveAcesso() {
+		return chaveAcesso;
+	}
+
+	public void setChaveAcesso(String chaveAcesso) {
+		this.chaveAcesso = chaveAcesso;
+	}
+
+	
+	@Transient
+	public Double getValorDescontado(){
+		Double valorTotal2 = getValorTotal() == null ? 0d : getValorTotal();
+		Double valorDesconto2 = getValorDesconto() == null ? 0d : getValorDesconto();
+		return valorTotal2-valorDesconto2;
+	}
+	
+	@Transient
+	public String getValorDescontadoFormatado(){
+		if(getValorTotal() != null){
+			NumberFormat nf = NumberFormat.getCurrencyInstance(Constantes.LOCALE_BRASIL);
+			return nf.format(getValorDescontado());
+		}
+		return "";
 	}
 	
 	@Override
