@@ -1,0 +1,194 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset id="solicitacoesMedicamentoProfissionalFieldSet"
+					legend="As 10 últimas solicitações" 
+					collapsed="false"
+					toggleable="false">
+			<p:commandLink action="#{solicitacaoMedicamentoUnidadeConsultaRaiz.consultarSolicitacoesProfissional}" 
+						   update=":#{p:component('solicitacoesMedicamentoProfissionalFieldSet')}" 
+						   global="false" 
+              			   onclick="statusDialog.show();" 
+              			   onsuccess="statusDialog.hide();">
+				<h:graphicImage value="/Imagens/refresh16.png" />
+			</p:commandLink>
+			<p:dataTable id="solicitacoesMedicamentoProfissionalDataTable"
+						 value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacoesProfissional}" 
+						 var="linha"
+						 dblClickSelect="true" 
+						 emptyMessage="Não foi encontrado registros"
+						 rows="5" 
+						 paginator="true" 
+						 selectionMode="single"
+						 rowKey="#{linha.idSolicitacaoMedicamentoUnidade}">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Número da Requisição" />
+					</f:facet>
+					<h:outputText value="#{linha.idSolicitacaoMedicamentoUnidade}"/>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Unidade de Destino" />
+					</f:facet>
+					<h:outputText value="#{linha.unidadeDestino.nome}"/>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data" />
+					</f:facet>
+					<h:outputText value="#{linha.dataFechamento == null ? linha.dataInsercao : linha.dataFechamento}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:outputText value="#{linha.statusDispensacao.label}"/>
+				</p:column>
+				
+				<p:column style="width:60px; text-align: center;">
+					<p:commandLink title="Vizualizar"
+								   action="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogConsultaSolicitacao}" 
+								   update=":#{p:component('solicitacaoExibicaoDialog')}" 
+								   rendered="#{linha.statusDispensacao != 'A'}"
+								   global="false" 
+		              			   onclick="statusDialog.show();" 
+		              			   onsuccess="statusDialog.hide();"
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao}" />
+						<h:graphicImage value="/Imagens/doc.png" 
+										height="16px"
+										width="16px" />
+					</p:commandLink>
+					
+					<p:commandLink oncomplete="location.href='Enfermagem/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidade.hu'"
+								   title="Continuar solicitação"
+								   rendered="#{linha.statusDispensacao == 'A'}"
+								   global="false" 
+		              			   onclick="statusDialog.show();" 
+		              			   onsuccess="statusDialog.hide();"
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instanciaSolicitacaoAberta}" />
+						<h:graphicImage value="/Imagens/next.png" 
+										height="16px"
+										width="16px" />
+					</p:commandLink>
+					
+					<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.apagar}"
+								   title="Apagar solicitação"
+								   update=":#{p:component('solicitacoesMedicamentoProfissionalDataTable')}" 
+								   rendered="#{linha.statusDispensacao == 'A'}"
+								   global="false" 
+		              			   onclick="statusDialog.show();" 
+		              			   onsuccess="statusDialog.hide();"
+		              			   
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/Close-icon.png" 
+										height="16px"
+										width="16px" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			<br/>
+			<b>Legenda do status</b>
+			<br/>
+			<div align="left" >
+				<b>* Aberta</b> - Solicitação que não foi enviada à farmácia;
+				<br/>
+				<b>* Pendente</b> - Solicitação que está na farmácia aguardando a dispensação;
+				<br/>
+				<b>* Dispensado</b> - Solicitação que a farmácia já liberou;
+				<br/>
+				<b>* Recusado</b> - Solicitação recusada pela farmácia
+			</div>
+			<p:dialog id="solicitacaoExibicaoDialog"
+					  widgetVar="solicitacoesProfissionais" 
+					  closable="false"
+					  modal="true"
+					  width="600"
+					  height="530"
+					  header="Consulta Simplificada"
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirConsultaSolicitacao}" >
+				<p:panel id="solicitacaoExibicaoPanel" style="width:550px; height:490px;" >
+					<b>Consulta simplificada da solicitação #{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.idSolicitacaoMedicamentoUnidade}</b>
+					<br/>
+					<h:panelGrid columns="2" >
+						<h:panelGroup>
+							<b>Unidade:</b><br/>
+							#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.unidadeDestino}
+						</h:panelGroup>
+						<h:panelGroup>
+							<b>Receptor:</b><br/>
+							#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.profissionalReceptor.nome}
+						</h:panelGroup>
+						<h:panelGroup>
+							<b>Data da Solicitação:</b><br/>
+							<h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.dataFechamento}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+							</h:outputText>
+						</h:panelGroup>
+						<h:panelGroup>
+							<b>Data da Dispensação:</b><br/>
+							<h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.dataDispensacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+							</h:outputText>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.statusDispensacao == 'R'}" >
+							<b>Solicitação Recusada:</b><br/>
+							<h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.justificativa}" escape="false" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<br/>
+					<div style="height:350px; overflow:auto;" >
+						<table>
+							<ui:repeat value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.itens}" var="item" >
+								<tr>
+									<td colspan="2" >
+										<h:panelGroup rendered="#{item.statusItem == 'R'}" >
+											<b>x#{item.material.codigoMaterial}#{' - '}#{item.material.descricao} - Recusado</b><br/>
+											Motivo: <h:outputText value="#{item.justificativa}" escape="false" />
+										</h:panelGroup>
+										<h:panelGroup rendered="#{item.statusItem != 'R'}" >
+											•<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b>  
+											<h:outputText value=" • Soli.:#{item.quantidadeSolicitada}" style="padding-right:10px; padding-left:10px;" /> 
+											<h:outputText rendered="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.statusDispensacao != 'P'}"
+														  value=" • Dis.:#{item.dispensacaoSimples.movimentoLivro.quantidadeMovimentacao}" 
+														  style="padding-right:10px; padding-left:10px;" />
+											<h:panelGroup rendered="#{item.justificativa != null and item.justificativa != ''}" >
+												Justificativa: <h:outputText value="#{item.justificativa}" escape="false" />
+											</h:panelGroup>
+											<br/>
+										</h:panelGroup>
+									</td>
+								</tr>
+							</ui:repeat>
+						</table>
+					</div>
+				</p:panel>
+				<p:commandButton action="#{solicitacaoMedicamentoUnidadeRaiz.ocultarDialogConsultaSolicitacao}" 
+								 update=":#{p:component('solicitacaoExibicaoDialog')}" 
+								 global="false" 
+	              			     onclick="statusDialog.show();" 
+	              			     onsuccess="statusDialog.hide();"
+								 value="Fechar"/>
+			</p:dialog>
+			
+			<p:poll interval="60" 
+					update=":#{p:component('solicitacoesMedicamentoProfissionalFieldSet')}" 
+					listener="#{solicitacaoMedicamentoUnidadeConsultaRaiz.consultarSolicitacoesProfissional}"
+					global="false" />
+		</p:fieldset>
+	</ui:define>
+</ui:composition>
