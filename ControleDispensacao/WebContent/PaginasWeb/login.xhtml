@@ -11,7 +11,11 @@
 						collapsed="false" 
 						toggleable="true"
 						toggleSpeed="500">
-						
+				
+				<script>
+					setTimeout("window.location.reload();", 5 * 60 * 1000);
+				</script>
+				
 				<h:form id="loginForm">
 					<p:growl />
 					<h:panelGrid columns="1">
@@ -21,6 +25,7 @@
 							<br />
 							<p:inputText value="#{autenticador.usuario.login}"
 										 label="Usuário" 
+										 autocomplete="false"
 										 required="true" 
 										 size="30" />
 						</h:panelGroup>
@@ -48,21 +53,38 @@
 						</h:panelGroup>
 					</h:panelGrid>
 					<p:commandButton value="Login"
-						action="#{autenticador.logarUsuario}" update="loginForm"
-						rendered="#{!autenticador.mostraComboUnidade}"
-						image="ui-icon ui-icon-locked"
-						title="Click para entrar na sua conta" />
+									 action="#{autenticador.logarUsuario}" 
+									 update="loginForm"
+									 ajax="false"
+									 rendered="#{!autenticador.mostraComboUnidade}"
+									 image="ui-icon ui-icon-locked"
+									 title="Click para entrar na sua conta" />
 
 					<p:commandButton value="Limpar"
-						image="ui-icon ui-icon-arrowrefresh-1-s"
-						rendered="#{!autenticador.mostraComboUnidade}"
-						title="Limpar os campos" type="reset" />
+									 image="ui-icon ui-icon-arrowrefresh-1-s"
+									 rendered="#{!autenticador.mostraComboUnidade}"
+									 title="Limpar os campos" 
+									 type="reset" />
 
 					<p:commandButton value="Continuar"
-						action="#{autenticador.continuaLogin}"
-						rendered="#{autenticador.mostraComboUnidade}" update="loginForm"
-						image="ui-icon ui-icon-arrowreturnthick-1-n"
-						title="Click para continuar seu Login" />
+									 action="#{autenticador.continuaLogin}"
+									 rendered="#{autenticador.mostraComboUnidade}" 
+									 update="loginForm"
+									 image="ui-icon ui-icon-arrowreturnthick-1-n"
+									 title="Click para continuar seu Login" />
+					
+					<br/>
+					<br/>
+					<br/>
+					<p:commandLink onclick="window.location='/imhotep/PaginasWeb/Publico/recuperarSenha.hu'" >
+						Esqueci minha senha
+					</p:commandLink>
+					<br/>
+					<br/>
+					<p:commandLink onclick="window.location='/imhotep/PaginasWeb/Publico/preCadastroProfissional.hu'" >
+						Pré-Cadastro
+					</p:commandLink>
+					
 					<br />
 					<br />
 				</h:form>
