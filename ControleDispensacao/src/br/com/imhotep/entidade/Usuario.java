@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,7 +18,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_usuario")
-public class Usuario {
+public class Usuario implements Serializable {
+	private static final long serialVersionUID = -1554433111839681441L;
 	
 	private int idUsuario;
 	private String login;
@@ -28,6 +30,7 @@ public class Usuario {
 	private boolean expiraSessao;
 	private Profissional profissional;
 	private boolean baseTeste;
+	private Integer quantidadeErroLogin;
 	
 	public Usuario() {
 	}
@@ -49,7 +52,7 @@ public class Usuario {
 		this.idUsuario = idUsuario;
 	}
 
-	@Column(name = "ds_login", length = 50)
+	@Column(name = "cv_login")
 	public String getLogin() {
 		return this.login;
 	}
@@ -58,7 +61,7 @@ public class Usuario {
 		this.login = login;
 	}
 	
-	@Column(name = "ds_senha", length = 200)
+	@Column(name = "cv_senha")
 	public String getSenha() {
 		return this.senha;
 	}
@@ -120,6 +123,15 @@ public class Usuario {
 	}
 	public void setProfissional(Profissional profissional) {
 		this.profissional = profissional;
+	}
+	
+	@Column(name="in_quantidade_erro_login")
+	public Integer getQuantidadeErroLogin(){
+		return quantidadeErroLogin;
+	}
+	
+	public void setQuantidadeErroLogin(Integer quantidadeErroLogin){
+		this.quantidadeErroLogin = quantidadeErroLogin;
 	}
 	
 	@Override
