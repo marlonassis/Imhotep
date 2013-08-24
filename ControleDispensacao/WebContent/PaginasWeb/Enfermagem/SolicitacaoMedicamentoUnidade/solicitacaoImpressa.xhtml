@@ -90,6 +90,10 @@
 								</h:panelGroup>
 								<h:panelGroup rendered="#{item.statusItem != 'R'}" >
 									•<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b>  <h:outputText value="•" style="padding-right:10px; padding-left:10px;" /> Soli.:#{item.quantidadeSolicitada}  <h:outputText value="•" style="padding-right:10px; padding-left:10px;" />  Dis.:#{solicitacaoMedicamentoUnidadeItemRaiz.somaTotalDispensadaItem(item)}<br/>
+									<h:panelGroup rendered="#{item.justificativa != null and item.justificativa != ''}" >
+										Justificativa: <h:outputText value="#{item.justificativa}" escape="false" />
+									</h:panelGroup>
+									<br/>
 									<ui:repeat value="#{solicitacaoMedicamentoUnidadeItemRaiz.pegarEstoqueItensLiberados(item)}" var="itemLiberado" >
 										Lote: #{itemLiberado.estoque.lote} - Dis.:#{itemLiberado.quantidadeDispensada} - Vali.:<h:outputText value="#{itemLiberado.estoque.dataValidade}" ><f:convertDateTime pattern="MMMM/yyyy"  locale="pt_BR" timeZone="GMT-3" /></h:outputText>
 										••
