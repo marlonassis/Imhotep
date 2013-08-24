@@ -10,6 +10,7 @@ public class MovimentacaoEstoqueUnidade {
 	private String nomeMaterial;
 	private String lote;
 	private Integer quantidade;
+	private Integer quantidadeAtual;
 	private Date dataMovimento;
 	private String usuario;
 
@@ -17,12 +18,13 @@ public class MovimentacaoEstoqueUnidade {
 		
 	}
 	
-	public MovimentacaoEstoqueUnidade(TipoMovimento tipoMovimento, String nomeMaterial, String lote, Integer quantidade, 
+	public MovimentacaoEstoqueUnidade(TipoMovimento tipoMovimento, String nomeMaterial, String lote, Integer quantidade, Integer quantidadeAtual, 
 			Date dataMovimento, String usuario){
 		this.tipoMovimento=tipoMovimento;
 		this.nomeMaterial=nomeMaterial;
 		this.lote=lote;
 		this.quantidade=quantidade;
+		this.quantidadeAtual = quantidadeAtual;
 		this.dataMovimento=dataMovimento;
 		this.usuario=usuario;
 	}
@@ -85,6 +87,14 @@ public class MovimentacaoEstoqueUnidade {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public Integer getQuantidadeAtual() {
+		return quantidadeAtual;
+	}
+
+	public void setQuantidadeAtual(Integer quantidadeAtual) {
+		this.quantidadeAtual = quantidadeAtual;
 	}
 	
 }
