@@ -150,6 +150,11 @@ public class Fornecedor implements Serializable {
 	}
 
 	@Transient
+	public String getCadastroPessoaFisicaJuridicaFormatado() {
+		return cadastroPessoaFisicaJuridica;
+	}
+	
+	@Transient
 	public String getNome(){
 		return nomeFantasia == null || nomeFantasia.isEmpty() ? razaoSocial : nomeFantasia;
 	}
