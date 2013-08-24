@@ -2,52 +2,36 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="menuPanelGrid" columns="3" width="100%">
 
+		<ri:inputTextoSimples id="descricao" 
+							  title="Nome do menu" 
+							  value="#{menuRaiz.instancia.descricao}" 
+							  label="Descrição" 
+							  required="true" />
 
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" value="#{menuRaiz.instancia.descricao}"
-				required="true" title="Informe a descrição do menu" />
-		</h:panelGroup>
+		<ri:inputTextoSimples id="url" 
+							  title="URL do menu" 
+							  value="#{menuRaiz.instancia.url}" 
+							  label="URL" 
+							  required="false" />
+	
+		<ri:inputAutoComplete id="menuPai" 
+							  completeMethod="#{menuAutoComplete.autoComplete}" 
+							  itemValue="#{menu}" 
+							  itemLabel="#{menu.descricao}" 
+							  var="menu" 
+							  value="#{menuRaiz.instancia.menuPai}" 
+							  label="Menu Pai"/>
 
-		<h:panelGroup>
-			<h:outputLabel for="url" value="Url:" />
-			<br />
-			<p:inputText id="url" value="#{menuRaiz.instancia.url}"
-				title="Informe a url do menu" />
-		</h:panelGroup>
-
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="menuPai" value="Menu pai:" />
-			<br />
-			<p:autoComplete id="menuPai" 
-							value="#{menuRaiz.instancia.menuPai}"
-							scrollHeight="300"
-							minQueryLength="4"
-							forceSelection="true"
-							completeMethod="#{menuAutoComplete.autoComplete}" 
-							title="Informe o menu pai" 
-							var="menu"
-							itemLabel="#{menu.descricao}"
-							itemValue="#{menu}" 
-							converter="menuConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="urlAjuda" value="Url Ajuda:" />
-			<br />
-			<p:inputText id="urlAjuda" value="#{menuRaiz.instancia.urlAjuda}"
-				title="Informe a url da página de ajuda do menu" />
-		</h:panelGroup>
-
+		<ri:inputTextoSimples id="ajuda" 
+							  title="URL da ajuda do menu" 
+							  value="#{menuRaiz.instancia.urlAjuda}" 
+							  label="URL de Ajuda" 
+							  required="false" />
 
 	</h:panelGrid>
 </ui:composition>
