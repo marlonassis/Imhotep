@@ -9,11 +9,12 @@ import br.com.imhotep.entidade.TipoMovimento;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="tipoMovimentoConsulta")
+@ManagedBean
 @SessionScoped
 public class TipoMovimentoConsulta extends PadraoConsulta<TipoMovimento> {
 	public TipoMovimentoConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.tipoOperacao", IGUAL);
 		setOrderBy("to_ascii(o.descricao)");
 	}
 	
