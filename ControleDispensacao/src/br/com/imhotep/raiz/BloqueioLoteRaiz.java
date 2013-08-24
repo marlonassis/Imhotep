@@ -30,12 +30,14 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	}
 	
 	public boolean medicamentoVencido(Date validade){
-		Calendar atual = Calendar.getInstance();
-		Calendar vali = Calendar.getInstance();
-		vali.setTime(new Utilitarios().ajustarUltimaHoraDia(validade));
-		vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
-		if(vali.after(atual)){
-			return false;
+		if(validade != null){
+			Calendar atual = Calendar.getInstance();
+			Calendar vali = Calendar.getInstance();
+			vali.setTime(new Utilitarios().ajustarUltimaHoraDia(validade));
+			vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
+			if(vali.after(atual)){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -94,10 +96,10 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 		}
 		if(super.atualizar()){
 			if(getInstancia().getBloqueado()){
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.O, sdf.format(getInstancia().getDataValidade()));
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.O, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
 				new EstoqueLogRaiz().gerarLog(log);
 			}else{
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.P, sdf.format(getInstancia().getDataValidade()));
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.P, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
 				new EstoqueLogRaiz().gerarLog(log);
 			}
 			return true;
