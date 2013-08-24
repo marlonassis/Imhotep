@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset legend="Medicamentos abaixo da quantidade mínima"
+					collapsed="false" 
+					toggleable="false">
+			<p:commandLink action="#{materialConsultaRaiz.atualizaMateriaisQuantidadeAbaixoPermitido}" 
+						   update=":#{p:component('tabelaMateiralAbaixoEstoque')}" 
+						   global="false" 
+              			   onclick="statusDialog.show();" 
+              			   onsuccess="statusDialog.hide();">
+				<h:graphicImage value="/Imagens/refresh16.png" />
+			</p:commandLink>
+			<p:dataTable id="tabelaMateiralAbaixoEstoque"
+						 value="#{materialRaiz.materiaisAbaixoQuantidadeMinima}" 
+						 var="linha"
+						 dblClickSelect="true" 
+						 emptyMessage="Não foi encontrado registros"
+						 rows="5" 
+						 paginator="true" 
+						 selectionMode="single"
+						 rowKey="#{linha.idMaterial}">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Código" />
+					</f:facet>
+					<h:outputText value="#{linha.codigoMaterial}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Material" />
+					</f:facet>
+					<h:outputText value="#{linha.material}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Mínimo" />
+					</f:facet>
+					<h:outputText value="#{linha.quantidadeMinima}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Quantidade atual" />
+					</f:facet>
+					<h:outputText value="#{linha.quantidadeAtual}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton id="downloadRelatorio"
+							value="Gerar relatório" 
+							ajax="false"
+							action="#{relatorioMaterialAbaixoQuantidadeMinima.gerarRalatorio}"/>
+			<p:poll interval="60" 
+					update=":#{p:component('tabelaMateiralAbaixoEstoque')}" 
+					listener="#{materialConsultaRaiz.atualizaMateriaisQuantidadeAbaixoPermitido}"
+					global="false" />
+		</p:fieldset>
+	</ui:define>
+</ui:composition>
