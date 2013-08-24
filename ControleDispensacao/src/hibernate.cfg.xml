@@ -6,12 +6,11 @@
 	<session-factory name="imhotep">
 
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-		<property name="hibernate.connection.show_sql">true</property>
+		<property name="hibernate.connection.show_sql">false</property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.username">imhotep</property>
-		<property name="hibernate.connection.password">!@#imhotep*()1237890</property>
+		<property name="hibernate.connection.password">##Imhotep09*123789!@#*()</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_imhotep</property>
-
 		
 		<mapping class="br.com.imhotep.entidade.Usuario" />
 		<mapping class="br.com.imhotep.entidade.Menu" />
@@ -82,6 +81,15 @@
 		<mapping class="br.com.imhotep.entidade.EhealthMunicipio" />
 		<mapping class="br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade" />
 		<mapping class="br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem" />
+		<mapping class="br.com.imhotep.entidade.PainelAviso" />
+		<mapping class="br.com.imhotep.entidade.PainelAvisoEspecialidade" />
+		<mapping class="br.com.imhotep.entidade.ProfissionalEspecialidade" />
+		<mapping class="br.com.imhotep.entidade.DevolucaoMedicamento" />
+		<mapping class="br.com.imhotep.entidade.DevolucaoMedicamentoItem" />
+		<mapping class="br.com.imhotep.entidade.EhealthFormulario" />
+		<mapping class="br.com.imhotep.entidade.EhealthFormularioRedeSocial" />
+		<mapping class="br.com.imhotep.entidade.EhealthFormularioTecnologia" />
+		<mapping class="br.com.imhotep.entidade.PreCadastroProfissional" />
 
 	</session-factory>
 </hibernate-configuration>
