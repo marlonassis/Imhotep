@@ -15,7 +15,7 @@ import br.com.remendo.PadraoHome;
 public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
 	
 	private Boolean loteEncontrado;
-	private int quantidadeMovimentacao;
+	private Integer quantidadeMovimentacao;
 	
 	public EntradaMaterialSemNotaRaiz() {
 	}
@@ -36,7 +36,7 @@ public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
 	public void novaInstancia() {
 		super.novaInstancia();
 		setLoteEncontrado(null);
-		setQuantidadeMovimentacao(0);
+		setQuantidadeMovimentacao(null);
 	}
 	
 	private MovimentoLivro prepararMovimentoLivro() {
@@ -54,8 +54,10 @@ public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
 			FluxoSemNotaFiscal fluxoSemNotaFiscal = new FluxoSemNotaFiscal();
 			if(getLoteEncontrado())
 				fluxoSemNotaFiscal.atualizarEstoque(getInstancia(), movimentoLivro);
-			else
+			else{
+				getInstancia().setQuantidadeAtual(getQuantidadeMovimentacao());
 				fluxoSemNotaFiscal.salvarNovoEstoque(getInstancia(), movimentoLivro);
+			}
 			novaInstancia();
 			return true;
 		} catch (Exception e) {
@@ -72,11 +74,11 @@ public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
 		this.loteEncontrado = loteEncontrado;
 	}
 
-	public int getQuantidadeMovimentacao() {
+	public Integer getQuantidadeMovimentacao() {
 		return quantidadeMovimentacao;
 	}
 
-	public void setQuantidadeMovimentacao(int quantidadeMovimentacao) {
+	public void setQuantidadeMovimentacao(Integer quantidadeMovimentacao) {
 		this.quantidadeMovimentacao = quantidadeMovimentacao;
 	}
 	
