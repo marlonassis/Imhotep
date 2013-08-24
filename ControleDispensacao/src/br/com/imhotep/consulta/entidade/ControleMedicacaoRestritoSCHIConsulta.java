@@ -19,7 +19,7 @@ public class ControleMedicacaoRestritoSCHIConsulta extends PadraoConsulta<Contro
 	@Override
 	public List<ControleMedicacaoRestritoSCHI> getList() {
 		setConsultaGeral(new ConsultaGeral<ControleMedicacaoRestritoSCHI>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from ControleMedicacaoRestritoSCHI o where o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.dispensavel = 'S') "));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from ControleMedicacaoRestritoSCHI o where o.idControleMedicacaoRestritoSCHI in (select a.controleMedicacaoRestritoSCHI.idControleMedicacaoRestritoSCHI from PrescricaoItem a where a.prescricao.dispensavel = true) "));
 		return super.getList();
 	}
 }
