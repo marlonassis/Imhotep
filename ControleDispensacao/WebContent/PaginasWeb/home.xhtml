@@ -35,6 +35,10 @@
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelConsultaSolicitacaoProfissional.xhtml" />
 					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Abaixo Quantidade Mínima')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelMedicamentoAbaixoEstoque.xhtml" />
+					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
 			<p:dialog header="Atualização cadastral"
