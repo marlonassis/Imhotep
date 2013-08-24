@@ -26,20 +26,20 @@
 						columns="1"  
 						paginator="true">  
 
-			        <p:panel header="#{linha.unidadeDestino.nome}" style="text-align:center">  
+			        <p:panel header="#{linha.unidadeDestino.nome} - #{linha.idSolicitacaoMedicamentoUnidade}" style="text-align:center">  
 			            <h:panelGrid id="solicitacoesPendentesPanelGrid" columns="1" style="width:100%">  
 							<h:outputText value="#{linha.profissionalInsercao.nome}" />
 							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInsercao)}" />
 			                <h:outputText value="#{linha.itens.size()} item(ns)" />
 			                <h:panelGroup>
 			                	<h:panelGrid width="100%" columns="2" >			                
-					                <p:commandLink  title="Dispensar"
-					                				action="#{solicitacaoMedicamentoUnidadeRaiz.iniciarDispensacao}"
+					                <p:commandLink  title="Dispensar" 
+					                				action="#{solicitacaoMedicamentoUnidadeRaiz.iniciarDispensacao}" 
 					                				global="false" 
 					                				onclick="statusDialog.show();" 
-					                				onsuccess="statusDialog.hide();"
-					                				update=":#{p:component('dispensacoesPendentesDataGrid')} :#{p:component('dispensarDialog')}" >  
-					                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+					                				onsuccess="statusDialog.hide();" 
+					                				update=":#{p:component('dispensacoesPendentesDataGrid')} :#{p:component('dispensarDialog')}" > 
+					                    <h:graphicImage value="/Imagens/search.png" /> 
 					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.carregarDispensacao}" />  
 					                </p:commandLink>
 					                <p:commandLink  title="Recusar" 
@@ -365,27 +365,24 @@
 										    				 rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao}" />
 										</center>
 									</h:panelGroup>
+									<h:panelGroup id="loteEdicao" rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao != null}" >
+										<h:outputText style="font-weight:bold;" value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.estoque.lote}" /><br/>
+										Quantidade:<br/>
+										<p:inputText value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.quantidadeDispensada}" /><br/>
+										<p:commandButton value="Atualizar" 
+														 global="false" 
+					                					 onclick="statusDialog.show();" 
+					                					 onsuccess="statusDialog.hide();"
+														 action="#{solicitacaoMedicamentoUnidadeItemRaiz.atualizarEstoqueDispensacaoEdicao}" 
+														 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
+										<p:commandButton value="Cancelar" 
+														 global="false" 
+					                					 onclick="statusDialog.show();" 
+					                					 onsuccess="statusDialog.hide();"
+														 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarEstoqueEdicao}" 
+														 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
+									</h:panelGroup>
 							    </h:panelGrid>
-							</h:panelGroup>
-							  
-							<h:panelGroup/>
-							
-							<h:panelGroup id="loteEdicao" rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao != null}" >
-								<h:outputText style="font-weight:bold;" value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.estoque.lote}" /><br/>
-								Quantidade:<br/>
-								<p:inputText value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.quantidadeDispensada}" /><br/>
-								<p:commandButton value="Atualizar" 
-												 global="false" 
-			                					 onclick="statusDialog.show();" 
-			                					 onsuccess="statusDialog.hide();"
-												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.atualizarEstoqueDispensacaoEdicao}" 
-												 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
-								<p:commandButton value="Cancelar" 
-												 global="false" 
-			                					 onclick="statusDialog.show();" 
-			                					 onsuccess="statusDialog.hide();"
-												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarEstoqueEdicao}" 
-												 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
 							</h:panelGroup>
 						</h:panelGrid>
 						<p:separator id="separator" />
