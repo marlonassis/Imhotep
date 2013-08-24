@@ -12,15 +12,11 @@ import org.hibernate.cfg.Configuration;
 
 public class GerenciadorConexao {
 	protected Session session;
-	protected Configuration cfg;
+	protected static Configuration cfg = new AnnotationConfiguration().configure("hibernate.cfg.xml");
 	protected Transaction tx;
-	protected SessionFactory factory;
+	protected static SessionFactory factory = cfg.buildSessionFactory();
 	
 	public void iniciarTransacao(){
-		cfg = new AnnotationConfiguration();
-		//Informe o arquivo XML que contém as configurações
-		cfg.configure("hibernate.cfg.xml");
-		factory = cfg.buildSessionFactory();
 		session = factory.openSession();
 		tx = session.beginTransaction();
 	}
