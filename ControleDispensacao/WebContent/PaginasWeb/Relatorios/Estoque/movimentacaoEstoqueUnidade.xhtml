@@ -2,6 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
@@ -15,33 +16,38 @@
 					style="text-align: left;">
 				<h:panelGrid id="formularioRelatorioPanelGrid" columns="2" width="100%">
 					<h:panelGroup>
-						<font color="red">*</font>
-						<h:outputLabel for="unidade" value="Unidade:" />
+						<p:watermark value="Todos" for=":#{p:component('unidade')}" />
+						<ri:inputAutoComplete id="unidade" 
+											  label="Unidade"  
+											  required="true"
+											  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+											  itemValue="#{unidade}" 
+											  itemLabel="#{unidade.nome}" 
+											  var="unidade"
+											  value="#{relatorioMovimentacaoEstoqueUnidade.unidade}"/>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel for="operacao" value="Operação:" />
 						<br />
-						<p:autoComplete id="unidade" 
-										forceSelection="true"
-										required="true"
-										minQueryLength="4" 
-										size="30"
-										value="#{relatorioMovimentacaoEstoqueUnidade.unidade}"
-										completeMethod="#{unidadeAutoComplete.autoComplete}"
-										var="unidade" 
-										title="Informe a unidade para onde está sendo enviado o material."
-										scrollHeight="300" 
-										itemLabel="#{unidade.nome}"
-										itemValue="#{unidade}" 
-										converter="unidadeConversor" />
+						<p:selectOneMenu id="operacao"
+										 value="#{relatorioMovimentacaoEstoqueUnidade.tipoOperacao}" 
+										 title="A operação tipifica o tipo do movimento em entrada, saída e perda">
+							<p:ajax event="change" update=":#{p:component('tipoMovimento')}" />
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItems value="#{itensPadrao.operacaoEnumItens}" />
+						</p:selectOneMenu>
 					</h:panelGroup>
 					
 					<h:panelGroup>
 						<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
 						<br />
-						<p:selectOneMenu
-							value="#{relatorioMovimentacaoEstoqueUnidade.tipoMovimento}"
-							effect="fade" 
-							converter="tipoMovimentoConversor" >
+						<p:selectOneMenu id="tipoMovimento"
+										 value="#{relatorioMovimentacaoEstoqueUnidade.tipoMovimento}"
+										 effect="fade" 
+										 converter="tipoMovimentoConversor" >
 							<f:selectItem itemLabel="Todos" itemValue="" />
-							<f:selectItems value="#{tipoMovimentoConsulta.list}"
+							<f:selectItems value="#{relatorioMovimentacaoEstoqueUnidade.listaTipoMovimento}"
 										   var="tipoMovimento" 
 										   itemLabel="#{tipoMovimento.descricao}"
 										   itemValue="#{tipoMovimento}" />
