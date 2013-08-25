@@ -270,6 +270,16 @@
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Resultado do Pezinho')}" />
 	</p:submenu>
 	
+	<p:submenu label="Mensageiro"
+			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Mensageiro')}">
+		<p:menuitem value="Painel de Aviso"
+					url="/PaginasWeb/Painel/PainelAviso/painelAviso.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Painel de Aviso')}" />
+		<p:menuitem value="Mensagens"
+					url="/PaginasWeb/Painel/PainelAviso/painelAviso.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Mensagens')}" />
+	</p:submenu>
+	
 	<p:submenu label="Psicologia"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Psicologia')}">
 		<p:menuitem value="Avaliação Psicológica"
