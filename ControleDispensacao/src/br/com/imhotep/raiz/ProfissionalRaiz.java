@@ -1,6 +1,7 @@
 package br.com.imhotep.raiz;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -74,6 +75,9 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 	
 	public void addEspecialidadeProfissional(){
 		if(new ProfissionalEspecialidadeRaiz().enviar(getEspecialidade(), getInstancia())){
+			if(getInstancia().getEspecialidades() == null){
+				getInstancia().setEspecialidades(new HashSet<Especialidade>());
+			}
 			getInstancia().getEspecialidades().add(getEspecialidade());
 			setEspecialidade(null);
 		}
