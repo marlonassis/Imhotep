@@ -90,6 +90,7 @@
 		<mapping class="br.com.imhotep.entidade.EhealthFormularioRedeSocial" />
 		<mapping class="br.com.imhotep.entidade.EhealthFormularioTecnologia" />
 		<mapping class="br.com.imhotep.entidade.PreCadastroProfissional" />
+		<mapping class="br.com.imhotep.entidade.EstoqueContagem" />
 
 	</session-factory>
 </hibernate-configuration>

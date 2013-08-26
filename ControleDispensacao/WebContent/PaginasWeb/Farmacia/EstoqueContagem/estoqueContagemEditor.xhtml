@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="estoqueContagemPanelGrid" columns="3" width="100%">
+		
+		<ri:inputAutoComplete id="estoque" 
+							  completeMethod="#{estoqueAutoComplete.autoComplete}" 
+							  itemValue="#{estoque}" 
+							  itemLabel="#{estoque.lote}" 
+							  var="estoque" 
+							  value="#{estoqueContagemRaiz.instancia.estoque}"
+							  required="true" 
+							  label="Estoque"/>
+		
+		<ri:inputApenasNumero id="quantidadeContada" 
+							  title="Informe a quantidade atestada no estoque" 
+							  value="#{estoqueContagemRaiz.instancia.quantidadeContada}" 
+							  label="Quantidade Contada" 
+							  required="true"/>
+							  
+		<ri:inputDataHora id="dataContagem" 
+						  title="Informe a data da contagem deste lote" 
+						  value="#{estoqueContagemRaiz.instancia.dataContagem}" 
+						  label="Data da Contagem" 
+						  required="true"/>
+
+	</h:panelGrid>
+
+</ui:composition>

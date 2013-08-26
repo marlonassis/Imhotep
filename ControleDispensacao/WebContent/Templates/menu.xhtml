@@ -211,6 +211,10 @@
 					url="/PaginasWeb/Movimentacao/BloqueioLote/bloqueioLote.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Bloqueio de Estoque')}" />
 		
+		<p:menuitem value="Contagem de Medicamento"
+					url="/PaginasWeb/Farmacia/EstoqueContagem/estoqueContagem.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Contagem de Medicamento')}" />
+		
 		<p:menuitem value="Dispensação Simples"
 					url="/PaginasWeb/Movimentacao/DispensacaoSimples/dispensacaoSimples.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Dispensação Simples')}" />
@@ -319,6 +323,9 @@
 
 	<p:submenu label="Relatório"
 			   rendered="#{controleMenu.menuAutorizadoStringList.contains('Relatório')}">
+		<p:menuitem value="Contagem de Estoque"
+					url="/PaginasWeb/Relatorios/Estoque/contagemEstoque.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Contagem de Estoque')}" />
 		<p:menuitem value="Estoque"
 					url="/PaginasWeb/Relatorios/Estoque/estoque.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Estoque')}" />

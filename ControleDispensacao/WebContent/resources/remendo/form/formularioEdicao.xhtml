@@ -21,6 +21,7 @@
 		<co:attribute name="renderedGravar" default="true" />
 		<co:attribute name="renderedNovo" default="true" />
 		<co:attribute name="ajaxSalvar" default="true" />
+		<co:attribute name="semPesquisa" default="false" />
 		<co:attribute name="renderedSalvar" default="true" />
 		<co:attribute name="valueSalvar" default="Salvar" />
 		<co:attribute name="valueGravar" default="Gravar" />
@@ -30,7 +31,7 @@
 	
 	<co:implementation>
 		<ui:param name="idFormulario" value="#{cc.attrs.id}EditorForm"/>
-		<ui:param name="idFormularioPesquisa" value=":padraoTabView:#{cc.attrs.id}Pesquisa:#{cc.attrs.id}PesquisaForm"/>
+		<ui:param name="idFormularioPesquisa" value="#{cc.attrs.semPesquisa ? idFormulario : ':padraoTabView:#{cc.attrs.id}Pesquisa:#{cc.attrs.id}PesquisaForm'}"/>
 		<ui:param name="idFormularioEditor" value=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
 		<h:form id="#{idFormulario}">
 			<p:fieldset legend="#{cc.attrs.fieldSetLegend}"

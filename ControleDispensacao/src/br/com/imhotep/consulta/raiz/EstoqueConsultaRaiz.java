@@ -51,6 +51,13 @@ public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		return list;
 	}
 	
+	public List<Estoque> consultarEstoqueValido() {
+		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"'";
+		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
+		return list;
+	}
+	
 	public Estoque consultarEstoqueLivre(String lote) {
 		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
 		String hql = "select o from Estoque o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and o.lote = '"+lote+"'";

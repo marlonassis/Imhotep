@@ -2,43 +2,31 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 
 	<h:panelGrid id="menuPanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="menuPai" value="Menu pai:" />
-			<br />
-			<p:autoComplete id="menuPai" 
-							value="#{menuConsulta.instancia.menuPai}"
-							forceSelection="true"
-							completeMethod="#{menuAutoComplete.autoComplete}" 
-							title="Informe o menu pai" 
-							var="menu"
-							itemLabel="#{menu.descricao}"
-							itemValue="#{menu}" 
-							converter="menuConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
-	
-		<h:panelGroup>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" 
-						 value="#{menuConsulta.instancia.descricao}"
-						 title="Informe a descrição do menu" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="menuPaiConsulta" 
+							  completeMethod="#{menuAutoComplete.autoComplete}" 
+							  itemValue="#{menu}" 
+							  itemLabel="#{menu.descricao}" 
+							  var="menu" 
+							  value="#{menuConsulta.instancia.menuPai}" 
+							  label="Menu Pai"/>
+
+		<ri:inputTextoSimples id="descricaoConsulta" 
+							  title="Nome do menu" 
+							  value="#{menuConsulta.instancia.descricao}" 
+							  label="Descrição" 
+							  required="true" />
+
+		<ri:inputTextoSimples id="urlConsulta" 
+							  title="URL do menu" 
+							  value="#{menuConsulta.instancia.url}" 
+							  label="URL" 
+							  required="false" />
 		
-		<h:panelGroup>
-			<h:outputLabel for="url" value="Url:" />
-			<br />
-			<p:inputText id="url" 
-						 value="#{menuConsulta.instancia.url}"
-						 title="Informe a url do menu" />
-		</h:panelGroup>
-	
 	</h:panelGrid>
 </ui:composition>
