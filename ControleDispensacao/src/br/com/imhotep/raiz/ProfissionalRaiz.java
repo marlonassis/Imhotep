@@ -13,7 +13,7 @@ import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EspecialidadeConsultaRaiz;
 import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Profissional;
-import br.com.imhotep.entidade.Unidade;
+import br.com.imhotep.entidade.TipoConselho;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
@@ -23,7 +23,7 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class ProfissionalRaiz extends PadraoHome<Profissional>{
 	
-	private Unidade unidade;
+	private TipoConselho tipoConselho;
 	private Especialidade especialidade;
 	
 	public ProfissionalRaiz() {
@@ -61,8 +61,8 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 	}
 	
 	public List<Especialidade> getListaEspecialidade(){
-		if(getEspecialidade() !=  null && getEspecialidade().getTipoConselho() != null){
-			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(getEspecialidade().getTipoConselho().getIdTipoConselho());
+		if(getTipoConselho() != null){
+			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(getTipoConselho().getIdTipoConselho());
 		}else{
 			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(null);
 		}
@@ -107,9 +107,9 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 			getInstancia().getUsuario().setQuantidadeErroLogin(0);
 			getInstancia().getUsuario().setSenha(Utilitarios.encriptaParaMd5(String.valueOf("123456")));
 			if(super.enviar()){
-				boolean exibeMensagemInsercao = false;
-				boolean res = new AutorizaUnidadeProfissionalRaiz().enviar(getInstancia(), getUnidade(), exibeMensagemInsercao);
-				return res;
+//				boolean exibeMensagemInsercao = false;
+//				boolean res = new AutorizaUnidadeProfissionalRaiz().enviar(getInstancia(), getUnidade(), exibeMensagemInsercao);
+				return true;
 			}
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este usuário já foi escolhido. informe outro login.", "Inserção não efetuada."));
@@ -117,12 +117,12 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 		return false;
 	}
 
-	public Unidade getUnidade() {
-		return unidade;
+	public TipoConselho getTipoConselho() {
+		return tipoConselho;
 	}
 
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
+	public void setTipoConselho(TipoConselho tipoConselho) {
+		this.tipoConselho = tipoConselho;
 	}
 
 	public Especialidade getEspecialidade() {
