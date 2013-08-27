@@ -14,17 +14,6 @@ import br.com.remendo.PadraoHome;
 @SessionScoped
 public class EstoqueContagemRaiz extends PadraoHome<EstoqueContagem>{
 
-	public EstoqueContagemRaiz() {
-		super();
-		novaInstancia();
-	}
-	
-	@Override
-	public void novaInstancia() {
-		super.novaInstancia();
-		getInstancia().setDataContagem(new Date());
-	}
-	
 	@Override
 	public boolean enviar() {
 		try {

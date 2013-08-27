@@ -21,7 +21,7 @@ public class EstoqueAutoComplete extends ConsultaGeral<Estoque> {
 			string = string.trim();
 			String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
 			String hql = "select o from Estoque o where o.bloqueado = false and "
-					+ "to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and to_ascii(lower(o.lote)) = to_ascii(lower('"+string+"'))";
+					+ "to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and to_ascii(lower(o.lote)) like to_ascii(lower('%"+string+"%'))";
 			List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
 			return list;
 		}

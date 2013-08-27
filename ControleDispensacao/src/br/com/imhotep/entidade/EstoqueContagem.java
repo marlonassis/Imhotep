@@ -22,7 +22,6 @@ public class EstoqueContagem {
 	private Estoque estoque;
 	private Integer quantidadeAtual;
 	private Integer quantidadeContada;
-	private Date dataContagem;
 	private Date dataCadastro;
 	private Profissional responsavel;
 	
@@ -53,15 +52,6 @@ public class EstoqueContagem {
 	}
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
-	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_data_contagem")
-	public Date getDataContagem() {
-		return dataContagem;
-	}
-	public void setDataContagem(Date dataContagem) {
-		this.dataContagem = dataContagem;
 	}
 	
 	@Column(name="in_quantidade_atual")
@@ -95,8 +85,6 @@ public class EstoqueContagem {
 		int result = 1;
 		result = prime * result
 				+ ((dataCadastro == null) ? 0 : dataCadastro.hashCode());
-		result = prime * result
-				+ ((dataContagem == null) ? 0 : dataContagem.hashCode());
 		result = prime * result + ((estoque == null) ? 0 : estoque.hashCode());
 		result = prime * result + idEstoqueContagem;
 		result = prime * result
@@ -121,11 +109,6 @@ public class EstoqueContagem {
 			if (other.dataCadastro != null)
 				return false;
 		} else if (!dataCadastro.equals(other.dataCadastro))
-			return false;
-		if (dataContagem == null) {
-			if (other.dataContagem != null)
-				return false;
-		} else if (!dataContagem.equals(other.dataContagem))
 			return false;
 		if (estoque == null) {
 			if (other.estoque != null)
