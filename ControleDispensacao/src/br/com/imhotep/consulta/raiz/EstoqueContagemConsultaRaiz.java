@@ -17,7 +17,7 @@ public class EstoqueContagemConsultaRaiz  extends ConsultaGeral<EstoqueContagem>
 	
 	public List<EstoqueContagem> consultarEstoquesContagem() {
 		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from EstoqueContagem o where o.estoque.quantidadeAtual > 0 and "
+		String hql = "select o from EstoqueContagem o where "
 				+ "o.estoque.bloqueado = false and to_char(o.estoque.dataValidade, 'yyyy-MM') >= '"+dataS+"' and "
 				+"o.dataCadastro = (select max(a.dataCadastro) from EstoqueContagem a where a.estoque.idEstoque = "
 				+ "o.estoque.idEstoque) "

@@ -62,11 +62,17 @@
 									   value="#{notaFiscalRaiz.instancia.doacao}" 
 									   label="Doação" />
 		
-		<ri:inputTextoSimples id="chave" 
-							  title="Informe a chave única da nota fiscal" 
-							  value="#{notaFiscalRaiz.instancia.chaveAcesso}" 
-							  label="Chave"
-							  required="true"/>
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="codigo" value="Chave:" />
+			<br />
+			<p:inputText id="chaveAcesso" 
+						 required="true"
+						 onkeyup="apenasNumero(this);"
+						 value="#{notaFiscalRaiz.instancia.chaveAcesso}"
+						 title="Informe o código do material" />
+		</h:panelGroup>
+		
 	</h:panelGrid>
 <p:separator id="separator" rendered="#{notaFiscalRaiz.edicao}" />
 	  

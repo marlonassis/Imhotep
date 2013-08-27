@@ -35,23 +35,29 @@ public class RelatorioEstoqueContagem extends PadraoRelatorio{
 	}
 	
 	private Date maiorData(List<EstoqueContagem> lista){
-		Date maiorData = lista.get(0).getDataCadastro();
-		for(EstoqueContagem item : lista){
-			if(item.getDataCadastro().compareTo(maiorData) > 0){
-				maiorData = item.getDataCadastro();
+		if(lista != null && !lista.isEmpty()){
+			Date maiorData = lista.get(0).getDataCadastro();
+			for(EstoqueContagem item : lista){
+				if(item.getDataCadastro().compareTo(maiorData) > 0){
+					maiorData = item.getDataCadastro();
+				}
 			}
+			return maiorData;
 		}
-		return maiorData;
+		return new Date();
 	}
 	
 	private Date menorData(List<EstoqueContagem> lista){
-		Date menorData = lista.get(0).getDataCadastro();
-		for(EstoqueContagem item : lista){
-			if(item.getDataCadastro().compareTo(menorData) < 0){
-				menorData = item.getDataCadastro();
+		if(lista != null && !lista.isEmpty()){
+			Date menorData = lista.get(0).getDataCadastro();
+			for(EstoqueContagem item : lista){
+				if(item.getDataCadastro().compareTo(menorData) < 0){
+					menorData = item.getDataCadastro();
+				}
 			}
+			return menorData;
 		}
-		return menorData;
+		return new Date();
 	}
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
