@@ -9,7 +9,7 @@ import br.com.imhotep.entidade.AutorizaMenu;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="autorizaMenuConsulta")
+@ManagedBean
 @SessionScoped
 public class AutorizaMenuConsulta extends PadraoConsulta<AutorizaMenu> {
 	public AutorizaMenuConsulta(){

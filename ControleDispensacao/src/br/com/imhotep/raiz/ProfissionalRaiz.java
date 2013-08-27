@@ -100,8 +100,6 @@ public class ProfissionalRaiz extends PadraoHome<Profissional>{
 				super.mensagem("Erro ao acessar o autenticador.", null, FacesMessage.SEVERITY_ERROR);
 				System.out.print("Erro em ProfissionalHome");
 			}
-			getInstancia().setEspecialidade(new Especialidade());
-			getInstancia().getEspecialidade().setIdEspecialidade(1);
 			getInstancia().setDataInclusao(new Date());
 			getInstancia().getUsuario().setDataInclusao(new Date());
 			getInstancia().getUsuario().setQuantidadeErroLogin(0);

@@ -12,7 +12,7 @@ import br.com.imhotep.entidade.Usuario;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="autorizaPainelRaiz")
+@ManagedBean
 @SessionScoped
 public class AutorizaPainelRaiz extends PadraoHome<AutorizaPainel>{
 	

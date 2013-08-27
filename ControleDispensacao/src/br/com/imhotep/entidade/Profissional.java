@@ -33,7 +33,6 @@ public class Profissional implements Serializable{
 	
 	private int idProfissional;
 	private Estado estado; 
-	private Especialidade especialidade;
 	private String nome;
 	private TipoSituacaoEnum situacao;
 	private Usuario usuarioInclusao;
@@ -69,16 +68,6 @@ public class Profissional implements Serializable{
 		this.estado = estado;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_especialidade")
-	public Especialidade getEspecialidade() {
-		return especialidade;
-	}
-	
-	public void setEspecialidade(Especialidade especialidade) {
-		this.especialidade = especialidade;
-	}
-	
 	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;

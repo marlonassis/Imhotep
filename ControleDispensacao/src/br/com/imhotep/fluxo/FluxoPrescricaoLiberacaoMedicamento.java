@@ -113,9 +113,10 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 		ConsultaGeral<Integer> cg = new ConsultaGeral<Integer>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idMaterial", material.getIdMaterial());
-		hm.put("idEspecialidade", profissional.getEspecialidade().getIdEspecialidade());
+//		hm.put("idEspecialidade", profissional.getEspecialidade().getIdEspecialidade());
 		Integer idEspecialidade = (Integer) cg.consultaUnica(new StringBuilder("select a.idLiberaMaterialEspecialidade from LiberaMaterialEspecialidade a where a.material.idMaterial = :idMaterial and a.especialidade.idEspecialidade = :idEspecialidade"), hm);
-		return idEspecialidade != null && idEspecialidade != 0;
+//		return idEspecialidade != null && idEspecialidade != 0;
+		return false;
 	}
 	
 	private void anexaAutorizacaoAtualizaItem(ControleMedicacaoRestritoSCHI controleMedicacaoRestritoSCHI, Profissional profissionalPeloUsuario, PrescricaoItem item) {

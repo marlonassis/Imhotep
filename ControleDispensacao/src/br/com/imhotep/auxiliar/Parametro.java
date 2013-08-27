@@ -23,32 +23,29 @@ public class Parametro implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static Especialidade getEspecialidade(){
+	private static boolean verificaEspecialidade(String especialidade){
 		try{
 			Autenticador autenticador = Autenticador.getInstancia();
 			Profissional profissionaAtual =  autenticador == null ? null : autenticador.getProfissionalAtual();
 			if(profissionaAtual != null){
-				return profissionaAtual.getEspecialidade();
+				for(Especialidade espe : profissionaAtual.getEspecialidades()){
+					if(espe.getDescricao().equalsIgnoreCase(especialidade)){
+						return true;
+					}
+				}
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
-	}
-	
-	private static String getDescricaoEspecialidade(){
-		Especialidade especialidade = getEspecialidade();
-		if(especialidade == null)
-			return "";
-		return especialidade.getDescricao();
+		return false;
 	}
 	
 	public static boolean isUsuarioTeste(){
-		return getDescricaoEspecialidade().equalsIgnoreCase("Teste");
+		return verificaEspecialidade("Teste");
 	}
 	
 	public static boolean isUsuarioFarmaceutico(){
-		return getDescricaoEspecialidade().equalsIgnoreCase("Farmac");
+		return verificaEspecialidade("Farmac");
 	}
 	
 	public boolean getUsuarioFarmaceutico(){
@@ -60,7 +57,7 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean isUsuarioEngenheiro(){
-		return getDescricaoEspecialidade().equalsIgnoreCase("Engenharia");
+		return verificaEspecialidade("Engenharia");
 	}
 	
 	public boolean getUsuarioEngenheiro(){
@@ -68,7 +65,7 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean isUsuarioMedico(){
-		return getDescricaoEspecialidade().equalsIgnoreCase("Médico");
+		return verificaEspecialidade("Médico");
 	}
 	
 	public boolean getUsuarioMedico(){
@@ -215,27 +212,23 @@ public class Parametro implements Serializable {
 	}
 	
 	private static String usuarioEspecialidade(Usuario usuario){
-		ConsultaGeral<String> cg = new ConsultaGeral<String>();
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idUsuario", usuario.getIdUsuario());
-		StringBuilder sb = new StringBuilder("select o.especialidade.especialidadePai.descricao from Profissional o where o.usuario.idUsuario = :idUsuario");
-		return cg.consultaUnica(sb, hm);
+//		ConsultaGeral<String> cg = new ConsultaGeral<String>();
+//		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+//		hm.put("idUsuario", usuario.getIdUsuario());
+//		StringBuilder sb = new StringBuilder("select o.especialidade.especialidadePai.descricao from Profissional o where o.usuario.idUsuario = :idUsuario");
+//		return cg.consultaUnica(sb, hm);
+		return "";
 	}
 	
 	public static boolean profissionalEnfermeiroMedico(Profissional profissional){
-		if(profissional.getEspecialidade().getEspecialidadePai() != null){
-			String especialidadePai = profissional.getEspecialidade().getEspecialidadePai().getDescricao();
-			return especialidadePai.equalsIgnoreCase("Enfermagem") || especialidadePai.equalsIgnoreCase("Médico");
-		}
-		String especialidade = profissional.getEspecialidade().getDescricao();
-		return especialidade.equalsIgnoreCase("Enfermagem") || especialidade.equalsIgnoreCase("Médico");
+		return false;
 	}
 	
 	public static boolean profissionalEnfermeiro(Profissional profissional){
-		return profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Enfermagem");
+		return false;
 	}
 	
 	public static boolean profissionalMedico(Profissional profissional){
-		return profissional.getEspecialidade().getEspecialidadePai().getDescricao().equalsIgnoreCase("Médico");
+		return false;
 	}
 }
