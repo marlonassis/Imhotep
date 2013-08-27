@@ -31,7 +31,8 @@
 	
 	<co:implementation>
 		<ui:param name="idFormulario" value="#{cc.attrs.id}EditorForm"/>
-		<ui:param name="idFormularioPesquisa" value="#{cc.attrs.semPesquisa ? idFormulario : ':padraoTabView:#{cc.attrs.id}Pesquisa:#{cc.attrs.id}PesquisaForm'}"/>
+		<ui:param name="idPes" value=":padraoTabView:#{cc.attrs.id}Pesquisa:#{cc.attrs.id}PesquisaForm"/>
+		<ui:param name="idFormularioPesquisa" value="#{cc.attrs.semPesquisa ? idFormulario : idPes}"/>
 		<ui:param name="idFormularioEditor" value=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
 		<h:form id="#{idFormulario}">
 			<p:fieldset legend="#{cc.attrs.fieldSetLegend}"
