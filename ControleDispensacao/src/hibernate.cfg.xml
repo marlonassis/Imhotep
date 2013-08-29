@@ -91,6 +91,8 @@
 		<mapping class="br.com.imhotep.entidade.EhealthFormularioTecnologia" />
 		<mapping class="br.com.imhotep.entidade.PreCadastroProfissional" />
 		<mapping class="br.com.imhotep.entidade.EstoqueContagem" />
+		<mapping class="br.com.imhotep.entidade.Leito" />
+		<mapping class="br.com.imhotep.entidade.LeitoLog" />
 
 	</session-factory>
 </hibernate-configuration>

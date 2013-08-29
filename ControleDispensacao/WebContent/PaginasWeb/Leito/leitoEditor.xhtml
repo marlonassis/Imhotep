@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="leitoPanelGrid" columns="3" width="100%">
+		<ri:inputAutoComplete id="unidade" 
+							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							  itemValue="#{unidade}" 
+							  itemLabel="#{unidade.nome}" 
+							  var="unidade" 
+							  value="#{leitoRaiz.instancia.unidade}"
+							  required="true" 
+							  label="Unidade"/>
+		
+		<ri:inputTextoSimples id="nome" 
+							  title="Informe o nome do leito" 
+							  required="true"
+							  value="#{leitoRaiz.instancia.nome}" 
+							  label="Nome"/>
+		
+		<ri:inputTextoSimples id="patrimonio"
+							  required="true" 
+							  title="Informe o patrimonio do leito" 
+							  value="#{leitoRaiz.instancia.patrimonio}" 
+							  label="Patrimonio"/>
+		
+		<ri:inputAutoComplete id="unidadeEmprestimo" 
+							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							  itemValue="#{unidade}" 
+							  itemLabel="#{unidade.nome}" 
+							  var="unidade" 
+							  value="#{leitoRaiz.instancia.unidadeEmprestimo}"
+							  label="Unidade Emprestada"/>
+							  
+		<ri:inputSelectOneMenuEnum id="statusLeito" 
+								   value="#{leitoRaiz.instancia.statusLeito}" 
+								   label="Status" 
+								   required="true"
+								   itens="#{itensPadrao.tipoStatusLeitoEnumItens}" />
+	</h:panelGrid>
+
+</ui:composition>

@@ -30,6 +30,7 @@
 		<p:menuitem value="Hospital" 
 					url="/PaginasWeb/Hospital/hospital.hu"
 					rendered="#{controleMenu.menuAutorizadoStringList.contains('Hospital')}" />
+		
 		<p:submenu label="Laboratório"
 				   rendered="#{controleMenu.menuAutorizadoStringList.contains('Laboratório')}">
 			<p:menuitem value="Teste do Pezinho"
@@ -39,6 +40,10 @@
 						url="/PaginasWeb/Laboratorio/TipoExame/tipoExame.hu"
 						rendered="#{controleMenu.menuAutorizadoStringList.contains('Tipo de Exame')}" />
 		</p:submenu>
+
+		<p:menuitem value="Leito" 
+					url="/PaginasWeb/Leito/leito.hu"
+					rendered="#{controleMenu.menuAutorizadoStringList.contains('Leito')}" />
 
 		<p:menuitem value="Fornecedor"
 					url="/PaginasWeb/Fornecedor/fornecedor.hu"
