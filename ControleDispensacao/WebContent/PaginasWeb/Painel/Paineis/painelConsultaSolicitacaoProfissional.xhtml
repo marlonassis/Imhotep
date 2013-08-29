@@ -45,9 +45,7 @@
 					<f:facet name="header">
 						<h:outputText value="Data" />
 					</f:facet>
-					<h:outputText value="#{linha.dataFechamento == null ? linha.dataInsercao : linha.dataFechamento}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-					</h:outputText>
+					<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataFechamento == null ? linha.dataInsercao : linha.dataFechamento)}"/>
 				</p:column>
 				
 				<p:column>
