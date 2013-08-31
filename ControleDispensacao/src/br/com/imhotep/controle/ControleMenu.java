@@ -2,12 +2,19 @@ package br.com.imhotep.controle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.submenu.Submenu;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.comparador.MenuComparador;
 import br.com.imhotep.entidade.Menu;
 
 @ManagedBean
@@ -15,9 +22,76 @@ import br.com.imhotep.entidade.Menu;
 public class ControleMenu implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private List<String> menuAutorizadoStringList = new ArrayList<String>();
 	private List<Menu> menuAutorizadoList = new ArrayList<Menu>();
+	private MenuModel menuModel;
 	
+	public void montarMenu(){
+		menuModel = new DefaultMenuModel();
+		Collections.sort(menuAutorizadoList, new MenuComparador());
+		adicionarHome();
+		for(Menu menu : getMenuAutorizadoList())
+			if(menu.getMenuPai() == null && !menu.getInterno()){
+				Submenu subMenu = contruirMenu(menu, filhosMenuPai(menu));
+				getMenuModel().addSubmenu(subMenu);
+			}
+		adicionarFinalMenu();
+	}
+
+	private void adicionarHome() {
+		MenuItem menuItem = new MenuItem();
+		menuItem.setValue("Home");
+		menuItem.setUrl("/PaginasWeb/home.hu");
+		getMenuModel().addMenuItem(menuItem);
+	}
+	
+	private void adicionarFinalMenu() {
+		MenuItem menuItem = new MenuItem();
+		
+		menuItem.setValue("Ajuda");
+		menuItem.setUrl("/PaginasWeb/Ajuda/Ajuda/ajuda.hu");
+		getMenuModel().addMenuItem(menuItem);
+		
+		menuItem = new MenuItem();
+		menuItem.setValue("Sair");
+		menuItem.setActionExpression(Utilitarios.contruirMethodExpression("#{autenticador.logout()}"));
+		getMenuModel().addMenuItem(menuItem);
+	}
+
+	private Submenu contruirMenu(Menu menu, List<Menu> filhos) {
+		Submenu subMenu = new Submenu();
+		subMenu.setLabel(menu.getDescricao());
+		Collections.sort(filhos, new MenuComparador());
+		for(Menu filho : filhos){
+			if(!filho.getInterno()){
+				List<Menu> sons = filhosMenuPai(filho);
+				if(!sons.isEmpty()){
+					Submenu subMenu2 = contruirMenu(filho, filhosMenuPai(filho));
+					subMenu2.setLabel(filho.getDescricao());
+					subMenu.getChildren().add(subMenu2);
+				}else{
+					MenuItem menuItem = new MenuItem();
+					menuItem.setValue(filho.getDescricao());
+					menuItem.setUrl(filho.getUrl());
+					if(filho.getConstrucao()){
+						menuItem.setStyle("background-color:#FF0000;");
+					}
+					subMenu.getChildren().add(menuItem);
+				}
+			}
+		}
+		return subMenu;
+	}
+
+	private List<Menu> filhosMenuPai(Menu menu){
+		List<Menu> filhos = new ArrayList<Menu>();
+		for(Menu item : menuAutorizadoList){
+			if(menu.equals(item.getMenuPai())){
+				filhos.add(item);
+			}
+		}
+		return filhos;
+	}
+
 	public static ControleMenu getInstancia(){
 		try {
 			return (ControleMenu) Utilitarios.procuraInstancia(ControleMenu.class);
@@ -43,24 +117,19 @@ public class ControleMenu implements Serializable {
 		return false;
 	}
 	
-	public void converteMenuString(){
-		setMenuAutorizadoStringList(new ArrayList<String>());
-		for(Menu menu : menuAutorizadoList){
-			getMenuAutorizadoStringList().add(menu.getDescricao());
-		}
-	}
-	
 	public List<Menu> getMenuAutorizadoList() {
 		return menuAutorizadoList;
 	}
 	public void setMenuAutorizadoList(List<Menu> menuAutorizadoList) {
 		this.menuAutorizadoList = menuAutorizadoList;
 	}
-	public List<String> getMenuAutorizadoStringList() {
-		return menuAutorizadoStringList;
+
+	public MenuModel getMenuModel() {
+		return menuModel;
 	}
-	public void setMenuAutorizadoStringList(List<String> menuAutorizadoStringList) {
-		this.menuAutorizadoStringList = menuAutorizadoStringList;
+
+	public void setMenuModel(MenuModel menuModel) {
+		this.menuModel = menuModel;
 	}
 	
 }

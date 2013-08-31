@@ -299,8 +299,7 @@ public class Autenticador {
 			menuAutorizadoSet.addAll(carregarMenuProfissional());
 			ControleMenu controleMenu = new ControleMenu();
 			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(menuAutorizadoSet));
-			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
-			controleMenu.converteMenuString();
+			controleMenu.montarMenu();
 			Utilitarios.atualizaInstancia(controleMenu);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -313,7 +312,10 @@ public class Autenticador {
 
 	private ArrayList<Menu> carregarMenuProfissional() {
 		//carrega o menu que pertence ao profissional
-		String hql = "select o.menu from AutorizaMenuProfissional o where o.profissional.idProfissional = :idProfissional order by to_ascii(o.menu.descricao)";
+		String hql = "select o.menu from AutorizaMenuProfissional o where "
+				+ "o.profissional.idProfissional = :idProfissional "
+				+ "and o.menu.bloqueado = false "
+				+ "order by to_ascii(o.menu.descricao)";
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
 		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));
@@ -322,7 +324,7 @@ public class Autenticador {
 	
 	private ArrayList<Menu> carregarMenuEspecialidade() {
 		//carrega o menu que pertence à especialidade do usuário
-		String hql = "select b.menu from Profissional o join o.especialidades a join a.menus b where o.idProfissional = :idProfissional";
+		String hql = "select b.menu from Profissional o join o.especialidades a join a.menus b where o.idProfissional = :idProfissional and b.menu.bloqueado = false";
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
 		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));

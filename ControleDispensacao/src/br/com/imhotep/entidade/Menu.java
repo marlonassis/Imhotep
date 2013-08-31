@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import br.com.imhotep.comparador.MenuComparador;
 
@@ -26,6 +27,8 @@ public class Menu implements Serializable {
 	private Menu menuPai;
 	private String descricao;
 	private boolean bloqueado;
+	private boolean construcao;
+	private boolean interno;
 	private String url;
 	private String urlAjuda;
 	private List<Menu> menusFilho;
@@ -88,6 +91,24 @@ public class Menu implements Serializable {
 		this.bloqueado = bloqueado;
 	}
 	
+	@Column(name = "bl_interno")
+	public boolean getInterno() {
+		return this.interno;
+	}
+
+	public void setInterno(boolean interno) {
+		this.interno = interno;
+	}
+	
+	@Column(name = "bl_construcao")
+	public boolean getConstrucao() {
+		return this.construcao;
+	}
+
+	public void setConstrucao(boolean construcao) {
+		this.construcao = construcao;
+	}
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "menuPai")
 	public List<Menu> getMenusFilho() {
 		if(menusFilho != null)
@@ -96,6 +117,21 @@ public class Menu implements Serializable {
 	}
 	public void setMenusFilho(List<Menu> menusFilho) {
 		this.menusFilho = menusFilho;
+	}
+	
+	@Transient
+	public String getCaminhoMenu(){
+		return caminho(this, "-> ");
+	}
+	
+	@Transient
+	private String caminho(Menu pai, String path){
+		path =  path.concat(pai.getDescricao());
+		if(pai.getMenuPai() != null){
+			path =  path.concat(" -> ");
+			return caminho(pai.getMenuPai(), path);
+		}
+		return path;
 	}
 	
 	@Override
@@ -118,5 +154,5 @@ public class Menu implements Serializable {
 	public String toString() {
 		return descricao;
 	}
-	
+
 }

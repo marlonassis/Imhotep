@@ -23,7 +23,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.persistence.Id;
 import javax.servlet.http.HttpSession;
 
@@ -39,6 +42,12 @@ public class Utilitarios{
 	
 	private static Locale LOCALE_BRASIL = new Locale ("pt", "BR");
 
+	public static MethodExpression contruirMethodExpression(String elExpression) {
+		ExpressionFactory factory = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+		MethodExpression methodExpression = factory.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), elExpression, null, new Class[]{ActionEvent.class});
+		return methodExpression;
+	}
+	
 	public static String doubleFormatadoDuasCasasDecimais(Double valor){
 		NumberFormat df = NumberFormat.getNumberInstance(LOCALE_BRASIL);
 		df.setMaximumFractionDigits(2);

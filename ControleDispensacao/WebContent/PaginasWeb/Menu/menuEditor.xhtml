@@ -24,7 +24,9 @@
 							  itemValue="#{menu}" 
 							  itemLabel="#{menu.descricao}" 
 							  var="menu" 
-							  value="#{menuRaiz.instancia.menuPai}" 
+							  value="#{menuRaiz.instancia.menuPai}"
+							  labelTip="#{' '}" 
+							  valueTip="#{menu.caminhoMenu}" 
 							  label="Menu Pai"/>
 
 		<ri:inputTextoSimples id="ajuda" 
@@ -32,6 +34,17 @@
 							  value="#{menuRaiz.instancia.urlAjuda}" 
 							  label="URL de Ajuda" 
 							  required="false" />
-
+							  
+		<ri:inputCheckBoolean id="bloqueado" 
+							  value="#{menuRaiz.instancia.bloqueado}" 
+							  label="Bloqueado"/>
+		
+		<ri:inputCheckBoolean id="construcao" 
+							  value="#{menuRaiz.instancia.construcao}" 
+							  label="Construção"/>
+		
+		<ri:inputCheckBoolean id="interno" 
+							  value="#{menuRaiz.instancia.interno}" 
+							  label="Interno"/>					  
 	</h:panelGrid>
 </ui:composition>
