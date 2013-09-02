@@ -34,4 +34,11 @@ public class PreCadastroProfissionalRaiz extends PadraoHome<PreCadastroProfissio
 		return false;
 	}
 	
+	public void efetivarCadastro(){
+		getInstancia().setDataEfetivacao(new Date());
+		getInstancia().setCadastroEfetivado(true);
+		super.atualizar();
+		super.novaInstancia();
+	}
+	
 }

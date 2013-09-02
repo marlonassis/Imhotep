@@ -16,6 +16,10 @@
 							 width="100%"
 							 style="vertical-align: top" 
 							 columnClasses="colStyle2 ,colStyle2" >
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Painel Pré-Cadastro de Profissional')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelPreCadastro.xhtml" />
+					</h:panelGroup>
 					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Vencidos')}" >
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />

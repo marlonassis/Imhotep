@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset id="cadastrosPendentesFieldSet"
+					legend="Cadastro Pendentes"
+					collapsed="false" 
+					toggleable="false">
+			
+			<p:dataTable id="preCadastroPendenteDataGrid"
+						 value="#{preCadastroProfissionalConsultaRaiz.consultaCadastrosPendentes}" 
+						 var="linha"
+						 dblClickSelect="true" 
+						 emptyMessage="Não foi encontrado registros"
+						 rows="5" 
+						 paginator="true" 
+						 selectionMode="single"
+						 rowKey="#{linha.idPreCadastroProfissional}">
+			
+				<p:column headerText="Nome">  
+		            <h:outputText value="#{linha.nome}" />  
+		        </p:column>  
+		        
+		        <p:column headerText="Próximo plantão">  
+		            <h:outputText value="#{util.formatarDataHoraBrasil(linha.proximoPlantao)}" />  
+		        </p:column>
+		        
+		        <p:column headerText="Solicitação">  
+		            <h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInsercao)}" />  
+		        </p:column>
+		        
+		        <p:column headerText="Unidade">  
+		            <h:outputText value="#{linha.unidade}" />  
+		        </p:column>
+		        
+		        <p:column headerText="Telefone">  
+		            <h:outputText value="#{linha.telefone}" />  
+		        </p:column>
+		        
+		        <p:column headerText="Observação">  
+		            <h:outputText value="#{linha.observacao}" />  
+		        </p:column>
+		        
+		        <p:column style="width:60px; text-align: center;" >
+					<p:commandLink action="#{preCadastroProfissionalRaiz.efetivarCadastro}"
+								   global="false" 
+              					   onclick="statusDialog.show();" 
+              					   onsuccess="statusDialog.hide();"
+								   update=":#{p:component('preCadastroPendenteDataGrid')}"
+								   title="Confirmar cadastro de #{linha.nome}" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{preCadastroProfissionalRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/feito16.png" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+	</ui:define>
+</ui:composition>

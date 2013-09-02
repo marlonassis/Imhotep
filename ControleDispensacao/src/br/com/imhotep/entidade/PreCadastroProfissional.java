@@ -21,6 +21,8 @@ public class PreCadastroProfissional {
 	private String telefone;
 	private String unidade;
 	private Date dataInsercao;
+	private Date dataEfetivacao;
+	private boolean cadastroEfetivado;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_pre_cadastro_profissional_id_pre_cadastro_profissional_seq")
 	@Id
@@ -81,6 +83,24 @@ public class PreCadastroProfissional {
 	}
 	public void setDataInsercao(Date dataInsercao) {
 		this.dataInsercao = dataInsercao;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="dt_data_efetivacao")
+	public Date getDataEfetivacao() {
+		return dataEfetivacao;
+	}
+	public void setDataEfetivacao(Date dataEfetivacao) {
+		this.dataEfetivacao = dataEfetivacao;
+	}
+	
+	@Column(name="bl_cadastro_efetivado")
+	public boolean getCadastroEfetivado(){
+		return cadastroEfetivado;
+	}
+	
+	public void setCadastroEfetivado(boolean cadastroEfetivado){
+		this.cadastroEfetivado = cadastroEfetivado;
 	}
 
 }
