@@ -32,6 +32,7 @@ public class PainelAviso implements Serializable {
 	private Profissional profissionalInsercao;
 	private Date dataInicio;
 	private Date dataFim;
+	private boolean liberado;
 
 	private Set<PainelAvisoEspecialidade> especialidades;
 	
@@ -96,6 +97,15 @@ public class PainelAviso implements Serializable {
 	}
 	public void setEspecialidades(Set<PainelAvisoEspecialidade> especialidades) {
 		this.especialidades = especialidades;
+	}
+	
+	@Column(name="bl_liberado")
+	public boolean getLiberado(){
+		return liberado;
+	}
+	
+	public void setLiberado(boolean liberado){
+		this.liberado = liberado;
 	}
 	
 	@Transient

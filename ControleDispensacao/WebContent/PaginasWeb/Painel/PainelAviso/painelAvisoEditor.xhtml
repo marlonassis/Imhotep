@@ -17,7 +17,9 @@
 						  value="#{painelAvisoRaiz.instancia.dataFim}" 
 						  label="Data de Fim"/>
 						  
-		<h:panelGroup/>
+		<ri:inputCheckBoolean id="liberado" 
+							  value="#{painelAvisoRaiz.instancia.liberado}" 
+							  label="Liberado" />
 		
 		<p:editor value="#{painelAvisoRaiz.instancia.descricao}" />
 		
@@ -45,7 +47,7 @@
 								   var="especialidade" 
 								   itemLabel="#{especialidade.descricao}"
 								   itemValue="#{especialidade}" />
-					<p:ajax event="change" listener="#{painelAvisoRaiz.addEspecialidadeProfissional}" update=":#{p:component('especialidadePanelGroup')} :#{p:component('especialidadesAviso')}" />
+					<p:ajax event="change" listener="#{painelAvisoRaiz.addEspecialidadeProfissional}" update=":#{p:component('painelAvisoEditorForm')} :#{p:component('especialidadesAviso')}" />
 				</p:selectOneMenu>
 			</h:panelGroup>
 			

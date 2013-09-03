@@ -47,12 +47,15 @@ public class ControlePainelAviso implements Serializable{
 		StringBuilder sb = new StringBuilder();
 		try {
 			Integer idProfissional = Autenticador.getProfissionalLogado().getIdProfissional();
-			sb = new StringBuilder("select o from PainelAviso o ");
-			sb.append("join o.especialidades a ");
-			sb.append("join a.especialidade b ");
-			sb.append("where b.idEspecialidade in (select d.idEspecialidade from Profissional c join c.especialidades d where c.idProfissional = "+idProfissional+") ");
+			sb = new StringBuilder("select o from PainelAviso o ");  
+			sb.append("where ");
+			sb.append("(o.idPainelAviso in (select a.painelAviso.idPainelAviso from PainelAvisoEspecialidade a where a.especialidade.idEspecialidade in "); 
+			sb.append("(select c.idEspecialidade from Profissional b join b.especialidades c where b.idProfissional = "+idProfissional+")) ");
+			sb.append("or ");
+			sb.append("o.idPainelAviso not in (select a.painelAviso.idPainelAviso from PainelAvisoEspecialidade a )) ");
 			sb.append("and o.dataInicio <= now()  ");
-			sb.append("and o.dataFim >= now()");
+			sb.append("and o.dataFim >= now() ");
+			sb.append("and o.liberado = true");
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		}
