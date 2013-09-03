@@ -181,6 +181,13 @@ public class GerenciadorMecanico {
         return ret;
 	}
 
+	protected static String adicionaAspas(String valor){
+		if(valor == null){
+			return null;
+		}
+		
+		return "'".concat(valor).concat("'");
+	}
 	
 	public String getNomeBanco() {
 		return nomeBanco;

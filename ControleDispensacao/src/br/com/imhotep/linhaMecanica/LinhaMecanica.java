@@ -290,14 +290,6 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		
 	}
 
-	private static String adicionaAspas(String valor){
-		if(valor == null){
-			return null;
-		}
-		
-		return "'".concat(valor).concat("'");
-	}
-	
 	private void inserirProfissionalEspecialidade() throws SQLException{
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		ResultSet rs = consultar(utf8_to_latin1("select id_profissional, id_especialidade from tb_profissional order by id_profissional"));

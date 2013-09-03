@@ -1,31 +1,25 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="autorizaMenuPanelGrid" columns="2" width="100%">
 
-		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
-			<h:outputLabel for="profissional" value="Profissional:" />
-			<br />
-			<p:autoComplete id="profissional" 
-							forceSelection="true"
-							scrollHeight="300"
-							value="#{autorizaMenuProfissionalRaiz.instancia.profissional}"
-							completeMethod="#{profissionalAutoComplete.autoComplete}"
-							required="true"
-							title="Informe o nome do profissional."
-							var="profissional" 
-							itemLabel="#{profissional.nome}" 
-							itemValue="#{profissional}"
-							converter="profissionalConversor" />
+		<h:panelGrid columns="2" >
+			<ri:inputAutoComplete id="profissional" 
+								  completeMethod="#{profissionalAutoComplete.autoComplete}" 
+								  itemValue="#{profissional}" 
+								  itemLabel="#{profissional.nome}" 
+								  var="profissional" 
+								  value="#{autorizaMenuProfissionalRaiz.instancia.profissional}" 
+								  label="Profissional"/>
 			<p:commandButton image="ui-icon ui-icon-search"
 							 update=":#{p:component('autorizaMenuProfissionalEditorForm')}"
 							 action="#{autorizaMenuProfissionalRaiz.carregarTreeMenu}" 
-							 title="Carregar menu." />
-		</h:panelGroup>
+							 title="Carregar menu" />
+		</h:panelGrid>
 
 		<h:panelGroup id="menuTreePanelGrid" >
 			<p:tree id="checkboxTree"

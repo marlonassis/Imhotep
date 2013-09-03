@@ -27,12 +27,14 @@
 					var="node"
 					selectionMode="multiple" 
 					selection="#{autorizaMenuRaiz.selectedNodes}">
-				<p:treeNode>  
+				<p:treeNode>
 					<h:outputText value="#{node}" />
 					<h:graphicImage value="/Imagens/feito16.png"
 									rendered="#{autorizaMenuRaiz.menusAutorizado.contains(node)}"
 									height="8px"
 									width="8px"/>
+					<h:outputText value="(Bloqueado)" style="color-text:#FF0000;" rendered="#{autorizaMenuRaiz.menuBloqueado(node)}" />
+					<h:outputText value="(Construção)" style="color-text:#FF0000;" rendered="#{autorizaMenuRaiz.menuConstrucao(node)}" />
 				</p:treeNode>  
 			</p:tree>  
 		</h:panelGroup>

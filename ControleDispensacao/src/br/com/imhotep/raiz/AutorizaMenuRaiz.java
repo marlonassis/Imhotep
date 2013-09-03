@@ -70,6 +70,16 @@ public class AutorizaMenuRaiz extends PadraoHome<AutorizaMenu>{
 		}
 	}
 	
+	public boolean menuBloqueado(Object obj){
+		Menu menu = (Menu) obj;
+		return menu.getBloqueado();
+	}
+	
+	public boolean menuConstrucao(Object obj){
+		Menu menu = (Menu) obj;
+		return menu.getConstrucao();
+	}
+	
 	public TreeNode getRoot() {
 		return root;
 	}
