@@ -149,7 +149,9 @@ public class Material implements Serializable {
 	
 	@Transient
 	public String getDescricaoUnidadeMaterial(){
-		return getDescricao().concat(" - ").concat(getUnidadeMaterial().getSigla());
+		if(getDescricao() != null && getUnidadeMaterial() != null)
+			return getDescricao().concat(" - ").concat(getUnidadeMaterial().getSigla());
+		return "";
 	}
 	
 	@Column(name="bl_bloqueado")
