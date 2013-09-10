@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="subGrupoAlmoxarifadoPanelGridConsulta" columns="3" width="100%">
+		
+		<ri:inputTextoSimples id="descricaoConsulta" 
+							  title="Descreva o grupo" 
+							  value="#{subGrupoAlmoxarifadoConsulta.instancia.descricao}" 
+							  label="Descrição" />
+		
+		<ri:inputSelectOneMenuEntidade id="grupoConsulta" 
+									   itemLabel="#{grupoAlmoxarifadoInput.descricao}" 
+									   itemValue="#{grupoAlmoxarifadoInput}" 
+									   var="grupoAlmoxarifadoInput"
+									   value="#{subGrupoAlmoxarifadoConsulta.instancia.grupoAlmoxarifado}" 
+									   list="#{grupoAlmoxarifadoConsultaRaiz.consultarGrupos()}" 
+									   label="Grupo" />
+		
+	</h:panelGrid>
+</ui:composition>

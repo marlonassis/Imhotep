@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="materialPanelGrid" columns="3" width="100%">
+
+		<ri:inputTextoSimples id="descricao" 
+							  title="Descreva o material" 
+							  value="#{materialAlmoxarifadoRaiz.instancia.descricao}" 
+							  label="Descrição"/>
+		<h:panelGroup id="agrupamento" >
+			<h:panelGrid columns="2" width="100%" >
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputLabel for="grupo" value="Grupo:" />
+					<br />
+					<p:selectOneMenu value="#{materialAlmoxarifadoRaiz.instancia.grupoAlmoxarifado}"
+									 effect="fade" 
+									 required="true" 
+									 converter="entidadeConversor">
+						<p:ajax update=":#{p:component('agrupamento')}" 
+								listener="#{materialAlmoxarifadoRaiz.atualizaSubGrupoAmoxarifado()}" />
+						<f:selectItem itemLabel="Selecione..." itemValue="" />
+						<f:selectItems value="#{grupoAlmoxarifadoConsultaRaiz.consultarGrupos()}" 
+									   var="grupo"
+									   itemLabel="#{grupo.descricao}" 
+									   itemValue="#{grupo}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+				
+				<ri:inputSelectOneMenuEntidade id="subGrupo"
+											   required="true"
+											   rendered="#{materialAlmoxarifadoRaiz.subGrupoAlmoxarifadoList != null}"
+											   itemLabel="#{subGrupoAlmoxarifadoInput.descricao}"
+											   itemValue="#{subGrupoAlmoxarifadoInput}"
+											   var="subGrupoAlmoxarifadoInput"
+											   value="#{materialAlmoxarifadoRaiz.instancia.subGrupoAlmoxarifado}"
+											   list="#{materialAlmoxarifadoRaiz.subGrupoAlmoxarifadoList}"
+											   label="SubGrupo" />
+			</h:panelGrid>
+		</h:panelGroup>
+		
+		<ri:inputSelectOneMenuEntidade id="unidadeMaterialAlmoxarifado"
+									   required="true"
+									   itemLabel="#{unidadeMaterialAlmoxarifado.descricao}"
+									   itemValue="#{unidadeMaterialAlmoxarifado}"
+									   var="unidadeMaterialAlmoxarifado"
+									   value="#{materialAlmoxarifadoRaiz.instancia.unidadeMaterialAlmoxarifado}"
+									   list="#{unidadeMaterialAlmoxarifadoConsultaRaiz.todasUnidadesMaterialAlmoxarifado}"
+									   label="Unidade do Material" />
+									   
+		<ri:inputSelectOneRadioBoolean id="bloqueado" 
+									   value="#{materialAlmoxarifadoRaiz.instancia.bloqueado}" 
+									   label="Bloqueado" />
+	</h:panelGrid>
+
+</ui:composition>

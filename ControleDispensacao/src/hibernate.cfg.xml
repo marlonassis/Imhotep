@@ -93,6 +93,10 @@
 		<mapping class="br.com.imhotep.entidade.EstoqueContagem" />
 		<mapping class="br.com.imhotep.entidade.Leito" />
 		<mapping class="br.com.imhotep.entidade.LeitoLog" />
+		<mapping class="br.com.imhotep.entidade.GrupoAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.SubGrupoAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.MaterialAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.UnidadeMaterialAlmoxarifado" />
 
 	</session-factory>
 </hibernate-configuration>
