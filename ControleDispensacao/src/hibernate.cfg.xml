@@ -97,6 +97,7 @@
 		<mapping class="br.com.imhotep.entidade.SubGrupoAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.MaterialAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.UnidadeMaterialAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.AutorizaPainelProfissional" />
 
 	</session-factory>
 </hibernate-configuration>

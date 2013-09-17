@@ -271,12 +271,13 @@ public class Autenticador {
 	
 	private void carregaPaineis() {
 		try {
-			//carrega o menu que pertence ao usuário
-			HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-			hashMap.put("idProfissional", Autenticador.getInstancia().getProfissionalAtual().getIdProfissional());
-			StringBuilder hql = new StringBuilder("select b.painel from Profissional o  join o.especialidades a join a.paineis b where o.idProfissional = :idProfissional");
+			//carrega os paineis que pertencem à especialidade do profissional
+			ArrayList<Painel> painelAutorizadoList = carregaPaineisEspecialidade();
+			//carrega os paineis que pertencem ao profissional
+			painelAutorizadoList.addAll(carregaPaineisProfissional());
+			
 			ControlePainel controlePainel = new ControlePainel();
-			controlePainel.setPainelAutorizadoList(new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap)));
+			controlePainel.setPainelAutorizadoList(painelAutorizadoList);
 			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
 			controlePainel.convertePainelString();
 			Utilitarios.atualizaInstancia(controlePainel);
@@ -288,6 +289,23 @@ public class Autenticador {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private ArrayList<Painel> carregaPaineisProfissional() throws InstantiationException,IllegalAccessException, ClassNotFoundException {
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("idProfissional", Autenticador.getInstancia().getProfissionalAtual().getIdProfissional());
+		StringBuilder hql = new StringBuilder("select o.painel from AutorizaPainelProfissional o where o.profissional.idProfissional = :idProfissional");
+		ArrayList<Painel> painelAutorizadoList = new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap));
+		return painelAutorizadoList;
+	}
+	
+	private ArrayList<Painel> carregaPaineisEspecialidade() throws InstantiationException,
+			IllegalAccessException, ClassNotFoundException {
+		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+		hashMap.put("idProfissional", Autenticador.getInstancia().getProfissionalAtual().getIdProfissional());
+		StringBuilder hql = new StringBuilder("select b.painel from Profissional o  join o.especialidades a join a.paineis b where o.idProfissional = :idProfissional");
+		ArrayList<Painel> painelAutorizadoList = new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap));
+		return painelAutorizadoList;
 	}
 
 	/**

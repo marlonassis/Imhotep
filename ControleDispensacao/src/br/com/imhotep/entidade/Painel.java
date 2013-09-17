@@ -64,6 +64,6 @@ public class Painel implements Serializable {
 
 	@Override
 	public String toString() {
-		return url;
+		return descricao;
 	}
 }
