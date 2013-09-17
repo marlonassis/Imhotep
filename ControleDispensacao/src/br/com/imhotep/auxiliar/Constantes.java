@@ -9,7 +9,7 @@ public class Constantes {
 	public static final String PATTERN_CHAVE_VERIFICACAO_PROFISSIONAL = "{cpf}{dataNascimento}";
 	
 	public static final String DIR_RELATORIO = "/WEB-INF/classes/br/com/imhotep/relatorio/";
-	public static final String PAGINA_TROCA_SENHA = "/imhotep/PaginasWeb/Usuario/usuarioTrocaSenha.hu";
+	public static final String PAGINA_TROCA_SENHA = "/imhotep/PaginasWeb/ConfiguracaoUsuario/usuarioTrocaSenha.hu";
 	public static final String PAGINA_HOME = "/imhotep/PaginasWeb/home.hu";
 	public static final String PAGINA_ENTRADA_PACIENTE = "/imhotep/PaginasWeb/Paciente/PacienteEntrada/pacienteEntrada.hu";
 	public static final String PAGINA_VIZUALIZA_PRESCRICAO = "/imhotep/PaginasWeb/Prescricao/ConsultaPrescricao/consultaPrescricao.hu";
