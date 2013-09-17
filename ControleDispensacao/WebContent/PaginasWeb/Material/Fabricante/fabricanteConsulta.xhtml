@@ -2,21 +2,16 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 
 	<h:panelGrid id="fabricantePanelGridConsulta" columns="3" width="100%">
-
-		<h:panelGroup>
-			
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" required="false"
-				value="#{fabricanteConsulta.instancia.descricao}"
-				title="Informe o nome do fabricante." />
-		</h:panelGroup>
-
-
-
+		
+		<ri:inputTextoSimples id="descricaoConsulta" 
+							  title="Descrição" 
+							  value="#{fabricanteConsulta.instancia.descricao}" 
+							  label="Descrição" />
+		
 	</h:panelGrid>
 </ui:composition>

@@ -9,7 +9,7 @@ import br.com.imhotep.entidade.Fabricante;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="fabricanteConsulta")
+@ManagedBean
 @SessionScoped
 public class FabricanteConsulta extends PadraoConsulta<Fabricante> {
 	public FabricanteConsulta(){
