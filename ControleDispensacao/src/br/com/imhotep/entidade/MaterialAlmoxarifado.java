@@ -27,9 +27,7 @@ public class MaterialAlmoxarifado implements Serializable {
 	private UnidadeMaterialAlmoxarifado unidadeMaterialAlmoxarifado;
 	private Date dataInclusao;
 	private Profissional profissionalInclusao;
-
 	private Integer quantidadeMinima;
-
 	private Boolean bloqueado;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_almoxarifado_id_material_almoxarifado_seq")
