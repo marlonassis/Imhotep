@@ -6,8 +6,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.Profissional;
-import br.com.imhotep.temp.PadraoConsulta;
 import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoConsulta;
 
 
 @ManagedBean

@@ -11,8 +11,8 @@ import org.primefaces.model.TreeNode;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
 import br.com.imhotep.entidade.extra.SolicitacaoMedicamento;
-import br.com.imhotep.temp.PadraoConsulta;
 import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoConsulta;
 
 @ManagedBean
 @SessionScoped

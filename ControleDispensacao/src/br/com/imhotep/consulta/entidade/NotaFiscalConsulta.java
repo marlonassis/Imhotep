@@ -6,7 +6,7 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.NotaFiscal;
 import br.com.remendo.ConsultaGeral;
-import br.com.imhotep.temp.PadraoConsulta;
+import br.com.remendo.PadraoConsulta;
 
 @ManagedBean
 @SessionScoped
@@ -28,6 +28,7 @@ public class NotaFiscalConsulta extends PadraoConsulta<NotaFiscal> {
 	@Override
 	public void carregarResultado(){
 		setPesquisaGuiada(true);
+		setPesquisaCamposDespadronizado(true);
 		setConsultaGeral(new ConsultaGeral<NotaFiscal>());
 		String sql = null;
 		if(getMaterial() == null || getMaterial().getIdMaterial() == 0)
