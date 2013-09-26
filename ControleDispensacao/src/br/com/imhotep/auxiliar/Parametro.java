@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.TipoMovimento;
+import br.com.imhotep.entidade.TipoMovimentoAlmoxarifado;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
@@ -138,6 +139,11 @@ public class Parametro implements Serializable {
 	public static TipoMovimento tipoMovimentoSemNotaFiscalEntrada(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 20");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimentoAlmoxarifado tipoMovimentoNotaFiscalEntradaAlmoxarifado(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 1");
+		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
 	}
 	
 	private static TipoMovimento tipoMovimento(String movimento){
