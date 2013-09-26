@@ -98,6 +98,12 @@
 		<mapping class="br.com.imhotep.entidade.MaterialAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.UnidadeMaterialAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.AutorizaPainelProfissional" />
+		<mapping class="br.com.imhotep.entidade.FabricanteAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.EstoqueAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.NotaFiscalAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.MovimentoLivroAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.TipoMovimentoAlmoxarifado" />
 
 	</session-factory>
 </hibernate-configuration>
