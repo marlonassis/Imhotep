@@ -30,6 +30,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	private String orderBy;
 	private String groupBy;
 	private boolean pesquisaGuiada; 
+	private boolean pesquisaCamposDespadronizado;
 	private List<T> lista = new ArrayList<T>();
 	
 	public void carregarResultado(){
@@ -137,7 +138,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         	}
         	
         	
-        	if(achouCampoPreenchidoPeloUsuario){
+        	if(achouCampoPreenchidoPeloUsuario || isPesquisaCamposDespadronizado()){
         		resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
         	}else{
         		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que não existe algum campo de pesquisa
@@ -246,6 +247,14 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 
 	public void setLista(List<T> lista) {
 		this.lista = lista;
+	}
+
+	public boolean isPesquisaCamposDespadronizado() {
+		return pesquisaCamposDespadronizado;
+	}
+
+	public void setPesquisaCamposDespadronizado(boolean pesquisaCamposDespadronizado) {
+		this.pesquisaCamposDespadronizado = pesquisaCamposDespadronizado;
 	}
 
 }
