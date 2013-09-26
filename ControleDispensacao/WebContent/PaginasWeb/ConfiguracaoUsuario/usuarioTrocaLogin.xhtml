@@ -2,6 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
@@ -14,17 +15,17 @@
 			<h:form id="loginForm" >
 				<p:growl id="growl" />
 				<h:panelGrid columns="1">
+					
 					<h:panelGroup>
 						<h:outputLabel for="loginAntigo" value="Login Antigo:" />
 						<h:outputLabel for="loginAntigo" value="#{autenticador.usuarioAtual.login}" />
 					</h:panelGroup>
-					<h:panelGroup>
-						<font color="red">*</font>
-						<h:outputLabel for="loginNovo" value="Login Novo:" />
-						<br />
-						<p:inputText id="loginNovo"
-									 value="#{usuarioRaiz.login}" required="true" />
-					</h:panelGroup>
+					
+					<ri:inputApenasLetrasNumeros id="loginNovo" 
+												 title="Informe seu novo usuário" 
+												 value="#{usuarioRaiz.login}" 
+												 label="Login Novo"/>
+					
 					<h:panelGroup>
 						<p:commandButton value="Verificar Disponibilidade"
 							action="#{usuarioRaiz.trocaLogin()}"
