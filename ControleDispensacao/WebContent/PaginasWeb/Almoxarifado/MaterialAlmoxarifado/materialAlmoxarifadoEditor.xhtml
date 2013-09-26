@@ -11,6 +11,7 @@
 							  title="Descreva o material" 
 							  value="#{materialAlmoxarifadoRaiz.instancia.descricao}" 
 							  label="Descrição"/>
+							  
 		<h:panelGroup id="agrupamento" >
 			<h:panelGrid columns="2" width="100%" >
 				<h:panelGroup>
@@ -54,6 +55,7 @@
 									   
 		<ri:inputSelectOneRadioBoolean id="bloqueado" 
 									   value="#{materialAlmoxarifadoRaiz.instancia.bloqueado}" 
+									   required="true"
 									   label="Bloqueado" />
 		
 		<ri:inputApenasNumero id="quantidadeMinima" 
