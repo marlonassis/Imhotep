@@ -29,7 +29,7 @@ public class TipoMovimento {
 		this.idTipoMovimento = idTipoMovimento;
 	}
 	
-	@Column(name = "ds_descricao", length = 40)
+	@Column(name = "cv_descricao")
 	public String getDescricao() {
 		return descricao;
 	}

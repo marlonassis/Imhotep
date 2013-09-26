@@ -33,7 +33,7 @@ import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
 import br.com.imhotep.excecoes.ExcecaoReservaVazia;
-import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
+import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.fluxo.FluxoPrescricaoConfirmacao;
 import br.com.imhotep.fluxo.FluxoPrescricaoCuidados;
 import br.com.imhotep.fluxo.FluxoPrescricaoLiberacaoMedicamento;
@@ -238,16 +238,16 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		}
 	}
 	
-	public void adicionarItemFarmacoPrescricaoDoseControleSCHI(Prescricao prescricaoSCHI, Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
+	public void adicionarItemFarmacoPrescricaoDoseControleSCHI(Prescricao prescricaoSCHI, Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
 		getDose().getPrescricaoItem().setPrescricao(prescricaoSCHI);
 		gravarDose(dose);
 	}
 	
-	public void adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
+	public void adicionarItemFarmacoPrescricaoControleSCHI(Prescricao prescricaoSCHI, Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
 		gravarPrescricaoMedicamento(dose, prescricaoSCHI);
 	}
 	
-	private void gravarDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia {
+	private void gravarDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia {
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
 		fpm.inserirDose(dose);
 	}
@@ -260,7 +260,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		}
 	}
 
-	private void gravarPrescricaoMedicamento(Dose doseFluxo, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia {
+	private void gravarPrescricaoMedicamento(Dose doseFluxo, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia {
 		FluxoPrescricaoMedicamento fpm = new FluxoPrescricaoMedicamento();
 		fpm.inserirItem(doseFluxo, prescricao);
 		carregaDoseFluxo();

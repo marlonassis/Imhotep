@@ -20,7 +20,7 @@ import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
 import br.com.imhotep.excecoes.ExcecaoReservaVazia;
-import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
+import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.raiz.PrescricaoRaiz;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoFluxo;
@@ -53,7 +53,7 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		return null;
 	}
 	
-	public void inserirItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
+	public void inserirItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
 		formularioDoseVazio(dose);
 		liberaDose(dose.getPrescricaoItem().getMaterial(), dose);
 		dose.getPrescricaoItem().setPrescricao(prescricao);
@@ -61,7 +61,7 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		gravaDose(dose);
 	}
 	
-	public void inserirDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
+	public void inserirDose(Dose dose) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
 		formularioDoseVazio(dose);
 		liberaDose(dose.getPrescricaoItem().getMaterial(), dose);
 		gravaDose(dose);
@@ -75,7 +75,7 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 		new ControlePrescricaoItem().gravaPrescricaoItem(pi);
 	}
 	
-	private void liberaDose(Material material, Dose dose) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoReservaVazia{
+	private void liberaDose(Material material, Dose dose) throws ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoReservaVazia{
 		int quantidadeDose = dose.getQuantidadeDoses() * dose.getQuantidadePorDose();
 		ControleEstoque ce = new ControleEstoque();
 		ce.liberarReserva(quantidadeDose, material);

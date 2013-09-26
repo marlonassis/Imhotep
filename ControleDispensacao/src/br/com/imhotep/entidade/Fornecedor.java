@@ -20,8 +20,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "tb_fornecedor")
 public class Fornecedor implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1270604461836538304L;
 	
 	private int idFornecedor;
 	private String cadastroPessoaFisicaJuridica;

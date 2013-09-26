@@ -9,7 +9,7 @@ import br.com.imhotep.entidade.NotaFiscalEstoque;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
-@ManagedBean(name="notaFiscalEstoqueRaiz")
+@ManagedBean
 @SessionScoped
 public class NotaFiscalEstoqueRaiz extends PadraoHome<NotaFiscalEstoque>{
 

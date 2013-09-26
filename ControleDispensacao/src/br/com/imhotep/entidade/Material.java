@@ -23,9 +23,6 @@ import br.com.imhotep.auxiliar.Constantes;
 @Entity
 @Table(name = "tb_material")
 public class Material implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6402136718034247531L;
 	
 	private int idMaterial;

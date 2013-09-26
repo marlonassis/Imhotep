@@ -19,23 +19,23 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
 import br.com.imhotep.excecoes.ExcecaoReservaVazia;
-import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
+import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.raiz.EstoqueRaiz;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.imhotep.temp.PadraoGeralTemp;
 import br.com.remendo.ConsultaGeral;
+import br.com.remendo.PadraoGeral;
 
-public class ControleEstoque extends PadraoGeralTemp {
+public class ControleEstoque extends PadraoGeral {
 	
 	private void estoqueReservado(long sobra, long reservado, int quantidadeSolicitada) throws ExcecaoEstoqueReservado {
 		if(quantidadeSolicitada > sobra)
 			throw new ExcecaoEstoqueReservado(reservado, sobra);
 	}
 	
-	private void estoqueInsuficiente(long totalEstoque, long quantidadeMovimentacao) throws ExcecaoSaldoInsuficienteEstoque {
+	private void estoqueInsuficiente(long totalEstoque, long quantidadeMovimentacao) throws ExcecaoEstoqueSaldoInsuficiente {
 		if(quantidadeMovimentacao > totalEstoque)
-			throw new ExcecaoSaldoInsuficienteEstoque(totalEstoque);
+			throw new ExcecaoEstoqueSaldoInsuficiente(totalEstoque);
 	}
 
 	private void estoqueVazio(long quantidade) throws ExcecaoEstoqueVazio {
@@ -49,20 +49,14 @@ public class ControleEstoque extends PadraoGeralTemp {
 	}
 	
 	private void estoqueVencido(Date dataValidade) throws ExcecaoEstoqueVencido {
-		Calendar dataAtual = zerarHoraDataAtual();
+		Calendar dataAtual = new Utilitarios().zerarHoraDataAtual();
 		Calendar dataVencimento = Calendar.getInstance();
 		dataVencimento.setTime(new Utilitarios().ajustarUltimoDiaMesHoraMaximo(dataValidade));
 		if(dataAtual.after(dataVencimento))
 			throw new ExcecaoEstoqueVencido();
 	}
 
-	private Calendar zerarHoraDataAtual() {
-		Calendar dataAtual = Calendar.getInstance();
-		dataAtual.set(Calendar.HOUR_OF_DAY, 0);
-		dataAtual.set(Calendar.MINUTE, 0);
-		dataAtual.set(Calendar.SECOND, 0);
-		return dataAtual;
-	}
+	
 	
 	private StringBuilder getSBConsultaEstoqueDisponivelMaterial(){
 		StringBuilder sb = new StringBuilder();
@@ -124,10 +118,10 @@ public class ControleEstoque extends PadraoGeralTemp {
 	 * @throws ExcecaoEstoqueVencido
 	 * @throws ExcecaoEstoqueBloqueado
 	 * @throws ExcecaoEstoqueVazio
-	 * @throws ExcecaoSaldoInsuficienteEstoque
+	 * @throws ExcecaoEstoqueSaldoInsuficiente
 	 * @throws ExcecaoEstoqueReservado
 	 */
-	private void filtroEstoque(Estoque estoque, TipoOperacaoEnum tipoOperacao, int quantidadeSolicitada) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado{
+	private void filtroEstoque(Estoque estoque, TipoOperacaoEnum tipoOperacao, int quantidadeSolicitada) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado{
 		estoqueVencido(estoque.getDataValidade());
 		estoqueBloqueado(estoque);
 		if(!tipoOperacao.equals(TipoOperacaoEnum.E)){
@@ -160,7 +154,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 	 * @throws ExcecaoEstoqueVencido
 	 * @throws ExcecaoEstoqueBloqueado
 	 * @throws ExcecaoEstoqueVazio
-	 * @throws ExcecaoSaldoInsuficienteEstoque
+	 * @throws ExcecaoEstoqueSaldoInsuficiente
 	 * @throws ExcecaoEstoqueReservado
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
@@ -168,7 +162,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 	 * @throws ExcecaoEstoqueNaoCadastrado
 	 * @throws ExcecaoEstoqueNaoAtualizado
 	 */
-	public void liberarAjuste(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
+	public void liberarAjuste(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
 		movimentoLivro.getEstoque().setLote(movimentoLivro.getEstoque().getLote().toUpperCase());
 		filtroEstoque(movimentoLivro.getEstoque(), movimentoLivro.getTipoMovimento().getTipoOperacao(), movimentoLivro.getQuantidadeMovimentacao());
 		prepararMovimentoLivro(dataAtual, movimentoLivro);
@@ -176,7 +170,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 		atualizarEstoqueNoMovimento(movimentoLivro);
 	}
 
-	public void liberarReserva(int quantidadeDose, Material material) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoReservaVazia {
+	public void liberarReserva(int quantidadeDose, Material material) throws ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoReservaVazia {
 		if(quantidadeDose == 0){
 			throw new ExcecaoReservaVazia();
 		}
@@ -195,7 +189,7 @@ public class ControleEstoque extends PadraoGeralTemp {
 		movimentoLivro.setUsuarioMovimentacao(autenticador.getUsuarioAtual());
 	}
 
-	private void manipularEstoque(Date dataAtual, Estoque estoque, int quantidadeMovimentada, TipoMovimento tipoMovimento) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoSaldoInsuficienteEstoque, ExcecaoEstoqueVazio, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
+	private void manipularEstoque(Date dataAtual, Estoque estoque, int quantidadeMovimentada, TipoMovimento tipoMovimento) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueVazio, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
 		if(estoque.getIdEstoque() == 0){
 			estoque.setQuantidadeAtual(quantidadeMovimentada);
 			inserirNovoEstoque(dataAtual, estoque);

@@ -21,7 +21,7 @@ import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItemDose;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoFormularioNaoPreenchido;
 import br.com.imhotep.excecoes.ExcecaoReservaVazia;
-import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
+import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
@@ -66,7 +66,7 @@ public class ControleMedicacaoRestritoSCHIRaiz extends PadraoHome<ControleMedica
 		carregarMedicamentosPendentes(getInstancia());
 	}
 	
-	public void adicionaPrescricaoItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
+	public void adicionaPrescricaoItem(Dose dose, Prescricao prescricao) throws ExcecaoFormularioNaoPreenchido, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoControlePrescricaoItem, ExcecaoControlePrescricaoItemDose, ExcecaoReservaVazia{
 		dose.getPrescricaoItem().setControleMedicacaoRestritoSCHI(getInstancia());
 		new PrescricaoRaiz().adicionarItemFarmacoPrescricaoControleSCHI(prescricao, dose);
 		carregaDose(dose.getPrescricaoItem());

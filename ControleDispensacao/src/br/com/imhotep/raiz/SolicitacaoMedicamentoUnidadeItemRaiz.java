@@ -31,7 +31,7 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoQuantidadeAcimaEstoqueSolicitacaoUnidade;
 import br.com.imhotep.excecoes.ExcecaoReservaVazia;
-import br.com.imhotep.excecoes.ExcecaoSaldoInsuficienteEstoque;
+import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoItemInseridaDuasVezes;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.seguranca.Autenticador;
@@ -74,7 +74,7 @@ public class SolicitacaoMedicamentoUnidadeItemRaiz extends PadraoHome<Solicitaca
 			super.novaInstancia();
 		} catch (ExcecaoEstoqueVazio e) {
 			e.printStackTrace();
-		} catch (ExcecaoSaldoInsuficienteEstoque e) {
+		} catch (ExcecaoEstoqueSaldoInsuficiente e) {
 			e.printStackTrace();
 		} catch (ExcecaoReservaVazia e) {
 			e.printStackTrace();
@@ -385,12 +385,12 @@ public class SolicitacaoMedicamentoUnidadeItemRaiz extends PadraoHome<Solicitaca
 		}
 	}
 	
-	private void validarQuantidade(SolicitacaoMedicamentoUnidadeItem instancia) throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoReservaVazia {
+	private void validarQuantidade(SolicitacaoMedicamentoUnidadeItem instancia) throws ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoReservaVazia {
 		ControleEstoque ce = new ControleEstoque();
 		ce.liberarReserva(instancia.getQuantidadeSolicitada(), getInstancia().getMaterial());
 	}
 	
-	private void verificaItemInseridoDuasVezes() throws ExcecaoEstoqueVazio, ExcecaoSaldoInsuficienteEstoque, ExcecaoSolicitacaoItemInseridaDuasVezes, ExcecaoReservaVazia{
+	private void verificaItemInseridoDuasVezes() throws ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoSolicitacaoItemInseridaDuasVezes, ExcecaoReservaVazia{
 		for(SolicitacaoMedicamentoUnidadeItem item : getItens()){
 			if(item.getMaterial().equals(getInstancia().getMaterial())){
 				Integer total = item.getQuantidadeSolicitada();
@@ -423,7 +423,7 @@ public class SolicitacaoMedicamentoUnidadeItemRaiz extends PadraoHome<Solicitaca
 			}
 		} catch (ExcecaoEstoqueVazio e) {
 			e.printStackTrace();
-		} catch (ExcecaoSaldoInsuficienteEstoque e) {
+		} catch (ExcecaoEstoqueSaldoInsuficiente e) {
 			e.printStackTrace();
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();

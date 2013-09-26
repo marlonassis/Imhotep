@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.Usuario;
 import br.com.remendo.ConsultaGeral;
 

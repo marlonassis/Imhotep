@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_material_almoxarifado")
@@ -119,6 +120,12 @@ public class MaterialAlmoxarifado implements Serializable {
 		this.bloqueado = bloqueado;
 	}
 	
+	@Transient
+	public String getDescricaoUnidadeMaterial(){
+		if(getDescricao() != null && getUnidadeMaterialAlmoxarifado() != null)
+			return getDescricao().concat(" - ").concat(getUnidadeMaterialAlmoxarifado().getSigla());
+		return "";
+	}
 	
 	
 	@Override
