@@ -25,25 +25,17 @@
 			<h:form id="formAtualizarChave" >
 				<p:growl/>
 				<h:panelGrid columns="3" >
-					<ri:inputApenasNumero id="cpf" 
-										  required="true"
-										  autocomplete="false"
-										  title="Informe o seu CPF" 
-										  value="#{autenticador.profissionalRecuperacao.cpf}" 
-										  label="CPF" />
+				
+					<ri:inputCpf id="cpf" 
+								 title="Informe o seu CPF" 
+								 value="#{autenticador.profissionalRecuperacao.cpf}" 
+								 label="CPF" />
+
+					<ri:inputDataDiaMesAno id="dataNascimento" 
+										   title="Informe sua data de nascimento" 
+										   value="#{autenticador.profissionalRecuperacao.dataNascimento}" 
+										   label="Data de Nascimento" />
 					
-					<h:panelGroup>
-						<h:outputText value="*" style="color:red" />
-						<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
-						<br/>
-						<p:calendar id="dataNascimento" 
-									required="true"
-									autocomplete="false"
-									value="#{autenticador.profissionalRecuperacao.dataNascimento}" 
-									pattern="dd/MM/yyyy" 
-									title="Informe sua data de nascimento" />
-					</h:panelGroup>
-								
 				</h:panelGrid>
 				<p:commandButton value="Enviar" 
 							     action="#{profissionalRaiz.gerarChave}"
