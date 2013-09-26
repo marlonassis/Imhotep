@@ -35,6 +35,7 @@
 		<ui:param name="idFormularioPesquisa" value="#{cc.attrs.semPesquisa ? idFormulario : idPes}"/>
 		<ui:param name="idFormularioEditor" value=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
 		<h:form id="#{idFormulario}">
+			<p:growl/>
 			<p:fieldset legend="#{cc.attrs.fieldSetLegend}"
 						collapsed="#{cc.attrs.fieldSetCollapsed}" 
 						toggleable="#{cc.attrs.fieldSetToggleable}"
