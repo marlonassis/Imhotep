@@ -158,6 +158,14 @@ function apenasNumero(obj){
 	return obj;
 }  
 
+function apenasLetrasNumeros(obj){
+	valor = obj.value;
+	valor = valor.replace(/[^a-z0-9]$/i,"");
+	valor = valor.toLowerCase();
+	obj.value = valor;
+	return obj;
+}
+
 function apenasNumeroSemZeroEsquerda(obj){
 	apenasNumero(obj);
 	valor = obj.value;
@@ -246,6 +254,7 @@ function validaCPF(obj){
     var numeros, digitos, soma, i, resultado;
     if (cpf.length < 11){
       alert('CPF inválido');
+      obj.value = '';
       obj.focus();
       return false;
   	}
@@ -258,6 +267,7 @@ function validaCPF(obj){
     if (resultado != digitos.charAt(0)){
           alert('CPF inválido');
           obj.focus();
+          obj.value = '';
           return false;
     }
     numeros = cpf.substring(0,10);
@@ -267,6 +277,7 @@ function validaCPF(obj){
     resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
     if (resultado != digitos.charAt(1)){
         alert('CPF inválido');
+        obj.value = '';
         obj.focus();
         return false;
     }
