@@ -1,6 +1,7 @@
 package br.com.imhotep.temp;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,8 +12,8 @@ import br.com.remendo.PadraoFluxo;
 
 public class PadraoFluxoTemp extends PadraoFluxo {
 
-	private Map<String, Object> objetoSalvar = new HashMap<String, Object>();
-	private Map<String, Object> objetoAtualizar = new HashMap<String, Object>();
+	private static Map<String, Object> objetoSalvar = new LinkedHashMap<String, Object>();
+	private static Map<String, Object> objetoAtualizar = new LinkedHashMap<String, Object>();
 	
 	public PadraoFluxoTemp(){
 		super();
@@ -44,19 +45,20 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		setExibeMensagemInsercao(exibeMensagemInsercao);
 	}
 	
+	//após adicionado todos os itens nos dois para serem persistidos, este método varre cada um desses maps para finalizar o processo 
 	public boolean processarFluxo() throws ExcecaoPadraoFluxo{
 		boolean status=false;
 		String posicao = "Iniciar Transação";
 		iniciarTransacao();
 		try{
-			Set<String> chavesSalvar = getObjetoSalvar().keySet();
-			for(String chave : chavesSalvar){
+			Set<String> keys = getObjetoSalvar().keySet();
+			for(String chave : keys){
 				posicao = "Save - ".concat(chave);
 				session.save(getObjetoSalvar().get(chave));
 			}
 			
-			Set<String> chavesAtualizar = getObjetoAtualizar().keySet();
-			for(String chave : chavesAtualizar){
+			keys = getObjetoAtualizar().keySet();
+			for(String chave : keys){
 				posicao = "Merge - ".concat(chave);
 				session.merge(getObjetoAtualizar().get(chave));
 			}
@@ -89,19 +91,24 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		}
 	}
 	
-	public Map<String, Object> getObjetoSalvar() {
-		return objetoSalvar;
+	public static void limparFluxo(){
+		objetoSalvar = new HashMap<String, Object>();
+		objetoAtualizar = new HashMap<String, Object>();
 	}
-	public void setObjetoSalvar(Map<String, Object> objetoSalvar) {
-		this.objetoSalvar = objetoSalvar;
+	
+	public static Map<String, Object> getObjetoSalvar() {
+		return PadraoFluxoTemp.objetoSalvar;
+	}
+	public static void setObjetoSalvar(Map<String, Object> objetoSalvar) {
+		PadraoFluxoTemp.objetoSalvar = objetoSalvar;
 	}
 
-	public Map<String, Object> getObjetoAtualizar() {
-		return objetoAtualizar;
+	public static Map<String, Object> getObjetoAtualizar() {
+		return PadraoFluxoTemp.objetoAtualizar;
 	}
 
 	public void setObjetoAtualizar(Map<String, Object> objetoAtualizar) {
-		this.objetoAtualizar = objetoAtualizar;
+		PadraoFluxoTemp.objetoAtualizar = objetoAtualizar;
 	}
 
 }
