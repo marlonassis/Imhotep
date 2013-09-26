@@ -150,6 +150,14 @@ public class Utilitarios{
 		return df.getTime();
 	}
 	
+	public Calendar zerarHoraDataAtual() {
+		Calendar dataAtual = Calendar.getInstance();
+		dataAtual.set(Calendar.HOUR_OF_DAY, 0);
+		dataAtual.set(Calendar.MINUTE, 0);
+		dataAtual.set(Calendar.SECOND, 0);
+		return dataAtual;
+	}
+	
 	public Date ajustarUltimoDiaMesHoraMaximo(Date dataFim) {
 		dataFim = ajustarUltimoDiaMes(dataFim);
 		dataFim = ajustarUltimaHoraDia(dataFim);
