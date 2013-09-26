@@ -2,6 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
@@ -20,14 +21,13 @@
 					<p:growl />
 					<h:panelGrid columns="1">
 						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}">
-							<font color="red">*</font>
-							<h:outputText value="Usuário: " />
-							<br />
-							<p:inputText value="#{autenticador.usuario.login}"
-										 label="Usuário" 
-										 autocomplete="false"
-										 required="true" 
-										 size="30" />
+							<ri:inputApenasLetrasNumeros id="loginNovo" 
+												 title="Informe seu novo usuário" 
+												 value="#{autenticador.usuario.login}" 
+												 autocomplete="false"
+												 size="30"
+												 required="true"
+												 label="Usuário"/>
 						</h:panelGroup>
 						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}">
 							<font color="red">*</font>
