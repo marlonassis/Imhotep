@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaNotaFiscalAlmoxarifado" 
+				 value="#{notaFiscalAlmoxarifadoConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idNotaFiscalAlmoxarifado}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Fornecedor:" />
+			</f:facet>
+			<h:outputText value="#{linha.fornecedor.nomeFantasia == null ? linha.fornecedor.razaoSocial : linha.fornecedor.nomeFantasia}" />
+			#{' - '}
+			<h:outputText value="#{linha.fornecedor.cadastroPessoaFisicaJuridicaFormatado}"/>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nota Fiscal" />
+			</f:facet>
+			<h:outputText value="#{linha.identificacao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Fechada" />
+			</f:facet>
+			<h:outputText value="#{linha.fechada ? 'Sim' : 'Não'}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Bloqueada" />
+			</f:facet>
+			<h:outputText value="#{linha.bloqueada ? 'Sim' : 'Não'}" />
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   ajax="false"
+						   update=":#{p:component('notaFiscalAlmoxarifadoEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalAlmoxarifadoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{notaFiscalAlmoxarifadoRaiz.bloquearNotaFiscal()}"
+						   update=":#{p:component('notaFiscalAlmoxarifadoEditorForm')} :#{p:component('notaFiscalAlmoxarifadoPesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
+						   title="Bloquear" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalAlmoxarifadoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+			
+			<p:commandLink title="Visualizar"
+						   onclick="window.open('notaFiscalAlmoxarifadoImpressa.hu?id=#{linha.idNotaFiscalAlmoxarifado}', 'notaFiscalAlmoxarifadoImpressa');"
+						   target="notaFiscalAlmoxarifadoImpressa"
+						   style="padding-right:10px;">
+				<h:graphicImage height="16px"
+								width="16px" 
+								value="/Imagens/PDF-icon.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>
