@@ -49,4 +49,6 @@ public class Constantes {
 	
 	public static final Locale LOCALE_BRASIL = new Locale ("pt", "BR");
 	
+	public static final String JUSTIFICATIVA_ENTRADA_SEM_NOTA = "Entrada sem nota fiscal";
+	
 }
