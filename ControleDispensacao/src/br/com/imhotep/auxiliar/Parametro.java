@@ -141,6 +141,11 @@ public class Parametro implements Serializable {
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
 	}
 	
+	public static TipoMovimentoAlmoxarifado tipoMovimentoEntradaSemNotaFiscalAlmoxarifado(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 2");
+		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
+	}
+	
 	public static TipoMovimentoAlmoxarifado tipoMovimentoNotaFiscalEntradaAlmoxarifado(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 1");
 		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
