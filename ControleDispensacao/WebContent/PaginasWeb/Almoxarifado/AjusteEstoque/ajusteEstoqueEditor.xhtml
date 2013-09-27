@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid columns="2" width="100%">
+		<h:panelGroup>
+			<h:outputLabel for="lote" value="Lote:" />
+			<br />
+			<p:inputText id="lote"
+						 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.lote}"
+						 title="Informe o lote" 
+						 disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado != null}"
+						 required="false"/>
+			<p:commandButton image="ui-icon ui-icon-search"
+							 update=":#{p:component('ajusteEstoqueAlmoxarifadoEditorForm')}"
+							 action="#{ajusteEstoqueAlmoxarifadoRaiz.procurarLote}" 
+							 rendered="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado == null}"
+							 title="Procurar lote." />
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid id="entradaMaterialPanelGrid"
+				 rendered="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado != null}" 
+				 columns="3" 
+				 width="100%">
+		
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="tipoMovimento" value="Tipo do Movimento" />
+			<br />
+			<p:selectOneMenu id="tipoMovimentoAlmoxarifado"
+							 value="#{ajusteEstoqueAlmoxarifadoRaiz.tipoMovimentoAlmoxarifado}"
+							 effect="fade" 
+							 converter="entidadeConversor" 
+							 required="true">
+				<f:selectItem itemLabel="Selecione..." itemValue="" />
+				<f:selectItems value="#{tipoMovimentoAlmoxarifadoSelectOne.itens}"
+							   var="tipoMovimentoAlmoxarifado" 
+							   itemLabel="#{tipoMovimentoAlmoxarifado.descricao}"
+							   itemValue="#{tipoMovimentoAlmoxarifado}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+		
+		
+		<ri:inputAutoComplete id="material" 
+							 label="Material"  
+							 disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado}"
+							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoComplete}" 
+							 itemValue="#{material}" 
+							 itemLabel="#{material.descricaoUnidadeMaterial}" 
+							 var="material"
+							 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.materialAlmoxarifado}" 
+							 required="true"/>
+		
+		<ri:inputAutoComplete id="fabricante" 
+							 label="Fabricante"  
+							 disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado}"
+							 completeMethod="#{fabricanteAlmoxarifadoAutoComplete.autoComplete}" 
+							 itemValue="#{fabricante}" 
+							 itemLabel="#{fabricante.descricao}" 
+							 var="fabricante"
+							 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.fabricanteAlmoxarifado}" 
+							 required="true"/>
+		
+		<ri:inputDataDiaMesAno id="dataValidade"
+							   label="Data de Validade"
+							   disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado}"
+							   required="false" 
+							   value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.dataValidade}"
+							   title="Data de validade do lote"/>
+
+		<ri:inputApenasNumero id="quantidade" 
+							  required="true"
+							  title="Informe a quantidade informada na nota" 
+							  value="#{ajusteEstoqueAlmoxarifadoRaiz.quantidadeMovimentada}" 
+							  label="Quantidade"/>
+
+		<ri:inputTextoSimples id="codigoBarras" 
+							  title="Informe o código de barras" 
+							  value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.codigoBarras}" 
+							  label="Código de Barras" />
+		
+	</h:panelGrid>
+	<h:panelGroup rendered="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado != null}" >
+		<font color="red">*</font>
+		<h:outputLabel for="justificativa" value="Justificava:" />
+		<br />
+		<p:editor id="justificativa" 
+				  required="true" 
+				  value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.justificativa}" />
+	</h:panelGroup>
+</ui:composition>

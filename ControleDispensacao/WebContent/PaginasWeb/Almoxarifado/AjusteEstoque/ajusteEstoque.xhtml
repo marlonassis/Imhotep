@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabAjusteEstoque" title="Ajuste de Estoque">
+			<rf:formularioEdicao id="ajusteEstoqueAlmoxarifado"
+								raiz="#{ajusteEstoqueAlmoxarifadoRaiz}"
+								semPesquisa="true"
+								ajaxSalvar="false"
+								renderedNovo="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado != null}"
+								renderedSalvar="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado != null}"
+								fieldSetCollapsed="false"
+								srcEditor="Almoxarifado/AjusteEstoque/ajusteEstoqueEditor.xhtml" />
+			
+			<rf:formularioPesquisaEstoqueMaterialAlmoxarifado id="pesquisaEstoqueMaterialAlmoxarifadoAjusteForm" 
+															  renderedForm="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.idEstoqueAlmoxarifado == 0}" />
+		</p:tab>
+	</ui:define>
+</ui:composition>
