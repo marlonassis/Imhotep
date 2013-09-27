@@ -1,6 +1,7 @@
 package br.com.imhotep.raiz;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
@@ -8,12 +9,14 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.consulta.raiz.LoteExistenteNotaFiscalConsultaRaiz;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.entidade.NotaFiscal;
 import br.com.imhotep.entidade.NotaFiscalEstoque;
+import br.com.imhotep.excecoes.ExcecaoDataContabil;
 import br.com.imhotep.fluxo.FluxoNotaFiscalEstoque;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
@@ -50,6 +53,28 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 			e.printStackTrace();
 		}
 		super.preEnvio();
+	}
+	
+	@Override
+	public boolean enviar() {
+		try {
+			validarDataContabil();
+			return super.enviar();
+		} catch (ExcecaoDataContabil e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private void validarDataContabil() throws ExcecaoDataContabil {
+		Calendar dataContabil = Calendar.getInstance();
+		dataContabil.setTime(Utilitarios.ajustarZeroHoraDia(getInstancia().getDataContabil()));
+		Calendar mesAtual = Calendar.getInstance();
+		mesAtual.set(Calendar.DAY_OF_MONTH, 01);
+		mesAtual.setTime(Utilitarios.ajustarZeroHoraDia(mesAtual.getTime()));
+		if(dataContabil.before(mesAtual)){
+			throw new ExcecaoDataContabil();
+		}
 	}
 	
 	public void procurarLote() throws IOException{

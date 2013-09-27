@@ -9,7 +9,7 @@ import javax.faces.bean.RequestScoped;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="tipoMovimentoAjusteEstoqueFarmaciaSelectOne")
+@ManagedBean
 @RequestScoped
 public class TipoMovimentoBloqueioEstoqueFarmaciaSelectOne extends ConsultaGeral<TipoMovimento> {
 	
