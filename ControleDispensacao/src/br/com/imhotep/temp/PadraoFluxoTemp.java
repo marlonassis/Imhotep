@@ -1,6 +1,5 @@
 package br.com.imhotep.temp;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -92,8 +91,8 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 	}
 	
 	public static void limparFluxo(){
-		objetoSalvar = new HashMap<String, Object>();
-		objetoAtualizar = new HashMap<String, Object>();
+		objetoSalvar = new LinkedHashMap<String, Object>();
+		objetoAtualizar = new LinkedHashMap<String, Object>();
 	}
 	
 	public static Map<String, Object> getObjetoSalvar() {
