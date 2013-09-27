@@ -1,6 +1,7 @@
 package br.com.imhotep.raiz;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,10 +9,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.controle.ControleEstoqueAlmoxarifado;
 import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.entidade.NotaFiscalAlmoxarifado;
 import br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado;
+import br.com.imhotep.excecoes.ExcecaoDataContabil;
 import br.com.imhotep.excecoes.ExcecaoEstoqueRepetidoNotaFiscal;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
 import br.com.imhotep.temp.ConsultaGeral;
@@ -31,6 +34,28 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 		novaInstancia();
 	}
 	
+	@Override
+	public boolean enviar() {
+		try {
+			validarDataContabil();
+			return super.enviar();
+		} catch (ExcecaoDataContabil e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private void validarDataContabil() throws ExcecaoDataContabil {
+		Calendar dataContabil = Calendar.getInstance();
+		dataContabil.setTime(Utilitarios.ajustarZeroHoraDia(getInstancia().getDataContabil()));
+		Calendar mesAtual = Calendar.getInstance();
+		mesAtual.set(Calendar.DAY_OF_MONTH, 01);
+		mesAtual.setTime(Utilitarios.ajustarZeroHoraDia(mesAtual.getTime()));
+		if(dataContabil.before(mesAtual)){
+			throw new ExcecaoDataContabil();
+		}
+	}
+
 	@Override
 	public void novaInstancia() {
 		super.novaInstancia();
@@ -72,9 +97,19 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 			getItem().setQuantidadeEntrada(getQuantidadeMovimentada());
 			new NotaFiscalEstoqueAlmoxarifadoRaiz().salvarItem(getItem(), getQuantidadeMovimentada());
 			processarFluxo();
+			limparFluxo();
 			finalizarAddItemNotaFiscal();
 		} catch (Exception e){
+			unlockEstoque();
 			e.printStackTrace();
+		}
+	}
+
+	private void unlockEstoque() {
+		try {
+			new ControleEstoqueAlmoxarifado().unLockEstoque(getItem().getEstoqueAlmoxarifado());
+		} catch (ExcecaoEstoqueUnLock e1) {
+			e1.printStackTrace();
 		}
 	}
 
@@ -82,12 +117,12 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 		new PadraoFluxoTemp().processarFluxo();
 	}
 
+	private void limparFluxo() {
+		PadraoFluxoTemp.limparFluxo();
+	}
+	
 	private void finalizarAddItemNotaFiscal() {
-		try {
-			new ControleEstoqueAlmoxarifado().unLockEstoque(getItem().getEstoqueAlmoxarifado());
-		} catch (ExcecaoEstoqueUnLock e) {
-			e.printStackTrace();
-		}
+		unlockEstoque();
 		getInstancia().getItens().add(getItem());
 		setItem(new NotaFiscalEstoqueAlmoxarifado());
 		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
