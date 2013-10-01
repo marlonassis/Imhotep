@@ -105,6 +105,8 @@
 		<mapping class="br.com.imhotep.entidade.MovimentoLivroAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.TipoMovimentoAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.AjusteEstoqueAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.MaterialLog" />
+		<mapping class="br.com.imhotep.entidade.PrecoMedioTransportadoMedLynx" />
 
 	</session-factory>
 </hibernate-configuration>
