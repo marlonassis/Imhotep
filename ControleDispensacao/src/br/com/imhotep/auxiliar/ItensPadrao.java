@@ -19,6 +19,7 @@ import br.com.imhotep.enums.TipoEhealthTipoTecnologiaEnum;
 import br.com.imhotep.enums.TipoEscolaridadeEnum;
 import br.com.imhotep.enums.TipoEstadoCivilEnum;
 import br.com.imhotep.enums.TipoEstadoEnum;
+import br.com.imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.enums.TipoIndicacaoEnum;
 import br.com.imhotep.enums.TipoLogradouroEnum;
 import br.com.imhotep.enums.TipoMetodoExameEnum;
@@ -45,6 +46,14 @@ import br.com.imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 @ManagedBean
 @RequestScoped
 public class ItensPadrao{
+	
+	public List<SelectItem> getTipoEstoqueLogEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEstoqueLog item : TipoEstoqueLog.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
 	
 	public List<SelectItem> getTipoStatusLeitoEnumItens(){
 		List<SelectItem> itens = new ArrayList<SelectItem>();

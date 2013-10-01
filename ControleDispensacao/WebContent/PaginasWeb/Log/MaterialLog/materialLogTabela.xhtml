@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaMaterialLog" 
+				 value="#{materialLogConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idMaterialLog}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Código" />
+			</f:facet>
+			<h:outputText value="#{linha.codigo}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nome" />
+			</f:facet>
+			<h:outputText value="#{linha.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade do Material" />
+			</f:facet>
+			<h:outputText value="#{linha.unidade}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Bloqueado" />
+			</f:facet>
+			<h:outputText value="#{linha.bloqueado ? 'Sim' : 'Não'}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Tipo do Log" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoLog.label}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data Log" />
+			</f:facet>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataLog)}" />
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

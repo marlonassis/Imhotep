@@ -15,8 +15,8 @@ public enum TipoEstoqueLog {
 	
 	private String label;
 	
-	TipoEstoqueLog(String sexo){
-		label = sexo;
+	TipoEstoqueLog(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

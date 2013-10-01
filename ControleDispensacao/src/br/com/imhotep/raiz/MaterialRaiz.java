@@ -14,8 +14,10 @@ import br.com.imhotep.consulta.raiz.SubGrupoConsultaRaiz;
 import br.com.imhotep.entidade.Familia;
 import br.com.imhotep.entidade.Grupo;
 import br.com.imhotep.entidade.Material;
+import br.com.imhotep.entidade.MaterialLog;
 import br.com.imhotep.entidade.SubGrupo;
 import br.com.imhotep.entidade.extra.MaterialFaltaEstoque;
+import br.com.imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoHome;
 
@@ -25,6 +27,8 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();
 	private List<Familia> familiaList = new ArrayList<Familia>();
 	private List<MaterialFaltaEstoque> materiaisAbaixoQuantidadeMinima = new ArrayList<MaterialFaltaEstoque>();
+	private MaterialLog materialAntigoLog = new MaterialLog();
+	private MaterialLog materialNovoLog = new MaterialLog();
 
 	public MaterialRaiz() {
 		inicializaVariaveis();
@@ -78,15 +82,31 @@ public class MaterialRaiz extends PadraoHome<Material>{
 		getInstancia().getFamilia().getSubGrupo().setGrupo(new Grupo());
 		sugGrupoList = new ArrayList<SubGrupo>();
 		familiaList = new ArrayList<Familia>();
+		materialAntigoLog = new MaterialLog();
 	}
 	
 	@Override
 	public void setInstancia(Material instancia) {
 		//carregando os valores ao entrar em edição
-		inicializaVariaveis();
 		super.setInstancia(instancia);
+		inicializaVariaveis();
 		carregaSubGrupoList();
 		familiaList.add(getInstancia().getFamilia());
+		gerarLogInicial();
+	}
+	
+	private void gerarLogInicial() {
+		getMaterialAntigoLog().setCodigo(String.valueOf(getInstancia().getCodigoMaterial()));
+		getMaterialAntigoLog().setNome(getInstancia().getDescricao());
+		getMaterialAntigoLog().setUnidade(getInstancia().getUnidadeMaterial().getDescricao());
+		getMaterialAntigoLog().setBloqueado(getInstancia().getBloqueado());
+	}
+
+	private void gerarLogFinal() {
+		getMaterialNovoLog().setCodigo(String.valueOf(getInstancia().getCodigoMaterial()));
+		getMaterialNovoLog().setNome(getInstancia().getDescricao());
+		getMaterialNovoLog().setUnidade(getInstancia().getUnidadeMaterial().getDescricao());
+		getMaterialNovoLog().setBloqueado(getInstancia().getBloqueado());
 	}
 	
 	@Override
@@ -103,6 +123,36 @@ public class MaterialRaiz extends PadraoHome<Material>{
 		return super.enviar();
 	}
 
+	@Override
+	public boolean atualizar() {
+		gerarLogFinal();
+		if(super.atualizar()){
+			Date dataLog = new Date();
+			gerarLog(getMaterialAntigoLog(), dataLog, TipoEstoqueLog.A);
+			gerarLog(getMaterialNovoLog(), dataLog, TipoEstoqueLog.B);
+			gerarLogInicial();
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean apagar() {
+		if(super.apagar()){
+			gerarLog(getMaterialAntigoLog(), new Date(), TipoEstoqueLog.D);
+			return true;
+		}
+		return false;
+	}
+	
+	private void gerarLog(MaterialLog materialLog, Date dataLog, TipoEstoqueLog tipoEstoqueLog) {
+		MaterialLogRaiz mlr = new MaterialLogRaiz();
+		mlr.setInstancia(materialLog);
+		mlr.setDadosBasicos(dataLog);
+		mlr.getInstancia().setTipoLog(tipoEstoqueLog);
+		mlr.setExibeMensagemInsercao(false);
+		mlr.enviar();
+	}
 
 	public List<SubGrupo> getSugGrupoList() {
 		return sugGrupoList;
@@ -130,6 +180,22 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	public void setMateriaisAbaixoQuantidadeMinima(
 			List<MaterialFaltaEstoque> materiaisAbaixoQuantidadeMinima) {
 		this.materiaisAbaixoQuantidadeMinima = materiaisAbaixoQuantidadeMinima;
+	}
+
+	public MaterialLog getMaterialAntigoLog() {
+		return materialAntigoLog;
+	}
+
+	public void setMateriaAntigolLog(MaterialLog materialLog) {
+		this.materialAntigoLog = materialLog;
+	}
+
+	public MaterialLog getMaterialNovoLog() {
+		return materialNovoLog;
+	}
+
+	public void setMaterialNovoLog(MaterialLog materialNovoLog) {
+		this.materialNovoLog = materialNovoLog;
 	}
 	
 }
