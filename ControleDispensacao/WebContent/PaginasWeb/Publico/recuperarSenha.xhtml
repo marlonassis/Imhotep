@@ -22,18 +22,12 @@
 										  title="Informe o seu CPF" 
 										  value="#{autenticador.profissionalRecuperacao.cpf}" 
 										  label="CPF" />
-					<h:panelGroup>
-						<h:outputText value="*" style="color:red" />
-						<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
-						<br/>
-						<p:calendar id="dataNascimento" 
-									autocomplete="false"
-									required="true"
-									value="#{autenticador.profissionalRecuperacao.dataNascimento}" 
-									pattern="dd/MM/yyyy" 
-									title="Informe sua data de nascimento" />
-					</h:panelGroup>
-								
+					
+					<ri:inputDataDiaMesAno id="dataNascimento" 
+										   title="Informe a data de nascimento" 
+										   value="#{autenticador.profissionalRecuperacao.dataNascimento}"
+										   required="true" 
+										   label="Data de Nascimento" />
 				</h:panelGrid>
 				<p:commandButton value="Recuperar" 
 								 action="#{autenticador.recuperarSenha}" 
