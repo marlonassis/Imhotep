@@ -5,7 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
 	<p:treeTable id="tabelaSolicitacoes" 
-				 value="#{solicitacaoMedicamentoUnidadeConsulta.root}"
+				 value="#{solicitacaoMaterialUnidadeConsulta.root}"
 				 var="linha">
 
 		<p:column>
@@ -48,19 +48,19 @@
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
 						   rendered="#{linha.statusDispensacao == 'A'}"
-						   update=":padraoTabView:solicitacaoMedicamentoUnidade:solicitacaoMedicamentoUnidadeEditorForm"
+						   update=":padraoTabView:solicitacaoMaterialUnidade:solicitacaoMaterialUnidadeEditorForm"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia2}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMaterialUnidadeRaiz.instancia2}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.apagar()}"
+			<p:commandLink action="#{solicitacaoMaterialUnidadeRaiz.apagar()}"
 						   rendered="false"
-						   update=":padraoTabView:solicitacaoMedicamentoUnidade:solicitacaoMedicamentoUnidadeEditorForm :padraoTabView:solicitacaoMedicamentoUnidadePesquisa"
+						   update=":padraoTabView:solicitacaoMaterialUnidade:solicitacaoMaterialUnidadeEditorForm :padraoTabView:solicitacaoMaterialUnidadePesquisa"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMaterialUnidadeRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

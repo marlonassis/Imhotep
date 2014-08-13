@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateImpressao.xhtml">
+
+	<ui:define name="head">
+		
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<style type="text/css" >
+			td{
+				text-align:center;
+				padding:0px;
+			}
+		</style>
+		<div id="header" class="header" >
+			<h:form>
+				<center>
+					<table border="0" style="width:100%; font-size:14px; font-family:'Times New Roman',Georgia,Serif;" >
+						<tr>
+							<td colspan="3" >
+								<div style="font-size:15px">
+									<b>Universidade Federal de Sergipe</b><br/>
+									Hospital Universitário<br/>
+									Dispensação de Medicamentos<br/>
+									Setor: Farmácia
+								</div>
+							</td>
+							<td>
+								<h:graphicImage width="150" value="/Imagens/logo_hu_simples.png" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" >
+								            Nº da Devolução: <h:outputText value="#{devolucaoMedicamentoRaiz.instancia.idDevolucaoMedicamento}" />
+								            <br/>
+											Data da impressão: <h:outputText value="#{util.dataHoraAtual}" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">--------------------------------------------------------------------------------------------------------</td>
+						</tr>
+						<tr>
+							<td colspan="2" >
+								<b>Solicitação:</b>
+							</td>
+							<td colspan="2" >
+								<b>Aferição:</b>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" >
+								Data: <h:outputText value="#{util.formatarDataHoraBrasil(devolucaoMedicamentoRaiz.instancia.dataFechamento)}"/>
+							</td>
+							<td colspan="2" >
+								Data:<h:outputText value="#{util.formatarDataHoraBrasil(devolucaoMedicamentoRaiz.instancia.dataRecebimento)}"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" >
+								Nome:#{devolucaoMedicamentoRaiz.instancia.profissionalInsercao.nome}
+							</td>
+							<td colspan="2" >
+								Nome:#{devolucaoMedicamentoRaiz.instancia.profissionalConfirmacao.nome}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" >
+								Unidade:#{devolucaoMedicamentoRaiz.instancia.unidadeDevolucao.nome}
+							</td>
+							<td colspan="2" >
+								Status:#{devolucaoMedicamentoRaiz.instancia.status.label}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" >--------------------------------------------------------------------------------------------------------</td>
+						</tr>
+					</table>
+					<table border="0" style="width:100%; font-size:12px; font-family:'Times New Roman',Georgia,Serif;" >
+						<tr>
+							<td colspan="4">
+								<b>Itens</b>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>Grupo</b>
+							</td>
+							<td>
+								<b>Medicamento</b>
+							</td>
+							<td>
+								<b>Qtd Alegada</b>
+							</td>
+							<td>
+								<b>Qtd Atestada</b>
+							</td>
+						</tr>
+						<ui:repeat value="#{devolucaoMedicamentoRaiz.instancia.itens}" var="item" >
+							<tr>
+								<td>
+									#{item.material.familia.subGrupo.grupo.descricao}
+								</td>
+								<td>
+									<h:panelGroup rendered="#{item.status == 'RE'}" >
+										<b>x#{item.material.codigoMaterial}#{' - '}#{item.material.descricao} - Recusado</b><br/>
+										Motivo: <h:outputText value="#{item.justificativa}" escape="false" />
+									</h:panelGroup>
+									
+									<h:panelGroup rendered="#{item.status != 'RE'}" >
+										<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b>  
+										<h:panelGroup rendered="#{item.justificativa != null and item.justificativa != ''}" >
+											Justificativa: <h:outputText value="#{item.justificativa}" escape="false" />
+											<br/>
+										</h:panelGroup>
+									</h:panelGroup>
+								</td>
+								<td>
+									#{item.quantidadeDevolvida}
+								</td>
+								<td>
+									#{devolucaoMedicamentoRaiz.somaTotalQuantidadeLiberada(item)}
+								</td>
+							</tr>
+							<tr>
+								<td/>
+								<td colspan="3" style="text-align:left;" >
+									<table>
+										<tr>
+											<td>
+												<b>Lote</b>
+											</td>
+											<td>
+												<b>Qtd Recebida</b>
+											</td>
+											<td>
+												<b>Validade</b>
+											</td>
+										</tr>
+										<ui:repeat value="#{item.devolucoesEstoqueList}" var="loteLiberado" >
+											<tr>
+												<td>#{loteLiberado.movimentoLivro.estoque.lote}</td>
+												<td>#{loteLiberado.movimentoLivro.quantidadeMovimentacao}</td>
+												<td><h:outputText value="#{loteLiberado.movimentoLivro.estoque.dataValidade}" ><f:convertDateTime pattern="MMMM/yyyy"  locale="pt_BR" timeZone="GMT-3" /></h:outputText></td>
+											</tr>
+										</ui:repeat>
+									</table>
+								</td>
+							</tr>
+						</ui:repeat>
+						<tr>
+							<td colspan="4">
+								<h:panelGroup rendered="#{devolucaoMedicamentoRaiz.instancia.justificativa != null and devolucaoMedicamentoRaiz.instancia.justificativa != ''}" >
+									Observação: <h:outputText value="#{devolucaoMedicamentoRaiz.instancia.justificativa}" escape="false" />
+								</h:panelGroup>
+							</td>
+						</tr>
+					</table>
+					<table border="0" style="width:100%; font-size:14px; font-family:'Times New Roman',Georgia,Serif;" >
+						<tr>
+							<td colspan="2" style="padding:25px 50px;" >
+								-------------------------------------<br/>#{devolucaoMedicamentoRaiz.instancia.profissionalInsercao.nome}
+							</td> 
+							<td colspan="2" style="padding:25px 50px;" >
+								-------------------------------------<br/>#{devolucaoMedicamentoRaiz.instancia.profissionalConfirmacao.nome}
+							</td>
+						</tr>
+					</table>
+				</center>
+				<div align="right" style="font-size:1x2px">
+					Sistema Imhotep
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
