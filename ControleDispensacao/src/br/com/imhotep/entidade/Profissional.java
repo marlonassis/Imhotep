@@ -24,15 +24,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.enums.TipoQualidadeDigitalEnum;
+import br.com.imhotep.enums.TipoSexoEnum;
 import br.com.imhotep.enums.TipoSituacaoEnum;
+import br.com.imhotep.enums.TipoVinculoEnum;
 
 @Entity
 @Table(name = "tb_profissional")
 public class Profissional implements Serializable{
-	private static final long serialVersionUID = 2823381085636103344L;
+	private static final long serialVersionUID = 1013702742197171400L;
 	
 	private int idProfissional;
-	private Estado estado; 
 	private String nome;
 	private TipoSituacaoEnum situacao;
 	private Usuario usuarioInclusao;
@@ -43,6 +46,11 @@ public class Profissional implements Serializable{
 	private Date dataNascimento;
 	private String chaveVerificacao;
 	private String cpf;
+	private String email;
+	private String senhaDigital;
+	private TipoSexoEnum sexo;
+	private TipoQualidadeDigitalEnum qualidadeDigital;
+	private TipoVinculoEnum vinculo;
 	private Set<Especialidade> especialidades;
 	
 	
@@ -58,16 +66,6 @@ public class Profissional implements Serializable{
 		this.idProfissional = idProfissional;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_estado")
-	public Estado getEstado() {
-		return estado;
-	}
-	
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
-
 	@Column(name = "cv_nome")
 	public String getNome() {
 		return nome;
@@ -96,6 +94,54 @@ public class Profissional implements Serializable{
 		this.situacao = situacao;
 	}
 
+	@Column(name = "cv_email")
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	@Column(name = "tp_sexo")
+	@Enumerated(EnumType.STRING)
+	public TipoSexoEnum getSexo() {
+		return this.sexo;
+	}
+
+	public void setSexo(TipoSexoEnum sexo) {
+		this.sexo = sexo;
+	}
+	
+	@Column(name = "tp_qualidade_digital")
+	@Enumerated(EnumType.STRING)
+	public TipoQualidadeDigitalEnum getQualidadeDigital() {
+		return this.qualidadeDigital;
+	}
+
+	public void setQualidadeDigital(TipoQualidadeDigitalEnum qualidadeDigital) {
+		this.qualidadeDigital = qualidadeDigital;
+	}
+	
+	@Column(name = "tp_tipo_vinculo")
+	@Enumerated(EnumType.STRING)
+	public TipoVinculoEnum getVinculo() {
+		return this.vinculo;
+	}
+
+	public void setVinculo(TipoVinculoEnum vinculo) {
+		this.vinculo = vinculo;
+	}
+	
+	@Column(name = "cv_senha_digital")
+	public String getSenhaDigital() {
+		return senhaDigital;
+	}
+	
+	public void setSenhaDigital(String senhaDigital) {
+		this.senhaDigital = senhaDigital;
+	}
+	
 	@Column(name = "in_matricula")
 	public Integer getMatricula() {
 		return matricula;
@@ -147,13 +193,7 @@ public class Profissional implements Serializable{
 	
 	@Transient
 	public String getNomeResumido(){
-		if(nome != null){
-			String[] n = nome.split(" ");
-			String nomeResumido = n[0];
-			nomeResumido = nomeResumido.concat(" ").concat(n[n.length-1]);
-			return nomeResumido;
-		}
-		return null;
+		return new Utilitarios().nomeResumido(getNome());
 	}
 	
 	@Column(name="cv_chave_verificacao")
@@ -165,7 +205,7 @@ public class Profissional implements Serializable{
 		this.chaveVerificacao = chaveVerificacao;
 	}
 
-	@Transient
+	@Column(name="cv_cpf")
 	public String getCpf() {
 		return cpf;
 	}
@@ -173,14 +213,6 @@ public class Profissional implements Serializable{
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-
-//	@Transient
-//	public Set<ProfissionalEspecialidade> getEspecialidades() {
-//		if(especialidades == null || especialidades.isEmpty()) {
-//			especialidades = new HashSet<ProfissionalEspecialidade>(new GerenciadorConsultaLazy<ProfissionalEspecialidade>().consultarLista(this, new ProfissionalEspecialidade(), new HashSet<ProfissionalEspecialidade>()));
-//		}
-//		return especialidades;
-//	}
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch=FetchType.EAGER)
 	@JoinTable(name="tb_profissional_especialidade",
@@ -200,25 +232,117 @@ public class Profissional implements Serializable{
 		}
 		return new ArrayList<Especialidade>();
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Profissional))
-			return false;
-		
-		return ((Profissional)obj).getIdProfissional() == this.idProfissional;
-	}
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + ((nome == null) ? 0 : nome.hashCode()) + usuario.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((chaveVerificacao == null) ? 0 : chaveVerificacao.hashCode());
+		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime * result
+				+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + idProfissional;
+		result = prime * result
+				+ ((matricula == null) ? 0 : matricula.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime
+				* result
+				+ ((qualidadeDigital == null) ? 0 : qualidadeDigital.hashCode());
+		result = prime
+				* result
+				+ ((registroConselho == null) ? 0 : registroConselho.hashCode());
+		result = prime * result
+				+ ((senhaDigital == null) ? 0 : senhaDigital.hashCode());
+		result = prime * result + ((sexo == null) ? 0 : sexo.hashCode());
+		result = prime * result
+				+ ((situacao == null) ? 0 : situacao.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result
+				+ ((usuarioInclusao == null) ? 0 : usuarioInclusao.hashCode());
+		result = prime * result + ((vinculo == null) ? 0 : vinculo.hashCode());
+		return result;
 	}
 
 	@Override
-	public String toString() {
-		return nome;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Profissional other = (Profissional) obj;
+		if (chaveVerificacao == null) {
+			if (other.chaveVerificacao != null)
+				return false;
+		} else if (!chaveVerificacao.equals(other.chaveVerificacao))
+			return false;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
+		if (dataNascimento == null) {
+			if (other.dataNascimento != null)
+				return false;
+		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (idProfissional != other.idProfissional)
+			return false;
+		if (matricula == null) {
+			if (other.matricula != null)
+				return false;
+		} else if (!matricula.equals(other.matricula))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (qualidadeDigital != other.qualidadeDigital)
+			return false;
+		if (registroConselho == null) {
+			if (other.registroConselho != null)
+				return false;
+		} else if (!registroConselho.equals(other.registroConselho))
+			return false;
+		if (senhaDigital == null) {
+			if (other.senhaDigital != null)
+				return false;
+		} else if (!senhaDigital.equals(other.senhaDigital))
+			return false;
+		if (sexo != other.sexo)
+			return false;
+		if (situacao != other.situacao)
+			return false;
+		if (usuario == null) {
+			if (other.usuario != null)
+				return false;
+		} else if (!usuario.equals(other.usuario))
+			return false;
+		if (usuarioInclusao == null) {
+			if (other.usuarioInclusao != null)
+				return false;
+		} else if (!usuarioInclusao.equals(other.usuarioInclusao))
+			return false;
+		if (vinculo != other.vinculo)
+			return false;
+		return true;
 	}
+	
 }
