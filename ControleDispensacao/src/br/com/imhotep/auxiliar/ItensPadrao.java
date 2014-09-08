@@ -2,6 +2,7 @@ package br.com.imhotep.auxiliar;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -12,10 +13,12 @@ import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.imhotep.enums.TipoBooleanEnum;
 import br.com.imhotep.enums.TipoComplexidadeEnum;
 import br.com.imhotep.enums.TipoCuidadosPacienteEnum;
+import br.com.imhotep.enums.TipoEhealthContinenteEnum;
 import br.com.imhotep.enums.TipoEhealthNaturezaEnum;
 import br.com.imhotep.enums.TipoEhealthPresencaWebEnum;
 import br.com.imhotep.enums.TipoEhealthRedeSocialEnum;
 import br.com.imhotep.enums.TipoEhealthTipoTecnologiaEnum;
+import br.com.imhotep.enums.TipoEhealthUnidadeSaudeEnum;
 import br.com.imhotep.enums.TipoEscolaridadeEnum;
 import br.com.imhotep.enums.TipoEstadoCivilEnum;
 import br.com.imhotep.enums.TipoEstadoEnum;
@@ -36,6 +39,7 @@ import br.com.imhotep.enums.TipoSubIndicacaoProfilaxiaEnum;
 import br.com.imhotep.enums.TipoSubIndicacaoTerapeuticaEnum;
 import br.com.imhotep.enums.TipoUnidadeSaudeEnum;
 import br.com.imhotep.enums.TipoUsuarioLogEnum;
+import br.com.imhotep.enums.TipoValorLaboratorioExameEnum;
 import br.com.imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 
 
@@ -46,6 +50,64 @@ import br.com.imhotep.enums.TipoViaAdministracaoMedicamentoEnum;
 @ManagedBean
 @RequestScoped
 public class ItensPadrao{
+	
+	public List<SelectItem> getTipoEhealthHospitalItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		
+		itens.add(new SelectItem(TipoEhealthUnidadeSaudeEnum.HE, TipoEhealthUnidadeSaudeEnum.HE.getLabel()));
+		itens.add(new SelectItem(TipoEhealthUnidadeSaudeEnum.HG, TipoEhealthUnidadeSaudeEnum.HG.getLabel()));
+		itens.add(new SelectItem(TipoEhealthUnidadeSaudeEnum.HDI, TipoEhealthUnidadeSaudeEnum.HDI.getLabel()));
+		itens.add(new SelectItem(TipoEhealthUnidadeSaudeEnum.HP, TipoEhealthUnidadeSaudeEnum.HP.getLabel()));
+		
+		return itens;
+	} 
+	
+	public List<String> valoresLista(String listaItens){
+		List<String> itens = new ArrayList<String>();
+		String it[] = listaItens.split("\\,");
+		for(String i : it){
+			itens.add(i);
+		}
+		return itens;
+	} 
+	
+	public Enum<?>[] valoresEnumArray(String idComponent){
+		Enum<?>[] enumConstantes = new Utilitarios().getEnumConstantes(idComponent);
+		return enumConstantes;
+	} 
+	
+	public List<SelectItem> valoresEnum(String idComponent){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		Enum<?>[] enumConstantes = new Utilitarios().getEnumConstantes(idComponent);
+		for(Enum<?> item : enumConstantes){
+			itens.add(new SelectItem(item, item.toString()));
+		}
+		return itens;
+	} 
+	
+	public List<SelectItem> getTipoEhealthUnidadeSaudeEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEhealthUnidadeSaudeEnum item : TipoEhealthUnidadeSaudeEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
+	
+	public List<SelectItem> getTipoEhealthContinenteEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoEhealthContinenteEnum item : TipoEhealthContinenteEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
+	
+	public List<SelectItem> getTipoValorLaboratorioExameItemEnumItens(){
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		for(TipoValorLaboratorioExameEnum item : TipoValorLaboratorioExameEnum.values()){
+			itens.add(new SelectItem(item, item.getLabel()));
+		}
+		return itens;
+	}
 	
 	public List<SelectItem> getTipoEstoqueLogEnumItens(){
 		List<SelectItem> itens = new ArrayList<SelectItem>();
