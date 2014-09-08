@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xmlns="http://java.sun.com/xml/ns/javaee" 
+		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+		 id="WebApp_ID" 
+		 version="3.0">
   <display-name>imhotep.ufs.br</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
@@ -80,9 +85,7 @@
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
   </context-param>
-  <listener>
-    <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-  </listener>
+
   <listener>
     <listener-class>br.com.imhotep.seguranca.GerenciadorSessao</listener-class>
   </listener>
@@ -91,6 +94,11 @@
     <param-value>glass-x</param-value>
   </context-param>
   <session-config>
-    <session-timeout>5</session-timeout>
+    <session-timeout>10</session-timeout>
   </session-config>
+  
+	<error-page> 
+		<error-code>500</error-code> 
+		<location>/home.hu</location> 
+	</error-page> 
 </web-app>
