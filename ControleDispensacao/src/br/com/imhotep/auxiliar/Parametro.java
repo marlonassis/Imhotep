@@ -2,6 +2,7 @@ package br.com.imhotep.auxiliar;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean isUsuarioMedico(){
-		return verificaEspecialidade("M√©dico");
+		return verificaEspecialidade("Médico");
 	}
 	
 	public boolean getUsuarioMedico(){
@@ -97,15 +98,38 @@ public class Parametro implements Serializable {
 	public static TipoMovimento tipoMovimentoDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("tipoMovimento", "Dispensa√ß√£o".toLowerCase());
+		hashMap.put("tipoMovimento", "Dispensação".toLowerCase());
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
 		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:tipoMovimento)");
 		return cg.consultaUnica(sb, hashMap);
 	}
 
+	public static String diretorioArquivosConsultasAGHU(){
+		StringBuilder sb = new StringBuilder("select o.valor from Configuracao o where o.nome = 'PathConsultasAGHU'");
+		return new ConsultaGeral<String>().consultaUnica(sb, null);
+	}
+	
 	public static byte[] logoTipoHU(){
 		StringBuilder sb = new StringBuilder("select o.valorByte from Configuracao o where o.nome = 'Logo HU'");
 		return new ConsultaGeral<byte[]>().consultaUnica(sb, null);
+	}
+	
+	public static boolean getLiberadoSolicitacaoMedicamentoForaHU(){
+		String valor = null;
+		try {
+			ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, Constantes.IP_LOCAL)
+			.consultar("SELECT cv_valor FROM tb_configuracao where cv_nome = 'solicitacaoMedicamentoForaHU'");
+			if(rs.next()){
+				valor = rs.getString("cv_valor");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(valor == null || valor.equals("false")){
+			return false;
+		}else{
+			return true;
+		}
 	}
 	
 	public static TipoMovimento tipoMovimentoDoacaoRecebida(){
@@ -126,6 +150,11 @@ public class Parametro implements Serializable {
 	public static TipoMovimento tipoMovimentoDevolucaoDispensacao(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 22");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifadoDevolucaoDispensacao(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 7");
+		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
 	}
 	
 	public static TipoMovimento tipoMovimentoDoacaoEnviada(){
@@ -151,6 +180,26 @@ public class Parametro implements Serializable {
 	public static TipoMovimentoAlmoxarifado tipoMovimentoNotaFiscalEntradaAlmoxarifado(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 1");
 		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimentoAlmoxarifado tipoMovimentoDispensacaoSimplesAlmoxarifado(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 6");
+		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimento tipoMovimentoInventarioEntrada(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 30");
+		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimento tipoMovimentoInventarioSaida(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 29");
+		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
+	}
+	
+	public static List<TipoMovimentoAlmoxarifado> tiposMovimentoEntrada(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.tipoOperacao = 'E'");
+		return new ArrayList<TipoMovimentoAlmoxarifado>(new ConsultaGeral<TipoMovimentoAlmoxarifado>().consulta(sb, null));
 	}
 	
 	private static TipoMovimento tipoMovimento(String movimento){
@@ -206,14 +255,14 @@ public class Parametro implements Serializable {
 	public static List<TipoMovimento> tiposMovimentoAjusteDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
-		sb.append(" lower(to_ascii(o.descricao)) = lower(to_ascii('Devolu√ß√£o de medicamento dispensado'))");
-		sb.append(" or lower(to_ascii(o.descricao)) = lower(to_ascii('Sa√≠da de medicamento dispensado'))");
+		sb.append(" lower(to_ascii(o.descricao)) = lower(to_ascii('Devolução de medicamento dispensado'))");
+		sb.append(" or lower(to_ascii(o.descricao)) = lower(to_ascii('Saída de medicamento dispensado'))");
 		return new ArrayList<TipoMovimento>(cg.consulta(sb, null));
 	}
 	
 	public static boolean usuarioEnfermeiroMedico(Usuario usuario){
 		String usuarioEspecialidade = usuarioEspecialidade(usuario);
-		return usuarioEspecialidade.equalsIgnoreCase("Enfermagem") || usuarioEspecialidade.equalsIgnoreCase("M√©dico");
+		return usuarioEspecialidade.equalsIgnoreCase("Enfermagem") || usuarioEspecialidade.equalsIgnoreCase("Médico");
 	}
 	
 	public static boolean usuarioEnfermeiro(Usuario usuario){
@@ -221,7 +270,7 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean usuarioMedico(Usuario usuario){
-		return usuarioEspecialidade(usuario).equalsIgnoreCase("M√©dico");
+		return usuarioEspecialidade(usuario).equalsIgnoreCase("Médico");
 	}
 	
 	private static String usuarioEspecialidade(Usuario usuario){
