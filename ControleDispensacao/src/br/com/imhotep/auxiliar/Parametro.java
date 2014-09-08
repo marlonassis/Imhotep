@@ -1,6 +1,7 @@
 package br.com.imhotep.auxiliar;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import br.com.imhotep.entidade.TipoMovimentoAlmoxarifado;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 
