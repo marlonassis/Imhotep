@@ -33,7 +33,7 @@ public class PrescricaoUsuarioConsulta extends PadraoConsulta<Prescricao> {
 			restricaoConsulta.put("profissionalInclusao", Autenticador.getInstancia().getUsuarioAtual().getIdUsuario());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pesquisar a prescri√ß√£o por usu√°rio.", "Erro ao pegar o usu√°rio", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pesquisar a prescrição por usuário.", "Erro ao pegar o usuário", FacesMessage.SEVERITY_ERROR);
 		}
 		getConsultaGeral().setAddValorConsulta(restricaoConsulta);
 	}

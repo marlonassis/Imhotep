@@ -10,6 +10,7 @@ import br.com.remendo.PadraoConsulta;
 @ManagedBean
 @SessionScoped
 public class SolicitacaoMedicamentoUnidadeDispensadoConsulta extends PadraoConsulta<SolicitacaoMedicamentoUnidade> {
+	
 	public SolicitacaoMedicamentoUnidadeDispensadoConsulta(){
 		getCamposConsulta().put("o.unidadeDestino", IGUAL);
 		getCamposConsulta().put("o.profissionalInsercao", IGUAL);
@@ -21,9 +22,8 @@ public class SolicitacaoMedicamentoUnidadeDispensadoConsulta extends PadraoConsu
 	public void carregarResultado() {
 		setPesquisaGuiada(true);
 		setConsultaGeral(new ConsultaGeral<SolicitacaoMedicamentoUnidade>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from SolicitacaoMedicamentoUnidade o where (o.statusDispensacao = 'D' or o.statusDispensacao = 'DP') "));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from SolicitacaoMedicamentoUnidade o where 1=1 "));
 		super.carregarResultado();
 	}
-	
 
 }

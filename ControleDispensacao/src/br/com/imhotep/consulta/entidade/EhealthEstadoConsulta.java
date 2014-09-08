@@ -15,6 +15,7 @@ import br.com.remendo.PadraoConsulta;
 public class EhealthEstadoConsulta extends PadraoConsulta<EhealthEstado> {
 	public EhealthEstadoConsulta(){
 		getCamposConsulta().put("o.nome", INCLUINDO_TUDO);
+		getCamposConsulta().put("o.pais", IGUAL);
 		setOrderBy("to_ascii(o.nome)");
 	}
 	

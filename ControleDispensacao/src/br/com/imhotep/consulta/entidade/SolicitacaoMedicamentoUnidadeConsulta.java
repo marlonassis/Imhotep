@@ -28,7 +28,7 @@ public class SolicitacaoMedicamentoUnidadeConsulta extends PadraoConsulta<Solici
 	public List<SolicitacaoMedicamentoUnidade> getList() {
 		setPesquisaGuiada(true);
 		setConsultaGeral(new ConsultaGeral<SolicitacaoMedicamentoUnidade>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from SolicitacaoMedicamentoUnidade o where 1=1"));
+		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from SolicitacaoMedicamentoUnidade o where (o.statusDispensacao = 'D' or o.statusDispensacao = 'DP' or o.statusDispensacao = 'R')"));
 		return super.getList();
 	}
 
