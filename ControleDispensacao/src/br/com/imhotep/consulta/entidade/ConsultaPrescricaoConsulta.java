@@ -35,7 +35,7 @@ public class ConsultaPrescricaoConsulta extends PadraoConsulta<Prescricao> {
 //			restricaoConsulta.put("idUnidade", Autenticador.getInstancia().getUnidadeAtual().getIdUnidade());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pesquisar prescri√ß√£o", "Erro ao pegar a unidade atual.", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pesquisar prescrição", "Erro ao pegar a unidade atual.", FacesMessage.SEVERITY_ERROR);
 		}
 		getConsultaGeral().setAddValorConsulta(restricaoConsulta);
 	}
