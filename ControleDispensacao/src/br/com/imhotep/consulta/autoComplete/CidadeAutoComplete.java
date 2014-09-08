@@ -8,7 +8,7 @@ import javax.faces.bean.RequestScoped;
 import br.com.imhotep.entidade.Cidade;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="cidadeAutoComplete")
+@ManagedBean
 @RequestScoped
 public class CidadeAutoComplete extends ConsultaGeral<Cidade> {
 	

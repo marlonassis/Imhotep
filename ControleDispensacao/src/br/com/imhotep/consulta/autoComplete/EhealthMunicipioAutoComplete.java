@@ -13,6 +13,7 @@ import br.com.remendo.ConsultaGeral;
 public class EhealthMunicipioAutoComplete extends ConsultaGeral<EhealthMunicipio> {
 	
 	public Collection<EhealthMunicipio> autoComplete(String string){
+		string = string.toLowerCase();
 		StringBuilder stringB = new StringBuilder("select o from EhealthMunicipio as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+string+"%'))");
 		return super.consulta(stringB, null);
 	}
