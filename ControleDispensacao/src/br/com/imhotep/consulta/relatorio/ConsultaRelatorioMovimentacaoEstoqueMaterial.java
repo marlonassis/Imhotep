@@ -26,7 +26,7 @@ public class ConsultaRelatorioMovimentacaoEstoqueMaterial extends ConsultaGeral<
 		map.put("dataFim", dataFim);
 		String sql = "select new br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial(o.tipoMovimento, " +
 				"a.nome, o.estoque.lote, o.quantidadeMovimentacao, o.quantidadeAtual, o.dataMovimento, " +
-				"o.usuarioMovimentacao.login, o.estoque.material.descricao) from MovimentoLivro o " +
+				"o.usuarioMovimentacao.login, o.estoque.material.descricao, o.justificativa) from MovimentoLivro o " +
 				"LEFT OUTER JOIN o.dispensacaoSimples.unidadeDispensada a "+
 				"where o.dataMovimento >= :dataIni and o.dataMovimento <= :dataFim";
 		
@@ -51,9 +51,9 @@ public class ConsultaRelatorioMovimentacaoEstoqueMaterial extends ConsultaGeral<
 		}
 		
 		if(agruparPorLote){
-			sql += " order by o.estoque.lote, o.dataMovimento desc";
+			sql += " order by o.estoque.lote, o.dataMovimento asc";
 		}else{
-			sql += " order by o.dataMovimento desc";
+			sql += " order by o.dataMovimento asc";
 		}
 		
 		ArrayList<MovimentacaoEstoqueMaterial> list = new ArrayList<MovimentacaoEstoqueMaterial>(cg.consulta(new StringBuilder(sql), map));
