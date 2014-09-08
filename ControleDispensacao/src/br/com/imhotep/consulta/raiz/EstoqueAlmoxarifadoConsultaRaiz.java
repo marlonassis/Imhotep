@@ -11,24 +11,52 @@ import javax.faces.bean.RequestScoped;
 
 import br.com.imhotep.comparador.EstoqueAlmoxarifadoDataVencimentoComparador;
 import br.com.imhotep.entidade.EstoqueAlmoxarifado;
-import br.com.imhotep.entidade.Material;
+import br.com.imhotep.entidade.MaterialAlmoxarifado;
+import br.com.imhotep.entidade.MovimentoLivroAlmoxarifado;
+import br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean
 @RequestScoped
-public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<EstoqueAlmoxarifado>{
+public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<NotaFiscalEstoqueAlmoxarifado>{
 	
-	public List<EstoqueAlmoxarifado> consultarEstoquesMaterial(Material material) {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from EstoqueAlmoxarifado o where o.quantidadeAtual > 0 and o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and o.material.idMaterial = "+material.getIdMaterial()+" order by o.dataValidade asc, to_ascii(lower(o.lote))";
+	public NotaFiscalEstoqueAlmoxarifado itemEstoqueNotaFiscalAlmoxarifado(EstoqueAlmoxarifado estoque) {
+		String hql = "select o from NotaFiscalEstoqueAlmoxarifado o where o.estoqueAlmoxarifado.idEstoqueAlmoxarifado = "+estoque.getIdEstoqueAlmoxarifado();
+		NotaFiscalEstoqueAlmoxarifado item = new ConsultaGeral<NotaFiscalEstoqueAlmoxarifado>().consultaUnica(new StringBuilder(hql), null);
+		return item;
+	}
+	
+	public NotaFiscalEstoqueAlmoxarifado itemEstoqueNotaFiscalAlmoxarifado(MovimentoLivroAlmoxarifado mla) {
+		String hql = "select o from NotaFiscalEstoqueAlmoxarifado o where o.movimentoLivroAlmoxarifado.idMovimentoLivroAlmoxarifado = "+mla.getIdMovimentoLivroAlmoxarifado();
+		NotaFiscalEstoqueAlmoxarifado item = new ConsultaGeral<NotaFiscalEstoqueAlmoxarifado>().consultaUnica(new StringBuilder(hql), null);
+		return item;
+	}
+	
+	public Long totalEmEstoqueValido(MaterialAlmoxarifado material) {
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select sum(o.quantidadeAtual) from EstoqueAlmoxarifado o where o.quantidadeAtual > 0 and o.bloqueado = false and (o.dataValidade = null or cast(o.dataValidade as date) >= cast('"+dataS+"' as date)) and o.materialAlmoxarifado.idMaterialAlmoxarifado = "+material.getIdMaterialAlmoxarifado();
+		Long total = new ConsultaGeral<Long>().consultaUnica(new StringBuilder(hql), null);
+		return total;
+	}
+	
+	public List<EstoqueAlmoxarifado> consultarEstoquesMaterial(MaterialAlmoxarifado materialAlmoxarifado) {
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from EstoqueAlmoxarifado o where o.quantidadeAtual > 0 and o.bloqueado = false and (o.dataValidade is null or cast(o.dataValidade as date) >= cast('"+dataS+"' as date)) and o.materialAlmoxarifado.idMaterialAlmoxarifado = "+materialAlmoxarifado.getIdMaterialAlmoxarifado()+" order by to_ascii(lower(o.lote)), o.dataValidade asc";
+		List<EstoqueAlmoxarifado> list = new ArrayList<EstoqueAlmoxarifado>(new ConsultaGeral<EstoqueAlmoxarifado>().consulta(new StringBuilder(hql), null));
+		return list;
+	}
+	
+	public List<EstoqueAlmoxarifado> consultarTodosEstoquesValidosMaterial(MaterialAlmoxarifado materialAlmoxarifado) {
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and (o.dataValidade is null or cast(o.dataValidade as date) >= cast('"+dataS+"' as date)) and o.materialAlmoxarifado.idMaterialAlmoxarifado = "+materialAlmoxarifado.getIdMaterialAlmoxarifado()+" order by to_ascii(lower(o.lote)), o.dataValidade asc";
 		List<EstoqueAlmoxarifado> list = new ArrayList<EstoqueAlmoxarifado>(new ConsultaGeral<EstoqueAlmoxarifado>().consulta(new StringBuilder(hql), null));
 		return list;
 	}
 	
 	public EstoqueAlmoxarifado consultarEstoqueLoteCodigoBarras(String codigo) {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 		StringBuilder stringB = new StringBuilder("select o from EstoqueAlmoxarifado o where ");
-		stringB.append("o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '");
+		stringB.append("o.bloqueado = false and o.dataValidade >= '");
 		stringB.append(dataS);
 		stringB.append("' and (lower(o.lote) = lower('");
 		stringB.append(codigo);
@@ -45,29 +73,29 @@ public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<EstoqueAlmox
 		String dataS = new SimpleDateFormat("yyyy-MM").format(dataMesAnterior.getTime());
 		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and "+
 					"((to_char(o.dataValidade, 'yyyy-MM') = '"+dataS+"' and to_char(now(), 'dd') < '07' ) ) or to_char(o.dataValidade, 'yyyy-MM') = to_char(now(), 'yyyy-MM')) " + 
-					"order by to_ascii(o.material.descricao)";
+					"order by to_ascii(o.materialAmoxarifado.descricao)";
 		List<EstoqueAlmoxarifado> list = new ArrayList<EstoqueAlmoxarifado>(new ConsultaGeral<EstoqueAlmoxarifado>().consulta(new StringBuilder(hql), null));
 		Collections.sort(list, new EstoqueAlmoxarifadoDataVencimentoComparador());
 		return list;
 	}
 	
 	public List<EstoqueAlmoxarifado> consultarEstoqueValido() {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"'";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and (cast(o.dataValidade as date) >= cast('"+dataS+"' as date) or o.dataValidade is null) order by lower(to_ascii(o.materialAlmoxarifado.descricao))";
 		List<EstoqueAlmoxarifado> list = new ArrayList<EstoqueAlmoxarifado>(new ConsultaGeral<EstoqueAlmoxarifado>().consulta(new StringBuilder(hql), null));
 		return list;
 	}
 	
 	public EstoqueAlmoxarifado consultarEstoqueLivre(String lote) {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and o.lote = '"+lote+"'";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
+		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and (cast(o.dataValidade as date) >= cast('"+dataS+"' as date) or o.dataValidade is null) and o.lote = '"+lote+"'";
 		EstoqueAlmoxarifado estoque = (EstoqueAlmoxarifado) new ConsultaGeral<EstoqueAlmoxarifado>().consultaUnica(new StringBuilder(hql), null);
 		return estoque;
 	}
 	
 	public List<EstoqueAlmoxarifado> consultarEstoqueVencido() {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+dataS+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+dataS+"') order by o.dataValidade, to_ascii(lower(o.material.descricao))";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and cast(o.dataValidade as date) <= cast('"+dataS+"' as date) order by o.dataValidade, to_ascii(lower(o.material.descricao))";
 		List<EstoqueAlmoxarifado> list = new ArrayList<EstoqueAlmoxarifado>(new ConsultaGeral<EstoqueAlmoxarifado>().consulta(new StringBuilder(hql), null));
 		return list;
 	}
@@ -81,4 +109,5 @@ public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<EstoqueAlmox
 	public EstoqueAlmoxarifado consultaEstoque(int id){
 		return new ConsultaGeral<EstoqueAlmoxarifado>(new StringBuilder("select o from EstoqueAlmoxarifado o where o.idEstoqueAlmoxarifado = "+id)).consultaUnica();
 	}
+	
 }

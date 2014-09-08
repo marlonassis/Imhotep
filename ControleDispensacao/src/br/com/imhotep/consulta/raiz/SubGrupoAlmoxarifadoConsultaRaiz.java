@@ -14,7 +14,9 @@ import br.com.remendo.ConsultaGeral;
 public class SubGrupoAlmoxarifadoConsultaRaiz  extends ConsultaGeral<SubGrupoAlmoxarifado>{
 	
 	public List<SubGrupoAlmoxarifado> consultarSubGrupoGrupo(int idGrupo) {
-		StringBuilder sb = new StringBuilder("select o from SubGrupoAlmoxarifado as o where o.grupoAlmoxarifado.idGrupoAlmoxarifado = "+idGrupo);
+		String string = "select o from SubGrupoAlmoxarifado as o where o.grupoAlmoxarifado.idGrupoAlmoxarifado = "+idGrupo
+				+ " order by lower(to_ascii(o.descricao)) ";
+		StringBuilder sb = new StringBuilder(string);
 		return new ArrayList<SubGrupoAlmoxarifado>(new ConsultaGeral<SubGrupoAlmoxarifado>().consulta(sb, null));
 	}
 	

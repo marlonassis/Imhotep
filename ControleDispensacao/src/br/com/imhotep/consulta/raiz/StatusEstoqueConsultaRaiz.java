@@ -16,7 +16,7 @@ public class StatusEstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 
 	private boolean estoqueInsuficiente(Integer quantidade, int quantidadeSolicitada) {
 		if(quantidadeSolicitada > quantidade){
-			super.mensagem("N√£o h√° quantidade suficiente no estoque. O m√°ximo dispon√≠vel √© de " + String.valueOf(quantidade) + " unidade(s)", "", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + String.valueOf(quantidade) + " unidade(s)", "", FacesMessage.SEVERITY_ERROR);
 			return true;
 		}else{
 			return false;
@@ -27,7 +27,7 @@ public class StatusEstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		if(quantidade > 0){
 			return false;
 		}else{
-			super.mensagem("Este medicamento est√° em falta.", "", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Este medicamento está em falta.", "", FacesMessage.SEVERITY_ERROR);
 			return true;
 		}
 	}

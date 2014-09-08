@@ -15,16 +15,13 @@ import br.com.remendo.ConsultaGeral;
 @SessionScoped
 public class EstoqueMaterialConsultaRaiz extends ConsultaGeral<Estoque> implements Serializable{
 	
-	private static final long serialVersionUID = -3166628607140060111L;
-	
+	private static final long serialVersionUID = -5136486263527574062L;
+
 	private List<Estoque> listaEstoque = new ArrayList<Estoque>();
 	private Material material;
 	
 	public void consultar(){
-		String sql = "select o from Estoque o where o.material.idMaterial = "+material.getIdMaterial();
-		StringBuilder stringB = new StringBuilder(sql);
-		setListaEstoque(new ArrayList<Estoque>(super.consulta(stringB, null)));
-//		listaEstoque = new LinhaMecanica().estoquePorMaterial(material.getIdMaterial());
+		setListaEstoque(new EstoqueConsultaRaiz().consultarEstoquesMaterial(getMaterial()));
 	}
 
 	public List<Estoque> getListaEstoque() {

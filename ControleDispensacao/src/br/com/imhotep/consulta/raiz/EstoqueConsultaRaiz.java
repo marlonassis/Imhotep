@@ -19,18 +19,18 @@ import br.com.remendo.ConsultaGeral;
 public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 	
 	public List<Estoque> consultarEstoquesMaterial(Material material) {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from Estoque o where o.quantidadeAtual > 0 and o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and o.material.idMaterial = "+material.getIdMaterial()+" order by o.dataValidade asc, to_ascii(lower(o.lote))";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.quantidadeAtual > 0 and o.bloqueado = false and o.dataValidade >= cast('"+dataS+"' as date) and o.material.idMaterial = "+material.getIdMaterial()+" order by o.dataValidade asc, to_ascii(lower(o.lote))";
 		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
 		return list;
 	}
 	
 	public Estoque consultarEstoqueLoteCodigoBarras(String codigo) {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 		StringBuilder stringB = new StringBuilder("select o from Estoque o where ");
-		stringB.append("o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '");
+		stringB.append("o.bloqueado = false and o.dataValidade >= cast('");
 		stringB.append(dataS);
-		stringB.append("' and (lower(o.lote) = lower('");
+		stringB.append("' as date) and (lower(o.lote) = lower('");
 		stringB.append(codigo);
 		stringB.append("') or codigoBarras = '");
 		stringB.append(codigo);
@@ -43,31 +43,39 @@ public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 		Calendar dataMesAnterior = Calendar.getInstance();
 		dataMesAnterior.add(Calendar.MONTH, -1);
 		String dataS = new SimpleDateFormat("yyyy-MM").format(dataMesAnterior.getTime());
-		String hql = "select o from Estoque o where o.bloqueado = false and "+
-					"((to_char(o.dataValidade, 'yyyy-MM') = '"+dataS+"' and to_char(now(), 'dd') < '07' ) ) or to_char(o.dataValidade, 'yyyy-MM') = to_char(now(), 'yyyy-MM')) " + 
-					"order by to_ascii(o.material.descricao)";
+		String hql = "select o from Estoque o where o.bloqueado = false and"
+					+ " o.quantidadeAtual > 0 and "
+					+ " (((to_char(o.dataValidade, 'yyyy-MM') = '"+dataS+"' and cast(to_char(now(), 'DD') as int) < 07) )"
+					+ " or to_char(o.dataValidade, 'yyyy-MM') = to_char(now(), 'yyyy-MM')))" 
+					+ " order by to_ascii(o.material.descricao)";
 		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
 		Collections.sort(list, new EstoqueDataVencimentoComparador());
 		return list;
 	}
 	
 	public List<Estoque> consultarEstoqueValido() {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from Estoque o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"'";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.bloqueado = false and o.dataValidade >= cast('"+dataS+"' as date)";
 		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
 		return list;
 	}
 	
+	public Estoque consultarEstoque(String lote) {
+		String hql = "select o from Estoque o where o.lote = '"+lote+"'";
+		Estoque estoque = (Estoque) new ConsultaGeral<Estoque>().consultaUnica(new StringBuilder(hql), null);
+		return estoque;
+	}
+	
 	public Estoque consultarEstoqueLivre(String lote) {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from Estoque o where o.bloqueado = false and to_char(o.dataValidade, 'yyyy-MM') >= '"+dataS+"' and o.lote = '"+lote+"'";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.bloqueado = false and o.dataValidade >= cast('"+dataS+"' as date) and o.lote = '"+lote+"'";
 		Estoque estoque = (Estoque) new ConsultaGeral<Estoque>().consultaUnica(new StringBuilder(hql), null);
 		return estoque;
 	}
 	
 	public List<Estoque> consultarEstoqueVencido() {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
-		String hql = "select o from Estoque o where o.bloqueado = false and (to_char(o.dataValidade, 'yyyy-MM') < '"+dataS+"' or to_char(o.dataValidade, 'yyyy-MM') = '"+dataS+"') order by o.dataValidade, to_ascii(lower(o.material.descricao))";
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		String hql = "select o from Estoque o where o.bloqueado = false and o.dataValidade <= cast('"+dataS+"' as date) order by o.dataValidade, to_ascii(lower(o.material.descricao))";
 		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
 		return list;
 	}

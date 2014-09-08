@@ -5,7 +5,7 @@ import javax.faces.bean.RequestScoped;
 
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="loteExistenteConsultaRaiz")
+@ManagedBean
 @RequestScoped
 public class LoteExistenteConsultaRaiz extends ConsultaGeral<String> {
 	

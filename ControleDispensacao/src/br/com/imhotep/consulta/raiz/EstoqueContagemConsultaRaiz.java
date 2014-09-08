@@ -16,9 +16,9 @@ import br.com.remendo.ConsultaGeral;
 public class EstoqueContagemConsultaRaiz  extends ConsultaGeral<EstoqueContagem>{
 	
 	public List<EstoqueContagem> consultarEstoquesContagem() {
-		String dataS = new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime());
+		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 		String hql = "select o from EstoqueContagem o where "
-				+ "o.estoque.bloqueado = false and to_char(o.estoque.dataValidade, 'yyyy-MM') >= '"+dataS+"' and "
+				+ "o.estoque.bloqueado = false and o.estoque.dataValidade >= '"+dataS+"' and "
 				+"o.dataCadastro = (select max(a.dataCadastro) from EstoqueContagem a where a.estoque.idEstoque = "
 				+ "o.estoque.idEstoque) "
 						+ " order by to_ascii(o.estoque.material.descricao)";

@@ -25,4 +25,10 @@ public class DevolucaoMedicamentoConsultaRaiz  extends ConsultaGeral<DevolucaoMe
 		return new ConsultaGeral<Long>(new StringBuilder(sql)).consultaUnica();
 	}
 	
+	public DevolucaoMedicamento getDevolucao(int id){
+		String sql = "select o from DevolucaoMedicamento o "+ 
+				 "where o.idDevolucaoMedicamento = "+id;
+		return new ConsultaGeral<DevolucaoMedicamento>(new StringBuilder(sql)).consultaUnica();
+	}
+	
 }

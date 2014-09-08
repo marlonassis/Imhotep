@@ -11,10 +11,16 @@ import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.NotaFiscalEstoque;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="notaFiscalEstoqueConsultaRaiz")
+@ManagedBean
 @RequestScoped
 public class NotaFiscalEstoqueConsultaRaiz  extends ConsultaGeral<NotaFiscalEstoque>{
 
+	public NotaFiscalEstoque itemEstoqueNotaFiscal(Estoque estoque) {
+		String hql = "select o from NotaFiscalEstoque o where o.estoque.idEstoque = "+estoque.getIdEstoque();
+		NotaFiscalEstoque item = new ConsultaGeral<NotaFiscalEstoque>().consultaUnica(new StringBuilder(hql), null);
+		return item;
+	}
+	
 	public boolean existeNotaFiscal(Estoque estoque){
 		List<NotaFiscalEstoque> list = consultaEstoque(estoque);
 		return list != null && !list.isEmpty();

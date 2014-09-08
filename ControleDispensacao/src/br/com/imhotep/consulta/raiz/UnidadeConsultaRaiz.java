@@ -18,4 +18,9 @@ public class UnidadeConsultaRaiz  extends ConsultaGeral<Unidade>{
 		return new ArrayList<Unidade>(new ConsultaGeral<Unidade>().consulta(sb, null));
 	}
 	
+	public List<Unidade> getUnidadeSaude() {
+		StringBuilder sb = new StringBuilder("select o.unidade from UnidadeSolicitacao as o order by to_ascii(lower(o.unidade.nome))");
+		return new ArrayList<Unidade>(new ConsultaGeral<Unidade>().consulta(sb, null));
+	}
+	
 }
