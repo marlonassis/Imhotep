@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+                xmlns:ri="http://java.sun.com/jsf/composite/remendo/input">
+
+	<h:panelGrid id="ehealthEstadoPanelGrid" columns="3" width="100%">
+		<r:inputTextoSimples id="nome" 
+							 label="Nome"
+							 required="true" 
+							 title="Informe o nome do estado" 
+							 value="#{ehealthEstadoRaiz.instancia.nome}" />
+							 
+		<r:inputTextoSimples id="sigla" 
+							 label="Sigla"
+							 required="false" 
+							 title="Informe a sigla do estado" 
+							 value="#{ehealthEstadoRaiz.instancia.sigla}" />
+							 
+		<r:inputAutoComplete id="regiao"
+							  disabled="false"
+							  desativarConversor="true"
+							  required="false" 
+							  forceSelection="false"
+							  completeMethod="#{ehealthEstadoAutoComplete.autoCompleteRegiao}" 
+							  itemValue="#{regiao}" 
+							  itemLabel="#{regiao}" 
+							  var="regiao" 
+							  value="#{ehealthEstadoRaiz.instancia.regiao}" 
+							  label="Região" />
+		
+		<r:inputEntidade id="pais" 
+						 itemLabel="NomeSigla"
+						 required="true"
+						 atributosOrderBy="o.nome" 
+						 value="#{ehealthEstadoRaiz.instancia.pais}" 
+						 label="País" />
+		  
+	</h:panelGrid>
+
+</ui:composition>
