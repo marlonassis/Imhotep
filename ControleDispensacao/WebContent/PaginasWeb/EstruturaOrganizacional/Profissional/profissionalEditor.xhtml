@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="profissionalPanelGrid" columns="3" width="100%">
+		
+		<ri:inputApenasNumero id="matricula" 
+							  title="Informe a matrícula" 
+							  value="#{profissionalRaiz.instancia.matricula}" 
+							  label="Matrícula" />
+		
+		<ri:inputTextoSimples id="nome" 
+							  title="Informe o nome do profissional"
+							  required="true" 
+							  value="#{profissionalRaiz.instancia.nome}" 
+							  label="Nome" />
+		
+		<ri:inputTextoSimples id="login" 
+							  title="Informe o nome de usuário para este profissional" 
+							  value="#{profissionalRaiz.instancia.usuario.login}"
+							  disabled="#{profissionalRaiz.instancia.usuario.idUsuario != 0}" 
+							  label="Login" />
+		
+		<ri:inputDataDiaMesAno id="dataNascimento" 
+							   title="Informe a data de nascimento do profissional" 
+							   value="#{profissionalRaiz.instancia.dataNascimento}" 
+							   label="Data de Nascimento" />
+		
+		<ri:inputTextoSimples id="email" 
+							  title="Informe o correio eletrônico" 
+							  value="#{profissionalRaiz.instancia.email}" 
+							  label="Correio Eletrônico (e-Mail)" />
+		
+		<ri:inputCpf id="cpf" 
+					 title="Informe o seu CPF" 
+					 value="#{profissionalRaiz.instancia.cpf}" 
+					 label="CPF" />
+		
+		<ri:inputEnum id="sexo" 
+					  value="#{profissionalRaiz.instancia.sexo}" 
+					  label="Sexo" />
+		
+		<ri:inputEnum id="vinculo" 
+					  value="#{profissionalRaiz.instancia.vinculo}" 
+					  label="Vínculo" />
+		
+		<ri:inputEnum id="situacao" 
+					  value="#{profissionalRaiz.instancia.situacao}" 
+					  label="Situação" />
+		
+		<h:panelGrid id="funcoesPanelGroup" columns="1" rendered="#{profissionalRaiz.edicao}" >
+		
+			<h:panelGroup id="funcaoPanelGroup">
+				<h:outputLabel for="funcao" value="Função" />
+				<br />
+				<p:selectOneMenu id="funcao"
+								 value="#{profissionalRaiz.funcao}" 
+								 effect="fade"
+								 converter="entidadeConversor">
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{funcaoConsultaRaiz.funcoesGroup}" 
+								   var="funcao" 
+								   itemLabel="#{funcao.nomeFilhoSeta}"
+								   itemValue="#{funcao}" />
+					<p:ajax event="change" 
+							listener="#{profissionalRaiz.addFuncaoProfissional}" 
+							update=":#{p:component('funcoesPanelGroup')}" />
+				</p:selectOneMenu>
+			</h:panelGroup>
+		
+			<h:panelGroup id="funcoesProfissional" >		
+				<p:dataList value="#{funcaoConsultaRaiz.funcoesProfissionalLista(profissionalRaiz.instancia)}" 
+							var="e" 
+							type="ordered"
+							emptyMessage="Sem Função" >  
+				    #{e.nome}#{' - '}
+				   	<p:commandLink action="#{profissionalRaiz.removeFuncaoProfissional(e)}"
+				    			   update=":#{p:component('funcoesProfissional')}" >
+				    	<h:graphicImage value="/Imagens/delete32.png" 
+				    					width="12" 
+				    					height="12"
+				    					title="Apagar #{e.nome}" />
+				    </p:commandLink>
+				</p:dataList>
+			</h:panelGroup>
+		</h:panelGrid>
+		
+		<h:panelGrid id="cargosPanelGroup" columns="1" rendered="#{profissionalRaiz.edicao}" >
+			<h:panelGroup id="cargoPanelGroup">
+				<h:outputLabel for="cargo" value="Cargo" />
+				<br />
+				<p:selectOneMenu id="cargo"
+								 value="#{profissionalRaiz.cargo}" 
+								 effect="fade" 
+								 converter="entidadeConversor">
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{cargoConsultaRaiz.cargosGroup}" 
+								   var="cargo" 
+								   itemLabel="#{cargo.nomeFilhoSeta}"
+								   itemValue="#{cargo}"  />
+					<p:ajax event="change" 
+							listener="#{profissionalRaiz.addCargoProfissional}" 
+							update=":#{p:component('cargosPanelGroup')}" />
+				</p:selectOneMenu>
+			</h:panelGroup>
+		
+			<h:panelGroup id="cargosProfissional" >		
+				<p:dataList value="#{cargoConsultaRaiz.cargosProfissionalLista(profissionalRaiz.instancia)}" 
+							var="e" 
+							type="ordered"
+							emptyMessage="Sem Cargo" >  
+				    #{e.nome}#{' - '}
+				    <p:commandLink action="#{profissionalRaiz.removeCargoProfissional(e)}"
+				    			   update=":#{p:component('cargosProfissional')}" >
+				    	<h:graphicImage value="/Imagens/delete32.png" 
+				    					width="12" 
+				    					height="12"
+				    					title="Apagar #{e.nome}" />
+				    </p:commandLink>
+				</p:dataList>
+			</h:panelGroup>
+		</h:panelGrid>
+	</h:panelGrid>
+</ui:composition>

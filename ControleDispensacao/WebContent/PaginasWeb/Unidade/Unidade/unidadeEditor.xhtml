@@ -66,7 +66,6 @@
 		</h:panelGroup>
 
 		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
 			<h:outputLabel for="coordenador" value="Coordenador:" />
 			<br />
 			<p:autoComplete id="coordenador" 
@@ -74,7 +73,7 @@
 							scrollHeight="300"
 							value="#{unidadeRaiz.instancia.coordenador}"
 							completeMethod="#{profissionalAutoComplete.autoComplete}"
-							required="true"
+							required="false"
 							title="Informe o nome do profissional que é coordenador do setor."
 							var="profissional" 
 							itemLabel="#{profissional.nome}" 

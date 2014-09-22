@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +12,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_tipo_conselho")
-public class TipoConselho {
+public class TipoConselho implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private int idTipoConselho;
 	private String descricao;
 	private String sigla;

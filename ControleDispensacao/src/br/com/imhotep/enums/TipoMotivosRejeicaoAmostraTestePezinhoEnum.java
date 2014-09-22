@@ -7,8 +7,8 @@ package br.com.imhotep.enums;
 public enum TipoMotivosRejeicaoAmostraTestePezinhoEnum {
 	AI("Amostra Insuficiente"), 
 	AS("Amostra Sobreposta"),
-	AE("Amostra Elu√≠da"),
-	EP("Erro de preenchimento do cart√£o"),
+	AE("Amostra Eluída"),
+	EP("Erro de preenchimento do cartão"),
 	AC("Amostra Contaminada"),
 	OT("Outros");
 	

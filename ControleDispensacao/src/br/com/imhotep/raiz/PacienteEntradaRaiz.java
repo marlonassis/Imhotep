@@ -26,11 +26,11 @@ import br.com.imhotep.entidade.ProcedimentoSaude;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PacienteEntradaRaiz extends PadraoHome<PacienteEntrada>{
+public class PacienteEntradaRaiz extends PadraoRaiz<PacienteEntrada>{
 	
 	private String valorPesquisa;
 	private Cid cid;
@@ -146,7 +146,7 @@ public class PacienteEntradaRaiz extends PadraoHome<PacienteEntrada>{
 		if(paciente == null){
 			setInstancia(new PacienteEntrada());
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
-			super.mensagem("O n√∫mero do SUS ou prontu√°rio informado n√£o est√° cadastro.", "Verifique se voc√™ informou o n√∫mero certo ou cadastre esse novo paciente.", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("O número do SUS ou prontuário informado não está cadastro.", "Verifique se você informou o número certo ou cadastre esse novo paciente.", FacesMessage.SEVERITY_ERROR);
 		}else{
 			getInstancia().setPaciente(paciente);
 			carregarUltimoAntendimento();

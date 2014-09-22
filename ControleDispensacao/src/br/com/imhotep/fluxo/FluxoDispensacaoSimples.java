@@ -2,27 +2,29 @@ package br.com.imhotep.fluxo;
 
 import java.util.Date;
 
-import br.com.imhotep.controle.ControleEstoque;
+import br.com.imhotep.controle.ControleEstoqueTemp;
 import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.excecoes.ExcecaoEstoqueBloqueado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
+import br.com.imhotep.excecoes.ExcecaoEstoqueLockAcimaUmMinuto;
 import br.com.imhotep.excecoes.ExcecaoEstoqueNaoAtualizado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueNaoCadastrado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVazio;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
-import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.temp.ExcecaoPadraoFluxo;
 import br.com.imhotep.temp.PadraoFluxoTemp;
 
 public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 	
 	public FluxoDispensacaoSimples() {
-		super("Erro ao salvar a dispensa√ß√£o simplificada.", "Dispensa√ß√£o simplificada salva com sucesso.");
+		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
 	}
 	
 	public FluxoDispensacaoSimples(boolean exibirMensagem) {
-		super("Erro ao salvar a dispensa√ß√£o simplificada.", "Dispensa√ß√£o simplificada salva com sucesso.");
+		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
 		if(!exibirMensagem){
 			setExibeMensagemAtualizacao(false);
 			setExibeMensagemDelecao(false);
@@ -30,7 +32,7 @@ public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 		}
 	}
 	
-	public void atualizarEstoque(DispensacaoSimples dispensacaoSimples) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
+	public void atualizarEstoque(DispensacaoSimples dispensacaoSimples) throws ExcecaoPadraoFluxo, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock{
 		Date dataAtual = new Date();
 		ativarControladoraEstoque(dataAtual, dispensacaoSimples.getMovimentoLivro());
 		enfileirarObjetosAtualizacaoEstoque(dispensacaoSimples);
@@ -42,8 +44,8 @@ public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 		super.getObjetoSalvar().put("DispensacaoSimples", dispensacaoSimples);
 	}
 	
-	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
-		ControleEstoque controleEstoque = new ControleEstoque();
+	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock{
+		ControleEstoqueTemp controleEstoque = new ControleEstoqueTemp();
 		controleEstoque.liberarAjuste(dataAtual, movimentoLivro);
 	}
 	

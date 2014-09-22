@@ -4,11 +4,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.EhealthFormularioRedeSocial;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class EhealthFormularioRedeSocialRaiz extends PadraoHome<EhealthFormularioRedeSocial>{
+public class EhealthFormularioRedeSocialRaiz extends PadraoRaiz<EhealthFormularioRedeSocial>{
 	
 	public EhealthFormularioRedeSocialRaiz(){
 		super();

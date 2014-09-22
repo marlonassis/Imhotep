@@ -8,10 +8,10 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.submenu.Submenu;
-import org.primefaces.model.DefaultMenuModel;
-import org.primefaces.model.MenuModel;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuModel;
 
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.comparador.MenuComparador;
@@ -23,6 +23,7 @@ public class ControleMenu implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private List<Menu> menuAutorizadoList = new ArrayList<Menu>();
+	private List<String> menuAutorizadoString = new ArrayList<String>();
 	private MenuModel menuModel;
 	
 	public void montarMenu(){
@@ -31,57 +32,62 @@ public class ControleMenu implements Serializable {
 		adicionarHome();
 		for(Menu menu : getMenuAutorizadoList())
 			if(menu.getMenuPai() == null && !menu.getInterno()){
-				Submenu subMenu = contruirMenu(menu, filhosMenuPai(menu));
-				getMenuModel().addSubmenu(subMenu);
+				DefaultSubMenu subMenu = contruirMenu(menu, filhosMenuPai(menu));
+				getMenuModel().addElement(subMenu);
 			}
 		adicionarFinalMenu();
 	}
 
 	private void adicionarHome() {
-		MenuItem menuItem = new MenuItem();
-		menuItem.setValue("Home");
-		menuItem.setUrl("/PaginasWeb/home.hu");
-		getMenuModel().addMenuItem(menuItem);
+	    DefaultMenuItem item = new DefaultMenuItem();
+	    item.setValue("Home");
+	    item.setUrl("/PaginasWeb/home.hu");
+	    getMenuModel().addElement(item);
 	}
 	
 	private void adicionarFinalMenu() {
-		MenuItem menuItem = new MenuItem();
-		
-		menuItem.setValue("Ajuda");
-		menuItem.setUrl("/PaginasWeb/Ajuda/Ajuda/ajuda.hu");
-		getMenuModel().addMenuItem(menuItem);
-		
-		menuItem = new MenuItem();
-		menuItem.setValue("Sair");
-		menuItem.setActionExpression(Utilitarios.contruirMethodExpression("#{autenticador.logout()}"));
-		getMenuModel().addMenuItem(menuItem);
+		DefaultMenuItem item = new DefaultMenuItem();
+	    item.setValue("Ajuda");
+	    item.setUrl("/PaginasWeb/Ajuda/Ajuda/ajuda.hu");
+	    getMenuModel().addElement(item);
+	    
+	    item = new DefaultMenuItem();
+	    item.setValue("Sair");
+	    item.setCommand("#{autenticador.logout()}");
+	    getMenuModel().addElement(item);
 	}
 
-	private Submenu contruirMenu(Menu menu, List<Menu> filhos) {
-		Submenu subMenu = new Submenu();
+	private DefaultSubMenu contruirMenu(Menu menu, List<Menu> filhos) {
+	    DefaultSubMenu subMenu = new DefaultSubMenu();
 		subMenu.setLabel(menu.getDescricao());
 		Collections.sort(filhos, new MenuComparador());
 		for(Menu filho : filhos){
 			if(!filho.getInterno()){
 				List<Menu> sons = filhosMenuPai(filho);
 				if(!sons.isEmpty()){
-					Submenu subMenu2 = contruirMenu(filho, filhosMenuPai(filho));
+					DefaultSubMenu subMenu2 = contruirMenu(filho, filhosMenuPai(filho));
 					subMenu2.setLabel(filho.getDescricao());
-					subMenu.getChildren().add(subMenu2);
+					subMenu.addElement(subMenu2);
 				}else{
-					MenuItem menuItem = new MenuItem();
+					DefaultMenuItem menuItem = new DefaultMenuItem();
 					menuItem.setValue(filho.getDescricao());
 					menuItem.setUrl(filho.getUrl());
 					if(filho.getConstrucao()){
 						menuItem.setStyle("background-color:#FF0000;");
 					}
-					subMenu.getChildren().add(menuItem);
+					subMenu.addElement(menuItem);
 				}
 			}
 		}
 		return subMenu;
 	}
 
+	public void montarMenuPlanoString(){
+		for(Menu m : menuAutorizadoList){
+			getMenuAutorizadoString().add(m.getDescricao());
+		}
+	}
+	
 	private List<Menu> filhosMenuPai(Menu menu){
 		List<Menu> filhos = new ArrayList<Menu>();
 		for(Menu item : menuAutorizadoList){
@@ -130,6 +136,14 @@ public class ControleMenu implements Serializable {
 
 	public void setMenuModel(MenuModel menuModel) {
 		this.menuModel = menuModel;
+	}
+
+	public List<String> getMenuAutorizadoString() {
+		return menuAutorizadoString;
+	}
+
+	public void setMenuAutorizadoString(List<String> menuAutorizadoString) {
+		this.menuAutorizadoString = menuAutorizadoString;
 	}
 	
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+      xmlns:co="http://java.sun.com/jsf/composite">
+	
+	<co:interface>
+		<co:attribute name="id" required="true" />
+		<co:attribute name="size"/>
+		<co:attribute name="tipo" required="true" />
+		<co:attribute name="label" />
+		<co:attribute name="value" required="true" />
+		<co:attribute name="title" />
+		<co:attribute name="disabled" default="false" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="lista" />
+		<co:attribute name="rendered"/>
+	</co:interface>
+	
+	<co:implementation>
+		
+		<ri:inputApenasNumero id="#{cc.attrs.id}Inteiro" 
+							  title="#{cc.attrs.title}" 
+							  value="#{cc.attrs.value}" 
+							  label="#{cc.attrs.label}" 
+							  rendered="#{cc.attrs.rendered and cc.attrs.tipo == 'Inteiro'}" />
+		
+		<ri:inputValorFracionado id="#{cc.attrs.id}Fracionado" 
+								 title="#{cc.attrs.title}" 
+								 value="#{cc.attrs.value}" 
+								 label="#{cc.attrs.label}" 
+								 rendered="#{cc.attrs.rendered and cc.attrs.tipo == 'Fracionado'}" />
+		
+		<ri:inputTextArea id="#{cc.attrs.id}TextoArea" 
+						  title="#{cc.attrs.title}" 
+						  value="#{cc.attrs.value}" 
+						  label="#{cc.attrs.label}" 
+						  rendered="#{cc.attrs.rendered and cc.attrs.tipo == 'Texto'}" />
+		
+		<ri:inputTextoSimples id="#{cc.attrs.id}TextoSimples" 
+							  title="#{cc.attrs.title}" 
+							  value="#{cc.attrs.value}" 
+							  label="#{cc.attrs.label}" 
+							  rendered="#{cc.attrs.rendered and (cc.attrs.tipo == 'Alfanumérico' or 
+							  				cc.attrs.tipo == 'Alfanumerico')}" />
+		
+		<ri:inputListString id="#{cc.attrs.id}Lista" 
+							lista="#{cc.attrs.lista}" 
+							value="#{cc.attrs.value}" 
+							label="#{cc.attrs.value}" 
+							rendered="#{cc.attrs.rendered and cc.attrs.tipo == 'Lista'}" />
+		
+		<ri:inputListCheck id="#{cc.attrs.id}SimNao" 
+						   lista="#{cc.attrs.lista}"
+						   value="#{cc.attrs.value}" 
+						   label="#{cc.attrs.value}" 
+						   rendered="#{cc.attrs.rendered and cc.attrs.tipo == 'Sim/Não'}" />
+		
+	</co:implementation>
+</html>

@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaInventario" 
+				 value="#{inventarioFarmaciaConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idInventarioFarmacia}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Material" />
+			</f:facet>
+			<h:outputText value="#{linha.material.descricao}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Lote" />
+			</f:facet>
+			<h:outputText value="#{linha.lote}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Validade" />
+			</f:facet>
+			<h:outputText value="#{linha.dataValidade}" >
+				<f:convertDateTime pattern="MMM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Quantidade Contada" />
+			</f:facet>
+			<h:outputText value="#{linha.quantidadeContada}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Cadastro" />
+			</f:facet>
+			<h:outputText value="#{linha.profisionalCadastro.nomeResumido}" />
+		</p:column>
+
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   update=":#{p:component('inventarioFarmacia')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaRaiz.carregarInstancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink action="#{inventarioFarmaciaRaiz.apagar()}"
+						   oncomplete="atualizarTabela();"
+						   update=":#{p:component('inventarioFarmacia')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

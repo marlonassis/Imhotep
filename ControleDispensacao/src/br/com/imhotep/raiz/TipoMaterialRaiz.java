@@ -6,14 +6,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.TipoMaterial;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="tipoMaterialRaiz")
 @SessionScoped
-public class TipoMaterialRaiz extends PadraoHome<TipoMaterial>{
+public class TipoMaterialRaiz extends PadraoRaiz<TipoMaterial>{
 	
 	/**
-	 * MÃ©todo que retorna uma lista de TipoMaterial
+	 * MŽtodo que retorna uma lista de TipoMaterial
 	 * @param String sql
 	 * @return Collection Menu
 	 */

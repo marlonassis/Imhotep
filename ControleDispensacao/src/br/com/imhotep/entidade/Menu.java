@@ -134,20 +134,41 @@ public class Menu implements Serializable {
 		return path;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Menu))
-			return false;
-		
-		return ((Menu)obj).getIdMenu() == this.idMenu;
-	}
+	
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode() + idMenu;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idMenu;
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Menu other = (Menu) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idMenu != other.idMenu)
+			return false;
+		if (url == null) {
+			if (other.url != null)
+				return false;
+		} else if (!url.equals(other.url))
+			return false;
+		return true;
 	}
 
 	@Override

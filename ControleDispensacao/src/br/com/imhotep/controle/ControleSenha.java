@@ -57,8 +57,8 @@ public class ControleSenha {
 			if(senhaIgualMatricula() && autenticador.getUnidadeAtual() != null){
 				boolean paginaTrocaSenha = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
 				if(!paginaTrocaSenha){
-					FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Voc·∫Ω ainda n√£o trocou sua senha. Para sua seguran√ßa troque agora a sua senha.", ""));
+					FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Você ainda não trocou sua senha. Para sua segurança troque agora a sua senha.", ""));
 				}
 			}
 		}

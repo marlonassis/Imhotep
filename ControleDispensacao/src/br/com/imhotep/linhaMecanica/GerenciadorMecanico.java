@@ -24,11 +24,26 @@ import br.com.imhotep.auxiliar.Constantes;
 public class GerenciadorMecanico {
 	private String driver = "org.postgresql.Driver";
 	private String ip = "127.0.0.1";
-	private String url = "jdbc:postgresql://{ip}:5432/{banco}";
+	private String porta = "5432";
+	private String url = "jdbc:postgresql://{ip}:{porta}/{banco}";
 	private String nomeBanco;
+	private String usuarioBanco = Constantes.USUARIO_BANCO;
+	private String senhaBanco = Constantes.SENHA_BANCO;
 
 	private Connection c = null;
 	private Statement s = null;
+	
+	public GerenciadorMecanico() {
+		// Register the native JDBC driver. If the driver cannot 
+		// be registered, the test cannot continue.
+		try {
+			Class.forName(driver);
+		} catch (Exception e) {
+			System.out.println("Driver failed to register.");
+			System.out.println(e.getMessage());
+			System.exit(1);
+		}
+	}
 	
 	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));
@@ -71,43 +86,49 @@ public class GerenciadorMecanico {
 		return null;
 	}
 	
-	private void registrarDriver() {
-		// Register the native JDBC driver. If the driver cannot 
-        // be registered, the test cannot continue.
-        try {
-            Class.forName(driver);
-        } catch (Exception e) {
-            System.out.println("Driver failed to register.");
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-	}
-	
 	private Connection createConnection(String nomeBanco) throws SQLException {
 		// Create the connection properties.
 		Properties properties = new Properties ();
-		properties.put ("user", Constantes.USUARIO_BANCO);
-		properties.put ("password", Constantes.SENHA_BANCO);
+		properties.put ("user", getUsuarioBanco());
+		properties.put ("password", getSenhaBanco());
 
 		// Connect to the local database.
-		String urlCompleta = url.replace("{banco}", nomeBanco).replace("{ip}", ip);
+		String urlCompleta = url.replace("{banco}", nomeBanco).replace("{ip}", ip).replace("{porta}", porta);
 		return DriverManager.getConnection(urlCompleta, properties);
 	}
 	
+	public ResultSet fastConsulta(String sql){
+		 try {
+		    	PreparedStatement ps = c.prepareStatement(sql);
+		    	return ps.executeQuery();
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+	        }
+		 return null;
+	}
+	
 	public ResultSet consultar(String sql){
-		registrarDriver();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+		ResultSet rs = null;
         try {
-			c = createConnection((getNomeBanco() == null || getNomeBanco().isEmpty()) ? "postgres" : getNomeBanco());
-	    	s = c.createStatement();
-	        ps = c.prepareStatement(sql);
-	        rs = ps.executeQuery();
+			criarConexao();
+	    	PreparedStatement ps = c.prepareStatement(sql);
+	    	rs = ps.executeQuery();
         } catch (SQLException e) {
         	e.printStackTrace();
+        }finally{
+        	fecharConexoes();
         }
         
-        try {
+        return rs;
+	}
+
+	public void criarConexao() throws SQLException {
+		c = createConnection((getNomeBanco() == null || getNomeBanco().isEmpty()) ? "postgres" : getNomeBanco());
+		s = c.createStatement();
+	}
+
+	public void fecharConexoes() {
+		try {
             if (c != null) {
                 c.close();
             }
@@ -117,26 +138,23 @@ public class GerenciadorMecanico {
         } catch (SQLException e) {
             System.out.println("Cleanup failed to close Connection.");
         }
-        
-        return rs;
 	}
 
 	private HashMap<String, String> fluxo = new HashMap<String, String>(); 
 	
 	public boolean executarQueryFluxo() {
-		registrarDriver();
 		boolean ret = true;
 		String chaveAtual = null;
         try {
-        	c = createConnection((getNomeBanco() == null || getNomeBanco().isEmpty()) ? "postgres" : getNomeBanco());
-        	s = c.createStatement();
+        	criarConexao();
+        	
         	Set<String> chaves = getFluxo().keySet();
         	for(String chave : chaves){
         		chaveAtual = chave;
         		s.executeUpdate(getFluxo().get(chave));
         	}
         } catch (SQLException sqle) {
-        	System.out.println("Erro durante a execu√ß√£o do fluxo: "+chaveAtual);
+        	System.out.println("Erro durante a execução do fluxo: "+chaveAtual);
             System.out.println("Database processing has failed.");
             System.out.println("Reason: " + sqle.getMessage());
             ret = false;
@@ -155,12 +173,22 @@ public class GerenciadorMecanico {
         return ret;
 	}
 	
-	protected boolean executarQuery(String query) {
-		registrarDriver();
+	protected boolean fastExecutarQuery(String query) {
 		boolean ret = true;
         try {
-        	c = createConnection((getNomeBanco() == null || getNomeBanco().isEmpty()) ? "postgres" : getNomeBanco());
-        	s = c.createStatement();
+			s.executeUpdate(query);
+        } catch (SQLException sqle) {
+            System.out.println("Database processing has failed.");
+            System.out.println("Reason: " + sqle.getMessage());
+            ret = false;
+        }
+        return ret;
+	}
+	
+	protected boolean executarQuery(String query) {
+		boolean ret = true;
+        try {
+        	criarConexao();
 			s.executeUpdate(query);
         } catch (SQLException sqle) {
             System.out.println("Database processing has failed.");
@@ -213,5 +241,29 @@ public class GerenciadorMecanico {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public String getPorta() {
+		return porta;
+	}
+
+	public void setPorta(String porta) {
+		this.porta = porta;
+	}
+
+	public String getUsuarioBanco() {
+		return usuarioBanco;
+	}
+
+	public void setUsuarioBanco(String usuarioBanco) {
+		this.usuarioBanco = usuarioBanco;
+	}
+
+	public String getSenhaBanco() {
+		return senhaBanco;
+	}
+
+	public void setSenhaBanco(String senhaBanco) {
+		this.senhaBanco = senhaBanco;
 	}
 }

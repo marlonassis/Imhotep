@@ -1,0 +1,231 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset id="examesPendentesFieldSet"
+					legend="Exames"
+					collapsed="false" 
+					toggleable="false">
+			<p:commandLink action="#{laboratorioSolicitacaoLiberacaoRaiz.consultarExamesSolicitados}" 
+						   update=":#{p:component('solicitacoesExamesPendentesDataGrid')}" 
+						   global="false" 
+              			   onclick="statusDialog.show();" 
+              			   onsuccess="statusDialog.hide();">
+				<h:graphicImage value="/Imagens/refresh16.png" />
+			</p:commandLink>
+			
+			<p:dataGrid id="solicitacoesExamesPendentesDataGrid"
+						var="linha" 
+						emptyMessage="Não há solicitações"
+						value="#{laboratorioSolicitacaoLiberacaoRaiz.examesSolicitados}" 
+						columns="1"  
+						paginator="true">  
+
+			        <p:panel header="#{linha.profissionalSolicitacao.nome} - #{linha.idLaboratorioSolicitacao}" style="text-align:center">  
+			            <h:panelGrid id="examesPendentesPanelGrid" columns="1" style="width:100%">  
+							<h:outputText value="#{linha.unidade.nome}" />
+							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataSolicitacao)}" />
+			                <h:outputText value="#{linha.itens.size()} item(ns)" />
+			                <h:panelGroup>
+			                	<h:panelGrid width="100%" columns="2" >			                
+					                <p:commandLink  title="Devolver"
+					                				action="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogExame}"
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();"
+					                				update=":#{p:component('solicitacoesExamesPendentesDataGrid')} :#{p:component('exameLiberacaoDialog')}" >  
+					                    <h:graphicImage value="/Imagens/test-tube-16.png" />   
+					                    <f:setPropertyActionListener value="#{linha}" target="#{laboratorioSolicitacaoLiberacaoRaiz.exame}" />  
+					                </p:commandLink>
+					                <p:commandLink  title="Recusar" 
+					                				action="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogRecusaExame}" 
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+						                			update=":#{p:component('recusarExameLiberacaoDialog')}"
+					                				onsuccess="statusDialog.hide();" > 
+					                    <h:graphicImage value="/Imagens/Close-icon.png" /> 
+					                    <f:setPropertyActionListener value="#{linha}" target="#{laboratorioSolicitacaoLiberacaoRaiz.exame}" />  
+					                </p:commandLink>
+					        	</h:panelGrid>
+				            </h:panelGroup>
+			                <h:graphicImage value="/Imagens/ensa-tube-16.png" 
+			                				rendered="#{laboratorioSolicitacaoLiberacaoRaiz.exame.idLaboratorioSolicitacao  == linha.idLaboratorioSolicitacao}" />
+			            </h:panelGrid>  
+			        </p:panel>  
+			  
+			</p:dataGrid>
+			
+			<p:dialog id="exameLiberacaoDialog" 
+					  visible="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogExame}" 
+					  resizable="true"
+					  closable="false" 
+					  modal="true"
+					  width="1024px" >
+				<p:growl/>
+				<p:outputPanel id="detalhesExame" style="text-align:center;" layout="block">
+		        	<b>#{laboratorioSolicitacaoLiberacaoRaiz.exame.profissionalSolicitacao.nome} - #{laboratorioSolicitacaoLiberacaoRaiz.exame.idLaboratorioSolicitacao}</b><br/>
+		        	#{laboratorioSolicitacaoLiberacaoRaiz.exame.unidade.nome} <br/>
+		        	#{laboratorioSolicitacaoLiberacaoRaiz.exame.paciente.nome}
+		            <h:panelGrid columns="1" width="90%">
+		            	<h:panelGroup>
+							<p:growl id="mensagemExameGrowl" showDetail="true"  />  
+				        	<div style="height:400px; overflow:scroll;" >
+								<p:dataTable var="item" 
+											 value="#{laboratorioSolicitacaoLiberacaoRaiz.exame.itensLista}"
+											 emptyMessage="Não há itens cadastrados" > 
+									<f:facet name="header">  
+								            Itens do Exame
+								    </f:facet>  
+								    
+								    <p:column style="width:60px; text-align: center;" >
+										<p:commandLink action="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogRecusaExameItem}"
+													   global="false" 
+			                						   onclick="statusDialog.show();" 
+			                						   onsuccess="statusDialog.hide();"
+													   update=":#{p:component('preRecusaItemDialog')}"
+													   rendered="#{item.statusItem != 'BB'}" 
+													   title="Recusar #{item.laboratorioExame.descricao}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{item}" target="#{laboratorioSolicitacaoLiberacaoRaiz.itemExame}" />
+											<h:graphicImage value="/Imagens/Close-icon.png" />
+										</p:commandLink>
+									</p:column>
+								    
+							        <p:column headerText="Código" width="">  
+							            <h:outputText value="#{item.laboratorioExame.codigo}" />  
+							        </p:column>  
+							        
+							        <p:column headerText="Descrição" width="">  
+							            <h:outputText value="#{item.laboratorioExame.descricao}" />  
+							        </p:column>
+							        
+							        <p:column headerText="Método" width="">  
+							            <h:outputText value="#{item.laboratorioExame.metodo}" />  
+							        </p:column>
+							        
+							        <p:column headerText="Justificativa" style="width:60px; text-align: center;" >
+										<p:commandLink action="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogJustificativaSolicitacaoExameItem}"
+													   global="false" 
+			                						   onclick="statusDialog.show();" 
+			                						   onsuccess="statusDialog.hide();"
+													   update=":#{p:component('exameItemJsutificaticaSolicitacaoDialog')}"
+													   rendered="#{item.justificativaSolicitacao != null}" 
+													   title="Clique aqui para ver a justificativa" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{item}" target="#{laboratorioSolicitacaoLiberacaoRaiz.itemExame}" />
+											<h:graphicImage value="/Imagens/doc.png" />
+										</p:commandLink>
+									</p:column>
+							        
+							        <p:column style="width:60px; text-align: center;" >
+										<p:commandLink action="#{laboratorioSolicitacaoLiberacaoRaiz.desfazerRecusaItem}"
+													   global="false" 
+													   rendered="#{item.statusItem == 'BB'}"
+			                						   onclick="statusDialog.show();" 
+			                						   onsuccess="statusDialog.hide();"
+													   update=":#{p:component('exameLiberacaoDialog')}"
+													   title="Recuperar #{item.laboratorioExame.descricao}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{item}" target="#{laboratorioSolicitacaoLiberacaoRaiz.itemExame}" />
+											<h:graphicImage value="/Imagens/undoBlue16.png" />
+										</p:commandLink>
+									</p:column> 
+							    </p:dataTable>
+							</div>
+						</h:panelGroup>
+						<h:panelGrid id="botoesLiberacaoExamePanelGrid" 
+									 global="false" 
+        						     onclick="statusDialog.show();" 
+        						     onsuccess="statusDialog.hide();"
+									 columns="3" 
+									 width="100%" >
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Liberar" 
+								    				 rendered="#{laboratorioSolicitacaoLiberacaoRaiz.exame.statusSolicitacao == 'AA'}"
+								    				 global="false" 
+			                						 onclick="statusDialog.show();" 
+			                						 onsuccess="statusDialog.hide();"
+								    				 action="#{laboratorioSolicitacaoLiberacaoRaiz.liberarSolicitacao}" 
+													 update=":#{p:component('exameLiberacaoDialog')} :#{p:component('solicitacoesExamesPendentesDataGrid')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Fechar"
+								    				 global="false" 
+					                				 onclick="statusDialog.show();" 
+					                				 onsuccess="statusDialog.hide();"	
+								    				 action="#{laboratorioSolicitacaoLiberacaoRaiz.ocultarDialogExame}" 
+													 update=":#{p:component('solicitacoesExamesPendentesDataGrid')} :#{p:component('exameLiberacaoDialog')}" />
+								</center>
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGrid>
+		        </p:outputPanel>  
+			
+			</p:dialog>
+			
+			<p:dialog id="exameItemJsutificaticaSolicitacaoDialog"
+					  header="Justificativa informada por #{laboratorioSolicitacaoLiberacaoRaiz.exame.profissionalSolicitacao.nome}" 
+					  modal="true" 
+					  resizable="true" 
+					  closable="false" 
+					  visible="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogJustificativaSolicitacaoExameItem}" >
+				<h:panelGrid columns="1" width="100%"  >
+					<p:editor value="#{laboratorioSolicitacaoLiberacaoRaiz.itemExame.justificativaSolicitacao}" disabled="true" />
+					<p:commandButton value="Fechar"
+				    				 global="false" 
+	                				 onclick="statusDialog.show();" 
+	                				 onsuccess="statusDialog.hide();"	
+				    				 action="#{laboratorioSolicitacaoLiberacaoRaiz.ocultarDialogJustificativaSolicitacaoExameItem}" 
+									 update=":#{p:component('exameItemJsutificaticaSolicitacaoDialog')}" />
+				</h:panelGrid>
+			</p:dialog>
+			
+			<p:dialog id="preRecusaItemDialog"
+					  header="Justificar recusa do item do exame" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{laboratorioSolicitacaoLiberacaoRaiz.exibirDialogJustificativaExameItem}" >
+				<h:panelGrid columns="1" width="100%"  >
+					<p:editor value="#{laboratorioSolicitacaoLiberacaoRaiz.justificativaItem}" />
+					<h:panelGroup>
+						<p:commandButton value="Recusar"
+					    				 global="false" 
+		                				 onclick="statusDialog.show();" 
+		                				 onsuccess="statusDialog.hide();" 
+					    				 action="#{laboratorioSolicitacaoLiberacaoRaiz.recusarExameItem}" 
+										 update=":#{p:component('preRecusaItemDialog')} :#{p:component('exameLiberacaoDialog')}" />
+						<p:commandButton value="Fechar"
+					    				 global="false" 
+		                				 onclick="statusDialog.show();" 
+		                				 onsuccess="statusDialog.hide();"	
+					    				 action="#{laboratorioSolicitacaoLiberacaoRaiz.ocultarDialogRecusaExameItem}" 
+										 update=":#{p:component('preRecusaItemDialog')}" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</p:dialog>
+			
+			<p:dialog id="recusarExameLiberacaoDialog"
+					  header="Recusar Devolução" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{exameMedicamentoRaiz.statusDialogJustificativaRecusaExame}" >
+				
+			</p:dialog>
+			
+			<p:poll interval="60" 
+					update=":#{p:component('solicitacoesExamesPendentesDataGrid')}" 
+					listener="#{laboratorioSolicitacaoLiberacaoRaiz.consultarExamesSolicitados}"
+					global="false" />
+		</p:fieldset>
+	</ui:define>
+</ui:composition>

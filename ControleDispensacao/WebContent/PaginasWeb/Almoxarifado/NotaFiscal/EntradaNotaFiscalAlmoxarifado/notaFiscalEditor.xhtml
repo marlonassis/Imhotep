@@ -61,6 +61,7 @@
 		
 		<ri:inputApenasNumero id="codigo" 
 							  title="Informe a chave de validação da nota fiscal" 
+							  required="true"
 							  value="#{notaFiscalAlmoxarifadoRaiz.instancia.chaveAcesso}" 
 							  label="Chave" />
 		
@@ -104,7 +105,7 @@
 		<ri:inputAutoComplete id="material" 
 							 label="Material"  
 							 disabled="#{notaFiscalAlmoxarifadoRaiz.achouLote}"
-							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoComplete}" 
+							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
 							 itemValue="#{material}" 
 							 itemLabel="#{material.descricaoUnidadeMaterial}" 
 							 var="material"
@@ -121,13 +122,12 @@
 							 value="#{notaFiscalAlmoxarifadoRaiz.item.estoqueAlmoxarifado.fabricanteAlmoxarifado}" 
 							 required="true"/>
 		
-		<ri:inputDataDiaMesAno id="dataValidade"
-						   label="Data de Validade"
-						   rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-						   disabled="#{notaFiscalAlmoxarifadoRaiz.achouLote}"
-						   required="true" 
-						   value="#{notaFiscalAlmoxarifadoRaiz.item.estoqueAlmoxarifado.dataValidade}"
-						   title="Data de validade do lote"/>
+		<ri:inputDataMesAnoValidadeAlmoxarifado id="dataValidade"
+											    label="Data de Validade"
+											    disabled="#{notaFiscalAlmoxarifadoRaiz.achouLote}"
+											    required="false" 
+											    value="#{notaFiscalAlmoxarifadoRaiz.item.estoqueAlmoxarifado.dataValidade}"
+											    title="Data de validade do lote"/>
 		
 		<ri:inputApenasNumero id="quantidade" 
 							  title="Informe a quantidade informada na nota" 
@@ -197,7 +197,7 @@
 				<h:panelGrid columns="1" style="width:100%">
 	                <h:panelGroup>
 	                	<h:outputText value="Material: " style="font-weight:bold;" /><br/>
-	  			       	<h:outputText value=" #{linha.estoqueAlmoxarifado.materialAlmoxarifado.descricao}"/>
+	  			       	<h:outputText value=" #{linha.estoqueAlmoxarifado.materialAlmoxarifado.descricaoReduzida}"/>
 	                </h:panelGroup>
 	            </h:panelGrid>
 	            <h:panelGrid columns="3" style="width:100%">  
@@ -210,7 +210,7 @@
 	                <h:panelGroup>
 	                	<h:outputText value="Validade:" style="font-weight:bold;" /><br/>
 	               		<h:outputText value="#{linha.estoqueAlmoxarifado.dataValidade}" style="margin-left:10px">
-			            	<f:convertDateTime pattern="dd/MM/yyyy"/>
+			            	<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3"  />
 			            </h:outputText>
 				    </h:panelGroup>
 				    

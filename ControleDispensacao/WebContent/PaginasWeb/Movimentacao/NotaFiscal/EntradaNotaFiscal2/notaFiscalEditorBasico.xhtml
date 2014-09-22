@@ -116,13 +116,12 @@
 							 value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.fabricante}" 
 							 required="true"/>
 		
-		<ri:inputDataMesAno id="dataValidade"
-						   label="Data de Validade"
-						   rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-						   disabled="#{notaFiscalRaiz.loteEncontrado}"
-						   required="true" 
-						   value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.dataValidade}"
-						   title="Data de validade do lote"/>
+		<ri:inputDataMesAnoMedicamento id="dataValidade"
+							   label="Data de Validade"
+							   disabled="#{notaFiscalRaiz.loteEncontrado}"
+						   	   required="true" 
+							   value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.dataValidade}"
+							   title="Data de validade do lote"/>
 		
 		<ri:inputApenasNumero id="quantidade" 
 							  title="Informe a quantidade informada na nota" 

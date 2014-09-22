@@ -31,19 +31,20 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 	}
 	
 	/**
-	 * m√©todo chamado para retorna o resultado da busca em que no seu instanciamento foi informado a string e o hashmap com os valores dos par√¢metros
-	 * @return cole√ß√£o de objetos do tipo informado
+	 * método chamado para retorna o resultado da busca em que no seu instanciamento foi informado a string e o hashmap com os valores dos parâmetros
+	 * @return coleção de objetos do tipo informado
 	 */
 	public Collection<E> resultadoBusca(){
 		return consulta(getSqlConsultaSB(), getAddValorConsulta());
 	}
  	
 	/**
-	 * m√©todo que retorna a consulta do tipo List
+	 * método que retorna a consulta do tipo List
 	 * @return lista de objetos do tipo informado
 	 */
 	public List<E> resultadoBuscaList(){
 		List<E> listaList = new ArrayList<E>();
+//		System.out.println(getSqlConsultaSB().toString());
 		for(E e : consulta(getSqlConsultaSB(), getAddValorConsulta())){
 			listaList.add(e);
 		}
@@ -59,10 +60,10 @@ public class ConsultaGeral<E> extends GerenciadorConexao {
 	}
 	
 	/**
-	 * M√©todo respons√°vel por setar os valores e fazer a consulta no banco 
+	 * Método responsável por setar os valores e fazer a consulta no banco 
 	 * @param String|Builder com o sql
 	 * @param hashMap com os valores as serem setados
-	 * @return Cole√ß√£o de objetos encontrados
+	 * @return Coleção de objetos encontrados
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<E> consulta(StringBuilder stringB, HashMap<Object, Object> hashMap, boolean consultaUnica ){

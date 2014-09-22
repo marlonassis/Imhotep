@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -13,7 +13,7 @@ public class ExcecaoQuantidadeAcimaEstoqueSolicitacaoUnidade extends ExcecaoPadr
 	private static final long serialVersionUID = 1783207019548721738L;
 	
 	public ExcecaoQuantidadeAcimaEstoqueSolicitacaoUnidade(){
-		super.mensagem("N√£o √© poss√≠vel dispensar uma quantidade acima do total do lote", null);
+		super.mensagem("Não é possível dispensar uma quantidade acima do total do lote", null);
 	}
 	
 }

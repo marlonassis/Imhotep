@@ -15,14 +15,14 @@ import javax.persistence.Table;
 import br.com.imhotep.enums.TipoEhealthRedeSocialEnum;
 
 @Entity
-@Table(name = "tb_ehealth_formulario_rede_social")
+@Table(name = "tb_ehealth_formulario_rede_social", schema="ehealth")
 public class EhealthFormularioRedeSocial {
 	
 	private int idEhealthFormularioRedeSocial;
 	private EhealthFormulario ehealthFormulario;
 	private TipoEhealthRedeSocialEnum tipoRedeSocial;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_ehealth_formulario_rede_so_id_ehealth_formulario_rede_so_seq")
+	@SequenceGenerator(name = "generator", sequenceName = "ehealth.tb_ehealth_formulario_rede_so_id_ehealth_formulario_rede_so_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_ehealth_formulario_rede_social", unique = true, nullable = false)

@@ -8,11 +8,11 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
 import br.com.imhotep.entidade.PreCadastroProfissional;
 import br.com.imhotep.excecoes.ExcecaoForaRedeHU;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PreCadastroProfissionalRaiz extends PadraoHome<PreCadastroProfissional>{
+public class PreCadastroProfissionalRaiz extends PadraoRaiz<PreCadastroProfissional>{
 	
 	@Override
 	protected void preEnvio() {

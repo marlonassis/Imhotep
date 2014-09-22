@@ -34,10 +34,10 @@ public class RelatorioAdmissaoPacienteEntrada extends PadraoRelatorio{
 		String caminho = Constantes.DIR_RELATORIO + "AdmissaoPacienteEntrada.jasper";
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		//injetando o relat√≥rio com o(s) cid(s)
+		//injetando o relatório com o(s) cid(s)
 		InputStream subInputStreamCid = this.getClass().getResourceAsStream("AdmissaoPacienteEntradaCid.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_CID", subInputStreamCid);
-		//injetando o relat√≥rio de doses do(s) procedimento(s)
+		//injetando o relatório de doses do(s) procedimento(s)
 		InputStream subInputStreamProcedimento = this.getClass().getResourceAsStream("AdmissaoPacienteEntradaProcedimento.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_PROCEDIMENTO_SAUDE", subInputStreamProcedimento);
 		

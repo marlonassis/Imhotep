@@ -50,7 +50,7 @@ public class ListaEspecial implements Serializable {
 		this.livro = livro;
 	}
 	
-	@Column(name = "ds_lista", length = 10)
+	@Column(name = "cv_lista", length = 10)
 	public String getLista() {
 		return this.lista;
 	}
@@ -59,7 +59,7 @@ public class ListaEspecial implements Serializable {
 		this.lista = lista;
 	}
 	
-	@Column(name = "ds_descricao", length = 60)
+	@Column(name = "cv_descricao", length = 60)
 	public String getDescricao() {
 		return this.descricao;
 	}

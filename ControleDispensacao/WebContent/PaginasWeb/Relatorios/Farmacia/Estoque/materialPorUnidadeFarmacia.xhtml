@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+ 
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório de Material por Unidade">
+			<h:form id="relatoriosForm"
+					style="text-align: left;">
+					
+				<h:panelGrid id="formularioRelatorio" columns="1" width="100%">
+		 		
+		 			<!-- UNIDADE -->
+					<h:panelGroup>
+						<p:watermark value="Todos" for=":#{p:component('unidade')}" />
+						<ri:inputAutoComplete id="unidade" 
+											  label="Unidade"  
+											  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+											  itemValue="#{unidade}" 
+											  itemLabel="#{unidade.nome}" 
+											  var="unidade"
+											  value="#{materialPorUnidadeFarmaciaBean.unidade}" 
+											   />
+					</h:panelGroup>
+					
+					<!-- PERÍODO -->
+					<h:panelGroup>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
+						<p:calendar id="dataIni"
+							value="#{materialPorUnidadeFarmaciaBean.dataIni}" pattern="dd/MM/yyyy"
+							locale="pt" 
+							required="true" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
+						<p:calendar id="dataFim"
+							value="#{materialPorUnidadeFarmaciaBean.dataFim}" pattern="dd/MM/yyyy"
+							locale="pt"
+							required="true" />
+					</h:panelGroup>	
+				</h:panelGrid>
+				
+				<h:panelGrid id="formularioRelatorioPanelGrid" columns="1" width="100%">
+					
+					<!-- GRUPO DE MATERIAL -->
+					<h:panelGroup>
+						<h:outputLabel for="grupo" value="Grupo:" />
+						<br />
+						<p:selectOneMenu value="#{materialPorUnidadeFarmaciaBean.grupo}"
+										 effect="fade" 
+										 required="false" 
+										 converter="entidadeConversor">
+							<p:ajax update=":#{p:component('formularioRelatorioPanelGrid')}" 
+									listener="#{materialPorUnidadeFarmaciaBean.atualizaSubGrupo()}" />
+							<f:selectItem itemLabel="[Todos]" itemValue="" />
+							<f:selectItems value="#{grupoConsulta.getList()}" 
+										   var="grupo"
+										   itemLabel="#{grupo.descricao}" 
+										   itemValue="#{grupo}" />
+						</p:selectOneMenu>
+					</h:panelGroup>  
+
+					<!-- SUBGRUPO DE MATERIAL -->
+					<h:outputLabel for="subGrupo" value="SubGrupo:" />
+					<p:selectOneMenu id="subGrupo"
+												   value="#{materialPorUnidadeFarmaciaBean.subGrupo}"
+												   effect="fade"
+												   required="false"
+												   converter="entidadeConversor"
+												   rendered="#{materialPorUnidadeFarmaciaBean.exibirComboSubGrupo}"
+												   label="SubGrupo" >
+	<!-- 					<p:ajax update=":#{p:component('formularioRelatorioPanelGrid')}" 
+									listener="#{materialPorUnidadeFarmaciaBean.atualizaFamilia()}" />   -->
+						<f:selectItem itemLabel="[Todos]" itemValue="" />	
+						<f:selectItems value="#{materialPorUnidadeFarmaciaBean.subGrupoList}" 
+										   var="subgrupo"
+										   itemLabel="#{subgrupo.descricao}" 
+										   itemValue="#{subgrupo}" />		
+					</p:selectOneMenu> 
+					
+	<!-- 				
+					
+					 FAMILIA DE MATERIAL
+					<ri:inputSelectOneMenuEntidade id="familia"
+												   required="false"
+												   rendered="#{materialPorUnidadeFarmaciaBean.exibirComboFamilia}"
+												   itemLabel="#{familiaInput.descricao}"
+												   itemValue="#{familiaInput}"
+												   labelItemDefault="[Todos]"
+												   var="familiaInput"
+												   value="#{materialPorUnidadeFarmaciaBean.familia}"
+												   list="#{materialPorUnidadeFarmaciaBean.familiaList}"
+												   label="Familia" />
+			 -->			
+	 			</h:panelGrid>
+	 			
+	 			
+	 			<div align="left">
+							<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{materialPorUnidadeFarmaciaBean.gerarRelatorio}"/>  
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

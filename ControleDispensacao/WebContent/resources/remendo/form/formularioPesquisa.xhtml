@@ -18,14 +18,17 @@
 		<co:attribute name="novoPadraoPesquisa" default="false" />
 		<co:attribute name="raizConsulta" />
 		<co:attribute name="labelNovo" default="Novo" />
+		<co:attribute name="exibirPesquisa" default="true" />
 	</co:interface>
 	
 	<co:implementation>
 		<ui:param name="idFormulario" value="#{cc.attrs.id}Form"/>
+		<ui:param name="idFormularioUpdt" value="p:component('#{idFormulario}')"/>
 		<h:form id="#{idFormulario}">
 			<p:fieldset legend="Pesquisa"
 						collapsed="#{cc.attrs.fieldSetCollapsed}" 
 						toggleable="true" 
+						rendered="#{cc.attrs.exibirPesquisa}"
 						toggleSpeed="500">
 				<p:growl id="formGrowl" showDetail="true" />
 				<ui:include src="/PaginasWeb/#{cc.attrs.srcConsulta}" />
@@ -35,7 +38,7 @@
 								 value="Pesquisar" 
 								 image="ui-icon ui-icon-search" 
 								 rendered="#{!cc.attrs.novoPadraoPesquisa}"
-								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
+								 update=":#{p:component('tabelaConsulta')}"/>
 				<p:commandButton global="false" 
                 				 onclick="statusDialog.show();"  
                 				 onsuccess="statusDialog.hide();"
@@ -43,16 +46,18 @@
 								 action="#{cc.attrs.raizConsulta.carregarResultado}"
 								 image="ui-icon ui-icon-search"
 								 rendered="#{cc.attrs.novoPadraoPesquisa}" 
-								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"/>
+								 update=":#{p:component('tabelaConsulta')}"/>
 				<p:commandButton global="false" 
                 				 onclick="statusDialog.show();"  
                 				 onsuccess="statusDialog.hide();"
 								 value="#{cc.attrs.labelNovo}" 
 								 image="ui-icon ui-icon-arrowrefresh-1-s" 
-								 update=":padraoTabView:#{cc.attrs.id}:#{idFormulario}"
+								 update=":#{p:component('padraoTabView')}"
 								 action="#{cc.attrs.novoAction}" />
 			</p:fieldset>
+			<h:panelGroup id="tabelaConsulta" >
 			<ui:include src="/PaginasWeb/#{cc.attrs.srcTabela}" />
+			</h:panelGroup>
 		</h:form>
 	</co:implementation>
 	

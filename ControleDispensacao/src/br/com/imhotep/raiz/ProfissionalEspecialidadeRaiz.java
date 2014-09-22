@@ -6,11 +6,11 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.ProfissionalEspecialidade;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class ProfissionalEspecialidadeRaiz extends PadraoHome<ProfissionalEspecialidade>{
+public class ProfissionalEspecialidadeRaiz extends PadraoRaiz<ProfissionalEspecialidade>{
 	
 	public ProfissionalEspecialidadeRaiz(){
 		super();

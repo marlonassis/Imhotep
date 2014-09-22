@@ -76,7 +76,7 @@ public class HttpPostForm
 					achouNomeLivro = true;
 					cont = 0;
 				}
-				//se j√° foi encontrado o nome do livro e houve dois espa√ßos consecutivos, ent√£o chegamos ao fim do nome do livro
+				//se j� foi encontrado o nome do livro e houve dois espa√ßos consecutivos, ent√£o chegamos ao fim do nome do livro
 				if(achouNomeLivro && cont > 1){
 					break;
 				}

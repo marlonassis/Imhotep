@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaGrupoOdontologia" 
+				 value="#{unidadeMaterialOdontologiaConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idUnidadeMaterialOdontologia}">
+				 
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Descrição" />
+			</f:facet>
+			<h:outputText value="#{linha.descricao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Sigla" />
+			</f:facet>
+			<h:outputText value="#{linha.sigla}" />
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   update=":padraoTabView:unidadeMaterialOdontologia:unidadeMaterialOdontologiaEditorForm"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{unidadeMaterialOdontologiaRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{unidadeMaterialOdontologiaRaiz.apagar()}"
+						   update=":padraoTabView:unidadeMaterialOdontologiaPesquisa:unidadeMaterialOdontologiaPesquisaForm :padraoTabView:unidadeMaterialOdontologia:unidadeMaterialOdontologiaEditorForm"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{unidadeMaterialOdontologiaRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

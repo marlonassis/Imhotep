@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -13,8 +13,11 @@ public class ExcecaoEstoqueLockAcimaUmMinuto extends ExcecaoPadrao {
 	private static final long serialVersionUID = 7270945906986262841L;
 	
 
-	public ExcecaoEstoqueLockAcimaUmMinuto(){
-		super.mensagem("Este lote est√° em lock a mais de um minuto", "");
+	public ExcecaoEstoqueLockAcimaUmMinuto(String lote){
+		if(lote != null && !lote.isEmpty())
+			super.mensagem("O lote "+lote+" está em lock a mais de um minuto", "");
+		else
+			super.mensagem("O lote está em lock a mais de um minuto", "");
 	}
 	
 }

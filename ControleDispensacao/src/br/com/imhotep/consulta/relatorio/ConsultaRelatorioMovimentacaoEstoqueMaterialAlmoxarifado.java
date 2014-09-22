@@ -25,7 +25,7 @@ public class ConsultaRelatorioMovimentacaoEstoqueMaterialAlmoxarifado extends Co
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
 		String sql = "select new br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterialAlmoxarifado(o.tipoMovimentoAlmoxarifado, " +
-				"a.nome, o.estoqueAlmoxarifado.lote, o.quantidadeMovimentacao, o.quantidadeAtual, o.dataMovimento, " +
+				"a.nome, o.estoqueAlmoxarifado.lote, o.estoqueAlmoxarifado.idEstoqueAlmoxarifado, o.quantidadeMovimentacao, o.quantidadeAtual, o.dataMovimento, " +
 				"b, o.estoqueAlmoxarifado.materialAlmoxarifado.descricao, o.justificativa) from MovimentoLivroAlmoxarifado o " +
 				"join o.profissionalInsercao b "+
 				"LEFT OUTER JOIN o.dispensacaoSimplesAlmoxarifado.unidadeDispensada a "+

@@ -62,14 +62,14 @@ public class RelatorioEstoqueContagem extends PadraoRelatorio{
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioEstoqueContagem.jasper";
-		String nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio = "RelatorioEstoqueContagem-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 		List<EstoqueContagem> lista = new EstoqueContagemConsultaRaiz().consultarEstoquesContagem();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("responsaveis", profissionais(lista));
 		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(menorData(lista)));
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(maiorData(lista)));
 		
-		//injetando o relat√≥rio de f√°rmacos
+		//injetando o relatório de fármacos
 		InputStream subInputStreamResponsaveis = this.getClass().getResourceAsStream("RelatorioEstoqueContagemResponsaveis.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_RESPONSAVEIS", subInputStreamResponsaveis);
 		

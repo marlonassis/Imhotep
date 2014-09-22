@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.FamiliaConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SubGrupoConsultaRaiz;
@@ -19,19 +20,37 @@ import br.com.imhotep.entidade.SubGrupo;
 import br.com.imhotep.entidade.extra.MaterialFaltaEstoque;
 import br.com.imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class MaterialRaiz extends PadraoHome<Material>{
+public class MaterialRaiz extends PadraoRaiz<Material>{
+	
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();
 	private List<Familia> familiaList = new ArrayList<Familia>();
 	private List<MaterialFaltaEstoque> materiaisAbaixoQuantidadeMinima = new ArrayList<MaterialFaltaEstoque>();
 	private MaterialLog materialAntigoLog = new MaterialLog();
 	private MaterialLog materialNovoLog = new MaterialLog();
+	private boolean exibirDialogConsultaQuantidadeMaterial;
 
 	public MaterialRaiz() {
 		inicializaVariaveis();
+	}
+	
+	public void entrou(){
+		super.mensagem("entrou", "entrou", Constantes.ERROR);
+	}
+	
+	public void alterarStatusDialogConsultaQuantidadeMaterial(){
+		if(isExibirDialogConsultaQuantidadeMaterial()){
+			setExibirDialogConsultaQuantidadeMaterial(false);
+		}else{
+			setExibirDialogConsultaQuantidadeMaterial(true);
+		}
+	}
+	
+	public void ocultarDialogConsultaQuantidadeMaterial(){
+		setExibirDialogConsultaQuantidadeMaterial(false);
 	}
 	
 	public static MaterialRaiz getInstanciaAtual(){
@@ -58,7 +77,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	}
 	
 	/**
-	 * M√©todo usando para carregar o subgrupo do grupo informado pelo usu√°rio
+	 * Método usando para carregar o subgrupo do grupo informado pelo usuário
 	 */
 	public void carregaSubGrupoList(){
 		if(getInstancia().getFamilia().getSubGrupo().getGrupo() != null){
@@ -68,7 +87,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	}
 	
 	/**
-	 * M√©todo usando para carregar as familias do subgrupo informado pelo usu√°rio
+	 * Método usando para carregar as familias do subgrupo informado pelo usuário
 	 */
 	public void carregaFamiliaList(){
 		if(getInstancia().getFamilia().getSubGrupo() != null){
@@ -87,9 +106,9 @@ public class MaterialRaiz extends PadraoHome<Material>{
 	
 	@Override
 	public void setInstancia(Material instancia) {
-		//carregando os valores ao entrar em edi√ß√£o
-		super.setInstancia(instancia);
+		//carregando os valores ao entrar em edição
 		inicializaVariaveis();
+		super.setInstancia(instancia);
 		carregaSubGrupoList();
 		familiaList.add(getInstancia().getFamilia());
 		gerarLogInicial();
@@ -100,6 +119,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 		getMaterialAntigoLog().setNome(getInstancia().getDescricao());
 		getMaterialAntigoLog().setUnidade(getInstancia().getUnidadeMaterial().getDescricao());
 		getMaterialAntigoLog().setBloqueado(getInstancia().getBloqueado());
+		getMaterialAntigoLog().setMaterial(getInstancia());
 	}
 
 	private void gerarLogFinal() {
@@ -107,6 +127,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 		getMaterialNovoLog().setNome(getInstancia().getDescricao());
 		getMaterialNovoLog().setUnidade(getInstancia().getUnidadeMaterial().getDescricao());
 		getMaterialNovoLog().setBloqueado(getInstancia().getBloqueado());
+		getMaterialNovoLog().setMaterial(getInstancia());
 	}
 	
 	@Override
@@ -115,7 +136,7 @@ public class MaterialRaiz extends PadraoHome<Material>{
 			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em MaterialHome");
 		}
 		getInstancia().setDataInclusao(new Date());
@@ -196,6 +217,15 @@ public class MaterialRaiz extends PadraoHome<Material>{
 
 	public void setMaterialNovoLog(MaterialLog materialNovoLog) {
 		this.materialNovoLog = materialNovoLog;
+	}
+
+	public boolean isExibirDialogConsultaQuantidadeMaterial() {
+		return exibirDialogConsultaQuantidadeMaterial;
+	}
+
+	public void setExibirDialogConsultaQuantidadeMaterial(
+			boolean exibirDialogConsultaQuantidadeMaterial) {
+		this.exibirDialogConsultaQuantidadeMaterial = exibirDialogConsultaQuantidadeMaterial;
 	}
 	
 }

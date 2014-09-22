@@ -20,11 +20,11 @@ import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteMovimentoSaida;
 import br.com.imhotep.excecoes.ExcecaoApagarLoteExisteNotaFiscal;
 import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
+public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 	
 	private boolean loteEncontrado;
 	private boolean loteDuplicado;
@@ -49,7 +49,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 			setDataAntiga(getInstancia().getDataValidade());
 			setCodigoBarrasAntigo(getInstancia().getCodigoBarras());
 		}else{
-			mensagem("Lote n√£o encontrado.", loteAntigo, Constantes.WARN);
+			mensagem("Lote não encontrado.", loteAntigo, Constantes.WARN);
 		}
 	}
 	
@@ -90,15 +90,15 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 	private void tentarDeletarEstoque() {
 		if(new LinhaMecanica().apagarMovimentoLivroEstoque(getInstancia().getIdEstoque()))
 			if(new LinhaMecanica().apagarEstoque(getInstancia().getIdEstoque())){
-				super.mensagem("Dele√ß√£o realizada com sucesso.", null, Constantes.INFO);
+				super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
 				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
 				new EstoqueLogRaiz().gerarLog(log);
 				novaInstancia();
 			}
 			else
-				super.mensagem("N√£o foi poss√≠vel deletar.", null, Constantes.WARN);
+				super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
 		else
-			super.mensagem("N√£o foi poss√≠vel deletar.", null, Constantes.WARN);
+			super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
 	}
 
 	public void fundirLotes(){
@@ -109,7 +109,7 @@ public class AlterarApagarLoteRaiz extends PadraoHome<Estoque> {
 			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras()),
 			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F, sdf.format(getInstancia().getDataValidade()), getEstoqueDuplicado().getCodigoBarras())};
 			new EstoqueLogRaiz().gerarLog(log);
-			mensagem("Fus√£o realizada com sucesso.", null, Constantes.INFO);
+			mensagem("Fusão realizada com sucesso.", null, Constantes.INFO);
 			setInstancia(getEstoqueDuplicado());
 			limparFusao();
 		}catch(ExcecaoEstoqueLock e){

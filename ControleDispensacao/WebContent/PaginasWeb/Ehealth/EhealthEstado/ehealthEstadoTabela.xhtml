@@ -21,20 +21,34 @@
 			<h:outputText value="#{linha.nome}" />
 		</p:column>
 		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Sigla" />
+			</f:facet>
+			<h:outputText value="#{linha.sigla}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="País" />
+			</f:facet>
+			<h:outputText value="#{linha.pais.nomeSigla}" />
+		</p:column>
+		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
 						   update=":padraoTabView:ehealthEstado:ehealthEstadoEditorForm"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstadoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{cidRaiz.apagar()}"
+			<p:commandLink action="#{ehealthEstadoRaiz.apagar()}"
 						   update=":padraoTabView:ehealthEstadoPesquisa:ehealthEstadoPesquisaForm :padraoTabView:ehealthEstado:ehealthEstadoEditorForm"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{cidRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstadoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

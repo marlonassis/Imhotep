@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Solicitação de exame(s)">
+			
+			<rf:formularioEdicao id="solicitacaoExame"
+								raiz="#{laboratorioSolicitacaoRaiz}"
+								srcEditor="Laboratorio/SolicitacaoExame/solicitacaoExameEditor.xhtml" 
+								semPesquisa="true" 
+								updateSalvar=":#{p:component('painelAvisosPanelGroup')}"
+								valueSalvar="Fechar Solicitação"
+								fieldSetCollapsed="false" />
+			
+			
+			<h:panelGroup id="justificativaItemPanelGroup" >
+				<p:dialog header="Justificativa - #{laboratorioSolicitacaoRaiz.item.laboratorioExame.descricao}" 
+						  visible="#{laboratorioSolicitacaoRaiz.exibirDialogJustificativaItem}"  >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<h:panelGroup>
+								<h:outputText value="Justificativa:" /><br/>
+								<p:editor id="justificativa" 
+										  value="#{laboratorioSolicitacaoRaiz.item.justificativaSolicitacao}" 
+										  required="true" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<p:commandButton value="Justificar" 
+										 update=":#{p:component('justificativaItemPanelGroup')} :#{p:component('examesPanelGrid')}"
+										 action="#{laboratorioSolicitacaoRaiz.atualizarJustificativa}" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="Cancelar"
+										 update=":#{p:component('justificativaItemPanelGroup')}" 
+										 action="#{laboratorioSolicitacaoRaiz.ocultarDialogJustificativaItem}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

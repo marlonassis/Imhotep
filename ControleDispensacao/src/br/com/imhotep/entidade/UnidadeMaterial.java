@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_unidade_material")
 public class UnidadeMaterial implements Serializable {
-	private static final long serialVersionUID = -7270695723242904479L;
+	private static final long serialVersionUID = -3618386383934172664L;
 	
 	private int idUnidadeMaterial;
 	private String descricao;
@@ -47,25 +47,40 @@ public class UnidadeMaterial implements Serializable {
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof UnidadeMaterial))
-			return false;
-		
-		return ((UnidadeMaterial)obj).getIdUnidadeMaterial() == this.idUnidadeMaterial;
-	}
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idUnidadeMaterial;
+		result = prime * result + ((sigla == null) ? 0 : sigla.hashCode());
+		return result;
 	}
 
 	@Override
-	public String toString() {
-		return descricao;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnidadeMaterial other = (UnidadeMaterial) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idUnidadeMaterial != other.idUnidadeMaterial)
+			return false;
+		if (sigla == null) {
+			if (other.sigla != null)
+				return false;
+		} else if (!sigla.equals(other.sigla))
+			return false;
+		return true;
 	}
+	
 }

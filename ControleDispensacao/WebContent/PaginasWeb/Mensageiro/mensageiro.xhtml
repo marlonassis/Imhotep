@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="conteudoPadraoSemTab">
+		<h:form>
+		
+			<p:layout style="min-width:500px;min-height:420px;" id="layout">
+				<p:layoutUnit position="west" size="15%" collapsible="true" header="Chat" >
+					<p:dataTable id="dataTable" 
+								 var="usu" 
+								 value="#{mensageiroConsulta.usuarios}" 
+            					 emptyMessage="Não há usuários" >  
+  
+				        <p:column id="nome" 
+				        		  filterBy="#{usu.nome}"
+				                  filterMatchMode="contains">  
+				            <h:outputText value="#{usu.nome}" />  
+				        </p:column>
+				    </p:dataTable>  
+        
+			    </p:layoutUnit>    
+			    
+			    <p:layoutUnit position="center" size="50%" resizable="true">  
+			    
+				    <p:menubar>  
+						<p:menuitem value="Recebidas" icon="ui-icon-mail-open" />
+			        	<p:menuitem value="Enviadas" icon="ui-icon-document" />
+			        	<p:menuitem value="Grupos" icon="ui-icon-arrow-4-diag" />
+			        	<p:menuitem value="Usuários" icon="ui-icon-person" />  
+			        	<p:separator/>
+			            <p:menuitem value="Marcar como Não Lida" icon="ui-icon-mail-closed"/>  
+			            <p:menuitem value="Apagar" icon="ui-icon-trash"/>  
+			              
+				        <f:facet name="options">  
+				            <p:inputText style="margin-right:10px"/>  
+				            <p:commandButton type="button" icon="ui-icon-search" />  
+				        </f:facet>  
+		    		</p:menubar>
+		    		  
+			    	<p:dataTable var="m" 
+		    					 value="#{mensageiroConsulta.listaMensagensRecebidas}"
+		    					 selection="#{mensageiroConsulta.mensagensSelecionadas}" 
+		    					 selectionMode="single" 
+				 				 rowKey="#{m.idMensagem}" >  
+				        
+				        <p:column selectionMode="multiple" style="width:2%" />  
+				        
+				        <p:column headerText="Remetente" >
+				            <h:outputText value="#{m.usuario.nome}" />
+				        </p:column>  
+				        
+				        <p:column headerText="Assunto" >
+				            <h:outputText value="#{m.assunto}" />  
+				        </p:column>  
+						
+						<p:column headerText="Envio" >
+							<h:outputText value="#{m.dataEnvio}">
+								<f:convertDateTime pattern="dd/MMMM/yyyy HH:mm"/>
+							</h:outputText>
+						</p:column>  
+					</p:dataTable>
+			    </p:layoutUnit>  
+			  
+			    <p:layoutUnit position="east" size="35%" >  
+			        <h:panelGrid width="100%" >
+			        	<h:panelGroup>
+			        		<h:outputText value="Destinatário(s)" /><br/>
+			        		<p:autoComplete value="#{mensageiroRaiz.destinatarios}" 
+			        						completeMethod="#{mensageiroConsulta.autoCompleteUsuario}" 
+			        						multiple="true"
+			        						var="u"
+			        						itemValue="#{u}"
+			        						itemLabel="#{u.nome}"/>  
+			        	</h:panelGroup>
+			        	<h:panelGroup>
+			        		<h:outputText value="cc" /><br/>
+			        		<p:autoComplete value="#{mensageiroRaiz.destinatarios}" 
+			        						completeMethod="#{mensageiroConsulta.autoCompleteUsuario}" 
+			        						multiple="true"
+			        						var="u"
+			        						itemValue="#{u}"
+			        						itemLabel="#{u.nome}"/>  
+			        	</h:panelGroup>
+			        	<h:panelGroup>
+			        		<h:outputText value="Assunto:" /><br/>
+			        		<p:inputText value="#{mensageiroRaiz.assunto}" size="60" />
+			        	</h:panelGroup>
+			        	<h:panelGroup>
+			        		<h:outputText value="Mensagem:" /><br/>
+			        		<p:editor id="editor" 
+			        				  value="#{mensageiroRaiz.mensagem}" 
+			        				  width="400"/> 
+			        	</h:panelGroup>
+			        </h:panelGrid>
+			        <p:commandButton value="Enviar" />
+			        <p:commandButton value="Limpar" />
+			    </p:layoutUnit>  
+			</p:layout>  
+
+		</h:form>  	
+		<br/>
+	</ui:define>
+	
+</ui:composition>

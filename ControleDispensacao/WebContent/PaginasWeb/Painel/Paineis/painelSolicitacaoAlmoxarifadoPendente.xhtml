@@ -1,0 +1,480 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset id="solicitacoesMaterialPendentesFieldSet"
+					legend="Solicitações Pendentes"
+					collapsed="false"
+					toggleable="false">
+			<p:commandLink action="#{solicitacaoMaterialAlmoxarifadoUnidadeConsultaRaiz.consultarSolicitacoesPendentes}" 
+						   update=":#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')}" 
+						   global="false" 
+              			   onclick="statusDialog.show();" 
+              			   onsuccess="statusDialog.hide();">
+				<h:graphicImage value="/Imagens/refresh16.png" />
+			</p:commandLink>
+			
+			<p:messages id="msgGeralDispensacaoAlmoxarifado" />
+			
+			<p:dataGrid id="solicitacoesMaterialAlmoxarifadoPendentesDataGrid"
+						var="linha" 
+						emptyMessage="Não há solicitações"
+						value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.listaSolicitacoesPendentes}" 
+						columns="1"  
+						paginator="true">  
+
+			        <p:panel header="#{linha.unidadeDestino.nome} - #{linha.idSolicitacaoMaterialAlmoxarifadoUnidade}" style="text-align:center">  
+			            <h:panelGrid id="solicitacoesMaterialAlmoxarifadoPendentesPanelGrid" columns="1" style="width:100%">  
+							<h:outputText value="#{linha.profissionalInsercao.nome}" />
+							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataFechamento)}" />
+			                <h:outputText value="#{linha.itens.size()} item(ns)" />
+			                <h:panelGroup rendered="#{linha.profissionalLock != null}" >
+				                <p:commandLink  title="Solicitação sendo liberada por #{linha.profissionalLock.nome}. Clique para desbloquear." 
+				                				action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.iniciarDispensacao}" 
+				                				global="false" 
+				                				onclick="statusDialog.show();" 
+				                				onsuccess="statusDialog.hide();" 
+				                				update=":#{p:component('avisoSolicitacaoLockDialog')} :#{p:component('msgGeralDispensacaoAlmoxarifado')} :#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" > 
+				                    <h:graphicImage value="/Imagens/Lock-icon.png" /> 
+				                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.carregarDispensacao}" />  
+				                </p:commandLink>
+					        </h:panelGroup>
+			                <h:panelGroup rendered="#{linha.profissionalLock == null}" >
+			                	<h:panelGrid width="100%" columns="2" >			                
+					                <p:commandLink  title="Dispensar" 
+					                				action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.iniciarDispensacao}" 
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();" 
+					                				update=":#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" > 
+					                    <h:graphicImage value="/Imagens/search.png" /> 
+					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.carregarDispensacao}" />  
+					                </p:commandLink>
+					                <p:commandLink  title="Recusar" 
+					                				action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.preRecusaSolicitacao}" 
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();" 
+					                				update=":#{p:component('recusarSolicitacaoMaterialAlmoxarifadoDialog')} :#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')}" > 
+					                    <h:graphicImage value="/Imagens/Close-icon.png" /> 
+					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia}" />  
+					                </p:commandLink>
+					        	</h:panelGrid>
+				            </h:panelGroup>
+			                <h:graphicImage value="/Imagens/upload.png" width="16px" height="16px" rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.edicao and 
+			                														solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.idSolicitacaoMaterialAlmoxarifadoUnidade == linha.idSolicitacaoMaterialAlmoxarifadoUnidade}" />
+			            </h:panelGrid>  
+			        </p:panel>  
+			  
+			</p:dataGrid>
+			
+			<p:dialog id="avisoSolicitacaoLockDialog"
+					  header="Solicitação em Liberação" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false"
+					  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.exibirDialogAvisoSolicitacaoLock}" >
+				<center>
+					<h:outputText value="Solicitação sendo liberada por #{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.profissionalLock.nome}. " /><br/>
+					<h:outputText value="Você está certo de que deseja assumir a liberação?" /><br/>
+					<h:panelGroup>
+					    <p:commandButton value="Sim" 
+					    				 global="false" 
+	               						 onclick="statusDialog.show();" 
+	               						 onsuccess="statusDialog.hide();"
+					    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.swapLockSolicitacao}" 
+										 update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('avisoSolicitacaoLockDialog')}" />
+					    <p:commandButton value="Não"
+					    				 global="false" 
+		                				 onclick="statusDialog.show();" 
+		                				 onsuccess="statusDialog.hide();"	
+					    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.ocultarDialogAvisoSolicitacaoLock}" 
+										 update=":#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')} :#{p:component('avisoSolicitacaoLockDialog')}" />
+						<br/>
+						<p:commandButton value="Remover Lacre" 
+					    				 global="false" 
+	               						 onclick="statusDialog.show();" 
+	               						 onsuccess="statusDialog.hide();"
+					    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.unlockSolicitacao}" 
+										 update=":#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')} :#{p:component('avisoSolicitacaoLockDialog')}" />
+						
+					</h:panelGroup>
+				</center>
+			</p:dialog>
+			
+			<p:dialog id="recusarSolicitacaoMaterialAlmoxarifadoDialog"
+					  header="Recusar Solicitação" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false"
+					  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.exibirModalJustificativaRecusaSolicitacao}" >
+				<p:outputPanel id="solicitacaoMaterialAlmoxarifadoRecusadaOutPutPanel" style="text-align:center;" layout="block">
+					<b>Informe o motivo da recusa da solicitação #{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.idSolicitacaoMaterialAlmoxarifadoUnidade}</b>
+					<br/>
+					<center>
+						<p:editor value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.justificativa}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.recusarSolicitacao}"
+												 update=":#{p:component('recusarSolicitacaoMaterialAlmoxarifadoDialog')} :#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')}" /> 
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.cancelarRecusa}" 
+							    				 update=":#{p:component('recusarSolicitacaoMaterialAlmoxarifadoDialog')} :#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="profissionalReceptorMaterialAlmoxarifadoDialog"
+					  header="Receptor" 
+					  widgetVar="profissionalReceptorMaterialAlmoxarifadoDialog" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.exibirModalProfissionalReceptor}" >
+				<p:outputPanel id="profissionalReceptorSolicitacaoMaterialAlmoxarifadoOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesReceptorSolicitacaoMaterialAlmoxarifado" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o nome do profissional que está recebendo a dispensação</b>
+					<br/>
+					<center>
+						<ri:inputAutoComplete id="profissionalResponsavelSolicitacaoMaterialAlmoxarifado" 
+											  completeMethod="#{profissionalAutoComplete.autoComplete}" 
+											  itemLabel="#{profissional.nome}" 
+											  itemValue="#{profissional}" 
+											  var="profissional" 
+											  value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.profissionalReceptor}" 
+											  label="Profissional Responsável" 
+											  required="false" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Dispensar" 
+												 global="false" 
+				                				 onclick="statusDialog.show();" 
+				                				 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.finalizarDispensacao}" 
+												 update=":#{p:component('messagesReceptorSolicitacaoMaterialAlmoxarifado')} :#{p:component('profissionalReceptorMaterialAlmoxarifadoDialog')}  :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.fecharConfirmacaoReceptor}" 
+							    				 update=":#{p:component('profissionalReceptorMaterialAlmoxarifadoDialog')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="justificativaRecusaItemSolicitacaoMaterialAlmoxarifadoDialog"
+					  header="Justificativa" 
+					  widgetVar="justificativaRecusaItemSolicitacaoMaterialAlmoxarifadoDialog" 
+					  modal="true" 
+					  width="700px" 
+					  height="340px" 
+					  closable="false" 
+					  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.exibirModalRecusaItemMaterial}" >
+				<p:outputPanel id="justificativaMaterialAlmoxarifadoRecusaOutPutPanel" style="text-align:center;" layout="block">
+					<b>Justifique o motivo de você estar recusando #{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado.item.materialAlmoxarifado.descricaoUnidadeMaterial}</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaRecusaMaterialAlmoxarifado" value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.justificativaRecusaSolicitacaoItem}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.recusarItem}" 
+												 update=":#{p:component('justificativaRecusaItemSolicitacaoMaterialAlmoxarifadoDialog')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('detalhesMaterialAlmoxarifadoEdicaoItem')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.cancelarRecusaItem}" 
+							    				 update=":#{p:component('justificativaRecusaItemSolicitacaoMaterialAlmoxarifadoDialog')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="justificativaMaterialAlmoxarifadoQuantidadeDiferenteDialog"
+					  header="Justificativa" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.exibirModalJustificativaQuantidadeDiferente}" >
+				<p:outputPanel id="justificativaMaterialAlmoxarifadoOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages showDetail="false" autoUpdate="false" closable="true" />  
+					<b>Justifique o motivo de você está liberando uma quantidade diferente da quantidade solicitada por #{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.profissionalInsercao.nomeResumido}</b>
+					<br/>
+					<center>
+						<p:editor value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.justificativaQuantidadeDiferenteSolicitada}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Liberar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+			                					 oncomplete="window.location.reload();"
+												 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.fecharItemLiberadoComJustificativa}"/> 
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+			                					 oncomplete="window.location.reload();"
+							    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.cancelarJustificativa}"/> 
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="dispensarSolicitacaoAlmoxarifadoDialog"
+					  header="Dispensar" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.exibirModalInicializacaoDispensacao}" >  
+		        <p:outputPanel id="detalhesMaterialAlmoxarifadoEdicaoItem" style="text-align:center;" layout="block">
+		        	<b>#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.unidadeDestino}</b> - #{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.idSolicitacaoMaterialAlmoxarifadoUnidade}
+		            <h:panelGrid columns="1" width="90%">
+						<h:panelGrid id="dispensarMaterialAlmoxarifadoPanelGrid" 
+									 columns="2"
+									 cellpadding="10px" >
+							<h:panelGroup>
+								<p:growl id="mensagemDispensacaoMaterialAlmoxarifadoGrowl" showDetail="true"  />  
+								<div style="height:450px; overflow:scroll;" >
+									<p:dataTable var="materialSolicitadoItem" 
+												 value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itensAtuais}"
+												 emptyMessage="Não há itens cadastrados" > 
+										<f:facet name="header">  
+									            Material(is) Soliciatado(s)
+									    </f:facet>  
+									    
+									    <p:column style="width:60px; text-align: center;" rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.statusDispensacao == 'P'}" >
+											<p:commandLink action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.preRecusaItem}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('justificativaRecusaItemSolicitacaoMaterialAlmoxarifadoDialog')}"
+														   rendered="#{materialSolicitadoItem.item.statusItem != 'R' and solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado.item == null}" 
+														   title="Recusar #{materialSolicitadoItem.item.materialAlmoxarifado.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{materialSolicitadoItem}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado}" />
+												<h:graphicImage value="/Imagens/Close-icon.png" />
+											</p:commandLink>
+										</p:column>
+									    
+								        <p:column headerText="Material" >
+								            <h:outputText value="#{materialSolicitadoItem.item.materialAlmoxarifado.descricaoUnidadeHtml}" escape="false" />  
+								        </p:column>  
+								        
+								        <p:column headerText="Quantidade Solicitada">  
+								            <h:outputText value="#{materialSolicitadoItem.item.quantidadeSolicitada}" />  
+								        </p:column> 
+								        
+								        <p:column headerText="Cota/Liberado">  
+								            <h:outputText value="#{materialSolicitadoItem.cota}" />
+								            <h:outputText value="/" />
+								            <h:outputText value="#{materialSolicitadoItem.quantidadeRecebidaMes}" />
+								        </p:column> 
+								        
+								        <p:column headerText="Saldo">  
+								            <h:outputText value="#{materialSolicitadoItem.totalEstoque}" />  
+								        </p:column> 
+								        
+								        <p:column headerText="Quantidade Dispensada">  
+								        	<h:outputText value="#{materialSolicitadoItem.lotes}" escape="false" /> 
+								        </p:column> 
+								        
+								        <p:column style="width:60px; text-align: center;" rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.statusDispensacao == 'P'}" >
+											<p:commandLink action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.carregarEstoquesDispensacao}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+				                						   oncomplete="window.location.reload();"
+														   rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado.item == null and materialSolicitadoItem.item.statusItem != 'R'}" 
+														   title="Editar #{materialSolicitadoItem.item.materialAlmoxarifado.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{materialSolicitadoItem}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado}" />
+												<h:graphicImage value="/Imagens/borrownext16.png" />
+											</p:commandLink>
+											<p:commandLink action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.cancelarRecusaItem}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}"
+														   rendered="#{materialSolicitadoItem.item.statusItem == 'R'}" 
+														   title="Reabilitar #{materialSolicitadoItem.item.materialAlmoxarifado.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{materialSolicitadoItem}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado}" />
+												<h:graphicImage value="/Imagens/undoBlue16.png" />
+											</p:commandLink>
+											<h:graphicImage value="/Imagens/pill16.png" 
+															rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado.item.idSolicitacaoMaterialAlmoxarifadoUnidadeItem == materialSolicitadoItem.item.idSolicitacaoMaterialAlmoxarifadoUnidadeItem}" 
+															title="Este medicamento está em edição" />
+										</p:column> 
+								    </p:dataTable>
+							    </div>
+							</h:panelGroup>
+						    <h:panelGroup id="edicaoLotesMateriais" rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado.item != null}" >
+						    	<p:messages id="messagesEdicaoLotesMateriais" showDetail="false" autoUpdate="false" closable="true" />
+							    <p:dataTable id="lotesMateriais" 
+											 var="estoqueAlmoxarifado" 
+											 emptyMessage="Escolha um material para iniciar a dispensação"
+											 value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.estoquesEdicao}">  
+	  
+							        <f:facet name="header"> 
+							            Lote(s) - #{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.itemSolicitado.item.materialAlmoxarifado.descricaoUnidadeMaterial}
+							        </f:facet>  
+							  
+							        <p:column headerText="Lote(s)">  
+							            <h:outputText value="#{estoqueAlmoxarifado.estoqueAlmoxarifado.lote}" />  
+							        </p:column>  
+							  		
+							  		<p:column headerText="Quantidade em Estoque" style="width:25%">  
+							                <h:outputText value="#{estoqueAlmoxarifado.estoqueAlmoxarifado.quantidadeAtual}" />  
+							        </p:column>  
+							  		
+							        <p:column headerText="Quantidade Dispensada" style="width:25%">  
+							                <h:outputText value="#{estoqueAlmoxarifado.quantidadeDispensada}" />  
+							        </p:column>  
+							        
+							        <p:column style="width:60px; text-align: center;">
+										<p:commandLink update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}"
+													   global="false" 
+					                				   onclick="statusDialog.show();" 
+					                				   onsuccess="statusDialog.hide();"
+													   rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.estoqueAlmoxarifadoDispensacao.estoqueAlmoxarifado == null}"
+													   title="Editar #{estoqueAlmoxarifado.estoqueAlmoxarifado.lote}" 
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{estoqueAlmoxarifado}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.estoqueAlmoxarifadoDispensacao}" />
+											<h:graphicImage value="/Imagens/borrownext16.png" />
+										</p:commandLink>
+										<h:graphicImage value="/Imagens/pill16.png" rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.estoqueAlmoxarifadoDispensacao == estoqueAlmoxarifado}" />
+									</p:column> 
+							    </p:dataTable>
+							    <br/>
+							    <h:panelGrid columns="2" width="100%" >
+							    	<h:panelGroup>
+							    		<center>
+										    <p:commandButton value="Liberar" 
+										    				 global="false" 
+			                								 onclick="statusDialog.show();" 
+			                								 onsuccess="statusDialog.hide();"
+										    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.preLiberacaoEstoquesItem}" 
+										    				 update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('justificativaMaterialAlmoxarifadoQuantidadeDiferenteDialog')}"/> 
+										</center>
+									</h:panelGroup>
+									<h:panelGroup>
+							    		<center>
+										    <p:commandButton value="Cancelar" 
+										    				 global="false" 
+							                				 onclick="statusDialog.show();" 
+							                				 onsuccess="statusDialog.hide();"
+										    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.cancelarLiberacaoEstoquesItem}" 
+										    				 update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}"/> 
+										</center>
+									</h:panelGroup>
+									<h:panelGroup id="loteMaterialAlmoxarifadoEdicao" rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.estoqueAlmoxarifadoDispensacao.estoqueAlmoxarifado != null}" >
+										<h:outputText style="font-weight:bold;" value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.estoqueAlmoxarifadoDispensacao.estoqueAlmoxarifado.lote}" /><br/>
+										Quantidade:<br/>
+										<p:inputText value="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.quantidadeDispensada}" /><br/>
+										<p:commandButton value="Atualizar" 
+														 global="false" 
+					                					 onclick="statusDialog.show();" 
+					                					 onsuccess="statusDialog.hide();"
+														 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.atualizarEstoqueDispensacaoEdicao}" 
+														 update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" />
+										<p:commandButton value="Cancelar" 
+														 global="false" 
+					                					 onclick="statusDialog.show();" 
+					                					 onsuccess="statusDialog.hide();"
+														 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.cancelarEstoqueDispensacaoEdicao}" 
+														 update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')}" />
+									</h:panelGroup>
+							    </h:panelGrid>
+							</h:panelGroup>
+						</h:panelGrid>
+						<p:separator id="separator2" />
+						<h:panelGrid id="botoesPanelGrid2" 
+									 columns="3" 
+									 width="100%" >
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Dispensar" 
+								    				 global="false" 
+								    				 rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.statusDispensacao == 'P'}"
+			                						 onclick="statusDialog.show();" 
+			                						 onsuccess="statusDialog.hide();"
+								    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.preFechamentoDispensacao}" 
+													 update=":#{p:component('profissionalReceptorMaterialAlmoxarifadoDialog')} :#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('mensagemDispensacaoMaterialAlmoxarifadoGrowl')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Fechar"
+								    				 global="false" 
+					                				 onclick="statusDialog.show();" 
+					                				 onsuccess="statusDialog.hide();"	
+								    				 action="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.fecharTelaDispensacaoAtual}" 
+													 update=":#{p:component('dispensarSolicitacaoAlmoxarifadoDialog')} :#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+									<p:commandButton value="Imprimir"
+								    			     onclick="window.open('/imhotep/PaginasWeb/Solicitacoes/SolicitacaoMaterialAlmoxarifadoUnidades/solicitacaoImpressa.hu', 'dispensacaoImpressa');" 
+								    			     rendered="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia.statusDispensacao == 'D'}" />
+								</center>
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGrid>
+		        </p:outputPanel>  
+			</p:dialog>  
+			
+			<p:poll interval="60" 
+					update=":#{p:component('solicitacoesMaterialAlmoxarifadoPendentesDataGrid')}" 
+					listener="#{solicitacaoMaterialAlmoxarifadoUnidadeConsultaRaiz.consultarSolicitacoesPendentes}"
+					global="false" />
+		</p:fieldset>
+	</ui:define>
+</ui:composition>

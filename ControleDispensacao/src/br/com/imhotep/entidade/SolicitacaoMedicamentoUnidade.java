@@ -1,6 +1,7 @@
 package br.com.imhotep.entidade;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.imhotep.comparador.MaterialGrupoSolicitacaoMedicamentoItemComparador;
 import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 
 @Entity
@@ -42,6 +44,7 @@ public class SolicitacaoMedicamentoUnidade implements Serializable {
 	private String justificativa;
 	private Profissional profissionalReceptor;
 	private Date dataFechamento;
+	private Profissional profissionalLock;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_solicitacao_medicamento_un_id_solicitacao_medicamento_un_seq")
 	@Id
@@ -107,8 +110,11 @@ public class SolicitacaoMedicamentoUnidade implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacaoMedicamentoUnidade")
 	public List<SolicitacaoMedicamentoUnidadeItem> getItens() {
+		if(itens != null)
+			Collections.sort(itens, new MaterialGrupoSolicitacaoMedicamentoItemComparador());
 		return itens;
 	}
+	
 	public void setItens(List<SolicitacaoMedicamentoUnidadeItem> itens) {
 		this.itens = itens;
 	}
@@ -161,6 +167,16 @@ public class SolicitacaoMedicamentoUnidade implements Serializable {
 
 	public void setDataFechamento(Date dataFechamento) {
 		this.dataFechamento = dataFechamento;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_lock")
+	public Profissional getProfissionalLock() {
+		return profissionalLock;
+	}
+
+	public void setProfissionalLock(Profissional profissionalLock) {
+		this.profissionalLock = profissionalLock;
 	}
 	
 	@Override

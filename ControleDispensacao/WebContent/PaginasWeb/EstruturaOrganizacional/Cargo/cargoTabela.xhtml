@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaCargo" 
+				 value="#{cargoConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foram encontrados registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idCargo}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nome" />
+			</f:facet>
+			<h:outputText value="#{linha.nome}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Função Pai" />
+			</f:facet>
+			<h:outputText value="#{linha.cargoPai.nome}" />
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   update=":#{p:component('cargoFormulario')}"
+						   rendered="#{linha.cargoPai == null}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+											 target="#{cargoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{cargoRaiz.apagar()}"
+						   update=":#{p:component('cargoFormulario')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+											 target="#{cargoRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

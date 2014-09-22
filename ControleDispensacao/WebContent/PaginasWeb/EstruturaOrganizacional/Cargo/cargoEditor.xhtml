@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="cargoPanelGrid" columns="3" width="100%">
+		
+		<ri:inputTextoSimples id="cargo" 
+							  title="Informe o cargo principal" 
+							  value="#{cargoRaiz.instancia.nome}" 
+							  label="Cargo Principal" />
+		
+		<h:panelGroup rendered="#{cargoRaiz.edicao}" >
+			<h:panelGrid columns="1" >
+				<h:panelGrid columns="2" >
+					<ri:inputTextoSimples id="cargoFilho" 
+										  title="Informe o cargo secundária" 
+										  value="#{cargoRaiz.cargoFilho}"
+										  label="Função Secundária" />
+					<p:commandButton icon="ui-icon-disk"
+									 action="#{cargoRaiz.cadastrarCargoFilho}" 
+									 update=":#{p:component('cargoPanelGrid')}" />
+				</h:panelGrid>
+			
+				<p:dataList id="tabelaFuncoesFilho" 
+						 value="#{cargoRaiz.cargosFilho}"
+						 var="linha" 
+						 dblClickSelect="true"
+						 emptyMessage="Não há cargos cadastradas" 
+						 rows="10" 
+						 paginator="true"
+						 selectionMode="single" 
+						 rowKey="#{linha.idCargo}">
+	
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:outputText value="#{linha.nome}" />
+					</p:column>
+					
+					<p:commandLink action="#{cargoRaiz.removerCargoFilho()}"
+								   update=":#{p:component('cargoPanelGrid')}"
+								   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+								   title="Apagar" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{cargoRaiz.cargoDelete}" />
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+					
+				</p:dataList>
+			</h:panelGrid>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+
+</ui:composition>

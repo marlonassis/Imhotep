@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid id="materialPanelGrid" columns="3" width="100%">
+
+		<ri:inputTextoSimples id="descricao" 
+							  title="Descreva o material" 
+							  required="true"
+							  value="#{materialOdontologiaRaiz.instancia.descricao}" 
+							  label="Descrição"/>
+							  
+		<h:panelGroup id="agrupamento" >
+			<h:panelGrid columns="2" width="100%" >
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputLabel for="grupo" value="Grupo:" />
+					<br />
+					<p:selectOneMenu value="#{materialOdontologiaRaiz.instancia.grupoOdontologia}"
+									 effect="fade" 
+									 required="true" 
+									 converter="entidadeConversor">
+						<p:ajax update=":#{p:component('agrupamento')}" 
+								listener="#{materialOdontologiaRaiz.atualizaSubGrupoAmoxarifado()}" />
+						<f:selectItem itemLabel="Selecione..." itemValue="" />
+						<f:selectItems value="#{grupoOdontologiaConsultaRaiz.consultarGrupos()}" 
+									   var="grupo"
+									   itemLabel="#{grupo.descricao}" 
+									   itemValue="#{grupo}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+				
+				<ri:inputSelectOneMenuEntidade id="subGrupo"
+											   required="true"
+											   rendered="#{materialOdontologiaRaiz.exibirComboSubGrupo}"
+											   itemLabel="#{subGrupoOdontologiaInput.descricao}"
+											   itemValue="#{subGrupoOdontologiaInput}"
+											   var="subGrupoOdontologiaInput"
+											   value="#{materialOdontologiaRaiz.instancia.subGrupoOdontologia}"
+											   list="#{materialOdontologiaRaiz.subGrupoOdontologiaList}"
+											   label="SubGrupo" />
+			</h:panelGrid>
+		</h:panelGroup>
+		
+		<ri:inputSelectOneMenuEntidade id="unidadeMaterialOdontologia"
+									   required="true"
+									   itemLabel="#{unidadeMaterialOdontologia.descricao}"
+									   itemValue="#{unidadeMaterialOdontologia}"
+									   var="unidadeMaterialOdontologia"
+									   value="#{materialOdontologiaRaiz.instancia.unidadeMaterialOdontologia}"
+									   list="#{unidadeMaterialOdontologiaConsultaRaiz.todasUnidadesMaterialOdontologia}"
+									   label="Unidade do Material" />
+									   
+		<ri:inputSelectOneRadioBoolean id="bloqueado" 
+									   value="#{materialOdontologiaRaiz.instancia.bloqueado}" 
+									   required="true"
+									   label="Bloqueado" />
+		
+		<ri:inputApenasNumero id="quantidadeMinima" 
+							  title="Informe a quantidade mínima" 
+							  value="#{materialOdontologiaRaiz.instancia.quantidadeMinima}" 
+							  label="Quantidade Mínima" />
+							  
+		
+	</h:panelGrid>
+
+</ui:composition>

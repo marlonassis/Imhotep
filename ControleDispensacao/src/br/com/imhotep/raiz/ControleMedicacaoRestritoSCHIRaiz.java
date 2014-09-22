@@ -25,11 +25,11 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="controleMedicacaoRestritoSCHIRaiz")
 @SessionScoped
-public class ControleMedicacaoRestritoSCHIRaiz extends PadraoHome<ControleMedicacaoRestritoSCHI>{
+public class ControleMedicacaoRestritoSCHIRaiz extends PadraoRaiz<ControleMedicacaoRestritoSCHI>{
 
 	private TipoBooleanEnum prescricaoAdequada = TipoBooleanEnum.T;
 	private List<PrescricaoItem> itensLiberacao = new ArrayList<PrescricaoItem>();

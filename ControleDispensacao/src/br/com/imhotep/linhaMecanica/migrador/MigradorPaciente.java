@@ -14,18 +14,21 @@ import br.com.imhotep.entidade.Paciente;
 import br.com.imhotep.enums.TipoSanguineoEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 /**
  * Classe para migrar os pacientes do medlynx
  * @author marlonassis
  *
  */
-public class MigradorPaciente extends PadraoHome<Paciente> {
+public class MigradorPaciente {
+
+	private static final String ARQUIVO_PACIENTES_MIGRADOS_ERRO = "/Users/marlonassis/Desktop/pacientesErro.txt";//"/Users/marlonassis/Desktop/pacientesErro.txt";
+	private static final String ARQUIVO_PACIENTES_MIGRADOS = "/Users/marlonassis/Desktop/pacientes.txt";//"/Users/marlonassis/Desktop/pacientes.txt";
 
 	public static void main(String[] args) {
-//		migrarPacientes();
-		atualizarPacienteTrimTipoSanguineo();
+		migrarPacientes();
+//		atualizarPacienteTrimTipoSanguineo();
 	}
 
 	private static void atualizarPacienteTrimTipoSanguineo() {
@@ -74,28 +77,28 @@ public class MigradorPaciente extends PadraoHome<Paciente> {
 		}
 		System.out.println("Total Achado: "+total);
 		System.out.println("Total Cadastrado: "+totalCadastrado);
-		System.out.println("In√≠cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println("Início: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
 		System.out.println("Fim: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 	}
 	
 	private static void migrarPacientes() {
-		//cd_pessoa √© o prontu√°rio e id do paciente (int)
-		//razao_social √© o nome (string)
-		//remover os ceps que est√£o no formato 49000000 (int)
-		//compl_cep √© a rua com o n√∫mero da casa, bairro, povoado, etc... (string) 
+		//cd_pessoa é o prontuário e id do paciente (int)
+		//razao_social é o nome (string)
+		//remover os ceps que estão no formato 49000000 (int)
+		//compl_cep é a rua com o número da casa, bairro, povoado, etc... (string) 
 		//sexo_pf (string)
-		//dt_nasc - tem que ter a hora tamb√©m (date)
+		//dt_nasc - tem que ter a hora também (date)
 		//tp_sanguineo - tipo do sangue (string)
 		//nome_pai, nome_mae, cd_rg, orgao_rg (string)
 		//nacionalidade, naturalidade (string) 
 		//cor, nacionalidade, naturalidade (string)
-		String sqlPes = "select cd_pessoa, razao_social, sexo_pf, dt_nasc, tp_sanguineo, "+
-				"nome_pai, nome_mae, cd_rg, orgao_rg, nacionalidade, naturalidade, cor, cd_cpf "+
-				"from cadpessoa where tp_pessoa = 'F' order by razao_social";
+		String sqlPes = "select cd_pessoa, razao_social, sexo_pf, dt_nasc, tp_sanguineo, compl_cep, "+
+				"nome_pai, nome_mae, cd_rg, orgao_rg, nacionalidade, naturalidade, cor, cd_cpf, num_prontuario "+
+				"from cadpessoa where dt_nasc is not null and cd_pessoa > 755839 and cd_pessoa < 790790 order by razao_social";
 		
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setNomeBanco("hospital_latin");
-		lm.setIp("127.0.0.1");
+		lm.setNomeBanco("hospital-18-02-14");
+		lm.setIp("200.133.41.8");
 		int totalAchado = 0;
 		int totalCadastrado = 0;
 		Calendar ini = Calendar.getInstance();
@@ -107,6 +110,7 @@ public class MigradorPaciente extends PadraoHome<Paciente> {
 				String sexo = limparString(rs.getString("sexo_pf"));
 				TipoSexoEnum sexoo = sexo == null || sexo.equals("") ? null : (sexo.equals("M") ? TipoSexoEnum.M : TipoSexoEnum.F );
 				Date nascimento = rs.getDate("dt_nasc");
+				String nascimento2 = nascimento == null ? null : "'"+new SimpleDateFormat("yyyy-MM-dd").format(nascimento)+"'";
 				TipoSanguineoEnum tipoSanguineoEnum = converterTipo(rs.getString("tp_sanguineo"));
 				String nomePai = limparString(rs.getString("nome_pai"));
 				String nomeMae = limparString(rs.getString("nome_mae"));
@@ -118,22 +122,29 @@ public class MigradorPaciente extends PadraoHome<Paciente> {
 				String cpf = limparString(rs.getString("cd_cpf"));
 				String sexooo = sexoo != null ? "'"+sexoo.name()+"'" : null;
 				String ts = tipoSanguineoEnum != null ? "'"+tipoSanguineoEnum.name().trim()+"'" : null;
+				String endereco = limparString(rs.getString("compl_cep"));
 				String sql = "insert into tb_paciente (cv_nome, cv_nome_mae, cv_nome_pai, tp_sexo, dt_data_nascimento, cv_cpf, " +
 						"cv_prontuario, tp_sangue, cv_registro_geral, cv_orgao_registro_geral, cv_nacionalidade, " +
-						"cv_cor, cv_naturalidade) values("+nome+","+nomeMae+","+nomePai+","+sexooo+","+nascimento+"," +
+						"cv_cor, cv_naturalidade, cv_endereco) values("+nome+","+nomeMae+","+nomePai+","+sexooo+","+nascimento2+"," +
 								cpf+","+prontuario+","+ts+","+rg+","+orgaoRg+","+nacionalidade+","+
-								cor+","+naturalidade+");";
+								cor+","+naturalidade+", "+endereco+");";
 				System.out.println(sql);
 				LinhaMecanica lml = new LinhaMecanica();
-				lml.setNomeBanco("db_imhotep_temp");
-				lml.setIp("127.0.0.1");
+				lml.setNomeBanco("db_imhotep_paciente");
+				lml.setIp("200.133.41.8");
 				if(lml.executarCUD(sql)){
 					totalCadastrado++;
+				}else{
+					File arquivo = new File(ARQUIVO_PACIENTES_MIGRADOS_ERRO);
+					FileOutputStream arquivoOutput = new FileOutputStream(arquivo, true); 
+					PrintStream gravador = new PrintStream(arquivoOutput);
+					gravador.println(sql);
+					gravador.close();
 				}
 				
 				totalAchado++;
-				
-				File arquivo = new File("/home/desenvolvimento/Imhotep/pacientes.txt");
+				System.out.println(totalAchado);
+				File arquivo = new File(ARQUIVO_PACIENTES_MIGRADOS);
 				FileOutputStream arquivoOutput = new FileOutputStream(arquivo, true); 
 				PrintStream gravador = new PrintStream(arquivoOutput);
 				gravador.println(sql);
@@ -147,7 +158,7 @@ public class MigradorPaciente extends PadraoHome<Paciente> {
 		}
 		System.out.println("Total Achado: "+totalAchado);
 		System.out.println("Total Cadastrado: "+totalCadastrado);
-		System.out.println("In√≠cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println("Início: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
 		System.out.println("Fim: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 	}
 

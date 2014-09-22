@@ -4,10 +4,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.Menu;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
-@ManagedBean(name="menuRaiz")
+@ManagedBean
 @SessionScoped
-public class MenuRaiz extends PadraoHome<Menu>{
+public class MenuRaiz extends PadraoRaiz<Menu>{
 	
 }

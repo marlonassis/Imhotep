@@ -40,11 +40,11 @@ import br.com.imhotep.fluxo.FluxoPrescricaoLiberacaoMedicamento;
 import br.com.imhotep.fluxo.FluxoPrescricaoMedicamento;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PrescricaoRaiz extends PadraoHome<Prescricao>{
+public class PrescricaoRaiz extends PadraoRaiz<Prescricao>{
 
 	private Prescricao prescricaoAtual = new Prescricao();
 	private Prescricao prescricaoBloqueio = new Prescricao();
@@ -114,7 +114,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 			getControleMedicacaoRestritoSCHI().setPaciente(getPrescricaoAtual().getPaciente());
 			getControleMedicacaoRestritoSCHI().setMassa(getPrescricaoAtual().getMassa());
 			getControleMedicacaoRestritoSCHI().setLeito(getPrescricaoAtual().getLeito());
-			//TODO alterar o nome do m√©todo - refatorar
+			//TODO alterar o nome do método - refatorar
 			if(fplm.analisarLiberacao(getControleMedicacaoRestritoSCHI(), getUsuario(), getSenha())){
 				carregaItensLiberacao();
 				limpaFormularioLiberacao();
@@ -130,7 +130,7 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 	
 	private boolean formularioLiberacaoPreenchido() {
 		if(getUsuario().isEmpty() || getSenha().isEmpty()){
-			super.mensagem("Informe o usu√°rio e senha.", null, FacesMessage.SEVERITY_INFO);
+			super.mensagem("Informe o usuário e senha.", null, FacesMessage.SEVERITY_INFO);
 			return false;
 		}
 		return true;
@@ -340,11 +340,11 @@ public class PrescricaoRaiz extends PadraoHome<Prescricao>{
 		if(fluxoAntigo.equals(Constantes.PRESCRICAO_PACIENTE_TAB)){
 			if(getPrescricaoAtual().getIdPrescricao() == 0){
 				if(!new ControlePrescricao().gravaPrescricao(getPrescricaoAtual())){
-					super.mensagem("Erro ao gravar a prescri√ß√£o", null, FacesMessage.SEVERITY_ERROR);
+					super.mensagem("Erro ao gravar a prescrição", null, FacesMessage.SEVERITY_ERROR);
 				}
 			}else{
 				if(!new ControlePrescricao().atualizaPrescricao(getPrescricaoAtual())){
-					super.mensagem("Erro ao atualizar a prescri√ß√£o", null, FacesMessage.SEVERITY_ERROR);
+					super.mensagem("Erro ao atualizar a prescrição", null, FacesMessage.SEVERITY_ERROR);
 				}
 			}
 		}

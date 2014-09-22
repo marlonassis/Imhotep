@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +15,8 @@ import br.com.imhotep.enums.TipoOperacaoEnum;
 
 @Entity
 @Table(name = "tb_tipo_movimento_almoxarifado")
-public class TipoMovimentoAlmoxarifado {
+public class TipoMovimentoAlmoxarifado implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int idTipoMovimentoAlmoxarifado;
 	private String descricao;
 	private TipoOperacaoEnum tipoOperacao;

@@ -48,9 +48,8 @@
 							 value="#{entradaMaterialSemNotaRaiz.instancia.fabricante}" 
 							 required="true"/>
 		
-		<ri:inputDataMesAno id="dataValidade"
+		<ri:inputDataMesAnoMedicamento id="dataValidade"
 							label="Data de Validade"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
 							disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 							required="true" 
 							value="#{entradaMaterialSemNotaRaiz.instancia.dataValidade}"

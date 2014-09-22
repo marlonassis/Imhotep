@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -13,7 +13,7 @@ public class ExcecaoReservaVazia extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1L;
 	
 	public ExcecaoReservaVazia(){
-		super.mensagem("N√£o √© poss√≠vel reservar quantidade 0", "Informe a quantidade");
+		super.mensagem("Não é possível reservar quantidade 0", "Informe a quantidade");
 	}
 	
 }

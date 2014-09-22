@@ -12,7 +12,7 @@
 			<h:outputLabel for="codigo" value="Código:" />
 			<br />
 			<p:inputText id="codigo" 
-						 disabled="#{materialRaiz.edicao}"
+						 disabled="false"
 						 required="true"
 						 onkeyup="apenasNumero(this);"
 						 value="#{materialRaiz.instancia.codigoMaterial}"
@@ -128,7 +128,11 @@
 							   itemValue="#{tipoMaterial}" />
 			</p:selectOneMenu>
 		</h:panelGroup>
-
+		
+		<ri:inputEnum id="tipoEstadoFisico" 
+					  value="#{materialRaiz.instancia.tipoEstadoFisico}" 
+					  label="Estado Físico" />
+		
 		<ri:inputSelectOneRadioBoolean id="bloqueado" 
 									   value="#{materialRaiz.instancia.bloqueado}" 
 									   label="Bloqueado" />

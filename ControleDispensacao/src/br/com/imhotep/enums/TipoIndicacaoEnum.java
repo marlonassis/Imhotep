@@ -5,8 +5,8 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoIndicacaoEnum {
-	T("Terap√™utica"),
-	P("Profil√°tica");
+	T("Terapêutica"),
+	P("Profilática");
 	
 	TipoIndicacaoEnum(String papel){
 		label = papel;

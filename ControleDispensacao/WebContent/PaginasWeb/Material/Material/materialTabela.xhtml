@@ -18,14 +18,7 @@
 			<f:facet name="header">
 				<h:outputText value="Descrição" />
 			</f:facet>
-			<h:outputText value="#{linha.descricao}" />
-		</p:column>
-
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Unidade do Material" />
-			</f:facet>
-			<h:outputText value="#{linha.unidadeMaterial}" />
+			<h:outputText value="#{linha.descricaoUnidadeMaterial}" />
 		</p:column>
 
 		<p:column>
@@ -35,16 +28,31 @@
 			<h:outputText value="#{linha.codigoMaterial}" />
 		</p:column>
 
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional Cadastrante" />
+			</f:facet>
+			<h:outputText value="#{linha.usuarioInclusao.profissional.nomeResumido}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data Cadastro" />
+			</f:facet>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInclusao)}" />
+		</p:column>
+
 		<p:column style="width:120px; text-align: center;">
+			
 			<p:commandLink title="Editar"
-						   update=":#{p:component('materialEditorForm')}"
+						   update=":#{p:component('materialCadastro')}"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{materialRaiz.apagar()}"
-						   update=":#{p:component('materialEditorForm')} :#{p:component('materialPesquisaForm')}"
+						   update=":#{p:component('materialCadastro')}"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.instancia}" />

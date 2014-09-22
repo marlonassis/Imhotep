@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="cotaPanelGrid" columns="3" width="100%">
+		<ri:inputAutoComplete id="unidade"
+							  required="true" 
+							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							  itemValue="#{unidade}" 
+							  itemLabel="#{unidade.nome}" 
+							  var="unidade" 
+							  value="#{almoxarifadoUnidadeCotaRaiz.instancia.unidade}" 
+							  label="Unidade"
+							  title="Informe o nome da unidade que receberá a cota"/>
+							 
+		<ri:inputAutoComplete id="materialAlmoxarifado" 
+							  completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
+							  itemValue="#{material}" 
+							  required="true"
+							  itemLabel="#{material.descricaoUnidadeMaterial}" 
+							  var="material" 
+							  value="#{almoxarifadoUnidadeCotaRaiz.instancia.materialAlmoxarifado}" 
+							  label="Material (código ou nome)"/>
+		
+		
+		<ri:inputApenasNumero id="quantidade" 
+							  title="Informe a quantidade máxima que a unidade pode solicitar" 
+							  required="true"
+							  value="#{almoxarifadoUnidadeCotaRaiz.instancia.cota}" 
+							  label="Cota" />
+		
+	</h:panelGrid>
+	
+</ui:composition>

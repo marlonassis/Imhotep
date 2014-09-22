@@ -16,11 +16,11 @@ import br.com.imhotep.entidade.PrescricaoAntiga;
 import br.com.imhotep.entidade.PrescricaoAntigaArquivo;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PrescricaoAntigaRaiz extends PadraoHome<PrescricaoAntiga> {
+public class PrescricaoAntigaRaiz extends PadraoRaiz<PrescricaoAntiga> {
 	
 	private List<UploadedFile> files = new ArrayList<UploadedFile>();
 	

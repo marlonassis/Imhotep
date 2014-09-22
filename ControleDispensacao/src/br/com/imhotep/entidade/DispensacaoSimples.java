@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,13 +14,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_dispensacao_simples")
-public class DispensacaoSimples {
+public class DispensacaoSimples  implements Serializable {
+	private static final long serialVersionUID = -1309274327397598165L;
 	
 	private int idDispensacaoSimples;
 	private Unidade unidadeDispensada;
 	private MovimentoLivro movimentoLivro;
 	private SolicitacaoMedicamentoUnidadeItem solicitacaoMedicamentoUnidadeItem;
-	private DevolucaoMedicamentoItem devolucaoMedicamentoItem;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_dispensacao_simples_id_dispensacao_simples_seq")
 	@Id
@@ -63,34 +65,59 @@ public class DispensacaoSimples {
 		this.solicitacaoMedicamentoUnidadeItem = solicitacaoMedicamentoUnidadeItem;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_devolucao_medicamento_item")
-	public DevolucaoMedicamentoItem getDevolucaoMedicamentoItem() {
-		return devolucaoMedicamentoItem;
-	}
-
-	public void setDevolucaoMedicamentoItem(DevolucaoMedicamentoItem devolucaoMedicamentoItem) {
-		this.devolucaoMedicamentoItem = devolucaoMedicamentoItem;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof DispensacaoSimples))
-			return false;
-		
-		return ((DispensacaoSimples)obj).getIdDispensacaoSimples() == this.idDispensacaoSimples;
-	}
-
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + unidadeDispensada.hashCode() + movimentoLivro.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idDispensacaoSimples;
+		result = prime * result
+				+ ((movimentoLivro == null) ? 0 : movimentoLivro.hashCode());
+		result = prime
+				* result
+				+ ((solicitacaoMedicamentoUnidadeItem == null) ? 0
+						: solicitacaoMedicamentoUnidadeItem.hashCode());
+		result = prime
+				* result
+				+ ((unidadeDispensada == null) ? 0 : unidadeDispensada
+						.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DispensacaoSimples other = (DispensacaoSimples) obj;
+		if (idDispensacaoSimples != other.idDispensacaoSimples)
+			return false;
+		if (movimentoLivro == null) {
+			if (other.movimentoLivro != null)
+				return false;
+		} else if (!movimentoLivro.equals(other.movimentoLivro))
+			return false;
+		if (solicitacaoMedicamentoUnidadeItem == null) {
+			if (other.solicitacaoMedicamentoUnidadeItem != null)
+				return false;
+		} else if (!solicitacaoMedicamentoUnidadeItem
+				.equals(other.solicitacaoMedicamentoUnidadeItem))
+			return false;
+		if (unidadeDispensada == null) {
+			if (other.unidadeDispensada != null)
+				return false;
+		} else if (!unidadeDispensada.equals(other.unidadeDispensada))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return unidadeDispensada.toString();
+		if(unidadeDispensada != null)
+			return unidadeDispensada.toString();
+		return super.toString();
 	}
+
 }

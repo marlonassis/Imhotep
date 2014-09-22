@@ -11,11 +11,11 @@ import br.com.imhotep.entidade.DevolucaoMedicamentoItem;
 import br.com.imhotep.enums.TipoStatusDevolucaoItemEnum;
 import br.com.imhotep.excecoes.ExcecaoDevolucaoItemInseridaDuasVezes;
 import br.com.imhotep.excecoes.ExcecaoDevolucaoMedicamentoSemItens;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class DevolucaoMedicamentoItemRaiz extends PadraoHome<DevolucaoMedicamentoItem>{
+public class DevolucaoMedicamentoItemRaiz extends PadraoRaiz<DevolucaoMedicamentoItem>{
 	
 	private List<DevolucaoMedicamentoItem> itens = new ArrayList<DevolucaoMedicamentoItem>();
 	private boolean exibirDialogAlterarQuantidade;

@@ -44,12 +44,12 @@ public abstract class PadraoControle extends PadraoGeral implements IPadraoHome 
 		boolean ret = false;
 		try{
 			iniciarTransacao();
-			session.delete(instancia); // Realiza persist√™ncia
-			tx.commit(); // Finaliza transa√ß√£o
+			session.delete(instancia); // Realiza persistência
+			tx.commit(); // Finaliza transação
 			setInstancia(null);
 			ret = true;
 			if(isExibeMensagemDelecao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Dele√ß√£o realizada com sucesso", "Registro apagado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Deleção realizada com sucesso", "Registro apagado!"));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -73,16 +73,16 @@ public abstract class PadraoControle extends PadraoGeral implements IPadraoHome 
 		Object o = null;
 		try{
 			iniciarTransacao();
-			session.merge(obj); // Realiza persist√™ncia
-			tx.commit(); // Finaliza transa√ß√£o
+			session.merge(obj); // Realiza persistência
+			tx.commit(); // Finaliza transação
 			o = obj;
 			if(isExibeMensagemAtualizacao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualiza√ß√£o realizada com sucesso", "Registro atualizado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualização realizada com sucesso", "Registro atualizado!"));
 			}
 		}catch (org.hibernate.exception.ConstraintViolationException e) {
 			session.getTransaction().rollback();
 			if(isExibeMensagemAtualizacao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro j√° cadastrado.","Ocorreu uma tentativa de duplica√ß√£o!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Operação não permitida!"));
 			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();

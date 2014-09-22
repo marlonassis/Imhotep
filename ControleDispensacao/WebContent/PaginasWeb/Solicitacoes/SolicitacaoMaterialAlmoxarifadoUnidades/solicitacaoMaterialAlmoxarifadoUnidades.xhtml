@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Solicitação de Material pelas Unidades">
+			<p:growl id="growlMaterialAlmoxarifadoUnidade" />
+			<rf:formularioEdicao id="solicitacaoMaterialAlmoxarifadoUnidade"
+								 fieldSetCollapsed="false"
+								 semPesquisa="true"
+								 raiz="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz}"
+								 srcEditor="Solicitacoes/SolicitacaoMaterialAlmoxarifadoUnidades/solicitacaoMaterialAlmoxarifadoUnidadesEditor.xhtml" 
+								 valueSalvar="Abrir Solicitação" 
+								 valueGravar="Fechar Solicitação"
+								 actionNovo="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.apagar()}"
+								 renderedNovo="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.edicao}" 
+								 updateAtualizar=":painelAvisosPanelGroup" 
+								 updateSalvar=":#{p:component('growlMaterialAlmoxarifadoUnidade')}" />
+				
+				<p:dialog id="alteracaoQuantidadeDialog"
+						  modal="true" 
+						  resizable="true" 
+						  header="Alterar a quantidade - #{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.itemSolicitacao.materialAlmoxarifado.descricaoUnidadeMaterial}" 
+						  visible="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.exibirModalAlterarQuantidadeItem}" >
+					<h:form>
+						<p:growl id="messagesAlteracaoQuantidade" />
+						<h:panelGrid columns="2" >
+							<ri:inputApenasNumero id="quantidade" 
+												  title="Informe a quantidade" 
+												  value="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.quantidadeAlteracaoItem}" 
+												  label="Quantidade" />
+							<h:panelGroup/>
+							<p:commandButton value="Alterar"
+											 action="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.alterarQuantidadeSolicitacaoAberta}" 
+											 update=":#{p:component('alteracaoQuantidadeDialog')} :#{p:component('solicitacaoMaterialAlmoxarifadoUnidadeEditorForm')}" />
+							
+							<p:commandButton value="Cancelar"
+											 action="#{solicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz.cancelarQuantidadeSolicitacaoAberta}" 
+											 update=":#{p:component('alteracaoQuantidadeDialog')} :#{p:component('solicitacaoMaterialAlmoxarifadoUnidadeEditorForm')}" />
+						</h:panelGrid>
+					</h:form>
+				</p:dialog>
+
+		</p:tab>
+	</ui:define>
+</ui:composition>

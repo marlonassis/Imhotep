@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="laboratorioResultadoPezinhoTempConsultaPanelGridConsulta" columns="3" width="100%">
+
+		<h:panelGroup>
+			<h:outputLabel for="exameConsulta" value="Exame:" />
+			<br />
+			<p:inputText id="exameConsulta" required="false"
+				value="#{laboratorioResultadoPezinhoTempConsulta.instancia.exameIdentificacao}"
+				title="Informe o número de exame" />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<h:outputLabel for="prontuarioConsulta" value="Prontuário:" />
+			<br />
+			<p:inputText id="prontuarioConsulta" required="false"
+				value="#{laboratorioResultadoPezinhoTempConsulta.instancia.prontuario}"
+				title="Informe o número de prontuário" />
+		</h:panelGroup>
+		
+		<ri:inputDataDiaMesAno id="dataCadastro" 
+							   title="Data do Cadastro" 
+							   value="#{laboratorioResultadoPezinhoTempConsulta.instancia.dataCadastro}" 
+							   label="Data do Cadastro" />
+
+	</h:panelGrid>
+</ui:composition>

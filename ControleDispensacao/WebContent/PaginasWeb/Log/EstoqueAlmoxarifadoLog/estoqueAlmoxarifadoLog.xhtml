@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Log do Estoque do Almoxarifado">
+			<p:dataTable id="tabelaEstoqueAlmoxaridoLog" 
+						 value="#{estoqueAlmoxarifadoLogConsulta.list}"
+						 var="linha" 
+						 dblClickSelect="true"
+						 emptyMessage="Não foi encontrado registros" 
+						 rows="100" 
+						 paginator="true"
+						 selectionMode="single" 
+						 rowKey="#{linha.idEstoqueAlmoxarifadoLog}">
+		
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Material" />
+					</f:facet>
+					<h:outputText value="#{linha.material}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Lote" />
+					</f:facet>
+					<h:outputText value="#{linha.lote}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data de Validade" />
+					</f:facet>
+					<h:outputText value="#{linha.dataValidade}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Código de Barras" />
+					</f:facet>
+					<h:outputText value="#{linha.codigoBarras}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tipo da Alteração" />
+					</f:facet>
+					<h:outputText value="#{linha.tipoAlteracao.label}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data do Log" />
+					</f:facet>
+					<h:outputText value="#{linha.dataLog}" >
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" timeZone="GMT-3" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Profissional" />
+					</f:facet>
+					<h:outputText value="#{linha.profissionalAlteracao.nome}" />
+				</p:column>
+			</p:dataTable>
+		</p:tab>
+	</ui:define>
+</ui:composition>

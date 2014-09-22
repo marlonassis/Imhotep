@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="confirma"
+ targetNamespace="http://200.166.148.111/confirma.wsdl"
+ xmlns:tns="http://200.166.148.111/confirma.wsdl"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns1="http://200.166.148.111/confirma.wsdl"
+ xmlns:ns2="http://tempuri.org/ns2.xsd"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:HTTP="http://schemas.xmlsoap.org/wsdl/http/"
+ xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+ <schema targetNamespace="http://200.166.148.111/confirma.wsdl"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns1="http://200.166.148.111/confirma.wsdl"
+  xmlns:ns2="http://tempuri.org/ns2.xsd"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+ </schema>
+
+ <schema targetNamespace="http://tempuri.org/ns2.xsd"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns1="http://200.166.148.111/confirma.wsdl"
+  xmlns:ns2="http://tempuri.org/ns2.xsd"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  attributeFormDefault="unqualified">
+  <import namespace="http://200.166.148.111/confirma.wsdl"/>
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <complexType name="agenda"><!-- ns2__agenda -->
+   <sequence>
+     <element name="codigointerno" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__agenda::endereco -->
+     <element name="codigosia" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__agenda::morador -->
+     <element name="cpf" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__agenda::dtvisita -->
+     <element name="hora" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__agenda::dtvisita -->
+     <element name="usuarios" type="ns2:usuario" minOccurs="0" maxOccurs="unbounded"/><!-- _ns2__familiaResponse::__sizeusuarios -->
+   </sequence>
+  </complexType>
+  <complexType name="usuario"><!-- ns2__Pessoa -->
+
+   <sequence>
+     <element name="cns" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__Pessoa::cns -->
+     <element name="nome" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__Pessoa::nome -->
+     <element name="dtnascimento" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__Pessoa::dtnascimento -->
+     <element name="sexo" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__Pessoa::sexo -->
+     <element name="confirma" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__Pessoa::sexo -->
+   </sequence>
+  </complexType>
+  <complexType name="login"><!-- _ns2__login -->
+   <sequence>
+     <element name="operador" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::operador -->
+     <element name="senha" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::senha -->
+   </sequence>
+  </complexType>
+
+  <complexType name="loginResponse"><!-- _ns2__loginResponse -->
+   <sequence>
+     <element name="token" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__loginResponse::token -->
+   </sequence>
+  </complexType>
+  <complexType name="pegaagendas"><!-- _ns2__login -->
+   <sequence>
+     <element name="token" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::operador -->
+     <element name="data" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::senha -->
+   </sequence>
+  </complexType>
+
+  <complexType name="agendasResponse"><!-- _ns2__familiaResponse -->
+
+   <sequence>
+     <element name="qtagendas" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__familiaResponse::qtpessoas -->
+     <element name="agendas" type="ns2:agenda" minOccurs="0" maxOccurs="unbounded"/><!-- _ns2__familiaResponse::__sizeusuarios -->
+   </sequence>
+  </complexType>
+  <complexType name="confirmaagenda"><!-- _ns2__login -->
+   <sequence>
+     <element name="token" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::operador -->
+     <element name="data" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::senha -->
+     <element name="agendas" type="ns2:agenda" minOccurs="0" maxOccurs="unbounded"/><!-- _ns2__familiaResponse::__sizeusuarios -->
+     <element name="cns" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns2__Pessoa::cns -->
+     <element name="chave" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__login::senha -->
+   </sequence>
+  </complexType>
+
+  <complexType name="confirmaResponse"><!-- _ns2__familiaResponse -->
+
+   <sequence>
+     <element name="status" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/><!-- _ns2__familiaResponse::qtpessoas -->
+   </sequence>
+  </complexType>
+
+  <element name="login" type="ns2:login"/>
+  <!-- operation response element -->
+  <element name="loginResponse" type="ns2:loginResponse"/>
+  <element name="pegaagendas" type="ns2:pegaagendas"/>
+  <!-- operation response element -->
+  <element name="agendasResponse" type="ns2:agendasResponse"/>
+  <element name="confirmaagenda" type="ns2:confirmaagenda"/>
+  <!-- operation response element -->
+  <element name="confirmaResponse" type="ns2:confirmaResponse"/>
+
+ </schema>
+
+</types>
+
+<message name="login">
+ <part name="Body" element="ns2:login"/><!-- __ns1__login::ns2__login -->
+</message>
+
+<message name="loginResponse">
+ <part name="Body" element="ns2:loginResponse"/>
+</message>
+
+<message name="pegaagendas">
+ <part name="Body" element="ns2:pegaagendas"/><!-- __ns1__pegafamilia::familia -->
+</message>
+
+<message name="agendasResponse">
+ <part name="Body" element="ns2:agendasResponse"/>
+</message>
+
+<message name="confirmaagenda">
+ <part name="Body" element="ns2:confirmaagenda"/><!-- __ns1__pegafamilia::familia -->
+</message>
+
+<message name="confirmaResponse">
+ <part name="Body" element="ns2:confirmaResponse"/>
+</message>
+
+<portType name="confirmaPortType">
+ <operation name="login">
+  <documentation>Service definition of function __ns1__login</documentation>
+  <input message="tns:login"/>
+  <output message="tns:loginResponse"/>
+ </operation>
+ <operation name="pegaagendas">
+  <documentation>Service definition of function __ns1__pegafamilia</documentation>
+  <input message="tns:pegaagendas"/>
+  <output message="tns:agendasResponse"/>
+ </operation>
+ <operation name="confirmaagenda">
+  <documentation>Service definition of function __ns1__pegafamilia</documentation>
+  <input message="tns:confirmaagenda"/>
+  <output message="tns:confirmaResponse"/>
+ </operation>
+
+</portType>
+
+<binding name="confirma" type="tns:confirmaPortType">
+ <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="login">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal"/>
+  </output>
+ </operation>
+ <operation name="pegaagendas">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal"/>
+  </output>
+ </operation>
+  <operation name="confirmaagenda">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal"/>
+  </output>
+ </operation>
+
+</binding>
+
+<service name="confirma">
+ <documentation>gSOAP 2.8.15 generated service definition</documentation>
+ <port name="confirma" binding="tns:confirma">
+  <SOAP:address location="http://200.166.148.111/cgi-bin/confirma.cgi"/>
+ </port>
+</service>
+
+</definitions>

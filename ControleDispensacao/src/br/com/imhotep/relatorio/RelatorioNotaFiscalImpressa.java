@@ -36,11 +36,11 @@ public class RelatorioNotaFiscalImpressa extends PadraoRelatorio{
 	
 	private void gerar(NotaFiscal notaFiscal) throws ClassNotFoundException, IOException, JRException, SQLException {
 		
-		String nomeRelatorio = notaFiscal.getIdentificacaoNotaFiscal();
+		String nomeRelatorio = notaFiscal.getIdentificacaoNotaFiscal()+".pdf";
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioNotaFiscalImpressa.jasper";
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		//injetando o relat√≥rio de f√°rmacos
+		//injetando o relatório de fármacos
 		InputStream subInputStreamNotaFiscalItens = this.getClass().getResourceAsStream("RelatorioNotaFiscalItens.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_MEDICAMENTOS", subInputStreamNotaFiscalItens);
 		

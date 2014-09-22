@@ -6,6 +6,15 @@ Released for free under a Creative Commons Attribution 2.5 License
 
 .colStyle1 { width: 25%; }
 .colStyle2 { width: 50%; }
+.colStyle3 { width: 33%; }
+
+.mypanelgrid td {
+	border-style: none !important;
+	padding: 2px 2px;
+}
+
+.contentPanelGrid td { text-align: left; 
+					   vertical-align: top; }
 
 .panelAvisos { height:125px; }
 

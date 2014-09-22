@@ -4,7 +4,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="/Templates/templatePadrao.xhtml">
+	template="/Templates/templatePadrao.xhtml"
+                xmlns:ri="http://java.sun.com/jsf/composite/remendo/input">
 
 	<ui:define name="head">
 	</ui:define>
@@ -12,6 +13,30 @@
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabRaiz" title="Home">
 			<h:form>
+				<p:hotkey bind="ctrl+shift+m" 
+						  update="consultaMedicamento" 
+						  global="false"
+						  actionListener="#{materialRaiz.alterarStatusDialogConsultaQuantidadeMaterial}" />  
+				<p:dialog id="consultaMedicamento" 
+						  modal="true"
+						  visible="#{materialRaiz.exibirDialogConsultaQuantidadeMaterial}" >
+					<h:panelGrid id="consultaMaterialPanelGrid" columns="2" >
+						<ri:inputAutoComplete id="materialConsultaQtd" 
+											  completeMethod="#{materialAutoComplete.autoComplete}" 
+											  itemValue="#{material}" 
+											  itemLabel="#{material.descricaoUnidadeMaterial}" 
+											  var="material" 
+											  value="#{materialConsultaRaiz.material}" 
+											  label="Material" />
+						<p:commandButton image="ui-icon ui-icon-search"
+										 update=":#{p:component('consultaMaterialPanelGrid')}"
+										 title="Atualizar a Quantidade" />
+						#{'Total: '}<h:outputText value="#{materialConsultaRaiz.quantidadeMaterialEstoque()}" />
+					</h:panelGrid>
+					<p:commandButton action="#{materialRaiz.alterarStatusDialogConsultaQuantidadeMaterial}" 
+									 value="Fechar" 
+									 update=":#{p:component('consultaMedicamento')}" />
+				</p:dialog>
 				<h:panelGrid columns="2" 
 							 width="100%"
 							 style="vertical-align: top" 
@@ -32,17 +57,32 @@
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelDevolucaoPendente.xhtml" />
 					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Devoluções Almoxarifado Pendentes')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelDevolucaoAlmoxarifadoPendente.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Solicitações Material Almoxarifado Pendentes')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelSolicitacaoAlmoxarifadoPendente.xhtml" />
+					</h:panelGroup>
 					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Dispensações Pendentes')}" >
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelDispensacaoPendente.xhtml" />
 					</h:panelGroup>
-					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Solicitações de Medicamento pelo Usuário')}" >
+					<h:panelGroup rendered="#{controleMenu.menuAutorizadoString.contains('Solicitações de Medicamento') or
+											  controleMenu.menuAutorizadoString.contains('Solicitação de Material') or
+											  controleMenu.menuAutorizadoString.contains('Devolução de Material') or
+											  controleMenu.menuAutorizadoString.contains('Devolução de Medicamento')}" >
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelConsultaSolicitacaoProfissional.xhtml" />
 					</h:panelGroup>
 					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Abaixo Quantidade Mínima')}" >
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelMedicamentoAbaixoEstoque.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Liberação de Exame')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelSolicitacoesExames.xhtml" />
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
@@ -53,6 +93,15 @@
 					  visible="#{autenticador.exibirFormularioAtual and autenticador.profissionalAtual.chaveVerificacao == null}" >
 				<ui:include src="/PaginasWeb/Formularios/cadastroChaveRecuperacao.xhtml" />
 			</p:dialog>
+			<h:panelGroup id="cadastroSenhaPanelGroup" >
+				<p:dialog header="Cadastro de Senha"
+						  modal="true" 
+						  closable="false" 
+						  width="1000px"
+						  visible="#{autenticador.usuarioTrocarSenha}" >
+					<ui:include src="/PaginasWeb/Formularios/trocaSenha.xhtml" />
+				</p:dialog>
+			</h:panelGroup>
 			
 		</p:tab>
 	</ui:define>

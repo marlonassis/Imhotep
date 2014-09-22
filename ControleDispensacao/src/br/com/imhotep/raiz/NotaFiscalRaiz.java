@@ -12,18 +12,22 @@ import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.consulta.raiz.LoteExistenteNotaFiscalConsultaRaiz;
+import br.com.imhotep.controle.ControleEstoqueTemp;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.entidade.NotaFiscal;
 import br.com.imhotep.entidade.NotaFiscalEstoque;
 import br.com.imhotep.excecoes.ExcecaoDataContabil;
-import br.com.imhotep.fluxo.FluxoNotaFiscalEstoque;
+import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.linhaMecanica.atualizador.AtualizadorEstoqueLM;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.imhotep.temp.PadraoFluxoTemp;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{	
+public class NotaFiscalRaiz extends PadraoRaiz<NotaFiscal>{	
 	
 	private NotaFiscalEstoque notaFiscalEstoque = new NotaFiscalEstoque();
 	private Boolean loteEncontrado;
@@ -87,7 +91,7 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 				getNotaFiscalEstoque().setEstoque(estoque);
 			}
 		}else{
-			mensagem("Este lote j√° est√° cadastrado para essa nota fiscal.", lote, Constantes.INFO);
+			mensagem("Este lote já está cadastrado para essa nota fiscal.", lote, Constantes.INFO);
 			limpar();
 		}
 	}
@@ -100,22 +104,35 @@ public class NotaFiscalRaiz extends PadraoHome<NotaFiscal>{
 	}
 	
 	public void gravarItemNotaFiscal(){
+		PadraoFluxoTemp.limparFluxo();
+		int idEstoque = getNotaFiscalEstoque().getEstoque().getIdEstoque();
 		try {
 			getNotaFiscalEstoque().setNotaFiscal(getInstancia());
 			MovimentoLivro movimentoLivro = prepararMovimentoLivro(getNotaFiscalEstoque());
-			getNotaFiscalEstoque().setMovimentoLivro(movimentoLivro);
-			if(getLoteEncontrado()){
-				FluxoNotaFiscalEstoque fluxoNotaFiscalEstoque = new FluxoNotaFiscalEstoque();
-				fluxoNotaFiscalEstoque.atualizarNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro);
-				limpar();
-			}else{
-				FluxoNotaFiscalEstoque fluxoNotaFiscalEstoque = new FluxoNotaFiscalEstoque();
-				fluxoNotaFiscalEstoque.salvarNovaNotaFiscalEstoque(getNotaFiscalEstoque(), movimentoLivro);
-				limpar();
-			}
+			Date dataAtual = new Date();
+			new ControleEstoqueTemp().liberarAjuste(dataAtual, movimentoLivro);
+			movimentoLivro.setJustificativa("NF: "+getInstancia().getIdentificacaoNotaFiscal());
+			PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro-"+movimentoLivro.hashCode(), movimentoLivro);
+			preparaItem(movimentoLivro, dataAtual);
+			PadraoFluxoTemp.getObjetoSalvar().put("NotaFiscalEstoque"+getNotaFiscalEstoque().hashCode(), getNotaFiscalEstoque());
+			PadraoFluxoTemp.finalizarFluxo();
+			getInstancia().getItens().add(getNotaFiscalEstoque());
+			limpar();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		PadraoFluxoTemp.limparFluxo();
+		try {
+			new AtualizadorEstoqueLM().unLockEstoque(idEstoque);
+		} catch (ExcecaoEstoqueUnLock e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void preparaItem(MovimentoLivro movimentoLivro, Date dataAtual) throws ExcecaoProfissionalLogado {
+		getNotaFiscalEstoque().setDataInsercao(dataAtual);
+		getNotaFiscalEstoque().setProfissionalInsercao(Autenticador.getProfissionalLogado());
+		getNotaFiscalEstoque().setMovimentoLivro(movimentoLivro);
 	}
 
 	private MovimentoLivro prepararMovimentoLivro(NotaFiscalEstoque notaFiscalEstoque) {

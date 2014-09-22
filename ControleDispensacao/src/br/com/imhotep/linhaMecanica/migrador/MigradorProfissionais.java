@@ -90,7 +90,7 @@ public class MigradorProfissionais {
 		InputStream is = new FileInputStream("/home/desenvolvimento/Desktop/Mod_Profissional.xls");  
 //        LeitorExcel leitor = null;  
 //  
-//        //Lista que ir√° guardar os dados da planilha  
+//        //Lista que irá guardar os dados da planilha  
 //        final List<ProfissionalImportacao> listaDadosProfissionalImportacao = new LinkedList<ProfissionalImportacao>();  
 //  
 //        leitor = new LeitorExcel("[*,*]", 1, is, null,  
@@ -104,7 +104,7 @@ public class MigradorProfissionais {
 //                        throws ListenerException {  
 //                    LinhaColunaListenerVo voAtual = (LinhaColunaListenerVo) dadosColuna  
 //                            .get(ColunaListener.CHAVE_VO_COLUNA);  
-//                    if (linha > 5) { //Pula primeira linha pois √© a linha que possui o t√≠tulo  
+//                    if (linha > 5) { //Pula primeira linha pois é a linha que possui o título  
 //                        switch (coluna) {  
 //                            case 1:// Coluna data  
 //                                if(dadosProfissionalImportacao == null){  
@@ -133,7 +133,7 @@ public class MigradorProfissionais {
 //          
 //        leitor.processarLeituraPlanilha();  
 //          
-////        //Agora fa√ßo o que quiser com os dados da planilha  
+////        //Agora faço o que quiser com os dados da planilha  
 //        for(ProfissionalImportacao vo : listaDadosProfissionalImportacao) {  
 //        	LinhaMecanica lm = new LinhaMecanica();
 //    		lm.setNomeBanco("db_imhotep_temp");

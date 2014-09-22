@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="estruturaOrganizacionalTab" title="Estrutura Organizacional">
+			<h:form id="estruturaOrganizacionalForm" >
+				<p:commandButton value="Deslocar" 
+								 action="#{estruturaOrganizacionalRaiz.exibirDialogDeslocarNo}"
+								 update=":#{p:component('dialogDeslocarNo')}" />
+				<p:commandButton value="Desmarcar" 
+								 action="#{estruturaOrganizacionalRaiz.desmarcarNo}"
+								 update=":#{p:component('estruturaOrganizacionalTree')}" />
+				<p:tree id="estruturaOrganizacionalTree"
+						draggable="true" 
+						droppable="true" 
+						dragMode="self"
+						value="#{estruturaOrganizacionalRaiz.root}" 
+						var="node" 
+		                selectionMode="single"
+		                selection="#{estruturaOrganizacionalRaiz.selectedNode}"
+		                orientation="horizontal" 
+		                animate="true" >
+		            <p:ajax event="dragdrop" listener="#{estruturaOrganizacionalRaiz.onDragDrop}" update=":#{p:component('estruturaOrganizacionalTree')}" />
+			        <p:treeNode>
+			            <h:outputText value="#{node}" />
+			        </p:treeNode>
+			    </p:tree>
+				 <p:contextMenu for="estruturaOrganizacionalForm"> 
+			        <p:menuitem value="Adicionar" 
+			        			update=":#{p:component('dialogAddEstrutura')}" 
+			        			actionListener="#{estruturaOrganizacionalRaiz.exibirDialogAddEstrutura}" 
+			        			icon="ui-icon-plus " /> 
+			        <p:menuitem value="Editar" 
+			        			update=":#{p:component('dialogAddEstrutura')}"
+			        			actionListener="#{estruturaOrganizacionalRaiz.exibirDialogAtualizarEstrutura}" 
+			        			icon="ui-icon-pencil" /> 
+			        <p:menuitem value="Apagar" 
+			        			update=":#{p:component('estruturaOrganizacionalForm')}" 
+			        			actionListener="#{estruturaOrganizacionalRaiz.deleteNode}" 
+			        			icon="ui-icon-closethick"/> 
+			    </p:contextMenu> 
+				
+			</h:form>
+		
+			<h:panelGroup id="dialogAddEstrutura" >
+				<p:dialog visible="#{estruturaOrganizacionalRaiz.exibirDialogEstrutura}" 
+						  closable="false" 
+						  width="400px"
+						  header="#{estruturaOrganizacionalRaiz.edicao ? 'Atualizar' : 'Cadastrar'}" 
+						  modal="true" >
+					<p:growl/>
+					<h:form>
+						<p:inputText size="60" value="#{estruturaOrganizacionalRaiz.instancia.nome}" />
+						<br/>
+						<br/>
+						<br/>
+						<p:commandButton value="#{estruturaOrganizacionalRaiz.edicao ? 'Atualizar' : 'Cadastrar'}" 
+										 action="#{estruturaOrganizacionalRaiz.enviarAtualizar}" 
+										 update=":#{p:component('estruturaOrganizacionalTree')} :#{p:component('dialogAddEstrutura')}" />
+										 
+						<p:commandButton value="Novo" 
+										 action="#{estruturaOrganizacionalRaiz.novaInstancia}"
+										 rendered="#{estruturaOrganizacionalRaiz.edicao}"
+										 update=":#{p:component('dialogAddEstrutura')}" />
+					</h:form>
+					<br/>
+					<br/>
+					<br/>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{estruturaOrganizacionalRaiz.ocultarDialogAddEstrutura}"
+										 update=":#{p:component('dialogAddEstrutura')}" />
+					</h:form>
+				</p:dialog>
+				
+				<h:panelGroup id="dialogDeslocarNo" >
+					<p:dialog visible="#{estruturaOrganizacionalRaiz.exibirDialogDeslocarNo}" 
+							  closable="false" 
+							  width="500px"
+							  header="Deslocar" 
+							  modal="true" >
+						<p:growl/>
+						<h:form>
+							<h:panelGrid columns="2" >
+								<ri:inputAutoComplete id="origem" 
+													  completeMethod="#{estruturaOrganizacionalAutoComplete.autoComplete}"
+													  labelTip="#{estru.estruturaPai.nome}" 
+													  itemValue="#{estru}" 
+													  itemLabel="#{estru.nome}" 
+													  var="estru" 
+													  value="#{estruturaOrganizacionalRaiz.origemDeslocar}" 
+													  label="Item da Estrutura" />
+								<ri:inputAutoComplete id="destino" 
+													  completeMethod="#{estruturaOrganizacionalAutoComplete.autoComplete}"
+													  labelTip="#{estru.estruturaPai.nome}" 
+													  itemValue="#{estru}" 
+													  itemLabel="#{estru.nome}" 
+													  var="estru" 
+													  value="#{estruturaOrganizacionalRaiz.destinoDeslocar}" 
+													  label="Deslocado Para" />
+							</h:panelGrid>
+							<br/>
+							<p:commandButton value="Deslocar" 
+											 action="#{estruturaOrganizacionalRaiz.deslocarNo}" 
+											 update=":#{p:component('dialogDeslocarNo')}" />
+											 
+						</h:form>
+						<br/>
+						<br/>
+						<br/>
+						<h:form>
+							<p:commandButton value="Fechar" 
+											 action="#{estruturaOrganizacionalRaiz.ocultarDialogDeslocarNo}"
+											 update=":#{p:component('dialogDeslocarNo')} :#{p:component('estruturaOrganizacionalTree')}" />
+						</h:form>
+					</p:dialog>
+				</h:panelGroup>
+			</h:panelGroup>
+		</p:tab>
+	</ui:define>
+</ui:composition>

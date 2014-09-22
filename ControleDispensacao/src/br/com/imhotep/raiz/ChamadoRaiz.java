@@ -12,11 +12,11 @@ import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.enums.TipoChamadoStatusEnum;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class ChamadoRaiz extends PadraoHome<Chamado>{
+public class ChamadoRaiz extends PadraoRaiz<Chamado>{
 	
 	public boolean abrirChamado(){
 		try {
@@ -59,7 +59,7 @@ public class ChamadoRaiz extends PadraoHome<Chamado>{
 				e.printStackTrace();
 			}
 		}else{
-			mensagem("Esste chamado n√£o est√° mais dispon√≠vel.", null, Constantes.INFO);
+			mensagem("Esste chamado não está mais disponível.", null, Constantes.INFO);
 		}
 		return false;
 	}

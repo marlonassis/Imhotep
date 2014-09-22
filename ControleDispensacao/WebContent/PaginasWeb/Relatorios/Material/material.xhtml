@@ -8,7 +8,7 @@
 	<ui:define name="head">
 	</ui:define>
 	<ui:define name="conteudoPadrao">
-		<p:tab id="tabRelatorios" title="Relatório Geral de Material">
+		<p:tab id="tabRelatorios" title="Relatório Geral de Materiais">
 			<h:form id="relatoriosForm"
 					target="_blank"
 					style="text-align: left;">
@@ -17,6 +17,11 @@
 								value="Gerar relatório" 
 								ajax="false"
 								action="#{relatorioMaterialCompleto.gerarRalatorio}"/>
+					<br/><br/>
+					<p:commandButton id="downloadRelatorioLista"
+								value="Gerar relatório dos materiais controlados" 
+								ajax="false"
+								action="#{relatorioMedicamentoControlado.gerarRalatorio}"/>
 				</div>
 			</h:form>
 		</p:tab>

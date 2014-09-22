@@ -4,11 +4,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.PainelAvisoEspecialidade;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PainelAvisoEspecialidadeRaiz extends PadraoHome<PainelAvisoEspecialidade>{
+public class PainelAvisoEspecialidadeRaiz extends PadraoRaiz<PainelAvisoEspecialidade>{
 	
 	public PainelAvisoEspecialidadeRaiz(){
 		super();

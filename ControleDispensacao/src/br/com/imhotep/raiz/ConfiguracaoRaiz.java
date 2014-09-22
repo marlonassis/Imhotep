@@ -8,11 +8,11 @@ import org.primefaces.model.UploadedFile;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.Configuracao;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class ConfiguracaoRaiz extends PadraoHome<Configuracao>{
+public class ConfiguracaoRaiz extends PadraoRaiz<Configuracao>{
 	
 	private UploadedFile uploadedFile;
 

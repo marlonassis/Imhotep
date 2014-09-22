@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório financeiro">
+			<h:form id="relatoriosForm"
+					target="_blank" 
+					style="text-align: left;">
+					
+				<h:panelGrid id="formularioRelatorioConsumoAnualPanelGrid" columns="3" width="100%">
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="ano" value="Ano:" />
+						<br />
+						<p:selectOneMenu value="#{relatorioConsumoAnualAlmoxarifado.ano}"
+										 effect="fade" 
+										 required="true">
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItem itemLabel="2013" itemValue="2013" />
+							<f:selectItem itemLabel="2014" itemValue="2014" />
+							<f:selectItem itemLabel="2015" itemValue="2015" />
+							<f:selectItem itemLabel="2016" itemValue="2016" />
+							<f:selectItem itemLabel="2017" itemValue="2017" />
+							<f:selectItem itemLabel="2018" itemValue="2018" />
+							<f:selectItem itemLabel="2019" itemValue="2019" />
+							<f:selectItem itemLabel="2020" itemValue="2020" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+				</h:panelGrid>
+					
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar Relatório" ajax="false"
+								action="#{relatorioConsumoAnualAlmoxarifado.gerarRelatorio}"/>
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

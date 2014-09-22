@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="configuracaoPanelGrid" columns="3" width="100%">
+		
+		<ri:inputApenasNumero id="exame" 
+							  title="Informe o número do exame"
+							  required="true" 
+							  value="#{laboratorioResultadoPezinhoTempRaiz.instancia.exameIdentificacao}" 
+							  label="Exame"/>
+		
+		<ri:inputApenasNumero id="prontuario" 
+							  title="Informe o número do prontuário"
+							  required="false" 
+							  value="#{laboratorioResultadoPezinhoTempRaiz.instancia.prontuario}" 
+							  label="Prontuário"/>
+		
+		<ri:inputValorFracionado id="resultadoExame" 
+							  title="Descreva a configuração"
+							  required="true" 
+							  value="#{laboratorioResultadoPezinhoTempRaiz.instancia.resultadoExame}" 
+							  label="Resultado"/>
+		
+		
+		<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataRes" value="Data do IRT" />
+						<br />
+						<p:calendar id="dataRes"
+									required="true"
+									value="#{laboratorioResultadoPezinhoTempRaiz.instancia.dataResultado}" 
+									pattern="dd/MM/yyyy"
+									locale="pt" />
+					</h:panelGroup>
+		
+		<p:fileUpload fileUploadListener="#{laboratorioResultadoPezinhoTempRaiz.handleFileUpload}"
+					  multiple="false"
+	    			  auto="true"
+	    			  cancelLabel="Limpar"
+	    			  label="Selecionar"
+		              mode="advanced"
+		              allowTypes="/(\.|\/)(html|htm)$/" />  
+		              
+	</h:panelGrid>
+
+</ui:composition>

@@ -1,151 +1,91 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="pacientePanelGrid" columns="3" width="100%">
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="numeroSus" value="Número do cartão do SUS:" />
-			<br />
-			<p:inputText id="numeroSus"
-						 value="#{pacienteRaiz.instancia.numeroSus}"
-						 required="true"
-						 title="Informe o número do cartão do SUS" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="prontuario" value="Prontuário:" />
-			<br />
-			<p:inputText id="prontuario"
-						 value="#{pacienteRaiz.instancia.prontuario}" 
-						 required="true"
-						 title="Informe o número do prontuário do paciente" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="nome" value="Nome:" />
-			<br />
-			<p:inputText id="nome" 
-						 value="#{pacienteRaiz.instancia.nome}"
-						 size="30"
-						 title="Informe o nome do paciete" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="nomeMae" value="Nome da Mãe:" />
-			<br />
-			<p:inputText id="nomeMae" 
-						 value="#{pacienteRaiz.instancia.nomeMae}"
-						 size="30"
-						 title="Informe o nome da mãe do paciente" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="nomePai" value="Nome do Pai:" />
-			<br />
-			<p:inputText id="nomePai" 
-						 value="#{pacienteRaiz.instancia.nomePai}"
-						 size="30"
-						 title="Informe o nome do pai do paciente" />
-		</h:panelGroup>
+		<ri:inputApenasNumero id="numeroSus" 
+							  required="true"
+							  title="Informe o número do cartão do SUS" 
+							  value="#{pacienteRaiz.instancia.numeroSus}" 
+							  label="Número do cartão do SUS" />
 		
-		<h:panelGroup>
-			<h:outputLabel for="dataNascimento" value="Data de Nascimento:" />
-			<br />
-			<p:inputMask id="dataNascimento" 
-						 mask="99/99/9999"
-						 value="#{pacienteRaiz.instancia.dataNascimento}"
-						 title="Data de nascimento do paciente">
-				<f:convertDateTime pattern="dd/MM/yyyy" />
-			</p:inputMask>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<h:outputLabel for="cpf" value="CPF:" />
-			<br />
-			<p:inputMask id="cpf" mask="999.999.999-99"
-						 value="#{pacienteRaiz.instancia.cpf}"
-						 title="Informe o CPF do paciente" 
-						 onblur="validaCPF(this);" />
-		</h:panelGroup>
-
-		<h:panelGroup style="align:left;">
-			<h:outputLabel for="cidadeNaturalidade" value="Naturalidade:" />
-			<br />
-			<p:autoComplete id="cidadeNaturalidade" 
-							minQueryLength="4"
-							value="#{pacienteRaiz.instancia.cidadeNaturalidade}" 
-							scrollHeight="300"
-							forceSelection="true"
-							completeMethod="#{cidadeAutoComplete.autoComplete}"
-							var="cidade" 
-							title="Informe a cidade à qual o paciente veio"
-							itemLabel="#{cidade.nomeCidadeEstado}" 
-							itemValue="#{cidade}"
-							converter="cidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="sexo" value="Sexo:" />
-			<br />
-			<p:selectOneMenu id="sexo" 
-							 value="#{pacienteRaiz.instancia.sexo}"
-							 effect="fade" 
-							 required="true" 
-							 title="Informe se o cliente é homem ou mulher">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{itensPadrao.sexoEnumItens}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
+		<ri:inputApenasNumero id="prontuario" 
+							  required="true"
+							  title="Informe o número do prontuário do paciente" 
+							  value="#{pacienteRaiz.instancia.prontuario}" 
+							  label="Prontuário" />
 		
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="tipoSanguineo" value="Tipo Sanguíneo:" />
-			<br />
-			<p:selectOneMenu id="tipoSanguineo" 
-							 value="#{pacienteRaiz.instancia.tipoSanguineo}"
-							 effect="fade" 
-							 required="false" 
-							 title="Informe o tipo sanguíneo do paciente">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{itensPadrao.tipoSanguineoEnumItens}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
+		<ri:inputTextoSimples id="nome"
+							  required="true" 
+							  title="Informe o nome do paciente" 
+							  value="#{pacienteRaiz.instancia.nome}" 
+							  label="Nome"
+							  size="30" />
 		
-		<h:panelGroup>
-			<h:outputLabel for="registroGeral" value="Registro Geral:" />
-			<br />
-			<p:inputText id="registroGeral" value="#{pacienteRaiz.instancia.registroGeral}"
-				title="Informe o RG do paciente" />
-		</h:panelGroup>
+		<ri:inputTextoSimples id="nomeMae"
+							  title="Informe o nome da mãe do paciente" 
+							  value="#{pacienteRaiz.instancia.nomeMae}" 
+							  label="Nome da Mãe"
+							  size="30" />
 		
-		<h:panelGroup>
-			<h:outputLabel for="orgaoRegistroGeral" value="Orgão:" />
-			<br />
-			<p:inputText id="orgaoRegistroGeral" value="#{pacienteRaiz.instancia.orgaoRegistroGeral}"
-				title="Informe o orgão do RG" />
-		</h:panelGroup>
+		<ri:inputTextoSimples id="nomePai"
+							  title="Informe o nome do pai do paciente" 
+							  value="#{pacienteRaiz.instancia.nomePai}" 
+							  label="Nome do Pai"
+							  size="30" />
 		
-		<h:panelGroup>
-			<h:outputLabel for="nacionalidade" value="Nacionalidade:" />
-			<br />
-			<p:inputText id="nacionalidade" value="#{pacienteRaiz.instancia.nacionalidade}"
-				title="Informe a nacionalidade do paciente" />
-		</h:panelGroup>
+		<ri:inputDataDiaMesAno id="dataNascimento" 
+							   title="Informe a data em que o paciente nasceu" 
+							   value="#{pacienteRaiz.instancia.dataNascimento}" 
+							   label="Data de nascimento"/>
 		
-		<h:panelGroup>
-			<h:outputLabel for="cor" value="Cor:" />
-			<br />
-			<p:inputText id="cor" value="#{pacienteRaiz.instancia.cor}"
-				title="Informe a cor do paciente" />
-		</h:panelGroup>
+		<ri:inputCpf id="cpf" 
+					 title="Informe o CPF do paciente" 
+					 value="#{pacienteRaiz.instancia.cpf}" 
+					 label="CPF"/>
+		
+		<ri:inputAutoComplete id="cidadeNaturalidade" 
+							  completeMethod="#{cidadeAutoComplete.autoComplete}" 
+							  itemValue="#{cidade}" 
+							  itemLabel="#{cidade.nomeCidadeEstado}" 
+							  var="cidade" 
+							  value="#{pacienteRaiz.instancia.cidadeNaturalidade}" 
+							  label="Naturalidade" />
+		
+		<ri:inputSelectOneMenuEnum id="sexo" 
+								   required="true"
+								   value="#{pacienteRaiz.instancia.sexo}" 
+								   label="Sexo" 
+								   itens="#{itensPadrao.sexoEnumItens}" />
+		
+		<ri:inputSelectOneMenuEnum id="tipoSanguineo" 
+								   required="true"
+								   value="#{pacienteRaiz.instancia.tipoSanguineo}" 
+								   label="Tipo Sanguíneo" 
+								   itens="#{itensPadrao.tipoSanguineoEnumItens}" />
+		
+		<ri:inputTextoSimples id="registroGeral" 
+							  title="Informe o RG do paciente" 
+							  value="#{pacienteRaiz.instancia.registroGeral}" 
+							  label="Registro Geral (RG)"></ri:inputTextoSimples>
+		
+		<ri:inputTextoSimples id="orgaoRegistroGeral" 
+							  title="Informe o orgão do RG" 
+							  value="#{pacienteRaiz.instancia.orgaoRegistroGeral}" 
+							  label="Orgão"/>
+		
+		<ri:inputTextoSimples id="nacionalidade" 
+							  title="Informe a nacionalidade do paciente" 
+							  value="#{pacienteRaiz.instancia.nacionalidade}" 
+							  label="Nacionalidade"/>
+		
+		<ri:inputTextoSimples id="cor" 
+							  title="Informe a cor do paciente" 
+							  value="#{pacienteRaiz.instancia.cor}" 
+							  label="Cor"/>
+		
 	</h:panelGrid>
 </ui:composition>

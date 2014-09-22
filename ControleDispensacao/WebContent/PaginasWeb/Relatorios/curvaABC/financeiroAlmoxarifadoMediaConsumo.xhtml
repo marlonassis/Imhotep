@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório financeiro">
+			<h:form id="relatoriosForm"
+					target="_blank" 
+					style="text-align: left;">
+					
+				<h:panelGrid id="formularioRelatorioCurvaABCPanelGrid" columns="3" width="100%">
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="mes" value="Mês Inicial:" />
+						<br />
+						<p:inputText styleClass="monthpicker" value="#{relatorioEstoqueCurvaABC.dataIni}">
+							<f:convertDateTime locale="pt_BR" timeZone="GMT-3" pattern="MM/yyyy"/>
+						</p:inputText>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="mes" value="Mês Final:" />
+						<br />
+						<p:inputText styleClass="monthpicker" value="#{relatorioEstoqueCurvaABC.dataFim}">
+							<f:convertDateTime locale="pt_BR" timeZone="GMT-3" pattern="MM/yyyy"/>
+						</p:inputText>
+					</h:panelGroup>
+				
+				</h:panelGrid>
+				<script>$('.monthpicker').monthpicker();</script>
+				
+				<div align="left">
+					<p:commandButton id="downloadRelatorioAlmoxarifado"
+									value="Almoxarifado" 
+									ajax="false"
+									action="#{relatorioEstoqueCurvaABC.gerarRelatorioAlmoxarifado}"/>
+					
+					<p:commandButton id="downloadRelatorioFarmacia"
+								value="Farmácia" 
+								ajax="false"
+								action="#{relatorioEstoqueCurvaABC.gerarRelatorioFarmacia}"/>
+								
+					<p:commandButton id="downloadRelatorioAmbos"
+									value="Ambos" 
+									ajax="false"
+									action="#{relatorioEstoqueCurvaABC.gerarRelatorioAmbos}"/>
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório de Movimentaçao por Material">
+			<h:form id="relatoriosForm"
+					style="text-align: left;">
+				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
+
+					<ri:inputAutoComplete id="material" 
+										  label="Informe o nome ou o código do material" 
+										  required="true"
+										  completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
+										  itemValue="#{material}" 
+										  itemLabel="#{material.descricaoUnidadeMaterial}" 
+										  var="material"
+										  value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.materialAlmoxarifado}" />
+					
+					<h:panelGroup>
+						<h:outputLabel for="operacao" value="Operação:" />
+						<br />
+						<p:selectOneMenu id="operacao"
+										 value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.tipoOperacao}" 
+										 title="A operação tipifica o tipo do movimento em entrada, saída e perda">
+							<p:ajax event="change" update=":#{p:component('tipoMovimento')}" />
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItems value="#{itensPadrao.operacaoEnumItens}" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel for="tipoMovimento" value="Tipo do movimento:" />
+						<br />
+						<p:selectOneMenu id="tipoMovimento"
+										 value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.tipoMovimentoAlmoxarifado}"
+										 effect="fade" 
+										 converter="entidadeConversor" >
+							<f:selectItem itemLabel="Todos" itemValue="" />
+							<f:selectItems value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.listaTipoMovimento}"
+										   var="tipoMovimento" 
+										   itemLabel="#{tipoMovimento.descricao}"
+										   itemValue="#{tipoMovimento}" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:watermark value="Todos" for=":#{p:component('unidade')}" />
+						<ri:inputAutoComplete id="unidade" 
+											  label="Unidade"  
+											  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+											  itemValue="#{unidade}" 
+											  itemLabel="#{unidade.nome}" 
+											  var="unidade"
+											  value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.unidade}" />
+					</h:panelGroup> 
+					
+					<ri:inputCheckBoolean id="agruparPorLote" 
+										  value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.agruparPorLote}" 
+										  label="Agrupar por Lote"/>
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
+						<p:calendar id="dataIni"
+							value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.dataIni}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
+						<p:calendar id="dataFim"
+							value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.dataFim}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" 
+								ajax="false"
+								action="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.gerarRelatorio}"/>
+					
+					<p:commandButton id="graficoRelatorio"
+								value="Gerar Gráfico"
+								ajax="true" 
+								title="O gráfico mostrará o consumo no período especificado"
+								action="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.gerarGrafico}"
+								update=":#{p:component('grafico')}"
+								global="false" 
+	              			    onclick="statusDialog.show();" 
+	              			    onsuccess="statusDialog.hide();"/>
+				</div>
+				
+				<p:dialog id="grafico" closable="false" modal="true" visible="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.exibirGrafico}" >
+					<center>
+						<p:lineChart id="linear" 
+									value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.linearModel}"
+									legendPosition="ne"
+									minY="0"
+									minX="0"
+									maxY="1000"
+									showMarkers="true"
+									showDatatip="true"
+									yaxisLabel="Consumo"
+									xaxisAngle="45" 
+									datatipFormat="#{util.datatipFormat}"
+	     							title="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.materialAlmoxarifado.descricao}" 
+	     							style="height:400px; width:800px;"/> 
+	     				 
+	     				<p:commandButton value="Fechar" update=":#{p:component('grafico')}" action="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.fecharModal}" />
+	     			</center>
+				</p:dialog>
+				
+			</h:form>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

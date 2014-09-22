@@ -32,7 +32,7 @@ public class ControleMedicacaoRestrito extends PadraoControle{
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao gravar a autoriza√ß√£o.", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu um erro ao gravar a autorização.", ""));
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaRestricao(ControleMedicacaoRestritoSCHI medicacaoRestritoSCHI)");
 			session.getTransaction().rollback();
 		}finally{
@@ -54,7 +54,7 @@ public class ControleMedicacaoRestrito extends PadraoControle{
 			ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControleMedicamentoRestrito");
 		}
 		new ErroAplicacaoRaiz(ea).enviar();

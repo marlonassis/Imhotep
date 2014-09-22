@@ -9,11 +9,11 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.entidade.TesteDoPezinho;
 import br.com.imhotep.entidade.TesteDoPezinhoResultado;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="testeDoPezinhoResultadoRaiz")
 @SessionScoped
-public class TesteDoPezinhoResultadoRaiz extends PadraoHome<TesteDoPezinhoResultado>{
+public class TesteDoPezinhoResultadoRaiz extends PadraoRaiz<TesteDoPezinhoResultado>{
 	private TesteDoPezinho testeDoPezinho;
 	
 	@Override

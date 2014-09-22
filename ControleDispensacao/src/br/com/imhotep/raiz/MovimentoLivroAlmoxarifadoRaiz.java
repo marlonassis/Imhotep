@@ -11,11 +11,11 @@ import br.com.imhotep.entidade.TipoMovimentoAlmoxarifado;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.imhotep.temp.PadraoFluxoTemp;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class MovimentoLivroAlmoxarifadoRaiz extends PadraoHome<MovimentoLivroAlmoxarifado>{
+public class MovimentoLivroAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmoxarifado>{
 	
 	public MovimentoLivroAlmoxarifado criarNovoMovimento(EstoqueAlmoxarifado estoqueAlmoxarifado, int qtdMovimentacao, int qtdAtual, TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado) throws ExcecaoProfissionalLogado{
 		getInstancia().setDataMovimento(new Date());
@@ -29,10 +29,7 @@ public class MovimentoLivroAlmoxarifadoRaiz extends PadraoHome<MovimentoLivroAlm
 	}
 	
 	private void addMovimentoAlmoxarifadoFluxo(MovimentoLivroAlmoxarifado movimentoLivroAlmoxarifado) {
-		if(movimentoLivroAlmoxarifado.getIdMovimentoLivro() > 0)
-			PadraoFluxoTemp.getObjetoAtualizar().put("movimentoLivroAlmoxarifado", movimentoLivroAlmoxarifado);
-		else
-			PadraoFluxoTemp.getObjetoSalvar().put("movimentoLivroAlmoxarifado", movimentoLivroAlmoxarifado);
+		PadraoFluxoTemp.getObjetoSalvar().put("movimentoLivroAlmoxarifado", movimentoLivroAlmoxarifado);
 	}
 	
 }

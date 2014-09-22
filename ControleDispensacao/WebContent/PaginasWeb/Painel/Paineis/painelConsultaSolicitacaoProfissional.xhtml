@@ -7,7 +7,7 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:fieldset id="solicitacoesMedicamentoProfissionalFieldSet"
-					legend="As 10 últimas solicitações" 
+					legend="As solicitações mais recentes" 
 					collapsed="false"
 					toggleable="false">
 			<p:commandLink action="#{solicitacaoMedicamentoUnidadeConsultaRaiz.consultarSolicitacoesProfissional}" 
@@ -18,81 +18,90 @@
 				<h:graphicImage value="/Imagens/refresh16.png" />
 			</p:commandLink>
 			<p:dataTable id="solicitacoesMedicamentoProfissionalDataTable"
-						 value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacoesProfissional}" 
+						 value="#{solicitacoesDevolucoesProfissionalRaiz.solicitacoesProfissional}" 
 						 var="linha"
 						 dblClickSelect="true" 
 						 emptyMessage="Não foi encontrado registros"
 						 rows="5" 
 						 paginator="true" 
 						 selectionMode="single"
-						 rowKey="#{linha.idSolicitacaoMedicamentoUnidade}">
+						 rowKey="#{linha.idUnico}">
 
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Número da Requisição" />
 					</f:facet>
-					<h:outputText value="#{linha.idSolicitacaoMedicamentoUnidade}"/>
+					<h:outputText value="#{linha.codigo}"/>
 				</p:column>
 				
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Unidade de Destino" />
 					</f:facet>
-					<h:outputText value="#{linha.unidadeDestino.nome}"/>
+					<h:outputText value="#{linha.unidade}"/>
 				</p:column>
 				
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Data" />
 					</f:facet>
-					<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataFechamento == null ? linha.dataInsercao : linha.dataFechamento)}"/>
+					<h:outputText value="#{linha.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tipo" />
+					</f:facet>
+					<h:outputText value="#{linha.tipo}"/>
 				</p:column>
 				
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Status" />
 					</f:facet>
-					<h:outputText value="#{linha.statusDispensacao.label}"/>
+					<h:outputText value="#{linha.status}"/>
 				</p:column>
 				
 				<p:column style="width:60px; text-align: center;">
 					<p:commandLink title="Vizualizar"
-								   action="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogConsultaSolicitacao}" 
+								   action="#{solicitacoesDevolucoesProfissionalRaiz.abrirDialogConsultaSolicitacao}" 
 								   update=":#{p:component('solicitacaoExibicaoDialog')}" 
-								   rendered="#{linha.statusDispensacao != 'A'}"
+								   rendered="#{linha.status != 'Aberta'}"
 								   global="false" 
 		              			   onclick="statusDialog.show();" 
 		              			   onsuccess="statusDialog.hide();"
 								   style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao}" />
+						<f:setPropertyActionListener value="#{linha}" target="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta}" />
 						<h:graphicImage value="/Imagens/doc.png" 
 										height="16px"
 										width="16px" />
 					</p:commandLink>
 					
-					<p:commandLink oncomplete="location.href='Enfermagem/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidade.hu'"
+					<p:commandLink action="#{solicitacoesDevolucoesProfissionalRaiz.carregarSolicitacao}"
 								   title="Continuar solicitação"
-								   rendered="#{linha.statusDispensacao == 'A'}"
+								   rendered="#{linha.status == 'Aberta'}"
 								   global="false" 
 		              			   onclick="statusDialog.show();" 
 		              			   onsuccess="statusDialog.hide();"
 								   style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instanciaSolicitacaoAberta}" />
+						<f:setPropertyActionListener value="#{linha}" target="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta}" />
 						<h:graphicImage value="/Imagens/next.png" 
 										height="16px"
 										width="16px" />
 					</p:commandLink>
 					
-					<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.apagar}"
+					<p:commandLink action="#{solicitacoesDevolucoesProfissionalRaiz.deletarSolicitacao}"
 								   title="Apagar solicitação"
 								   update=":#{p:component('solicitacoesMedicamentoProfissionalDataTable')}" 
-								   rendered="#{linha.statusDispensacao == 'A'}"
+								   rendered="#{linha.status == 'Aberta'}"
 								   global="false" 
 		              			   onclick="statusDialog.show();" 
 		              			   onsuccess="statusDialog.hide();"
 		              			   
 								   style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />
+						<f:setPropertyActionListener value="#{linha}" target="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta}" />
 						<h:graphicImage value="/Imagens/Close-icon.png" 
 										height="16px"
 										width="16px" />
@@ -103,14 +112,15 @@
 			<b>Legenda do status</b>
 			<br/>
 			<div align="left" >
-				<b>* Aberta</b> - Solicitação que não foi enviada à farmácia;
+				<b>* Aberta</b> - Solicitação que não foi enviada;
 				<br/>
-				<b>* Pendente</b> - Solicitação que está na farmácia aguardando a dispensação;
+				<b>* Pendente</b> - Solicitação que está aguardando liberação;
 				<br/>
-				<b>* Dispensado</b> - Solicitação que a farmácia já liberou;
+				<b>* Dispensado/Recebida</b> - Solicitação que já foi liberada ou recebida;
 				<br/>
-				<b>* Recusado</b> - Solicitação recusada pela farmácia
+				<b>* Recusado</b> - Solicitação recusada pelo setor
 			</div>
+			
 			<p:dialog id="solicitacaoExibicaoDialog"
 					  widgetVar="solicitacoesProfissionais" 
 					  closable="false"
@@ -118,52 +128,50 @@
 					  width="600"
 					  height="530"
 					  header="Consulta Simplificada"
-					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirConsultaSolicitacao}" >
+					  visible="#{solicitacoesDevolucoesProfissionalRaiz.exibirDialogConsultaSolicitacao}" >
 				<p:panel id="solicitacaoExibicaoPanel" style="width:550px; height:490px;" >
-					<b>Consulta simplificada da solicitação #{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.idSolicitacaoMedicamentoUnidade}</b>
+					<b>Consulta simplificada da solicitação #{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.codigo}</b>
 					<br/>
 					<h:panelGrid columns="2" >
 						<h:panelGroup>
 							<b>Unidade:</b><br/>
-							#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.unidadeDestino}
+							#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.unidade}
 						</h:panelGroup>
 						<h:panelGroup>
-							<b>Receptor:</b><br/>
-							#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.profissionalReceptor.nome}
+							
 						</h:panelGroup>
 						<h:panelGroup>
 							<b>Data da Solicitação:</b><br/>
-							<h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.dataFechamento}">
-								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+							<h:outputText value="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
 							</h:outputText>
 						</h:panelGroup>
 						<h:panelGroup>
-							<b>Data da Dispensação:</b><br/>
-							<h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.dataDispensacao}">
-								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-							</h:outputText>
 						</h:panelGroup>
-						<h:panelGroup rendered="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.statusDispensacao == 'R'}" >
+						<h:panelGroup rendered="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.status == 'Recusado'}" >
 							<b>Solicitação Recusada:</b><br/>
-							<h:outputText value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.justificativa}" escape="false" />
+							<h:outputText value="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.justificativa}" escape="false" />
 						</h:panelGroup>
+						<h:panelGroup rendered="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.justificativa != '' 
+												and solicitacoesDevolucoesProfissionalRaiz.itemConsulta.justificativa != null}" >
+							<b>Justificativa:</b><br/>
+							<h:outputText value="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.justificativa}" escape="false" />
+						</h:panelGroup>
+						
 					</h:panelGrid>
 					<br/>
 					<div style="height:350px; overflow:auto;" >
 						<table>
-							<ui:repeat value="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.itens}" var="item" >
+							<ui:repeat value="#{solicitacoesDevolucoesProfissionalRaiz.itemConsulta.itens}" var="item" >
 								<tr>
 									<td colspan="2" >
-										<h:panelGroup rendered="#{item.statusItem == 'R'}" >
-											<b>x#{item.material.codigoMaterial}#{' - '}#{item.material.descricao} - Recusado</b><br/>
+										<h:panelGroup rendered="#{item.status == 'Recusado'}" >
+											<b>x#{item.codigo}#{' - '}#{item.descricao} - Recusado</b><br/>
 											Motivo: <h:outputText value="#{item.justificativa}" escape="false" />
 										</h:panelGroup>
-										<h:panelGroup rendered="#{item.statusItem != 'R'}" >
-											•<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b>  
+										<h:panelGroup rendered="#{item.status != 'Recusado'}" >
+											•<b>#{item.codigo}#{' - '}#{item.descricao}</b>  
 											<h:outputText value=" • Soli.:#{item.quantidadeSolicitada}" style="padding-right:10px; padding-left:10px;" /> 
-											<h:outputText rendered="#{solicitacaoMedicamentoUnidadeRaiz.solicitacaoVizualizacao.statusDispensacao != 'P'}"
-														  value=" • Dis.:#{item.dispensacaoSimples.movimentoLivro.quantidadeMovimentacao}" 
-														  style="padding-right:10px; padding-left:10px;" />
 											<h:panelGroup rendered="#{item.justificativa != null and item.justificativa != ''}" >
 												Justificativa: <h:outputText value="#{item.justificativa}" escape="false" />
 											</h:panelGroup>
@@ -175,7 +183,7 @@
 						</table>
 					</div>
 				</p:panel>
-				<p:commandButton action="#{solicitacaoMedicamentoUnidadeRaiz.ocultarDialogConsultaSolicitacao}" 
+				<p:commandButton action="#{solicitacoesDevolucoesProfissionalRaiz.fecharDialogConsultaSolicitacao}" 
 								 update=":#{p:component('solicitacaoExibicaoDialog')}" 
 								 global="false" 
 	              			     onclick="statusDialog.show();" 

@@ -38,7 +38,7 @@ public class ControlePrescricaoItemDose extends PadraoControle{
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescri√ß√£o.", "Utilize o material de apoio para precrever at√© o sistema voltar ao normal."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricaoItemDose(Dose dose)");
 			session.getTransaction().rollback();
 		}finally{
@@ -63,7 +63,7 @@ public class ControlePrescricaoItemDose extends PadraoControle{
 			ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControleMedicamentoRestrito");
 		}
 		new ErroAplicacaoRaiz(ea).enviar();

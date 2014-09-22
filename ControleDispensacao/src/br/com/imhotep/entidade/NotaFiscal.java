@@ -29,10 +29,8 @@ import javax.persistence.JoinColumn;
 @Entity
 @Table(name = "tb_nota_fiscal")
 public class NotaFiscal implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8819523943804393426L;
+	
 	private int idNotaFiscal;
 	private boolean fechada;
 	private boolean bloqueada;

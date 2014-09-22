@@ -9,11 +9,11 @@ import br.com.imhotep.entidade.AvaliacaoPsicologica;
 import br.com.imhotep.entidade.AvaliacaoPsicologicaLog;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AvaliacaoPsicologicaRaiz extends PadraoHome<AvaliacaoPsicologica>{
+public class AvaliacaoPsicologicaRaiz extends PadraoRaiz<AvaliacaoPsicologica>{
 	
 	private AvaliacaoPsicologicaLog log;
 	

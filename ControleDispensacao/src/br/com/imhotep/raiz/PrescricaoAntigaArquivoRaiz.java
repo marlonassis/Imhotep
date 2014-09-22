@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.imhotep.entidade.PrescricaoAntigaArquivo;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PrescricaoAntigaArquivoRaiz extends PadraoHome<PrescricaoAntigaArquivo> {
+public class PrescricaoAntigaArquivoRaiz extends PadraoRaiz<PrescricaoAntigaArquivo> {
 	
 	public PrescricaoAntigaArquivoRaiz(){
 	}

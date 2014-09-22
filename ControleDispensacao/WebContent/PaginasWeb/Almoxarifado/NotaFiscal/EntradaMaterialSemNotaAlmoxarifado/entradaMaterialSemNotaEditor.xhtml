@@ -10,7 +10,7 @@
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
 			<p:inputText id="lote"
-						 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.lote}"
+						 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.lote}"
 						 title="Informe o lote" 
 						 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
 						 required="false"/>
@@ -29,11 +29,11 @@
 		<ri:inputAutoComplete id="material" 
 							 label="Material"  
 							 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado}"
-							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoComplete}" 
+							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
 							 itemValue="#{material}" 
 							 itemLabel="#{material.descricaoUnidadeMaterial}" 
 							 var="material"
-							 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.materialAlmoxarifado}" 
+							 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.materialAlmoxarifado}" 
 							 required="true"/>
 		
 		<ri:inputAutoComplete id="fabricante" 
@@ -43,16 +43,16 @@
 							 itemValue="#{fabricante}" 
 							 itemLabel="#{fabricante.descricao}" 
 							 var="fabricante"
-							 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.fabricanteAlmoxarifado}" 
-							 required="true"/>
+							 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.fabricanteAlmoxarifado}" 
+							 required="false"/>
 		
-		<ri:inputDataDiaMesAno id="dataValidade"
-							   label="Data de Validade"
-							   disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado}"
-							   required="false" 
-							   value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.dataValidade}"
-							   title="Data de validade do lote"/>
-
+		<ri:inputDataMesAnoValidadeAlmoxarifado id="dataValidade"
+											    label="Data de Validade"
+											    disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado}"
+											    required="false" 
+											    value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.dataValidade}"
+											    title="Data de validade do lote"/>
+		
 		<ri:inputApenasNumero id="quantidade" 
 							  required="true"
 							  title="Informe a quantidade informada na nota" 
@@ -61,8 +61,15 @@
 
 		<ri:inputTextoSimples id="codigoBarras" 
 							  title="Informe o código de barras" 
-							  value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.codigoBarras}" 
+							  value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.codigoBarras}" 
 							  label="Código de Barras" />
+							  
+		<ri:inputValorFracionado id="precoMedio" 
+								 title="Preço Médio"
+								 required="false" 
+								 rendered="false"
+								 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.precoMedio}" 
+								 label="Preço Médio Transportado" />
 		
 	</h:panelGrid>
 </ui:composition>

@@ -6,11 +6,11 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.entidade.CuidadosPaciente;
 import br.com.imhotep.entidade.CuidadosPrescricao;
 import br.com.imhotep.entidade.Prescricao;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="cuidadosPrescricaoRaiz")
 @SessionScoped
-public class CuidadosPrescricaoRaiz extends PadraoHome<CuidadosPrescricao>{
+public class CuidadosPrescricaoRaiz extends PadraoRaiz<CuidadosPrescricao>{
 
 	public CuidadosPrescricaoRaiz(){
 		super();

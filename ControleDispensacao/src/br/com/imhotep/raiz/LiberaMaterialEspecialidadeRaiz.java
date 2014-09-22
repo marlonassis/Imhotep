@@ -5,11 +5,11 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.LiberaMaterialEspecialidade;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class LiberaMaterialEspecialidadeRaiz extends PadraoHome<LiberaMaterialEspecialidade>{
+public class LiberaMaterialEspecialidadeRaiz extends PadraoRaiz<LiberaMaterialEspecialidade>{
 	
 	@Override
 	public boolean enviar() {

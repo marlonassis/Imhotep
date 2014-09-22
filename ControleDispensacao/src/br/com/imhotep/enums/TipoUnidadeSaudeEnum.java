@@ -5,33 +5,33 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoUnidadeSaudeEnum {
-	PS("Posto de Sa√∫de"), 
-	CS("Centro de Sa√∫de/Unidade B√°sica de Sa√∫de"), 
-	PC("Policl√≠nica"), 
+	PS("Posto de Saúde"), 
+	CS("Centro de Saúde/Unidade Básica de Saúde"), 
+	PC("Policlínica"), 
 	HG("Hospital Geral"), 
 	HE("Hospital Especializado"), 
 	UM("Unidade Mista"), 
 	PG("Pronto Socorro Geral"), 
 	PE("Pronto Socorro Especializado"), 
-	CI("Consult√≥rio Isolado"), 
-	UMF("Unidade M√≥vel Fluvial"), 
-	CAE("Cl√≠nica Especializada/Amb. Especializado"), 
-	US("Unidade de Servi√ßo de Apoio de Diagnose e Terapia"), 
-	UMT("Unidade M√≥vel Terrestre"), 
-	UMP("Unidade M√≥vel de N√≠vel Pr√©-hospitalar na √Årea de Urg√™ncia e Emerg√™ncia"), 
-	FA("Farm√°cia"), 
-	UVS("Unidade de Vigil√¢ncia em Sa√∫de"), 
+	CI("Consultório Isolado"), 
+	UMF("Unidade Móvel Fluvial"), 
+	CAE("Clínica Especializada/Amb. Especializado"), 
+	US("Unidade de Serviço de Apoio de Diagnose e Terapia"), 
+	UMT("Unidade Móvel Terrestre"), 
+	UMP("Unidade Móvel de Nível Pré-hospitalar na Área de Urgência e Emergência"), 
+	FA("Farmácia"), 
+	UVS("Unidade de Vigilância em Saúde"), 
 	CO("Cooperativa"), 
 	CPN("Centro de Parto Normal Isolado"), 
 	HI("Hospital /Dia- Isolado"), 
-	CRS("Central de Regula√ß√£o de Servi√ßos de Sa√∫de"), 
-	LCS("Laborat√≥rio Central de Sa√∫de P√∫blica - LACEN"), 
-	SS("Secretaria de Sa√∫de");
+	CRS("Central de Regulação de Serviços de Saúde"), 
+	LCS("Laboratório Central de Saúde Pública - LACEN"), 
+	SS("Secretaria de Saúde");
 	
 	private String label;
 	
-	TipoUnidadeSaudeEnum(String sexo){
-		label = sexo;
+	TipoUnidadeSaudeEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

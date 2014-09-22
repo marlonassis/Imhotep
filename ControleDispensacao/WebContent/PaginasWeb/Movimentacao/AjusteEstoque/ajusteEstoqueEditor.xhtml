@@ -11,7 +11,7 @@
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
 			<p:inputText id="lote"
-						 value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.lote}"
+						 value="#{ajusteEstoqueRaiz.instancia.estoque.lote}"
 						 title="Informe o lote" 
 						 disabled="#{ajusteEstoqueRaiz.loteEncontrado}"
 						 required="true"/>
@@ -32,11 +32,11 @@
 			<font color="red">*</font>
 			<h:outputLabel for="tipoOperacao" value="Tipo do Movimento" />
 			<br />
-			<h:outputText value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.tipoMovimento.descricao}" 
+			<h:outputText value="#{ajusteEstoqueRaiz.instancia.tipoMovimento.descricao}" 
 						  rendered="#{ajusteEstoqueRaiz.edicao or !ajusteEstoqueRaiz.loteEncontrado}" />
 			<p:selectOneMenu id="tipoOperacao"
 							 rendered="#{!ajusteEstoqueRaiz.edicao and ajusteEstoqueRaiz.loteEncontrado}"
-							 value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.tipoMovimento}"
+							 value="#{ajusteEstoqueRaiz.instancia.tipoMovimento}"
 							 effect="fade" 
 							 converter="tipoMovimentoConversor" 
 							 required="true">
@@ -55,7 +55,7 @@
 			<p:autoComplete id="material"
 							disabled="true"
 							size="35"
-							value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.material}"
+							value="#{ajusteEstoqueRaiz.instancia.estoque.material}"
 							minQueryLength="4"
 							required="true"
 							scrollHeight="300"
@@ -79,7 +79,7 @@
 			<p:autoComplete id="fabricante"
 							required="true"
 							disabled="true"
-							value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.fabricante}"
+							value="#{ajusteEstoqueRaiz.instancia.estoque.fabricante}"
 							completeMethod="#{fabricanteAutoComplete.autoComplete}"
 							var="fabricante" 
 							minQueryLength="3" 
@@ -95,11 +95,11 @@
 		</h:panelGroup>
 		
 		<h:panelGroup>
-			<r:inputDataMesAno id="dataValidade"
-							   label="Data de validade:"
+			<r:inputDataMesAnoMedicamento id="dataValidade"
+							   label="Data de Validade"
+							   required="true"
 							   disabled="true"
-							   required="true" 
-							   value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.dataValidade}"
+							   value="#{ajusteEstoqueRaiz.instancia.estoque.dataValidade}"
 							   title="Data de validade do lote"/>
 		</h:panelGroup>
 
@@ -109,7 +109,7 @@
 			<br />
 			<p:inputText id="quantidade"
 						 required="true"
-						 value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.quantidadeMovimentacao}"
+						 value="#{ajusteEstoqueRaiz.instancia.quantidadeMovimentacao}"
 						 onkeyup="apenasNumero(this);" 
 						 title="Informe a quantidade" />
 		</h:panelGroup>
@@ -117,7 +117,7 @@
 			<font color="red">*</font>
 			<h:outputLabel for="quantidadeAtual" value="Quantidade Atual:" />
 			<br />
-			<h:outputText id="quantidadeAtual" value="#{ajusteEstoqueRaiz.instancia.movimentoLivro.estoque.quantidadeAtual}" />
+			<h:outputText id="quantidadeAtual" value="#{ajusteEstoqueRaiz.instancia.estoque.quantidadeAtual}" />
 		</h:panelGroup>
 		<h:panelGroup>
 			<font color="red">*</font>

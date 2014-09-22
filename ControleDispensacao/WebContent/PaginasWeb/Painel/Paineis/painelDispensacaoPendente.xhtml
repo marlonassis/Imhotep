@@ -40,7 +40,7 @@
 					                				onsuccess="statusDialog.hide();" 
 					                				update=":#{p:component('dispensacoesPendentesDataGrid')} :#{p:component('dispensarDialog')}" > 
 					                    <h:graphicImage value="/Imagens/search.png" /> 
-					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.carregarDispensacao}" />  
+					                    <f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" />  
 					                </p:commandLink>
 					                <p:commandLink  title="Recusar" 
 					                				action="#{solicitacaoMedicamentoUnidadeRaiz.preRecusaSolicitacao}" 
@@ -61,17 +61,16 @@
 			
 			<p:dialog id="recusarSolicitacaoDialog"
 					  header="Recusar Solicitação" 
-					  widgetVar="profissionalReceptorDialog" 
 					  modal="true" 
 					  resizable="true"
 					  closable="false" 
-					  visible="#{solicitacaoMedicamentoUnidadeRaiz.solicitarJustificativaRecusaSolicitacao}" >
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogRecusaSolicitacao}" >
 				<p:outputPanel id="solicitacaoRecusadaOutPutPanel" style="text-align:center;" layout="block">
 					<p:messages id="messagesSolicitacaoRecusada" showDetail="false" autoUpdate="false" closable="true" />
 					<b>Informe o motivo da recusa da solicitação</b>
 					<br/>
 					<center>
-						<p:editor id="justificativaRecusaSolicitacao" value="#{solicitacaoMedicamentoUnidadeRaiz.justificativaRecusa}" />
+						<p:editor id="justificativaRecusaSolicitacao" value="#{solicitacaoMedicamentoUnidadeRaiz.justificativaRecusaSolicitacao}" />
 					</center>
 					<h:panelGrid columns="2" width="100%" >
 						<h:panelGroup>
@@ -100,11 +99,10 @@
 			
 			<p:dialog id="profissionalReceptorDialog"
 					  header="Receptor" 
-					  widgetVar="profissionalReceptorDialog" 
 					  modal="true" 
 					  resizable="true"
 					  closable="false" 
-					  visible="#{solicitacaoMedicamentoUnidadeRaiz.solicitarProfissionalRecepcao}" >
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogProfissionalReceptor}" >
 				<p:outputPanel id="profissionalReceptorOutPutPanel" style="text-align:center;" layout="block">
 					<p:messages id="messagesReceptor" showDetail="false" autoUpdate="false" closable="true" />
 					<b>Informe o nome do profissional que está recebendo a dispensação</b>
@@ -127,7 +125,7 @@
 				                				 onclick="statusDialog.show();" 
 				                				 onsuccess="statusDialog.hide();"
 												 action="#{solicitacaoMedicamentoUnidadeRaiz.fecharDispensacao}" 
-												 update=":#{p:component('messagesReceptor')} :#{p:component('profissionalReceptorDialog')} :#{p:component('detalhes')}" />
+												 update=":#{p:component('dispensarDialog')} :#{p:component('profissionalReceptorDialog')}" />
 							</center>
 						</h:panelGroup>
 						<h:panelGroup>
@@ -136,8 +134,8 @@
 												 global="false" 
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-							    				 action="#{solicitacaoMedicamentoUnidadeRaiz.fecharConfirmacaoReceptor}" 
-							    				 update=":#{p:component('profissionalReceptorDialog')}" />
+							    				 action="#{solicitacaoMedicamentoUnidadeRaiz.cancelarConfirmacaoReceptor}" 
+							    				 update=":#{p:component('profissionalReceptorDialog')} :#{p:component('dispensarDialog')}" />
 							</center>
 						</h:panelGroup>
 					</h:panelGrid>
@@ -146,17 +144,17 @@
 			
 			<p:dialog id="justificativaRecusaItemDialog"
 					  header="Justificativa" 
-					  widgetVar="justificativaRecusaItemDialog" 
 					  modal="true" 
 					  width="700px" 
 					  height="340px" 
 					  closable="false" 
-					  visible="#{solicitacaoMedicamentoUnidadeItemRaiz.itemRecusado}" >
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogItemSolicitacaoRecusado}" >
+				<p:growl/>	
 				<p:outputPanel id="justificativaRecusaOutPutPanel" style="text-align:center;" layout="block">
-					<b>Justifique o motivo de você estar recusando #{solicitacaoMedicamentoUnidadeItemRaiz.instancia.material.descricao}</b>
+					<b>Justifique o motivo de você estar recusando #{solicitacaoMedicamentoUnidadeRaiz.itemEdicao.material.descricao}</b>
 					<br/>
 					<center>
-						<p:editor id="tests" value="#{solicitacaoMedicamentoUnidadeItemRaiz.justificativaRecusa}" />
+						<p:editor id="justificativaRecusaItemEditor" value="#{solicitacaoMedicamentoUnidadeRaiz.justificativaRecusaItem}" />
 					</center>
 					<h:panelGrid columns="2" width="100%" >
 						<h:panelGroup>
@@ -165,8 +163,8 @@
 												 global="false" 
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.recusarItem}" 
-												 update=":#{p:component('justificativaRecusaItemDialog')} :#{p:component('detalhes')}" />
+												 action="#{solicitacaoMedicamentoUnidadeRaiz.recusarItemSolicitacao}" 
+												 update=":#{p:component('justificativaRecusaItemDialog')} :#{p:component('dispensarDialog')}" />
 							</center>
 						</h:panelGroup>
 						<h:panelGroup>
@@ -175,7 +173,7 @@
 												 global="false" 
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-							    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarRecusaItem}" 
+							    				 action="#{solicitacaoMedicamentoUnidadeRaiz.cancelarRecusaItem}" 
 							    				 update=":#{p:component('justificativaRecusaItemDialog')} :#{p:component('dispensarDialog')}" />
 							</center>
 						</h:panelGroup>
@@ -185,17 +183,16 @@
 			
 			<p:dialog id="justificativaDialog"
 					  header="Justificativa" 
-					  widgetVar="justificativaDialog" 
 					  modal="true" 
 					  resizable="true"
 					  closable="false" 
-					  visible="#{solicitacaoMedicamentoUnidadeItemRaiz.quantidadeDispensadaDiferenteSolicitada}" >
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogJustificativaQuantidadeDiferente}" >
 				<p:outputPanel id="justificativaOutPutPanel" style="text-align:center;" layout="block">
 					<p:messages id="messages" showDetail="false" autoUpdate="false" closable="true" />  
 					<b>Justifique o motivo de você está liberando uma quantidade diferente da quantidade solicitada por #{solicitacaoMedicamentoUnidadeRaiz.instancia.profissionalInsercao.nomeResumido}</b>
 					<br/>
 					<center>
-						<p:editor value="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia.justificativa}" />
+						<p:editor value="#{solicitacaoMedicamentoUnidadeRaiz.justificativaLiberarQuantidadeDiferente}" />
 					</center>
 					<h:panelGrid columns="2" width="100%" >
 						<h:panelGroup>
@@ -204,7 +201,7 @@
 												 global="false" 
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-												 action="#{solicitacaoMedicamentoUnidadeItemRaiz.fecharItemLiberadoComJustificativa}" 
+												 action="#{solicitacaoMedicamentoUnidadeRaiz.atualizarItemEstoqueQuantidadeAlterada}" 
 												 update=":#{p:component('justificativaDialog')} :#{p:component('dispensarDialog')}" />
 							</center>
 						</h:panelGroup>
@@ -214,8 +211,8 @@
 												 global="false" 
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-							    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarJustificativa}" 
-							    				 update=":#{p:component('justificativaDialog')}" />
+							    				 action="#{solicitacaoMedicamentoUnidadeRaiz.cancelarJustificativaQuantidadeAlterada}" 
+							    				 update=":#{p:component('justificativaDialog')} :#{p:component('dispensarDialog')}" />
 							</center>
 						</h:panelGroup>
 					</h:panelGrid>
@@ -224,11 +221,11 @@
 			
 			<p:dialog id="dispensarDialog"
 					  header="Dispensar" 
-					  widgetVar="dispensarDialog" 
-					  modal="false" 
 					  resizable="true"
+					  modal="true" 
 					  closable="false" 
-					  visible="#{solicitacaoMedicamentoUnidadeRaiz.iniciarDispensacao}" >  
+					  visible="#{solicitacaoMedicamentoUnidadeRaiz.exibirDialogDispensacao}" >
+				<p:growl/>  
 		        <p:outputPanel id="detalhes" style="text-align:center;" layout="block">
 		        	<b>#{solicitacaoMedicamentoUnidadeRaiz.instancia.unidadeDestino}</b> - #{solicitacaoMedicamentoUnidadeRaiz.instancia.idSolicitacaoMedicamentoUnidade}
 		            <h:panelGrid columns="1" width="90%">
@@ -240,22 +237,22 @@
 								<p:growl id="mensagemDispensacaoGrowl" showDetail="true"  />  
 								<div style="height:450px; overflow:scroll;" >
 									<p:dataTable var="item" 
-												 value="#{solicitacaoMedicamentoUnidadeItemRaiz.itens}"
+												 value="#{solicitacaoMedicamentoUnidadeRaiz.instancia.itens}"
 												 emptyMessage="Não há itens cadastrados" > 
 										<f:facet name="header">  
 									            Material(is) Soliciatado(s)
 									    </f:facet>  
 									    
 									    <p:column style="width:60px; text-align: center;" rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'P'}" >
-											<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.preRecusarItem}"
+											<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.preRecusaItemSolicitado}"
 														   global="false" 
 				                						   onclick="statusDialog.show();" 
 				                						   onsuccess="statusDialog.hide();"
-														   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')} :#{p:component('justificativaRecusaItemDialog')}"
-														   rendered="#{item.statusItem != 'R' and !solicitacaoMedicamentoUnidadeItemRaiz.edicao}" 
+														   update=":#{p:component('dispensarDialog')} :#{p:component('justificativaRecusaItemDialog')}"
+														   rendered="#{item.statusItem != 'R' and solicitacaoMedicamentoUnidadeRaiz.itemEdicao == null}" 
 														   title="Recusar #{item.material.descricaoUnidadeMaterial}" 
 														   style="padding-right:10px;">
-												<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+												<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeRaiz.itemEdicao}" />
 												<h:graphicImage value="/Imagens/Close-icon.png" />
 											</p:commandLink>
 										</p:column>
@@ -269,50 +266,50 @@
 								        </p:column> 
 								        
 								        <p:column headerText="Quantidade Dispensada">  
-								            <ui:repeat value="#{solicitacaoMedicamentoUnidadeItemRaiz.listaEstoqueDispensacao(item)}" 
+								            <ui:repeat value="#{solicitacaoMedicamentoUnidadeRaiz.estoquesDispensacaoItem(item)}" 
 								            		   var="estoqueLiberado" >
 								            	<b>#{estoqueLiberado.estoque.lote}</b>-#{estoqueLiberado.quantidadeDispensada}<br/>
 								            </ui:repeat>  
 								        </p:column> 
 								        
 								        <p:column style="width:60px; text-align: center;" rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'P'}" >
-											<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.carregarEstoquesDispensacao(item)}"
+											<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.carregarEstoquesDispensacao}"
 														   global="false" 
 				                						   onclick="statusDialog.show();" 
 				                						   onsuccess="statusDialog.hide();"
-														   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}"
-														   rendered="#{!solicitacaoMedicamentoUnidadeItemRaiz.edicao and item.statusItem != 'R'}" 
+														   update=":#{p:component('dispensarDialog')}"
+														   rendered="#{solicitacaoMedicamentoUnidadeRaiz.itemEdicao == null and item.statusItem != 'R'}" 
 														   title="Dispensar #{item.material.descricaoUnidadeMaterial}" 
 														   style="padding-right:10px;">
-												<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+												<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeRaiz.itemEdicao}" />
 												<h:graphicImage value="/Imagens/borrownext16.png" />
 											</p:commandLink>
-											<p:commandLink action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarRecusaItem}"
+											<p:commandLink action="#{solicitacaoMedicamentoUnidadeRaiz.desfazerRecusaItem}"
 														   global="false" 
 				                						   onclick="statusDialog.show();" 
 				                						   onsuccess="statusDialog.hide();"
-														   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}"
-														   rendered="#{item.statusItem == 'R' and !solicitacaoMedicamentoUnidadeItemRaiz.edicao}" 
+														   update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')} :#{p:component('justificativaRecusaItemDialog')}"
+														   rendered="#{item.statusItem == 'R' and solicitacaoMedicamentoUnidadeRaiz.itemEdicao == null}" 
 														   title="Recusar #{item.material.descricaoUnidadeMaterial}" 
 														   style="padding-right:10px;">
-												<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.instancia}" />
+												<f:setPropertyActionListener value="#{item}" target="#{solicitacaoMedicamentoUnidadeRaiz.itemEdicao}" />
 												<h:graphicImage value="/Imagens/undoBlue16.png" />
 											</p:commandLink>
 											<h:graphicImage value="/Imagens/pill16.png" 
-															rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao and solicitacaoMedicamentoUnidadeItemRaiz.instancia.idSolicitacaoMedicamentoUnidadeItem == item.idSolicitacaoMedicamentoUnidadeItem}" 
+															rendered="#{solicitacaoMedicamentoUnidadeRaiz.itemEdicao.idSolicitacaoMedicamentoUnidadeItem != 0 and solicitacaoMedicamentoUnidadeRaiz.itemEdicao == item}" 
 															title="Este medicamento está em edição" />
 										</p:column> 
 								    </p:dataTable>
 							    </div>
 							</h:panelGroup>
-						    <h:panelGroup>
+						    <h:panelGroup rendered="#{solicitacaoMedicamentoUnidadeRaiz.estoquesEdicao != null}" >
 							    <p:dataTable id="lotes" 
 											 var="lote" 
 											 emptyMessage="Escolha um material para iniciar a dispensação"
-											 value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoquesDispensacao}">  
+											 value="#{solicitacaoMedicamentoUnidadeRaiz.estoquesEdicao}">  
 	  
 							        <f:facet name="header">  
-							            Lote(s) - #{solicitacaoMedicamentoUnidadeItemRaiz.instancia.material.descricao}
+							            Lote(s) - #{solicitacaoMedicamentoUnidadeRaiz.itemEdicao.material.descricao}
 							        </f:facet>  
 							  
 							        <p:column headerText="Lote(s)">  
@@ -332,13 +329,13 @@
 													   global="false" 
 					                				   onclick="statusDialog.show();" 
 					                				   onsuccess="statusDialog.hide();"
-													   rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao == null}"
+													   rendered="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao == null}"
 													   title="Editar #{lote.estoque.lote}" 
 													   style="padding-right:10px;">
-											<f:setPropertyActionListener value="#{lote}" target="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao}" />
+											<f:setPropertyActionListener value="#{lote}" target="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao}" />
 											<h:graphicImage value="/Imagens/borrownext16.png" />
 										</p:commandLink>
-										<h:graphicImage value="/Imagens/pill16.png" rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.estoque.idEstoque == lote.estoque.idEstoque}" />
+										<h:graphicImage value="/Imagens/pill16.png" rendered="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao.estoque.idEstoque == lote.estoque.idEstoque}" />
 									</p:column> 
 							    </p:dataTable>
 							    <br/>
@@ -349,9 +346,9 @@
 										    				 global="false" 
 			                								 onclick="statusDialog.show();" 
 			                								 onsuccess="statusDialog.hide();"
-										    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.preFechamentoItemLiberado}" 
-										    				 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')} :#{p:component('justificativaDialog')}" 
-										    				 rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao}" />
+										    				 action="#{solicitacaoMedicamentoUnidadeRaiz.preFechamentoItemLiberado}" 
+										    				 update=":#{p:component('dispensarDialog')} :#{p:component('justificativaDialog')}" 
+										    				 rendered="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao == null}" />
 										</center>
 									</h:panelGroup>
 									<h:panelGroup>
@@ -360,27 +357,27 @@
 										    				 global="false" 
 							                				 onclick="statusDialog.show();" 
 							                				 onsuccess="statusDialog.hide();"
-										    				 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarItemLiberado}" 
-										    				 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" 
-										    				 rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.edicao}" />
+										    				 action="#{solicitacaoMedicamentoUnidadeRaiz.cancelarItemLiberado}" 
+										    				 update=":#{p:component('dispensarDialog')}" 
+										    				 rendered="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao == null}" />
 										</center>
 									</h:panelGroup>
-									<h:panelGroup id="loteEdicao" rendered="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao != null}" >
-										<h:outputText style="font-weight:bold;" value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.estoque.lote}" /><br/>
+									<h:panelGroup id="loteEdicao" rendered="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao != null}" >
+										<h:outputText style="font-weight:bold;" value="#{solicitacaoMedicamentoUnidadeRaiz.estoqueEdicao.estoque.lote}" /><br/>
 										Quantidade:<br/>
-										<p:inputText value="#{solicitacaoMedicamentoUnidadeItemRaiz.estoqueDispensacaoEdicao.quantidadeDispensada}" /><br/>
+										<p:inputText value="#{solicitacaoMedicamentoUnidadeRaiz.quantidadeAlteradaEstoque}" /><br/>
 										<p:commandButton value="Atualizar" 
 														 global="false" 
 					                					 onclick="statusDialog.show();" 
 					                					 onsuccess="statusDialog.hide();"
-														 action="#{solicitacaoMedicamentoUnidadeItemRaiz.atualizarEstoqueDispensacaoEdicao}" 
-														 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
+														 action="#{solicitacaoMedicamentoUnidadeRaiz.atualizarEdicaoEstoqueQuantidade}" 
+														 update=":#{p:component('dispensarDialog')}" />
 										<p:commandButton value="Cancelar" 
 														 global="false" 
 					                					 onclick="statusDialog.show();" 
 					                					 onsuccess="statusDialog.hide();"
-														 action="#{solicitacaoMedicamentoUnidadeItemRaiz.cancelarEstoqueEdicao}" 
-														 update=":#{p:component('solicitacaoMedicamentoSolicitadoItemPanelGrid')}" />
+														 action="#{solicitacaoMedicamentoUnidadeRaiz.cancelarEstoqueEdicao}" 
+														 update=":#{p:component('dispensarDialog')}" />
 									</h:panelGroup>
 							    </h:panelGrid>
 							</h:panelGroup>
@@ -397,7 +394,7 @@
 			                						 onclick="statusDialog.show();" 
 			                						 onsuccess="statusDialog.hide();"
 								    				 action="#{solicitacaoMedicamentoUnidadeRaiz.preFechamentoDispensacao}" 
-													 update=":#{p:component('profissionalReceptorDialog')} :#{p:component('mensagemDispensacaoGrowl')}" />
+													 update=":#{p:component('profissionalReceptorDialog')} :#{p:component('dispensarDialog')}" />
 								</center>
 							</h:panelGroup>
 							<h:panelGroup>
@@ -413,8 +410,11 @@
 							<h:panelGroup>
 								<center>
 									<p:commandButton value="Imprimir"
-								    			     onclick="window.open('/imhotep/PaginasWeb/Enfermagem/SolicitacaoMedicamentoUnidade/solicitacaoImpressa.hu', 'dispensacaoImpressa');" 
-								    			     rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'D'}" />
+								    			     rendered="#{solicitacaoMedicamentoUnidadeRaiz.instancia.statusDispensacao == 'D'}" 
+								    			     oncomplete="window.open('/imhotep/PaginasWeb/Solicitacoes/SolicitacaoMedicamentoUnidade/solicitacaoImpressa.hu', 'dispensacaoImpressa');" >
+								    	<f:setPropertyActionListener value="#{solicitacaoMedicamentoUnidadeRaiz.instancia}" 
+								    								 target="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.solicitacaoVizualizacao}" />
+								    </p:commandButton>
 								</center>
 							</h:panelGroup>
 						</h:panelGrid>

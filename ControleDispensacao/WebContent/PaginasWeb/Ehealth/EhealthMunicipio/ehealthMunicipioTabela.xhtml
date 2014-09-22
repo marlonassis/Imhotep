@@ -25,7 +25,7 @@
 			<f:facet name="header">
 				<h:outputText value="Estado" />
 			</f:facet>
-			<h:outputText value="#{linha.estado.label}" />
+			<h:outputText value="#{linha.ehealthEstado.nomeEstadoPais}" />
 		</p:column>
 		
 		<p:column>
@@ -35,6 +35,12 @@
 			<h:outputText value="#{linha.link}" />
 		</p:column>
 		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Capital" />
+			</f:facet>
+			<h:outputText value="#{linha.capital ? 'Sim' : 'Não'}" />
+		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"

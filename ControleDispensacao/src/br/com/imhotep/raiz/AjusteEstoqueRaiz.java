@@ -1,19 +1,22 @@
 package br.com.imhotep.raiz;
 
+import java.util.Date;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
-import br.com.imhotep.entidade.AjusteEstoque;
+import br.com.imhotep.controle.ControleEstoqueTemp;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
-import br.com.imhotep.fluxo.FluxoAjusteEstoque;
-import br.com.remendo.PadraoHome;
+import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
+import br.com.imhotep.temp.PadraoFluxoTemp;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AjusteEstoqueRaiz extends PadraoHome<AjusteEstoque>{
+public class AjusteEstoqueRaiz extends PadraoRaiz<MovimentoLivro>{
 	
 	private boolean loteEncontrado;
 	
@@ -22,43 +25,49 @@ public class AjusteEstoqueRaiz extends PadraoHome<AjusteEstoque>{
 	}
 
 	private void limpar() {
-		getInstancia().setMovimentoLivro(new MovimentoLivro());
-		getInstancia().getMovimentoLivro().setEstoque(new Estoque());
+		super.novaInstancia();
+		getInstancia().setEstoque(new Estoque());
 		setLoteEncontrado(false);
 	}
 	
 	public void procurarLote(){
-		String lote = getInstancia().getMovimentoLivro().getEstoque().getLote();
+		String lote = getInstancia().getEstoque().getLote();
 		Estoque estoque = new EstoqueConsultaRaiz().consultarEstoqueLivre(lote);
 		loteEncontrado = estoque != null;
 		if(loteEncontrado){
-			getInstancia().getMovimentoLivro().setEstoque(estoque);
+			getInstancia().setEstoque(estoque);
 		}else{
-			mensagem("Lote n√£o encontrado.", lote, Constantes.WARN);
+			mensagem("Lote não encontrado.", lote, Constantes.WARN);
 		}
 	}
 	
 	@Override
 	public boolean enviar() {
+		boolean r = false;
 		try {
-			FluxoAjusteEstoque fluxoAjusteEstoque = new FluxoAjusteEstoque();
-			if(loteEncontrado){
-				procurarLote();
-				fluxoAjusteEstoque.atualizarEstoque(getInstancia());
-			}else
-				fluxoAjusteEstoque.salvarNovoEstoque(getInstancia());
+			PadraoFluxoTemp.limparFluxo();
+			new ControleEstoqueTemp().liberarAjuste(new Date(), getInstancia());
+			PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro-"+getInstancia().hashCode(), getInstancia());
+			PadraoFluxoTemp.getObjetoAtualizar().put("Estoque-"+getInstancia().getEstoque().hashCode(), getInstancia());
+			PadraoFluxoTemp.finalizarFluxo();
 			novaInstancia();
-			return true;
+			r = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				new ControleEstoqueTemp().unLockEstoque(getInstancia().getEstoque());
+			} catch (ExcecaoEstoqueUnLock e) {
+				e.printStackTrace();
+			}
+			PadraoFluxoTemp.limparFluxo();
 		}
-		
-		return false;
+		return r;
 	}
 	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){
 		loteEncontrado = true;
-		getInstancia().getMovimentoLivro().setEstoque(estoque);
+		getInstancia().setEstoque(estoque);
 	}
 	
 	@Override

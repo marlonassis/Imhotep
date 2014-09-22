@@ -8,12 +8,12 @@ public enum TipoSexoEnum {
 	M("Masculino"), 
 	F("Feminino"),
 	I("Indiferente"),
-	N("NÃ£o se aplica");
+	N("N‹o se aplica");
 	
 	private String label;
 	
-	TipoSexoEnum(String sexo){
-		label = sexo;
+	TipoSexoEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

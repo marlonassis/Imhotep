@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid columns="1" width="100%">
+		
+		<h:panelGrid id="solicitacaoMedicamentounidadePanelGrid" columns="1">
+			<ri:inputAutoComplete id="unidade" 
+								  label="Unidade Ocorrência"  
+								  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+								  itemValue="#{unidade}" 
+								  itemLabel="#{unidade.nome}" 
+								  var="unidade"
+								  value="#{livroOcorrenciaRaiz.instancia.unidadeOcorrencia}" 
+								  required="true"/>
+			
+			<ri:inputTextoSimples id="assunto" 
+								  title="Informe o assunto da ocorrência. Um resumo do fato." 
+								  value="#{livroOcorrenciaRaiz.instancia.assunto}" 
+								  label="Assunto" />
+			
+		</h:panelGrid>
+		<p:editor value="#{livroOcorrenciaRaiz.instancia.texto}" />
+		
+	</h:panelGrid>
+	
+</ui:composition>

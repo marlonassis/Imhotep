@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid id="examesPanelGrid" columns="3" width="100%" columnClasses="colStyle3, colStyle3, colStyle3" >
+		
+		<h:panelGroup style="width: 60%;" layout="block" >
+			<h:outputText value="Setor(es):" style="font-weight:bold;" /><br/>
+			<p:dataList value="#{laboratorioSetorConsultaRaiz.listaSetores}" 
+						var="linha" 
+						type="unordered" 
+						itemType="•">
+				
+			    <p:commandLink action="#{examesRaiz.carregarListaExames}" 
+			    			   update=":#{p:component('examesPanelGrid')}" >
+			    	#{linha.descricao}
+			    	<h:graphicImage value="/Imagens/previous.png" 
+			    					rendered="#{examesRaiz.setor.idLaboratorioSetor == linha.idLaboratorioSetor}" 
+			    					width="8px" 
+			    					height="8px" />
+					<f:setPropertyActionListener value="#{linha}" target="#{examesRaiz.setor}" />
+			    </p:commandLink>
+			    
+			</p:dataList>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{examesRaiz.exibirExames}" style="width: 60%;" layout="block" >
+			<h:outputText value="Exame(s) do Setor:" style="font-weight:bold;" /><br/>
+			<p:dataList value="#{examesRaiz.listaExames}" 
+						var="linha" 
+						type="unordered" 
+						itemType="•">
+				
+			    <p:commandLink action="#{examesRaiz.removerExameSetor}" 
+			    			   update=":#{p:component('examesPanelGrid')}" >
+			    	#{linha.descricao}
+					<f:setPropertyActionListener value="#{linha}" target="#{examesRaiz.exame}" />
+			    </p:commandLink>
+			    
+			</p:dataList>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{examesRaiz.exibirExames}" style="width: 60%;" layout="block" >
+			<h:outputText value="Exame(s) não Escolhido(s):" style="font-weight:bold;" /><br/>
+			<p:dataList value="#{examesRaiz.listaExamesOut}" 
+						var="linha" 
+						type="unordered" 
+						itemType="•">
+		    	 <p:commandLink action="#{examesRaiz.adicionarExameSetor}" 
+			    			   update=":#{p:component('examesPanelGrid')}" >
+			    	#{linha.descricao}
+					<f:setPropertyActionListener value="#{linha}" target="#{examesRaiz.exameAdd}" />
+			    </p:commandLink>
+			</p:dataList>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+	
+</ui:composition>

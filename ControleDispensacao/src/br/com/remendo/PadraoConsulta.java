@@ -1,5 +1,6 @@
 package br.com.remendo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	private boolean contendoTodosCampos = true;
 	private int registrosEncontrados;
 	protected static final String IGUAL = " = ";
+	protected static final String IGUAL_DATA = " cast(DATA as date) ";
 	protected static final String DIFERENTE = " != ";
 	protected static final String MAIOR = " > ";
 	protected static final String MAIOR_IGUAL = " >= ";
@@ -52,11 +54,11 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	}
 	
 	/**
-	 * m√©todo que verifica se existe algum valor na propriedade a ser procurada
+	 * método que verifica se existe algum valor na propriedade a ser procurada
 	 * @param Object arg0
-	 * @return true se o campo n√£o for nulo
+	 * @return true se o campo não for nulo
 	 */
-	private boolean campoNaoNulo(Object valor){
+	protected boolean campoNaoNulo(Object valor){
 		if(valor instanceof Integer || valor instanceof Float || valor instanceof Double || valor instanceof Number || valor instanceof String){
 			return valor != null && !valor.toString().equals("0") && !valor.toString().equals("0.0") && !valor.toString().isEmpty();
 		}else{
@@ -64,8 +66,26 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 		}
 	}
 	
+	protected boolean isPesquisaValorada(){
+		if(!camposConsulta.isEmpty()){
+    		Set<String> campos = camposConsulta.keySet();
+    		//laço para pecorrer todos itens da pesquisa que o programador informou no consulta.java
+    		for(String campo : campos){
+				try {
+					Object obj = getValorPropriedadePesquisada(campo);
+					if(campoNaoNulo(obj)){
+						return true;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+    		}
+		}
+		return false;
+	}
+	
 	/**
-	 * m√©todo que adiciona o cast para alguns tipos de valor
+	 * método que adiciona o cast para alguns tipos de valor
 	 * @param String arg0 Object arg1
 	 * @return String com o cast
 	 */
@@ -78,51 +98,53 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 			}
 		}
 		return ":"+campo;
-	}	
+	}
+	
+	private Object getValorPropriedadePesquisada(String campo) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
+		String campoSubS;
+		Object obj = instancia;
+		//criando array com todos os itens da pesquisa. ex.: o.usuario.pessoa -> [o] [usuario] [pessoa]
+		String[] campoConsultaDesmembrado = campo.split("\\.");
+		//a variável campoSubS recebe o nome do item do campoConsultaDesmenbrado alterado para o padrão de um método get no camelcase. ex.: getUsuario ou getPessoa 
+		//laço que pecorre todos os níveis do hql para para poder pegar o valor que será consultado. ex.: o.usuario.pessoa -> primeiro vai pegar o getUsuario para depois pegar o getPessoa
+		for(int i = 1 ; i < campoConsultaDesmembrado.length; i++){
+			String campoConsulta = campoConsultaDesmembrado[i];
+			campoSubS = "get".concat(campoConsulta.substring(0,1).toUpperCase().trim().concat(campoConsulta.substring(1).trim()));
+			if(obj != null){
+	            Class cls = Class.forName(obj.getClass().getName());  
+	            Method meth = cls.getMethod(campoSubS, null);  
+            	obj = meth.invoke(obj, null);
+			}
+		}
+		return obj;
+	}
 	
 	public List<T> getList(){
 		List<T> resultadoBuscaList = null;
         try{
         	boolean achouCampoPreenchidoPeloUsuario = false;
         	boolean adicionadoWhere=false;
-        	//insere a clausula 'where' caso n√£o exista ainda
+        	//insere a clausula 'where' caso não exista ainda
         	if(!camposConsulta.isEmpty()){
-	        		        	
 	    		Set<String> campos = camposConsulta.keySet();
-	    		//la√ßo para pecorrer todos itens da pesquisa que o programador informou no consulta.java
+	    		//laço para pecorrer todos itens da pesquisa que o programador informou no consulta.java
 	    		for(String campo : campos){
-	    			//criando array com todos os itens da pesquisa. ex.: o.usuario.pessoa -> [o] [usuario] [pessoa]
-	    			String[] campoConsultaDesmembrado = campo.split("\\.");
-	    			
-	    			//a vari√°vel campoSubS recebe o nome do item do campoConsultaDesmenbrado alterado para o padr√£o de um m√©todo get no camelcase. ex.: getUsuario ou getPessoa 
-	    			String campoSubS = "";
-	    			
-	    			Object obj = instancia;
-	    			
-	    			//la√ßo que pecorre todos os n√≠veis do hql para para poder pegar o valor que ser√° consultado. ex.: o.usuario.pessoa -> primeiro vai pegar o getUsuario para depois pegar o getPessoa
-	    			for(int i = 1 ; i < campoConsultaDesmembrado.length; i++){
-	    				String campoConsulta = campoConsultaDesmembrado[i];
-    					campoSubS = "get".concat(campoConsulta.substring(0,1).toUpperCase().trim().concat(campoConsulta.substring(1).trim()));
-    					if(obj != null){
-				            Class cls = Class.forName(obj.getClass().getName());  
-				            Method meth = cls.getMethod(campoSubS, null);  
-			            	obj = meth.invoke(obj, null);
-    					}
-	    			}
-	    			
+	    			Object obj = getValorPropriedadePesquisada(campo);
     				if(campoNaoNulo(obj)){
     					achouCampoPreenchidoPeloUsuario = true;
     					String operador = camposConsulta.get(campo);
-    					consultaGeral.getAddValorConsulta().put(campoSubS, (operador.contains("like") ? "%" + obj.toString().toLowerCase() + "%" : obj));
-		    			String campo2 = addCast(campoSubS, obj);
+    					String parametro = "param_" + String.valueOf(obj.hashCode()).replaceAll("-", "_");
+						consultaGeral.getAddValorConsulta().put(parametro, (operador.contains("like") ? "%" + obj.toString().toLowerCase() + "%" : obj));
+		    			String campo2 = addCast(parametro, obj);
 		    			
-		    			//se o usu√°rio j√° adicionou a cl√°usula 'where' apenas √© adicionado o campo de pesquisa e √© colocado false para a var√≠avel 'adicionaWhere' para que insira o operado a partir dos pr√≥ximos campos
-		    			String clausula = " "+ (operador.contains("like") ? "lower(to_ascii(" + campo + "))" : campo) + " "+ operador + campo2;//.replaceAll("valor", campo2);
+		    			//se o usuário já adicionou a cláusula 'where' apenas é adicionado o campo de pesquisa e é colocado false para a varíavel 'adicionaWhere' para que insira o operado a partir dos próximos campos
+		    			String clausula = " "+ (operador.contains(INCLUINDO_TUDO.trim()) ? "lower(to_ascii(" + campo + "))" : 
+		    									(operador.contains(IGUAL_DATA.trim()) ? IGUAL_DATA.replaceAll("DATA", campo) : campo)) + " "+ (operador.equals(IGUAL_DATA) ? " = " : operador) + campo2;//.replaceAll("valor", campo2);
 		    			if(adicionadoWhere){
 		    				adicionadoWhere = false;
 	    					consultaGeral.getSqlConsultaSB().append(clausula);
 		    			}else{
-		    				consultaGeral.getSqlConsultaSB().append(" "+ (contendoTodosCampos ? " and " : " or ") + clausula);
+		    				consultaGeral.getSqlConsultaSB().append(" " + (contendoTodosCampos ? " and " : " or ") + clausula);
 		    			}
     				}
 	    		}
@@ -141,8 +163,8 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         	if(achouCampoPreenchidoPeloUsuario || isPesquisaCamposDespadronizado()){
         		resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
         	}else{
-        		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que n√£o existe algum campo de pesquisa
-        		//essa restri√ß√£o foi criada para evitar que entidades com muitos itens estourem o heap do java
+        		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que não existe algum campo de pesquisa
+        		//essa restrição foi criada para evitar que entidades com muitos itens estourem o heap do java
         		if(isPesquisaGuiada()){
         			return null;
         		}else{

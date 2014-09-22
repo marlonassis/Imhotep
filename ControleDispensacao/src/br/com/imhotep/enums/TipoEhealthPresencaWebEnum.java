@@ -6,7 +6,7 @@ package br.com.imhotep.enums;
 
 public enum TipoEhealthPresencaWebEnum {
 	
-	P("Pr√≥prio"),
+	P("Próprio"),
 	H("Hospedado");
 	
 	private String label;

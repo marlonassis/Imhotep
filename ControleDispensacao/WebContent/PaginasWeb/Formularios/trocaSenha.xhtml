@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<h:form id="cadastrarSenhaForm" >
+			<p:growl/>
+			<h:panelGrid columns="1" >
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputLabel for="senhaNova" 
+								   value="Senha nova:" />
+					<br />
+					<p:inputText id="senhaNova" 
+								 value="#{usuarioRaiz.senhaNova}"
+								 required="true" 
+								 type="password" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputLabel for="senhaNovaConfirmacao"
+								   value="Confirme a senha nova:" />
+					<br />
+					<p:inputText id="senhaNovaConfirmacao"
+								 value="#{usuarioRaiz.senhaNovaConfirmacao}" 
+								 required="true"
+								 type="password" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:commandButton value="Alterar Senha"
+									 action="#{usuarioRaiz.trocaSenha()}"
+									 update=":#{p:component('cadastroSenhaPanelGroup')}" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

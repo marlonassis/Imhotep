@@ -1,0 +1,388 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Exames Liberados">
+			<rf:formularioPesquisa id="solicitacaoExamesFinalPesquisa" 
+								   fieldSetCollapsed="false"
+								   novoPadraoPesquisa="true"
+								   raizConsulta="#{solicitacaoExamesFinalConsulta}"
+								   srcTabela="Laboratorio/SolicitacaoExamesFinal/solicitacaoExamesFinalTabela.xhtml"
+								   srcConsulta="Laboratorio/SolicitacaoExamesFinal/solicitacaoExamesFinalConsulta.xhtml" />
+			
+			<h:panelGroup id="dialogLogExamePanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogLogExame}" 
+						  closable="false" 
+						  header="Log do exame" 
+						  modal="true" >
+					<h:form>
+						
+						<p:dataTable value="#{solicitacaoExamesFinalRaiz.instancia.logLista}" 
+									 var="linha" 
+									 scrollable="true" 
+									 scrollHeight="500"
+									 emptyMessage="Não há log cadastrado" >
+										 
+							<f:facet name="header">
+								<h:outputText value="Log do Exame" />
+							</f:facet>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Tipo" />
+								</f:facet>
+								<h:outputText value="#{linha.tipoLog.label}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Profissional" />
+								</f:facet>
+								<h:outputText value="#{linha.profissionalLog.nome}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Data" />
+								</f:facet>
+								<h:outputText value="#{linha.dataLog}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" timeZone="GMT-3" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Justificativa" />
+								</f:facet>
+								<h:outputText value="#{linha.justificativa}" escape="false" />
+							</p:column>
+						</p:dataTable>
+						
+						<p:commandButton value="Fechar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogLogExame}" 
+										 update=":#{p:component('dialogLogExamePanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogLogExameItemPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogLogExameItem}" 
+						  closable="false" 
+						  header="Log do item do exame" 
+						  modal="true" >
+					<h:form>
+						
+						<p:dataTable value="#{solicitacaoExamesFinalRaiz.itemExame.logLista}" 
+									 var="linha" 
+									 scrollable="true" 
+									 scrollHeight="500"
+									 emptyMessage="Não há log cadastrado" >
+										 
+							<f:facet name="header">
+								<h:outputText value="Log do Exame" />
+							</f:facet>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Tipo" />
+								</f:facet>
+								<h:outputText value="#{linha.tipoLog.label}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Profissional" />
+								</f:facet>
+								<h:outputText value="#{linha.profissionalLog.nome}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Data" />
+								</f:facet>
+								<h:outputText value="#{linha.dataLog}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" timeZone="GMT-3" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Justificativa" />
+								</f:facet>
+								<h:outputText value="#{linha.justificativa}" escape="false" />
+							</p:column>
+						</p:dataTable>
+						
+						<p:commandButton value="Fechar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogLogExameItem}" 
+										 update=":#{p:component('dialogLogExameItemPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogReaberturaPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogJustificativaReabrirExame}" 
+						  closable="false" 
+						  header="Endereço" 
+						  modal="true" >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<h:panelGroup>
+								<h:outputText value="Justificativa:" /><br/>
+								<p:editor value="#{solicitacaoExamesFinalRaiz.justificativaReabertura}" 
+										  required="true" />
+							</h:panelGroup>
+							<p:commandButton value="Reabrir" 
+											 action="#{solicitacaoExamesFinalRaiz.reabrirExame}" 
+											 update=":#{p:component('dialogReaberturaPanelGroup')} :#{p:component('tabelaSolicitacaoExamesFinal')}" />/>
+						</h:panelGrid>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Cancelar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogJustificativaReabrirExame}" 
+										 update=":#{p:component('dialogReaberturaPanelGroup')} :#{p:component('tabelaSolicitacaoExamesFinal')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogReaberturaItemPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogReabrirExameItem}" 
+						  closable="false" 
+						  header="Justificativa para reabertura de item" 
+						  modal="true" >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<h:panelGroup>
+								<h:outputText value="Justificativa:" /><br/>
+								<p:editor value="#{solicitacaoExamesFinalRaiz.justificativaReaberturaItem}" 
+										  required="true" />
+							</h:panelGroup>
+							<p:commandButton value="Reabrir" 
+											 action="#{solicitacaoExamesFinalRaiz.reabrirExameItem}" 
+											 update=":#{p:component('dialogReaberturaItemPanelGroup')} :#{p:component('dialogItensPanelGroup')}" />/>
+						</h:panelGrid>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Cancelar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogReabrirExameItem}" 
+										 update=":#{p:component('dialogReaberturaItemPanelGroup')} :#{p:component('dialogItensPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogRecusaItemPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogRecusaItemExame}" 
+						  closable="false" 
+						  header="Justificativa para recusa de item" 
+						  modal="true" >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<h:panelGroup>
+								<h:outputText value="Justificativa:" /><br/>
+								<p:editor value="#{solicitacaoExamesFinalRaiz.justificativaRecusaItem}" 
+										  required="true" />
+							</h:panelGroup>
+							<p:commandButton value="Recusar" 
+											 action="#{solicitacaoExamesFinalRaiz.recusarExameItem}" 
+											 update=":#{p:component('dialogRecusaItemPanelGroup')} :#{p:component('dialogItensPanelGroup')}" />
+						</h:panelGrid>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Cancelar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogRecusaItemExame}" 
+										 update=":#{p:component('dialogRecusaItemPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogAnaliseItemPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogAnalise}" 
+						  closable="false" 
+						  header="Análise da amostra" 
+						  modal="true" >
+					<h:form>
+						<h:outputText value="Nome:" /><br/>
+						<h:outputText value="#{solicitacaoExamesFinalRaiz.itemExame.laboratorioExame.formulario.descricao}" /><br/>
+						<ui:repeat value="#{solicitacaoExamesFinalRaiz.itemExame.laboratorioExame.formulario.itensLista}" var="var" >
+							<h:panelGrid columns="1" >
+								<h:outputText value="#{var.grupo.descricao}" />
+								<h:outputText value="#{var.item.nomeFormulario}:" />
+								<ri:inputGenerico id="item#{var.idLaboratorioFormularioItem}" 
+												  tipo="#{var.item.tipo.label}"
+												  lista="#{var.item.listaItens}" 
+												  value="#{var}" />
+							</h:panelGrid>
+						</ui:repeat>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Cancelar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogAnalise}" 
+										 update=":#{p:component('dialogAnaliseItemPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogResultadoItemPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogResultados}" 
+						  closable="false" 
+						  header="Resultado da amostra" 
+						  modal="true" >
+					<h:form>
+						
+						<ri:inputGenerico id="resultado" 
+										  title="Informe o resultado"
+										  value="#{solicitacaoExamesFinalRaiz.itemExame.resultado}" 
+										  label="Resultado" 
+										  tipo="#{solicitacaoExamesFinalRaiz.itemExame.laboratorioExame.tipoValor.label}" />
+						
+						<p:commandButton value="Cadastrar" 
+										 action="#{solicitacaoExamesFinalRaiz.atualizarItem}" 
+										 update=":#{p:component('dialogResultadoItemPanelGroup')} :#{p:component('dialogItensPanelGroup')}" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogResultados}" 
+										 update=":#{p:component('dialogResultadoItemPanelGroup')} :#{p:component('dialogItensPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogItensPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{solicitacaoExamesFinalRaiz.exibirDialogItens}" 
+						  closable="false" 
+						  header="Itens do Exame" 
+						  modal="true"
+						  width="800"
+						  height="600" >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<p:dataTable value="#{solicitacaoExamesFinalRaiz.instancia.itensLista}" 
+										 var="linha" 
+										 emptyMessage="Não há item cadastrado" >
+										 
+								<f:facet name="header">
+									<h:outputText value="Itens Solicitados" />
+								</f:facet>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Código" />
+									</f:facet>
+									<h:outputText value="#{linha.laboratorioExame.codigo}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Nome" />
+									</f:facet>
+									<h:outputText value="#{linha.laboratorioExame.descricao}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Método" />
+									</f:facet>
+									<h:outputText value="#{linha.laboratorioExame.metodo}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Status" />
+									</f:facet>
+									<h:outputText value="#{linha.statusItem.label}" />
+								</p:column>
+								
+								<p:column style="text-align: center;">
+									<p:commandLink title="Log"
+												   action="#{solicitacaoExamesFinalRaiz.exibirDialogLogExameItem}"
+												   update=":#{p:component('dialogLogExameItemPanelGroup')}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.itemExame}" />
+										<h:graphicImage value="/Imagens/rec-16.png" />
+									</p:commandLink>
+									
+									<p:commandLink title="Reabrir"
+												   action="#{solicitacaoExamesFinalRaiz.exibirDialogReabrirExameItem}"
+												   update=":#{p:component('dialogReaberturaItemPanelGroup')}"
+												   rendered="#{solicitacaoExamesFinalRaiz.reaberturaItemLiberado and solicitacaoExamesFinalRaiz.exameItemRecusado(linha)}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.itemExame}" />
+										<h:graphicImage value="/Imagens/undo.png" />
+									</p:commandLink>
+									
+									<p:commandLink title="Informar Coleta"
+												   action="#{solicitacaoExamesFinalRaiz.informarColetaItem}"
+												   update=":#{p:component('dialogItensPanelGroup')}"
+												   rendered="#{solicitacaoExamesFinalRaiz.coletaItemLiberado and !solicitacaoExamesFinalRaiz.exameItemRecusado(linha)}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.itemExame}" />
+										<h:graphicImage value="/Imagens/frasco-16.png" />
+									</p:commandLink>
+									
+									<p:commandLink title="Lançar Resultado"
+												   action="#{solicitacaoExamesFinalRaiz.exibirDialogResultados}"
+												   update=":#{p:component('dialogResultadoItemPanelGroup')}"
+												   rendered="#{solicitacaoExamesFinalRaiz.lancarResultadosLiberado and
+												   			   !solicitacaoExamesFinalRaiz.exameItemRecusado(linha)}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.itemExame}" />
+										<h:graphicImage value="/Imagens/edit.gif" />
+									</p:commandLink>
+									
+									<p:commandLink title="Analisar"
+												   action="#{solicitacaoExamesFinalRaiz.exibirDialogAnalise}"
+												   update=":#{p:component('dialogAnaliseItemPanelGroup')}"
+												   rendered="#{solicitacaoExamesFinalRaiz.analiseItemLiberado and 
+												   			   !solicitacaoExamesFinalRaiz.exameItemRecusado(linha) and 
+												   			   (linha.laboratorioExame.formulario != null)}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.itemExame}" />
+										<h:graphicImage value="/Imagens/doc.png" />
+									</p:commandLink>
+	
+									<p:commandLink action="#{solicitacaoExamesFinalRaiz.exibirDialogRecusaItemExame}"
+												   update=":#{p:component('dialogRecusaItemPanelGroup')}"
+												   title="Recusar Item" 
+												   rendered="#{solicitacaoExamesFinalRaiz.recusaItemLiberado and !solicitacaoExamesFinalRaiz.exameItemRecusado(linha)}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.itemExame}" />
+										<h:graphicImage value="/Imagens/delete.png" />
+									</p:commandLink>
+									
+								</p:column>
+							</p:dataTable>
+							<p:commandButton value="Confirmar Resultados"
+											 rendered="#{solicitacaoExamesFinalRaiz.cofirmacaoResultadoLiberado}" 
+											 action="#{solicitacaoExamesFinalRaiz.confirmarVerificacaoExame}" 
+											 update=":#{p:component('solicitacaoExamesFinalPesquisaForm')} :#{p:component('dialogItensPanelGroup')}" />
+						</h:panelGrid>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{solicitacaoExamesFinalRaiz.ocultarDialogItens}" 
+										 update=":#{p:component('dialogItensPanelGroup')} :#{p:component('tabelaSolicitacaoExamesFinal')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

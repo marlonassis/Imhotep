@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="unidadeMaterialOdontologiaEditorPanelGrid" columns="3" width="100%">
+		
+		<ri:inputTextoSimples id="descricao" 
+							  required="true"
+							  title="Descreva a tipo de recipiente" 
+							  value="#{unidadeMaterialOdontologiaRaiz.instancia.descricao}" 
+							  label="Descrição" />
+
+		<ri:inputTextoSimples id="sigla"
+							  required="true" 
+							  title="Descreva a sigla do recipiente" 
+							  value="#{unidadeMaterialOdontologiaRaiz.instancia.sigla}" 
+							  label="Sigla" />
+							  
+	</h:panelGrid>
+
+</ui:composition>

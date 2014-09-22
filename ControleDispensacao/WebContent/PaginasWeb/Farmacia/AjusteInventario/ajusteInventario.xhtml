@@ -1,0 +1,333 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Ajuste Conforme o Inventário">
+			<h:panelGroup>
+				<p:commandButton value="Medicamentos Liberados" 
+								 action="#{inventarioFarmaciaControleRaiz.exibirModalMateriaisLiberados}" 
+								 update=":#{p:component('dialogMedicamentosLiberadosPanelGroup')}"/>
+				
+				<p:dataTable id="materiaisNaoLiberadosDataTable"
+							 var="linha" 
+							 value="#{inventarioFarmaciaControleRaiz.materiaisNaoLiberados}"
+							 style="width: 50%;" 
+							 scrollable="true" 
+							 scrollHeight="500"
+							 emptyMessage="Sem itens" >
+			        <p:column headerText="Medicamento" footerText="Medicamento" width="90%" >
+			            <h:outputText value="#{linha.descricaoUnidadeMaterial}" />
+			        </p:column>
+			        <p:column headerText="Ações" footerText="Ações" width="10%" >
+			            <p:commandLink title="Editar"
+			            			   action="#{inventarioFarmaciaControleRaiz.exibirModalAnaliseInventario}"
+									   update=":#{p:component('dialogAjusteInventarioPanelGroup')}"
+									   style="padding-right:10px;">
+							<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaControleRaiz.materialEdicao}" />
+							<h:graphicImage value="/Imagens/edit.gif" />
+						</p:commandLink>
+			        </p:column>
+			    </p:dataTable>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogMedicamentosLiberadosPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{inventarioFarmaciaControleRaiz.exibirModalMateriaisLiberados}" 
+						  closable="false" 
+						  header="Medicamentos Liberados" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					<h:form>
+						<h:panelGrid columns="2" 
+										 width="#{util.larguraTela * 0.9}px">
+							<p:dataTable id="materiaisLiberadosDataTable"
+										 var="linha" 
+										 value="#{inventarioFarmaciaControleRaiz.materiaisLiberados}"
+										 scrollable="true" 
+										 scrollHeight="220"
+										 emptyMessage="Sem itens" >
+						        <p:column headerText="Medicamento" width="90%" >
+						            <h:outputText value="#{linha.descricaoUnidadeMaterial}" />
+						        </p:column>
+						        <p:column headerText="Ações" width="10%" >
+						            <p:commandLink title="Tornar o Medicamento Pendente"
+						            			   action="#{inventarioFarmaciaControleRaiz.tornarMedicamentoPendente}"
+												   update=":#{p:component('dialogMedicamentosLiberadosPanelGroup')}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaControleRaiz.materialEdicao}" />
+										<h:graphicImage value="/Imagens/update.png" height="16px" width="16px" />
+									</p:commandLink>
+						        </p:column>
+						    </p:dataTable>
+						</h:panelGrid>
+				    </h:form>
+				    <h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioFarmaciaControleRaiz.ocultarModalMateriaisLiberados}" 
+										 update=":#{p:component('materiaisNaoLiberadosDataTable')} :#{p:component('dialogMedicamentosLiberadosPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogAjusteInventarioPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{inventarioFarmaciaControleRaiz.exibirModalAnaliseInventario}" 
+						  closable="false" 
+						  header="Ajuste do Inventário - #{inventarioFarmaciaControleRaiz.materialEdicao.descricaoUnidadeMaterial}" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="1" >
+								<h:outputText value="Saldo no dia 13/07/2014: #{inventarioFarmaciaControleRaiz.saldoRetroativo}" />
+								<h:outputText value="Inventariado: #{inventarioFarmaciaControleRaiz.quantidadeInventariada}" />
+								<h:outputText value="Saldo em #{util.dataAtual}: #{inventarioFarmaciaControleRaiz.saldoAtualLotesValidos}" rendered="false" />
+								<h:outputText value="Resolução: #{inventarioFarmaciaControleRaiz.resolucao}" />
+							</h:panelGrid>
+							
+							<h:panelGrid columns="2" 
+										 width="#{util.larguraTela * 0.9}px"
+										 columnClasses="colStyle2, colStyle2" >
+								<p:dataTable var="linha" 
+											 value="#{inventarioFarmaciaControleRaiz.estoquesInventariados}"
+											 scrollable="true" 
+											 scrollHeight="220" 
+											 emptyMessage="Sem itens">
+									<f:facet name="header">
+								        Situação Inventariada
+								    </f:facet>
+							        <p:column headerText="Lote">
+							            <h:outputText value="#{linha.lote}" />
+							        </p:column>
+							        
+							        <p:column headerText="Validade" >
+							            <h:outputText value="#{linha.validade}" />
+							        </p:column>
+							        
+							        <p:column headerText="Quantidade Contada">
+							            <h:outputText value="#{linha.quantidadeAtual}" />
+							        </p:column>
+							        
+							        <p:column headerText="Ações no Sistema">
+							            <p:commandLink title="Cadastrar Lote"
+							            			   rendered="#{!inventarioFarmaciaControleRaiz.loteCadastrado(linha.lote)}"
+							            			   action="#{inventarioFarmaciaControleRaiz.exibirModalAdicionarNovoLote}"
+													   update=":#{p:component('dialogCadastroLotePanelGroup')}"
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaControleRaiz.estoqueEdicao}" />
+											<h:graphicImage value="/Imagens/add.png" height="16px" width="16px" />
+										</p:commandLink>
+							        </p:column>
+							    </p:dataTable>
+							    
+							    <p:dataTable var="linha" 
+											 value="#{inventarioFarmaciaControleRaiz.estoquesValidos}"
+											 scrollable="true" 
+											 scrollHeight="220"
+											 emptyMessage="Sem itens" >
+									<f:facet name="header">
+								        Situação no Sistema
+								    </f:facet>
+									
+									<p:column width="10%" headerText="Editar" >
+							            <p:commandLink title="Editar"
+							            			   action="#{inventarioFarmaciaControleRaiz.exibirModalAtualizacaoLote}"
+													   update=":#{p:component('dialogAtualizacaoLotePanelGroup')}"
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaControleRaiz.estoqueEdicao}" />
+											<h:graphicImage value="/Imagens/edit.gif" />
+										</p:commandLink>
+							        </p:column>
+									
+							        <p:column headerText="Lote">
+							            <h:outputText value="#{linha.estoque.lote}" />
+							        </p:column>
+							        
+							        <p:column headerText="Validade">
+							            <h:outputText value="#{linha.estoque.dataValidade}" >
+							            	<f:convertDateTime pattern="MMM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+							            </h:outputText>
+							        </p:column>
+							        
+							        <p:column headerText="Saldo no Sistema">
+							            <h:outputText value="#{linha.estoque.quantidadeAtual}" />
+							        </p:column>
+							        
+							        <p:column headerText="Quantidade">
+							            <ri:inputApenasNumero id="quantidade" 
+							    							  title="Informe a quantidade que você quer alterar" 
+							    							  size="5"
+							    							  value="#{linha.quantidadeAtual}" 
+							    							  exibirLabel="false" />
+							        </p:column>
+							        
+							        <p:column headerText="Ações no Lote">
+							            <p:commandLink title="Subtrair"
+							            			   onclick="if(!confirm('Você tem certeza que quer SUBTRAIR deste lote?')) return false;"
+							            			   action="#{inventarioFarmaciaControleRaiz.removerSaldoEstoque}"
+													   update=":#{p:component('dialogAjusteInventarioPanelGroup')}"
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaControleRaiz.estoqueEdicao}" />
+											<h:graphicImage value="/Imagens/minus.png" height="16px" width="16px"/>
+										</p:commandLink>
+										
+										<p:commandLink title="Somar"
+													   onclick="if(!confirm('Você tem certeza que quer SOMAR deste lote?')) return false;"
+							            			   action="#{inventarioFarmaciaControleRaiz.adicionarSaldoEstoque}"
+													   update=":#{p:component('dialogAjusteInventarioPanelGroup')}"
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{linha}" target="#{inventarioFarmaciaControleRaiz.estoqueEdicao}" />
+											<h:graphicImage value="/Imagens/plus.png" height="16px" width="16px" />
+										</p:commandLink>
+							        </p:column>
+							    </p:dataTable>
+							</h:panelGrid>
+						</h:panelGrid>
+					</h:form>
+					
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioFarmaciaControleRaiz.ocultarModalAnaliseInventario}" 
+										 update=":#{p:component('materiaisNaoLiberadosDataTable')} :#{p:component('dialogAjusteInventarioPanelGroup')}" 
+										 immediate="false" />
+										 
+						<p:commandButton value="Liberar" 
+										 action="#{inventarioFarmaciaControleRaiz.liberarMedicamento}" 
+										 update=":#{p:component('materiaisNaoLiberadosDataTable')} :#{p:component('dialogAjusteInventarioPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogCadastroLotePanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{inventarioFarmaciaControleRaiz.exibirModalAdicionarNovoLote}" 
+						  closable="false" 
+						  header="Cadastro de Lote - #{inventarioFarmaciaControleRaiz.estoqueEdicao.lote}" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						<h:panelGrid id="entradaMaterialPanelGrid"
+									 columns="3" 
+									 width="100%">
+							<p:inputText id="lote"
+										 value="#{inventarioFarmaciaControleRaiz.estoqueCadastro.lote}"
+										 title="Informe o lote" 
+										 required="true" />
+							
+							<ri:inputAutoComplete id="material" 
+												 label="Material"  
+												 disabled="true"
+												 completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
+												 itemValue="#{material}" 
+												 itemLabel="#{material.descricaoUnidadeMaterial}" 
+												 var="material"
+												 value="#{inventarioFarmaciaControleRaiz.estoqueCadastro.material}" 
+												 required="true"/>
+							
+							<ri:inputAutoComplete id="fabricante" 
+												 label="Fabricante"
+												 required="true"  
+												 completeMethod="#{fabricanteAutoComplete.autoComplete}" 
+												 itemValue="#{fabricante}" 
+												 itemLabel="#{fabricante.descricao}" 
+												 var="fabricante"
+												 value="#{inventarioFarmaciaControleRaiz.estoqueCadastro.fabricante}" />
+							
+							<ri:inputDataMesAnoMedicamento id="dataValidade"
+														   label="Data de Validade"
+														   required="true" 
+														   value="#{inventarioFarmaciaControleRaiz.estoqueCadastro.dataValidade}"
+														   title="Data de validade do lote"/>
+							
+							<ri:inputApenasNumero id="quantidade" 
+												  required="true"
+												  title="Informe a quantidade informada na nota" 
+												  value="#{inventarioFarmaciaControleRaiz.estoqueCadastro.quantidadeAtual}" 
+												  label="Quantidade"/>
+					
+							<ri:inputTextoSimples id="codigoBarras" 
+												  title="Informe o código de barras"
+												  value="#{inventarioFarmaciaControleRaiz.estoqueCadastro.codigoBarras}" 
+												  label="Código de Barras" />
+												  
+						</h:panelGrid>
+						<p:commandButton value="Cadastrar" 
+										 action="#{inventarioFarmaciaControleRaiz.cadastrarLote}" 
+										 update=":#{p:component('dialogCadastroLotePanelGroup')} :#{p:component('dialogAjusteInventarioPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioFarmaciaControleRaiz.ocultarModalAdicionarNovoLote}" 
+										 update=":#{p:component('dialogCadastroLotePanelGroup')} :#{p:component('dialogAjusteInventarioPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+				</p:dialog>
+			</h:panelGroup>
+			
+			
+			
+			
+			
+			<h:panelGroup id="dialogAtualizacaoLotePanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{inventarioFarmaciaControleRaiz.exibirModalAtualizacaoLote}" 
+						  closable="false" 
+						  header="Atualização de Lote - #{inventarioFarmaciaControleRaiz.estoqueEdicao.estoque.lote}" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						<h:panelGrid id="atualizarLotePanelGrid"
+									 columns="3" 
+									 width="100%">
+							<p:inputText id="lote"
+										 value="#{inventarioFarmaciaControleRaiz.estoqueEdicao.estoque.lote}"
+										 required="true" 
+										 title="Informe o lote" />
+							
+							<ri:inputDataMesAnoMedicamento id="dataValidade"
+														   label="Data de Validade"
+														   required="true" 
+														   value="#{inventarioFarmaciaControleRaiz.estoqueEdicao.estoque.dataValidade}"
+														   title="Data de validade do lote"/>
+							
+						</h:panelGrid>
+						<p:commandButton value="Atualizar" 
+										 action="#{inventarioFarmaciaControleRaiz.atualizarEstoque}" 
+										 update=":#{p:component('dialogAjusteInventarioPanelGroup')} :#{p:component('dialogAtualizacaoLotePanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioFarmaciaControleRaiz.ocultarModalAtualizacaoLote}" 
+										 update=":#{p:component('dialogAjusteInventarioPanelGroup')} :#{p:component('dialogAtualizacaoLotePanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+				</p:dialog>
+			</h:panelGroup>
+		</p:tab>
+	</ui:define>
+</ui:composition>

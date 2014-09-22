@@ -8,7 +8,7 @@
 	<h:panelGrid id="notaFiscalPanelGrid" columns="3" width="100%">
 		<ri:inputAutoComplete id="fornecedor" 
 							 label="Fornecedor"  
-							 completeMethod="#{fornecedorAutoComplete.autoComplete}" 
+							 completeMethod="#{fornecedorAutoComplete.autoCompleteCnpj}" 
 							 itemValue="#{fornecedor}" 
 							 itemLabel="#{fornecedor.nome}" 
 							 var="fornecedor"
@@ -61,6 +61,10 @@
 		<ri:inputSelectOneRadioBoolean id="doacao" 
 									   value="#{notaFiscalRaiz.instancia.doacao}" 
 									   label="Doação" />
+		
+		<ri:inputSelectOneRadioBoolean id="bloqueado" 
+									   value="#{notaFiscalRaiz.instancia.bloqueada}" 
+									   label="Bloqueado" />
 		
 		<h:panelGroup>
 			<font color="red">*</font>
@@ -121,15 +125,14 @@
 							 var="fabricante"
 							 value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.fabricante}" 
 							 required="true"/>
-		
-		<ri:inputDataMesAno id="dataValidade"
+
+		<ri:inputDataMesAnoMedicamento id="dataValidade"
 						   label="Data de Validade"
 						   rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
 						   disabled="#{notaFiscalRaiz.loteEncontrado}"
 						   required="true" 
 						   value="#{notaFiscalRaiz.notaFiscalEstoque.estoque.dataValidade}"
 						   title="Data de validade do lote"/>
-		
 		<ri:inputApenasNumero id="quantidade" 
 							  title="Informe a quantidade informada na nota" 
 							  value="#{notaFiscalRaiz.notaFiscalEstoque.quantidadeEntrada}" 
@@ -210,7 +213,7 @@
 	                <h:panelGroup>
 	                	<h:outputText value="Validade:" style="font-weight:bold;" /><br/>
 	               		<h:outputText value="#{linha.estoque.dataValidade}" style="margin-left:10px">
-			            	<f:convertDateTime pattern="MM/yyyy"/>
+			            	<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3"  />
 			            </h:outputText>
 				    </h:panelGroup>
 				    

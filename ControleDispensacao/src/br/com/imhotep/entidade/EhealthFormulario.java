@@ -1,6 +1,7 @@
 package br.com.imhotep.entidade;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -16,12 +17,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.com.imhotep.enums.TipoEhealthPresencaWebEnum;
 
 @Entity
-@Table(name = "tb_ehealth_formulario")
+@Table(name = "tb_ehealth_formulario", schema="ehealth")
 public class EhealthFormulario {
 	
 	private int idEhealthFormulario;
@@ -45,8 +48,10 @@ public class EhealthFormulario {
 	private Set<EhealthFormularioRedeSocial> redesSociais;
 	private Set<EhealthFormularioTecnologia> tecnologias;
 	private EhealthEstabelecimento ehealthEstabelecimento;
+	private Profissional pesquisador;
+	private Date dataCadastro;
 	
-	@SequenceGenerator(name = "generator", sequenceName = "public.tb_ehealth_formulario_id_ehealth_formulario_seq")
+	@SequenceGenerator(name = "generator", sequenceName = "ehealth.tb_ehealth_formulario_id_ehealth_formulario_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_ehealth_formulario", unique = true, nullable = false)
@@ -253,14 +258,128 @@ public class EhealthFormulario {
 		this.ehealthEstabelecimento = ehealthEstabelecimento;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof EhealthFormulario))
-			return false;
-		
-		return ((EhealthFormulario)obj).getIdEhealthFormulario() == this.idEhealthFormulario;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_pesquisador")
+	public Profissional getPesquisador() {
+		return pesquisador;
+	}
+	public void setPesquisador(Profissional pesquisador) {
+		this.pesquisador = pesquisador;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_cadastro")
+	public Date getDataCadastro() {
+		return this.dataCadastro;
 	}
 
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (acessibilidade ? 1231 : 1237);
+		result = prime * result + (consultaOnline ? 1231 : 1237);
+		result = prime * result + (corpoClinico ? 1231 : 1237);
+		result = prime * result
+				+ ((dataCadastro == null) ? 0 : dataCadastro.hashCode());
+		result = prime * result
+				+ (disponibilizacaoFormularioDownload ? 1231 : 1237);
+		result = prime * result
+				+ (disponibilizacaoFormulariosOnline ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((ehealthEstabelecimento == null) ? 0
+						: ehealthEstabelecimento.hashCode());
+		result = prime * result + (enderecoEletronicoRecepcao ? 1231 : 1237);
+		result = prime * result + idEhealthFormulario;
+		result = prime * result
+				+ (informacaoInstitucionalHospital ? 1231 : 1237);
+		result = prime * result
+				+ (informacaoPrevencaoCuidadosSaude ? 1231 : 1237);
+		result = prime * result + (informacaoServicoPrestado ? 1231 : 1237);
+		result = prime * result + (localizacaoMeiosAcesso ? 1231 : 1237);
+		result = prime * result + (marcacaoConsulta ? 1231 : 1237);
+		result = prime * result
+				+ ((observacao == null) ? 0 : observacao.hashCode());
+		result = prime * result
+				+ ((pesquisador == null) ? 0 : pesquisador.hashCode());
+		result = prime * result + (possuiSiteProprio ? 1231 : 1237);
+		result = prime * result + (procedimentosEmergenciaMedica ? 1231 : 1237);
+		result = prime * result + (rastreioMedicoOnline ? 1231 : 1237);
+		result = prime * result + (tabelaCustoServico ? 1231 : 1237);
+		result = prime * result
+				+ ((tipoPresencaWeb == null) ? 0 : tipoPresencaWeb.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EhealthFormulario other = (EhealthFormulario) obj;
+		if (acessibilidade != other.acessibilidade)
+			return false;
+		if (consultaOnline != other.consultaOnline)
+			return false;
+		if (corpoClinico != other.corpoClinico)
+			return false;
+		if (dataCadastro == null) {
+			if (other.dataCadastro != null)
+				return false;
+		} else if (!dataCadastro.equals(other.dataCadastro))
+			return false;
+		if (disponibilizacaoFormularioDownload != other.disponibilizacaoFormularioDownload)
+			return false;
+		if (disponibilizacaoFormulariosOnline != other.disponibilizacaoFormulariosOnline)
+			return false;
+		if (ehealthEstabelecimento == null) {
+			if (other.ehealthEstabelecimento != null)
+				return false;
+		} else if (!ehealthEstabelecimento.equals(other.ehealthEstabelecimento))
+			return false;
+		if (enderecoEletronicoRecepcao != other.enderecoEletronicoRecepcao)
+			return false;
+		if (idEhealthFormulario != other.idEhealthFormulario)
+			return false;
+		if (informacaoInstitucionalHospital != other.informacaoInstitucionalHospital)
+			return false;
+		if (informacaoPrevencaoCuidadosSaude != other.informacaoPrevencaoCuidadosSaude)
+			return false;
+		if (informacaoServicoPrestado != other.informacaoServicoPrestado)
+			return false;
+		if (localizacaoMeiosAcesso != other.localizacaoMeiosAcesso)
+			return false;
+		if (marcacaoConsulta != other.marcacaoConsulta)
+			return false;
+		if (observacao == null) {
+			if (other.observacao != null)
+				return false;
+		} else if (!observacao.equals(other.observacao))
+			return false;
+		if (pesquisador == null) {
+			if (other.pesquisador != null)
+				return false;
+		} else if (!pesquisador.equals(other.pesquisador))
+			return false;
+		if (possuiSiteProprio != other.possuiSiteProprio)
+			return false;
+		if (procedimentosEmergenciaMedica != other.procedimentosEmergenciaMedica)
+			return false;
+		if (rastreioMedicoOnline != other.rastreioMedicoOnline)
+			return false;
+		if (tabelaCustoServico != other.tabelaCustoServico)
+			return false;
+		if (tipoPresencaWeb != other.tipoPresencaWeb)
+			return false;
+		return true;
+	}
+	
 }

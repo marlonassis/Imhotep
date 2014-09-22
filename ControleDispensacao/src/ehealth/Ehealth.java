@@ -292,7 +292,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 					
 					todos.append(sb.toString());
 				} catch (Exception e) {
-					erro.append("Munic√≠pio:").append(municipio.getLink()).append(" - id:").append(municipio.getIdMunicipio()).append("\n");
+					erro.append("Município:").append(municipio.getLink()).append(" - id:").append(municipio.getIdMunicipio()).append("\n");
 				}
 			}
 			
@@ -342,7 +342,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 				int i = 0;
 				boolean achouNatureza = false;
 				while ((line = reader.readLine()) != null) {
-					if(achouNatureza || line.contains("Natureza da Organiza√ß√£o")){
+					if(achouNatureza || line.contains("Natureza da Organização")){
 						achouNatureza = true;
 						if(achouNatureza){
 							i++;

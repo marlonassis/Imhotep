@@ -5,13 +5,13 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoEscolaridadeEnum {
-	EI("Educa√ß√£o Infantil"),
+	EI("Educação Infantil"),
 	EF("Ensino Fundamental"),
-	EM("Ensino M√©dio"),
+	EM("Ensino Médio"),
 	ES("Ensino Superior"),
 	ME("Mestrado"),
 	DO("Doutorado"),
-	PD("P√≥s-Doutorado");
+	PD("Pós-Doutorado");
 	
 	TipoEscolaridadeEnum(String papel){
 		label = papel;

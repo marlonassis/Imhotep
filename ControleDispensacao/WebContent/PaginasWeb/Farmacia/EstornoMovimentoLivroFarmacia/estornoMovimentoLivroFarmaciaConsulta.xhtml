@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="movimentoLivroPanelGridConsulta" columns="2" width="0%">
+		<h:panelGroup>
+			<h:panelGrid columns="2">
+				<ri:inputAutoComplete id="material" 
+									  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
+									  itemValue="#{material}" 
+									  itemLabel="#{material.descricaoUnidadeMaterial}" 
+									  var="material" 
+									  required="true"
+									  value="#{estornoMovimentacaoFarmaciaRaiz.material}" 
+									  label="Material"/>
+				
+				<p:commandButton value="->" 
+								 action="#{estornoMovimentacaoFarmaciaRaiz.carregarEstoques}"
+								 update=":#{p:component('estornoMovimentoFarmaciaPesquisaForm')}" />
+				
+			</h:panelGrid> 
+		</h:panelGroup>
+		
+		<ri:inputSelectOneMenuEntidade id="estoque"
+									   disabled="#{estornoMovimentacaoFarmaciaRaiz.material.idMaterial == 0}"
+									   itemLabel="#{estoque.lote}"
+									   itemValue="#{estoque}"
+									   var="estoque"
+									   value="#{estornoMovimentacaoFarmaciaConsulta.estoque}"
+									   list="#{estornoMovimentacaoFarmaciaRaiz.estoquesFarmacia}"
+									   label="Estoque" />
+		
+	</h:panelGrid>
+	
+</ui:composition>

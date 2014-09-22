@@ -10,11 +10,11 @@ import br.com.imhotep.entidade.PainelAviso;
 import br.com.imhotep.entidade.PainelAvisoEspecialidade;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PainelAvisoRaiz extends PadraoHome<PainelAviso>{
+public class PainelAvisoRaiz extends PadraoRaiz<PainelAviso>{
 	
 	private Especialidade especialidade;
 	

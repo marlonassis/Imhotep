@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -17,7 +17,7 @@ public class ExcecaoSolicitacaoMedicamentoSemItens extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1L;
 
 	public ExcecaoSolicitacaoMedicamentoSemItens(){
-		super.mensagem("√â necess√°rio adicionar itens para fechar a solicita√ß√£o", "");
+		super.mensagem("É necessário adicionar itens para fechar a solicitação", "");
 	}
 	
 }

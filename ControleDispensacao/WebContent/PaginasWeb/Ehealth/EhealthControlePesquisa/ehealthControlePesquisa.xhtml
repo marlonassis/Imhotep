@@ -22,7 +22,7 @@
 								  srcConsulta="Ehealth/EhealthControlePesquisa/ehealthControlePesquisaConsulta.xhtml" />
 			
 			<p:dialog id="formDialog" 
-					  visible="#{ehealthFormularioRaiz.exibeFormulario}" 
+					  visible="#{ehealthEstabelecimentoRaiz.exibeFormulario}" 
 					  modal="true" 
 					  closable="false"
 					  header="#{ehealthEstabelecimentoRaiz.instancia.nome}" >
@@ -31,96 +31,96 @@
 					<h:panelGrid columns="3" >
 						<h:panelGroup>
 							Possui site próprio?<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.possuiSiteProprio}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.possuiSiteProprio}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Acessibilidades para cidadãos com necessidades especiais:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.acessibilidade}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.acessibilidade}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Consulta On-line:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.consultaOnline}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.consultaOnline}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Informação sobre o corpo clínico:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.corpoClinico}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.corpoClinico}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Disponibilização de formulários para download:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.disponibilizacaoFormularioDownload}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.disponibilizacaoFormularioDownload}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Disponibilização de formulários para preenchimento e submissão online:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.disponibilizacaoFormulariosOnline}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.disponibilizacaoFormulariosOnline}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Endereço eletrônico para recepção de pedidos de informação, sugestões e reclamações:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.enderecoEletronicoRecepcao}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.enderecoEletronicoRecepcao}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Informação institucional acerca do hospital:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.informacaoInstitucionalHospital}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.informacaoInstitucionalHospital}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Informação sobre prevenção e cuidados de saúde:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.informacaoPrevencaoCuidadosSaude}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.informacaoPrevencaoCuidadosSaude}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Informação acerca dos serviços prestados:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.informacaoServicoPrestado}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.informacaoServicoPrestado}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Localização, meios de acesso e facilidades de estacionamento:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.localizacaoMeiosAcesso}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.localizacaoMeiosAcesso}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Marcação de consultas online:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.marcacaoConsulta}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.marcacaoConsulta}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Indicações sobre procedimentos em emergências médicas:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.procedimentosEmergenciaMedica}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.procedimentosEmergenciaMedica}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Rastreio médico online:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.rastreioMedicoOnline}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.rastreioMedicoOnline}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							Tabela de custos dos serviços:<br/>
-							<p:selectBooleanCheckbox value="#{ehealthFormularioRaiz.instancia.tabelaCustoServico}" />
+							<p:selectBooleanCheckbox value="#{ehealthEstabelecimentoRaiz.formulario.tabelaCustoServico}" />
 						</h:panelGroup>
 						<h:panelGroup>
 							<ri:inputSelectOneMenuEnum id="tipoPresencaWeb" 
-													   value="#{ehealthFormularioRaiz.instancia.tipoPresencaWeb}" 
+													   value="#{ehealthEstabelecimentoRaiz.formulario.tipoPresencaWeb}" 
 													   label="Tipo de presença na Web" 
 													   itens="#{itensPadrao.tipoEhealthPresencaWebEnumItens}"/>
 						</h:panelGroup>
 						<h:panelGroup>
 							<ri:inputTextArea id="observacao" 
 											  title="Observação" 
-											  value="#{ehealthFormularioRaiz.instancia.observacao}" 
+											  value="#{ehealthEstabelecimentoRaiz.formulario.observacao}" 
 											  label="Observação"/>
 						</h:panelGroup>
 						<h:panelGroup/>
-						<h:panelGroup id="redeSocialPanelGroup" rendered="#{ehealthFormularioRaiz.edicao}" >
+						<h:panelGroup id="redeSocialPanelGroup" rendered="#{ehealthEstabelecimentoRaiz.formulario.idEhealthFormulario != 0}" >
 							<h:panelGroup id="redesSociaisPanelGroup">
 								<h:outputLabel for="redeSocial" value="Rede Social:" />
 								<br />
 								<p:selectOneMenu id="redeSocial"
-												 value="#{ehealthFormularioRaiz.tipoRedeSocial}"
+												 value="#{ehealthEstabelecimentoRaiz.tipoRedeSocial}"
 												 effect="fade"
 												 label="Rede Social">
 									<f:selectItem itemLabel="Selecione..." itemValue="" />
 									<f:selectItems value="#{itensPadrao.tipoEhealthRedeSocialEnumItens}"/>
-									<p:ajax event="change" listener="#{ehealthFormularioRaiz.addRedeSocial}" update=":#{p:component('redeSocialPanelGroup')} :#{p:component('formDialog')}" />
+									<p:ajax event="change" listener="#{ehealthEstabelecimentoRaiz.addRedeSocial}" update=":#{p:component('redeSocialPanelGroup')} :#{p:component('formDialog')}" />
 								</p:selectOneMenu>
 							</h:panelGroup>
 							
 							<h:panelGroup id="redesSociais" >		
-								<p:dataList value="#{ehealthFormularioRaiz.instancia.redesSociaisList}" var="e" type="ordered">  
+								<p:dataList value="#{ehealthEstabelecimentoRaiz.formulario.redesSociaisList}" var="e" type="ordered">  
 								    #{e.tipoRedeSocial.label}#{' - '}<h:graphicImage value="/Imagens/delete32.png" width="16" height="16">
 										    					   		<p:ajax event="click" 
-										    					   				listener="#{ehealthFormularioRaiz.remRedeSocial(e)}" 
+										    					   				listener="#{ehealthEstabelecimentoRaiz.remRedeSocial(e)}" 
 										    					   				update=":#{p:component('redeSocialPanelGroup')} :#{p:component('formDialog')}" 
 										    					   				global="false" 
 											                				    onstart="statusDialog.show();"  
@@ -129,18 +129,18 @@
 								</p:dataList>
 							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup rendered="#{ehealthFormularioRaiz.edicao}" >
+						<h:panelGroup rendered="#{ehealthEstabelecimentoRaiz.formulario.idEhealthFormulario != 0}" >
 							<h:panelGroup id="tecnologiaPanelGroup">
 								<h:outputLabel for="tecnologia" value="Tecnologia:" />
 								<br />
 								<p:selectOneMenu id="tecnologia"
-												 value="#{ehealthFormularioRaiz.tipoTecnologia}"
+												 value="#{ehealthEstabelecimentoRaiz.tipoTecnologia}"
 												 effect="fade"
 												 label="Tecnologia">
 									<f:selectItem itemLabel="Selecione..." itemValue="" />
 									<f:selectItems value="#{itensPadrao.tipoEhealthTipoTecnologiaEnumItens}"/>
 									<p:ajax event="change" 
-											listener="#{ehealthFormularioRaiz.addTecnologia}" 
+											listener="#{ehealthEstabelecimentoRaiz.addTecnologia}" 
 											update=":#{p:component('formDialog')}" 
 											global="false" 
 		                				    onstart="statusDialog.show();"  
@@ -149,10 +149,10 @@
 							</h:panelGroup>
 							
 							<h:panelGroup id="tecnologias" >		
-								<p:dataList value="#{ehealthFormularioRaiz.instancia.tecnologiasList}" var="e" type="ordered">  
+								<p:dataList value="#{ehealthEstabelecimentoRaiz.formulario.tecnologiasList}" var="e" type="ordered">  
 								    #{e.tipoTecnologia.label}#{' - '}<h:graphicImage value="/Imagens/delete32.png" width="16" height="16">
 										    					   		<p:ajax event="click" 
-										    					   				listener="#{ehealthFormularioRaiz.remTecnologia(e)}" 
+										    					   				listener="#{ehealthEstabelecimentoRaiz.remTecnologia(e)}" 
 										    					   				update=":#{p:component('formDialog')}" 
 										    					   				global="false" 
 											                				    onclick="statusDialog.show();"  
@@ -165,21 +165,21 @@
 					<p:commandButton global="false" 
                 				 onclick="statusDialog.show();"  
                 				 onsuccess="statusDialog.hide();"
-                				 action="#{ehealthFormularioRaiz.enviar}"
+                				 action="#{ehealthEstabelecimentoRaiz.cadastrarFormulario}"
 								 value="Salvar" 
-								 rendered="#{!ehealthFormularioRaiz.edicao}"
+								 rendered="#{ehealthEstabelecimentoRaiz.formulario.idEhealthFormulario == 0}"
 								 update=":padraoTabView:formularioEstabelecimento"/>
 					<p:commandButton global="false" 
                 				 onclick="statusDialog.show();"  
                 				 onsuccess="statusDialog.hide();"
-                				 action="#{ehealthFormularioRaiz.atualizar}"
+                				 action="#{ehealthEstabelecimentoRaiz.atualizarFormulario}"
 								 value="Atualizar" 
-								 rendered="#{ehealthFormularioRaiz.edicao}"
+								 rendered="#{ehealthEstabelecimentoRaiz.formulario.idEhealthFormulario != 0}"
 								 update=":padraoTabView:formularioEstabelecimento"/>
 					<p:commandButton global="false" 
                 				 onclick="statusDialog.show(); formulario.hide();"  
                 				 onsuccess="statusDialog.hide();"
-                				 action="#{ehealthFormularioRaiz.novaInstancia}"
+                				 action="#{ehealthEstabelecimentoRaiz.ocultarFormulario}"
 								 value="Fechar" 
 								 update=":padraoTabView:formularioEstabelecimento"/>
 				</h:form>

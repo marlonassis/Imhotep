@@ -5,8 +5,8 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoSubIndicacaoProfilaxiaEnum {
-	CI("Cir√∫rgica"),
-	CL("Cl√≠nica");
+	CI("Cirúrgica"),
+	CL("Clínica");
 	
 	TipoSubIndicacaoProfilaxiaEnum(String papel){
 		label = papel;

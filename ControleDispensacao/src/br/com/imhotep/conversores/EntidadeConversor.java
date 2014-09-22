@@ -22,6 +22,10 @@ public class EntidadeConversor extends GerenciadorConexao implements Converter {
     	Object resultado = null;
         if (submittedValue != null && !submittedValue.trim().equals("")) {
         	try {
+        		facesContext.getExternalContext().getApplicationMap();
+//                return service.getThemes().get(Integer.parseInt(value));
+        		
+        		
         		Object obj = component.getValueExpression("value").getType(facesContext.getELContext()).newInstance();
         		String nomePropriedadeId = Utilitarios.getNomePropriedadeId(obj);
         		iniciarTransacao();

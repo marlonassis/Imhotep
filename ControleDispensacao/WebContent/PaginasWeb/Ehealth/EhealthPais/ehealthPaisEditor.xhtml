@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="ehealthPaisPanelGrid" columns="3" width="100%">
+		<r:inputTextoSimples id="nome" 
+							 label="Nome"
+							 required="true" 
+							 title="Informe o nome do Pais" 
+							 value="#{ehealthPaisRaiz.instancia.nome}" />
+							 
+		<r:inputTextoSimples id="sigla" 
+							 label="Sigla"
+							 required="true" 
+							 title="Informe a sigla do Pais" 
+							 value="#{ehealthPaisRaiz.instancia.sigla}" />
+		
+		<r:inputTextoSimples id="capitalFederal" 
+							 label="Capital Federal"
+							 required="true" 
+							 title="Informe o nome da capital federal" 
+							 value="#{ehealthPaisRaiz.instancia.capitalFederal}" />
+		
+		<r:inputSelectOneMenuEnum id="continentes" 
+								  value="#{ehealthPaisRaiz.instancia.tipoContinente}" 
+								  label="Continente" 
+								  required="true"
+								  itens="#{itensPadrao.tipoEhealthContinenteEnumItens}"/>
+	</h:panelGrid>
+
+</ui:composition>

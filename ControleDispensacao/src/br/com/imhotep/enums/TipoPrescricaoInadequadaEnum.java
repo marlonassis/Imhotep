@@ -5,15 +5,15 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoPrescricaoInadequadaEnum {
-	SI("Sem evid√™ncia de infec√ß√£o"),
+	SI("Sem evidência de infecção"),
 	TX("Toxidade"),
 	EI("Espectro inadequado"),
 	OT("Outros");
 	
 	private String label;
 	
-	TipoPrescricaoInadequadaEnum(String sexo){
-		label = sexo;
+	TipoPrescricaoInadequadaEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

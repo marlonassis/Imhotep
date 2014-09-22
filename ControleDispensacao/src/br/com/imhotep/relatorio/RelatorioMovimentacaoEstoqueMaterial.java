@@ -3,6 +3,7 @@ package br.com.imhotep.relatorio;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +11,8 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
+import org.primefaces.model.chart.CartesianChartModel;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
@@ -22,6 +25,7 @@ import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial;
 import br.com.imhotep.enums.TipoOperacaoEnum;
+import br.com.imhotep.grafico.GraficoMaterialConsumo;
 
 @ManagedBean
 @ViewScoped
@@ -36,6 +40,19 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 	private Unidade unidade;
 	private TipoOperacaoEnum tipoOperacao;
 	private boolean agruparPorLote;
+	private CartesianChartModel linearModel = new CartesianChartModel();
+	private boolean exibirGrafico;
+	
+	public void gerarGrafico(){
+		if(getMaterial() != null && getDataFim() != null && getDataIni() != null){
+			setLinearModel(new GraficoMaterialConsumo().montarGrafico(getMaterial(), getDataIni(), getDataFim()));
+			setExibirGrafico(true);
+		}
+	}
+	
+	public void fecharModal(){
+		setExibirGrafico(false);
+	}
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueMaterial.jasper";
@@ -47,9 +64,44 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
 		map.put("estoques", new EstoqueConsultaRaiz().consultarEstoquesMaterial(getMaterial()));
 		map.put("nomeMaterial", material.getDescricao());
+		map.put("totalEntrada", totalEntrada(lista));
+		int totalSaida = totalSaida(lista);
+		map.put("totalSaida", totalSaida);
+		int qtdDias = Utilitarios.qtdDias(getDataIni(), getDataFim());
+		map.put("totalDias", qtdDias);
+		NumberFormat nf = NumberFormat.getInstance(Constantes.LOCALE_BRASIL);
+		nf.setMaximumFractionDigits(2);
+		map.put("consumoMedio",  nf.format((float)totalSaida/qtdDias));
+		
 		InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioMovimentacaoEstoqueMaterialEstoques.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_ESTOQUES", subInputStreamEstoques);
 		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+	}
+
+	private int totalEntrada(List<MovimentacaoEstoqueMaterial> lista) {
+		if(lista.get(0).getTipoMovimento() == null)
+			return 0;
+		
+		int total = 0;
+		for(MovimentacaoEstoqueMaterial obj : lista){
+			if(obj.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.E)){
+				total += obj.getQuantidade();
+			}
+		}
+		return total;
+	}
+	
+	private int totalSaida(List<MovimentacaoEstoqueMaterial> lista) {
+		if(lista.get(0).getTipoMovimento() == null)
+			return 0;
+		
+		int total = 0;
+		for(MovimentacaoEstoqueMaterial obj : lista){
+			if(!obj.getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.E)){
+				total += obj.getQuantidade();
+			}
+		}
+		return total;
 	}
 
 	public List<TipoMovimento> getListaTipoMovimento(){
@@ -114,6 +166,22 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 
 	public void setAgruparPorLote(boolean agruparPorLote) {
 		this.agruparPorLote = agruparPorLote;
+	}
+
+	public CartesianChartModel getLinearModel() {
+		return linearModel;
+	}
+
+	public void setLinearModel(CartesianChartModel linearModel) {
+		this.linearModel = linearModel;
+	}
+
+	public boolean getExibirGrafico() {
+		return exibirGrafico;
+	}
+
+	public void setExibirGrafico(boolean exibirGrafico) {
+		this.exibirGrafico = exibirGrafico;
 	}
 	
 }

@@ -11,11 +11,11 @@ import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.enums.TipoStatusLeitoEnum;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class LeitoRaiz extends PadraoHome<Leito>{
+public class LeitoRaiz extends PadraoRaiz<Leito>{
 	
 	private Unidade unidadeAntiga;
 	

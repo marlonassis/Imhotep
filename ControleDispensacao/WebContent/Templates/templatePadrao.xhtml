@@ -23,14 +23,17 @@
 			src="#{request.contextPath}/js/basico.js"></script>
 		<script type="text/javascript"
 			src="#{request.contextPath}/js/concentrador.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/jquery.mtz.monthpicker.js">
+		</script>
 		<style> 
 			.ui-widget { font-size: 10px !important; } 
 		</style> 
+		 <h:outputScript name="#{request.contextPath}/js/locale-primefaces.js" library="js" /> 
 	</h:head>
 
 
 <h:body id="body" style="background-color:#FFFFFF;" >
-				
 		<div>
 			<h:panelGrid border="0"
 						 width="100%"
@@ -126,7 +129,7 @@
 		</div>			
 
         <ui:insert name="status">
-        	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+        	<p:ajaxStatus rendered="true" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
 			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..."   
 			        draggable="false" closable="false">  
 			    <p:graphicImage value="/Imagens/ajaxloadingbar.gif" />  

@@ -11,46 +11,42 @@
 	</ui:define>
 
 	<ui:define name="conteudoPadrao">
-			<h:panelGroup >
-				Prezado(a) #{autenticador.profissionalAtual.nomeResumido},<br/>
-				<div style="width: 500px;" align="justify">
-					estamos implantando a <b>recuperação de senhas</b>. Por isso, será necessário que você informe 
-					os dados abaixo para gerar sua chave criptografada. Ela servirá para uma futura recuperação de senha.
-				</div>
-				<br/>
-				Att, Núcleo de Processamento de Dados
-			</h:panelGroup>
+		<h:panelGroup >
+			Prezado(a) #{autenticador.profissionalAtual.nomeResumido},<br/>
+			<div style="width: 500px;" align="justify">
+				os dados abaixo servirão para a <b>recuperação de senhas</b>. Por isso, será necessário que você os informe 
+				para gerar sua chave criptografada.
+			</div>
 			<br/>
-			<br/>
-			<h:form id="formAtualizarChave" >
-				<p:growl/>
-				<h:panelGrid columns="3" >
+			Att, Núcleo de Processamento de Dados
+		</h:panelGroup>
+		<br/>
+		<br/>
+		<h:form id="formAtualizarChave" >
+			<p:growl/>
+			<h:panelGrid columns="3" >
+			
+				<ri:inputCpf id="cpf" 
+							 title="Informe o seu CPF" 
+							 value="#{autenticador.profissionalRecuperacao.cpf}" 
+							 label="CPF" />
+	
+				<ri:inputDataDiaMesAno id="dataNascimento" 
+									   title="Informe sua data de nascimento" 
+									   value="#{autenticador.profissionalRecuperacao.dataNascimento}" 
+									   label="Data de Nascimento" />
 				
-					<ri:inputCpf id="cpf" 
-								 title="Informe o seu CPF" 
-								 value="#{autenticador.profissionalRecuperacao.cpf}" 
-								 label="CPF" />
-
-					<ri:inputDataDiaMesAno id="dataNascimento" 
-										   title="Informe sua data de nascimento" 
-										   value="#{autenticador.profissionalRecuperacao.dataNascimento}" 
-										   label="Data de Nascimento" />
-					
-				</h:panelGrid>
-				<p:commandButton value="Enviar" 
-							     action="#{profissionalRaiz.gerarChave}"
-							     oncomplete="location.reload();"
-							     update=":#{p:component('formAtualizarChave')}" />
-				<p:commandButton value="Deixar para depois" 
-								 immediate="true" 
-								 action="#{autenticador.fecharFormularioAtual}" 
-								 oncomplete="location.reload();" 
-								 update=":#{p:component('formAtualizarChave')}" />
-			</h:form>
-			<br/>
-			<br/>
-			<h:panelGroup style="color:#FF0000; font-weight:bold;" >  
-				Seu CPF será usado apenas para gerar a chave. Após a atualização ele será descartado.  
-			</h:panelGroup>
+			</h:panelGrid>
+			<p:commandButton value="Enviar" 
+						     action="#{profissionalRaiz.gerarChave}"
+						     oncomplete="location.reload();"
+						     update=":#{p:component('formAtualizarChave')}" />
+			<p:commandButton value="Deixar para depois" 
+							 immediate="true" 
+							 rendered="true"
+							 action="#{autenticador.logout}" 
+							 oncomplete="location.reload();" 
+							 update=":#{p:component('formAtualizarChave')}" />
+		</h:form>
 	</ui:define>
 </ui:composition>

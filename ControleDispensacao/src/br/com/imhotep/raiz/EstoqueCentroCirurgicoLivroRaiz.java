@@ -10,11 +10,11 @@ import br.com.imhotep.entidade.EstoqueCentroCirurgicoLivro;
 import br.com.imhotep.enums.TipoMovimentacaoEnum;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="estoqueCentroCirurgicoLivroRaiz")
 @SessionScoped
-public class EstoqueCentroCirurgicoLivroRaiz extends PadraoHome<EstoqueCentroCirurgicoLivro> {
+public class EstoqueCentroCirurgicoLivroRaiz extends PadraoRaiz<EstoqueCentroCirurgicoLivro> {
 	
 	@Override
 	public boolean enviar() {
@@ -25,7 +25,7 @@ public class EstoqueCentroCirurgicoLivroRaiz extends PadraoHome<EstoqueCentroCir
 				super.novaInstancia();
 			return ret;
 		}else
-			super.mensagem("Quantidade em estoque estÃ¡ abaixo do solicitado.", "Consulte o estoque deste material para ver o saldo atual.", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Quantidade em estoque est‡ abaixo do solicitado.", "Consulte o estoque deste material para ver o saldo atual.", FacesMessage.SEVERITY_ERROR);
 		return false;
 	}
 

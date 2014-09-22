@@ -3,19 +3,19 @@ package br.com.imhotep.enums;
 public enum TipoCuidadosPacienteEnum {
 	AER("Aerosol"),
 	CEN("Cuidados de Enfermagem"),
-	MED("Medica√ß√µes"),
-	MOR("Medica√ß√µes orais"),
-	MSC("Medica√ß√µes SC, IM"),
-	MSO("Medica√ß√µes SOS"),
-	MTO("Medica√ß√µes t√≥picas"),
-	NUT("Nutri√ß√£o (SND)"),
+	MED("Medicações"),
+	MOR("Medicações orais"),
+	MSC("Medicações SC, IM"),
+	MSO("Medicações SOS"),
+	MTO("Medicações tópicas"),
+	NUT("Nutrição (SND)"),
 	SOR("Soroterapia, scalp,"),
 	OUT("Outros");
 	
 	private String label;
 	
-	TipoCuidadosPacienteEnum(String sexo){
-		label = sexo;
+	TipoCuidadosPacienteEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

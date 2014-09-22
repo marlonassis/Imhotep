@@ -22,10 +22,10 @@ public class FluxoPrescricaoConfirmacao extends PadraoFluxo{
 			String sql = "select o from PrescricaoItem o where " +
 						 "o.prescricao.idPrescricao = :idPrescricao and (( "+
 						 "exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) " +
-						 " and profissionalLiberacao is not null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÃ“TICO') and " +
+						 " and profissionalLiberacao is not null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBI—TICO') and " +
 						 "controleMedicacaoRestritoSCHI is not null)" +
 						 "or (not exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial)" +
-						 " and not lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIÃ“TICO'))) ";
+						 " and not lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBI—TICO'))) ";
 			
 			return (List<PrescricaoItem>) cg.consulta(new StringBuilder(sql), hm);
 		}

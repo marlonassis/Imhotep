@@ -12,11 +12,11 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.entidade.TesteDoPezinho;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="testeDoPezinhoRaiz")
 @SessionScoped
-public class TesteDoPezinhoRaiz extends PadraoHome<TesteDoPezinho>{
+public class TesteDoPezinhoRaiz extends PadraoRaiz<TesteDoPezinho>{
 	
 	public boolean atualizarLote(TesteDoPezinho obj){
 		setInstancia(obj);

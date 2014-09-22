@@ -10,11 +10,11 @@ import br.com.imhotep.entidade.AutorizaUnidadeProfissional;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AutorizaUnidadeProfissionalRaiz extends PadraoHome<AutorizaUnidadeProfissional>{
+public class AutorizaUnidadeProfissionalRaiz extends PadraoRaiz<AutorizaUnidadeProfissional>{
 	
 	public boolean enviar(Profissional profissional, Unidade unidade, boolean exibeMensagemInsercao){
 		setExibeMensagemInsercao(exibeMensagemInsercao);
@@ -29,7 +29,7 @@ public class AutorizaUnidadeProfissionalRaiz extends PadraoHome<AutorizaUnidadeP
 			getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usuÃ¡rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usu‡rio atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em AutorizaUnidadeProfissionalHome");
 		}
 		getInstancia().setDataInclusao(new Date());

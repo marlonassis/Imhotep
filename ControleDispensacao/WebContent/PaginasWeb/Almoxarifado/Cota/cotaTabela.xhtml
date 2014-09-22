@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaCotaAlmoxarifado" 
+				 value="#{almoxarifadoUnidadeCotaConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idAlmoxarifadoUnidadeCota}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade:" />
+			</f:facet>
+			<h:outputText value="#{linha.unidade.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Material" />
+			</f:facet>
+			<h:outputText value="#{linha.materialAlmoxarifado.descricaoUnidadeMaterial}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Cota" />
+			</f:facet>
+			<h:outputText value="#{linha.cota}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional Cadastrante" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalCadastrante.nomeResumido}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data do Cadastro" />
+			</f:facet>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataCadastro)}" />
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   ajax="false"
+						   update=":#{p:component('cotaEditorForm')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{almoxarifadoUnidadeCotaRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{almoxarifadoUnidadeCotaRaiz.apagar}"
+						   update=":#{p:component('cotaEditorForm')} :#{p:component('cotaPesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente apagar?')) return false;"
+						   title="Bloquear" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{almoxarifadoUnidadeCotaRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

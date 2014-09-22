@@ -1,6 +1,7 @@
 package br.com.imhotep.entidade;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.imhotep.comparador.MaterialGrupoDevolucaoMedicamentoItemComparador;
 import br.com.imhotep.enums.TipoStatusDevolucaoItemEnum;
 
 @Entity
@@ -132,12 +134,14 @@ public class DevolucaoMedicamento implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "devolucaoMedicamento")
 	public List<DevolucaoMedicamentoItem> getItens() {
+		if(itens != null)
+			Collections.sort(itens, new MaterialGrupoDevolucaoMedicamentoItemComparador());
 		return itens;
 	}
 	public void setItens(List<DevolucaoMedicamentoItem> itens) {
 		this.itens = itens;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null)

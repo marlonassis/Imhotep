@@ -10,11 +10,11 @@ import br.com.imhotep.consulta.raiz.SubGrupoConsultaRaiz;
 import br.com.imhotep.entidade.Familia;
 import br.com.imhotep.entidade.Grupo;
 import br.com.imhotep.entidade.SubGrupo;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="familiaRaiz")
 @SessionScoped
-public class FamiliaRaiz extends PadraoHome<Familia>{
+public class FamiliaRaiz extends PadraoRaiz<Familia>{
 	
 	private Grupo grupo;
 	private List<SubGrupo> sugGrupoList = new ArrayList<SubGrupo>();

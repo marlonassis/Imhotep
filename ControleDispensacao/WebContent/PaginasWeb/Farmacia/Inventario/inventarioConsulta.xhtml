@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="inventarioFarmaciaPanelGridConsulta" columns="3" width="100%">
+
+		<ri:inputTextoSimples id="loteConsulta" 
+							  title="Informe o lote" 
+							  value="#{inventarioFarmaciaConsulta.instancia.lote}" 
+							  label="Lote" />
+		
+		<ri:inputAutoComplete id="materialConsulta" 
+							  completeMethod="#{materialAutoComplete.autoComplete}" 
+							  itemValue="#{material}" 
+							  itemLabel="#{material.descricaoUnidadeMaterial}" 
+							  var="material" 
+							  value="#{inventarioFarmaciaConsulta.instancia.material}" 
+							  label="Material" />
+		
+	</h:panelGrid>
+</ui:composition>

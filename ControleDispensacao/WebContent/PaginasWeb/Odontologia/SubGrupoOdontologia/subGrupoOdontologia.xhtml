@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Subgrupo">
+			<rf:formularioEdicao id="subGrupoOdontologia"
+								raiz="#{subGrupoOdontologiaRaiz}"
+								srcEditor="Odontologia/SubGrupoOdontologia/subGrupoOdontologiaEditor.xhtml" />
+								
+			<rf:formularioPesquisa id="subGrupoOdontologiaPesquisa"
+								   raizConsulta="#{subGrupoOdontologiaConsultaRaiz}" 
+								   novoAction="#{subGrupoOdontologiaConsulta.novaInstancia()}"
+								   srcTabela="Odontologia/SubGrupoOdontologia/subGrupoOdontologiaTabela.xhtml"
+								   srcConsulta="Odontologia/SubGrupoOdontologia/subGrupoOdontologiaConsulta.xhtml" />
+		</p:tab>
+	</ui:define>
+</ui:composition>

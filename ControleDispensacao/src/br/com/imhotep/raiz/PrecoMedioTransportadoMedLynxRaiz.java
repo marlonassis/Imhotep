@@ -6,11 +6,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.PrecoMedioTransportadoMedLynx;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PrecoMedioTransportadoMedLynxRaiz extends PadraoHome<PrecoMedioTransportadoMedLynx>{
+public class PrecoMedioTransportadoMedLynxRaiz extends PadraoRaiz<PrecoMedioTransportadoMedLynx>{
 	
 	@Override
 	public boolean enviar() {

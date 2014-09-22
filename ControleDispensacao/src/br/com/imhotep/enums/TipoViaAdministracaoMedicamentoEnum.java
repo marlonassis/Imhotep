@@ -8,9 +8,9 @@ public enum TipoViaAdministracaoMedicamentoEnum {
 	
 	EV("EV - Via Endovenosa"),
 	IM("IM - Via Intramuscular"),
-	ID("ID - Via Intrad√©rmica"),
-	SC("SC - Via Subcut√¢nea"),
-	IN("Via inalat√≥ria"),
+	ID("ID - Via Intradérmica"),
+	SC("SC - Via Subcutânea"),
+	IN("Via inalatória"),
 	VR("Via Retal"),
 	VO("VO - Via Oral"),
 	VS("VS - Via sublingual"),

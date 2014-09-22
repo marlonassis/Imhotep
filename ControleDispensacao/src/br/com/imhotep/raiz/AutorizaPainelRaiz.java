@@ -10,11 +10,11 @@ import br.com.imhotep.entidade.AutorizaPainel;
 import br.com.imhotep.entidade.Painel;
 import br.com.imhotep.entidade.Usuario;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AutorizaPainelRaiz extends PadraoHome<AutorizaPainel>{
+public class AutorizaPainelRaiz extends PadraoRaiz<AutorizaPainel>{
 	
 	public List<Usuario> getListaEspecialidadeAutoComplete(String nome){
 		ConsultaGeral<Usuario> cg = new ConsultaGeral<Usuario>();

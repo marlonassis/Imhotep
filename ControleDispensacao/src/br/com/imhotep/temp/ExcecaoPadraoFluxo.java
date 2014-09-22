@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.temp;
 
@@ -19,7 +19,7 @@ public class ExcecaoPadraoFluxo extends ExcecaoPadrao {
 	}
 	
 	public ExcecaoPadraoFluxo(int quantidadeAtual){
-		super.mensagem("N√£o h√° quantidade suficiente no estoque. O m√°ximo dispon√≠vel √© de " + 
+		super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + 
 				String.valueOf(quantidadeAtual) + " unidade(s)", "");
 	}
 	

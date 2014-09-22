@@ -14,11 +14,11 @@ import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.EstoqueCentroCirurgico;
 import br.com.imhotep.enums.TipoStatusEnum;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="estoqueCentroCirurgicoRaiz")
 @SessionScoped
-public class EstoqueCentroCirurgicoRaiz extends PadraoHome<EstoqueCentroCirurgico> {
+public class EstoqueCentroCirurgicoRaiz extends PadraoRaiz<EstoqueCentroCirurgico> {
 	private Estoque estoqueApoio = new Estoque();
 	private EstoqueCentroCirurgico estoqueBloqueio = new EstoqueCentroCirurgico();
 	
@@ -59,7 +59,7 @@ public class EstoqueCentroCirurgicoRaiz extends PadraoHome<EstoqueCentroCirurgic
 			inicializarInstancia(getInstancia());
 			return super.enviar();
 		}else{
-			super.mensagem("Esse lote jÃ¡ estÃ¡ cadastrado.", "FaÃ§a uma busca no estoque e atualize-o.", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Esse lote j‡ est‡ cadastrado.", "Faa uma busca no estoque e atualize-o.", FacesMessage.SEVERITY_ERROR);
 		}
 		return false;
 	}
@@ -88,7 +88,7 @@ public class EstoqueCentroCirurgicoRaiz extends PadraoHome<EstoqueCentroCirurgic
 	
 	public void bloqueioLote(){
 		if(getEstoqueBloqueio().getMotivoBloqueio().isEmpty()){
-			super.mensagem("Informe o motivo do bloqueio", "O motivo Ã© obrigatÃ³rio.", FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Informe o motivo do bloqueio", "O motivo Ž obrigat—rio.", FacesMessage.SEVERITY_ERROR);
 		}else{
 			processoAtualizacao();
 		}

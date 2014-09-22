@@ -16,11 +16,11 @@ public class MesAnoComparador implements Comparator<Object>  {
 		int mes2 = Utilitarios.posMes(mesAno2[0]);
 		int ano2 = Integer.parseInt(mesAno2[1]);
 		
-		int compare = ano1 - ano2; //Come√ßamos pelo ano
+		int compare = ano1 - ano2; //Começamos pelo ano
 		
 		if (compare != 0)
 			return compare;
 		
-		return mes1 - mes2; //E se o ano for igual, comparamos o m√™s
+		return mes1 - mes2; //E se o ano for igual, comparamos o mês
 	}  
 }  

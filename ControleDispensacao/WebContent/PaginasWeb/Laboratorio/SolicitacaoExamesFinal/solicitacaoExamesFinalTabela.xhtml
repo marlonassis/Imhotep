@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaSolicitacaoExamesFinal" 
+				 value="#{solicitacaoExamesFinalConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idLaboratorioSolicitacao}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Nº do Exame" />
+			</f:facet>
+			<h:outputText value="#{linha.idLaboratorioSolicitacao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Fase" />
+			</f:facet>
+			<h:outputText value="#{linha.statusSolicitacao.label}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Paciente" />
+			</f:facet>
+			<h:outputText value="#{linha.paciente.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Solicitante" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalSolicitacao.nomeResumido}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data da Solicitação" />
+			</f:facet>
+			<h:outputText value="#{linha.dataSolicitacao}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Log"
+						   action="#{solicitacaoExamesFinalRaiz.exibirDialogLogExame}"
+						   update=":#{p:component('dialogLogExamePanelGroup')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/rec-16.png" />
+			</p:commandLink>
+			
+			<p:commandLink title="Reabrir"
+						   action="#{solicitacaoExamesFinalRaiz.reabrirExame}"
+						   update=":#{p:component('tabelaSolicitacaoExamesFinal')}"
+						   rendered="#{solicitacaoExamesFinalRaiz.reaberturaSolicitacaoLiberado and solicitacaoExamesFinalRaiz.exameRecusado(linha)}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/undo.png" />
+			</p:commandLink>
+			
+			<p:commandLink title="Ver Itens"
+						   action="#{solicitacaoExamesFinalRaiz.exibirDialogItens}"
+						   update=":#{p:component('dialogItensPanelGroup')}"
+						   rendered="#{solicitacaoExamesFinalRaiz.visualizarItensLiberado and 
+									   !solicitacaoExamesFinalRaiz.exameRecusado(linha) and 
+									   !solicitacaoExamesFinalRaiz.exameVerificado(linha)}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/menu-item-16.png" />
+			</p:commandLink>
+			
+			<p:commandLink title="Confirmar Resultados"
+						   action="#{solicitacaoExamesFinalRaiz.confirmarVerificacaoExame}"
+						   update=":#{p:component('tabelaSolicitacaoExamesFinal')}"
+						   rendered="#{solicitacaoExamesFinalRaiz.cofirmacaoResultadoLiberado and 
+						   			!solicitacaoExamesFinalRaiz.exameRecusado(linha) and 
+						   			!solicitacaoExamesFinalRaiz.exameVerificado(linha)}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/feito16.png" />
+			</p:commandLink>
+			
+			<p:commandLink action="#{solicitacaoExamesFinalRaiz.exibirDialogRecusa}"
+						   update=":#{p:component('solicitacaoExamesFinalPesquisaForm')}"
+						   onclick="if(!confirm('Deseja realmente recusar?')) return false;"
+						   title="Recusar"
+						   rendered="#{solicitacaoExamesFinalRaiz.exameRecusaLiberado and 
+						   				!solicitacaoExamesFinalRaiz.exameRecusado(linha) and
+						   				!solicitacaoExamesFinalRaiz.exameVerificado(linha)}" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{tipoExameRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+		<p:column style="width:18px; text-align: center;" >
+			<p:lightBox iframe="true" id="lighbox3" width="800px" height="600px" onHide="window.location.reload();">
+			    <h:outputLink value="examePdf.hu?id=#{linha.idLaboratorioSolicitacao}" title="Resultados"  >
+			        <p:commandLink title="Imprimir"
+						   action="#{solicitacaoExamesFinalRaiz.imprimirExame}"
+						   rendered="#{solicitacaoExamesFinalRaiz.exameLiberadoImpressao(linha) and !solicitacaoExamesFinalRaiz.exameRecusado(linha)}"
+						   style="padding-right:10px;">
+							<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoExamesFinalRaiz.instancia}" />
+						<h:graphicImage value="/Imagens/print.png" />
+					</p:commandLink>
+			    </h:outputLink>
+			</p:lightBox>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

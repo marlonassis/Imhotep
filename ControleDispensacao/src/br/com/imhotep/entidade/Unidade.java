@@ -55,6 +55,8 @@ public class Unidade implements Serializable {
 	
 	@Column(name = "cv_nome")
 	public String getNome() {
+		if(nome != null)
+			return nome.toUpperCase();
 		return nome;
 	}
 	public void setNome(String nome) {

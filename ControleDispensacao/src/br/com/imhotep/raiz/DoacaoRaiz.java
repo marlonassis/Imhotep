@@ -7,16 +7,17 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
+import br.com.imhotep.controle.ControleEstoqueTemp;
 import br.com.imhotep.entidade.Doacao;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.Hospital;
 import br.com.imhotep.entidade.MovimentoLivro;
-import br.com.imhotep.fluxo.FluxoDoacao;
-import br.com.remendo.PadraoHome;
+import br.com.imhotep.temp.PadraoFluxoTemp;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class DoacaoRaiz extends PadraoHome<Doacao>{
+public class DoacaoRaiz extends PadraoRaiz<Doacao>{
 	
 	private Boolean loteEncontrado;
 	
@@ -55,12 +56,14 @@ public class DoacaoRaiz extends PadraoHome<Doacao>{
 	@Override
 	public boolean enviar() {
 		try {
-			FluxoDoacao fluxoDoacao = new FluxoDoacao();
-			if(loteEncontrado){
-				procurarLote();
-				fluxoDoacao.atualizarDoacao(getInstancia());
-			}else
-				fluxoDoacao.salvarNovaDoacao(getInstancia());
+			PadraoFluxoTemp.limparFluxo();
+			new ControleEstoqueTemp().liberarAjuste(new Date(), getInstancia().getMovimentoLivro());
+			PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro-"+getInstancia().getMovimentoLivro().hashCode(), getInstancia().getMovimentoLivro());
+			PadraoFluxoTemp.getObjetoSalvar().put("Doacao-"+getInstancia().hashCode(), getInstancia());
+			PadraoFluxoTemp.getObjetoAtualizar().put("Estoque-"+getInstancia().getMovimentoLivro().getEstoque().hashCode(), getInstancia().getMovimentoLivro().getEstoque());
+			PadraoFluxoTemp.finalizarFluxo();
+			PadraoFluxoTemp.limparFluxo();
+			novaInstancia();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

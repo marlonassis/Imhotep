@@ -30,20 +30,32 @@
 		</p:column>
 		
 		<p:column style="width:180px; text-align: center;">
-			<p:commandLink rendered="false" update=":#{p:component('usuarioEditorForm')}" title="Editar"
+			
+			<p:commandLink action="#{usuarioRaiz.resetarErro()}"
+						   update=":#{p:component('usuarioPesquisaForm')}"
+						   rendered="#{usuarioRaiz.usuarioBloqueado(linha)}"
+						   title="Bloqueado" 
 						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}" target="#{usuarioRaiz.instancia}" />
-				<h:graphicImage value="/Imagens/edit.gif" />
+				<h:graphicImage value="/Imagens/Lock-icon.png" />
 			</p:commandLink>
-
-			<p:commandLink rendered="false" action="#{usuarioRaiz.apagar()}"
-					 	   update=":#{p:component('usuarioTabela')} :#{p:component('usuarioEditorForm')}"
-						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-						   title="Apagar" 
+			
+			<h:graphicImage value="/Imagens/Unlock-icon.png" 
+							rendered="#{!usuarioRaiz.usuarioBloqueado(linha)}" 
+							title="Não bloqueado" />
+			
+			<p:commandLink action="#{usuarioRaiz.apagarChave()}"
+						   update=":#{p:component('usuarioPesquisaForm')}"
+						   title="Usuário com chave"
+						   rendered="#{linha.profissional.chaveVerificacao != null}" 
 						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}" target="#{usuarioRaiz.instancia}" />
-				<h:graphicImage value="/Imagens/delete.png" />
+				<h:graphicImage value="/Imagens/key-icon.png" />
 			</p:commandLink>
+			
+			<h:graphicImage value="/Imagens/key-delete-icon.png" 
+							rendered="#{linha.profissional.chaveVerificacao == null}" 
+							alt="Usuário sem chave" />
 			
 			<p:commandLink action="#{usuarioRaiz.resetarSenha()}"
 						   update=":#{p:component('usuarioPesquisaForm')}"

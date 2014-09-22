@@ -20,6 +20,13 @@
 			</f:facet>
 			<h:outputText value="#{linha.descricao}" />
 		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Sem Financeiro" />
+			</f:facet>
+			<h:outputText value="#{linha.semFinanceiro ? 'Sim' : 'Não'}" />
+		</p:column>
 				 
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"

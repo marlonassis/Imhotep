@@ -7,80 +7,95 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.consulta.raiz.EstoqueAlmoxarifadoConsultaRaiz;
-import br.com.imhotep.controle.ControleEstoqueAlmoxarifado;
-import br.com.imhotep.entidade.AjusteEstoqueAlmoxarifado;
+import br.com.imhotep.controle.ControleEstoqueAlmoxarifadoTemp;
 import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.entidade.MovimentoLivroAlmoxarifado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
 import br.com.imhotep.temp.ConsultaGeral;
 import br.com.imhotep.temp.ExcecaoPadraoFluxo;
 import br.com.imhotep.temp.PadraoFluxoTemp;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class EntradaSemNotaFiscalAlmoxarifadoRaiz extends PadraoHome<AjusteEstoqueAlmoxarifado>{
+public class EntradaSemNotaFiscalAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmoxarifado>{
 	
 	private Boolean loteEncontrado;
 	private Integer quantidadeMovimentada;
+	private Double precoMedio;
 	
 	public EntradaSemNotaFiscalAlmoxarifadoRaiz() {
 		limpar();
 	}
 
 	private void limpar() {
-		getInstancia().setMovimentoLivroAlmoxarifado(new MovimentoLivroAlmoxarifado());
-		getInstancia().getMovimentoLivroAlmoxarifado().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
+		setInstancia(new MovimentoLivroAlmoxarifado());
+		getInstancia().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
 		setLoteEncontrado(null);
 		setQuantidadeMovimentada(null);
 	}
 	
 	public void procurarLote(){
-		String lote = getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado().getLote();
+		String lote = getInstancia().getEstoqueAlmoxarifado().getLote();
 		if(lote == null || lote.isEmpty()){
 			setLoteEncontrado(false);
 		}else{
 			EstoqueAlmoxarifado estoque = new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoqueLivre(lote);
 			loteEncontrado = estoque != null;
 			if(loteEncontrado){
-				getInstancia().getMovimentoLivroAlmoxarifado().setEstoqueAlmoxarifado(estoque);
+				getInstancia().setEstoqueAlmoxarifado(estoque);
 			}else{
-				mensagem("Lote n√£o encontrado.", lote, Constantes.WARN);
+				mensagem("Lote não encontrado.", lote, Constantes.WARN);
 			}
 		}
 	}
 	
-	private void varificaItemSemLote() {
-		EstoqueAlmoxarifado estoqueAlmoxarifado = getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado();
-		String lote = estoqueAlmoxarifado.getLote();
-		if(lote == null || lote.trim().equals("")){
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idMaterial", estoqueAlmoxarifado.getMaterialAlmoxarifado().getIdMaterialAlmoxarifado());
-			hm.put("idFabricante", estoqueAlmoxarifado.getFabricanteAlmoxarifado().getIdFabricanteAlmoxarifado());
-			hm.put("dataValidade", new SimpleDateFormat("yyyy-MM-dd").format(estoqueAlmoxarifado.getDataValidade()));
-			hm.put("codigoBarras", estoqueAlmoxarifado.getCodigoBarras());
-			String hql = "select o.idEstoqueAlmoxarifado from EstoqueAlmoxarifado o where o.fabricanteAlmoxarifado.idFabricanteAlmoxarifado = :idFabricante and "
-					+ "o.materialAlmoxarifado.idMaterialAlmoxarifado = :idMaterial and "
-					+ "to_char(o.dataValidade, 'yyyy-MM-dd') = :dataValidade and "
-					+ "o.codigoBarras = :codigoBarras";
-			Integer id = new ConsultaGeral<Integer>(new StringBuilder(hql), hm).consultaUnica();
-			getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado().setIdEstoqueAlmoxarifado((int) (id==null ? 0 : id));	
+	private void limparCodigoBarras(){
+		EstoqueAlmoxarifado estoqueAlmoxarifado = getInstancia().getEstoqueAlmoxarifado();
+		if(estoqueAlmoxarifado.getCodigoBarras() == ""){
+			estoqueAlmoxarifado.setCodigoBarras(null);
 		}
 	}
 	
+	private void varificaItemSemLote() {
+		EstoqueAlmoxarifado estoqueAlmoxarifado = getInstancia().getEstoqueAlmoxarifado();
+		String lote = estoqueAlmoxarifado.getLote();
+		if(lote == null || lote.trim().equals("")){
+			String validade = estoqueAlmoxarifado.getDataValidade() == null ? null : "'"+new SimpleDateFormat("yyyy-MM-dd").format(estoqueAlmoxarifado.getDataValidade())+"'";
+			String codigoBarras = estoqueAlmoxarifado.getCodigoBarras() == null ? null : "'"+estoqueAlmoxarifado.getCodigoBarras()+"'";
+			Integer fabricante = estoqueAlmoxarifado.getFabricanteAlmoxarifado() == null ? null : estoqueAlmoxarifado.getFabricanteAlmoxarifado().getIdFabricanteAlmoxarifado();
+			HashMap<Object, Object> hm = new HashMap<Object, Object>();
+			hm.put("idMaterial", estoqueAlmoxarifado.getMaterialAlmoxarifado().getIdMaterialAlmoxarifado());
+			String hql = "select o from EstoqueAlmoxarifado o where "
+					+ "o.fabricanteAlmoxarifado.idFabricanteAlmoxarifado = "+fabricante+" and "
+					+ "o.materialAlmoxarifado.idMaterialAlmoxarifado = :idMaterial and "
+					+ "to_char(o.dataValidade, 'yyyy-MM-dd') = "+validade+" and "
+					+ "o.codigoBarras = "+codigoBarras;
+			EstoqueAlmoxarifado obj = new ConsultaGeral<EstoqueAlmoxarifado>(new StringBuilder(hql), hm).consultaUnica();
+			if(obj != null)
+				getInstancia().setEstoqueAlmoxarifado(obj);	
+		}
+	}
+	
+	//Método temporariamente bloqueado
 	@Override
 	public boolean enviar(){
 		try {
+			if(true)
+				throw new Exception(); 
+			limparCodigoBarras();
 			varificaItemSemLote();
 			int qtd = getQuantidadeMovimentada() == null ? 0 : getQuantidadeMovimentada();
-			EstoqueAlmoxarifado estoqueAlmoxarifado = getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado();
-			MovimentoLivroAlmoxarifado mla = new ControleEstoqueAlmoxarifado().validarEstoqueAlmoxarifado(estoqueAlmoxarifado, qtd, Parametro.tipoMovimentoEntradaSemNotaFiscalAlmoxarifado());
-			getInstancia().setMovimentoLivroAlmoxarifado(mla);
+			EstoqueAlmoxarifado estoqueAlmoxarifado = getInstancia().getEstoqueAlmoxarifado();
+//			MovimentoLivroAlmoxarifado mla = new ControleEstoqueAlmoxarifadoTemp().validarEstoqueAlmoxarifado(estoqueAlmoxarifado, qtd, Parametro.tipoMovimentoEntradaSemNotaFiscalAlmoxarifado());
+//			setInstancia(mla);
 			getInstancia().setJustificativa(Constantes.JUSTIFICATIVA_ENTRADA_SEM_NOTA);
 			addAjusteFluxo();
 			processarFluxo();
 			limparFluxo();
+			unlockEstoque();
+//			gerarPrecoMedioTransportado();
 			novaInstancia();
 			return true;
 		} catch (Exception e){
@@ -89,6 +104,14 @@ public class EntradaSemNotaFiscalAlmoxarifadoRaiz extends PadraoHome<AjusteEstoq
 		return false;
 	}
 
+	private void unlockEstoque() {
+		try {
+			new ControleEstoqueAlmoxarifadoTemp().unLockEstoque(getInstancia().getEstoqueAlmoxarifado());
+		} catch (ExcecaoEstoqueUnLock e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	private void addAjusteFluxo() {
 		PadraoFluxoTemp.getObjetoAtualizar().put("ajusteEstoque", getInstancia());
 	}
@@ -123,4 +146,10 @@ public class EntradaSemNotaFiscalAlmoxarifadoRaiz extends PadraoHome<AjusteEstoq
 		this.quantidadeMovimentada = quantidadeMovimentada;
 	}
 	
+	public Double getPrecoMedio() {
+		return precoMedio;
+	}
+	public void setPrecoMedio(Double precoMedio) {
+		this.precoMedio = precoMedio;
+	}
 }

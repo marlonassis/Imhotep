@@ -1,0 +1,172 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Exames">
+			
+			<p:commandButton value="Setores" 
+					 action="#{laboratorioSetorRaiz.exibirModalSetor}" 
+					 update=":#{p:component('setorDialog')}"/>
+					 
+			<p:commandButton value="Exames" 
+							 action="#{laboratorioExameRaiz.exibirModalExame}" 
+							 update=":#{p:component('examesDialog')}"/>
+			<br/>
+			<br/>
+			<rf:formularioEdicao id="exame"
+								raiz="#{examesRaiz}"
+								srcEditor="Laboratorio/Exames/examesEditor.xhtml" 
+								semPesquisa="true" 
+								renderedSalvar="false"
+								renderedGravar="false"
+								renderedNovo="false"
+								fieldSetCollapsed="false" />
+			
+			
+			<p:dialog id="setorDialog" 
+					  visible="#{laboratorioSetorRaiz.exibirModalSetor}" 
+					  modal="true" 
+					  closable="false" 
+					  header="Setores"> 
+				<p:growl/>
+				<h:form>
+					<h:panelGrid id="setorPanelGridFormulario" columns="1"  >
+						<h:panelGroup>
+							<h:outputText value="Setor:" /><br/>
+							<p:selectOneMenu value="#{laboratorioSetorRaiz.setorEdicao}" converter="entidadeConversor" >
+								<f:selectItem itemValue="" itemLabel="Novo..." />
+								<f:selectItems var="setr" value="#{laboratorioSetorConsultaRaiz.listaSetores}" itemLabel="#{setr.descricao}" itemValue="#{setr}" />
+								<p:ajax event="change" update=":#{p:component('setorPanelGridFormulario')}" listener="#{laboratorioSetorRaiz.verificarSetorEdicaoNull}"/>
+							</p:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup>
+							<ri:inputTextoSimples id="setor" 
+												  title="Informe o setor" 
+												  value="#{laboratorioSetorRaiz.setorCadastro.descricao}" 
+												  label="Setor" />
+						</h:panelGroup>
+						<h:panelGrid columns="2" >
+							<p:commandButton value="#{laboratorioSetorRaiz.setorCadastro.idLaboratorioSetor == 0 ? 'Cadastrar' : 'Atualizar'}" 
+											 action="#{laboratorioSetorRaiz.cadastrarAtualizarSetor}" 
+										 	 update=":#{p:component('setorDialog')} :#{p:component('examesPanelGrid')}" />
+							
+							<p:commandButton value="Apagar" 
+											 rendered="#{laboratorioSetorRaiz.setorCadastro.idLaboratorioSetor != 0}"
+											 action="#{laboratorioSetorRaiz.apagarSetor}" 
+										 	 update=":#{p:component('setorDialog')} :#{p:component('examesPanelGrid')}" />
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:form>
+				<h:form>
+					<p:commandButton value="Fechar" 
+									 action="#{laboratorioSetorRaiz.ocultarModalSetor}" 
+								 	 update=":#{p:component('setorDialog')}" />
+				</h:form>
+			</p:dialog>
+			
+			
+			<p:dialog id="examesDialog" 
+					  visible="#{laboratorioExameRaiz.exibirModalExame}" 
+					  modal="true" 
+					  closable="false" 
+					  header="Exames"> 
+				<p:panel collapsed="false" 
+						 closable="false" 
+						 header="Exame" >
+					<h:form>
+						<h:panelGrid columns="1" width="100%" >
+							<h:panelGroup>
+								<h:outputText value="Exame:" /><br/>
+								<p:selectOneMenu value="#{laboratorioExameRaiz.exameEdi}" converter="entidadeConversor" >
+									<f:selectItem itemValue="" itemLabel="Novo..." />
+									<f:selectItems var="ex" value="#{laboratorioExameConsultaRaiz.consultarExamesValidos()}" itemLabel="#{ex.descricao}" itemValue="#{ex}" />
+									<p:ajax event="change" update=":#{p:component('examesDialog')}" listener="#{laboratorioExameRaiz.verificarExameEdicaoNull}"/>
+								</p:selectOneMenu>
+							</h:panelGroup>
+							<br/>
+							<h:panelGrid columns="3" >
+								<ri:inputTextoSimples id="exame" 
+													  required="true"
+													  title="Informe o nome do exame" 
+													  value="#{laboratorioExameRaiz.exameCad.descricao}" 
+													  label="Exame" />
+								<ri:inputTextoSimples id="mnemonico"
+													  required="true" 
+													  title="Informe o mnemônico do exame" 
+													  value="#{laboratorioExameRaiz.exameCad.menemonico}" 
+													  label="Mnemonico" />
+								<ri:inputApenasNumero id="codigo" 
+													  required="true"
+												      title="Informe o código do item" 
+												      value="#{laboratorioExameRaiz.exameCad.codigo}" 
+												      label="Código" />
+												      
+								<ri:inputTextoSimples id="sigla" 
+													  title="Informe a sigla do exame" 
+													  value="#{laboratorioExameRaiz.exameCad.sigla}" 
+													  label="Sigla" />
+								
+								<ri:inputTextoSimples id="metodo"
+													  required="true"
+													  label="Método" 
+													  title="Informe o menemônico" 
+													  value="#{laboratorioExameRaiz.exameCad.metodo}" />
+								
+								<ri:inputSelectOneMenuEnum id="tipoValor"
+														   required="true" 
+														   value="#{laboratorioExameRaiz.exameCad.tipoValor}" 
+														   label="Tipo de Valor"
+														   itens="#{itensPadrao.tipoValorLaboratorioExameItemEnumItens}"/>
+								
+								<ri:inputEntidade id="formulario" 
+												  itemLabel="Descricao"
+												  atributosOrderBy="o.descricao"
+												  value="#{laboratorioExameRaiz.exameCad.formulario}" 
+												  label="Formulário" />
+								
+								<ri:inputCheckBoolean id="bloqueado" 
+												  value="#{laboratorioExameRaiz.exameCad.bloqueado}" 
+												  label="Bloqueado" />
+												  
+								<ri:inputCheckBoolean id="justificativaObrigatoria" 
+												  value="#{laboratorioExameRaiz.exameCad.justificativaObrigatoria}" 
+												  label="Justificativa Obrigatória" />
+								
+								<ri:inputTextArea id="referencia" 
+												  title="Informe os valores de referência do exame" 
+												  value="#{laboratorioExameRaiz.exameCad.referencia}" 
+												  label="Referência" />
+							</h:panelGrid>
+							<br/>
+							<h:panelGrid columns="2" >
+							
+								<p:commandButton value="#{laboratorioExameRaiz.exameCad.idLaboratorioExame == 0 ? 'Cadastrar' : 'Atualizar'}" 
+												 action="#{laboratorioExameRaiz.cadastrarAtualizarExame}" 
+												 update=":#{p:component('examesDialog')} :#{p:component('examesPanelGrid')}" />
+								<p:commandButton value="Apagar" 
+												 rendered="#{laboratorioExameRaiz.exameCad.idLaboratorioExame != 0}"
+												 action="#{laboratorioExameRaiz.apagarExame}" 
+												 update=":#{p:component('examesDialog')} :#{p:component('examesPanelGrid')}" />
+							</h:panelGrid>
+						</h:panelGrid>
+					</h:form>
+				</p:panel>
+				<h:form>
+					<p:commandButton value="Fechar" 
+									 action="#{laboratorioExameRaiz.ocultarModalExame}" 
+								 	 update=":#{p:component('examesDialog')}" />
+				</h:form>
+			</p:dialog>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

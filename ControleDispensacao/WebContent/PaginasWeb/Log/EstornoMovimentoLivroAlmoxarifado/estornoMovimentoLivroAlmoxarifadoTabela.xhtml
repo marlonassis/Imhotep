@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaEstornoMovimentacaoAlmoxarifadoLog" 
+				 value="#{estornoMovimentacaoAlmoxarifadoLogConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idEstornoMovimentoAlmoxarifado}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalEstorno.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data do Estorno" />
+			</f:facet>
+			<h:outputText value="#{linha.dataEstorno}" >
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Material" />
+			</f:facet>
+			<h:outputText value="#{linha.estoqueAlmoxarifado.materialAlmoxarifado.descricaoUnidadeHtml}" escape="false" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Tipo Movimento" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoMovimentoAlmoxarifado.descricao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Quantidade Estornada" />
+			</f:facet>
+			<h:outputText value="#{linha.quantidadeEstornada}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Justificativa" />
+			</f:facet>
+			<h:outputText value="#{linha.justificativa}" escape="false" />
+		</p:column>
+		
+	</p:dataTable>
+
+</ui:composition>

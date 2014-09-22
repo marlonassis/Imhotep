@@ -1,0 +1,216 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Formulário">
+			<rf:formularioPadrao idFormPadrao="formularioPadrao" 
+								 raizConsulta="#{laboratorioFormularioConsulta}" 
+								 raiz="#{laboratorioFormularioRaiz}" 
+								 srcTabela="Laboratorio/Formulario/formularioTabela.xhtml"
+								 srcConsulta="Laboratorio/Formulario/formularioConsulta.xhtml"
+								 srcEditor="Laboratorio/Formulario/formularioEditor.xhtml" /> 
+			
+			<p:fieldset legend="Itens" 
+						collapsed="false" 
+						toggleable="false" 
+						rendered="#{laboratorioFormularioRaiz.edicao}" >
+				<h:panelGrid columns="3" >
+					<h:form>
+						<p:growl />
+						
+						<h:panelGrid id="formularioItensPanelGrid" columns="1" width="100%" >
+							
+							<h:panelGrid columns="2" id="itemAddPanelGrid" >
+								<ri:inputEntidade id="item" 
+												  itemLabel="Nomes"
+												  atributosOrderBy="o.nome" 
+												  value="#{laboratorioFormularioRaiz.item}" 
+												  label="Item" />
+								<p:commandLink action="#{laboratorioFormularioRaiz.exibirDialogItem}" 
+											   update=":#{p:component('dialogItemPanelGroup')}" 
+											   global="false" 
+											   immediate="true"
+					              			   onclick="statusDialog.show();" 
+					              			   onsuccess="statusDialog.hide();">
+									<h:graphicImage value="/Imagens/add.png" alt="Cadastrar item" />
+								</p:commandLink>
+							</h:panelGrid>
+							
+							<h:panelGrid columns="2" id="grupoAddPanelGrid" >
+								<ri:inputEntidade id="grupo" 
+												  itemLabel="Descricao"
+												  atributosOrderBy="o.descricao" 
+												  value="#{laboratorioFormularioRaiz.grupo}" 
+												  label="Grupo" />
+								<p:commandLink action="#{laboratorioFormularioRaiz.exibirDialogGrupo}" 
+											   update=":#{p:component('dialogGrupoPanelGroup')}" 
+											   global="false" 
+											   immediate="true"
+					              			   onclick="statusDialog.show();" 
+					              			   onsuccess="statusDialog.hide();">
+									<h:graphicImage value="/Imagens/add.png" alt="Cadastrar grupo" />
+								</p:commandLink>
+							</h:panelGrid>
+						</h:panelGrid>
+						<p:commandButton value="Add Item" 
+										 action="#{laboratorioFormularioRaiz.cadastrarItemFormulario}" 
+										 update=":#{p:component('formularioItensPanelGrid')} :#{p:component('formularioItemDataTable')}" />
+					</h:form>
+
+					<p:dataTable id="formularioItemDataTable"
+								 value="#{laboratorioFormularioRaiz.instancia.itensLista}" 
+								 var="linha" 
+								 emptyMessage="Não há itens no formulário" >
+						<f:facet name="header">
+							<h:outputText value="Itens do Formulário" />
+						</f:facet>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Nome" />
+							</f:facet>
+							<h:outputText value="#{linha.item.nome}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Nome no Formulário" />
+							</f:facet>
+							<h:outputText value="#{linha.item.nomeFormulario}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Tipo" />
+							</f:facet>
+							<h:outputText value="#{linha.item.tipo.label}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Grupo" />
+							</f:facet>
+							<h:outputText value="#{linha.grupo.descricao}" />
+						</p:column>
+						
+						<p:column style="width:20px; text-align: center;">
+							<p:commandLink action="#{laboratorioFormularioRaiz.apagarItem}"
+										   update=":#{p:component('formularioItemDataTable')}"
+										   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+										   title="Apagar" 
+										   immediate="true"
+										   style="padding-right:10px;">
+								<f:setPropertyActionListener value="#{linha}" target="#{laboratorioFormularioRaiz.formularioItem}" />
+								<h:graphicImage value="/Imagens/delete.png" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+
+				</h:panelGrid>
+			</p:fieldset>
+			
+			<h:panelGroup id="dialogItemPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{laboratorioFormularioRaiz.exibirDialogItem}" 
+						  closable="false" 
+						  header="Item" 
+						  modal="true" >
+					<h:form>
+						<h:panelGrid columns="4" >
+							<ri:inputTextoSimples id="nomeItem" 
+												  required="true"
+												  title="Informe o nome do item. Este nome não aparecerá no formulário." 
+												  value="#{laboratorioFormularioRaiz.itemCadastro.nome}" 
+												  label="Nome" />
+							
+							<ri:inputTextoSimples id="nomeItemRelatorio" 
+												  required="true"
+												  title="Informe o nome do item no fomulário" 
+												  value="#{laboratorioFormularioRaiz.itemCadastro.nomeFormulario}" 
+												  label="Nome no Relatório" />
+							
+							<ri:inputEnum id="valores" 
+										  required="true"
+										  value="#{laboratorioFormularioRaiz.itemCadastro.tipo}" 
+										  label="Tipo" 
+										  updateChange=":#{p:component('listaItensPanelGroup')}" />
+							
+							<h:panelGroup id="listaItensPanelGroup" >
+								<ri:inputAutoComplete id="listaItens"
+													  rendered="#{laboratorioFormularioRaiz.itemCadastro.tipo == 'LI' or 
+													  			  laboratorioFormularioRaiz.itemCadastro.tipo == 'SN'}" 
+													  completeMethod="#{listaItensLaboratorioItemAutoComplete.autoComplete}" 
+													  itemValue="#{item}" 
+													  itemLabel="#{item}" 
+													  var="item" 
+													  required="true"
+													  forceSelection="false"
+													  desativarConversor="true"
+													  value="#{laboratorioFormularioRaiz.itemCadastro.listaItens}" 
+													  label="Lista" />
+							</h:panelGroup>
+							
+							<ri:inputTextArea id="observacaoItem" 
+											  title="Informe alguma observação se necessária" 
+											  value="#{laboratorioFormularioRaiz.itemCadastro.observacao}" 
+											  label="Observação" />
+							
+						</h:panelGrid>
+						<p:commandButton value="Salvar" 
+										 action="#{laboratorioFormularioRaiz.cadastrarItem}" 
+										 update=":#{p:component('dialogItemPanelGroup')}" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{laboratorioFormularioRaiz.ocultarDialogItem}"
+										 update=":#{p:component('dialogItemPanelGroup')} :#{p:component('itemAddPanelGrid')}" 
+										 immediate="false" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			
+			
+			
+			<h:panelGroup id="dialogGrupoPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{laboratorioFormularioRaiz.exibirDialogGrupo}" 
+						  closable="false" 
+						  header="Grupo" 
+						  modal="true" >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<ri:inputTextoSimples id="grupo" 
+												  title="Informe o nome do grupo"
+												  required="true" 
+												  value="#{laboratorioFormularioRaiz.grupoCadastro.descricao}" 
+												  label="Grupo" />
+							
+							<h:panelGroup>
+								<p:commandButton value="Cadastrar" 
+												 action="#{laboratorioFormularioRaiz.cadastrarGrupo}"
+												 update=":#{p:component('dialogGrupoPanelGroup')}" 
+												 immediate="false" />
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{laboratorioFormularioRaiz.ocultarDialogGrupo}"
+										 update=":#{p:component('dialogGrupoPanelGroup')} :#{p:component('grupoAddPanelGrid')}" 
+										 immediate="false" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

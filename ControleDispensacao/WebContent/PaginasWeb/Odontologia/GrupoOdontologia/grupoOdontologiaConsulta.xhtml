@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="grupoPanelGridConsulta" columns="3" width="100%">
+		
+		<ri:inputTextoSimples id="descricaoConsulta" 
+							  title="Descreva o grupo" 
+							  value="#{grupoOdontologiaConsulta.instancia.descricao}" 
+							  label="Descrição" />
+		
+	</h:panelGrid>
+</ui:composition>

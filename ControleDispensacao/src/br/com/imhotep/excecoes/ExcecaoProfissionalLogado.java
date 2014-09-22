@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -13,7 +13,7 @@ public class ExcecaoProfissionalLogado extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1783207019548721738L;
 	
 	public ExcecaoProfissionalLogado(){
-		super.mensagem("N√£o foi poss√≠vel pegar o profissional logado", null);
+		super.mensagem("Não foi possível pegar o profissional logado", null);
 	}
 	
 }

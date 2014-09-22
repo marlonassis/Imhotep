@@ -9,18 +9,20 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.enums.TipoUsuarioLogEnum;
 import br.com.imhotep.excecoes.ExcecaoUsuarioDuplicado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 
-@ManagedBean(name="usuarioRaiz")
+@ManagedBean
 @SessionScoped
-public class UsuarioRaiz extends PadraoHome<Usuario> {
+public class UsuarioRaiz extends PadraoRaiz<Usuario> {
 
 	private Usuario usuario = new Usuario();
 	private String senhaConfirmacao;
@@ -30,6 +32,15 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	private String senhaNovaConfirmacao;
 	private String login;
 	private boolean exibeCampoSenhaAntiga = true;
+	
+	public boolean usuarioBloqueado(Usuario linha){
+		return linha.getQuantidadeErroLogin() >= Constantes.QUANTIDADE_BLOQUEIO_USUARIO;
+	}
+	
+	public void apagarChave(){
+		getInstancia().getProfissional().setChaveVerificacao(null);
+		new ProfissionalRaiz().atualizar(getInstancia().getProfissional());
+	}
 	
 	public static UsuarioRaiz getInstanciaAtual(){
 		try {
@@ -70,7 +81,13 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	}
 	
 	public void resetarSenha(){
-		getInstancia().setSenha(Utilitarios.encriptaParaMd5("123456"));
+		getInstancia().setSenha(Utilitarios.encriptaParaMd5(Constantes.SENHA_PADRAO));
+		super.atualizar();
+	}
+	
+	public void resetarErro(){
+		getInstancia().setQuantidadeErroLogin(0);
+		new UsuarioAcessoLogRaiz().gerarLog(getInstancia(), TipoUsuarioLogEnum.D);
 		super.atualizar();
 	}
 	
@@ -88,12 +105,12 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 			usuario = Autenticador.getInstancia().getUsuarioAtual();
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em EstoqueCentroCirurgico");
 		}
 		String senhaCriptografada = Utilitarios.encriptaParaMd5(senhaAntiga);
 		if(senhaNova.equals(senhaNovaConfirmacao)){
-			if(usuario.getSenha().equals(senhaCriptografada)){
+			if(new Autenticador().getUsuarioTrocarSenha() || usuario.getSenha().equals(senhaCriptografada)){
 				String senha = Utilitarios.encriptaParaMd5(senhaNova);
 				usuario.setSenha(senha);
 				setInstancia(usuario);
@@ -101,23 +118,23 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 				novaInstancia();
 				setExibeCampoSenhaAntiga(true);
 			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"A senha antiga est√° errada!", ""));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"A senha antiga está errada!", ""));
 			}
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas n√£o conferem!", "Informe duas senhas iguais."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas não conferem!", "Informe duas senhas iguais."));
 		}
 	}
 	
 	@Override
 	public boolean atualizar() {
-		//procura se existe algum usu√°rio com o mesmo login
-		//se o usu√°rio informou a senha de confirma√ß√£o ent√£o devemos validar a senha
+		//procura se existe algum usuário com o mesmo login
+		//se o usuário informou a senha de confirmação então devemos validar a senha
 		if(trocaSenha && !getSenhaConfirmacao().equals("") && getSenhaConfirmacao() != null){
 			if (getInstancia().getSenha().equals(getSenhaConfirmacao())){
 				getInstancia().setSenha(Utilitarios.encriptaParaMd5(getInstancia().getSenha()));
 				return super.atualizar();
 			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas n√£o conferem!", "Informe duas senhas iguais."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas não conferem!", "Informe duas senhas iguais."));
 			}
 		}else{
 			return super.atualizar();
@@ -155,7 +172,7 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 	}
 	
 	public boolean enviarUsuarioPadrao(){
-		getInstancia().setSenha(Utilitarios.encriptaParaMd5("123456"));
+		getInstancia().setSenha(Utilitarios.encriptaParaMd5(Constantes.SENHA_PADRAO));
 		getInstancia().setDataInclusao(new Date());
 		getInstancia().setExpiraSessao(true);
 		getInstancia().setProfissionalInclusao(getProfissionalAtual());
@@ -177,22 +194,23 @@ public class UsuarioRaiz extends PadraoHome<Usuario> {
 					getInstancia().setSenha(Utilitarios.encriptaParaMd5(getInstancia().getSenha()));
 					getInstancia().setDataInclusao(new Date());
 					getInstancia().setUsuarioInclusao(Autenticador.getInstancia().getUsuarioAtual());
+					getInstancia().setQuantidadeErroLogin(0);
 					if(super.enviar()){
 						novaInstancia();
 						return true;
 					}else{
-						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"N√£o foi poss√≠vel cadastrar! Tente novamente.", "Cadastro n√£o realizado!"));
+						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não foi possível cadastrar! Tente novamente.", "Cadastro não realizado!"));
 					}
 				}else{
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este login j√° foi escolhido.", "Cadastro n√£o realizado!"));
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este login já foi escolhido.", "Cadastro não realizado!"));
 				}
 			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas n√£o conferem!", "Informe duas senhas iguais."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senhas não conferem!", "Informe duas senhas iguais."));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
 			if(((Usuario)facesContext.getExternalContext().getSessionMap().get("usuario")) == null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao cadastrar!", "Cadastro n√£o realizado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao cadastrar!", "Cadastro não realizado!"));
 				getInstancia().setIdUsuario(0);
 			}
 		}

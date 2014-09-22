@@ -7,11 +7,11 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.NotaFiscalEstoque;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class NotaFiscalEstoqueRaiz extends PadraoHome<NotaFiscalEstoque>{
+public class NotaFiscalEstoqueRaiz extends PadraoRaiz<NotaFiscalEstoque>{
 
 	public boolean enviar(NotaFiscalEstoque notaFiscalEstoque) {
 		try {

@@ -40,7 +40,7 @@ public class ControlePrescricao extends PadraoControle{
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao iniciar a prescri√ß√£o.", "Utilize o material de apoio para precrever at√© o sistema voltar ao normal."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao iniciar a prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricao()");
 			session.getTransaction().rollback();
 		}finally{
@@ -62,7 +62,7 @@ public class ControlePrescricao extends PadraoControle{
 			ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControlePrescricao");
 		}
 		new ErroAplicacaoRaiz(ea).enviar();
@@ -74,7 +74,7 @@ public class ControlePrescricao extends PadraoControle{
 			prescricao.setUnidade(Autenticador.getInstancia().getUnidadeAtual());
 		}  catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControlePrescricao");
 		}
 		prescricao.setDispensavel(false);
@@ -83,7 +83,7 @@ public class ControlePrescricao extends PadraoControle{
 			prescricao.setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
 		}  catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControlePrescricao");
 		}
 	}	

@@ -18,6 +18,12 @@ import br.com.remendo.ConsultaGeral;
 @RequestScoped
 public class EstoqueConsultaRaiz  extends ConsultaGeral<Estoque>{
 	
+	public List<Estoque> consultarEstoquesMaterialTodos(Material material) {
+		String hql = "select o from Estoque o where o.material.idMaterial = "+material.getIdMaterial()+" order by o.dataValidade asc, to_ascii(lower(o.lote))";
+		List<Estoque> list = new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null));
+		return list;
+	}
+	
 	public List<Estoque> consultarEstoquesMaterial(Material material) {
 		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 		String hql = "select o from Estoque o where o.quantidadeAtual > 0 and o.bloqueado = false and o.dataValidade >= cast('"+dataS+"' as date) and o.material.idMaterial = "+material.getIdMaterial()+" order by o.dataValidade asc, to_ascii(lower(o.lote))";

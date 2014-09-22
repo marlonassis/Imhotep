@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório Financeiro">
+			<h:form id="relatoriosForm"
+					target="_blank" 
+					style="text-align: left;">
+					
+				<h:panelGrid id="formularioRelatorioPanelGrid" columns="2" width="100%">
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="mes" value="Mês:" />
+						<br />
+						<p:inputText styleClass="monthpicker" value="#{relatorioFinanceiroGrupoAlmoxarifado.dataReferencia}">
+							<f:convertDateTime locale="pt_BR" timeZone="GMT-3" pattern="MM/yyyy"/>
+						</p:inputText>
+					</h:panelGroup>
+				</h:panelGrid>
+				<script>$('.monthpicker').monthpicker();</script>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório por grupo" ajax="false"
+								action="#{relatorioFinanceiroGrupoAlmoxarifado.gerarRelatorio}"/>
+					<br/>
+					<br/>
+					<p:commandButton id="downloadRelatorioDetalhado"
+							    rendered="false"
+								value="Gerar relatório Detalhado" ajax="false"
+								action="#{relatorioFinanceiroGrupoAlmoxarifado.gerarRelatorioDetalhado}"/>
+					<br/>
+					<br/>
+					<p:commandButton id="downloadRelatorioErro"
+							    rendered="false"
+								value="Gerar relatório de Erro" ajax="false"
+								action="#{relatorioFinanceiroFalhaTransporteMedLynxAlmoxarifado.gerarRelatorio}"/>			
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

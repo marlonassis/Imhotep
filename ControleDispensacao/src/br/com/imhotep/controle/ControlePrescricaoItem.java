@@ -12,9 +12,9 @@ import br.com.imhotep.enums.TipoStatusEnum;
 import br.com.imhotep.excecoes.ExcecaoControlePrescricaoItem;
 import br.com.imhotep.raiz.ErroAplicacaoRaiz;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
-public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
+public class ControlePrescricaoItem extends PadraoRaiz<PrescricaoItem>{
 	public boolean gravaPrescricaoItem(PrescricaoItem prescricaoItem) throws ExcecaoControlePrescricaoItem {
 		boolean ret = false;
 		
@@ -28,7 +28,7 @@ public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 			ret = true;
 		}catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescri√ß√£o.", "Utilize o material de apoio para precrever at√© o sistema voltar ao normal."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocorreu ao gravar a o item da prescrição.", "Utilize o material de apoio para precrever até o sistema voltar ao normal."));
 			gravaErroAplicacao(new Date(), e.getMessage(), e.getStackTrace(), "gravaPrescricaoItem()");
 			session.getTransaction().rollback();
 		}finally{
@@ -54,7 +54,7 @@ public class ControlePrescricaoItem extends PadraoHome<PrescricaoItem>{
 			ea.setUsuario(Autenticador.getInstancia().getUsuarioAtual());
 		}  catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControleMedicamentoRestrito");
 		}
 		new ErroAplicacaoRaiz(ea).enviar();

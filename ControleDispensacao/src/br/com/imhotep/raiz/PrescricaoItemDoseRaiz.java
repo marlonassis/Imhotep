@@ -4,9 +4,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.PrescricaoItemDose;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="prescricaoItemDoseRaiz")
 @SessionScoped
-public class PrescricaoItemDoseRaiz extends PadraoHome<PrescricaoItemDose>{
+public class PrescricaoItemDoseRaiz extends PadraoRaiz<PrescricaoItemDose>{
 }

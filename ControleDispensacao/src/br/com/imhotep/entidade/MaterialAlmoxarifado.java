@@ -121,15 +121,117 @@ public class MaterialAlmoxarifado implements Serializable {
 	}
 	
 	@Transient
-	public String getDescricaoUnidadeMaterial(){
-		if(getDescricao() != null && getUnidadeMaterialAlmoxarifado() != null)
-			return getDescricao().concat(" - ").concat(getUnidadeMaterialAlmoxarifado().getSigla());
+	public String getDescricaoReduzida(){
+		if(getDescricao() != null){
+			int length = getDescricao().length();
+			int tamanho = length > 160 ? 160 : length;
+			return getIdMaterialAlmoxarifado() + " - " + String.valueOf(getDescricao().subSequence(0, tamanho))+( length > 160 ? "..." : "");
+		}
+		return getDescricao();
+	}
+	
+	@Transient
+	public String getDescricaoId(){
+		return getIdMaterialAlmoxarifado() + " - " + getDescricao();
+	}
+	
+	@Transient
+	public String getDescricaoUnidadeHtml(){
+		String descricaoUnidadeMaterial = getDescricao();
+		if(descricaoUnidadeMaterial != null){
+			String ret = "";
+			int cont = 1;
+			for(String s : descricaoUnidadeMaterial.split(" ")){
+				ret += s + " ";
+				if(cont == 9){
+					ret += "<br/>";
+					cont = 0;
+				}
+				cont++;
+			}
+			
+			return getIdMaterialAlmoxarifado() + " - " + ret.concat(" - ").concat(getUnidadeMaterialAlmoxarifado().getSigla());
+		}
 		return "";
 	}
 	
+	@Transient
+	public String getDescricaoUnidadeMaterial(){
+		if(getDescricao() != null && getUnidadeMaterialAlmoxarifado() != null)
+			return getIdMaterialAlmoxarifado() + " - " + getDescricao().concat(" - ").concat(getUnidadeMaterialAlmoxarifado().getSigla());
+		return "";
+	}
 	
 	@Override
 	public String toString() {
 		return descricao;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime
+				* result
+				+ ((grupoAlmoxarifado == null) ? 0 : grupoAlmoxarifado
+						.hashCode());
+		result = prime * result + idMaterialAlmoxarifado;
+		result = prime
+				* result
+				+ ((profissionalInclusao == null) ? 0 : profissionalInclusao
+						.hashCode());
+		result = prime
+				* result
+				+ ((subGrupoAlmoxarifado == null) ? 0 : subGrupoAlmoxarifado
+						.hashCode());
+		result = prime
+				* result
+				+ ((unidadeMaterialAlmoxarifado == null) ? 0
+						: unidadeMaterialAlmoxarifado.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MaterialAlmoxarifado other = (MaterialAlmoxarifado) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (grupoAlmoxarifado == null) {
+			if (other.grupoAlmoxarifado != null)
+				return false;
+		} else if (!grupoAlmoxarifado.equals(other.grupoAlmoxarifado))
+			return false;
+		if (idMaterialAlmoxarifado != other.idMaterialAlmoxarifado)
+			return false;
+		if (profissionalInclusao == null) {
+			if (other.profissionalInclusao != null)
+				return false;
+		} else if (!profissionalInclusao.equals(other.profissionalInclusao))
+			return false;
+		if (subGrupoAlmoxarifado == null) {
+			if (other.subGrupoAlmoxarifado != null)
+				return false;
+		} else if (!subGrupoAlmoxarifado.equals(other.subGrupoAlmoxarifado))
+			return false;
+		if (unidadeMaterialAlmoxarifado == null) {
+			if (other.unidadeMaterialAlmoxarifado != null)
+				return false;
+		} else if (!unidadeMaterialAlmoxarifado
+				.equals(other.unidadeMaterialAlmoxarifado))
+			return false;
+		return true;
+	}
+	
+	
 }

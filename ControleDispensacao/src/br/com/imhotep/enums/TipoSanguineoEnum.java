@@ -13,7 +13,7 @@ public enum TipoSanguineoEnum {
 	BP("B+"),
 	ABN("AB−"),
 	ABP("AB+"),
-	NI("Não Informado");
+	NI("N�o Informado");
 	
 	TipoSanguineoEnum(String papel){
 		label = papel;

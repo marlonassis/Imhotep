@@ -11,8 +11,8 @@ public enum TipoBloqueioLoteEnum {
 	
 	private String label;
 	
-	TipoBloqueioLoteEnum(String sexo){
-		label = sexo;
+	TipoBloqueioLoteEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

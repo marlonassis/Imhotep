@@ -7,12 +7,12 @@ package br.com.imhotep.enums;
 public enum TipoChamadoStatusEnum {
 	A("Aberto"),
 	F("Fechado"), 
-	N("NÃ£o Resolvido");
+	N("N‹o Resolvido");
 	
 	private String label;
 	
-	TipoChamadoStatusEnum(String sexo){
-		label = sexo;
+	TipoChamadoStatusEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

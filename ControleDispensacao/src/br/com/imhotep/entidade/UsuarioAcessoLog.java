@@ -28,7 +28,8 @@ public class UsuarioAcessoLog {
 	private String sessao;
 	private TipoUsuarioLogEnum tipoLog;
 	private int tempoSessao;
-	
+	private String mac;
+	private String loginErro;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_usuario_acesso_log_id_usuario_acesso_log_seq")
 	@Id
@@ -98,6 +99,24 @@ public class UsuarioAcessoLog {
 
 	public void setTipoLog(TipoUsuarioLogEnum tipoLog) {
 		this.tipoLog = tipoLog;
+	}
+	
+	@Column(name = "cv_mac")
+	public String getMac() {
+		return this.mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+	
+	@Column(name = "cv_login_erro")
+	public String getLoginErro() {
+		return this.loginErro;
+	}
+
+	public void setLoginErro(String loginErro) {
+		this.loginErro = loginErro;
 	}
 	
 	@Override

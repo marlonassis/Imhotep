@@ -15,11 +15,11 @@ import br.com.imhotep.entidade.EstoqueLog;
 import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
+public class BloqueioLoteRaiz extends PadraoRaiz<Estoque>{
 	
 	private boolean loteEncontrado;
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -44,13 +44,13 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 	
 	@Override
 	public boolean enviar() {
-		super.mensagem("N√£o √© permitido inserir um estoque", "Inser√ß√£o n√£o autorizada.", Constantes.ERROR);
+		super.mensagem("Não é permitido inserir um estoque", "Inserção não autorizada.", Constantes.ERROR);
 		return false;
 	}
 	
 	@Override
 	public boolean apagar() {
-		super.mensagem("N√£o √© permitido apagar um estoque", "Dele√ß√£o n√£o autorizada", Constantes.ERROR);
+		super.mensagem("Não é permitido apagar um estoque", "Deleção não autorizada", Constantes.ERROR);
 		return false;
 	}
 	
@@ -73,7 +73,7 @@ public class BloqueioLoteRaiz extends PadraoHome<Estoque>{
 		if(loteEncontrado){
 			setInstancia(estoque);
 		}else{
-			mensagem("Lote n√£o encontrado.", lote, Constantes.WARN);
+			mensagem("Lote não encontrado.", lote, Constantes.WARN);
 		}
 	}
 	

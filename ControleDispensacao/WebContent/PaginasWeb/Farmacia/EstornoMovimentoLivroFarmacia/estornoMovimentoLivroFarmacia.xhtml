@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabProfissional" title="Estorno">
+			<rf:formularioPesquisa id="estornoMovimentoFarmaciaPesquisa" 
+								   raizConsulta="#{estornoMovimentacaoFarmaciaConsulta}"
+								   novoPadraoPesquisa="true"
+								   fieldSetCollapsed="false"
+								   novoAction="#{estornoMovimentacaoFarmaciaConsulta.novaInstancia()}"
+								   srcTabela="Farmacia/EstornoMovimentoLivroFarmacia/estornoMovimentoLivroFarmaciaTabela.xhtml"
+								   srcConsulta="Farmacia/EstornoMovimentoLivroFarmacia/estornoMovimentoLivroFarmaciaConsulta.xhtml" />
+		</p:tab>
+	</ui:define>
+</ui:composition>

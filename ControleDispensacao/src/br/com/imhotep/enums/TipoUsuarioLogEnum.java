@@ -5,7 +5,10 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoUsuarioLogEnum {
-	A("Logout Autom√°tico"),
+	E("Erro Login"),
+	B("Bloqueio"),
+	D("Desbloqueio"),
+	A("Logout Automático"),
 	O("Logout"), 
 	I("Login");
 	

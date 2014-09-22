@@ -9,6 +9,7 @@
 
 		<ri:inputTextoSimples id="descricao" 
 							  title="Descreva o material" 
+							  required="true"
 							  value="#{materialAlmoxarifadoRaiz.instancia.descricao}" 
 							  label="Descrição"/>
 							  
@@ -34,7 +35,7 @@
 				
 				<ri:inputSelectOneMenuEntidade id="subGrupo"
 											   required="true"
-											   rendered="#{materialAlmoxarifadoRaiz.subGrupoAlmoxarifadoList != null}"
+											   rendered="#{materialAlmoxarifadoRaiz.exibirComboSubGrupo}"
 											   itemLabel="#{subGrupoAlmoxarifadoInput.descricao}"
 											   itemValue="#{subGrupoAlmoxarifadoInput}"
 											   var="subGrupoAlmoxarifadoInput"
@@ -62,6 +63,8 @@
 							  title="Informe a quantidade mínima" 
 							  value="#{materialAlmoxarifadoRaiz.instancia.quantidadeMinima}" 
 							  label="Quantidade Mínima" />
+							  
+		
 	</h:panelGrid>
 
 </ui:composition>

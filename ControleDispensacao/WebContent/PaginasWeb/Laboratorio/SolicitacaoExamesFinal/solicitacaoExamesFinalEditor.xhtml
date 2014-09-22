@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="tipoExamePanelGrid" columns="3" width="100%">
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="nome" value="Nome:" />
+			<br />
+			<p:inputText id="nome" required="true"
+				value="#{tipoExameRaiz.instancia.nome}"
+				title="Informe o nome do exame." />
+		</h:panelGroup>
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="valorReferencia" value="Valor de Referêcia:" />
+			<br />
+			<p:inputText id="valorReferencia" required="true"
+				value="#{tipoExameRaiz.instancia.valorReferencia}"
+				title="Informe o valor de referência do exame." />
+		</h:panelGroup>
+
+
+		<h:panelGroup>
+			<font color="red">*</font>
+			<h:outputLabel for="sigla" value="Sigla:" />
+			<br />
+			<p:inputText id="sigla" required="true"
+				value="#{tipoExameRaiz.instancia.sigla}"
+				title="Informe a sigla do exame." />
+		</h:panelGroup>
+
+
+
+	</h:panelGrid>
+
+</ui:composition>

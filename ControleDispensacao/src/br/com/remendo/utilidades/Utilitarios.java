@@ -2,13 +2,21 @@ package br.com.remendo.utilidades;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -25,13 +33,23 @@ import java.util.regex.Pattern;
 
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.Id;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.myfaces.component.visit.FullVisitContext;
+
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
-import br.com.imhotep.entidade.PacienteEntradaResponsavel;
+import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
+import br.com.imhotep.excecoes.ExcecaoForaRedeHU;
 
 
 /**
@@ -41,7 +59,213 @@ import br.com.imhotep.entidade.PacienteEntradaResponsavel;
 public class Utilitarios{
 	
 	private static Locale LOCALE_BRASIL = new Locale ("pt", "BR");
-
+	
+	public int getLarguraTela(){
+//		Toolkit tk = Toolkit.getDefaultToolkit();  
+//	    Dimension d = tk.getScreenSize();  
+//	    return d.width;
+		return 1024;
+	}
+	
+	public int getAlturaTela(){
+//		Toolkit tk = Toolkit.getDefaultToolkit();  
+//	    Dimension d = tk.getScreenSize();  
+//	    return d.height;
+		return 768;
+	}
+	
+	public String exibirToStringEnum(Enum obj){
+		if(obj != null)
+			obj.toString();
+		return null;
+	}
+	
+	public Class<?> getClass(String idComponent){
+		UIComponent foundComponent = findComponent(idComponent);
+		Class<?> type = foundComponent.getValueExpression("value").getType(FacesContext.getCurrentInstance().getELContext());
+		return type;
+	}
+	
+	public String nomeClasse(String idComponent){
+		Class<?> type = getClass(idComponent);
+		String[] nome = type.getName().split("\\.");
+		return nome[nome.length-1];
+	}
+	
+	public Enum<?>[] getEnumConstantes(String idComponent){
+		UIComponent foundComponent = findComponent(idComponent);
+		Class<?> type = foundComponent.getValueExpression("value").getType(FacesContext.getCurrentInstance().getELContext());
+		
+		Enum<?>[] enumConstants = null;
+		try {
+			enumConstants = (Enum<?>[]) Class.forName(type.getCanonicalName().replace("[", "").replace("]", "")).getEnumConstants();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return enumConstants;
+	}
+	
+	public String pegarValor(String atributo, Object obj){
+		try {
+			Method meth = Class.forName(obj.getClass().getName()).getMethod("get".concat(atributo));
+			return (String) meth.invoke(obj);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	return "";
+}  
+	
+	/* Método extraído do link
+	 * http://stackoverflow.com/questions/14378437/find-component-by-id-in-jsf
+	 */
+	public UIComponent findComponent(final String id){
+	    FacesContext context = FacesContext.getCurrentInstance(); 
+	    UIViewRoot root = context.getViewRoot();
+	    final UIComponent[] found = new UIComponent[1];
+	    root.visitTree(new FullVisitContext(context), new VisitCallback() {     
+	        @Override
+	        public VisitResult visit(VisitContext context, UIComponent component) {
+	            if(component.getId().equals(id)){
+	                found[0] = component;
+	                return VisitResult.COMPLETE;
+	            }
+	            return VisitResult.ACCEPT;              
+	        }
+	    });
+	    return found[0];
+	}
+	
+	public static void downloadArquivo(String caminho, String contentType, String nome){
+		try{
+			File arquivo = new File(caminho+nome);
+			InputStream stream = new FileInputStream(arquivo);
+			byte[] buf = new byte[((Long) arquivo.length()).intValue()];
+		    int offset = 0;
+		    int numRead = 0;
+		    while ((offset < buf.length) && ((numRead = stream.read(buf, offset, buf.length -offset)) >= 0)) {
+		        offset += numRead;
+		    }
+		    stream.close();
+			HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+			response.setContentType(contentType);
+			response.setHeader("Content-Disposition", "attachment;filename="+nome);
+			response.getOutputStream().write(buf);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+			FacesContext.getCurrentInstance().responseComplete();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Date getDataCorte(){
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.DAY_OF_MONTH, 01);
+		c.set(Calendar.MONTH, 05);
+		c.set(Calendar.YEAR, 2013);
+		c.set(Calendar.HOUR, 0);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTime();
+	}
+	
+	public String nomeResumido(String nome){
+		if(nome != null){
+			String[] n = nome.split(" ");
+			String nomeResumido = n[0];
+			nomeResumido = nomeResumido.concat(" ").concat(n[n.length-1]);
+			return nomeResumido;
+		}
+		return nome;
+	}
+	
+	static public String mesAnoDescricaoResumido(Date data) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(data);
+		String nomeMes = calendar.getDisplayName(Calendar.MONTH, 1, LOCALE_BRASIL);
+		int ano = calendar.get(Calendar.YEAR);
+		return nomeMes.concat("/").concat(String.valueOf(ano));
+	}
+	
+	static public String mesAnoDescricaoResumido(int mes, int ano) {
+		Calendar c = Calendar.getInstance(Constantes.LOCALE_BRASIL);
+		c.set(Calendar.MONTH, mes-1);
+		c.set(Calendar.YEAR, ano);
+		DateFormat df = new SimpleDateFormat("MMM/yyyy", Constantes.LOCALE_BRASIL);   
+		String periodo = df.format(c.getTime());
+		return periodo;
+	}
+	
+	static public String mesAnoDescricao(Date data) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(data);
+		int mes = calendar.get(Calendar.MONTH), ano = calendar.get(Calendar.YEAR);
+		return mesAnoDescricao(mes, ano);
+	}
+	
+	static public String mesAnoDescricao(int mes, int ano) {
+		Calendar c = Calendar.getInstance(Constantes.LOCALE_BRASIL);
+		c.set(Calendar.MONTH, mes-1);
+		c.set(Calendar.YEAR, ano);
+		DateFormat df = new SimpleDateFormat("MMMM/yyyy", Constantes.LOCALE_BRASIL);   
+		String periodo = df.format(c.getTime());
+		return periodo;
+	}
+	
+	public String getDatatipFormat(){
+	   return "<span style=\"display:none;\">%s</span><b><span>%s</span>%.1f</b>";
+	}
+	
+	public static String getMacFlag(){
+		String dentroRedeHU = "N";
+		try {
+			new RestringirAcessoRedeHU().validarAcessoRedeHU();
+			dentroRedeHU = "S";
+		} catch (ExcecaoForaRedeHU e) {
+			e.printStackTrace();
+		}
+		return "";
+//		String mac = getMac();
+//		if(mac != null)
+//			return mac.concat("/").concat(dentroRedeHU);
+//		else
+//			return dentroRedeHU;
+	}
+	
+	public static String getMac(){
+		try {         
+	           InetAddress address = InetAddress.getLocalHost();  
+	           NetworkInterface ni = NetworkInterface.getByInetAddress(address);  
+	           byte[] mac = ni.getHardwareAddress();
+	           String macAddress = "";
+	           for (int i = 0; i < mac.length; i++) {             
+	               macAddress += (String.format("%02X-", mac[i]));  
+	           }
+	           macAddress = macAddress.substring(0, macAddress.length()-1);
+	           return macAddress;
+	        } catch (UnknownHostException e) {  
+	           e.printStackTrace();
+	        } catch (SocketException e) {  
+	           e.printStackTrace();  
+	        }
+		return null;
+	}
+	
 	public static MethodExpression contruirMethodExpression(String elExpression) {
 		ExpressionFactory factory = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
 		MethodExpression methodExpression = factory.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), elExpression, null, new Class[]{ActionEvent.class});
@@ -60,11 +284,35 @@ public class Utilitarios{
 		return logoTipoHUInput;
 	}
 	
+	public static Object[][] addElemento(Object[][] matriz, int pos, Object elemento) {
+		if(matriz==null){
+			return new Object[][] { {elemento} };
+		}
+		
+		Object[][] temp = null;
+		
+		if(pos < matriz.length)
+			temp = new Object[matriz.length][];
+		else{
+			temp = new Object[matriz.length+1][];
+			int cont = 0;
+			for(Object[] o : matriz){
+				temp[cont] = o;
+				cont++;
+			}
+		}
+		
+		Object[] a = temp[pos];
+		a = addElemento(a, elemento);
+		temp[pos] = a;
+		return temp;
+	}
+	
+	
+	
 	public static Object[] addElemento(Object[] array, Object elemento) {
 		if(array==null){
-			Object[] array2 = {elemento};
-			array = array2;
-			return array;
+			return new Object[] {elemento};
 		}
 		Object[] result = Arrays.copyOf(array, array==null ? 1 : array.length+1);
 	    result[array.length] = elemento;
@@ -128,18 +376,25 @@ public class Utilitarios{
 	public static Date ajustarZeroHoraDia(Date dataFim) {
 		Calendar df = Calendar.getInstance();
 		df.setTime(dataFim);
-		df.set(Calendar.HOUR, 0);
+		df.set(Calendar.HOUR_OF_DAY, 0);
 		df.set(Calendar.MINUTE, 0);
 		df.set(Calendar.SECOND, 0);
 		return df.getTime();
 	}
 	
 	public Date ajustarUltimaHoraDia(Date dataFim) {
-		Calendar df = Calendar.getInstance();
+		Calendar df = Calendar.getInstance(Constantes.LOCALE_BRASIL);
 		df.setTime(dataFim);
-		df.set(Calendar.HOUR, 23);
+		df.set(Calendar.HOUR_OF_DAY, 23);
 		df.set(Calendar.MINUTE, 59);
 		df.set(Calendar.SECOND, 59);
+		return df.getTime();
+	}
+	
+	public Date ajustarPrimeiroDiaMes(Date dataFim) {
+		Calendar df = Calendar.getInstance();
+		df.setTime(dataFim);
+		df.set(Calendar.DAY_OF_MONTH, 01);
 		return df.getTime();
 	}
 	
@@ -195,11 +450,11 @@ public class Utilitarios{
 	
 
 	/**
-	 * Esse m√©todo retornar√° o valor formatado de acordo com a m√°scara informada. Cada caracter a 
-	 * ser substitu√≠do na m√°scara deve ser simbolizado por '#'.
+	 * Esse método retornará o valor formatado de acordo com a máscara informada. Cada caracter a 
+	 * ser substituído na máscara deve ser simbolizado por '#'.
 	 * @param valor
 	 * @param mascara
-	 * @return String com o valor formatado de acordo com a m√°scara
+	 * @return String com o valor formatado de acordo com a máscara
 	 */
 	public static String formatarValorMascara(String valor, String mascara){
 		if(valor != null && !valor.isEmpty()){
@@ -208,25 +463,8 @@ public class Utilitarios{
 			}
 			return mascara;
 		}
-		return null;
+		return "S/CPF";
 	}
-	
-	public static void main(String[] args) {
-		
-		
-		Class<?> clazz;
-		try {
-			clazz = Class.forName(PacienteEntradaResponsavel.class.getName());
-			for(Field field : clazz.getDeclaredFields()){
-				System.out.println("<field name=\""+field.getName()+"\" class=\""+field.getType().getName()+"\"/>");
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		
-	}
-	
 	
 	public static Object getValorPropriedadeId(Object obj){
 		Class<?> clazz;
@@ -279,6 +517,15 @@ public class Utilitarios{
 	public static float getDifAno(java.util.Date dtMenor, java.util.Date dtMaior){  
         return getDifDia(dtMenor, dtMaior) /365;
     }  
+	
+	public static Integer idadeAtualInteger(Date nascimento){
+		if(nascimento != null){
+			float difAno = getDifAno(nascimento, Calendar.getInstance().getTime());
+			int floor = (int) Math.floor(difAno);
+			return floor;
+		}
+		return -1;
+	}
 	
 	public static String idadeAtual(Date nascimento){
 		if(nascimento != null){
@@ -344,9 +591,9 @@ public class Utilitarios{
 	}
 	
 	/**
-	 * M√©todo que retorna o nome do M√™s de acordo com o valor repassado por argumento
+	 * Método que retorna o nome do Mês de acordo com o valor repassado por argumento
 	 * @param int arg0
-	 * @return nome do m√™s
+	 * @return nome do mês
 	 */
 	public static String mes(int arg0){
 		String[] meses = DateFormatSymbols.getInstance().getMonths();
@@ -361,9 +608,9 @@ public class Utilitarios{
 	}
 
 	/**
-	 * M√©todo que retorna a posi√ß√£o do M√™s de acordo com o valor repassado por argumento
+	 * Método que retorna a posição do Mês de acordo com o valor repassado por argumento
 	 * @param int arg0
-	 * @return n√∫mero do m√™s
+	 * @return número do mês
 	 */
 	public static Integer posMes(String arg0){
 		String[] meses = DateFormatSymbols.getInstance().getMonths();
@@ -395,5 +642,13 @@ public class Utilitarios{
 			} //or "SHA-1"  
 	    }  
 	    return result;  
-	} 
+	}
+	
+	public static int qtdDias(Date ini, Date fim){
+		if(ini != null && fim != null){
+			long difTempo = fim.getTime() - ini.getTime();  
+	        return (int) (difTempo /1000/60/60/24) + 1;
+		}
+		return -1;
+	}
 }

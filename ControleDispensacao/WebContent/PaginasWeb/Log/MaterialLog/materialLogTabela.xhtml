@@ -55,6 +55,14 @@
 			</f:facet>
 			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataLog)}" />
 		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalAlteracao.nome}" />
+		</p:column>
+		
 	</p:dataTable>
 
 </ui:composition>

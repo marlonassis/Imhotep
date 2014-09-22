@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Material">
+		
+			<h:form>
+				<p:commandButton value="Grupo" 
+								 action="#{grupoOdontologiaRaiz.exibirDialogGrupo}" 
+								 update=":#{p:component('dialogGrupoPanelGroup')} :#{p:component('materialOdontologiaEditorForm')}"/> 
+	
+				<p:commandButton value="SubGrupo" 
+								 action="#{subGrupoOdontologiaRaiz.exibirDialogSubGrupo}" 
+								 update=":#{p:component('dialogSubGrupoPanelGroup')} :#{p:component('materialOdontologiaEditorForm')}"/> 
+				
+				<p:commandButton value="Unidade do Material" 
+								 action="#{unidadeMaterialOdontologiaRaiz.exibirDialogUnidadeMaterial}" 
+								 update=":#{p:component('dialogUnidadeMaterialPanelGroup')} :#{p:component('materialOdontologiaEditorForm')}"/> 
+			</h:form>
+		
+			<rf:formularioEdicao id="materialOdontologia"
+								raiz="#{materialOdontologiaRaiz}"
+								srcEditor="Odontologia/MaterialOdontologia/materialOdontologiaEditor.xhtml" />
+								
+			<rf:formularioPesquisa id="materialOdontologiaPesquisa" 
+								   raizConsulta="#{materialOdontologiaConsulta}"
+								   novoPadraoPesquisa="true"
+								   novoAction="#{materialOdontologiaConsulta.novaInstancia()}"
+								   srcTabela="Odontologia/MaterialOdontologia/materialOdontologiaTabela.xhtml"
+								   srcConsulta="Odontologia/MaterialOdontologia/materialOdontologiaConsulta.xhtml" />
+								   
+			
+			<h:panelGroup id="dialogGrupoPanelGroup" >
+				<p:dialog visible="#{grupoOdontologiaRaiz.exibirDialogGrupo}" 
+						  closable="false" 
+						  header="Grupo" 
+						  modal="true"> 
+					<p:growl/>
+					<h:form>
+						<ui:include src="/PaginasWeb/Odontologia/GrupoOdontologia/grupoOdontologiaEditor.xhtml"></ui:include>
+						<p:commandButton value="Cadastrar" 
+										 action="#{grupoOdontologiaRaiz.cadastrarGrupo}" 
+										 update=":#{p:component('dialogGrupoPanelGroup')}" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{grupoOdontologiaRaiz.ocultarDialogGrupo}" 
+										 update=":#{p:component('dialogGrupoPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup id="dialogSubGrupoPanelGroup" >
+				<p:dialog visible="#{subGrupoOdontologiaRaiz.exibirDialogSubGrupo}" 
+						  closable="false" 
+						  header="Grupo" 
+						  modal="true"> 
+					<p:growl/>
+					<h:form>
+						<ui:include src="/PaginasWeb/Odontologia/SubGrupoOdontologia/subGrupoOdontologiaEditor.xhtml"></ui:include>
+						<p:commandButton value="Cadastrar" 
+										 action="#{subGrupoOdontologiaRaiz.cadastrarSubGrupo}" 
+										 update=":#{p:component('dialogSubGrupoPanelGroup')}" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{subGrupoOdontologiaRaiz.ocultarDialogSubGrupo}" 
+										 update=":#{p:component('dialogSubGrupoPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup id="dialogUnidadeMaterialPanelGroup" >
+				<p:dialog visible="#{unidadeMaterialOdontologiaRaiz.exibirDialogUnidadeMaterial}" 
+						  closable="false" 
+						  header="Unidade do Material" 
+						  modal="true"> 
+					<p:growl/>
+					<h:form>
+						<ui:include src="/PaginasWeb/Odontologia/UnidadeMaterialOdontologia/unidadeMaterialOdontologiaEditor.xhtml"></ui:include>
+						<p:commandButton value="Cadastrar" 
+										 action="#{unidadeMaterialOdontologiaRaiz.cadastrarUnidadeMaterial}" 
+										 update=":#{p:component('dialogUnidadeMaterialPanelGroup')}" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{unidadeMaterialOdontologiaRaiz.ocultarDialogUnidadeMaterial}" 
+										 update=":#{p:component('dialogUnidadeMaterialPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+		</p:tab>
+		
+	</ui:define>
+</ui:composition>

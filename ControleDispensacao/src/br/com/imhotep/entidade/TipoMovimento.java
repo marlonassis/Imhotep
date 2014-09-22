@@ -1,5 +1,7 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +15,9 @@ import br.com.imhotep.enums.TipoOperacaoEnum;
 
 @Entity
 @Table(name = "tb_tipo_movimento")
-public class TipoMovimento {
+public class TipoMovimento implements Serializable {
+	private static final long serialVersionUID = -7019219864542935870L;
+	
 	private int idTipoMovimento;
 	private String descricao;
 	private TipoOperacaoEnum tipoOperacao;
@@ -47,21 +51,38 @@ public class TipoMovimento {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof TipoMovimento))
-			return false;
-		
-		return ((TipoMovimento)obj).getIdTipoMovimento() == this.idTipoMovimento;
-	}
-
-	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idTipoMovimento;
+		result = prime * result
+				+ ((tipoOperacao == null) ? 0 : tipoOperacao.hashCode());
+		return result;
 	}
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TipoMovimento other = (TipoMovimento) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idTipoMovimento != other.idTipoMovimento)
+			return false;
+		if (tipoOperacao != other.tipoOperacao)
+			return false;
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return descricao;

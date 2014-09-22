@@ -26,7 +26,7 @@ public class JobBackUp implements Job{
 		    try{
 		    	String diretorioBackup = Parametro.getDiretorioBackupImhotep();
 		    	String diretorioPostgres = Parametro.getDiretorioPostgres();
-		    	String banco = Constantes.NOME_BANCO;
+		    	String banco = Constantes.NOME_BANCO_IMHOTEP;
 		    	diretorioBackup += new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 				criarDiretorio(diretorioBackup);
 		        ProcessBuilder pb;  

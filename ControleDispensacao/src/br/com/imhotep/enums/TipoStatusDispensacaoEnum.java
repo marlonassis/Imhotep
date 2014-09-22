@@ -7,9 +7,9 @@ package br.com.imhotep.enums;
 public enum TipoStatusDispensacaoEnum {
 	A("Aberta"),
 	P("Pendente"),
+	R("Recusado"),
 	D("Dispensado"),  
-	DP("Dispensado em parte"),
-	R("Recusado");
+	DP("Dispensado em parte");
 	
 	private String label;
 	

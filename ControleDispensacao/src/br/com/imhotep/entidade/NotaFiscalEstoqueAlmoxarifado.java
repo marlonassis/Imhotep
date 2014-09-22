@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_nota_fiscal_estoque_almoxarifado")
-public class NotaFiscalEstoqueAlmoxarifado {
+public class NotaFiscalEstoqueAlmoxarifado implements Serializable {
+	private static final long serialVersionUID = -1815921477926039620L;
+	
 	private int idNotaFiscalEstoqueAlmoxarifado;
 	private EstoqueAlmoxarifado estoqueAlmoxarifado;
 	private NotaFiscalAlmoxarifado notaFiscalAlmoxarifado;
@@ -114,14 +117,63 @@ public class NotaFiscalEstoqueAlmoxarifado {
 		}
 		return 0d;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataInsercao == null) ? 0 : dataInsercao.hashCode());
+		result = prime * result + idNotaFiscalEstoqueAlmoxarifado;
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null)
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		if(!(obj instanceof NotaFiscalEstoqueAlmoxarifado))
+		if (getClass() != obj.getClass())
 			return false;
-		
-		return ((NotaFiscalEstoqueAlmoxarifado)obj).getIdNotaFiscalEstoqueAlmoxarifado() == this.idNotaFiscalEstoqueAlmoxarifado;
+		NotaFiscalEstoqueAlmoxarifado other = (NotaFiscalEstoqueAlmoxarifado) obj;
+		if (dataInsercao == null) {
+			if (other.dataInsercao != null)
+				return false;
+		} else if (!dataInsercao.equals(other.dataInsercao))
+			return false;
+		if (estoqueAlmoxarifado == null) {
+			if (other.estoqueAlmoxarifado != null)
+				return false;
+		} else if (!estoqueAlmoxarifado.equals(other.estoqueAlmoxarifado))
+			return false;
+		if (idNotaFiscalEstoqueAlmoxarifado != other.idNotaFiscalEstoqueAlmoxarifado)
+			return false;
+		if (movimentoLivroAlmoxarifado == null) {
+			if (other.movimentoLivroAlmoxarifado != null)
+				return false;
+		} else if (!movimentoLivroAlmoxarifado
+				.equals(other.movimentoLivroAlmoxarifado))
+			return false;
+		if (notaFiscalAlmoxarifado == null) {
+			if (other.notaFiscalAlmoxarifado != null)
+				return false;
+		} else if (!notaFiscalAlmoxarifado.equals(other.notaFiscalAlmoxarifado))
+			return false;
+		if (profissionalInsercao == null) {
+			if (other.profissionalInsercao != null)
+				return false;
+		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		if (quantidadeEntrada != other.quantidadeEntrada)
+			return false;
+		if (valorUnitario == null) {
+			if (other.valorUnitario != null)
+				return false;
+		} else if (!valorUnitario.equals(other.valorUnitario))
+			return false;
+		return true;
 	}
+	
+	
 }

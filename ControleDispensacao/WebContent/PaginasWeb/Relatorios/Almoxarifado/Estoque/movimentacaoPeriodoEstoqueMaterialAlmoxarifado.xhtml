@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório de Movimentação por Material">
+			<h:form id="relatoriosForm"
+					target="_blank"
+					style="text-align: left;">
+				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
+					<h:panelGroup id="agrupamento" >
+						<h:panelGrid columns="2" width="100%" >
+							<h:panelGroup>
+								<font color="red">*</font>
+								<h:outputLabel for="grupo" value="Grupo:" />
+								<br />
+								<p:selectOneMenu value="#{relatorioMovimentacaoGrupoMaterialPeriodo.grupoAlmoxarifado}"
+												 effect="fade" 
+												 required="true" 
+												 converter="entidadeConversor">
+									<p:ajax update=":#{p:component('agrupamento')}" 
+											listener="#{relatorioMovimentacaoGrupoMaterialPeriodo.atualizaSubGrupoAmoxarifado()}" />
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItems value="#{grupoAlmoxarifadoConsultaRaiz.consultarGrupos()}" 
+												   var="grupo"
+												   itemLabel="#{grupo.descricao}" 
+												   itemValue="#{grupo}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+							
+							<ri:inputSelectOneMenuEntidade id="subGrupo"
+														   required="true"
+														   rendered="#{relatorioMovimentacaoGrupoMaterialPeriodo.exibirComboSubGrupo}"
+														   itemLabel="#{subGrupoAlmoxarifadoInput.descricao}"
+														   itemValue="#{subGrupoAlmoxarifadoInput}"
+														   var="subGrupoAlmoxarifadoInput"
+														   value="#{relatorioMovimentacaoGrupoMaterialPeriodo.subGrupoAlmoxarifado}"
+														   list="#{relatorioMovimentacaoGrupoMaterialPeriodo.subGrupoAlmoxarifadoList}"
+														   label="SubGrupo" />
+						</h:panelGrid>
+					</h:panelGroup>
+					
+					
+					
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
+						<p:calendar id="dataIni"
+							value="#{relatorioMovimentacaoGrupoMaterialPeriodo.dataIni}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<font color="red">*</font>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
+						<p:calendar id="dataFim"
+							value="#{relatorioMovimentacaoGrupoMaterialPeriodo.dataFim}" pattern="dd/MM/yyyy"
+							locale="pt" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<div align="left">
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" 
+								ajax="false"
+								action="#{relatorioMovimentacaoGrupoMaterialPeriodo.gerarRelatorio}"/>
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

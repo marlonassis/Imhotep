@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_tipo_material")
 public class TipoMaterial implements Serializable {
-	private static final long serialVersionUID = 2291419033808469794L;
+	private static final long serialVersionUID = 8957183054069950729L;
 	
 	private int idTipoMaterial;
 	private String descricao;
@@ -37,25 +37,34 @@ public class TipoMaterial implements Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof TipoMaterial))
-			return false;
-		
-		return ((TipoMaterial)obj).getIdTipoMaterial() == this.idTipoMaterial;
-	}
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idTipoMaterial;
+		return result;
 	}
 
 	@Override
-	public String toString() {
-		return descricao;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TipoMaterial other = (TipoMaterial) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idTipoMaterial != other.idTipoMaterial)
+			return false;
+		return true;
 	}
+	
 }

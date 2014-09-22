@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="tipoExamePanelGridConsulta" columns="3" width="100%">
+
+		<ri:inputApenasNumero id="numeroExame" 
+							  title="Informe o número do exame" 
+							  value="#{solicitacaoExamesFinalConsulta.instancia.idLaboratorioSolicitacao}" 
+							  label="Número do Exame" />
+							  
+		<ri:inputEnum id="statusSolicitacao" 
+					  value="#{solicitacaoExamesFinalConsulta.instancia.statusSolicitacao}" 
+					  label="Fase" />
+		
+		<ri:inputCheckBoolean id="examePendente" 
+							  value="#{solicitacaoExamesFinalConsulta.exibirExamePendente}" 
+							  label="Apenas exames pendentes" />
+		
+	</h:panelGrid>
+</ui:composition>

@@ -3,6 +3,7 @@ package br.com.imhotep.entidade.relatorio;
 import java.util.Date;
 
 import br.com.imhotep.entidade.TipoMovimento;
+import br.com.imhotep.enums.TipoOperacaoEnum;
 
 public class MovimentacaoEstoqueMaterial {
 	private String mensagemNaoEncontrado;
@@ -14,13 +15,15 @@ public class MovimentacaoEstoqueMaterial {
 	private String usuario;
 	private String nomeUnidade;
 	private String nomeMaterial;
+	private String justificativa;
 
 	public MovimentacaoEstoqueMaterial(){
 		
 	}
 	
 	public MovimentacaoEstoqueMaterial(TipoMovimento tipoMovimento, String nomeUnidade, 
-			String lote, Integer quantidade, Integer quantidadeAtual, Date dataMovimento, String usuario, String nomeMaterial){
+			String lote, Integer quantidade, Integer quantidadeAtual, Date dataMovimento, 
+			String usuario, String nomeMaterial, String justificativa){
 		this.tipoMovimento = tipoMovimento;
 		this.nomeUnidade = nomeUnidade;
 		this.lote = lote;
@@ -29,6 +32,7 @@ public class MovimentacaoEstoqueMaterial {
 		this.dataMovimento = dataMovimento;
 		this.usuario = usuario;
 		this.nomeMaterial = nomeMaterial;
+		this.justificativa = justificativa;
 	}
 	
 	public MovimentacaoEstoqueMaterial(String mensagemNaoEncontrado){
@@ -99,6 +103,16 @@ public class MovimentacaoEstoqueMaterial {
 		this.nomeMaterial = nomeMaterial;
 	}
 	
+	public Integer getSaldoRestante(){
+		if(getTipoMovimento() == null){
+			return 0;
+		}
+		if(getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.E))
+			return getQuantidadeAtual() + getQuantidade();
+		else
+			return getQuantidadeAtual() - getQuantidade();
+	}
+	
 	@Override
 	public String toString() {
 		return this.tipoMovimento+" - "+
@@ -116,5 +130,13 @@ public class MovimentacaoEstoqueMaterial {
 
 	public void setQuantidadeAtual(Integer quantidadeAtual) {
 		this.quantidadeAtual = quantidadeAtual;
+	}
+
+	public String getJustificativa() {
+		return justificativa;
+	}
+
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
 	}
 }

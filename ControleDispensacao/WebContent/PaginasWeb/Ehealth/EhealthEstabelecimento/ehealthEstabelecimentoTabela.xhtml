@@ -23,28 +23,42 @@
 		
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Município" />
-			</f:facet>
-			<h:outputText value="#{linha.ehealthMunicipio.municipioEstado}" />
-		</p:column>
-		
-		<p:column>
-			<f:facet name="header">
 				<h:outputText value="Natureza" />
 			</f:facet>
 			<h:outputText value="#{linha.tipoNatureza.label}" />
 		</p:column>
 		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoUnidade.label}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Localização" />
+			</f:facet>
+			<h:outputText value="#{linha.localizacao}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Fomulário?" />
+			</f:facet>
+			<h:outputText value="#{linha.formulario != null ? 'Sim' : 'Não'}" />
+		</p:column>
+		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-						   update=":padraoTabView:ehealthEstabelcimento:ehealthEstabelecimentoEditorForm"
+						   update=":#{p:component('ehealthEstabelecimentoEditorForm')}"
 						   style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
 			<p:commandLink action="#{ehealthEstabelecimentoRaiz.apagar()}"
-						   update=":padraoTabView:ehealthEstabelecimentoPesquisa:ehealthEstabelecimentoPesquisaForm :padraoTabView:ehealthEstabelecimento:ehealthEstabelecimentoEditorForm"
+						   update=":#{p:component('ehealthEstabelecimentoEditorForm')} :#{p:component('ehealthEstabelecimentoPesquisaForm')}"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">

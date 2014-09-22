@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,9 +18,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_movimento_livro")
-public class MovimentoLivro {
+public class MovimentoLivro implements Serializable {
+	private static final long serialVersionUID = -6772557323992726612L;
+	
 	private int idMovimentoLivro;
-	private Unidade unidadeCadastrante;
 	private TipoMovimento tipoMovimento;
 	private Integer quantidadeMovimentacao;
 	private Date dataMovimento;
@@ -27,6 +29,7 @@ public class MovimentoLivro {
 	private Estoque estoque;
 	private DispensacaoSimples dispensacaoSimples;
 	private Integer quantidadeAtual;
+	private String justificativa;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_id_movimento_livro_seq")
 	@Id
@@ -46,15 +49,6 @@ public class MovimentoLivro {
 	}
 	public void setUsuarioMovimentacao(Usuario usuarioMovimentacao) {
 		this.usuarioMovimentacao = usuarioMovimentacao;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade_cadastrante")
-	public Unidade getUnidadeCadastrante() {
-		return unidadeCadastrante;
-	}
-	public void setUnidadeCadastrante(Unidade unidadeCadastrante) {
-		this.unidadeCadastrante = unidadeCadastrante;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -108,22 +102,88 @@ public class MovimentoLivro {
 		this.dispensacaoSimples = dispensacaoSimples;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof MovimentoLivro))
-			return false;
-		
-		return ((MovimentoLivro)obj).getIdMovimentoLivro() == this.idMovimentoLivro;
+	@Column(name="cv_justificativa")
+	public String getJustificativa(){
+		return this.justificativa;
 	}
-
+	
+	public void setJustificativa(String justificativa){
+		this.justificativa = justificativa;
+	}
+	
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + estoque.hashCode() + usuarioMovimentacao.hashCode() + dataMovimento.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataMovimento == null) ? 0 : dataMovimento.hashCode());
+		result = prime * result + ((estoque == null) ? 0 : estoque.hashCode());
+		result = prime * result + idMovimentoLivro;
+		result = prime * result
+				+ ((justificativa == null) ? 0 : justificativa.hashCode());
+		result = prime * result
+				+ ((quantidadeAtual == null) ? 0 : quantidadeAtual.hashCode());
+		result = prime
+				* result
+				+ ((quantidadeMovimentacao == null) ? 0
+						: quantidadeMovimentacao.hashCode());
+		result = prime * result
+				+ ((tipoMovimento == null) ? 0 : tipoMovimento.hashCode());
+		result = prime
+				* result
+				+ ((usuarioMovimentacao == null) ? 0 : usuarioMovimentacao
+						.hashCode());
+		return result;
 	}
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MovimentoLivro other = (MovimentoLivro) obj;
+		if (dataMovimento == null) {
+			if (other.dataMovimento != null)
+				return false;
+		} else if (!dataMovimento.equals(other.dataMovimento))
+			return false;
+		if (estoque == null) {
+			if (other.estoque != null)
+				return false;
+		} else if (!estoque.equals(other.estoque))
+			return false;
+		if (idMovimentoLivro != other.idMovimentoLivro)
+			return false;
+		if (justificativa == null) {
+			if (other.justificativa != null)
+				return false;
+		} else if (!justificativa.equals(other.justificativa))
+			return false;
+		if (quantidadeAtual == null) {
+			if (other.quantidadeAtual != null)
+				return false;
+		} else if (!quantidadeAtual.equals(other.quantidadeAtual))
+			return false;
+		if (quantidadeMovimentacao == null) {
+			if (other.quantidadeMovimentacao != null)
+				return false;
+		} else if (!quantidadeMovimentacao.equals(other.quantidadeMovimentacao))
+			return false;
+		if (tipoMovimento == null) {
+			if (other.tipoMovimento != null)
+				return false;
+		} else if (!tipoMovimento.equals(other.tipoMovimento))
+			return false;
+		if (usuarioMovimentacao == null) {
+			if (other.usuarioMovimentacao != null)
+				return false;
+		} else if (!usuarioMovimentacao.equals(other.usuarioMovimentacao))
+			return false;
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return tipoMovimento.getDescricao().concat(" - ").concat(estoque.getMaterial().getDescricao());

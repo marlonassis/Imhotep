@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Solicitação de Medicamento por Unidade">
+			<p:growl id="growlMedicamentoUnidade" />
+			<rf:formularioEdicao id="solicitacaoMedicamentoUnidade"
+								 semPesquisa="true"
+								 fieldSetCollapsed="false"
+								 raiz="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz}"
+								 srcEditor="Solicitacoes/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidadeEditor.xhtml" 
+								 valueSalvar="Abrir Solicitação" 
+								 valueGravar="Fechar Solicitação"
+								 actionNovo="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.apagar()}" 
+								 renderedNovo="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}" 
+								 updateAtualizar=":painelAvisosPanelGroup :#{p:component('dialogConfirmacaoPedidoPanelGroup')}" 
+								 updateSalvar=":#{p:component('growlMedicamentoUnidade')}" />
+			
+			<h:panelGroup id="dialogConfirmacaoPedidoPanelGroup" >
+				<p:dialog visible="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.exibirDialogConfirmacao}" 
+						  closable="false" 
+						  header="Resumo" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.8}" >
+					
+					<h:form>
+						<p:messages/>
+						<p:dataTable var="t" 
+									 value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.itensSelecionados}"
+									 style="width: 90%;" 
+									 scrollable="true" 
+									 scrollHeight="400"
+									 emptyMessage="Solicitação sem itens" >
+					        <p:column headerText="Quantidade" footerText="Quantidade" width="5%" >
+					            <ri:inputApenasNumero id="qtdSelecionado" 
+					    							  title="Informe a quantidade que você quer solicitar" 
+					    							  size="5"
+					    							  disabled="#{!t.comSaldo}"
+					    							  value="#{t.quantidadeSolicitada}" 
+					    							  exibirLabel="false" />
+					        </p:column>
+					        
+					        <p:column headerText="Saldo Atual" footerText="Saldo Atual" width="5%" >
+					        	<h:outputText value="#{t.quantidadeAtual}" style="color:red;" rendered="#{t.saldoInsuficiente}" />
+					        </p:column>
+					        
+					        <p:column headerText="Medicamento" footerText="Medicamento" width="40%" >
+						       	<h:graphicImage value="/Imagens/greenBall-16.png" 
+						       					rendered="#{t.comSaldo and !t.saldoInsuficiente}" 
+						       					title="Item em estoque" />
+					            <h:graphicImage value="/Imagens/redBall-16.png" 
+							       				rendered="#{!t.comSaldo}" 
+							       				title="Item sem estoque" />
+						       	<h:graphicImage value="/Imagens/yellowBall.png" 
+						       					rendered="#{t.saldoInsuficiente}" 
+						       					title="Item em estoque" />
+			            		<h:outputText value="#{t.material.descricaoUnidadeMaterial}" style="color:red;" rendered="#{t.saldoInsuficiente or !t.comSaldo}" />
+			            		<h:outputText value="#{t.material.descricaoUnidadeMaterial}" style="color:black;" rendered="#{!t.saldoInsuficiente and t.comSaldo}" />
+					        </p:column>
+					        
+					        <p:column width="5%" >
+					        	<p:commandLink action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.removerItemSolicitacao(t)}"
+											   update=":#{p:component('dialogConfirmacaoPedidoPanelGroup')}"
+											   title="Apagar" style="padding-right:10px;">
+									<h:graphicImage value="/Imagens/delete.png" />
+								</p:commandLink>
+							</p:column>
+					    </p:dataTable>
+						
+						
+						<p:commandButton value="Confirmar" 
+										 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.fecharSolicitacao}" 
+										 update=":#{p:component('dialogConfirmacaoPedidoPanelGroup')} :#{p:component('solicitacaoMedicamentoUnidadeEditorForm')}" 
+										 immediate="false" />
+					</h:form>
+					<br/>
+					<h:panelGrid columns="2" >
+						<h:graphicImage value="/Imagens/greenBall-16.png" 
+				       					title="Item em estoque" />
+				       	<h:outputText value="Item em estoque" />
+			            <h:graphicImage value="/Imagens/redBall-16.png" 
+					       				title="Item sem estoque" />
+					    <h:outputText value="Item sem estoque" />
+				       	<h:graphicImage value="/Imagens/yellowBall.png" 
+				       					title="Item em estoque" />
+						<h:outputText value="Item com estoque insuficiente" />
+					</h:panelGrid>
+					<br/>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.ocultarDialogConfirmacao}" 
+										 update=":#{p:component('dialogConfirmacaoPedidoPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

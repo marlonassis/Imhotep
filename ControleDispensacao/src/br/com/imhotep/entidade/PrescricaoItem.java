@@ -175,6 +175,6 @@ public class PrescricaoItem {
 	
 	@Override
 	public String toString() {
-		return "Material: ".concat(material.getDescricao()).concat(" - Prescri√ß√£o: ").concat(String.valueOf(prescricao.getIdPrescricao()));
+		return "Material: ".concat(material.getDescricao()).concat(" - Prescrição: ").concat(String.valueOf(prescricao.getIdPrescricao()));
 	}
 }

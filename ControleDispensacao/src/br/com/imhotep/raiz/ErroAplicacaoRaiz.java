@@ -6,11 +6,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.ErroAplicacao;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="erroAplicacaoRaiz")
 @SessionScoped
-public class ErroAplicacaoRaiz extends PadraoHome<ErroAplicacao>{
+public class ErroAplicacaoRaiz extends PadraoRaiz<ErroAplicacao>{
 	
 	public ErroAplicacaoRaiz(ErroAplicacao ea) {
 		setInstancia(ea);

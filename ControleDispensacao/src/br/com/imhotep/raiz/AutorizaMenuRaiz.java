@@ -12,11 +12,11 @@ import br.com.imhotep.consulta.raiz.MenuConsultaRaiz;
 import br.com.imhotep.entidade.AutorizaMenu;
 import br.com.imhotep.entidade.Menu;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AutorizaMenuRaiz extends PadraoHome<AutorizaMenu>{
+public class AutorizaMenuRaiz extends PadraoRaiz<AutorizaMenu>{
 
 	private TreeNode root;
 	private List<Menu> menusAutorizado;

@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -17,11 +17,11 @@ public class ExcecaoEstoqueSaldoInsuficiente extends ExcecaoPadrao {
 	}
 	
 	public ExcecaoEstoqueSaldoInsuficiente(long quantidadeAtual){
-		super.mensagem("N√£o h√° quantidade suficiente no estoque. O m√°ximo dispon√≠vel √© de " + quantidadeAtual + " unidade(s)", "");
+		super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + quantidadeAtual + " unidade(s)", "");
 	}
 	
 	public ExcecaoEstoqueSaldoInsuficiente(int quantidadeAtual){
-		super.mensagem("N√£o h√° quantidade suficiente no estoque. O m√°ximo dispon√≠vel √© de " + quantidadeAtual + " unidade(s)", "");
+		super.mensagem("Não há quantidade suficiente no estoque. O máximo disponível é de " + quantidadeAtual + " unidade(s)", "");
 	}
 	
 }

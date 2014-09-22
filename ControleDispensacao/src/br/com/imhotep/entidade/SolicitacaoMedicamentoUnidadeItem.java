@@ -1,7 +1,10 @@
 package br.com.imhotep.entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,21 +15,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 
 @Entity
 @Table(name = "tb_solicitacao_medicamento_unidade_item")
 public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private int idSolicitacaoMedicamentoUnidadeItem;
@@ -40,7 +40,7 @@ public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
 	private String justificativa;
 	private SolicitacaoMedicamentoUnidade solicitacaoMedicamentoUnidade;
 	private TipoStatusSolicitacaoItemEnum statusItem;
-	private DispensacaoSimples dispensacaoSimples;
+	private Set<DispensacaoSimples> dispensacacoes;
 	
 	public SolicitacaoMedicamentoUnidadeItem(){
 		super();
@@ -161,34 +161,126 @@ public class SolicitacaoMedicamentoUnidadeItem implements Serializable {
 		this.statusItem = statusItem;
 	}
 
-	@OneToOne(mappedBy="solicitacaoMedicamentoUnidadeItem")  
-	public DispensacaoSimples getDispensacaoSimples() {
-		return dispensacaoSimples;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacaoMedicamentoUnidadeItem")
+	public Set<DispensacaoSimples> getDispensacoes() {
+		return dispensacacoes;
 	}
-	public void setDispensacaoSimples(DispensacaoSimples dispensacaoSimples) {
-		this.dispensacaoSimples = dispensacaoSimples;
+	public void setDispensacoes(Set<DispensacaoSimples> dispensacacoes) {
+		this.dispensacacoes = dispensacacoes;
 	}
 	
+	@Transient
+	public List<DispensacaoSimples> getDispensacoesList(){
+		ArrayList<DispensacaoSimples> list = new ArrayList<DispensacaoSimples>(getDispensacoes());
+		return list;
+	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof SolicitacaoMedicamentoUnidadeItem))
-			return false;
-		
-		return ((SolicitacaoMedicamentoUnidadeItem)obj).getIdSolicitacaoMedicamentoUnidadeItem() == this.idSolicitacaoMedicamentoUnidadeItem;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataInsercao == null) ? 0 : dataInsercao.hashCode());
+		result = prime * result
+				+ ((dataLiberacao == null) ? 0 : dataLiberacao.hashCode());
+		result = prime * result + idSolicitacaoMedicamentoUnidadeItem;
+		result = prime * result
+				+ ((justificativa == null) ? 0 : justificativa.hashCode());
+		result = prime * result
+				+ ((material == null) ? 0 : material.hashCode());
+		result = prime
+				* result
+				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
+						.hashCode());
+		result = prime
+				* result
+				+ ((profissionalLiberacao == null) ? 0 : profissionalLiberacao
+						.hashCode());
+		result = prime
+				* result
+				+ ((quantidadeSolicitada == null) ? 0 : quantidadeSolicitada
+						.hashCode());
+		result = prime
+				* result
+				+ ((solicitacaoMedicamentoUnidade == null) ? 0
+						: solicitacaoMedicamentoUnidade.hashCode());
+		result = prime * result
+				+ ((statusItem == null) ? 0 : statusItem.hashCode());
+		result = prime
+				* result
+				+ ((unidadeProfissionalLiberacao == null) ? 0
+						: unidadeProfissionalLiberacao.hashCode());
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + profissionalInsercao.hashCode() + dataInsercao.hashCode();
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SolicitacaoMedicamentoUnidadeItem other = (SolicitacaoMedicamentoUnidadeItem) obj;
+		if (dataInsercao == null) {
+			if (other.dataInsercao != null)
+				return false;
+		} else if (!dataInsercao.equals(other.dataInsercao))
+			return false;
+		if (dataLiberacao == null) {
+			if (other.dataLiberacao != null)
+				return false;
+		} else if (!dataLiberacao.equals(other.dataLiberacao))
+			return false;
+		if (idSolicitacaoMedicamentoUnidadeItem != other.idSolicitacaoMedicamentoUnidadeItem)
+			return false;
+		if (justificativa == null) {
+			if (other.justificativa != null)
+				return false;
+		} else if (!justificativa.equals(other.justificativa))
+			return false;
+		if (material == null) {
+			if (other.material != null)
+				return false;
+		} else if (!material.equals(other.material))
+			return false;
+		if (profissionalInsercao == null) {
+			if (other.profissionalInsercao != null)
+				return false;
+		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		if (profissionalLiberacao == null) {
+			if (other.profissionalLiberacao != null)
+				return false;
+		} else if (!profissionalLiberacao.equals(other.profissionalLiberacao))
+			return false;
+		if (quantidadeSolicitada == null) {
+			if (other.quantidadeSolicitada != null)
+				return false;
+		} else if (!quantidadeSolicitada.equals(other.quantidadeSolicitada))
+			return false;
+		if (solicitacaoMedicamentoUnidade == null) {
+			if (other.solicitacaoMedicamentoUnidade != null)
+				return false;
+		} else if (!solicitacaoMedicamentoUnidade
+				.equals(other.solicitacaoMedicamentoUnidade))
+			return false;
+		if (statusItem != other.statusItem)
+			return false;
+		if (unidadeProfissionalLiberacao == null) {
+			if (other.unidadeProfissionalLiberacao != null)
+				return false;
+		} else if (!unidadeProfissionalLiberacao
+				.equals(other.unidadeProfissionalLiberacao))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return material.getDescricao();
+		if(material != null)
+			return material.getDescricao();
+		return "";
 	}
 	
 }

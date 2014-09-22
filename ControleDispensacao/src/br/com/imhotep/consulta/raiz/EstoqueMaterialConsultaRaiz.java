@@ -21,7 +21,7 @@ public class EstoqueMaterialConsultaRaiz extends ConsultaGeral<Estoque> implemen
 	private Material material;
 	
 	public void consultar(){
-		setListaEstoque(new EstoqueConsultaRaiz().consultarEstoquesMaterial(getMaterial()));
+		setListaEstoque(new EstoqueConsultaRaiz().consultarEstoquesMaterialTodos(getMaterial()));
 	}
 
 	public List<Estoque> getListaEstoque() {

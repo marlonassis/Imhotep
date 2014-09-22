@@ -9,11 +9,11 @@ import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.fluxo.FluxoDispensacaoSimples;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
+public class DispensacaoSimplesRaiz extends PadraoRaiz<DispensacaoSimples>{
 	
 	private boolean loteEncontrado;
 	private boolean ativarMensagem = true; 
@@ -44,7 +44,7 @@ public class DispensacaoSimplesRaiz extends PadraoHome<DispensacaoSimples>{
 		}else{
 			limpar();
 			getInstancia().getMovimentoLivro().getEstoque().setLote(lote);
-			mensagem("Estoque n√£o encontrado.", lote, Constantes.WARN);
+			mensagem("Estoque não encontrado.", lote, Constantes.WARN);
 		}
 	}
 	

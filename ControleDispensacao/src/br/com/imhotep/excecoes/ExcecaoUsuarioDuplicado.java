@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -17,7 +17,7 @@ public class ExcecaoUsuarioDuplicado extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1L;
 
 	public ExcecaoUsuarioDuplicado(){
-		super.mensagem("Este usu√°rio j√° foi escolhido", "Informe outro usu√°rio");
+		super.mensagem("Este usuário já foi escolhido", "Informe outro usuário");
 	}
 	
 }

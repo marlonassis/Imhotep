@@ -27,6 +27,7 @@ public class RelatorioMaterialCompleto extends PadraoRelatorio{
 		List<Material> listaEstoqueRelatorioGeral = new MaterialCompletoConsultaRaiz().consultar();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("data", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
+		map.put("nomeRelatorio", "Materiais Cadastrados");
 		super.geraRelatorio(caminho, nomeRelatorio, listaEstoqueRelatorioGeral, map);
 	}
 	

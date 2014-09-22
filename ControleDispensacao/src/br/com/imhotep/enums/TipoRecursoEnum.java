@@ -7,12 +7,12 @@ package br.com.imhotep.enums;
 public enum TipoRecursoEnum {
 	A("Aberto"),
 	F("Fechado"), 
-	N("NÃ£o Resolvido");
+	N("N‹o Resolvido");
 	
 	private String label;
 	
-	TipoRecursoEnum(String sexo){
-		label = sexo;
+	TipoRecursoEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

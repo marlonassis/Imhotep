@@ -6,7 +6,7 @@ package br.com.imhotep.enums;
 
 public enum TipoMetodoExameEnum {
 	IM("Imunofluorimetria"), 
-	FI("Focaliza√ß√£o Isoel√©trica");
+	FI("Focalização Isoelétrica");
 	
 	private String label;
 	

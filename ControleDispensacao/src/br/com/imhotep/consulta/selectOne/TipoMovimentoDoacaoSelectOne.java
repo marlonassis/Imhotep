@@ -14,7 +14,7 @@ import br.com.remendo.ConsultaGeral;
 public class TipoMovimentoDoacaoSelectOne extends ConsultaGeral<TipoMovimento> {
 	
 	public List<TipoMovimento> getItens(){
-		StringBuilder stringB = new StringBuilder("select o from TipoMovimento o where lower(to_ascii(o.descricao)) like lower(to_ascii('%Doa√ß√£o%'))");
+		StringBuilder stringB = new StringBuilder("select o from TipoMovimento o where lower(to_ascii(o.descricao)) like lower(to_ascii('%Doação%'))");
 		return new ArrayList<TipoMovimento>(super.consulta(stringB, null));
 	}
 	

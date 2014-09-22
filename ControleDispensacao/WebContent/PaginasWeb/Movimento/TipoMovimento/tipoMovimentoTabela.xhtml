@@ -4,10 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaTipoMovimento" value="#{tipoMovimentoConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idTipoMovimento}">
+	<p:dataTable id="tabelaTipoMovimento" 
+				 value="#{tipoMovimentoConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idTipoMovimento}">
 
 		<p:column>
 			<f:facet name="header">

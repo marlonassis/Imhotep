@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,7 +18,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_movimento_livro_almoxarifado")
-public class MovimentoLivroAlmoxarifado {
+public class MovimentoLivroAlmoxarifado implements Serializable {
+	
+	private static final long serialVersionUID = 8967836589200619134L;
+	
 	private int idMovimentoLivroAlmoxarifado;
 	private TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado;
 	private Integer quantidadeMovimentacao;
@@ -24,16 +29,19 @@ public class MovimentoLivroAlmoxarifado {
 	private Profissional profissionalInsercao;
 	private EstoqueAlmoxarifado estoqueAlmoxarifado;
 	private Integer quantidadeAtual;
+	private DispensacaoSimplesAlmoxarifado dispensacaoSimplesAlmoxarifado;
+	private String justificativa;
+
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_movimento_livro_almoxarifa_id_movimento_livro_almoxarifa_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_movimento_livro_almoxarifado", unique = true, nullable = false)
-	public int getIdMovimentoLivro() {
+	public int getIdMovimentoLivroAlmoxarifado() {
 		return idMovimentoLivroAlmoxarifado;
 	}
-	public void setIdMovimentoLivro(int idMovimentoLivro) {
-		this.idMovimentoLivroAlmoxarifado = idMovimentoLivro;
+	public void setIdMovimentoLivroAlmoxarifado(int idMovimentoLivroAlmoxarifado) {
+		this.idMovimentoLivroAlmoxarifado = idMovimentoLivroAlmoxarifado;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -88,24 +96,86 @@ public class MovimentoLivroAlmoxarifado {
 		this.quantidadeAtual = quantidadeAtual;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof MovimentoLivroAlmoxarifado))
-			return false;
-		
-		return ((MovimentoLivroAlmoxarifado)obj).getIdMovimentoLivro() == this.idMovimentoLivroAlmoxarifado;
+	@OneToOne(mappedBy="movimentoLivroAlmoxarifado")  
+	public DispensacaoSimplesAlmoxarifado getDispensacaoSimplesAlmoxarifado() {
+		return dispensacaoSimplesAlmoxarifado;
 	}
-
-	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + estoqueAlmoxarifado.hashCode() + profissionalInsercao.hashCode() + dataMovimento.hashCode();
+	public void setDispensacaoSimplesAlmoxarifado(DispensacaoSimplesAlmoxarifado dispensacaoSimplesAlmoxarifado) {
+		this.dispensacaoSimplesAlmoxarifado = dispensacaoSimplesAlmoxarifado;
 	}
-
+	
+	@Column(name="cv_justificativa")
+	public String getJustificativa(){
+		return this.justificativa;
+	}
+	
+	public void setJustificativa(String justificativa){
+		this.justificativa = justificativa;
+	}
+	
 	@Override
 	public String toString() {
 		return tipoMovimentoAlmoxarifado.getDescricao().concat(" - ").concat(estoqueAlmoxarifado.getMaterialAlmoxarifado().getDescricao());
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataMovimento == null) ? 0 : dataMovimento.hashCode());
+		result = prime
+				* result
+				+ ((estoqueAlmoxarifado == null) ? 0 : estoqueAlmoxarifado
+						.hashCode());
+		result = prime * result + idMovimentoLivroAlmoxarifado;
+		result = prime
+				* result
+				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
+						.hashCode());
+		result = prime
+				* result
+				+ ((tipoMovimentoAlmoxarifado == null) ? 0
+						: tipoMovimentoAlmoxarifado.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MovimentoLivroAlmoxarifado other = (MovimentoLivroAlmoxarifado) obj;
+		if (dataMovimento == null) {
+			if (other.dataMovimento != null)
+				return false;
+		} else if (!dataMovimento.equals(other.dataMovimento))
+			return false;
+		if (estoqueAlmoxarifado == null) {
+			if (other.estoqueAlmoxarifado != null)
+				return false;
+		} else if (!estoqueAlmoxarifado.equals(other.estoqueAlmoxarifado))
+			return false;
+		if (idMovimentoLivroAlmoxarifado != other.idMovimentoLivroAlmoxarifado)
+			return false;
+		if (profissionalInsercao == null) {
+			if (other.profissionalInsercao != null)
+				return false;
+		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		if (tipoMovimentoAlmoxarifado == null) {
+			if (other.tipoMovimentoAlmoxarifado != null)
+				return false;
+		} else if (!tipoMovimentoAlmoxarifado
+				.equals(other.tipoMovimentoAlmoxarifado))
+			return false;
+		return true;
+	}
+	
+	
+	
+	
 }

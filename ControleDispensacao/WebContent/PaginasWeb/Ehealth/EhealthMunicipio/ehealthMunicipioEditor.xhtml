@@ -12,23 +12,36 @@
 							 value="#{ehealthMunicipioRaiz.instancia.nome}" 
 							 required="true" />
 		
+		<ri:inputCheckBoolean id="capital" 
+							  value="#{ehealthMunicipioRaiz.instancia.capital}" 
+							  label="Capital" />
+		
+		<ri:inputAutoComplete id="ehealthEstado" 
+							  completeMethod="#{ehealthEstadoAutoComplete.autoComplete}" 
+							  itemValue="#{ehealthEstado}" 
+							  itemLabel="#{ehealthEstado.nomeEstadoPais}"
+							  var="ehealthEstado" 
+							  value="#{ehealthMunicipioRaiz.instancia.ehealthEstado}" 
+							  label="Estado" 
+							  required="true" />
+		
+		<ri:inputTextoSimples id="departamento" 
+							 label="Departamento"
+							 title="Informe o departamento, se houver" 
+							 value="#{ehealthMunicipioRaiz.instancia.departamento}" 
+							 required="false" />
+		
 		<ri:inputTextoSimples id="link" 
 							 label="Link"
 							 title="Informe o link do município no DataSus" 
 							 value="#{ehealthMunicipioRaiz.instancia.link}" 
-							 required="true" />
+							 required="false" />
 		
-		<ri:inputSelectOneMenuEnum id="estado" 
-								  value="#{ehealthMunicipioRaiz.instancia.estado}" 
-								  label="Estado" 
-								  itens="#{itensPadrao.getEstadoEnumItens()}"
-							 	  required="true"/>
-							 	  
 		<ri:inputTextoSimples id="linkEstado" 
 							 label="Link do Estado"
 							 title="Informe o link do estado no DataSus" 
 							 value="#{ehealthMunicipioRaiz.instancia.linkEstado}" 
-							 required="true" />
+							 required="false" />
 	</h:panelGrid>
 
 </ui:composition>

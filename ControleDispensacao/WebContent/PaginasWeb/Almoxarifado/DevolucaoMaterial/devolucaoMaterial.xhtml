@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Devolução de Material por Unidade">
+		
+			<rf:formularioEdicao id="devolucaoMaterial"
+								 fieldSetCollapsed="false"
+								 semPesquisa="true"
+								 raiz="#{devolucaoMaterialRaiz}"
+								 srcEditor="Almoxarifado/DevolucaoMaterial/devolucaoMaterialEditor.xhtml"
+								 valueSalvar="Abrir Devolução" 
+								 valueGravar="Fechar Devolução"
+								 actionNovo="#{devolucaoMaterialRaiz.apagar()}" 
+								 renderedNovo="#{devolucaoMaterialRaiz.edicao}" 
+								 updateAtualizar=":painelAvisosPanelGroup" />
+			
+			<p:dialog id="alteracaoQuantidadeDialog"
+					  modal="true" 
+					  resizable="true" 
+					  header="Alterar a quantidade - #{devolucaoMaterialItemRaiz.instancia.materialAlmoxarifado.descricao}" 
+					  visible="#{devolucaoMaterialItemRaiz.exibirDialogAlterarQuantidade}" >
+					<h:form>
+						<p:growl id="messagesAlteracaoQuantidade" />
+						<h:panelGrid columns="2" >
+							<ri:inputApenasNumero id="quantidade" 
+												  title="Informe a quantidade" 
+												  value="#{devolucaoMaterialItemRaiz.instancia.quantidadeDevolvida}" 
+												  label="Quantidade" />
+							<h:panelGroup/>
+							<p:commandButton value="Alterar"
+											 action="#{devolucaoMaterialItemRaiz.alterarQuantidade}" 
+											 update=":#{p:component('messagesAlteracaoQuantidade')} :#{p:component('listaItensPanelGrid')} :#{p:component('alteracaoQuantidadeDialog')}" />
+							
+							<p:commandButton value="Cancelar"
+											 action="#{devolucaoMaterialItemRaiz.cancelarAjusteQuantidade}" 
+											 update=":#{p:component('alteracaoQuantidadeDialog')}" />
+						</h:panelGrid>
+					</h:form>
+				</p:dialog>
+		</p:tab>
+	</ui:define>
+</ui:composition>

@@ -17,13 +17,15 @@
 							  completeMethod="#{profissionalAutoComplete.autoComplete}" 
 							  itemValue="#{profissional}" 
 							  itemLabel="#{profissional.nome}" 
+							  rendered="false"
 							  var="profissional" 
 							  value="#{solicitacaoMedicamentoUnidadeDispensadoConsulta.instancia.profissionalInsercao}" 
 							  label="Profissional Solicitante" />
 		
 		<ri:inputAutoComplete id="unidadeSolicitanteConsulta" 
 							  completeMethod="#{unidadeAutoComplete.autoComplete}" 
-							  itemValue="#{unidade}" 
+							  itemValue="#{unidade}"
+							  rendered="false" 
 							  itemLabel="#{unidade.nome}" 
 							  var="unidade" 
 							  value="#{solicitacaoMedicamentoUnidadeDispensadoConsulta.instancia.unidadeDestino}" 

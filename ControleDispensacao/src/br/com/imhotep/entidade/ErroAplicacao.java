@@ -119,6 +119,6 @@ public class ErroAplicacao {
 
 	@Override
 	public String toString() {
-		return "MÃ©todo: " + metodo + " - PÃ¡gina: "+pagina;
+		return "MŽtodo: " + metodo + " - P‡gina: "+pagina;
 	}
 }

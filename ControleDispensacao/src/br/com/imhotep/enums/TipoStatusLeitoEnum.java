@@ -7,7 +7,7 @@ package br.com.imhotep.enums;
 public enum TipoStatusLeitoEnum {
 	A("Ativo"),
 	I("Inativo"),
-	E("Exclu√≠do");
+	E("Excluído");
 	
 	private String label;
 	

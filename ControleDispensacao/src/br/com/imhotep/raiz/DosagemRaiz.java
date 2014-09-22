@@ -10,11 +10,11 @@ import br.com.imhotep.entidade.Prescricao;
 import br.com.imhotep.entidade.PrescricaoItem;
 import br.com.imhotep.entidade.PrescricaoItemDose;
 import br.com.imhotep.entidade.PrescricaoItemEstoqueSaida;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="dosagemRaiz")
 @SessionScoped
-public class DosagemRaiz extends PadraoHome<Prescricao>{
+public class DosagemRaiz extends PadraoRaiz<Prescricao>{
 	
 	public List<PrescricaoItemEstoqueSaida> doses(){
 		

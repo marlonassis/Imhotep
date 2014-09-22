@@ -5,15 +5,15 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoComplexidadeEnum {
-	T0("N√£o se Aplica"), 
-	T1("Aten√ß√£o B√°sica Complexidade"),
-	T2("M√©dia Complexidade"),
+	T0("Não se Aplica"), 
+	T1("Atenção Básica Complexidade"),
+	T2("Média Complexidade"),
 	T3("Alta Complexidade");
 	
 	private String label;
 	
-	TipoComplexidadeEnum(String sexo){
-		label = sexo;
+	TipoComplexidadeEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

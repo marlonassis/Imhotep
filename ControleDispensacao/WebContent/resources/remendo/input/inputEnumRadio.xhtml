@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:co="http://java.sun.com/jsf/composite">
+      
+	<co:interface>
+		<co:attribute name="id" required="true" />
+		<co:attribute name="label" required="true" />
+		<co:attribute name="style" />
+		<co:attribute name="value" required="true" />
+		<co:attribute name="disabled" default="false" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="rendered" default="true" />
+		<co:attribute name="updateChange"  />
+	</co:interface>
+	
+	<co:implementation>
+		
+		<style>
+			.selection tr {
+			   float: left;
+			    width: 33%;
+			} 
+		</style>
+		<h:panelGrid >
+			<h:panelGroup rendered="#{cc.attrs.rendered and cc.attrs.updateChange == null}" >
+				<h:panelGroup rendered="#{cc.attrs.exibirLabel}" >
+					<c:if test="#{cc.attrs.required}">
+						<h:outputText value="*" style="color:red" />
+					</c:if>
+					<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+				</h:panelGroup><br/>
+				<p:selectOneRadio id="#{cc.attrs.id}" 
+								  value="#{cc.attrs.value}"  
+								  layout="grid" 
+								  columns="3"
+								  converter="enumConversor" >
+		            <f:selectItems value="#{itensPadrao.valoresEnum(cc.attrs.id)}" />
+		        </p:selectOneRadio>
+				
+			</h:panelGroup>
+			
+			<h:panelGroup rendered="#{cc.attrs.rendered and cc.attrs.updateChange != null}" >
+				<ui:param name="idComponenteUC" value="#{cc.attrs.id}UpdateChange" />
+				<h:panelGroup rendered="#{cc.attrs.exibirLabel}" >
+					<c:if test="#{cc.attrs.required}">
+						<h:outputText value="*" style="color:red" />
+					</c:if>
+					<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+				</h:panelGroup><br/>
+				<h:panelGroup layout="block" styleClass="selection">
+					<p:selectManyCheckbox id="#{idComponenteUC}" 
+										  layout="pageDirection" 
+										  value="#{cc.attrs.value}" 
+										  converter="enumConversor" >
+			            <f:selectItems value="#{itensPadrao.valoresEnum(idComponenteUC)}"  />
+			            <p:ajax event="change" update="#{cc.attrs.updateChange}" />
+			        </p:selectManyCheckbox>
+			    </h:panelGroup>
+			</h:panelGroup>
+			
+		</h:panelGrid>
+	</co:implementation>
+</html>

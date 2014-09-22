@@ -10,7 +10,7 @@
 			<h:outputLabel for="lote" value="Lote:" />
 			<br />
 			<p:inputText id="lote"
-						 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.lote}"
+						 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.lote}"
 						 title="Informe o lote" 
 						 disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado != null}"
 						 required="false"/>
@@ -47,11 +47,11 @@
 		<ri:inputAutoComplete id="material" 
 							 label="Material"  
 							 disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado}"
-							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoComplete}" 
+							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
 							 itemValue="#{material}" 
 							 itemLabel="#{material.descricaoUnidadeMaterial}" 
 							 var="material"
-							 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.materialAlmoxarifado}" 
+							 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.materialAlmoxarifado}" 
 							 required="true"/>
 		
 		<ri:inputAutoComplete id="fabricante" 
@@ -61,25 +61,29 @@
 							 itemValue="#{fabricante}" 
 							 itemLabel="#{fabricante.descricao}" 
 							 var="fabricante"
-							 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.fabricanteAlmoxarifado}" 
+							 value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.fabricanteAlmoxarifado}" 
 							 required="true"/>
 		
-		<ri:inputDataDiaMesAno id="dataValidade"
-							   label="Data de Validade"
-							   disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado}"
-							   required="false" 
-							   value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.dataValidade}"
-							   title="Data de validade do lote"/>
-
+		<ri:inputDataMesAnoValidadeAlmoxarifado id="dataValidade"
+											    label="Data de Validade"
+											    disabled="#{ajusteEstoqueAlmoxarifadoRaiz.loteEncontrado}"
+										   	    required="false" 
+											    value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.dataValidade}"
+											    title="Data de validade do lote"/>
+		
 		<ri:inputApenasNumero id="quantidade" 
 							  required="true"
 							  title="Informe a quantidade informada na nota" 
 							  value="#{ajusteEstoqueAlmoxarifadoRaiz.quantidadeMovimentada}" 
 							  label="Quantidade"/>
-
+		<h:panelGroup>
+			<h:outputText value="Quantidade Atual:" /><br/>
+			<h:outputText value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.quantidadeAtual}" /><br/>
+		</h:panelGroup>
+		
 		<ri:inputTextoSimples id="codigoBarras" 
 							  title="Informe o código de barras" 
-							  value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.codigoBarras}" 
+							  value="#{ajusteEstoqueAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.codigoBarras}" 
 							  label="Código de Barras" />
 		
 	</h:panelGrid>

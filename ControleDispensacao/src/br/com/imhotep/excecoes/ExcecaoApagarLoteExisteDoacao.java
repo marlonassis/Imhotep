@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -13,7 +13,7 @@ public class ExcecaoApagarLoteExisteDoacao extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1783207019548721738L;
 	
 	public ExcecaoApagarLoteExisteDoacao(){
-		super.mensagem("N√£o foi poss√≠vel apagar o lote.", "Existem doa√ß√µes associadas ao lote.");
+		super.mensagem("Não foi possível apagar o lote.", "Existem doações associadas ao lote.");
 	}
 	
 }

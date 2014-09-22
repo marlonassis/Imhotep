@@ -12,6 +12,7 @@ import javax.faces.bean.RequestScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.Material;
+import br.com.imhotep.entidade.UnidadeMaterial;
 import br.com.imhotep.entidade.extra.MaterialFaltaEstoque;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.raiz.MaterialRaiz;
@@ -102,6 +103,61 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 		return null;
 	}
 	
+	public List<Material> getMateriaisLiberadosInventario(){
+		List<Material> materiais = new ArrayList<Material>();
+		String sql  = "select b.id_material, b.cv_descricao, b.in_codigo_material, c.id_unidade_material, c.cv_unidade, c.cv_sigla "+ 
+						"from farmacia.tb_inventario_controle a "+
+						"inner join tb_material b on a.id_material = b.id_material "+
+						"inner join tb_unidade_material c on c.id_unidade_material = b.id_unidade_material "+
+						"order by lower(to_ascii(b.cv_descricao)) ";
+		ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
+		try {
+			while(rs.next()){
+				UnidadeMaterial unidadeMaterial = new UnidadeMaterial();
+				unidadeMaterial.setIdUnidadeMaterial(rs.getInt("id_unidade_material"));
+				unidadeMaterial.setDescricao(rs.getString("cv_unidade"));
+				unidadeMaterial.setSigla(rs.getString("cv_sigla"));
+				Material material = new Material();
+				material.setUnidadeMaterial(unidadeMaterial);
+				material.setIdMaterial(rs.getInt("id_material"));
+				material.setCodigoMaterial(rs.getInt("in_codigo_material"));
+				material.setDescricao(rs.getString("cv_descricao"));
+				materiais.add(material);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return materiais;
+	}
+	
+	public List<Material> getMateriaisNaoLiberadosInventario(){
+		List<Material> materiais = new ArrayList<Material>();
+		String sql  = "select a.id_material, a.cv_descricao, a.in_codigo_material, c.id_unidade_material, c.cv_unidade, c.cv_sigla "+ 
+						"from tb_material a "+
+						"left join farmacia.tb_inventario_controle b on a.id_material = b.id_material "+
+						"inner join tb_unidade_material c on c.id_unidade_material = a.id_unidade_material "+
+						"where b.id_material is null "+
+						"order by lower(to_ascii(a.cv_descricao))";
+		ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
+		try {
+			while(rs.next()){
+				UnidadeMaterial unidadeMaterial = new UnidadeMaterial();
+				unidadeMaterial.setIdUnidadeMaterial(rs.getInt("id_unidade_material"));
+				unidadeMaterial.setDescricao(rs.getString("cv_unidade"));
+				unidadeMaterial.setSigla(rs.getString("cv_sigla"));
+				Material material = new Material();
+				material.setUnidadeMaterial(unidadeMaterial);
+				material.setIdMaterial(rs.getInt("id_material"));
+				material.setCodigoMaterial(rs.getInt("in_codigo_material"));
+				material.setDescricao(rs.getString("cv_descricao"));
+				materiais.add(material);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return materiais;
+	}
+	
 	public Material getMaterial() {
 		return material;
 	}
@@ -109,4 +165,5 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 	public void setMaterial(Material material) {
 		this.material = material;
 	}
+	
 }

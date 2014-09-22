@@ -27,11 +27,11 @@ import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.enums.TipoStatusEnum;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="dispensacaoRaiz")
 @SessionScoped
-public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
+public class DispensacaoRaiz extends PadraoRaiz<PrescricaoItem> {
 
 	private Prescricao prescricao;
 	private Integer quantidadeAjuste;
@@ -101,7 +101,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 	public void carregaEstoqueEdicao(){
 		setListPrescricaoItemEstoqueSaida(pesquisaPrescricaoItemEstoqueSaida());
 		if(getListPrescricaoItemEstoqueSaida() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"N√£o foi encontrado a prescri√ß√£o.", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não foi encontrado a prescrição.", ""));
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		boolean b = sobra >= 0;
 		
 		if(!b){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Quantidade insufiente em estoque.", "A quantidade dispon√≠vel em estoque √© de ".concat(String.valueOf(estoqueAtual))));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Quantidade insufiente em estoque.", "A quantidade disponível em estoque é de ".concat(String.valueOf(estoqueAtual))));
 			prescricaoItem.setQuantidadeLiberada(null);
 		}
 		
@@ -184,10 +184,10 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 					atualizaEstoque(prescricaoItem);
 					
 					geraMovimentoLivro(saldoAnterior, prescricaoItem.getQuantidadeLiberada(), prescricaoItem.getMaterial());
-					String msg = "Dispensa√ß√£o realizada com sucesso.";
+					String msg = "Dispensação realizada com sucesso.";
 					finalizaTransacao(msg);
 				}catch(Exception e){
-					String msg = "Ocorreu um erro ao fazer a dispensa√ß√£o.";
+					String msg = "Ocorreu um erro ao fazer a dispensação.";
 					catchTransacao(msg, e);
 				}finally{
 					finallyTransacao();
@@ -200,7 +200,6 @@ public class DispensacaoRaiz extends PadraoHome<PrescricaoItem> {
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(new Date());
 		try{
-			movimentoLivroAtual.setUnidadeCadastrante(Autenticador.getInstancia().getUnidadeAtual());
 			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
 		} catch (Exception e) {
 			e.printStackTrace();

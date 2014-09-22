@@ -1,18 +1,18 @@
 package br.com.imhotep.enums;
 
 /**
- * Classe que cont√©m todos os pap√©is poss√≠veis a um usu√°rio
+ * Classe que contém todos os papéis possíveis a um usuário
  * @author marlonassis
  */
 
 public enum TipoBooleanEnum {
 	T("Sim"), 
-	F("N√£o");
+	F("Não");
 	
 	private String label;
 	
-	TipoBooleanEnum(String sexo){
-		label = sexo;
+	TipoBooleanEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

@@ -23,7 +23,10 @@ function exibicaoAlternadaItemGuiado(id, janela, display) {
  */
 function apenasNumero(obj){
 	valor = obj.value;
-	obj.value = valor.replace(/\D/g,"");
+	valor = valor.replace(/\D/g,"");
+	if(valor == '0')
+		valor = null;
+	obj.value = valor;
 	return obj;
 }  
 
@@ -148,15 +151,6 @@ function spinnerRem(idComponente){
 	horaInicial = hora.toString() + operador + minuto.toString();
 	document.getElementById(idComponente).value = horaInicial;
 }
-
-/**
- * Máscara para campo hora
- */
-function apenasNumero(obj){
-	valor = obj.value;
-	obj.value = valor.replace(/\D/g,"");
-	return obj;
-}  
 
 function apenasLetrasNumeros(obj){
 	valor = obj.value;

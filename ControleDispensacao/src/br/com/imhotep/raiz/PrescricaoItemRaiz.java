@@ -4,11 +4,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.PrescricaoItem;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="prescricaoItemRaiz")
 @SessionScoped
-public class PrescricaoItemRaiz extends PadraoHome<PrescricaoItem>{
+public class PrescricaoItemRaiz extends PadraoRaiz<PrescricaoItem>{
 	
 	public PrescricaoItemRaiz(){
 	}

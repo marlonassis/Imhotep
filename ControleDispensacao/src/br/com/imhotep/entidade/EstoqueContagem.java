@@ -24,6 +24,7 @@ public class EstoqueContagem {
 	private Integer quantidadeContada;
 	private Date dataCadastro;
 	private Profissional responsavel;
+	private MovimentoLivro movimentoLivro;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_contagem_id_estoque_contagem_seq")
 	@Id
@@ -77,6 +78,15 @@ public class EstoqueContagem {
 	}
 	public void setResponsavel(Profissional responsavel) {
 		this.responsavel = responsavel;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_movimento_livro")
+	public MovimentoLivro getMovimentoLivro() {
+		return movimentoLivro;
+	}
+	public void setMovimentoLivro(MovimentoLivro movimentoLivro) {
+		this.movimentoLivro = movimentoLivro;
 	}
 	
 	@Override

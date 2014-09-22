@@ -10,7 +10,7 @@
 				 var="linha" 
 				 dblClickSelect="true"
 				 emptyMessage="Não foi encontrado registros" 
-				 rows="10" 
+				 rows="20" 
 				 paginator="true"
 				 selectionMode="single" 
 				 rowKey="#{linha.idEhealthEstabelecimento}">
@@ -28,7 +28,7 @@
 			<f:facet name="header">
 				<h:outputText value="Tipo" />
 			</f:facet>
-			<h:outputText value="#{linha.tipoUnidade}" />
+			<h:outputText value="#{linha.tipoUnidade.label}" />
 		</p:column>
 		
 		<p:column>
@@ -49,14 +49,14 @@
 			<f:facet name="header">
 				<h:outputText value="Link" />
 			</f:facet>
-			<p:commandLink target="_blank" onclick="window.open('http://cnes.datasus.gov.br/#{linha.link}', '#{linha.nome}');" >
+			<p:commandLink rendered="#{linha.link != null and linha.link != ''}" target="_blank" onclick="window.open('#{linha.link}', '#{linha.nome}');" >
 				<h:outputText value="link" />
 			</p:commandLink>
 		</p:column>
 
-		<p:column style="width:120px; text-align: center;">
+		<p:column id="opcsColumn" style="width:120px; text-align: center;">
 			<p:commandLink title="Rejeitar"
-						   rendered="#{linha.profissionalPesquisador.idProfissional==autenticador.profissionalAtual.idProfissional}"
+						   rendered="#{linha.pesquisador.idProfissional==autenticador.profissionalAtual.idProfissional}"
 						   update=":padraoTabView:solicitacoesDispensadasPesquisa:solicitacoesDispensadasPesquisaForm:tabelaSolicitacaoMedicamentoUnidadeDispensada"
 						   action="#{ehealthEstabelecimentoRaiz.rejeitarEstabelecimento}"
 						   style="padding-right:10px;"
@@ -66,10 +66,10 @@
 				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
 				Rejeitar
 			</p:commandLink>
-			<p:commandLink title="Registrar"
-						   rendered="#{linha.profissionalPesquisador.idProfissional==autenticador.profissionalAtual.idProfissional}"
+			<p:commandLink title="Formulário"
+						   rendered="#{linha.pesquisador.idProfissional==autenticador.profissionalAtual.idProfissional}"
 						   update=":padraoTabView:formularioEstabelecimento :#{p:component('formDialog')}"
-						   action="#{ehealthFormularioRaiz.iniciarPreenchimento}"
+						   action="#{ehealthEstabelecimentoRaiz.exibeFormulario}"
 						   style="padding-right:10px;"
 						   global="false" 
        				       onclick="statusDialog.show();"  
@@ -77,13 +77,13 @@
 				<f:setPropertyActionListener value="#{linha}" target="#{ehealthEstabelecimentoRaiz.instancia}" />
 				Formulário
 			</p:commandLink>
-			<h:outputText value="#{linha.profissionalPesquisador.nome}" 
-						  rendered="#{linha.profissionalPesquisador!=null and linha.profissionalPesquisador.idProfissional!=autenticador.profissionalAtual.idProfissional}" />
+			<h:outputText value="#{linha.pesquisador.nome}" 
+						  rendered="#{linha.pesquisador!=null and linha.pesquisador.idProfissional!=autenticador.profissionalAtual.idProfissional}" />
 				
 			<p:commandLink title="Pegar"
-						   update=":padraoTabView:solicitacoesDispensadasPesquisa:solicitacoesDispensadasPesquisaForm:tabelaSolicitacaoMedicamentoUnidadeDispensada :#{p:component('formDialog')}"
+						   update=":#{p:component('tabelaSolicitacaoMedicamentoUnidadeDispensada')}"
 						   action="#{ehealthEstabelecimentoRaiz.pegarEstabelecimento}"
-						   rendered="#{linha.profissionalPesquisador==null}"
+						   rendered="#{linha.pesquisador==null}"
 						   style="padding-right:10px;"
 						   global="false" 
       				       onclick="statusDialog.show();"  

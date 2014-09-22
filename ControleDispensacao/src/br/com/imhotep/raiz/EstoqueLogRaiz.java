@@ -8,11 +8,11 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.entidade.EstoqueLog;
 import br.com.imhotep.enums.TipoEstoqueLog;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class EstoqueLogRaiz extends PadraoHome<EstoqueLog>{
+public class EstoqueLogRaiz extends PadraoRaiz<EstoqueLog>{
 	
 	public static EstoqueLog carregarLog(Date data, String lote, String material, TipoEstoqueLog tipoAlteracao, String dataValidade, String codigoBarras) {
 		EstoqueLog estoqueLog = new EstoqueLog();

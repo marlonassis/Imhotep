@@ -60,7 +60,6 @@
 		<mapping class="br.com.imhotep.entidade.Fornecedor" />
 		<mapping class="br.com.imhotep.entidade.NotaFiscal" />
 		<mapping class="br.com.imhotep.entidade.NotaFiscalEstoque" />
-		<mapping class="br.com.imhotep.entidade.AjusteEstoque" />
 		<mapping class="br.com.imhotep.entidade.DispensacaoSimples" />
 		<mapping class="br.com.imhotep.entidade.UsuarioAcessoLog" />
 		<mapping class="br.com.imhotep.entidade.EstoqueLog" />
@@ -104,9 +103,59 @@
 		<mapping class="br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.MovimentoLivroAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.TipoMovimentoAlmoxarifado" />
-		<mapping class="br.com.imhotep.entidade.AjusteEstoqueAlmoxarifado" />
 		<mapping class="br.com.imhotep.entidade.MaterialLog" />
 		<mapping class="br.com.imhotep.entidade.PrecoMedioTransportadoMedLynx" />
-
+		<mapping class="br.com.imhotep.entidade.MaterialAlmoxarifadoPrecoMedioTransportadoMedLynx" />
+		<mapping class="br.com.imhotep.entidade.SolicitacaoMaterialAlmoxarifadoUnidade" />
+		<mapping class="br.com.imhotep.entidade.SolicitacaoMaterialAlmoxarifadoUnidadeItem" />
+		<mapping class="br.com.imhotep.entidade.LivroOcorrencia" />
+		<mapping class="br.com.imhotep.entidade.DevolucaoMedicamentoItemMovimento" />
+		<mapping class="br.com.imhotep.entidade.AlmoxarifadoUnidadeCota" />
+		<mapping class="br.com.imhotep.entidade.FinanceiroMensalAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.FinanceiroMensalFarmacia" />
+		<mapping class="br.com.imhotep.entidade.DispensacaoSimplesAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.EstornoMovimentoAlmoxarifado" />
+		<mapping class="br.com.imhotep.entidade.DevolucaoMaterial" />
+		<mapping class="br.com.imhotep.entidade.DevolucaoMaterialItem" />
+		<mapping class="br.com.imhotep.entidade.DevolucaoMaterialItemMovimento" />
+		<mapping class="br.com.imhotep.entidade.EstornoMovimentoFarmacia" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioSetor" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioSetorExame" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioResultadoPezinhoTemp" />
+		<mapping class="br.com.imhotep.entidade.EhealthPais" />
+		
+		<mapping class="br.com.imhotep.entidade.GrupoOdontologia" />
+		<mapping class="br.com.imhotep.entidade.SubGrupoOdontologia" />
+		<mapping class="br.com.imhotep.entidade.MaterialOdontologia" />
+		<mapping class="br.com.imhotep.entidade.UnidadeMaterialOdontologia" />
+		
+		<mapping class="br.com.imhotep.entidade.EstoqueAlmoxarifadoLog" />
+		
+		<mapping class="br.com.imhotep.entidade.LaboratorioSolicitacao" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioSolicitacaoLog" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioSolicitacaoItem" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioSolicitacaoItemLog" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioSolicitacaoItemResultado" />
+		
+		<mapping class="br.com.imhotep.entidade.LaboratorioExameAnaliseFormulario" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioExameAnaliseGrupo" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioExameAnaliseItem" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioExameAutorizaProfissional" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioFormularioItem" />
+		<mapping class="br.com.imhotep.entidade.LaboratorioExame"/>
+		
+		<mapping class="br.com.imhotep.entidade.InventarioFarmacia" />
+		<mapping class="br.com.imhotep.entidade.InventarioFarmaciaControle" />
+		<mapping class="br.com.imhotep.entidade.InventarioAlmoxarifado" />
+		
+		<mapping class="br.com.imhotep.entidade.EstruturaOrganizacional" />
+		<mapping class="br.com.imhotep.entidade.Funcao" />
+		<mapping class="br.com.imhotep.entidade.FuncaoProfissional" />
+		<mapping class="br.com.imhotep.entidade.Cargo" />
+		<mapping class="br.com.imhotep.entidade.CargoProfissional" />
+		<mapping class="br.com.imhotep.entidade.LotacaoProfissional" />
+		
+		<mapping class="br.com.imhotep.entidade.UnidadeSolicitacao" />
+		
 	</session-factory>
 </hibernate-configuration>

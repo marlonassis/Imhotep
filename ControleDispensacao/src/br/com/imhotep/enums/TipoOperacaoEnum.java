@@ -1,19 +1,19 @@
 package br.com.imhotep.enums;
 
 /**
- * Classe que cont√©m todos os pap√©is poss√≠veis a um usu√°rio
+ * Classe que contém todos os papéis possíveis a um usuário
  * @author marlonassis
  */
 
 public enum TipoOperacaoEnum {
 	E("Entrada"), 
-	S("Sa√≠da"),
+	S("Saída"),
 	P("Perda");
 	
 	private String label;
 	
-	TipoOperacaoEnum(String sexo){
-		label = sexo;
+	TipoOperacaoEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

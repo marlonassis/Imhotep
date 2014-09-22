@@ -1,7 +1,9 @@
 package br.com.imhotep.raiz;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,21 +12,23 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
-import br.com.imhotep.controle.ControleEstoqueAlmoxarifado;
+import br.com.imhotep.controle.ControleEstoqueAlmoxarifadoTemp;
 import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.entidade.NotaFiscalAlmoxarifado;
 import br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado;
 import br.com.imhotep.excecoes.ExcecaoDataContabil;
 import br.com.imhotep.excecoes.ExcecaoEstoqueRepetidoNotaFiscal;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.seguranca.Autenticador;
 import br.com.imhotep.temp.ConsultaGeral;
 import br.com.imhotep.temp.ExcecaoPadraoFluxo;
 import br.com.imhotep.temp.PadraoFluxoTemp;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifado>{	
+public class NotaFiscalAlmoxarifadoRaiz extends PadraoRaiz<NotaFiscalAlmoxarifado>{	
 	private NotaFiscalEstoqueAlmoxarifado item = new NotaFiscalEstoqueAlmoxarifado();
 	private Boolean achouLote = null;
 	private Integer quantidadeMovimentada;
@@ -32,6 +36,17 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 	public NotaFiscalAlmoxarifadoRaiz(){
 		super();
 		novaInstancia();
+	}
+	
+	@Override
+	protected void preEnvio() {
+		try {
+			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+		}
+		getInstancia().setDataInsercao(new Date());
+		super.preEnvio();
 	}
 	
 	@Override
@@ -67,7 +82,7 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 	public void procurarLote(){
 		String lote = getItem().getEstoqueAlmoxarifado().getLote();
 		if(lote == null || lote.trim().equals("")){
-			super.mensagem("Lote n√£o informado", null, Constantes.INFO);
+			super.mensagem("Lote não informado", null, Constantes.INFO);
 			setAchouLote(false);
 			return;
 		}
@@ -76,7 +91,7 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 		List<EstoqueAlmoxarifado> busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql2);
 		if(busca != null && busca.size() > 0){
 			setAchouLote(null);
-			super.mensagem("Lote j√° cadastrado para esta nota-fiscal", null, Constantes.ERROR);
+			super.mensagem("Lote já cadastrado para esta nota-fiscal", null, Constantes.ERROR);
 		}else{
 			String sql = "select o from EstoqueAlmoxarifado o where o.lote = '"+lote+"'";
 			busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql);
@@ -84,7 +99,7 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 				getItem().setEstoqueAlmoxarifado(busca.get(0));
 				setAchouLote(true);
 			}else{
-				super.mensagem("Lote n√£o encontrado", null, Constantes.WARN);
+				super.mensagem("Lote não encontrado", null, Constantes.WARN);
 				setAchouLote(false);
 			}
 		}
@@ -100,14 +115,15 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 			limparFluxo();
 			finalizarAddItemNotaFiscal();
 		} catch (Exception e){
-			unlockEstoque();
 			e.printStackTrace();
+		}finally{
+			unlockEstoque();
 		}
 	}
 
 	private void unlockEstoque() {
 		try {
-			new ControleEstoqueAlmoxarifado().unLockEstoque(getItem().getEstoqueAlmoxarifado());
+			new ControleEstoqueAlmoxarifadoTemp().unLockEstoque(getItem().getEstoqueAlmoxarifado());
 		} catch (ExcecaoEstoqueUnLock e1) {
 			e1.printStackTrace();
 		}
@@ -123,6 +139,9 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoHome<NotaFiscalAlmoxarifad
 	
 	private void finalizarAddItemNotaFiscal() {
 		unlockEstoque();
+		if(getInstancia().getItens() == null){
+			getInstancia().setItens(new ArrayList<NotaFiscalEstoqueAlmoxarifado>());
+		}
 		getInstancia().getItens().add(getItem());
 		setItem(new NotaFiscalEstoqueAlmoxarifado());
 		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());

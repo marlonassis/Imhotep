@@ -29,6 +29,10 @@ public class GerenciadorRequisicao implements PhaseListener{
 	public GerenciadorRequisicao() {
 	}
 	
+	public void redirecionarPagina(String pagina) throws IOException{
+		FacesContext.getCurrentInstance().getExternalContext().redirect(pagina);
+	}
+	
 	private void acessoPaginaNaoAutorizado(String pagina) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, ExcecaoAcessoNaoAutorizado{
 		ControleMenu controleMenu = (ControleMenu) Utilitarios.procuraInstancia(ControleMenu.class);
 		if(existeUsuarioLogado() && !paginaAcessoGeral(pagina) && !controleMenu.urlAutorizada(pagina)){
@@ -38,11 +42,14 @@ public class GerenciadorRequisicao implements PhaseListener{
 	}
 	
 	private void sistemaEmManutencao(String paginaAtual) throws IOException, ExcecaoSistemaManutencao{
+		boolean paginaManutencao = paginaAtual.indexOf(Constantes.PAGINA_MANUTENCAO) == 0;
 		if(Parametro.isManutencao()){
-			boolean paginaManutencao = paginaAtual.indexOf(Constantes.PAGINA_MANUTENCAO) == 0;
 			if(!paginaManutencao)
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_MANUTENCAO);
 			throw new ExcecaoSistemaManutencao();
+		}else{
+			if(paginaManutencao)
+				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
 		}
 	}
 	
@@ -100,10 +107,9 @@ public class GerenciadorRequisicao implements PhaseListener{
 	}
 
 	private void verificaUsuarioNovaSenha(String pagina) throws InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoUsuarioTrocaSenha, IOException {
-		boolean paginaLogin = pagina.indexOf(Constantes.PAGINA_LOGIN) == 0;
-		boolean paginaTrocaSenha = pagina.indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
-		if(!paginaLogin && !paginaTrocaSenha && Autenticador.getInstancia() != null && (new ControleSenha().senhaIgualMatricula() || new ControleSenha().senhaResetada())){
-			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_TROCA_SENHA);
+		boolean paginaHome = pagina.indexOf(Constantes.PAGINA_HOME) == 0;
+		if(!paginaHome && Autenticador.getInstancia() != null && (new ControleSenha().senhaIgualMatricula() || new ControleSenha().senhaResetada())){
+			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
 			throw new ExcecaoUsuarioTrocaSenha();
 		}
 	}

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ public class PadraoRelatorio implements Serializable {
 
 	@SuppressWarnings("rawtypes")
     protected void geraRelatorio(String caminho, String nomeRelatorio, List list, Map<String, Object> map) throws ClassNotFoundException, IOException, JRException, SQLException {
+		if(map == null){
+			map = new HashMap<String, Object>();
+		}
 		map.put("LOGO_HU", Utilitarios.getImagemLogoHU());
     	String url = Constantes.URL_BANCO;
 		String usuario = Constantes.USUARIO_BANCO;
@@ -55,6 +59,9 @@ public class PadraoRelatorio implements Serializable {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void geraRelatorio(String caminho, String nomeRelatorio, Object obj, Map<String, Object> map) throws ClassNotFoundException, IOException, JRException, SQLException {
+		if(map == null){
+			map = new HashMap<String, Object>();
+		}
 		map.put("LOGO_HU", Utilitarios.getImagemLogoHU());
     	String url = Constantes.URL_BANCO;
 		String usuario = Constantes.USUARIO_BANCO;

@@ -51,25 +51,48 @@ public class SubGrupoAlmoxarifado implements Serializable{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof SubGrupoAlmoxarifado))
-			return false;
-		
-		return ((SubGrupoAlmoxarifado)obj).getIdSubGrupoAlmoxarifado() == this.idSubGrupoAlmoxarifado;
-	}
-
-	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
-	}
 
 	@Override
 	public String toString() {
 		return descricao;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime
+				* result
+				+ ((grupoAlmoxarifado == null) ? 0 : grupoAlmoxarifado
+						.hashCode());
+		result = prime * result + idSubGrupoAlmoxarifado;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SubGrupoAlmoxarifado other = (SubGrupoAlmoxarifado) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (grupoAlmoxarifado == null) {
+			if (other.grupoAlmoxarifado != null)
+				return false;
+		} else if (!grupoAlmoxarifado.equals(other.grupoAlmoxarifado))
+			return false;
+		if (idSubGrupoAlmoxarifado != other.idSubGrupoAlmoxarifado)
+			return false;
+		return true;
+	}
+	
 }

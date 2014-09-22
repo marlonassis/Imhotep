@@ -132,11 +132,13 @@
 						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}">
 				<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
 			</h:outputText>
-			<r:inputDataMesAno id="dataValidade"
-							   label="Data de validade:"
-							   disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
-							   required="true" 
+			
+			
+			<r:inputDataMesAnoMedicamento id="dataValidade"
+							   label="Data de Validade"
+							   required="true"
 							   rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
+							   disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
 							   value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
 							   title="Data de validade do lote"/>
 		</h:panelGroup>

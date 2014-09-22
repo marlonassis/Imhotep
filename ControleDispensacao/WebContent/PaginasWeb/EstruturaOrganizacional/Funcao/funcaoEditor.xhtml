@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="funcaoPanelGrid" columns="3" width="100%">
+		
+		<ri:inputTextoSimples id="funcao" 
+							  title="Informe a função principal" 
+							  value="#{funcaoRaiz.instancia.nome}" 
+							  label="Função Principal" />
+		
+		<h:panelGroup rendered="#{funcaoRaiz.edicao}" >
+			<h:panelGrid columns="1" >
+				<h:panelGrid columns="2" >
+					<ri:inputTextoSimples id="funcaoFilho" 
+										  title="Informe a função secundária" 
+										  value="#{funcaoRaiz.funcaoFilho}"
+										  label="Função Secundária" />
+					<p:commandButton icon="ui-icon-disk"
+									 action="#{funcaoRaiz.cadastrarFuncaoFilho}" 
+									 update=":#{p:component('funcaoPanelGrid')}" />
+				</h:panelGrid>
+			
+				<p:dataList id="tabelaFuncoesFilho" 
+						 value="#{funcaoRaiz.funcoesFilho}"
+						 var="linha" 
+						 dblClickSelect="true"
+						 emptyMessage="Não há funções cadastradas" 
+						 rows="10" 
+						 paginator="true"
+						 selectionMode="single" 
+						 rowKey="#{linha.idFuncao}">
+	
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:outputText value="#{linha.nome}" />
+					</p:column>
+					
+					<p:commandLink action="#{funcaoRaiz.removerFuncaoFilho()}"
+								   update=":#{p:component('funcaoPanelGrid')}"
+								   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+								   title="Apagar" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{funcaoRaiz.funcaoDelete}" />
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+					
+				</p:dataList>
+			</h:panelGrid>
+		</h:panelGroup>
+		
+	</h:panelGrid>
+
+</ui:composition>

@@ -17,20 +17,27 @@
 							 label="Razão Social"
 							 title="Informe a razão social do estabelecimento" 
 							 value="#{ehealthEstabelecimentoRaiz.instancia.razaoSocial}" 
-							 required="true" />
+							 required="false" />
 							 
 		<ri:inputTextoSimples id="endereco" 
 							 label="Endereço"
 							 title="Informe o endereco do estabelecimento" 
 							 value="#{ehealthEstabelecimentoRaiz.instancia.endereco}" 
-							 required="true" />
+							 required="false" />
 		
 		<ri:inputSelectOneMenuEnum id="tipoNatureza" 
 								  value="#{ehealthEstabelecimentoRaiz.instancia.tipoNatureza}" 
-								  label="Tipo da Natureza" 
+								  label="Tipo de Natureza" 
 								  itens="#{itensPadrao.getTipoEhealthNaturezaEnumItens()}"
 							 	  required="true"/>
-							 	  
+		
+		
+		<ri:inputSelectOneMenuEnum id="tipoUnidade" 
+								   value="#{ehealthEstabelecimentoRaiz.instancia.tipoUnidade}" 
+								   label="Tipo" 
+								   required="true"
+								   itens="#{itensPadrao.tipoEhealthHospitalItens}" />
+		
 		<ri:inputAutoComplete id="ehealthMunicipio" 
 							 completeMethod="#{ehealthMunicipioAutoComplete.autoComplete}" 
 							 itemLabel="#{ehealthMunicipio.municipioEstado}" 

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:co="http://java.sun.com/jsf/composite">
+      
+	<co:interface>
+		<co:attribute name="id" required="true" />
+		<co:attribute name="value" required="true" />
+		<co:attribute name="completeMethod" required="true"  method-signature="java.util.Collection autoComplete(java.lang.String)" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="itemLabel" required="true" />
+		<co:attribute name="label" required="true" />
+		<co:attribute name="disabled" required="false" />
+		<co:attribute name="size" default="30" />
+		<co:attribute name="labelTip" />
+		<co:attribute name="title" />
+		<co:attribute name="updateAjax" />
+		<co:attribute name="listenerAjax" method-signature="void metodo()" />
+		<co:attribute name="forceSelection" default="true" />
+		<co:attribute name="desativarConversor" default="false" />
+		<co:attribute name="panelStyle" />
+		<co:attribute name="style" />
+		<co:attribute name="styleClass" />
+		<co:attribute name="mensagemWaterMark"/>
+	</co:interface>
+	
+	<co:implementation>
+		<h:panelGrid>
+			<h:panelGroup>
+				<c:if test="#{cc.attrs.required}">
+					<h:outputText value="*" style="color:red" />
+				</c:if>
+				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+			</h:panelGroup>
+			<h:panelGroup>
+				<h:panelGrid columns="2" >
+					<c:if test="#{cc.attrs.desativarConversor}">
+						<p:autoComplete id="#{cc.attrs.id}"
+										disabled="#{cc.attrs.disabled}" 
+										queryDelay="1000"
+										global="false" 
+										minQueryLength="4"
+										label="#{cc.attrs.label}"
+										scrollHeight="300"
+										size="#{cc.attrs.size}"
+										forceSelection="#{cc.attrs.forceSelection}"
+										value="#{cc.attrs.value}"
+										completeMethod="#{consultaRaiz.listaGeral(cc.attrs.id, cc.attrs.atributosOrderBy)}"
+										var="#{cc.attrs.var}" 
+										onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+										required="#{cc.attrs.required}" 
+										itemLabel="#{cc.attrs.itemLabel}"
+										title="#{cc.attrs.title}"
+										panelStyle="#{cc.attrs.panelStyle} width: 500px !important;"
+										style="#{cc.attrs.style}"
+										styleClass="#{cc.attrs.styleClass}"
+										itemValue="#{cc.attrs.itemValue}" >
+							<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
+								<f:facet name="itemtip">  
+					                <h:panelGrid  columns="2" cellpadding="5">  
+					                    <h:outputText rendered="#{cc.attrs.labelTip != null}" value="#{cc.attrs.labelTip}" />  
+					                    <h:outputText rendered="#{cc.attrs.valueTip != null}" value="#{cc.attrs.valueTip}"/>
+					                </h:panelGrid>  
+					            </f:facet>
+					        </c:if>
+					        
+					        <p:ajax event="itemSelect" 
+					        		global="false" 
+					        		onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		oncomplete="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		listener="#{cc.attrs.listenerAjax}" 
+					        		disabled="#{cc.attrs.listenerAjax == null or cc.attrs.updateAjax == null}" 
+					        		update="#{cc.attrs.updateAjax}" />
+					        
+							<co:insertChildren/>
+						</p:autoComplete>
+					</c:if>
+				
+					<c:if test="#{!cc.attrs.desativarConversor}">
+						<p:autoComplete id="#{cc.attrs.id}"
+										disabled="#{cc.attrs.disabled}" 
+										queryDelay="1000"
+										global="false"
+										minQueryLength="4"
+										multiple="#{cc.attrs.multiple}"
+										label="#{cc.attrs.label}"
+										scrollHeight="300"
+										size="#{cc.attrs.size}"
+										forceSelection="#{cc.attrs.forceSelection}"
+										value="#{cc.attrs.value}"
+										completeMethod="#{cc.attrs.completeMethod}"
+										var="#{cc.attrs.var}" 
+										onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+										required="#{cc.attrs.required}" 
+										itemLabel="#{cc.attrs.itemLabel}"
+										converter="entidadeConversor"
+										title="#{cc.attrs.title}"
+										panelStyle="#{cc.attrs.panelStyle} width: 500px !important;"
+										style="#{cc.attrs.style}"
+										styleClass="#{cc.attrs.styleClass}"
+										itemValue="#{cc.attrs.itemValue}" >
+							<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
+								<f:facet name="itemtip">  
+					                <h:panelGrid  columns="2" cellpadding="5">  
+					                    <h:outputText rendered="#{cc.attrs.labelTip != null}" value="#{cc.attrs.labelTip}" />  
+					                    <h:outputText rendered="#{cc.attrs.valueTip != null}" value="#{cc.attrs.valueTip}"/>
+					                </h:panelGrid>  
+					            </f:facet>
+					        </c:if>
+					        
+					        <p:ajax event="itemSelect" 
+					        		global="false" 
+					        		onstart="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		oncomplete="exibicaoAlternadaItem('loadingImage#{cc.attrs.id}');"
+					        		listener="#{cc.attrs.listenerAjax}" 
+					        		disabled="#{cc.attrs.listenerAjax == null or cc.attrs.updateAjax == null}" 
+					        		update="#{cc.attrs.updateAjax}" />
+					        
+							<co:insertChildren/>
+						</p:autoComplete>
+					</c:if>
+					<h:panelGroup style="width: 20px;" layout="block" >
+						<div id="loadingImage#{cc.attrs.id}" style="display:none;" >
+							<h:graphicImage value="/Imagens/ajax-loader.gif" />
+						</div>
+					</h:panelGroup>
+				</h:panelGrid>
+				<p:watermark value="#{cc.attrs.mensagemWaterMark}" for="#{cc.attrs.id}" />
+			</h:panelGroup>
+		</h:panelGrid>
+	</co:implementation>
+</html>

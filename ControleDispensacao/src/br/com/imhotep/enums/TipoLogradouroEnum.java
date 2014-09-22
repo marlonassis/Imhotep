@@ -13,7 +13,7 @@ public enum TipoLogradouroEnum {
 	LG("Largo"),
 	LT("Lote"),
 	OT("Outro"),
-	PÇ("Praça"),
+	PC("Pra�a"),
 	QUA("Quadra"),
 	ROD("Rodovia"),
 	R("Rua"),
@@ -22,8 +22,8 @@ public enum TipoLogradouroEnum {
 	
 	private String label;
 	
-	TipoLogradouroEnum(String sexo){
-		label = sexo;
+	TipoLogradouroEnum(String label){
+		this.label = label;
 	}
 	
 	public String getLabel(){

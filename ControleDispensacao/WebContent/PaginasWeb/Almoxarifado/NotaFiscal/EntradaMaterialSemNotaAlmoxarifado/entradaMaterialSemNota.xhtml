@@ -8,18 +8,15 @@
 
 	<ui:define name="head">
 	</ui:define>
-
-
 	<ui:define name="conteudoPadrao">
 		<p:tab id="tabEntradaMaterialSemNotaAlmoxarifado" title="Entrada de Material Sem Nota Fiscal">
 			<rf:formularioEdicao id="entradaSemNotaFiscalAlmoxarifado"
-								raiz="#{entradaSemNotaFiscalAlmoxarifadoRaiz}"
-								semPesquisa="true"
-								renderedNovo="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
-								renderedSalvar="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
-								fieldSetCollapsed="false"
-								srcEditor="Almoxarifado/NotaFiscal/EntradaMaterialSemNotaAlmoxarifado/entradaMaterialSemNotaEditor.xhtml" />
-			
+								 raiz="#{entradaSemNotaFiscalAlmoxarifadoRaiz}"
+								 semPesquisa="true"
+								 renderedNovo="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
+								 renderedSalvar="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
+								 fieldSetCollapsed="false"
+								 srcEditor="Almoxarifado/NotaFiscal/EntradaMaterialSemNotaAlmoxarifado/entradaMaterialSemNotaEditor.xhtml" />
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -17,7 +17,7 @@ public class ExcecaoForaRedeHU extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1L;
 
 	public ExcecaoForaRedeHU(){
-		super.mensagem("N√£o √© permitido realizar esta opera√ß√£o fora do HU", "");
+		super.mensagem("Não é permitido realizar esta operação fora do HU", "");
 	}
 	
 }

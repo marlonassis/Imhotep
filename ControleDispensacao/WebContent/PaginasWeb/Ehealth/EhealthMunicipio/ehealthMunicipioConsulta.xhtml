@@ -12,9 +12,13 @@
 							 title="Informe o nome do cid" 
 							 value="#{ehealthMunicipioConsulta.instancia.nome}" />
 		
-		<ri:inputSelectOneMenuEnum id="estadoConsulta" 
-								  value="#{ehealthMunicipioConsulta.instancia.estado}" 
-								  label="Estado" 
-								  itens="#{itensPadrao.getEstadoEnumItens()}"/>
+		<ri:inputAutoComplete id="ehealthEstadoConsulta" 
+							  completeMethod="#{ehealthEstadoAutoComplete.autoComplete}" 
+							  itemValue="#{ehealthEstado}" 
+							  itemLabel="#{ehealthEstado.nomeEstadoPais}"
+							  var="ehealthEstado" 
+							  value="#{ehealthMunicipioConsulta.instancia.ehealthEstado}" 
+							  label="Estado" />
+		
 	</h:panelGrid>
 </ui:composition>

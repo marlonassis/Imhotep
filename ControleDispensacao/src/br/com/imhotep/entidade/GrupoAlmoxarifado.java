@@ -16,6 +16,7 @@ public class GrupoAlmoxarifado implements Serializable {
 	
 	private int idGrupoAlmoxarifado;
 	private String descricao;
+	private boolean semFinanceiro;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_grupo_almoxarifado_id_grupo_almoxarifado_seq")
 	@Id
@@ -38,25 +39,47 @@ public class GrupoAlmoxarifado implements Serializable {
 		this.descricao = descricao;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof GrupoAlmoxarifado))
-			return false;
-		
-		return ((GrupoAlmoxarifado)obj).getIdGrupoAlmoxarifado() == this.idGrupoAlmoxarifado;
+	@Column(name = "bl_sem_financeiro")
+	public boolean getSemFinanceiro() {
+		return this.semFinanceiro;
 	}
 
-	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + descricao.hashCode();
+	public void setSemFinanceiro(boolean semFinanceiro) {
+		this.semFinanceiro = semFinanceiro;
 	}
 
 	@Override
 	public String toString() {
 		return descricao;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idGrupoAlmoxarifado;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GrupoAlmoxarifado other = (GrupoAlmoxarifado) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idGrupoAlmoxarifado != other.idGrupoAlmoxarifado)
+			return false;
+		return true;
 	}
 	
 }

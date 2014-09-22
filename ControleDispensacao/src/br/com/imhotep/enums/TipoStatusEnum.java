@@ -6,7 +6,7 @@ package br.com.imhotep.enums;
 
 public enum TipoStatusEnum {
 	S("Sim"), 
-	N("NÃ£o"); 
+	N("N‹o"); 
 	
 	TipoStatusEnum(String papel){
 		label = papel;

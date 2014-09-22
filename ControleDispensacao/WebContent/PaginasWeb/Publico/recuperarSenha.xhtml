@@ -16,13 +16,12 @@
 			<h:form id="formRecuperacaoSenha" >
 				<p:growl/>
 				<h:panelGrid columns="3" >
-					<ri:inputApenasNumero id="cpf"
-										  required="true" 
-										  autocomplete="false"
-										  title="Informe o seu CPF" 
-										  value="#{autenticador.profissionalRecuperacao.cpf}" 
-										  label="CPF" />
-					
+				
+					<ri:inputCpf id="cpf" 
+								 title="Informe o seu CPF" 
+								 value="#{autenticador.profissionalRecuperacao.cpf}" 
+								 label="CPF" />
+								 
 					<ri:inputDataDiaMesAno id="dataNascimento" 
 										   title="Informe a data de nascimento" 
 										   value="#{autenticador.profissionalRecuperacao.dataNascimento}"

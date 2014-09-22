@@ -14,11 +14,11 @@ import br.com.imhotep.entidade.AutorizaPainelProfissional;
 import br.com.imhotep.entidade.Painel;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AutorizaPainelProfissionalRaiz extends PadraoHome<AutorizaPainelProfissional>{
+public class AutorizaPainelProfissionalRaiz extends PadraoRaiz<AutorizaPainelProfissional>{
 
 	private TreeNode root;
 	private List<Painel> paineisAutorizado;

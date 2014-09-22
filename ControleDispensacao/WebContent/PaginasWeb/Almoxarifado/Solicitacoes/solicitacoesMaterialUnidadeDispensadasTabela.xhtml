@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaSolicitacaoMedicamentoUnidadeDispensada" 
+				 value="#{solicitacaoMaterialAlmoxarifadoUnidadeConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single"
+				 rowKey="#{linha.idSolicitacaoMaterialAlmoxarifadoUnidade}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Solicitação" />
+			</f:facet>
+			<h:outputText value="#{linha.idSolicitacaoMaterialAlmoxarifadoUnidade}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data da Dispensação" />
+			</f:facet>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataDispensacao)}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Unidade" />
+			</f:facet>
+			<h:outputText value="#{linha.unidadeDestino.nome}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Solicitante" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalInsercao.nome}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Status" />
+			</f:facet>
+			<h:outputText value="#{linha.statusDispensacao.label}" />
+		</p:column>
+
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   style="padding-right:10px;"
+						   global="false" 
+           				   onclick="statusDialog.show();"
+           				   onsuccess="statusDialog.hide(); window.open('/imhotep/PaginasWeb/Solicitacoes/SolicitacaoMaterialAlmoxarifadoUnidades/solicitacaoImpressa.hu', 'dispensacaoImpressa');">
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMaterialAlmoxarifadoUnidadeRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/print.png" />
+			</p:commandLink>
+		</p:column>
+		
+	</p:dataTable>
+
+</ui:composition>

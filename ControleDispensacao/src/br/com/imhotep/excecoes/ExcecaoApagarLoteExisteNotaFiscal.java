@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -9,11 +9,11 @@ package br.com.imhotep.excecoes;
  *
  */
 public class ExcecaoApagarLoteExisteNotaFiscal extends ExcecaoPadrao {
-
-	private static final long serialVersionUID = 1783207019548721738L;
 	
+	private static final long serialVersionUID = -8613649925406324742L;
+
 	public ExcecaoApagarLoteExisteNotaFiscal(){
-		super.mensagem("N√£o foi poss√≠vel apagar o lote.", "Existem notas fiscais associadas ao lote.");
+		super.mensagem("Não foi possível apagar o lote.", "Existem notas fiscais associadas ao lote.");
 	}
 	
 }

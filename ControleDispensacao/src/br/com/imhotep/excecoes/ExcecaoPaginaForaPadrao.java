@@ -1,5 +1,5 @@
 /**
- * Criado por MÃ¡rlon Assis
+ * Criado por M‡rlon Assis
  */
 package br.com.imhotep.excecoes;
 

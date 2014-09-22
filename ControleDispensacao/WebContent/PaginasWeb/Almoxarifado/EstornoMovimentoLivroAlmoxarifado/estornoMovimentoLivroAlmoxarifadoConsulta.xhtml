@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="movimentoLivroALmoxarifadoPanelGridConsulta" columns="3" width="0%">
+	
+		<h:panelGroup rendered="false" >
+			<h:outputText value="Data de referência:" /><br/>
+			<p:inputText styleClass="monthpicker" value="#{estornoMovimentacaoAlmoxarifadoConsulta.dataReferencia}">
+				<f:convertDateTime locale="pt_BR" timeZone="GMT-3" pattern="MM/yyyy"/>
+			</p:inputText>
+			<script>$('.monthpicker').monthpicker();</script>
+		</h:panelGroup>
+		
+		<h:panelGroup>
+			<h:panelGrid columns="2">
+				<ri:inputAutoComplete id="materialAlmoxarifado" 
+									  completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
+									  itemValue="#{materialAlmoxarifado}" 
+									  itemLabel="#{materialAlmoxarifado.descricaoUnidadeMaterial}" 
+									  var="materialAlmoxarifado" 
+									  required="true"
+									  value="#{estornoMovimentacaoAlmoxarifadoRaiz.materialAlmoxarifado}" 
+									  label="Material"/>
+				
+				<p:commandButton value="->" 
+								 action="#{estornoMovimentacaoAlmoxarifadoRaiz.carregarEstoques}"
+								 update=":#{p:component('estornoMovimentoAlmoxarifadoAlmoxarifadoPesquisaForm')}" />
+				
+			</h:panelGrid> 
+		</h:panelGroup>
+		
+		<ri:inputSelectOneMenuEntidade id="estoqueAlmoxarifado"
+									   disabled="#{estornoMovimentacaoAlmoxarifadoRaiz.materialAlmoxarifado.idMaterialAlmoxarifado == 0}"
+									   itemLabel="#{estoqueAlmoxarifado.descricaoResumida}"
+									   itemValue="#{estoqueAlmoxarifado}"
+									   var="estoqueAlmoxarifado"
+									   value="#{estornoMovimentacaoAlmoxarifadoConsulta.estoqueAlmoxarifado}"
+									   list="#{estornoMovimentacaoAlmoxarifadoRaiz.estoquesAlmoxarifado}"
+									   label="Estoque" />
+		
+	</h:panelGrid>
+	
+</ui:composition>

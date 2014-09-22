@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<style>
+		.selection tr {
+		   float: left;
+		    width: 33%;
+		} 
+	</style>
+	
+	
+	<h:panelGrid id="controleAcessoFaseExamePanelGrid" columns="4" width="100%">
+		
+		<h:panelGroup>
+			<h:outputText value="Profissional:" /><br/>
+			<p:selectOneMenu value="#{controleAcessoFaseExameRaiz.profissional}" 
+							 converter="entidadeConversor"
+							 disabled="#{controleAcessoFaseExameRaiz.profissional != null}" >
+				<f:selectItem itemValue="" 
+							  itemLabel="Selecione..." />
+				<f:selectItems var="profi" 
+							   value="#{profissionalLaboratorioConsultaRaiz.consultar()}" 
+							   itemLabel="#{profi.nomeResumido}" 
+							   itemValue="#{profi}" />
+				<p:ajax event="change" 
+						update=":#{p:component('controleAcessoFaseExamePanelGrid')}"
+						oncomplete="window.location.reload();" 
+						listener="#{controleAcessoFaseExameRaiz.carregarFasesAutorizadas}"/>
+			</p:selectOneMenu>
+		</h:panelGroup>
+		<p:panel header="Solicitação" >
+			<ri:inputEnumCheck id="faseSolicitacaoManyCheckBox" 
+							   value="#{controleAcessoFaseExameRaiz.fasesSolicitacao}" 
+							   label="Fases" 
+							   rendered="#{controleAcessoFaseExameRaiz.profissional != null}" />
+		</p:panel>
+		
+		<p:panel header="Item" >
+			<ri:inputEnumCheck id="faseItemManyCheckBox" 
+							   value="#{controleAcessoFaseExameRaiz.fasesSolicitacaoItem}" 
+							   label="Fases" 
+							   rendered="#{controleAcessoFaseExameRaiz.profissional != null}" />
+		</p:panel>
+	</h:panelGrid>
+
+</ui:composition>

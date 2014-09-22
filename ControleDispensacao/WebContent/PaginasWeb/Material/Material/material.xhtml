@@ -3,6 +3,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
@@ -11,42 +13,15 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Material">
-			<h:form id="materialEditorForm" >
-				<p:fieldset legend="Novo Material"
-					collapsed="#{!materialRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
-					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="materialEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!materialRaiz.edicao}"
-						update=":#{p:component('materialEditorForm')} :#{p:component('materialPesquisaForm')}"
-						action="#{materialRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{materialRaiz.edicao}"
-						update=":#{p:component('materialEditorForm')} :#{p:component('materialPesquisaForm')}"
-						action="#{materialRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{materialRaiz.edicao}"
-						 update="@parent"
-						 action="#{materialRaiz.novaInstancia()}" />
-				</p:fieldset>
-			</h:form>
-
-			<h:form id="materialPesquisaForm">
-				<p:growl />
-				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="materialConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('materialPesquisaForm')}"/>
-
-					<p:commandButton value="Limpar"
-						action="#{materialConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('materialPesquisaForm')}" />
-
-				</p:fieldset>
-				<ui:include src="materialTabela.xhtml" />
-			</h:form>
+		
+			<rf:formularioPadrao idFormPadrao="materialCadastro" 
+								 srcConsulta="Material/Material/materialConsulta.xhtml" 
+								 raizConsulta="#{materialConsulta}" 
+								 raiz="#{materialRaiz}" 
+								 srcEditor="Material/Material/materialEditor.xhtml" 
+								 srcTabela="Material/Material/materialTabela.xhtml" />
+		
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

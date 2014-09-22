@@ -52,7 +52,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 			profissionalAutorizador = Autenticador.getInstancia().profissionalPeloNomeUsuario(usuario, senha);
 		} catch (Exception e) {
 			e.printStackTrace();
-			super.mensagem("Erro ao pegar o usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
+			super.mensagem("Erro ao pegar o usuário atual.", null, FacesMessage.SEVERITY_ERROR);
 			System.out.print("Erro em ControleMedicamentoRestrito");
 		}
 		
@@ -60,11 +60,11 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 			if(Parametro.profissionalEnfermeiroMedico(profissionalAutorizador)){
 				analiseIndividualItensPrescritos(controleMedicacaoRestritoSCHI, profissionalAutorizador);
 			}else{
-				super.mensagem("Informe algum profissional que seja m√©dico ou enfermeiro.", null, FacesMessage.SEVERITY_WARN);
+				super.mensagem("Informe algum profissional que seja médico ou enfermeiro.", null, FacesMessage.SEVERITY_WARN);
 				return false;
 			}
 		}else{
-			super.mensagem("Profissional n√£o encontrado.", "Verifique se o usu√°rio e senha est√£o corretos.", FacesMessage.SEVERITY_WARN);
+			super.mensagem("Profissional não encontrado.", "Verifique se o usuário e senha estão corretos.", FacesMessage.SEVERITY_WARN);
 			return false;
 		}
 		return true;
@@ -105,7 +105,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 			item.setProfissionalLiberacao(profissionalPeloUsuario);
 			new PrescricaoItemRaiz(item, false).atualizar();
 		}else{
-			super.mensagem("O usu√°rio informado n√£o possue autoriza√ß√£o para liberar este material.", "", FacesMessage.SEVERITY_WARN);
+			super.mensagem("O usuário informado não possue autorização para liberar este material.", "", FacesMessage.SEVERITY_WARN);
 		}
 	}
 	
@@ -154,7 +154,7 @@ public class FluxoPrescricaoLiberacaoMedicamento extends PadraoFluxo{
 			HashMap<Object, Object> hm = new HashMap<Object, Object>();
 			hm.put("idPrescricao", prescricao.getIdPrescricao());
 			String selectAutorizacaoEspecialidade = "exists (select a from LiberaMaterialEspecialidade a where a.material.idMaterial = o.material.idMaterial) ";
-			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao and (( "+selectAutorizacaoEspecialidade+" and o.profissionalLiberacao is null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBI√ìTICO') and o.controleMedicacaoRestritoSCHI is null)) "), hm);
+			return (List<PrescricaoItem>) cg.consulta(new StringBuilder("select o from PrescricaoItem o where o.prescricao.idPrescricao = :idPrescricao and (( "+selectAutorizacaoEspecialidade+" and o.profissionalLiberacao is null) or (lower(o.material.familia.subGrupo.grupo.descricao) = lower('ANTIBIóTICO') and o.controleMedicacaoRestritoSCHI is null)) "), hm);
 		}
 		return null;
 	}

@@ -28,6 +28,10 @@
 		<co:attribute name="listenerAjax" method-signature="void metodo()" />
 		<co:attribute name="forceSelection" default="true" />
 		<co:attribute name="desativarConversor" default="false" />
+		<co:attribute name="panelStyle" />
+		<co:attribute name="style" />
+		<co:attribute name="styleClass" />
+		<co:attribute name="mensagemWaterMark"/>
 	</co:interface>
 	
 	<co:implementation>
@@ -44,7 +48,7 @@
 						<p:autoComplete id="#{cc.attrs.id}"
 										disabled="#{cc.attrs.disabled}" 
 										queryDelay="1000"
-										global="false"
+										global="false" 
 										minQueryLength="4"
 										multiple="#{cc.attrs.multiple}"
 										label="#{cc.attrs.label}"
@@ -58,6 +62,9 @@
 										required="#{cc.attrs.required}" 
 										itemLabel="#{cc.attrs.itemLabel}"
 										title="#{cc.attrs.title}"
+										panelStyle="#{cc.attrs.panelStyle} width: 500px !important;"
+										style="#{cc.attrs.style}"
+										styleClass="#{cc.attrs.styleClass}"
 										itemValue="#{cc.attrs.itemValue}" >
 							<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
 								<f:facet name="itemtip">  
@@ -99,6 +106,9 @@
 										itemLabel="#{cc.attrs.itemLabel}"
 										converter="entidadeConversor"
 										title="#{cc.attrs.title}"
+										panelStyle="#{cc.attrs.panelStyle} width: 500px !important;"
+										style="#{cc.attrs.style}"
+										styleClass="#{cc.attrs.styleClass}"
 										itemValue="#{cc.attrs.itemValue}" >
 							<c:if test="#{cc.attrs.labelTip != null or cc.attrs.valueTip != null}">
 								<f:facet name="itemtip">  
@@ -126,6 +136,7 @@
 						</div>
 					</h:panelGroup>
 				</h:panelGrid>
+				<p:watermark value="#{cc.attrs.mensagemWaterMark}" for="#{cc.attrs.id}" />
 			</h:panelGroup>
 		</h:panelGrid>
 	</co:implementation>

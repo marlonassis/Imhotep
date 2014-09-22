@@ -8,6 +8,7 @@ public enum TipoEhealthTipoTecnologiaEnum {
 	
 	AP("ASP"),
 	CS("CSS"),
+	FL("Flash"),
 	H("HTML"),
 	JS("JavaScript"),
 	JA("Joomla"),

@@ -4,11 +4,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.PacienteEntradaResponsavel;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PacienteEntradaResponsavelRaiz extends PadraoHome<PacienteEntradaResponsavel>{
+public class PacienteEntradaResponsavelRaiz extends PadraoRaiz<PacienteEntradaResponsavel>{
 	
 	public PacienteEntradaResponsavelRaiz(){
 		super();

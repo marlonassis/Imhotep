@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,8 +18,12 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_doacao")
-public class Doacao {
+public class Doacao  implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int idDoacao;
 	private Hospital hospital;
 	private Date dataDoacao;

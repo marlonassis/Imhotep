@@ -34,7 +34,7 @@
 				<p:column headerText="Data de validade"
 						  style="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade) ? 'background-color:#FF0000;' : 'background-color:#FFFF00;'}">
 					<h:outputText value="#{linha.dataValidade}" style="#{bloqueioLoteRaiz.medicamentoVencido(linha.dataValidade) ? 'color:#FFFFFF;' : 'color:#000000;'} font-weight:bold;" >
-						<f:convertDateTime pattern="MMMM/yyyy" />
+						<f:convertDateTime pattern="MMMM/yyyy" locale="pt_BR" timeZone="GMT-3" />
 					</h:outputText>
 				</p:column>
 				<p:column>

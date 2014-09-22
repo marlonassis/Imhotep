@@ -46,13 +46,13 @@ public class RelatorioPrescricaoCompleta extends PadraoRelatorio{
 		String caminho = Constantes.DIR_RELATORIO + "PrescricaoIndividual.jasper";
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		//injetando o relatÃ³rio de fÃ¡rmacos
+		//injetando o relat—rio de f‡rmacos
 		InputStream subInputStreamFarmaco = this.getClass().getResourceAsStream("PrescricaoIndividualFarmaco.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_FARMACO", subInputStreamFarmaco);
-		//injetando o relatÃ³rio de doses dos fÃ¡rmacos
+		//injetando o relat—rio de doses dos f‡rmacos
 		InputStream subInputStreamFarmacoDose = this.getClass().getResourceAsStream("PrescricaoIndividualFarmacoDose.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_DOSE_UM", subInputStreamFarmacoDose);
-		//injetando o relatÃ³rio de cuidados
+		//injetando o relat—rio de cuidados
 		InputStream subInputStreamCuidados = this.getClass().getResourceAsStream("PrescricaoIndividualCuidados.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_CUIDADOS", subInputStreamCuidados);
 		

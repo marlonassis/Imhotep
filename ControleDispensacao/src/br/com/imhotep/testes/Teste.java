@@ -1,33 +1,32 @@
 package br.com.imhotep.testes;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuModel;
+
+
 
 public class Teste {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		try {
-			InputStream site = new URL("http://192.168.1.2/hospital/comum/login.php").openStream();
-			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(site, "ISO-8859-1"));
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
-			}
-			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+//		int v = 8 + r.nextInt(17); 
+		int max = 0;
+		for(int i = 0; i<1000;i++){
+			int a = new Random().nextInt(59);
+			if(a > max)
+				max = a;
+			System.out.println(a);
 		}
-		
+		System.out.println(max);
 	}
 
 }

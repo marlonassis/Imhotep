@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Cargo">
+			<rf:formularioPadrao idFormPadrao="cargoFormulario" 
+								 srcConsulta="EstruturaOrganizacional/Cargo/cargoConsulta.xhtml" 
+								 raizConsulta="#{cargoConsulta}" 
+								 raiz="#{cargoRaiz}" 
+								 srcEditor="EstruturaOrganizacional/Cargo/cargoEditor.xhtml" 
+								 srcTabela="EstruturaOrganizacional/Cargo/cargoTabela.xhtml" />
+		</p:tab>
+	</ui:define>
+</ui:composition>

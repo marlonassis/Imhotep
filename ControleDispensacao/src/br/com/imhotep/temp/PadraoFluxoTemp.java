@@ -13,10 +13,11 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 
 	private static Map<String, Object> objetoSalvar = new LinkedHashMap<String, Object>();
 	private static Map<String, Object> objetoAtualizar = new LinkedHashMap<String, Object>();
+	private static Map<String, Object> objetoDeletar = new LinkedHashMap<String, Object>();
 	
 	public PadraoFluxoTemp(){
 		super();
-		setMensagemErro("Erro ao salvar!");
+		setMensagemErro("Erro ao processar o fluxo!");
 		setMensagemSucesso("Cadastro realizado com sucesso!");
 	}
 	
@@ -28,7 +29,7 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 	
 	public PadraoFluxoTemp(boolean exibeMensagemDelecao, boolean exibeMensagemInsercao, boolean exibeMensagemAtualizacao) {
 		super();
-		setMensagemErro("Erro ao salvar!");
+		setMensagemErro("Erro ao processar o fluxo!");
 		setMensagemSucesso("Cadastro realizado com sucesso!");
 		setExibeMensagemAtualizacao(exibeMensagemAtualizacao);
 		setExibeMensagemDelecao(exibeMensagemDelecao);
@@ -44,10 +45,14 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 		setExibeMensagemInsercao(exibeMensagemInsercao);
 	}
 	
-	//ap√≥s adicionado todos os itens nos dois para serem persistidos, este m√©todo varre cada um desses maps para finalizar o processo 
+	public static boolean finalizarFluxo() throws ExcecaoPadraoFluxo{
+		return new PadraoFluxoTemp().processarFluxo();
+	}
+	
+	//após adicionado todos os itens nos dois para serem persistidos, este método varre cada um desses maps para finalizar o processo 
 	public boolean processarFluxo() throws ExcecaoPadraoFluxo{
 		boolean status=false;
-		String posicao = "Iniciar Transa√ß√£o";
+		String posicao = "Iniciar Transação";
 		iniciarTransacao();
 		try{
 			Set<String> keys = getObjetoSalvar().keySet();
@@ -60,6 +65,12 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 			for(String chave : keys){
 				posicao = "Merge - ".concat(chave);
 				session.merge(getObjetoAtualizar().get(chave));
+			}
+			
+			keys = getObjetoDeletar().keySet();
+			for(String chave : keys){
+				posicao = "Delete - ".concat(chave);
+				session.delete(getObjetoDeletar().get(chave));
 			}
 			
 			posicao = "Flush";
@@ -93,6 +104,7 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 	public static void limparFluxo(){
 		objetoSalvar = new LinkedHashMap<String, Object>();
 		objetoAtualizar = new LinkedHashMap<String, Object>();
+		objetoDeletar = new LinkedHashMap<String, Object>();
 	}
 	
 	public static Map<String, Object> getObjetoSalvar() {
@@ -108,6 +120,14 @@ public class PadraoFluxoTemp extends PadraoFluxo {
 
 	public void setObjetoAtualizar(Map<String, Object> objetoAtualizar) {
 		PadraoFluxoTemp.objetoAtualizar = objetoAtualizar;
+	}
+
+	public static Map<String, Object> getObjetoDeletar() {
+		return objetoDeletar;
+	}
+
+	public static void setObjetoDeletar(Map<String, Object> objetoDeletar) {
+		PadraoFluxoTemp.objetoDeletar = objetoDeletar;
 	}
 
 }

@@ -73,7 +73,7 @@ public class MigradorProcedimentoSus {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("In√≠cio: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println("Início: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
 		System.out.println("Fim: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 		System.out.println("Qtd Encontrada: " + quantidadeEncontrada);
 		System.out.println("Qtd Persistida: " + quantidadePersistida);

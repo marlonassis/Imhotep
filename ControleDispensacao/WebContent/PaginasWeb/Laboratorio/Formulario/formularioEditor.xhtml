@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid id="formularioPanelGrid" columns="1" width="100%">
+		<ri:inputTextoSimples id="descricaoFormulario" 
+							  title="Descreva o formulário" 
+							  value="#{laboratorioFormularioRaiz.instancia.descricao}" 
+							  label="Formulário" />
+		
+		<ri:inputTextArea id="observacaoFormulario" 
+						  title="Informe alguma observação sobre o formulário" 
+						  value="#{laboratorioFormularioRaiz.instancia.observacao}" 
+						  label="Observação" />
+	</h:panelGrid>
+</ui:composition>

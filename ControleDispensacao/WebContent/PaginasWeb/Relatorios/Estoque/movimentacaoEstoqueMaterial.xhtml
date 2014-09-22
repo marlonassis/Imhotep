@@ -12,7 +12,6 @@
 		<p:tab id="tabRelatorios"
 			title="Relatório de Movimentaçao por Material">
 			<h:form id="relatoriosForm"
-					target="_blank" 
 					style="text-align: left;">
 				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
 
@@ -86,10 +85,43 @@
 				</h:panelGrid>
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
-								value="Gerar relatório" ajax="false"
+								value="Gerar relatório" 
+								ajax="false"
 								action="#{relatorioMovimentacaoEstoqueMaterial.gerarRelatorio}"/>
+					
+					<p:commandButton id="graficoRelatorio"
+								value="Gerar Gráfico"
+								ajax="true" 
+								title="O gráfico mostrará o consumo no período especificado"
+								action="#{relatorioMovimentacaoEstoqueMaterial.gerarGrafico}"
+								update=":#{p:component('grafico')}"
+								global="false" 
+	              			    onclick="statusDialog.show();" 
+	              			    onsuccess="statusDialog.hide();"/>
 				</div>
+				
+				<p:dialog id="grafico" closable="false" modal="true" visible="#{relatorioMovimentacaoEstoqueMaterial.exibirGrafico}" >
+					<center>
+						<p:lineChart id="linear" 
+									value="#{relatorioMovimentacaoEstoqueMaterial.linearModel}"
+									legendPosition="ne"
+									minY="0"
+									minX="0"
+									maxY="1000"
+									showMarkers="true"
+									showDatatip="true"
+									yaxisLabel="Consumo"
+									xaxisAngle="45" 
+									datatipFormat="#{util.datatipFormat}"
+	     							title="#{relatorioMovimentacaoEstoqueMaterial.material.descricao}" 
+	     							style="height:400px; width:800px;"/> 
+	     				 
+	     				<p:commandButton value="Fechar" update=":#{p:component('grafico')}" action="#{relatorioMovimentacaoEstoqueMaterial.fecharModal}" />
+	     			</center>
+				</p:dialog>
+				
 			</h:form>
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

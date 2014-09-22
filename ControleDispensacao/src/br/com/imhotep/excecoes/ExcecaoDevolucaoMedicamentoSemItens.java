@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -17,7 +17,7 @@ public class ExcecaoDevolucaoMedicamentoSemItens extends ExcecaoPadrao {
 	private static final long serialVersionUID = 1L;
 
 	public ExcecaoDevolucaoMedicamentoSemItens(){
-		super.mensagem("√â necess√°rio que voc√™ recuse ou adicione lotes aos itens", "");
+		super.mensagem("É necessário que você recuse ou adicione lotes aos itens", "");
 	}
 	
 }

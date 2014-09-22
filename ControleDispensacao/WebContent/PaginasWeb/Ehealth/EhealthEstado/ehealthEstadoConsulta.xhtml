@@ -11,5 +11,13 @@
 							 label="Nome"
 							 title="Informe o nome do estado" 
 							 value="#{ehealthEstadoConsulta.instancia.nome}" />
+		
+		<r:inputEntidade id="pais" 
+						 itemLabel="NomeSigla"
+						 required="false"
+						 atributosOrderBy="o.nome" 
+						 value="#{ehealthEstadoConsulta.instancia.pais}" 
+						 label="País" />
+		
 	</h:panelGrid>
 </ui:composition>

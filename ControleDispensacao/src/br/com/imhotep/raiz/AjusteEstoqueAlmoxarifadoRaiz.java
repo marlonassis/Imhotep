@@ -1,23 +1,25 @@
 package br.com.imhotep.raiz;
 
+import java.util.Date;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.consulta.raiz.EstoqueAlmoxarifadoConsultaRaiz;
-import br.com.imhotep.controle.ControleEstoqueAlmoxarifado;
-import br.com.imhotep.entidade.AjusteEstoqueAlmoxarifado;
+import br.com.imhotep.controle.ControleEstoqueAlmoxarifadoTemp;
 import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.entidade.MovimentoLivroAlmoxarifado;
 import br.com.imhotep.entidade.TipoMovimentoAlmoxarifado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
+import br.com.imhotep.seguranca.Autenticador;
 import br.com.imhotep.temp.ExcecaoPadraoFluxo;
 import br.com.imhotep.temp.PadraoFluxoTemp;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoHome<AjusteEstoqueAlmoxarifado>{
+public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmoxarifado>{
 	
 	private Boolean loteEncontrado;
 	private Integer quantidadeMovimentada;
@@ -28,29 +30,30 @@ public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoHome<AjusteEstoqueAlmox
 	}
 
 	private void limpar() {
-		getInstancia().setMovimentoLivroAlmoxarifado(new MovimentoLivroAlmoxarifado());
-		getInstancia().getMovimentoLivroAlmoxarifado().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
+		setInstancia(new MovimentoLivroAlmoxarifado());
+		getInstancia().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
 		setLoteEncontrado(null);
 		setTipoMovimentoAlmoxarifado(null);
+		setQuantidadeMovimentada(null);
 	}
 	
 	public void procurarLote(){
-		String lote = getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado().getLote();
+		String lote = getInstancia().getEstoqueAlmoxarifado().getLote();
 		if(lote == null || lote.isEmpty()){
 			mensagem("Informe o lote", lote, Constantes.WARN);
 		}else{
 			EstoqueAlmoxarifado estoque = new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoqueLivre(lote);
 			loteEncontrado = estoque != null;
 			if(loteEncontrado){
-				getInstancia().getMovimentoLivroAlmoxarifado().setEstoqueAlmoxarifado(estoque);
+				getInstancia().setEstoqueAlmoxarifado(estoque);
 			}else{
-				mensagem("Lote nÃ£o encontrado.", lote, Constantes.WARN);
+				mensagem("Lote n‹o encontrado.", lote, Constantes.WARN);
 			}
 		}
 	}
 	
 	public void carregarEstoque(EstoqueAlmoxarifado ea){
-		getInstancia().getMovimentoLivroAlmoxarifado().setEstoqueAlmoxarifado(ea);
+		getInstancia().setEstoqueAlmoxarifado(ea);
 		setLoteEncontrado(true);
 	}
 	
@@ -58,10 +61,14 @@ public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoHome<AjusteEstoqueAlmox
 	public boolean enviar(){
 		try {
 			int qtd = getQuantidadeMovimentada() == null ? 0 : getQuantidadeMovimentada();
-			EstoqueAlmoxarifado estoqueAlmoxarifado = getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado();
-			MovimentoLivroAlmoxarifado mla = new ControleEstoqueAlmoxarifado().validarEstoqueAlmoxarifado(estoqueAlmoxarifado, qtd, getTipoMovimentoAlmoxarifado());
-			getInstancia().setMovimentoLivroAlmoxarifado(mla);
-			addAjusteFluxo();
+			getInstancia().setDataMovimento(new Date());
+			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
+			getInstancia().setTipoMovimentoAlmoxarifado(getTipoMovimentoAlmoxarifado());
+			getInstancia().setQuantidadeAtual(getInstancia().getEstoqueAlmoxarifado().getQuantidadeAtual());
+			getInstancia().setQuantidadeMovimentacao(getQuantidadeMovimentada());
+			new ControleEstoqueAlmoxarifadoTemp().liberarAjustarEstoqueAlmoxarifado(getInstancia().getEstoqueAlmoxarifado(), qtd, getTipoMovimentoAlmoxarifado());
+			PadraoFluxoTemp.getObjetoAtualizar().put("movimentoLivroAlmoxarifado", getInstancia());
+			PadraoFluxoTemp.getObjetoAtualizar().put("estoqueAlmoxarifado", getInstancia().getEstoqueAlmoxarifado());
 			processarFluxo();
 			limparFluxo();
 			unlockEstoque();
@@ -76,14 +83,10 @@ public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoHome<AjusteEstoqueAlmox
 
 	private void unlockEstoque() {
 		try {
-			new ControleEstoqueAlmoxarifado().unLockEstoque(getInstancia().getMovimentoLivroAlmoxarifado().getEstoqueAlmoxarifado());
+			new ControleEstoqueAlmoxarifadoTemp().unLockEstoque(getInstancia().getEstoqueAlmoxarifado());
 		} catch (ExcecaoEstoqueUnLock e1) {
 			e1.printStackTrace();
 		}
-	}
-	
-	private void addAjusteFluxo() {
-		PadraoFluxoTemp.getObjetoAtualizar().put("ajusteEstoque", getInstancia());
 	}
 	
 	private void processarFluxo() throws ExcecaoPadraoFluxo {

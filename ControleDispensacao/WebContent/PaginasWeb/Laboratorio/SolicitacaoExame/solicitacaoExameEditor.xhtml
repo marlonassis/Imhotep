@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid id="examesPanelGrid" columns="3" width="100%">
+		<h:panelGroup>
+			<h:panelGrid columns="1" width="100%" >
+				<ri:inputAutoComplete id="paciente" 
+									  completeMethod="#{pacienteAutoComplete.autoComplete}" 
+									  itemValue="#{paciente}" 
+									  itemLabel="#{paciente.nomeProntuarioCPF}" 
+									  var="paciente" 
+									  required="true"
+									  title="Informe o CPF, Prontuário ou Cartão do SUS"
+									  value="#{laboratorioSolicitacaoRaiz.paciente}" 
+									  label="Paciente (CPF, Prontuário ou Cartão do SUS)"/>
+				
+				<ri:inputAutoComplete id="unidade" 
+									  completeMethod="#{unidadeAutoComplete.autoComplete}" 
+									  itemValue="#{unidade}" 
+									  itemLabel="#{unidade.nome}" 
+									  var="unidade" 
+									  title="Informe a unidade em que o paciente está internado"
+									  value="#{laboratorioSolicitacaoRaiz.unidade}" 
+									  label="Unidade"/>
+			</h:panelGrid>
+		</h:panelGroup>
+		<h:panelGroup id="exameAddPanelGrid" >
+			<h:panelGrid columns="1" width="100%" >
+				<p:fieldset>
+					<h:panelGrid columns="2"  >
+						<ri:inputTextoSimples id="valorPesquisa" 
+											  title="Informe o código" 
+											  value="#{laboratorioSolicitacaoRaiz.valorPesquisaExame}" 
+											  label="Código do Exame" />
+						<p:commandButton update=":#{p:component('solicitacaoExameEditorForm')} :#{p:component('itensSolicitadosPanelGroup')}"
+										 image="ui-icon ui-icon-search"
+										 action="#{laboratorioSolicitacaoRaiz.pesquisarItens}" />
+					</h:panelGrid>
+				</p:fieldset>
+				<p:fieldset>
+					<p:commandLink action="#{laboratorioSolicitacaoRaiz.atualizarListaExames}"
+								   immediate="true" 
+								   update=":#{p:component('exameAddPanelGrid')}" 
+								   title="Atualizar" >
+						<h:outputText value="Exames Disponíveis:" />
+					</p:commandLink>
+					<br/>
+					<h:panelGrid columns="2"> 
+				        <p:selectCheckboxMenu id="exames" 
+				        					  value="#{laboratorioSolicitacaoRaiz.examesSelecionados}"
+				        					  label="Exames"
+				                              filter="true" 
+				                              filterMatchMode="contains" 
+				                              panelStyle="width:250px"
+				                              converter="laboratorioExameArrayConversor" >
+				            <f:selectItems value="#{laboratorioSolicitacaoRaiz.exames}" />
+				        </p:selectCheckboxMenu>
+					    <p:commandButton image="ui-icon ui-icon-disk"
+					    				 update=":#{p:component('examesPanelGrid')}" 
+					    				 action="#{laboratorioSolicitacaoRaiz.adicionarExames}" />
+				    </h:panelGrid>
+				</p:fieldset>
+			</h:panelGrid>
+		</h:panelGroup>	
+		<h:panelGroup id="itensSolicitadosPanelGroup" >
+			<p:dataTable value="#{laboratorioSolicitacaoRaiz.itensSolicitados}" 
+						 var="linha" 
+						 emptyMessage="Você ainda não escolheu algum exame" >
+				<f:facet name="header">
+					Itens Solicitados
+				</f:facet>
+				<p:column headerText="Código" >
+					<h:outputText value="#{linha.laboratorioExame.codigo}" />
+				</p:column>
+				<p:column headerText="Exame" >
+					<h:outputText value="#{linha.laboratorioExame.descricao}" />
+				</p:column>
+				<p:column style="width:20px; text-align: center;">
+					<p:commandLink action="#{laboratorioSolicitacaoRaiz.removerItemSolicitado}"
+								   update=":#{p:component('examesPanelGrid')}"
+								   title="Apagar" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{laboratorioSolicitacaoRaiz.item}" />
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+					<p:commandLink rendered="#{linha.laboratorioExame.justificativaObrigatoria and linha.justificativaSolicitacao == null}"
+								   action="#{laboratorioSolicitacaoRaiz.exibirDialogJustificativaItem}"
+								   update=":#{p:component('justificativaItemPanelGroup')}"
+								   title="Justificar" 
+								   style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{laboratorioSolicitacaoRaiz.item}" />
+						<h:graphicImage value="/Imagens/warning16.png" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:panelGroup>	
+	</h:panelGrid>
+	
+</ui:composition>

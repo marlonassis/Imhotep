@@ -8,11 +8,11 @@ import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.fluxo.FluxoSemNotaFiscal;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class EntradaMaterialSemNotaRaiz extends PadraoHome<Estoque>{
+public class EntradaMaterialSemNotaRaiz extends PadraoRaiz<Estoque>{
 	
 	private Boolean loteEncontrado;
 	private Integer quantidadeMovimentacao;

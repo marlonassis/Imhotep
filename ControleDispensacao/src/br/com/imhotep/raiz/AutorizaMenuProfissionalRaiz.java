@@ -13,11 +13,11 @@ import br.com.imhotep.entidade.AutorizaMenuProfissional;
 import br.com.imhotep.entidade.Menu;
 import br.com.imhotep.excecoes.ExcecaoProfissionalNaoEncontrado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class AutorizaMenuProfissionalRaiz extends PadraoHome<AutorizaMenuProfissional>{
+public class AutorizaMenuProfissionalRaiz extends PadraoRaiz<AutorizaMenuProfissional>{
 
 	private TreeNode root;
 	private List<Menu> menusAutorizado;

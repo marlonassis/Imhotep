@@ -5,11 +5,11 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoEstoqueLog {
-	F("Fus√£o"),
-	G("Dele√ß√£o da Fus√£o"),
-	D("Dele√ß√£o"),
-	A("Altera√ß√£o Origem"),
-	B("Altera√ß√£o Destino"),
+	F("Fusão"),
+	G("Deleção da Fusão"),
+	D("Deleção"),
+	A("Alteração Origem"),
+	B("Alteração Destino"),
 	O("Bloqueio"),
 	P("Desbloqueio");
 	

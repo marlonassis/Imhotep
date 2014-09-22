@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,15 +21,17 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.enums.TipoEstadoFisicoMedicamentoEnum;
 
 @Entity
 @Table(name = "tb_material")
 public class Material implements Serializable {
-	private static final long serialVersionUID = -6402136718034247531L;
+	private static final long serialVersionUID = -557390793038327695L;
 	
 	private int idMaterial;
 	private UnidadeMaterial unidadeMaterial;
 	private TipoMaterial tipoMaterial;
+	private TipoEstadoFisicoMedicamentoEnum tipoEstadoFisico;
 	private Familia familia;
 	private ListaEspecial listaEspecial;
 	private Integer codigoMaterial;
@@ -80,6 +84,15 @@ public class Material implements Serializable {
 		this.tipoMaterial = tipoMaterial;
 	}
 
+	@Column(name = "tp_estado_fisico")
+	@Enumerated(EnumType.STRING)
+	public TipoEstadoFisicoMedicamentoEnum getTipoEstadoFisico() {
+		return tipoEstadoFisico;
+	}
+	public void setTipoEstadoFisico(TipoEstadoFisicoMedicamentoEnum tipoEstadoFisico) {
+		this.tipoEstadoFisico = tipoEstadoFisico;
+	}
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_familia")
 	public Familia getFamilia() {
@@ -182,15 +195,34 @@ public class Material implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
+				+ ((bloqueado == null) ? 0 : bloqueado.hashCode());
+		result = prime * result
 				+ ((codigoMaterial == null) ? 0 : codigoMaterial.hashCode());
 		result = prime * result
 				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + ((familia == null) ? 0 : familia.hashCode());
 		result = prime * result + idMaterial;
+		result = prime * result
+				+ ((listaEspecial == null) ? 0 : listaEspecial.hashCode());
+		result = prime * result
+				+ ((padronizado == null) ? 0 : padronizado.hashCode());
+		result = prime
+				* result
+				+ ((quantidadeMinima == null) ? 0 : quantidadeMinima.hashCode());
+		result = prime
+				* result
+				+ ((tipoEstadoFisico == null) ? 0 : tipoEstadoFisico.hashCode());
+		result = prime * result
+				+ ((tipoMaterial == null) ? 0 : tipoMaterial.hashCode());
+		result = prime * result
+				+ ((unidadeMaterial == null) ? 0 : unidadeMaterial.hashCode());
+		result = prime * result
+				+ ((usuarioInclusao == null) ? 0 : usuarioInclusao.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -200,6 +232,11 @@ public class Material implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Material other = (Material) obj;
+		if (bloqueado == null) {
+			if (other.bloqueado != null)
+				return false;
+		} else if (!bloqueado.equals(other.bloqueado))
+			return false;
 		if (codigoMaterial == null) {
 			if (other.codigoMaterial != null)
 				return false;
@@ -215,13 +252,51 @@ public class Material implements Serializable {
 				return false;
 		} else if (!descricao.equals(other.descricao))
 			return false;
+		if (familia == null) {
+			if (other.familia != null)
+				return false;
+		} else if (!familia.equals(other.familia))
+			return false;
 		if (idMaterial != other.idMaterial)
+			return false;
+		if (listaEspecial == null) {
+			if (other.listaEspecial != null)
+				return false;
+		} else if (!listaEspecial.equals(other.listaEspecial))
+			return false;
+		if (padronizado == null) {
+			if (other.padronizado != null)
+				return false;
+		} else if (!padronizado.equals(other.padronizado))
+			return false;
+		if (quantidadeMinima == null) {
+			if (other.quantidadeMinima != null)
+				return false;
+		} else if (!quantidadeMinima.equals(other.quantidadeMinima))
+			return false;
+		if (tipoEstadoFisico != other.tipoEstadoFisico)
+			return false;
+		if (tipoMaterial == null) {
+			if (other.tipoMaterial != null)
+				return false;
+		} else if (!tipoMaterial.equals(other.tipoMaterial))
+			return false;
+		if (unidadeMaterial == null) {
+			if (other.unidadeMaterial != null)
+				return false;
+		} else if (!unidadeMaterial.equals(other.unidadeMaterial))
+			return false;
+		if (usuarioInclusao == null) {
+			if (other.usuarioInclusao != null)
+				return false;
+		} else if (!usuarioInclusao.equals(other.usuarioInclusao))
 			return false;
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
-		return descricao;
+		return getDescricao();
 	}
+
 }

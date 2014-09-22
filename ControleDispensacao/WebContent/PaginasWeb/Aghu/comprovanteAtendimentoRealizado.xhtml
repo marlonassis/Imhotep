@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml"
+                xmlns:ri="http://java.sun.com/jsf/composite/remendo/input">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios" title="Relatório das Consultas Realizadas - Comprovante">
+			<h:form id="relatoriosForm"
+					target="_blank"
+					style="text-align: left;">
+				<div align="left">
+					<h:panelGrid columns="4">
+						<r:inputAutoComplete id="profissionalConsulta"
+								 required="false" 
+								 desativarConversor="true"
+								 completeMethod="#{aGHUProfissionalComprovanteAutoComplete.autoComplete}" 
+								 itemValue="#{profissional}" 
+								 itemLabel="#{profissional}" 
+								 var="profissional" 
+								 value="#{relatorioComprovanteAtendimentoAGHU.profissional}" 
+								 label="Informe o nome do profissional"
+								 mensagemWaterMark="[Todos]" />
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="dataIni" value="Início:" />
+							<br />
+							<p:calendar id="dataIni"
+										required="true"
+										value="#{relatorioComprovanteAtendimentoAGHU.dataIni}" 
+										pattern="dd/MM/yyyy"
+										locale="pt" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="dataFim" value="Fim:" />
+							<br />
+							<p:calendar id="dataFim"
+										required="true"
+										value="#{relatorioComprovanteAtendimentoAGHU.dataFim}" 
+										pattern="dd/MM/yyyy"
+										locale="pt" />
+						</h:panelGroup>
+						<ri:inputApenasNumero id="quantidadeLinhasExtras" 
+											  title="Informe a quantidade de linhas extras que devem aparecer no relatório" 
+											  value="#{relatorioComprovanteAtendimentoAGHU.quantidadeLinhasExtras}" 
+											  label="Linhas Extras"
+											  required="false" />
+					</h:panelGrid>
+					
+					<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" 
+								ajax="false"
+								action="#{relatorioComprovanteAtendimentoAGHU.gerarRelatorio}"/>
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

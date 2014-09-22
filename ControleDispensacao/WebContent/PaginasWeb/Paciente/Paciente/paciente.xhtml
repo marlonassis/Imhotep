@@ -28,6 +28,7 @@
 			<rf:formularioEdicao id="paciente"
 								 rendered="#{pacienteRaiz.edicao or (!pacienteRaiz.achouPaciente and pacienteRaiz.achouPaciente != null)}"
 								 raiz="#{pacienteRaiz}"
+								 fieldSetCollapsed="#{pacienteRaiz.achouPaciente}"
 								 srcEditor="Paciente/Paciente/pacienteEditor.xhtml" />
 								
 			<rf:formularioPesquisa id="pacientePesquisa" 

@@ -1,6 +1,7 @@
 package br.com.imhotep.raiz;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -12,14 +13,15 @@ import javax.faces.context.FacesContext;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.controle.ControleInstancia;
 import br.com.imhotep.entidade.Paciente;
-import br.com.imhotep.entidade.Unidade;
+import br.com.imhotep.excecoes.ExcecaoPacienteDataNascimentoFuturo;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class PacienteRaiz extends PadraoHome<Paciente>{
+public class PacienteRaiz extends PadraoRaiz<Paciente>{
 	
 	private String valorPesquisa;
 	private Boolean achouPaciente;
@@ -47,7 +49,7 @@ public class PacienteRaiz extends PadraoHome<Paciente>{
 				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_ENTRADA_PACIENTE);
 			}else{
 				setAchouPaciente(false);
-				super.mensagem("O n√∫mero do SUS informado n√£o est√° cadastrado.", "Verifique se voc√™ informou o n√∫mero certo ou cadastre esse novo usu√°rio.", FacesMessage.SEVERITY_ERROR);
+				super.mensagem("O número do SUS informado não está cadastrado.", "Verifique se você informou o número certo ou cadastre esse novo usuário.", FacesMessage.SEVERITY_ERROR);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,48 +59,38 @@ public class PacienteRaiz extends PadraoHome<Paciente>{
 	
 	@Override
 	public boolean atualizar() {
-		if(getInstancia().getProfissionalInclusao() == null || getInstancia().getUnidadeCadastro() == null){
+		if(getInstancia().getProfissionalInclusao() == null){
 			try {
-				getInstancia().setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
-				getInstancia().setUnidadeCadastro(Autenticador.getInstancia().getUnidadeAtual());
+				getInstancia().setProfissionalInclusao(Autenticador.getProfissionalLogado());
+				if(getInstancia().getDataNascimento().after(Calendar.getInstance().getTime())){
+					throw new ExcecaoPacienteDataNascimentoFuturo();
+				}
+				getInstancia().setDataInclusao(new Date());
 				return super.atualizar();
-			} catch (InstantiationException e) {
+			} catch (ExcecaoProfissionalLogado e) {
 				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			} catch (ExcecaoPacienteDataNascimentoFuturo e) {
 				e.printStackTrace();
 			}
-		}else{
-			return super.atualizar();
 		}
-		super.mensagem("Erro ao atualizar", null, Constantes.ERROR);
-		return false;
+		
+		return super.atualizar();
 	}
 	
 	@Override
 	public boolean enviar() {
-		Unidade unidadeAtual = null;
 		try {
-			unidadeAtual = Autenticador.getInstancia().getUnidadeAtual();
-		} catch (Exception e) {
-			e.printStackTrace();
-			super.mensagem("Erro ao pegar a unidade atual.", null, FacesMessage.SEVERITY_ERROR);
-			System.out.print("Erro em EstoqueCentroCirurgico");
-		}
-		if(unidadeAtual != null){
-			try {
-				getInstancia().setProfissionalInclusao(Autenticador.getInstancia().getProfissionalAtual());
-			} catch (Exception e) {
-				e.printStackTrace();
-				super.mensagem("Erro ao pegar a usu√°rio atual.", null, FacesMessage.SEVERITY_ERROR);
-				System.out.print("Erro em PacienteHome");
+			if(getInstancia().getDataNascimento().after(Calendar.getInstance().getTime())){
+				throw new ExcecaoPacienteDataNascimentoFuturo();
 			}
 			getInstancia().setDataInclusao(new Date());
-			getInstancia().setUnidadeCadastro(unidadeAtual);
+			getInstancia().setProfissionalInclusao(Autenticador.getProfissionalLogado());
 			return super.enviar();
+		} catch (ExcecaoPacienteDataNascimentoFuturo e) {
+			e.printStackTrace();
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
 		}
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Voc√™ n√£o est√° alocado em uma unidade", "Escolha uma unidade na combo acima do menu."));
 		return false;
 	}
 

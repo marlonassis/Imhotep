@@ -26,7 +26,7 @@
 						columns="1"  
 						paginator="true">  
 
-			        <p:panel header="#{linha.unidadeDevolucao.nome}" style="text-align:center">  
+			        <p:panel header="#{linha.unidadeDevolucao.nome} - #{linha.idDevolucaoMedicamento}" style="text-align:center">  
 			            <h:panelGrid id="devolucoesPendentesPanelGrid" columns="1" style="width:100%">  
 							<h:outputText value="#{linha.profissionalInsercao.nome}" />
 							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInsercao)}" />
@@ -63,11 +63,11 @@
 					  visible="#{devolucaoMedicamentoRaiz.statusDialogDevolucao}" 
 					  resizable="true"
 					  closable="false" 
-					  width="1024px"
-					  modal="false" >
+					  modal="true"
+					  width="1024px" >
 				<p:growl/>
 				<p:outputPanel id="detalhesDevolucao" style="text-align:center;" layout="block">
-		        	<b>#{devolucaoMedicamentoRaiz.instancia.unidadeDevolucao}</b>  
+		        	<b>#{devolucaoMedicamentoRaiz.instancia.unidadeDevolucao} - #{linha.idDevolucaoMedicamento}</b>  
 		            <h:panelGrid columns="1" width="90%">
 						<h:panelGrid id="devolucaoMedicamentoItemPanelGrid" 
 									 rendered="#{devolucaoMedicamentoRaiz.edicao}" 
@@ -105,12 +105,16 @@
 								            <h:outputText value="#{item.quantidadeDevolvida}" />  
 								        </p:column> 
 								        
-								        <p:column headerText="Quantidade Atestada">  
+								        <p:column headerText="Quantidade Atestada">
 								            <h:outputText rendered="#{item.status != 'RE'}" value="#{devolucaoMedicamentoRaiz.quantidadeTotalRecebida(item)}" />  
 								        </p:column> 
 								        
 								        <p:column headerText="Estoques">  
-								            <h:outputText rendered="#{item.status != 'RE'}" value="#{devolucaoMedicamentoRaiz.stringLotesDevolvidos(item)}" escape="false" />  
+											<ui:repeat rendered="#{item.status != 'RE'}" 
+													   value="#{devolucaoMedicamentoRaiz.mapDevolucao.get(item.idDevolucaoMedicamentoItem)}" 
+													   var="e" >
+								        		<h:outputText value="#{e.estoque.lote} - #{e.quantidadeDevolvida}"/><br/>
+								        	</ui:repeat>  
 								        </p:column> 
 								        
 								        <p:column style="width:60px; text-align: center;" rendered="#{devolucaoMedicamentoRaiz.instancia.status == 'P'}" >
@@ -159,7 +163,7 @@
 			                						 onclick="statusDialog.show();" 
 			                						 onsuccess="statusDialog.hide();"
 								    				 action="#{devolucaoMedicamentoRaiz.preFinalizarDevolucao}" 
-													 update=":#{p:component('devolucoesPendentesDataGrid')} :#{p:component('detalhesDevolucao')} :#{p:component('mensagemDevolucaoGrowl')} :#{p:component('justificativaDevolucaoParcialDialog')}" />
+													 update=":#{p:component('devolucoesPendentesDataGrid')} :#{p:component('devolucaoDialog')} :#{p:component('mensagemDevolucaoGrowl')} :#{p:component('justificativaDevolucaoQuantidadeAlteradaDialog')}" />
 								</center>
 							</h:panelGroup>
 							<h:panelGroup>
@@ -176,7 +180,7 @@
 								<center>
 									<p:commandButton value="Imprimir"
 													 rendered="#{devolucaoMedicamentoRaiz.instancia.status != 'P'}"
-								    			     onclick="window.open('/imhotep/PaginasWeb/Enfermagem/DevolucaoMedicamento/devolucaoMedicamentoImpressa.hu', 'devolucaoImpressa');"/>
+								    			     onclick="window.open('/imhotep/PaginasWeb/Solicitacoes/DevolucaoMedicamento/devolucaoMedicamentoImpressa.hu', 'devolucaoImpressa');"/>
 								</center>
 							</h:panelGroup>
 						</h:panelGrid>
@@ -185,18 +189,18 @@
 			
 			</p:dialog>
 			
-			<p:dialog id="justificativaDevolucaoParcialDialog"
+			<p:dialog id="justificativaDevolucaoQuantidadeAlteradaDialog"
 					  header="Justificar Devolução Parcial" 
 					  modal="true" 
 					  resizable="true"
 					  closable="false" 
-					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativaDevolucaoParcial}" >
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativaQuantidadeDiferente}" >
 				<p:outputPanel id="devolucaoParcialOutPutPanel" style="text-align:center;" layout="block">
 					<p:messages id="messagesDevolucaoParcial" showDetail="false" autoUpdate="false" closable="true" />
-					<b>Informe o motivo da devolução ser parcial</b>
+					<b>Informe o motivo da devolução ser registrada com quantidades diferentes da informada pelo devolutor</b>
 					<br/>
 					<center>
-						<p:editor id="justificativaDevolucaoParcial" value="#{devolucaoMedicamentoRaiz.justificativa}" />
+						<p:editor id="justificativaDevolucaoParcial" value="#{devolucaoMedicamentoRaiz.justificativaDevolucaoDiferente}" />
 					</center>
 					<h:panelGrid columns="2" width="100%" >
 						<h:panelGroup>
@@ -206,16 +210,17 @@
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
 												 action="#{devolucaoMedicamentoRaiz.finalizarDevolucao}" 
-												 update=":#{p:component('devolucoesPendentesDataGrid')} :#{p:component('justificativaDevolucaoParcialDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+												 update=":#{p:component('devolucaoDialog')} :#{p:component('justificativaDevolucaoQuantidadeAlteradaDialog')}" />
 							</center>
 						</h:panelGroup>
 						<h:panelGroup>
 							<center>
 								<p:commandButton value="Cancelar" 
 												 global="false" 
+												 action="#{devolucaoMedicamentoRaiz.cancelarJustificativaDevolucao}"
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-							    				 update=":#{p:component('devolucaoDialog')} :#{p:component('justificativaDevolucaoParcialDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
+							    				 update=":#{p:component('devolucaoDialog')} :#{p:component('justificativaDevolucaoQuantidadeAlteradaDialog')}" />
 							</center>
 						</h:panelGroup>
 					</h:panelGrid>
@@ -227,13 +232,13 @@
 					  modal="true" 
 					  resizable="true"
 					  closable="false" 
-					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativa}" >
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativaRecusaDevolucao}" >
 				<p:outputPanel id="devolucaoRecusadaOutPutPanel" style="text-align:center;" layout="block">
 					<p:messages id="messagesDevolucaoRecusada" showDetail="false" autoUpdate="false" closable="true" />
 					<b>Informe o motivo da recusa da devolução de #{devolucaoMedicamentoRaiz.instancia.profissionalInsercao.nomeResumido}</b>
 					<br/>
 					<center>
-						<p:editor id="justificativaRecusaDevolucao" value="#{devolucaoMedicamentoRaiz.instancia.justificativa}" />
+						<p:editor id="justificativaRecusaDevolucao" value="#{devolucaoMedicamentoRaiz.justificativaDevolucaoRecusada}" />
 					</center>
 					<h:panelGrid columns="2" width="100%" >
 						<h:panelGroup>
@@ -252,7 +257,7 @@
 												 global="false" 
 			                					 onclick="statusDialog.show();" 
 			                					 onsuccess="statusDialog.hide();"
-							    				 action="#{devolucaoMedicamentoRaiz.cancelarRecusa}" 
+							    				 action="#{devolucaoMedicamentoRaiz.cancelarRecusaDevolucao}" 
 							    				 update=":#{p:component('recusarDevolucaoDialog')} :#{p:component('devolucoesPendentesDataGrid')}" />
 							</center>
 						</h:panelGroup>
@@ -265,13 +270,13 @@
 					  modal="true" 
 					  resizable="true"
 					  closable="false" 
-					  visible="#{devolucaoMedicamentoRaiz.statusDialogRecusaItem}" >
+					  visible="#{devolucaoMedicamentoRaiz.statusDialogJustificativaRecusaItem}" >
 				<p:outputPanel id="devolucaoItemRecusadaOutPutPanel" style="text-align:center;" layout="block">
 					<p:messages id="messagesDevolucaoItemRecusada" showDetail="false" autoUpdate="false" closable="true" />
 					<b>Informe o motivo da recusa do #{devolucaoMedicamentoRaiz.itemRecusado.material.descricaoUnidadeMaterial}</b>
 					<br/>
 					<center>
-						<p:editor id="justificativaRecusaItemDevolucao" value="#{devolucaoMedicamentoRaiz.itemRecusado.justificativa}" />
+						<p:editor id="justificativaRecusaItemDevolucao" value="#{devolucaoMedicamentoRaiz.justificativaItemRecusado}" />
 					</center>
 					<h:panelGrid columns="2" width="100%" >
 						<h:panelGroup>

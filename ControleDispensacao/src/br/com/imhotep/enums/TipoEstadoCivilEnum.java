@@ -9,7 +9,7 @@ public enum TipoEstadoCivilEnum {
 	CA("Casado(a)"),
 	SE("Separado(a)"),
 	DI("Divorciado(a)"),
-	VI("Vi√∫vo(a)");
+	VI("Viúvo(a)");
 	
 	TipoEstadoCivilEnum(String papel){
 		label = papel;

@@ -37,9 +37,16 @@
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Profissional" />
+				<h:outputText value="Solicitante" />
 			</f:facet>
 			<h:outputText value="#{linha.profissionalInsercao.nome}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Status" />
+			</f:facet>
+			<h:outputText value="#{linha.statusDispensacao.label}" />
 		</p:column>
 
 		<p:column style="width:120px; text-align: center;">
@@ -47,8 +54,8 @@
 						   style="padding-right:10px;"
 						   global="false" 
            				   onclick="statusDialog.show();"
-           				   onsuccess="statusDialog.hide(); window.open('/imhotep/PaginasWeb/Enfermagem/SolicitacaoMedicamentoUnidade/solicitacaoImpressa.hu', 'dispensacaoImpressa');">
-				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeRaiz.carregarImpressao}" />
+           				   onsuccess="statusDialog.hide(); window.open('/imhotep/PaginasWeb/Solicitacoes/SolicitacaoMedicamentoUnidade/solicitacaoImpressa.hu', 'dispensacaoImpressa');">
+				<f:setPropertyActionListener value="#{linha}" target="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.solicitacaoVizualizacao}" />
 				<h:graphicImage value="/Imagens/print.png" />
 			</p:commandLink>
 		</p:column>

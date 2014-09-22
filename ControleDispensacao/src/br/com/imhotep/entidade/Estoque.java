@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,7 +23,9 @@ import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 
 @Entity
 @Table(name = "tb_estoque")
-public class Estoque {
+public class Estoque implements Serializable{
+	private static final long serialVersionUID = -6495593978691300777L;
+	
 	private int idEstoque;
 	private Fabricante fabricante; 
 	private Material material;
@@ -86,9 +89,8 @@ public class Estoque {
 		return lote;
 	}
 	public void setLote(String lote) {
-		if(lote != null){
-			lote = lote.toUpperCase();
-		}
+		if(lote != null)
+			lote = lote.toUpperCase().trim();
 		this.lote = lote;
 	}
 	
@@ -185,6 +187,14 @@ public class Estoque {
 	public void setCodigoBarras(String codigoBarras) {
 		this.codigoBarras = codigoBarras;
 	}
+	
+	@Transient
+	public String getLoteMaterialDescricao(){
+		if(getMaterial() != null && getLote() != null){
+			return getLote().concat(" - ").concat(getMaterial().getDescricao());
+		}
+		return "Erro ao procurar o nome do material e lote";
+	}
 
 	@Transient
 	public String getDescricaoEstoqueCentroCirurgico(){
@@ -198,12 +208,35 @@ public class Estoque {
 		return null;
 	}
 	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (bloqueado ? 1231 : 1237);
+		result = prime * result
+				+ ((codigoBarras == null) ? 0 : codigoBarras.hashCode());
+		result = prime * result
+				+ ((dataBloqueio == null) ? 0 : dataBloqueio.hashCode());
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime * result
+				+ ((dataValidade == null) ? 0 : dataValidade.hashCode());
+		result = prime * result
+				+ ((fabricante == null) ? 0 : fabricante.hashCode());
 		result = prime * result + idEstoque;
+		result = prime * result + (lock ? 1231 : 1237);
 		result = prime * result + ((lote == null) ? 0 : lote.hashCode());
+		result = prime * result
+				+ ((material == null) ? 0 : material.hashCode());
+		result = prime * result
+				+ ((motivoBloqueio == null) ? 0 : motivoBloqueio.hashCode());
+		result = prime * result + quantidadeAtual;
+		result = prime * result
+				+ ((tipoBloqueio == null) ? 0 : tipoBloqueio.hashCode());
+		result = prime * result + ((unidade == null) ? 0 : unidade.hashCode());
+		result = prime * result
+				+ ((usuarioBloqueio == null) ? 0 : usuarioBloqueio.hashCode());
 		result = prime * result
 				+ ((usuarioInclusao == null) ? 0 : usuarioInclusao.hashCode());
 		return result;
@@ -217,7 +250,36 @@ public class Estoque {
 		if (getClass() != obj.getClass())
 			return false;
 		Estoque other = (Estoque) obj;
+		if (bloqueado != other.bloqueado)
+			return false;
+		if (codigoBarras == null) {
+			if (other.codigoBarras != null)
+				return false;
+		} else if (!codigoBarras.equals(other.codigoBarras))
+			return false;
+		if (dataBloqueio == null) {
+			if (other.dataBloqueio != null)
+				return false;
+		} else if (!dataBloqueio.equals(other.dataBloqueio))
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
+		if (dataValidade == null) {
+			if (other.dataValidade != null)
+				return false;
+		} else if (!dataValidade.equals(other.dataValidade))
+			return false;
+		if (fabricante == null) {
+			if (other.fabricante != null)
+				return false;
+		} else if (!fabricante.equals(other.fabricante))
+			return false;
 		if (idEstoque != other.idEstoque)
+			return false;
+		if (lock != other.lock)
 			return false;
 		if (lote == null) {
 			if (other.lote != null)
@@ -229,6 +291,25 @@ public class Estoque {
 				return false;
 		} else if (!material.equals(other.material))
 			return false;
+		if (motivoBloqueio == null) {
+			if (other.motivoBloqueio != null)
+				return false;
+		} else if (!motivoBloqueio.equals(other.motivoBloqueio))
+			return false;
+		if (quantidadeAtual != other.quantidadeAtual)
+			return false;
+		if (tipoBloqueio != other.tipoBloqueio)
+			return false;
+		if (unidade == null) {
+			if (other.unidade != null)
+				return false;
+		} else if (!unidade.equals(other.unidade))
+			return false;
+		if (usuarioBloqueio == null) {
+			if (other.usuarioBloqueio != null)
+				return false;
+		} else if (!usuarioBloqueio.equals(other.usuarioBloqueio))
+			return false;
 		if (usuarioInclusao == null) {
 			if (other.usuarioInclusao != null)
 				return false;
@@ -236,7 +317,6 @@ public class Estoque {
 			return false;
 		return true;
 	}
-	
 	@Override
 	public String toString() {
 		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidadeAtual).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));

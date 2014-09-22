@@ -1,33 +1,20 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
 
 	<h:panelGrid id="pacientePanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup>
-			<h:outputLabel for="naturalidade" value="Naturalidade:" />
-			<br />
-			<p:autoComplete id="naturalidade"
-							scrollHeight="300"
-							dropdown="false" 
-							styleClass="autoCompletePesquisa"
-							required="false" 
-							minQueryLength="3" 
-							size="30"
-							forceSelection="true"
-							value="#{pacienteConsulta.instancia.cidadeNaturalidade}"
-							completeMethod="#{cidadeAutoComplete.autoComplete}"
-							var="cidade" 
-							itemLabel="#{cidade.nomeCidadeEstado}"
-							itemValue="#{cidade}" 
-							converter="cidadeConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-				title="Ao digitar aparecerá algumas sugestões"
-				style="padding-top:8px" />
-		</h:panelGroup>
+		<ri:inputAutoComplete id="cidadeNaturalidade" 
+							  completeMethod="#{cidadeAutoComplete.autoComplete}" 
+							  itemValue="#{cidade}" 
+							  itemLabel="#{cidade.nomeCidadeEstado}" 
+							  var="cidade" 
+							  value="#{pacienteConsulta.instancia.cidadeNaturalidade}" 
+							  label="Naturalidade" />
 
 		<h:panelGroup>
 			

@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:panelGrid id="estadoPanelGridConsulta" columns="3" width="100%">
+		<r:inputAutoComplete id="unidadeConsulta" 
+							 completeMethod="#{unidadeAutoComplete.autoComplete}" 
+							 itemValue="#{unidade}" 
+							 itemLabel="#{unidade.nome}" 
+							 var="unidade" 
+							 value="#{almoxarifadoUnidadeCotaConsulta.instancia.unidade}" 
+							 label="Informe o nome da unidade que receberá a cota"/>
+		
+		<r:inputAutoComplete id="materialAlmoxarifadoConsulta" 
+							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
+							 itemValue="#{material}" 
+							 itemLabel="#{material.descricaoUnidadeMaterial}" 
+							 var="material" 
+							 value="#{almoxarifadoUnidadeCotaConsulta.instancia.materialAlmoxarifado}" 
+							 label="Informe o nome ou o código do material" />
+	</h:panelGrid>
+</ui:composition>

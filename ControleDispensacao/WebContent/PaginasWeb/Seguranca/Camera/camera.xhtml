@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Log do Material">
+			<h:panelGrid width="100%" columns="1" >
+				<ui:include src="192.168.1.2/hospital/comum/"/>
+			</h:panelGrid>
+			
+			<frameset rows="90%,10%">
+				<frame name="main" src="ypurpage1.htm">
+				<frame name="footer" src="yourpage2.htm">
+			</frameset>
+		</p:tab>
+	</ui:define>
+</ui:composition>

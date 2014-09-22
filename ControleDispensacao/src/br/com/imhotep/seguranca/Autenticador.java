@@ -28,8 +28,11 @@ import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.enums.TipoSituacaoEnum;
+import br.com.imhotep.enums.TipoUsuarioLogEnum;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
+import br.com.imhotep.excecoes.ExcecaoUsuarioInativo;
+import br.com.imhotep.excecoes.ExcecaoUsuarioLogin;
 import br.com.imhotep.raiz.ConfiguracaoRaiz;
 import br.com.imhotep.raiz.EstoqueRaiz;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
@@ -99,9 +102,9 @@ public class Autenticador {
 			ur.setInstancia(profRec.getUsuario());
 			ur.resetarSenha();
 			setUsuario(profRec.getUsuario());
-			getUsuario().setSenha("123456");
+			getUsuario().setSenha(Constantes.SENHA_PADRAO);
 			logarUsuario();
-			UsuarioRaiz.getInstanciaAtual().setSenhaAntiga("123456");
+			UsuarioRaiz.getInstanciaAtual().setSenhaAntiga(Constantes.SENHA_PADRAO);
 			UsuarioRaiz.getInstanciaAtual().setExibeCampoSenhaAntiga(false);
 			setExibirMensagemUsuarioBloqueado(false);
 			try {
@@ -110,7 +113,7 @@ public class Autenticador {
 				e.printStackTrace();
 			}
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Dados n√£o conferem", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Dados não conferem", ""));
 		}
 	}
 	
@@ -130,7 +133,7 @@ public class Autenticador {
 		}
 	}
 
-	//////////////////////////////////////Nova forma de pesquisar o usuario. A busca deve ser feita apenas para trazer o profissional e n√£o o usu√°rio
+	//////////////////////////////////////Nova forma de pesquisar o usuario. A busca deve ser feita apenas para trazer o profissional e não o usuário
 	
 	private Object buscaGenerica(String sql, HashMap<Object, Object> hm){
 		ConsultaGeral<Object> cg = new ConsultaGeral<Object>();
@@ -177,7 +180,7 @@ public class Autenticador {
 		}catch (Exception e) {
 			e.printStackTrace();
 			if(getUsuarioAtual() != null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Logout n√£o realizado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Logout não realizado!"));
 			}
 		}
 	}
@@ -186,7 +189,7 @@ public class Autenticador {
 		return getUsuarioAtual() != null && getUsuarioAtual().getIdUsuario() != 0 ? true : false;
 	}
 	
-	public Usuario procurarUsuario(String nome){
+	public Usuario procurarUsuario(String nome) throws ExcecaoUsuarioInativo, ExcecaoUsuarioLogin{
 		ConsultaGeral<Usuario> cg = new ConsultaGeral<Usuario>();
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("login", nome.trim());
@@ -195,12 +198,10 @@ public class Autenticador {
 			if(resultado.getProfissional().getSituacao().equals(TipoSituacaoEnum.A))
 				return resultado;
 			else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Usu√°rio inativo", ""));
-				return null;
+				throw new ExcecaoUsuarioInativo();
 			}
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usu√°rio e/ou senha n√£o confere!", "Usu√°rio n√£o encontrado!"));
-			return null;
+			throw new ExcecaoUsuarioLogin();
 		}
 	}
 
@@ -216,9 +217,12 @@ public class Autenticador {
 		if(usuarioLogado.getSenha().equals(Utilitarios.encriptaParaMd5(senha))){
 			return true;
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usu√°rio e/ou senha n√£o confere!", "Login n√£o realizado!"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Login não realizado!"));
 			String sql = "update Usuario set quantidadeErroLogin = quantidadeErroLogin + 1 where login = '"+usuarioLogado.getLogin()+"'";
 			new UsuarioRaiz().executa(sql);
+			if(usuarioLogado.getQuantidadeErroLogin() == Constantes.QUANTIDADE_BLOQUEIO_USUARIO.intValue()){
+				new UsuarioAcessoLogRaiz().gerarLog(usuarioLogado, TipoUsuarioLogEnum.B);
+			}
 			return false;
 		}
 	}
@@ -230,11 +234,11 @@ public class Autenticador {
 			if(!getUsuario().getLogin().isEmpty()){
 	    		Usuario usuarioLogado = procurarUsuario(getUsuario().getLogin());
 	    		if(usuarioLogado != null && usuarioLogado.getIdUsuario() != 0){
-	    			if(usuarioLogado.getQuantidadeErroLogin() > 5){
-	    				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_RECUPERACAO_SENHA);
-	    				setExibirMensagemUsuarioBloqueado(true);
-	    				return;
-	    			}
+//	    			if(usuarioLogado.getQuantidadeErroLogin() > Constantes.QUANTIDADE_BLOQUEIO_USUARIO){
+//	    				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_RECUPERACAO_SENHA);
+//	    				setExibirMensagemUsuarioBloqueado(true);
+//	    				return;
+//	    			}
 	    			if(verificaSenha(usuarioLogado, getUsuario().getSenha())){
 	    				setUsuarioAtual(usuarioLogado);
 	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
@@ -249,13 +253,11 @@ public class Autenticador {
 	    			}
 	    		}
 	    	}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro desconhecido!",  null));
-			if(((Usuario)facesContext.getExternalContext().getSessionMap().get("usuario")) == null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao logar! Voc√™ n√£o est√° logado.", "Tente logar novamente!"));
-			}
+			new UsuarioAcessoLogRaiz().gerarLog(TipoUsuarioLogEnum.E, getUsuario().getLogin());
 		}
+		
 		setUsuario(new Usuario());
 	}
 	
@@ -271,14 +273,14 @@ public class Autenticador {
 	
 	private void carregaPaineis() {
 		try {
-			//carrega os paineis que pertencem √† especialidade do profissional
+			//carrega os paineis que pertencem à especialidade do profissional
 			ArrayList<Painel> painelAutorizadoList = carregaPaineisEspecialidade();
 			//carrega os paineis que pertencem ao profissional
 			painelAutorizadoList.addAll(carregaPaineisProfissional());
 			
 			ControlePainel controlePainel = new ControlePainel();
 			controlePainel.setPainelAutorizadoList(painelAutorizadoList);
-			//ap√≥s carregar o menu √© chamado o m√©todo converteMenuString para converter todo o menu em uma lista de string
+			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
 			controlePainel.convertePainelString();
 			Utilitarios.atualizaInstancia(controlePainel);
 		} catch (InstantiationException e) {
@@ -309,7 +311,7 @@ public class Autenticador {
 	}
 
 	/**
-	 * Monta o menu de acordo com as permiss√µes de cada usu√°rio
+	 * Monta o menu de acordo com as permissões de cada usuário
 	 */
 	private void carregaToolBarMenu() {
 		try {
@@ -318,6 +320,7 @@ public class Autenticador {
 			ControleMenu controleMenu = new ControleMenu();
 			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(menuAutorizadoSet));
 			controleMenu.montarMenu();
+			controleMenu.montarMenuPlanoString();
 			Utilitarios.atualizaInstancia(controleMenu);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -341,7 +344,7 @@ public class Autenticador {
 	}
 	
 	private ArrayList<Menu> carregarMenuEspecialidade() {
-		//carrega o menu que pertence √† especialidade do usu√°rio
+		//carrega o menu que pertence à especialidade do usuário
 		String hql = "select b.menu from Profissional o join o.especialidades a join a.menus b where o.idProfissional = :idProfissional and b.menu.bloqueado = false";
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
 		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
@@ -366,6 +369,19 @@ public class Autenticador {
 			e.printStackTrace();
 		}
 		
+		return false;
+	}
+	
+	public boolean getUsuarioTrocarSenha(){
+		try {
+			return new ControleSenha().senhaIgualMatricula() || senhaResetada();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	

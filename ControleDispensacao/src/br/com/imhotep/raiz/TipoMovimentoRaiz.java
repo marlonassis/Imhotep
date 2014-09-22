@@ -6,14 +6,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.entidade.TipoMovimento;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean(name="tipoMovimentoRaiz")
 @SessionScoped
-public class TipoMovimentoRaiz extends PadraoHome<TipoMovimento>{
+public class TipoMovimentoRaiz extends PadraoRaiz<TipoMovimento>{
 	
 	/**
-	 * MÃ©todo que retorna uma lista de TipoMovimento
+	 * MŽtodo que retorna uma lista de TipoMovimento
 	 * @param String sql
 	 * @return Collection TipoMovimento
 	 */

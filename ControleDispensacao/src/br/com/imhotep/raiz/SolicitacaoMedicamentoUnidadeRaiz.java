@@ -7,181 +7,442 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
-import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeItemConsultaRaiz;
+import br.com.imhotep.controle.ControleEstoqueTemp;
 import br.com.imhotep.controle.ControlePainelAviso;
-import br.com.imhotep.entidade.PainelAviso;
+import br.com.imhotep.entidade.DispensacaoSimples;
+import br.com.imhotep.entidade.Estoque;
+import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
-import br.com.imhotep.entidade.extra.SolicitacaoMedicamento;
+import br.com.imhotep.entidade.TipoMovimento;
+import br.com.imhotep.entidade.extra.EstoqueDispensacao;
+import br.com.imhotep.entidade.extra.ItemDispensacao;
 import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
-import br.com.imhotep.excecoes.ExcecaoDispensacaoSolicitacaoItemPendente;
-import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.excecoes.ExcecaoEstoqueQuantidadeAcima;
+import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
 import br.com.imhotep.excecoes.ExcecaoForaRedeHU;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.excecoes.ExcecaoQuantidadeZero;
+import br.com.imhotep.excecoes.ExcecaoSemJustificativa;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoSemItens;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoRecusadaSemJustificativa;
-import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
+import br.com.imhotep.excecoes.ExcecaoSolicitacaoSemReceptor;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.imhotep.temp.ExcecaoPadraoFluxo;
+import br.com.imhotep.temp.PadraoFluxoTemp;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMedicamentoUnidade>{
-	private SolicitacaoMedicamentoUnidade solicitacaoVizualizacao = new SolicitacaoMedicamentoUnidade();
-	private boolean exibirConsultaSolicitacao;
+public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoRaiz<SolicitacaoMedicamentoUnidade>{
 	
-	//lista usada pela farmácia para vizualizar as solicitações não dispensadas
+	private SolicitacaoMedicamentoUnidadeItem itemEdicao;
+	private SolicitacaoMedicamentoUnidadeItem itemSolicitacao = new SolicitacaoMedicamentoUnidadeItem();
+	private EstoqueDispensacao estoqueEdicao;
+	
 	private List<SolicitacaoMedicamentoUnidade> solicitacoesPendentes = new ArrayList<SolicitacaoMedicamentoUnidade>();
-	/////////////
-	private Boolean solicitarProfissionalRecepcao;
-	private Boolean solicitarJustificativaRecusaSolicitacao;
-	private Boolean iniciarDispensacao;
-	private String justificativaRecusa;
 	
-	private List<SolicitacaoMedicamentoUnidade> solicitacoesProfissional = new ArrayList<SolicitacaoMedicamentoUnidade>();
+	private List<ItemDispensacao> itensDispensacao = new ArrayList<ItemDispensacao>();
+	private List<EstoqueDispensacao> estoquesEdicao = null;
 	
-	public void setInstanciaSolicitacaoAberta(SolicitacaoMedicamentoUnidade smu){
-		setInstancia(smu);
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(smu.getItens());
-	}
+	private boolean exibirDialogDispensacao;
+	private boolean exibirDialogRecusaSolicitacao;
+	private boolean exibirDialogProfissionalReceptor;
+	private boolean exibirDialogItemSolicitacaoRecusado;
+	private boolean exibirDialogJustificativaQuantidadeDiferente;
 	
-	@Override
-	public boolean apagar() {
-		if(super.apagar()){
-			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesProfissional();
-			return true;
+	private Integer quantidadeAlterada;
+	private Integer quantidadeAlteradaEstoque;
+	
+	private String justificativaRecusaItem;
+	private String justificativaRecusaSolicitacao;
+	private String justificativaLiberarQuantidadeDiferente;
+	
+	public int somaTotalQuantidadeLiberada(SolicitacaoMedicamentoUnidadeItem item){
+		int total = 0;
+		for(DispensacaoSimples obj : item.getDispensacoes()){
+			total += obj.getMovimentoLivro().getQuantidadeMovimentacao();
 		}
-		return false;
-	}
-	
-	public void exibirDialogConsultaSolicitacao(){
-		setExibirConsultaSolicitacao(true);
-	}
-	
-	public void ocultarDialogConsultaSolicitacao(){
-		setExibirConsultaSolicitacao(false);
-	}
-	
-	public void setCarregarImpressao(SolicitacaoMedicamentoUnidade linha){
-		super.novaInstancia();
-		setInstancia(linha);
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().montarImpressao();
-	}
-	
-	public void setCarregarDispensacao(SolicitacaoMedicamentoUnidade linha){
-		setInstancia(linha);
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().montarSugestao();
-	}
-	
-	//TODO remover a dispensacao item da sessao e criar uma varivel de solicitacao item aqui dentro
-	public void iniciarDispensacao(){
-		setIniciarDispensacao(true);
-	}
-	
-	public void cancelarRecusa(){
-		setSolicitarJustificativaRecusaSolicitacao(false);
-		setJustificativaRecusa(null);
-		super.novaInstancia();
-	}
-	
-	public void recusarSolicitacao(){
-		if(getJustificativaRecusa() != null && !getJustificativaRecusa().isEmpty()){
-			//TODO criar fluxo
-			getInstancia().setJustificativa(getJustificativaRecusa());
-			try {
-				Date dataAtual = new Date();
-				for(SolicitacaoMedicamentoUnidadeItem item : getInstancia().getItens()){
-						item.setStatusItem(TipoStatusSolicitacaoItemEnum.R);
-						item.setJustificativa("Solicitação Recusada");
-						item.setProfissionalLiberacao(Autenticador.getProfissionalLogado());
-						item.setDataLiberacao(dataAtual);
-						item.setUnidadeProfissionalLiberacao(Autenticador.getUnidadeProfissional());
-						SolicitacaoMedicamentoUnidadeItemRaiz smuri = new SolicitacaoMedicamentoUnidadeItemRaiz(item);
-						smuri.setInstancia(item);
-						smuri.setExibeMensagemAtualizacao(false);
-						smuri.atualizar();
-				}
-				
-				getInstancia().setDataDispensacao(dataAtual);
-				getInstancia().setProfissionalDispensacao(Autenticador.getProfissionalLogado());
-				getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.R);
-				if(super.atualizar()){
-					setSolicitarJustificativaRecusaSolicitacao(false);
-					setJustificativaRecusa(null);
-					getSolicitacoesPendentes().remove(getInstancia());
-					super.novaInstancia();
-				}
-				
-			} catch (ExcecaoProfissionalLogado e) {
-				e.printStackTrace();
-			} catch (ExcecaoUnidadeAtual e) {
-				e.printStackTrace();
-			}
-		}else{
-			try {
-				throw new ExcecaoSolicitacaoRecusadaSemJustificativa();
-			} catch (ExcecaoSolicitacaoRecusadaSemJustificativa e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void preRecusaSolicitacao(){
-		getInstancia().setJustificativa(null);
-		setSolicitarJustificativaRecusaSolicitacao(true);
-	}
-	
-	public void fecharTelaDispensacaoAtual(){
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().novaInstancia();
-		setIniciarDispensacao(false);
-		novaInstancia();
-	}
-	
-	public void fecharConfirmacaoReceptor(){
-		setSolicitarProfissionalRecepcao(false);
-	}
-	
-	public void preFechamentoDispensacao(){
-		try {
-			SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().verificaItensPendentes();
-			getInstancia().setProfissionalReceptor(getInstancia().getProfissionalInsercao());
-			setSolicitarProfissionalRecepcao(true);
-		} catch (ExcecaoDispensacaoSolicitacaoItemPendente e) {
-			e.printStackTrace();
-		}
+		return total;
 	}
 	
 	public void fecharDispensacao(){
 		try {
-			setSolicitarProfissionalRecepcao(false);
-			SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().fecharSolicitacaoItens();
-			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.D);
-			getInstancia().setDataDispensacao(new Date());
-			getInstancia().setProfissionalDispensacao(Autenticador.getProfissionalLogado());
-			super.atualizar();
-			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesPendentes();
-			ControlePainelAviso.getInstancia().atualizarAvisos();
-		} catch (ExcecaoProfissionalLogado e) {
-			e.printStackTrace();
-		} catch (ExcecaoDispensacaoSolicitacaoItemPendente e) {
+			if(getInstancia().getProfissionalReceptor() == null || getInstancia().getProfissionalReceptor().getIdProfissional() == 0){
+				throw new ExcecaoSolicitacaoSemReceptor();
+			}
+			finalizarDispensacao();
+		} catch (ExcecaoSolicitacaoSemReceptor e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void setInstancia2(SolicitacaoMedicamento linha){
-		SolicitacaoMedicamentoUnidade obj = new SolicitacaoMedicamentoUnidadeConsultaRaiz().solicitacaoId(linha.getIdSolicitacaoMedicamentoUnidade());
-		setInstancia(obj);
-		SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().setItens(new SolicitacaoMedicamentoUnidadeItemConsultaRaiz().getItensSolicitacao());
+
+	private void finalizarDispensacao() {
+		PadraoFluxoTemp.limparFluxo();
+		try{
+			TipoMovimento tipoMovimentoDS = Parametro.tipoMovimentoDispensacaoSimples();
+			Date date = new Date();
+			for(ItemDispensacao item : getItensDispensacao()){
+				item.getItem().setDataLiberacao(date);
+				item.getItem().setProfissionalLiberacao(Autenticador.getProfissionalLogado());
+				if(!item.getItem().getStatusItem().equals(TipoStatusSolicitacaoItemEnum.R)){
+					for(EstoqueDispensacao ed : item.getEstoques()){
+						MovimentoLivro ml = new MovimentoLivro();
+						ml.setEstoque(ed.getEstoque());
+						ml.setTipoMovimento(tipoMovimentoDS);
+						ml.setQuantidadeMovimentacao(ed.getQuantidadeDispensada());
+						ml.setJustificativa("RM: "+getInstancia().getIdSolicitacaoMedicamentoUnidade());
+						new ControleEstoqueTemp().liberarAjuste(date, ml);
+						
+						PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro"+ml.hashCode(), ml);
+						
+						DispensacaoSimples ds = new DispensacaoSimples();
+						ds.setSolicitacaoMedicamentoUnidadeItem(item.getItem());
+						ds.setMovimentoLivro(ml);
+						ds.setUnidadeDispensada(item.getItem().getSolicitacaoMedicamentoUnidade().getUnidadeDestino());
+						PadraoFluxoTemp.getObjetoSalvar().put("DispensacaoSimples"+ds.hashCode(), ds);
+					}
+				}
+				PadraoFluxoTemp.getObjetoAtualizar().put("ItemDispensacao"+item.hashCode(), item.getItem());
+			}
+			getInstancia().setDataDispensacao(date);
+			getInstancia().setProfissionalDispensacao(Autenticador.getProfissionalLogado());
+			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.D);
+			PadraoFluxoTemp.getObjetoAtualizar().put("Dispensacao"+getInstancia().hashCode(), getInstancia());
+			PadraoFluxoTemp.finalizarFluxo();
+			setExibirDialogProfissionalReceptor(false);
+			setExibirDialogDispensacao(true);
+			SolicitacaoMedicamentoUnidadeConsultaRaiz.getInstanciaAtual().consultarSolicitacoesPendentes();
+		}catch(Exception e){
+			e.printStackTrace();
+			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
+		}finally{
+			PadraoFluxoTemp.limparFluxo();
+			unlockEstoques();
+			setInstancia(new SolicitacaoMedicamentoUnidadeConsultaRaiz().solicitacaoId(getInstancia().getIdSolicitacaoMedicamentoUnidade()));
+		}
 	}
 	
-	public boolean removerItem(SolicitacaoMedicamentoUnidadeItem item){
-		if(getInstancia().getItens().remove(item)){
-			return super.atualizar();
+	private void unlockEstoques() {
+		for(ItemDispensacao item : getItensDispensacao()){
+			for(EstoqueDispensacao ed : item.getEstoques()){
+				try {
+					new ControleEstoqueTemp().unLockEstoque(ed.getEstoque());
+				} catch (ExcecaoEstoqueUnLock e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void preRecusaSolicitacao(){
+		setExibirDialogRecusaSolicitacao(true);
+	}
+	
+	public void fecharTelaDispensacaoAtual(){
+		super.novaInstancia();
+		itensDispensacao = new ArrayList<ItemDispensacao>();
+		estoquesEdicao = null;
+		setEstoqueEdicao(null);
+		setItemEdicao(null);
+		
+		itemSolicitacao = new SolicitacaoMedicamentoUnidadeItem();
+		
+		exibirDialogDispensacao = false;
+		exibirDialogRecusaSolicitacao = false;
+		exibirDialogProfissionalReceptor = false;
+		exibirDialogItemSolicitacaoRecusado = false;
+		exibirDialogJustificativaQuantidadeDiferente = false;
+		
+		quantidadeAlterada = null;
+		quantidadeAlteradaEstoque  = null;
+		
+		justificativaRecusaItem = null;
+		justificativaRecusaSolicitacao = null;
+		justificativaLiberarQuantidadeDiferente = null;
+		
+		
+	}
+	
+	public void cancelarEstoqueEdicao(){
+		setEstoqueEdicao(null);
+	}
+	
+	public void preFechamentoDispensacao(){
+		setExibirDialogProfissionalReceptor(true);
+		setExibirDialogDispensacao(false);
+		getInstancia().setProfissionalReceptor(getInstancia().getProfissionalInsercao());
+	}
+	
+	public void atualizarEdicaoEstoqueQuantidade() throws ExcecaoEstoqueQuantidadeAcima{
+		if(getQuantidadeAlteradaEstoque() > getEstoqueEdicao().getEstoque().getQuantidadeAtual()){
+			throw new ExcecaoEstoqueQuantidadeAcima();
+		}else{
+			int indexOf = getEstoquesEdicao().indexOf(getEstoqueEdicao());
+			getEstoquesEdicao().get(indexOf).setQuantidadeDispensada(getQuantidadeAlteradaEstoque());
+			setQuantidadeAlteradaEstoque(null);
+			setEstoqueEdicao(null);
+		}
+	}
+	
+	public void cancelarItemLiberado(){
+		setItemEdicao(null);
+		setEstoqueEdicao(null);
+		setEstoquesEdicao(null);
+		setExibirDialogDispensacao(true);
+		setExibirDialogJustificativaQuantidadeDiferente(false);
+	}
+	
+	
+	public void preFechamentoItemLiberado() throws ExcecaoQuantidadeZero {
+		if(getQuantidadeLiberada() == 0)
+			throw new ExcecaoQuantidadeZero();
+		else
+			if(getQuantidadeLiberada() != getItemEdicao().getQuantidadeSolicitada()){
+				setExibirDialogJustificativaQuantidadeDiferente(true);
+				setExibirDialogDispensacao(false);
+			}else{
+				finalizarEdicao();
+			}
+	}
+	
+	private int getQuantidadeLiberada(){
+		int total = 0;
+		for(EstoqueDispensacao ed : getEstoquesEdicao()){
+			total += ed.getQuantidadeDispensada();
+		}
+		return total;
+	}
+	
+	private int quantidadeDispensadaItemEstoque(Estoque estoque){
+		for(ItemDispensacao item : getItensDispensacao()){
+			if(item.getItem().equals(getItemEdicao())){
+				for(EstoqueDispensacao ed : item.getEstoques()){
+					if(ed.getEstoque().getLote().equals(estoque.getLote())){
+						return ed.getQuantidadeDispensada();
+					}
+				}
+				return 0;
+			}
+		}
+		return 0;
+	}
+	
+	public void carregarEstoquesDispensacao(){
+		List<Estoque> estoques = new EstoqueConsultaRaiz().consultarEstoquesMaterial(getItemEdicao().getMaterial());
+		setEstoquesEdicao(new ArrayList<EstoqueDispensacao>());
+		for(Estoque estoque : estoques){
+			EstoqueDispensacao ed = new EstoqueDispensacao();
+			ed.setEstoque(estoque);
+			ed.setQuantidadeDispensada(quantidadeDispensadaItemEstoque(estoque));
+			getEstoquesEdicao().add(ed);
+		}
+	}
+	
+	public List<EstoqueDispensacao> estoquesDispensacaoItem(SolicitacaoMedicamentoUnidadeItem item){
+		for(ItemDispensacao id : getItensDispensacao()){
+			if(id.getItem().equals(item)){
+				return id.getEstoques();
+			}
+		}
+		return null;
+	}
+	
+	public void preRecusaItemSolicitado(){
+		setExibirDialogDispensacao(false);
+		setExibirDialogItemSolicitacaoRecusado(true);
+		setJustificativaRecusaItem(null);
+	}
+	
+	public void cancelarJustificativaQuantidadeAlterada(){
+		setJustificativaLiberarQuantidadeDiferente(null);
+		setExibirDialogDispensacao(true);
+		setExibirDialogJustificativaQuantidadeDiferente(false);
+	}
+	
+	public void atualizarItemEstoqueQuantidadeAlterada() throws ExcecaoSemJustificativa{
+		if(getJustificativaLiberarQuantidadeDiferente() == null || getJustificativaLiberarQuantidadeDiferente().isEmpty()){
+			throw new ExcecaoSemJustificativa();
+		}else{
+			finalizarEdicao();
+		}
+	}
+
+	private void finalizarEdicao() {
+		atualizarItensEstoqueEdicao();
+		setExibirDialogDispensacao(true);
+		setExibirDialogJustificativaQuantidadeDiferente(false);
+		setJustificativaLiberarQuantidadeDiferente(null);
+		setItemEdicao(null);
+		setEstoquesEdicao(null);
+	}
+
+	private void atualizarItensEstoqueEdicao() {
+		for(ItemDispensacao item : getItensDispensacao()){
+			if(item.getItem().equals(getItemEdicao())){
+				item.setEstoques(new ArrayList<EstoqueDispensacao>());
+				for(EstoqueDispensacao ed : getEstoquesEdicao()){
+					if(ed.getQuantidadeDispensada() != 0){
+						item.getEstoques().add(ed);
+					}
+				}
+				break;
+			}
+		}
+	}
+	
+	public void recusarItemSolicitacao() throws ExcecaoSolicitacaoRecusadaSemJustificativa{
+		if(getJustificativaRecusaItem() == null || getJustificativaRecusaItem().isEmpty()){
+			throw new ExcecaoSolicitacaoRecusadaSemJustificativa();
+		}else{
+			getItemEdicao().setJustificativa(getJustificativaRecusaItem());
+			getItemEdicao().setStatusItem(TipoStatusSolicitacaoItemEnum.R);
+			removerItemDispensacaoSugestao(getItemEdicao());
+			setJustificativaRecusaItem(null);
+			setItemEdicao(null);
+			setExibirDialogDispensacao(true);
+			setExibirDialogItemSolicitacaoRecusado(false);
+		}
+	}
+	
+	public void desfazerRecusaItem(){
+		addSugestaoItemSolicitacao(getItemEdicao());
+		getItemEdicao().setStatusItem(TipoStatusSolicitacaoItemEnum.P);
+		setItemEdicao(null);
+	}
+	
+	public void cancelarRecusaItem(){
+		setExibirDialogDispensacao(true);
+		setExibirDialogItemSolicitacaoRecusado(false);
+		setItemEdicao(new SolicitacaoMedicamentoUnidadeItem());
+	}
+	
+	private void removerItemDispensacaoSugestao(SolicitacaoMedicamentoUnidadeItem solicitacaoMedicamentoUnidadeItem) {
+		for(ItemDispensacao id : getItensDispensacao()){
+			if(getItemEdicao().equals(id.getItem())){
+				getItensDispensacao().remove(id);
+				break;
+			}
+		}
+	}
+	
+	public void cancelarConfirmacaoReceptor(){
+		getInstancia().setProfissionalReceptor(null);
+		setExibirDialogProfissionalReceptor(false);
+		setExibirDialogDispensacao(true);
+	}
+	
+	public void recusarSolicitacao() throws ExcecaoSolicitacaoRecusadaSemJustificativa{
+		if(getJustificativaRecusaSolicitacao() == null || getJustificativaRecusaSolicitacao().isEmpty()){
+			throw new ExcecaoSolicitacaoRecusadaSemJustificativa();
+		}else{
+			iniciarRecusa();
+		}
+	}
+
+	private void iniciarRecusa() {
+		PadraoFluxoTemp.limparFluxo();
+		try {
+			processarRecusa();
+			setExibirDialogRecusaSolicitacao(false);
+			setJustificativaRecusaSolicitacao(null);
+			SolicitacaoMedicamentoUnidadeConsultaRaiz.getInstanciaAtual().consultarSolicitacoesPendentes();
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+		} catch (ExcecaoPadraoFluxo e) {
+			e.printStackTrace();
+		}
+		PadraoFluxoTemp.limparFluxo();
+	}
+
+	private void processarRecusa() throws ExcecaoProfissionalLogado, ExcecaoPadraoFluxo {
+		iniciarRecusaSolicitacao();
+		recusarItens();
+		PadraoFluxoTemp.getObjetoAtualizar().put("solicitacaoMedicamentoUnidade-"+getInstancia().hashCode(), getInstancia());
+		PadraoFluxoTemp.finalizarFluxo();
+	}
+
+	private void iniciarRecusaSolicitacao() throws ExcecaoProfissionalLogado {
+		getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.R);
+		getInstancia().setProfissionalReceptor(null);
+		getInstancia().setDataDispensacao(new Date());
+		getInstancia().setProfissionalDispensacao(Autenticador.getProfissionalLogado());
+		getInstancia().setJustificativa(getJustificativaRecusaSolicitacao());
+	}
+
+	private void recusarItens() {
+		for(SolicitacaoMedicamentoUnidadeItem item : getInstancia().getItens()){
+			item.setJustificativa(Constantes.JUSTIFICATIVA_RECUSA_SOLICITACAO_ITEM);
+			item.setStatusItem(TipoStatusSolicitacaoItemEnum.R);
+			PadraoFluxoTemp.getObjetoAtualizar().put("solicitacaoMedicamentoUnidadeItem-"+item.hashCode(), item);
+		}
+	}
+	
+	public void cancelarRecusa(){
+		setExibirDialogRecusaSolicitacao(false);
+		setJustificativaRecusaSolicitacao(null);
+	}
+	
+	public void iniciarDispensacao(){
+		setExibirDialogDispensacao(true);
+		montarSugestaoDispensacao();
+	}
+	
+	private void montarSugestaoDispensacao() {
+		for(SolicitacaoMedicamentoUnidadeItem item : getInstancia().getItens()){
+			addSugestaoItemSolicitacao(item);
+		}
+	}
+
+	private void addSugestaoItemSolicitacao(SolicitacaoMedicamentoUnidadeItem item) {
+		List<Estoque> estoques = new EstoqueConsultaRaiz().consultarEstoquesMaterial(item.getMaterial());
+		int quantidadeTemp = item.getQuantidadeSolicitada();
+		ItemDispensacao id = new ItemDispensacao();
+		id.setItem(item);
+		for(Estoque estoque : estoques){
+			EstoqueDispensacao ed = new EstoqueDispensacao();
+			if(quantidadeTemp <= estoque.getQuantidadeAtual()){
+				ed.setEstoque(estoque);
+				ed.setQuantidadeDispensada(quantidadeTemp);
+				id.getEstoques().add(ed);
+				break;
+			}else{
+				if(quantidadeTemp > estoque.getQuantidadeAtual()){
+					ed.setEstoque(estoque);
+					ed.setQuantidadeDispensada(estoque.getQuantidadeAtual());
+					id.getEstoques().add(ed);
+					quantidadeTemp = quantidadeTemp - estoque.getQuantidadeAtual();
+				}
+			}
+		}
+		if(estoques == null || estoques.isEmpty()){
+			id.getItem().setStatusItem(TipoStatusSolicitacaoItemEnum.R);
+			id.getItem().setJustificativa("Item recusado por n�o possuir algum lote com saldo");
+		}
+		getItensDispensacao().add(id);
+	}
+	
+	@Override
+	public boolean enviar() {
+		try {
+			boolean liberadoGeral = Parametro.getLiberadoSolicitacaoMedicamentoForaHU();
+			if(!liberadoGeral)
+				new RestringirAcessoRedeHU().validarAcessoRedeHU();
+			getInstancia().setDataInsercao(new Date());
+			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
+			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.A);
+			return super.enviar();
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+		} catch (ExcecaoForaRedeHU e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -201,42 +462,29 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 	
 	@Override
 	public boolean atualizar() {
-		try{
-			if(new SolicitacaoMedicamentoUnidadeConsultaRaiz().quantidadeItens(getInstancia()) < 1){
+		try {
+			if(getInstancia().getItens() == null || getInstancia().getItens().isEmpty()){
 				throw new ExcecaoSolicitacaoMedicamentoSemItens();
 			}
-			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
 			getInstancia().setDataFechamento(new Date());
+			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
 			if(super.atualizar()){
-				ControlePainelAviso.getInstancia().setAvisosNaoMonitorado(new ArrayList<PainelAviso>());
 				ControlePainelAviso.getInstancia().gerarAvisoRM(getInstancia().getIdSolicitacaoMedicamentoUnidade(), getInstancia().getUnidadeDestino());
-				novaInstancia();
+				super.novaInstancia();
 				return true;
 			}
-		}catch(ExcecaoSolicitacaoMedicamentoSemItens e){
+		} catch (ExcecaoSolicitacaoMedicamentoSemItens e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	@Override
-	public boolean enviar() {
-		try {
-		    new RestringirAcessoRedeHU().validarAcessoRedeHU();
-			SolicitacaoMedicamentoUnidadeItemRaiz.getInstanciaAtual().limparInstancia();
-			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
-			getInstancia().setUnidadeProfissionalInsercao(Autenticador.getUnidadeProfissional());
-			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.A);
-			getInstancia().setDataInsercao(new Date());
-			super.enviar();
-		} catch (ExcecaoProfissionalLogado e) {
-			e.printStackTrace();
-		} catch (ExcecaoUnidadeAtual e) {
-			e.printStackTrace();
-		} catch (ExcecaoForaRedeHU e) {
-			e.printStackTrace();
-		}
-		return false;
+	public SolicitacaoMedicamentoUnidadeItem getItemEdicao() {
+		return itemEdicao;
+	}
+
+	public void setItemEdicao(SolicitacaoMedicamentoUnidadeItem itemEdicao) {
+		this.itemEdicao = itemEdicao;
 	}
 
 	public List<SolicitacaoMedicamentoUnidade> getSolicitacoesPendentes() {
@@ -247,64 +495,122 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoHome<SolicitacaoMed
 		this.solicitacoesPendentes = solicitacoesPendentes;
 	}
 
-	public Boolean getSolicitarProfissionalRecepcao() {
-		return solicitarProfissionalRecepcao;
+	public Integer getQuantidadeAlterada() {
+		return quantidadeAlterada;
 	}
 
-	public void setSolicitarProfissionalRecepcao(
-			Boolean solicitarProfissionalRecepcao) {
-		this.solicitarProfissionalRecepcao = solicitarProfissionalRecepcao;
+	public void setQuantidadeAlterada(Integer quantidadeAlterada) {
+		this.quantidadeAlterada = quantidadeAlterada;
 	}
 
-	public Boolean getSolicitarJustificativaRecusaSolicitacao() {
-		return solicitarJustificativaRecusaSolicitacao;
+	public boolean isExibirDialogDispensacao() {
+		return exibirDialogDispensacao;
 	}
 
-	public void setSolicitarJustificativaRecusaSolicitacao(
-			Boolean solicitarJustificativaRecusaSolicitacao) {
-		this.solicitarJustificativaRecusaSolicitacao = solicitarJustificativaRecusaSolicitacao;
+	public void setExibirDialogDispensacao(boolean exibirDialogDispensacao) {
+		this.exibirDialogDispensacao = exibirDialogDispensacao;
 	}
 
-	public Boolean getIniciarDispensacao() {
-		return iniciarDispensacao;
+	public boolean isExibirDialogRecusaSolicitacao() {
+		return exibirDialogRecusaSolicitacao;
 	}
 
-	public void setIniciarDispensacao(Boolean iniciarDispensacao) {
-		this.iniciarDispensacao = iniciarDispensacao;
+	public void setExibirDialogRecusaSolicitacao(
+			boolean exibirDialogRecusaSolicitacao) {
+		this.exibirDialogRecusaSolicitacao = exibirDialogRecusaSolicitacao;
 	}
 
-	public String getJustificativaRecusa() {
-		return justificativaRecusa;
+	public boolean isExibirDialogProfissionalReceptor() {
+		return exibirDialogProfissionalReceptor;
 	}
 
-	public void setJustificativaRecusa(String justificativaRecusa) {
-		this.justificativaRecusa = justificativaRecusa;
+	public void setExibirDialogProfissionalReceptor(
+			boolean exibirDialogProfissionalReceptor) {
+		this.exibirDialogProfissionalReceptor = exibirDialogProfissionalReceptor;
 	}
 
-	public List<SolicitacaoMedicamentoUnidade> getSolicitacoesProfissional() {
-		return solicitacoesProfissional;
+	public List<ItemDispensacao> getItensDispensacao() {
+		return itensDispensacao;
 	}
 
-	public void setSolicitacoesProfissional(
-			List<SolicitacaoMedicamentoUnidade> solicitacoesPendentesProfissional) {
-		this.solicitacoesProfissional = solicitacoesPendentesProfissional;
+	public void setItensDispensacao(List<ItemDispensacao> itensDispensacao) {
+		this.itensDispensacao = itensDispensacao;
 	}
 
-	public SolicitacaoMedicamentoUnidade getSolicitacaoVizualizacao() {
-		return solicitacaoVizualizacao;
+	public boolean isExibirDialogItemSolicitacaoRecusado() {
+		return exibirDialogItemSolicitacaoRecusado;
 	}
 
-	public void setSolicitacaoVizualizacao(SolicitacaoMedicamentoUnidade solicitacaoVizualizacao) {
-		this.solicitacaoVizualizacao = solicitacaoVizualizacao;
+	public void setExibirDialogItemSolicitacaoRecusado(
+			boolean exibirDialogItemSolicitacaoRecusado) {
+		this.exibirDialogItemSolicitacaoRecusado = exibirDialogItemSolicitacaoRecusado;
 	}
 
-	public boolean isExibirConsultaSolicitacao() {
-		return exibirConsultaSolicitacao;
+	public boolean isExibirDialogJustificativaQuantidadeDiferente() {
+		return exibirDialogJustificativaQuantidadeDiferente;
 	}
 
-	public void setExibirConsultaSolicitacao(boolean exibirConsultaSolicitacao) {
-		this.exibirConsultaSolicitacao = exibirConsultaSolicitacao;
+	public void setExibirDialogJustificativaQuantidadeDiferente(
+			boolean exibirDialogJustificativaQuantidadeDiferente) {
+		this.exibirDialogJustificativaQuantidadeDiferente = exibirDialogJustificativaQuantidadeDiferente;
 	}
 
+	public String getJustificativaRecusaItem() {
+		return justificativaRecusaItem;
+	}
 
+	public void setJustificativaRecusaItem(String justificativaRecusaItem) {
+		this.justificativaRecusaItem = justificativaRecusaItem;
+	}
+
+	public String getJustificativaRecusaSolicitacao() {
+		return justificativaRecusaSolicitacao;
+	}
+
+	public void setJustificativaRecusaSolicitacao(
+			String justificativaRecusaSolicitacao) {
+		this.justificativaRecusaSolicitacao = justificativaRecusaSolicitacao;
+	}
+
+	public List<EstoqueDispensacao> getEstoquesEdicao() {
+		return estoquesEdicao;
+	}
+
+	public void setEstoquesEdicao(List<EstoqueDispensacao> estoquesEdicao) {
+		this.estoquesEdicao = estoquesEdicao;
+	}
+
+	public String getJustificativaLiberarQuantidadeDiferente() {
+		return justificativaLiberarQuantidadeDiferente;
+	}
+
+	public void setJustificativaLiberarQuantidadeDiferente(
+			String justificativaLiberarQuantidadeDiferente) {
+		this.justificativaLiberarQuantidadeDiferente = justificativaLiberarQuantidadeDiferente;
+	}
+
+	public EstoqueDispensacao getEstoqueEdicao() {
+		return estoqueEdicao;
+	}
+
+	public void setEstoqueEdicao(EstoqueDispensacao estoqueEdicao) {
+		this.estoqueEdicao = estoqueEdicao;
+	}
+
+	public Integer getQuantidadeAlteradaEstoque() {
+		return quantidadeAlteradaEstoque;
+	}
+
+	public void setQuantidadeAlteradaEstoque(Integer quantidadeAlteradaEstoque) {
+		this.quantidadeAlteradaEstoque = quantidadeAlteradaEstoque;
+	}
+
+	public SolicitacaoMedicamentoUnidadeItem getItemSolicitacao() {
+		return itemSolicitacao;
+	}
+
+	public void setItemSolicitacao(SolicitacaoMedicamentoUnidadeItem itemSolicitacao) {
+		this.itemSolicitacao = itemSolicitacao;
+	}
+	
 }

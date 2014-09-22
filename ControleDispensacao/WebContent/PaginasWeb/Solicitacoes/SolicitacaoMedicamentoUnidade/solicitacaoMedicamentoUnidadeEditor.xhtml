@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:panelGrid id="telaSolicitacaoPanelGrid" columns="1" width="100%">
+		<h:panelGrid id="solicitacaoMedicamentounidadePanelGrid" columns="3" width="100%">
+			<ri:inputEntidadeList id="unidades" 
+								  disabled="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}"
+								  itemLabel="Nome" 
+								  required="true" 
+								  value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.instancia.unidadeDestino}" 
+								  lista="#{unidadeConsultaRaiz.unidadeSaude}" 
+								  label="Unidade" />
+		</h:panelGrid>
+		<h:panelGroup rendered="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}" >
+			<p:selectOneRadio id="tipoConsulta" 
+							  value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.tipoConsulta}"  
+							  layout="grid" 
+							  columns="1"
+							  converter="enumConversor" >
+	            <f:selectItems value="#{itensPadrao.valoresEnum('tipoConsulta')}" />
+	            <p:ajax event="change" 
+	            		listener="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarListaItensSolicitacao}" 
+	            		update=":#{p:component('telaSolicitacaoPanelGrid')}" />
+	        </p:selectOneRadio>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}" >
+			<p:dataTable var="t" 
+						 value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.materiaisCadastrados}"
+						 style="width: 50%;" 
+						 scrollable="true" 
+						 scrollHeight="500"
+						 emptyMessage="Sem itens" >
+		        <p:column headerText="Quantidade" footerText="Quantidade" width="10%" >
+		            <ri:inputApenasNumero id="qtdSelecionado" 
+		    							  title="Informe a quantidade que você quer solicitar" 
+		    							  size="5"
+		    							  disabled="#{!t.comSaldo}"
+		    							  value="#{t.quantidadeSolicitada}" 
+		    							  exibirLabel="false" />
+		        </p:column>
+		        <p:column headerText="Medicamento" footerText="Medicamento" width="90%" >
+		            <h:graphicImage value="/Imagens/redBall-16.png" 
+				       				rendered="#{!t.comSaldo}" 
+				       				title="Item sem estoque" />
+			       	<h:graphicImage value="/Imagens/greenBall-16.png" 
+			       					rendered="#{t.comSaldo}" 
+			       					title="Item em estoque" />
+	           		<h:outputText value="#{t.material.descricaoUnidadeMaterial}" />
+		        </p:column>
+		    </p:dataTable>
+		</h:panelGroup>
+	</h:panelGrid>
+	
+</ui:composition>

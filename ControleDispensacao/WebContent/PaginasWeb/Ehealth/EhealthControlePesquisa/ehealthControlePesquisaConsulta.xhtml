@@ -6,49 +6,44 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="estadoPanelGridConsulta" columns="4" >
+	<h:panelGrid id="controlePesquisaPanelGridConsulta" columns="4" >
 		
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="grupo" value="Estado:" />
-			<br />
-			<p:selectOneMenu value="#{ehealthEstabelecimentoControlePesquisaConsulta.estado}"
-							 effect="fade" 
-							 required="true" >
-				<p:ajax update=":padraoTabView:solicitacoesDispensadasPesquisa:solicitacoesDispensadasPesquisaForm:municipioConsulta:municipioConsulta" />
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{itensPadrao.estadoEnumItens}"/> 
-			</p:selectOneMenu>
-		</h:panelGroup>
+		<ri:inputEntidade id="pais" 
+						  required="true"
+						  atributosOrderBy="o.nome"
+						  itemLabel="Nome" 
+						  value="#{ehealthEstabelecimentoRaiz.pais}" 
+						  label="País" 
+						  updateChange=":#{p:component('controlePesquisaPanelGridConsulta')}" />
 		
-		<ri:inputSelectOneMenuEntidade id="municipioConsulta" 
-									   itemLabel="#{municipio.nome}" 
-									   itemValue="#{municipio}" 
-									   var="municipio" 
-									   value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.ehealthMunicipio}" 
-									   list="#{ehealthEstabelecimentoControlePesquisaConsulta.municipios}" 
-									   label="Municípios"/>
-									   
-		<ri:inputTextoSimples id="nomeConsulta" 
+		<ri:inputEntidadeList id="estado"
+							  required="true"  
+							  itemLabel="Nome" 
+							  value="#{ehealthEstabelecimentoRaiz.estado}" 
+							  lista="#{ehealthEstabelecimentoRaiz.estadosPais}" 
+							  label="Estado" 
+							  updateChange=":#{p:component('controlePesquisaPanelGridConsulta')}"/>
+		
+		
+		<ri:inputEntidadeList id="municipio"
+							  itemLabel="Nome" 
+							  required="true"
+							  value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.ehealthMunicipio}" 
+							  lista="#{ehealthEstabelecimentoRaiz.municipiosEstado}" 
+							  label="Município" />
+		
+		<ri:inputTextoSimples id="nomeEstabelecimento" 
 							  title="Nome ou parte do nome" 
 							  value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.nome}" 
 							  label="Nome" />
-							  
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="tipo" value="Tipo:" />
-			<br />
-			<p:selectOneMenu id="tipo"
-							 value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.tipoUnidade}"
-							 effect="fade" 
-							 required="true" >
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItem itemLabel="HOSPITAL ESPECIALIZADO" itemValue="HOSPITAL ESPECIALIZADO" />
-				<f:selectItem itemLabel="HOSPITAL GERAL" itemValue="HOSPITAL GERAL" />
-				<f:selectItem itemLabel="HOSPITAL/DIA - ISOLADO" itemValue="HOSPITAL/DIA - ISOLADO" />
-			</p:selectOneMenu>
-		</h:panelGroup>	  
-						
+		
+		
+		<ri:inputSelectOneMenuEnum id="tipo" 
+								   value="#{ehealthEstabelecimentoControlePesquisaConsulta.instancia.tipoUnidade}" 
+								   label="Tipo" 
+								   required="false"
+								   itens="#{itensPadrao.tipoEhealthHospitalItens}" />
+			  
 									   
 	</h:panelGrid>
 	

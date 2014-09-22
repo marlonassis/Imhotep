@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,12 +17,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 
 @Entity
 @Table(name = "tb_estoque_almoxarifado")
-public class EstoqueAlmoxarifado {
+public class EstoqueAlmoxarifado implements Serializable {
+
+	private static final long serialVersionUID = 6593907596416924213L;
 	private int idEstoqueAlmoxarifado;
 	private FabricanteAlmoxarifado fabricanteAlmoxarifado; 
 	private MaterialAlmoxarifado materialAlmoxarifado;
@@ -39,6 +43,29 @@ public class EstoqueAlmoxarifado {
 	private Date dataLock;
 	private String codigoBarras;
 	
+	public EstoqueAlmoxarifado(){
+		super();
+	}
+	
+	public EstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado) {
+		super();
+		this.idEstoqueAlmoxarifado = estoqueAlmoxarifado.idEstoqueAlmoxarifado;
+		this.fabricanteAlmoxarifado = estoqueAlmoxarifado.fabricanteAlmoxarifado;
+		this.materialAlmoxarifado = estoqueAlmoxarifado.materialAlmoxarifado;
+		this.lote = estoqueAlmoxarifado.lote;
+		this.dataValidade = estoqueAlmoxarifado.dataValidade;
+		this.quantidadeAtual = estoqueAlmoxarifado.quantidadeAtual;
+		this.bloqueado = estoqueAlmoxarifado.bloqueado;
+		this.motivoBloqueio = estoqueAlmoxarifado.motivoBloqueio;
+		this.dataInclusao = estoqueAlmoxarifado.dataInclusao;
+		this.profissionalInclusao = estoqueAlmoxarifado.profissionalInclusao;
+		this.dataBloqueio = estoqueAlmoxarifado.dataBloqueio;
+		this.profissionalBloqueio = estoqueAlmoxarifado.profissionalBloqueio;
+		this.tipoBloqueio = estoqueAlmoxarifado.tipoBloqueio;
+		this.lock = estoqueAlmoxarifado.lock;
+		this.dataLock = estoqueAlmoxarifado.dataLock;
+		this.codigoBarras = estoqueAlmoxarifado.codigoBarras;
+	}
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_almoxarifado_id_estoque_almoxarifado_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
@@ -70,15 +97,11 @@ public class EstoqueAlmoxarifado {
 	
 	@Column(name = "cv_lote")
 	public String getLote() {
-		if(lote != null){
-			lote = lote.toUpperCase();
-		}
 		return lote;
 	}
 	public void setLote(String lote) {
-		if(lote != null){
-			lote = lote.toUpperCase();
-		}
+		if(lote != null)
+			lote = lote.toUpperCase().trim();
 		this.lote = lote;
 	}
 	
@@ -185,14 +208,50 @@ public class EstoqueAlmoxarifado {
 		this.codigoBarras = codigoBarras;
 	}
 
+	@Transient
+	public String getDescricaoResumida(){
+		String descricao = "";
+		if(getLote() != null){
+			descricao += getLote() + " - ";
+		}
+		if(getFabricanteAlmoxarifado() != null){
+			descricao += getFabricanteAlmoxarifado().getDescricao() + " - ";
+		}
+		if(getDataValidade() != null){
+			descricao += new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()) + " - ";
+		}
+		
+		descricao += getQuantidadeAtual();
+		
+		return descricao;
+	}
+	
+	@Transient
+	public EstoqueAlmoxarifado clone(){
+		return new EstoqueAlmoxarifado(this);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + idEstoqueAlmoxarifado;
-		result = prime * result + ((lote == null) ? 0 : lote.hashCode());
 		result = prime * result
-				+ ((profissionalInclusao == null) ? 0 : profissionalInclusao.hashCode());
+				+ ((codigoBarras == null) ? 0 : codigoBarras.hashCode());
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime
+				* result
+				+ ((fabricanteAlmoxarifado == null) ? 0
+						: fabricanteAlmoxarifado.hashCode());
+		result = prime * result + idEstoqueAlmoxarifado;
+		result = prime
+				* result
+				+ ((materialAlmoxarifado == null) ? 0 : materialAlmoxarifado
+						.hashCode());
+		result = prime
+				* result
+				+ ((profissionalInclusao == null) ? 0 : profissionalInclusao
+						.hashCode());
 		return result;
 	}
 	@Override
@@ -204,12 +263,22 @@ public class EstoqueAlmoxarifado {
 		if (getClass() != obj.getClass())
 			return false;
 		EstoqueAlmoxarifado other = (EstoqueAlmoxarifado) obj;
-		if (idEstoqueAlmoxarifado != other.idEstoqueAlmoxarifado)
-			return false;
-		if (lote == null) {
-			if (other.lote != null)
+		if (codigoBarras == null) {
+			if (other.codigoBarras != null)
 				return false;
-		} else if (!lote.equals(other.lote))
+		} else if (!codigoBarras.equals(other.codigoBarras))
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
+		if (fabricanteAlmoxarifado == null) {
+			if (other.fabricanteAlmoxarifado != null)
+				return false;
+		} else if (!fabricanteAlmoxarifado.equals(other.fabricanteAlmoxarifado))
+			return false;
+		if (idEstoqueAlmoxarifado != other.idEstoqueAlmoxarifado)
 			return false;
 		if (materialAlmoxarifado == null) {
 			if (other.materialAlmoxarifado != null)
@@ -224,9 +293,7 @@ public class EstoqueAlmoxarifado {
 		return true;
 	}
 	
-	@Override
-	public String toString() {
-		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidadeAtual).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));
-	}
+	
+	
 	
 }

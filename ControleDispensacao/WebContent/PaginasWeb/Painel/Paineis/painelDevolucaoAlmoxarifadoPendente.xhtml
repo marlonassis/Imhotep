@@ -1,0 +1,348 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+
+	<ui:define name="conteudoPadrao">
+		<p:fieldset id="devolucoesAlmoxarifadoPendentesFieldSet"
+					legend="Devoluções Pendentes"
+					collapsed="false" 
+					toggleable="false">
+			<p:commandLink action="#{devolucaoMaterialConsultaRaiz.consultarDevolucoesPendentes}" 
+						   update=":#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')}" 
+						   global="false" 
+              			   onclick="statusDialog.show();" 
+              			   onsuccess="statusDialog.hide();">
+				<h:graphicImage value="/Imagens/refresh16.png" />
+			</p:commandLink>
+			
+			<p:dataGrid id="devolucoesAlmoxarifadoPendentesDataGrid"
+						var="linha" 
+						emptyMessage="Não há devoluções"
+						value="#{devolucaoMaterialRaiz.devolucoesPendentes}" 
+						columns="1"  
+						paginator="true">  
+
+			        <p:panel header="#{linha.unidadeDevolucao.nome} - #{linha.idDevolucaoMaterial}" style="text-align:center">  
+			            <h:panelGrid id="devolucoesAlmoxarifadoPendentesPanelGrid" columns="1" style="width:100%">  
+							<h:outputText value="#{linha.profissionalInsercao.nome}" />
+							<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataInsercao)}" />
+			                <h:outputText value="#{linha.itens.size()} item(ns)" />
+			                <h:panelGroup>
+			                	<h:panelGrid width="100%" columns="2" >			                
+					                <p:commandLink  title="Devolver"
+					                				action="#{devolucaoMaterialRaiz.exibirDialogDevolucao}"
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+					                				onsuccess="statusDialog.hide();"
+					                				update=":#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')} :#{p:component('devolucaoAlmoxarifadoDialog')}" >  
+					                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+					                    <f:setPropertyActionListener value="#{linha}" target="#{devolucaoMaterialRaiz.instancia}" />  
+					                </p:commandLink>
+					                <p:commandLink  title="Recusar" 
+					                				action="#{devolucaoMaterialRaiz.preRecusaDevolucao}" 
+					                				global="false" 
+					                				onclick="statusDialog.show();" 
+						                			update=":#{p:component('recusardevolucaoAlmoxarifadoDialog')}"
+					                				onsuccess="statusDialog.hide();" > 
+					                    <h:graphicImage value="/Imagens/Close-icon.png" /> 
+					                    <f:setPropertyActionListener value="#{linha}" target="#{devolucaoMaterialRaiz.instancia}" />  
+					                </p:commandLink>
+					        	</h:panelGrid>
+				            </h:panelGroup>
+			                <h:graphicImage value="/Imagens/pill16.png" rendered="#{devolucaoMaterialRaiz.edicao and devolucaoMaterialRaiz.instancia.idDevolucaoMaterial == linha.idDevolucaoMaterial}" />
+			            </h:panelGrid>  
+			        </p:panel>  
+			  
+			</p:dataGrid>
+			
+			<p:dialog id="devolucaoAlmoxarifadoDialog" 
+					  visible="#{devolucaoMaterialRaiz.statusDialogDevolucao}" 
+					  resizable="true"
+					  closable="false" 
+					  modal="true"
+					  width="1024px" >
+				<p:growl/>
+				<p:outputPanel id="detalhesDevolucaoAlmoxarifado" style="text-align:center;" layout="block">
+		        	<b>#{devolucaoMaterialRaiz.instancia.unidadeDevolucao} - #{linha.idDevolucaoMaterial}</b>  
+		            <h:panelGrid columns="1" width="90%">
+						<h:panelGrid id="devolucaoMaterialItemPanelGrid" 
+									 rendered="#{devolucaoMaterialRaiz.edicao}" 
+									 columns="2"
+									 cellpadding="10px" >
+							<h:panelGroup>
+								<p:growl id="mensagemDevolucaoAlmoxarifadoGrowl" showDetail="true"  />  
+					        	<div style="height:400px; overflow:scroll;" >
+									<p:dataTable var="item" 
+												 value="#{devolucaoMaterialRaiz.instancia.itens}"
+												 emptyMessage="Não há itens cadastrados" > 
+										<f:facet name="header">  
+									            Material(is) Devolvido(s)
+									    </f:facet>  
+									    
+									    <p:column style="width:60px; text-align: center;" rendered="#{devolucaoMaterialRaiz.instancia.status == 'P'}" >
+											<p:commandLink action="#{devolucaoMaterialRaiz.preRecusarItem}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('devolucaoMaterialItemPanelGrid')} :#{p:component('recusarDevolucaoAlmoxarifadoItemDialog')}"
+														   rendered="#{item.status != 'RE'}" 
+														   title="Recusar #{item.materialAlmoxarifado.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{item}" target="#{devolucaoMaterialRaiz.itemRecusado}" />
+												<h:graphicImage value="/Imagens/Close-icon.png" />
+											</p:commandLink>
+										</p:column>
+									    
+								        <p:column headerText="Material" width="">  
+							            	<h:outputText value="#{item.materialAlmoxarifado.descricaoUnidadeHtml}" escape="false" />
+								        </p:column>  
+								        
+								        <p:column headerText="Quantidade Devolvida">  
+								            <h:outputText value="#{item.quantidadeDevolvida}" />  
+								        </p:column> 
+								        
+								        <p:column headerText="Quantidade Atestada">
+								            <h:outputText rendered="#{item.status != 'RE'}" value="#{devolucaoMaterialRaiz.quantidadeTotalRecebida(item)}" />  
+								        </p:column> 
+								        
+								        <p:column headerText="Estoques">  
+											<ui:repeat rendered="#{item.status != 'RE'}" 
+													   value="#{devolucaoMaterialRaiz.mapDevolucao.get(item.idDevolucaoMaterialItem)}" 
+													   var="e" >
+								        		<h:outputText value="#{(e.estoqueAlmoxarifado.lote == '' or
+								        								e.estoqueAlmoxarifado.lote == null) ? e.estoqueAlmoxarifado.idEstoqueAlmoxarifado : e.estoqueAlmoxarifado.lote} - #{e.quantidadeDevolvida}"/><br/>
+								        	</ui:repeat>  
+								        </p:column> 
+								        
+								        <p:column style="width:60px; text-align: center;" rendered="#{devolucaoMaterialRaiz.instancia.status == 'P'}" >
+											<p:commandLink action="#{devolucaoMaterialRaiz.recuperarItem}"
+														   global="false" 
+				                						   onclick="statusDialog.show();" 
+				                						   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('detalhesDevolucaoAlmoxarifado')}"
+														   rendered="#{item.status == 'RE'}" 
+														   title="Recuperar #{item.materialAlmoxarifado.descricaoUnidadeMaterial}" 
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{item}" target="#{devolucaoMaterialRaiz.itemRecusado}" />
+												<h:graphicImage value="/Imagens/undoBlue16.png" />
+											</p:commandLink>
+											 <p:commandLink action="#{devolucaoMaterialRaiz.carregarEstoqueSugestao}"
+														   global="false" 
+														   immediate="true"
+														   rendered="#{item.status != 'RE'}"
+					                					   onclick="statusDialog.show();" 
+					                					   onsuccess="statusDialog.hide();"
+														   update=":#{p:component('detalhesDevolucaoAlmoxarifado')}"
+														   title="Listar estoques" >
+												<f:setPropertyActionListener value="#{item}" target="#{devolucaoMaterialRaiz.devolucaoMaterialItemSugestao}" />
+								            	<h:graphicImage value="/Imagens/text-list-bullets-icon.png" />
+								            </p:commandLink>  
+										</p:column> 
+								    </p:dataTable>
+								</div>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{devolucaoMaterialRaiz.instancia.status == 'P'}" >
+								<h:panelGroup>
+									<h:panelGrid columns="1" >
+										<h:outputText value="#{devolucaoMaterialRaiz.devolucaoMaterialItemSugestao.materialAlmoxarifado.descricaoUnidadeHtml}" escape="false" />
+										<p:dataTable value="#{devolucaoMaterialRaiz.estoqueAlmoxarifadoSugestao}" 
+													 var="eg" 
+												 	 emptyMessage="Click em algum material"> 
+											<p:column headerText="Id" >
+												<h:outputText value="#{eg.idEstoqueAlmoxarifado}" />
+											</p:column>
+											<p:column headerText="Lote" >
+												<h:outputText value="#{eg.lote}" />
+											</p:column>
+											<p:column headerText="Codigo de Barras" >
+												<h:outputText value="#{eg.codigoBarras}" />
+											</p:column>
+											<p:column headerText="Quantidade" >
+												<h:outputText value="#{eg.quantidadeAtual}" />
+											</p:column>
+										</p:dataTable>
+									</h:panelGrid>
+								</h:panelGroup>
+								
+								<ri:inputTextArea id="codigosEstoqueAlmoxarifado" 
+												  title="Insira o lote ou código de barras" 
+												  value="#{devolucaoMaterialRaiz.codigos}" 
+												  label="Lote/Código de Barras" 
+												  rows="15" 
+												  cols="40" />
+								<p:commandButton value="Validar" 
+												 global="false" 
+	                						     onclick="statusDialog.show();" 
+	                						     onsuccess="statusDialog.hide();"
+	                						     update=":#{p:component('devolucaoMaterialItemPanelGrid')}"
+												 action="#{devolucaoMaterialRaiz.validarCodigos}" />
+							</h:panelGroup>
+						</h:panelGrid>						   
+						<p:separator id="separatorDevolucaoAlmoxarifado" />
+						<h:panelGrid id="botoesDevolucaoAlmoxarifadoPanelGrid" 
+									 global="false" 
+        						     onclick="statusDialog.show();" 
+        						     onsuccess="statusDialog.hide();"
+									 columns="3" 
+									 width="100%" >
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Devolver" 
+								    				 rendered="#{devolucaoMaterialRaiz.instancia.status == 'P'}"
+								    				 global="false" 
+			                						 onclick="statusDialog.show();" 
+			                						 onsuccess="statusDialog.hide();"
+								    				 action="#{devolucaoMaterialRaiz.preFinalizarDevolucao}" 
+													 update=":#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')} :#{p:component('devolucaoAlmoxarifadoDialog')} :#{p:component('mensagemDevolucaoAlmoxarifadoGrowl')} :#{p:component('justificativaDevolucaoAlmoxarifadoQuantidadeAlteradaDialog')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup>
+								<center>
+								    <p:commandButton value="Fechar"
+								    				 global="false" 
+					                				 onclick="statusDialog.show();" 
+					                				 onsuccess="statusDialog.hide();"	
+								    				 action="#{devolucaoMaterialRaiz.fecharDialogDevolucaoPendente}" 
+													 update=":#{p:component('devolucaoAlmoxarifadoDialog')} :#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')}" />
+								</center>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{devolucaoMaterialRaiz.instancia.status == 'R' or devolucaoMaterialRaiz.instancia.status == 'RP'}" >
+								<center>
+									<p:commandButton value="Imprimir"
+													 global="false" 
+					                				 onsuccess="statusDialog.hide();"	
+													 rendered="#{devolucaoMaterialRaiz.instancia.status != 'P'}"
+								    			     onclick="window.open('/imhotep/PaginasWeb/Almoxarifado/DevolucaoMaterial/devolucaoMaterialImpressa.hu', 'devolucaoImpressa');"/>
+								</center>
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGrid>
+		        </p:outputPanel>  
+			
+			</p:dialog>
+			
+			<p:dialog id="justificativaDevolucaoAlmoxarifadoQuantidadeAlteradaDialog"
+					  header="Justificar Devolução Parcial" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{devolucaoMaterialRaiz.statusDialogJustificativaQuantidadeDiferente}" >
+				<p:outputPanel id="devolucaoAlmoxarifadoParcialOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesDevolucaoAlmoxarifadoParcial" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da devolução ser registrada com quantidades diferentes da informada pelo devolutor</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaDevolucaoAlmoxarifadoParcial" value="#{devolucaoMaterialRaiz.justificativaDevolucaoDiferente}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Finalizar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{devolucaoMaterialRaiz.finalizarDevolucao}" 
+												 update=":#{p:component('devolucaoAlmoxarifadoDialog')} :#{p:component('justificativaDevolucaoAlmoxarifadoQuantidadeAlteradaDialog')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+												 action="#{devolucaoMaterialRaiz.cancelarJustificativaDevolucao}"
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 update=":#{p:component('devolucaoAlmoxarifadoDialog')} :#{p:component('justificativaDevolucaoAlmoxarifadoQuantidadeAlteradaDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="recusardevolucaoAlmoxarifadoDialog"
+					  header="Recusar Devolução" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{devolucaoMaterialRaiz.statusDialogJustificativaRecusaDevolucao}" >
+				<p:outputPanel id="devolucaoAlmoxarifadoRecusadaOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesDevolucaoAlmoxarifadoRecusada" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da recusa da devolução de #{devolucaoMaterialRaiz.instancia.profissionalInsercao.nomeResumido}</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaRecusaDevolucaoAlmoxarifado" value="#{devolucaoMaterialRaiz.justificativaDevolucaoRecusada}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{devolucaoMaterialRaiz.recusarDevolucao}" 
+												 update=":#{p:component('recusardevolucaoAlmoxarifadoDialog')} :#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{devolucaoMaterialRaiz.cancelarRecusaDevolucao}" 
+							    				 update=":#{p:component('recusardevolucaoAlmoxarifadoDialog')} :#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog id="recusarDevolucaoAlmoxarifadoItemDialog"
+					  header="Recusar Item da Devolução" 
+					  modal="true" 
+					  resizable="true"
+					  closable="false" 
+					  visible="#{devolucaoMaterialRaiz.statusDialogJustificativaRecusaItem}" >
+				<p:outputPanel id="devolucaoAlmoxarifadoItemRecusadaOutPutPanel" style="text-align:center;" layout="block">
+					<p:messages id="messagesDevolucaoAlmoxarifadoItemRecusada" showDetail="false" autoUpdate="false" closable="true" />
+					<b>Informe o motivo da recusa do #{devolucaoMaterialRaiz.itemRecusado.materialAlmoxarifado.descricaoUnidadeMaterial}</b>
+					<br/>
+					<center>
+						<p:editor id="justificativaRecusaItemDevolucaoAlmoxarifado" value="#{devolucaoMaterialRaiz.justificativaItemRecusado}" />
+					</center>
+					<h:panelGrid columns="2" width="100%" >
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Recusar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+												 action="#{devolucaoMaterialRaiz.recusarItemDevolvido}" 
+												 update=":#{p:component('recusarDevolucaoAlmoxarifadoItemDialog')} :#{p:component('devolucaoAlmoxarifadoDialog')}" />
+							</center>
+						</h:panelGroup>
+						<h:panelGroup>
+							<center>
+								<p:commandButton value="Cancelar" 
+												 global="false" 
+			                					 onclick="statusDialog.show();" 
+			                					 onsuccess="statusDialog.hide();"
+							    				 action="#{devolucaoMaterialRaiz.cancelarRecusaItem}" 
+							    				 update=":#{p:component('recusarDevolucaoAlmoxarifadoItemDialog')} :#{p:component('devolucaoAlmoxarifadoDialog')}" />
+							</center>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:poll interval="60" 
+					update=":#{p:component('devolucoesAlmoxarifadoPendentesDataGrid')}" 
+					listener="#{devolucaoMaterialConsultaRaiz.consultarDevolucoesPendentes}"
+					global="false" />
+		</p:fieldset>
+	</ui:define>
+</ui:composition>

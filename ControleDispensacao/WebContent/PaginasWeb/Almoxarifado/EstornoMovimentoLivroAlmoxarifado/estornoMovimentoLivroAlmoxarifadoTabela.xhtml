@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ri="http://java.sun.com/jsf/composite/remendo/input">
+	
+	<p:dataTable id="tabelaLivro" 
+				 value="#{estornoMovimentacaoAlmoxarifadoConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10000" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idMovimentoLivroAlmoxarifado}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data do Movimento" />
+			</f:facet>
+			<h:outputText value="#{linha.dataMovimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalInsercao.nome}"/>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Tipo do Movimento" />
+			</f:facet>
+			<h:outputText value="#{linha.tipoMovimentoAlmoxarifado.descricao}/#{linha.tipoMovimentoAlmoxarifado.tipoOperacao}"/>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Quantidade Movimentada" />
+			</f:facet>
+			<h:outputText value="#{linha.quantidadeMovimentacao}"/>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Justificativa" />
+			</f:facet>
+			<h:outputText value="#{linha.justificativa}" escape="false" />
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink action="#{estornoMovimentacaoAlmoxarifadoRaiz.preEstorno}"
+						   update=":#{p:component('estornoMovimentoAlmoxarifadoAlmoxarifadoPesquisaForm')}"
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<h:graphicImage value="/Imagens/delete.png" />
+				<f:setPropertyActionListener value="#{linha}" target="#{estornoMovimentacaoAlmoxarifadoRaiz.item}" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+	
+	<p:dialog closable="false" 
+			  visible="#{estornoMovimentacaoAlmoxarifadoRaiz.exigirJustificativa}" 
+			  modal="true" >
+		Justifique a exclusão do movimento
+		<p:editor value="#{estornoMovimentacaoAlmoxarifadoRaiz.justificativa}" />
+		<p:commandButton value="Estornar" 
+						 update=":#{p:component('estornoMovimentoAlmoxarifadoAlmoxarifadoPesquisaForm')}" 
+						 action="#{estornoMovimentacaoAlmoxarifadoRaiz.apagarMovimento}" />
+		<p:commandButton value="Cancelar" 
+						 action="#{estornoMovimentacaoAlmoxarifadoRaiz.cancelarJustificativa}" 
+						 update=":#{p:component('estornoMovimentoAlmoxarifadoAlmoxarifadoPesquisaForm')}" />
+	</p:dialog>
+
+</ui:composition>

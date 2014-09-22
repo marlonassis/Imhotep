@@ -30,7 +30,7 @@ public class Usuario implements Serializable {
 	private boolean expiraSessao;
 	private Profissional profissional;
 	private boolean baseTeste;
-	private Integer quantidadeErroLogin;
+	private int quantidadeErroLogin;
 	
 	public Usuario() {
 	}
@@ -126,28 +126,59 @@ public class Usuario implements Serializable {
 	}
 	
 	@Column(name="in_quantidade_erro_login")
-	public Integer getQuantidadeErroLogin(){
+	public int getQuantidadeErroLogin(){
 		return quantidadeErroLogin;
 	}
 	
-	public void setQuantidadeErroLogin(Integer quantidadeErroLogin){
+	public void setQuantidadeErroLogin(int quantidadeErroLogin){
 		this.quantidadeErroLogin = quantidadeErroLogin;
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Usuario))
-			return false;
-		
-		return ((Usuario)obj).getIdUsuario() == this.idUsuario;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (baseTeste ? 1231 : 1237);
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime * result + (expiraSessao ? 1231 : 1237);
+		result = prime * result + idUsuario;
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + login.hashCode();
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (baseTeste != other.baseTeste)
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
+		if (expiraSessao != other.expiraSessao)
+			return false;
+		if (idUsuario != other.idUsuario)
+			return false;
+		if (login == null) {
+			if (other.login != null)
+				return false;
+		} else if (!login.equals(other.login))
+			return false;
+		if (senha == null) {
+			if (other.senha != null)
+				return false;
+		} else if (!senha.equals(other.senha))
+			return false;
+		return true;
 	}
 
 	@Override

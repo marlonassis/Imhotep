@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -16,7 +16,7 @@ public class ExcecaoAcessoNaoAutorizado extends ExcecaoPadrao {
 	}
 	
 	public ExcecaoAcessoNaoAutorizado(String pagina){
-		super.mensagem("Acesso n√£o autorizado.", "O usu√°rio tentou acessar "+pagina);
+		super.mensagem("Acesso não autorizado.", "O usuário tentou acessar "+pagina);
 	}
 	
 }

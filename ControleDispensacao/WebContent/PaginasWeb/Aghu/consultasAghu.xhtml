@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml"
+                xmlns:ri="http://java.sun.com/jsf/composite/remendo/input">
+
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios" title="Consultas Agendadas">
+			<h:form id="relatoriosForm"
+					style="text-align: left;">
+				<div align="left">
+					<h:panelGrid columns="3">
+						
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="dataIni" value="Início:" />
+							<br />
+							<p:calendar id="dataIni"
+								value="#{aghuRaiz.dataIni}" pattern="dd/MM/yyyy"
+								locale="pt" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<font color="red">*</font>
+							<h:outputLabel for="dataFim" value="Fim:" />
+							<br />
+							<p:calendar id="dataFim"
+								value="#{aghuRaiz.dataFim}" pattern="dd/MM/yyyy" locale="pt" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<ri:inputApenasLetrasNumeros id="chave" 
+														 title="Informe, se houver, a chave de acesso" 
+														 value="#{aghuRaiz.chave}" 
+														 label="Chave" 
+														 autocomplete="false"/>
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<p:commandButton value="Consultar" 
+											action="#{aghuRaiz.gerarArquivoConsultas}" 
+											update=":#{p:component('relatoriosForm')}" 
+											global="false" 
+				              			    onclick="statusDialog.show();" 
+				              			    onsuccess="statusDialog.hide();"/>
+						</h:panelGroup>
+					</h:panelGrid>
+					<br/>
+					<br/>
+					<div align="center">
+						<p:commandLink action="#{aghuRaiz.carregarDocumentosConsultasAGHU}" 
+									   update=":#{p:component('relatoriosForm')}"
+									   immediate="true" 
+									   global="false" 
+			              			   onclick="statusDialog.show();" 
+			              			   onsuccess="statusDialog.hide();">
+							<h:graphicImage value="/Imagens/refresh16.png" />
+						</p:commandLink>
+					</div>
+					<p:dataGrid id="dataGridArquivo"
+								var="arquivo" 
+								value="#{aghuRaiz.arquivosList}" 
+								columns="3"
+								emptyMessage="Não foram encontrados arquivos"
+								paginator="false">  
+					        <p:panel header="#{arquivo}" style="text-align:center">  
+					            <h:panelGrid columns="1" style="width:100%">  
+					                <p:graphicImage value="/Imagens/medical-report-icon.png"/>   
+					  
+					                <h:outputText value="#{arquivo}" />  
+					                
+					                <p:commandLink action="#{aghuRaiz.carregarItemDownload(arquivo)}"  
+					                			   ajax="false" 
+					                			   update=":#{p:component('dataGridArquivo')}"
+					                			   immediate="true">
+					                    <h:graphicImage value="/Imagens/Button-Download-icon.png" />
+					                </p:commandLink>  
+					                
+					            </h:panelGrid>  
+					        </p:panel>  
+    				</p:dataGrid>  
+					
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>

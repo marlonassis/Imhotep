@@ -1,5 +1,5 @@
 /**
- * Criado por M√°rlon Assis
+ * Criado por Márlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -12,7 +12,7 @@ public class ExcecaoDataContabil extends ExcecaoPadrao {
 	private static final long serialVersionUID = -476477719195628188L;
 
 	public ExcecaoDataContabil(){
-		super.mensagem("A data cont√°bil n√£o pode ser anterior ao m√™s atual", "");
+		super.mensagem("A data contábil não pode ser anterior ao mês atual", "");
 	}
 	
 }

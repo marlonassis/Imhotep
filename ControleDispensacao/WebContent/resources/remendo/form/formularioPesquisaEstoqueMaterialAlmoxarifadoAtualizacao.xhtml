@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+      xmlns:co="http://java.sun.com/jsf/composite">
+	
+	<co:interface>
+		<co:attribute name="id" required="true"/>
+		<co:attribute name="renderedForm" default="true" />
+	</co:interface>
+	
+	<co:implementation>
+		<ui:param name="componentUpdate" value="p:component('#{cc.attrs.id}')"/>
+		<h:form id="#{cc.attrs.id}"
+				rendered="#{cc.attrs.renderedForm}" 
+				style="text-align: left;" >
+			<p:growl/>
+			<h:panelGroup>
+				<h:panelGrid columns="2" >
+					<ri:inputAutoComplete id="materialAlmoxarifado" 
+										  label="Material"  
+										  disabled="#{materialEstoqueRaiz.estoquesEncontrados.size() > 0}"
+										  completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
+										  itemValue="#{material}" 
+										  itemLabel="#{material.descricaoUnidadeMaterial}" 
+										  var="material"
+										  value="#{materialEstoqueRaiz.materialAlmoxarifado}"/>
+					<p:commandButton image="ui-icon ui-icon-search"
+									 update="#{cc.attrs.id}"
+									 action="#{materialEstoqueRaiz.buscarEstoques}" 
+									 rendered="#{materialEstoqueRaiz.estoquesEncontrados.size() == 0}"
+									 title="Procurar por lotes" />
+									 
+					<p:commandButton image="ui-icon ui-icon-gear"
+									 update="#{cc.attrs.id}"
+									 action="#{materialEstoqueRaiz.novaBusca}" 
+									 rendered="#{materialEstoqueRaiz.estoquesEncontrados.size() > 0}"
+									 title="Limpar pesquisas" />
+				</h:panelGrid>
+			</h:panelGroup>
+			<br/>
+			<h:panelGroup rendered="#{materialEstoqueRaiz.estoquesEncontrados.size() > 0}" >
+				<h3>Estoques encontrados</h3>  
+				<p:dataList value="#{materialEstoqueRaiz.estoquesEncontrados}" 
+							var="linha" 
+							type="ordered">  
+					<p:commandLink value="#{linha.lote}" 
+								   action="#{ajusteEstoqueAlmoxarifadoRaiz.carregarEstoque(linha)}" 
+								   oncomplete="location.reload();" />
+					#{' - '}
+					<h:outputText value="#{linha.fabricanteAlmoxarifado.descricao}"/>
+					#{' - '}  
+					<h:outputText value="#{linha.dataValidade}">
+						<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+					</h:outputText>
+					#{' - '} 
+					<h:outputText value="#{linha.quantidadeAtual}"/>
+					#{' '} 
+					<p:commandLink update=":#{p:component('tabAtualizacaoEstoque')}">
+						<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
+										title="Clique aqui para editar o lote" />
+						<f:setPropertyActionListener value="#{linha}" target="#{alterarEstoqueAlmoxarifadoRaiz.estoqueAntigo}" />
+					</p:commandLink>
+				</p:dataList>
+			</h:panelGroup>
+			</h:form> 
+	</co:implementation>
+	
+</html>

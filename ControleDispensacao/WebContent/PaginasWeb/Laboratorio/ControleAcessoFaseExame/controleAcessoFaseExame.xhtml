@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Controle de Acesso">
+			
+			<p:commandButton value="Adicionar Profissional ao Laboratório" 
+							 action="#{controleAcessoFaseExameRaiz.exibirDialogAddProfissional}" 
+							 update=":#{p:component('dialogAddProfissionalUnidadeLaboratorioPanelGroup')}" />
+			
+			<rf:formularioPadrao idFormPadrao="controleAcessoFaseExame" 
+								 srcConsulta="Laboratorio/ControleAcessoFaseExame/controleAcessoFaseExameConsulta.xhtml" 
+								 raizConsulta="#{controleAcessoFaseExameConsulta}" 
+								 raiz="#{controleAcessoFaseExameRaiz}" 
+								 renderedGravar="false"
+								 renderedNovo="true"
+								 semPesquisa="true"
+								 srcEditor="Laboratorio/ControleAcessoFaseExame/controleAcessoFaseExameEditor.xhtml" 
+								 srcTabela="Laboratorio/ControleAcessoFaseExame/controleAcessoFaseExameTabela.xhtml" />
+			
+			
+			
+			<h:panelGroup id="dialogAddProfissionalUnidadeLaboratorioPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{controleAcessoFaseExameRaiz.exibirDialogAddProfissional}" 
+						  closable="false" 
+						  header="Adicionar profissional ao laboratório" 
+						  modal="true" >
+					<h:form>
+						<h:panelGrid columns="1" >
+							<ri:inputAutoComplete id="profissional" 
+												  completeMethod="#{profissionalLaboratorioAutoComplete.autoComplete}" 
+												  itemValue="#{profissional}" 
+												  required="true"
+												  itemLabel="#{profissional.nome}" 
+												  var="profissional" 
+												  value="#{controleAcessoFaseExameRaiz.profissionalUnidade}" 
+												  label="Profissional" />
+							
+							<p:commandButton value="Adicionar" 
+											 action="#{controleAcessoFaseExameRaiz.adicionarProfissionalLaboratorio}" 
+											 update=":#{p:component('dialogAddProfissionalUnidadeLaboratorioPanelGroup')}" />
+							
+							<p:dataTable value="#{profissionalLaboratorioConsultaRaiz.consultar()}" 
+										 var="linha" 
+										 emptyMessage="Não há profissional cadastrado" >
+										 
+								<f:facet name="header">
+									<h:outputText value="Profissionais do Laboratório" />
+								</f:facet>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Nome" />
+									</f:facet>
+									<h:outputText value="#{linha.nome}" />
+								</p:column>
+								
+								<p:column style="text-align: center;">
+									<p:commandLink action="#{controleAcessoFaseExameRaiz.removerProfissionalLaboratorio()}"
+												   update=":#{p:component('dialogAddProfissionalUnidadeLaboratorioPanelGroup')}"
+												   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+												   title="Apagar" style="padding-right:10px;"
+												    immediate="true" >
+										<f:setPropertyActionListener value="#{linha}" target="#{controleAcessoFaseExameRaiz.profissionalUnidade}" />
+										<h:graphicImage value="/Imagens/delete.png" />
+									</p:commandLink>
+								</p:column>
+							</p:dataTable>
+						</h:panelGrid>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{controleAcessoFaseExameRaiz.ocultarDialogAddProfissional}" 
+										 update=":#{p:component('dialogAddProfissionalUnidadeLaboratorioPanelGroup')} :#{p:component('controleAcessoFaseExame')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>

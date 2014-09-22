@@ -7,7 +7,7 @@ package br.com.imhotep.enums;
 public enum TipoMovimentacaoEnum {
 	E("Entrada"),
 	P("Perda"),
-	S("Sa√≠da");
+	S("Saída");
 	
 	TipoMovimentacaoEnum(String papel){
 		label = papel;

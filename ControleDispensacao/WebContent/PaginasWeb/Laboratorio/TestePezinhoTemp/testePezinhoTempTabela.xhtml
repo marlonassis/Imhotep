@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelalaboratorioResultadoPezinhoTemp" 
+				 var="linha" 
+				 rows="10" 
+				 value="#{laboratorioResultadoPezinhoTempConsulta.list}"
+				 rowKey="#{linha.idLaboratorioResultadoPezinhoTemp}"
+				 paginator="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 selectionMode="single" 
+				 dblClickSelect="true">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Exame" />
+			</f:facet>
+			<h:outputText value="#{linha.exameIdentificacao}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Prontuário" />
+			</f:facet>
+			<h:outputText value="#{linha.prontuario}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Resultado" />
+			</f:facet>
+			<h:outputText value="#{linha.resultadoExame}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data do Resultado" />
+			</f:facet>
+			<h:outputText value="#{linha.dataResultado}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Cadastrante" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalCadastro.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data Cadastro" />
+			</f:facet>
+			<h:outputText value="#{linha.dataCadastro}" >
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+
+
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+				update=":#{p:component('testePezinhoTempEditorForm')}"
+				style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{laboratorioResultadoPezinhoTempRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+
+			<p:commandLink action="#{laboratorioResultadoPezinhoTempRaiz.apagar()}"
+				update=":#{p:component('testePezinhoTempEditorForm')} :#{p:component('testePezinhoTempPesquisaForm')}"
+				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+				title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}"
+					target="#{laboratorioResultadoPezinhoTempRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+			
+			<p:commandLink title="Visualizar"
+						   onclick="window.open('testePezinhoTempImpressa.hu?id=#{linha.exameIdentificacao}', 'examePezinhoImpressa');"
+						   target="examePezinhoImpressa"
+						   style="padding-right:10px;">
+				<h:graphicImage height="16px"
+								width="16px" 
+								value="/Imagens/PDF-icon.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

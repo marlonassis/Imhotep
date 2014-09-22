@@ -95,6 +95,6 @@ public class PrescricaoItemDose {
 
 	@Override
 	public String toString() {
-		return "Material: ".concat(prescricaoItem.getMaterial().getDescricao()).concat(" - Per√≠odo: ").concat(periodo.toString());
+		return "Material: ".concat(prescricaoItem.getMaterial().getDescricao()).concat(" - Período: ").concat(periodo.toString());
 	}
 }

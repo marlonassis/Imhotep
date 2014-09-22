@@ -1,5 +1,6 @@
 package br.com.imhotep.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,7 +24,11 @@ import br.com.imhotep.enums.TipoSexoEnum;
 
 @Entity
 @Table(name = "tb_paciente")
-public class Paciente {
+public class Paciente implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3432678836361624292L;
 	private int idPaciente;
 	private Unidade unidadeCadastro;
 	private Cidade cidadeNaturalidade;
@@ -235,22 +240,154 @@ public class Paciente {
 		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(cpf, "###.###.###-##");
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Paciente))
-			return false;
-		
-		return ((Paciente)obj).getIdPaciente() == this.idPaciente;
+	@Transient
+	public String getNomeProntuarioCPF(){
+		return getNome().concat(" - ").concat(getProntuario()).concat(" - ").concat(getCpfFormatado());
 	}
+	
+	
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + nome.hashCode() + dataInclusao.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((cidadeNaturalidade == null) ? 0 : cidadeNaturalidade
+						.hashCode());
+		result = prime * result + ((cor == null) ? 0 : cor.hashCode());
+		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime * result
+				+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = prime * result + idPaciente;
+		result = prime * result
+				+ ((nacionalidade == null) ? 0 : nacionalidade.hashCode());
+		result = prime * result
+				+ ((naturalidade == null) ? 0 : naturalidade.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((nomeMae == null) ? 0 : nomeMae.hashCode());
+		result = prime * result + ((nomePai == null) ? 0 : nomePai.hashCode());
+		result = prime * result
+				+ ((numeroSus == null) ? 0 : numeroSus.hashCode());
+		result = prime
+				* result
+				+ ((orgaoRegistroGeral == null) ? 0 : orgaoRegistroGeral
+						.hashCode());
+		result = prime
+				* result
+				+ ((profissionalInclusao == null) ? 0 : profissionalInclusao
+						.hashCode());
+		result = prime * result
+				+ ((prontuario == null) ? 0 : prontuario.hashCode());
+		result = prime * result
+				+ ((registroGeral == null) ? 0 : registroGeral.hashCode());
+		result = prime * result + ((sexo == null) ? 0 : sexo.hashCode());
+		result = prime * result
+				+ ((tipoSanguineo == null) ? 0 : tipoSanguineo.hashCode());
+		result = prime * result
+				+ ((unidadeCadastro == null) ? 0 : unidadeCadastro.hashCode());
+		return result;
 	}
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Paciente other = (Paciente) obj;
+		if (cidadeNaturalidade == null) {
+			if (other.cidadeNaturalidade != null)
+				return false;
+		} else if (!cidadeNaturalidade.equals(other.cidadeNaturalidade))
+			return false;
+		if (cor == null) {
+			if (other.cor != null)
+				return false;
+		} else if (!cor.equals(other.cor))
+			return false;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
+		if (dataNascimento == null) {
+			if (other.dataNascimento != null)
+				return false;
+		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+		if (idPaciente != other.idPaciente)
+			return false;
+		if (nacionalidade == null) {
+			if (other.nacionalidade != null)
+				return false;
+		} else if (!nacionalidade.equals(other.nacionalidade))
+			return false;
+		if (naturalidade == null) {
+			if (other.naturalidade != null)
+				return false;
+		} else if (!naturalidade.equals(other.naturalidade))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (nomeMae == null) {
+			if (other.nomeMae != null)
+				return false;
+		} else if (!nomeMae.equals(other.nomeMae))
+			return false;
+		if (nomePai == null) {
+			if (other.nomePai != null)
+				return false;
+		} else if (!nomePai.equals(other.nomePai))
+			return false;
+		if (numeroSus == null) {
+			if (other.numeroSus != null)
+				return false;
+		} else if (!numeroSus.equals(other.numeroSus))
+			return false;
+		if (orgaoRegistroGeral == null) {
+			if (other.orgaoRegistroGeral != null)
+				return false;
+		} else if (!orgaoRegistroGeral.equals(other.orgaoRegistroGeral))
+			return false;
+		if (profissionalInclusao == null) {
+			if (other.profissionalInclusao != null)
+				return false;
+		} else if (!profissionalInclusao.equals(other.profissionalInclusao))
+			return false;
+		if (prontuario == null) {
+			if (other.prontuario != null)
+				return false;
+		} else if (!prontuario.equals(other.prontuario))
+			return false;
+		if (registroGeral == null) {
+			if (other.registroGeral != null)
+				return false;
+		} else if (!registroGeral.equals(other.registroGeral))
+			return false;
+		if (sexo != other.sexo)
+			return false;
+		if (tipoSanguineo != other.tipoSanguineo)
+			return false;
+		if (unidadeCadastro == null) {
+			if (other.unidadeCadastro != null)
+				return false;
+		} else if (!unidadeCadastro.equals(other.unidadeCadastro))
+			return false;
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return nome;

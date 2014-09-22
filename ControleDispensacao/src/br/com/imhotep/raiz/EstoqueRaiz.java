@@ -8,13 +8,13 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.Estoque;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class EstoqueRaiz extends PadraoHome<Estoque>{
+public class EstoqueRaiz extends PadraoRaiz<Estoque>{
 	
-	//o autenticador carrega essa lista quando o usu√°rio tiver atuoriza√ß√£o para v√™-la
+	//o autenticador carrega essa lista quando o usuário tiver atuorização para vê-la
 	private List<Estoque> estoqueVencido = new ArrayList<Estoque>();
 	
 	public static EstoqueRaiz getInstanciaAtual(){

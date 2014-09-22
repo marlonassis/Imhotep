@@ -157,14 +157,109 @@ public class Fornecedor implements Serializable {
 	public String getNome(){
 		return nomeFantasia == null || nomeFantasia.isEmpty() ? razaoSocial : nomeFantasia;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((cadastroPessoaFisicaJuridica == null) ? 0
+						: cadastroPessoaFisicaJuridica.hashCode());
+		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
+		result = prime * result + ((cidade == null) ? 0 : cidade.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((endereco == null) ? 0 : endereco.hashCode());
+		result = prime * result + idFornecedor;
+		result = prime
+				* result
+				+ ((inscricaoEstadual == null) ? 0 : inscricaoEstadual
+						.hashCode());
+		result = prime
+				* result
+				+ ((inscricaoMunicipal == null) ? 0 : inscricaoMunicipal
+						.hashCode());
+		result = prime * result
+				+ ((nomeFantasia == null) ? 0 : nomeFantasia.hashCode());
+		result = prime * result
+				+ ((razaoSocial == null) ? 0 : razaoSocial.hashCode());
+		result = prime * result
+				+ ((telefone == null) ? 0 : telefone.hashCode());
+		result = prime * result
+				+ ((telefone2 == null) ? 0 : telefone2.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null)
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		if(!(obj instanceof Fornecedor))
+		if (getClass() != obj.getClass())
 			return false;
-		
-		return ((Fornecedor)obj).getIdFornecedor() == this.idFornecedor;
+		Fornecedor other = (Fornecedor) obj;
+		if (cadastroPessoaFisicaJuridica == null) {
+			if (other.cadastroPessoaFisicaJuridica != null)
+				return false;
+		} else if (!cadastroPessoaFisicaJuridica
+				.equals(other.cadastroPessoaFisicaJuridica))
+			return false;
+		if (cep == null) {
+			if (other.cep != null)
+				return false;
+		} else if (!cep.equals(other.cep))
+			return false;
+		if (cidade == null) {
+			if (other.cidade != null)
+				return false;
+		} else if (!cidade.equals(other.cidade))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (endereco == null) {
+			if (other.endereco != null)
+				return false;
+		} else if (!endereco.equals(other.endereco))
+			return false;
+		if (idFornecedor != other.idFornecedor)
+			return false;
+		if (inscricaoEstadual == null) {
+			if (other.inscricaoEstadual != null)
+				return false;
+		} else if (!inscricaoEstadual.equals(other.inscricaoEstadual))
+			return false;
+		if (inscricaoMunicipal == null) {
+			if (other.inscricaoMunicipal != null)
+				return false;
+		} else if (!inscricaoMunicipal.equals(other.inscricaoMunicipal))
+			return false;
+		if (nomeFantasia == null) {
+			if (other.nomeFantasia != null)
+				return false;
+		} else if (!nomeFantasia.equals(other.nomeFantasia))
+			return false;
+		if (razaoSocial == null) {
+			if (other.razaoSocial != null)
+				return false;
+		} else if (!razaoSocial.equals(other.razaoSocial))
+			return false;
+		if (telefone == null) {
+			if (other.telefone != null)
+				return false;
+		} else if (!telefone.equals(other.telefone))
+			return false;
+		if (telefone2 == null) {
+			if (other.telefone2 != null)
+				return false;
+		} else if (!telefone2.equals(other.telefone2))
+			return false;
+		return true;
 	}
+	
+	
 }

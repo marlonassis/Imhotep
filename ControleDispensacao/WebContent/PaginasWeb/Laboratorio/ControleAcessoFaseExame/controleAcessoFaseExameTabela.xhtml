@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dataTable id="tabelaSolicitacaoExamesFinal" 
+				 value="#{controleAcessoFaseExameConsulta.lista}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idLaboratorioExameAutorizaProfissional}">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Profissional" />
+			</f:facet>
+			<h:outputText value="#{linha.profissional.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Fase" />
+			</f:facet>
+			<h:outputText value="#{controleAcessoFaseExameRaiz.faseLinha(linha)}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Cadastrante" />
+			</f:facet>
+			<h:outputText value="#{linha.profissionalCadastro.nome}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Data do Casdastro" />
+			</f:facet>
+			<h:outputText value="#{linha.dataCadastro}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-3" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column style="width:120px; text-align: center;">
+			<p:commandLink title="Editar"
+						   update=":#{p:component('controleAcessoFaseExame')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{controleAcessoFaseExameRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink action="#{controleAcessoFaseExameRaiz.apagar()}"
+						   update=":#{p:component('controleAcessoFaseExame')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Excluir"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{controleAcessoFaseExameRaiz.instancia}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

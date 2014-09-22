@@ -1,5 +1,6 @@
 package br.com.imhotep.raiz;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,11 @@ import br.com.imhotep.entidade.MaterialAlmoxarifado;
 import br.com.imhotep.entidade.SubGrupoAlmoxarifado;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.remendo.PadraoHome;
+import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class MaterialAlmoxarifadoRaiz extends PadraoHome<MaterialAlmoxarifado>{
+public class MaterialAlmoxarifadoRaiz extends PadraoRaiz<MaterialAlmoxarifado>{
 	private List<SubGrupoAlmoxarifado> subGrupoAlmoxarifadoList;
 
 	@Override
@@ -32,7 +33,15 @@ public class MaterialAlmoxarifadoRaiz extends PadraoHome<MaterialAlmoxarifado>{
 	@Override
 	public void novaInstancia() {
 		super.novaInstancia();
-		setSubGrupoAlmoxarifadoList(null);
+		setSubGrupoAlmoxarifadoList(new ArrayList<SubGrupoAlmoxarifado>());
+	}
+	
+	@Override
+	public boolean atualizar() {
+		if(getSubGrupoAlmoxarifadoList() == null || getSubGrupoAlmoxarifadoList().isEmpty()){
+			getInstancia().setSubGrupoAlmoxarifado(null);
+		}
+		return super.atualizar();
 	}
 	
 	@Override
@@ -45,9 +54,15 @@ public class MaterialAlmoxarifadoRaiz extends PadraoHome<MaterialAlmoxarifado>{
 		if(getInstancia().getGrupoAlmoxarifado() != null){
 			setSubGrupoAlmoxarifadoList(new SubGrupoAlmoxarifadoConsultaRaiz().consultarSubGrupoGrupo(getInstancia().getGrupoAlmoxarifado().getIdGrupoAlmoxarifado()));
 			if(getSubGrupoAlmoxarifadoList() == null || getSubGrupoAlmoxarifadoList().isEmpty()){
-				setSubGrupoAlmoxarifadoList(null);
+				getInstancia().setSubGrupoAlmoxarifado(null);
 			}
 		}
+	}
+	
+	public boolean getExibirComboSubGrupo(){
+		if(getSubGrupoAlmoxarifadoList() == null || getSubGrupoAlmoxarifadoList().isEmpty())
+			return false;
+		return true;
 	}
 	
 	public List<SubGrupoAlmoxarifado> getSubGrupoAlmoxarifadoList() {
