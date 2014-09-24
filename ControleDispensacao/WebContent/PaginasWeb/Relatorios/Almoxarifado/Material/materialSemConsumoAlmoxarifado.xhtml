@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+ 
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="conteudoPadrao">
+		<p:tab id="tabRelatorios"
+			title="Relatório de Material por Unidade">
+			<h:form id="relatoriosForm"
+					style="text-align: left;">
+					
+				<h:panelGrid id="formularioRelatorio" columns="1" width="100%">
+		 					
+					<!-- PERÍODO -->
+					<h:panelGroup>
+						<h:outputLabel for="dataIni" value="Início:" />
+						<br />
+						<p:calendar id="dataIni"
+							value="#{matSemConsAlmoxBean.dataIni}" pattern="dd/MM/yyyy"
+							locale="pt" 
+							required="true" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel for="dataFim" value="Fim:" />
+						<br />
+						<p:calendar id="dataFim"
+							value="#{matSemConsAlmoxBean.dataFim}" pattern="dd/MM/yyyy"
+							locale="pt"
+							required="true" />
+					</h:panelGroup>	
+				</h:panelGrid>
+				
+				<h:panelGrid id="formularioRelatorioPanelGrid" columns="1" width="100%">
+					
+					<!-- GRUPO DE MATERIAL -->
+					<h:panelGroup>
+						<h:outputLabel for="grupo" value="Grupo:" />
+						<br />
+						<p:selectOneMenu value="#{matSemConsAlmoxBean.grupoAlmoxarifado}"
+										 effect="fade" 
+										 required="false" 
+										 converter="entidadeConversor">
+							<p:ajax update=":#{p:component('formularioRelatorioPanelGrid')}" 
+									listener="#{matSemConsAlmoxBean.atualizaSubGrupoAmoxarifado()}" />
+							<f:selectItem itemLabel="[Todos]" itemValue="" />
+							<f:selectItems value="#{grupoAlmoxarifadoConsultaRaiz.consultarGrupos()}" 
+										   var="grupo"
+										   itemLabel="#{grupo.descricao}" 
+										   itemValue="#{grupo}" />
+						</p:selectOneMenu>
+					</h:panelGroup>  
+
+					<!-- SUBGRUPO DE MATERIAL -->
+					<ri:inputSelectOneMenuEntidade id="subGrupo"
+												   required="false"
+												   rendered="#{matSemConsAlmoxBean.exibirComboSubGrupo}"
+												   itemLabel="#{subGrupoAlmoxarifadoInput.descricao}"
+												   itemValue="#{subGrupoAlmoxarifadoInput}"
+												   labelItemDefault="[Todos]"
+												   var="subGrupoAlmoxarifadoInput"
+												   value="#{matSemConsAlmoxBean.subGrupoAlmoxarifado}"
+												   list="#{matSemConsAlmoxBean.subGrupoAlmoxarifadoList}"
+												   label="SubGrupo" /> 
+						
+	 			</h:panelGrid>
+	 			
+	 			<div align="left">
+							<p:commandButton id="downloadRelatorio"
+								value="Gerar relatório" ajax="false"
+								action="#{matSemConsAlmoxBean.gerarRelatorioAloxarifado}"/>  
+				</div>
+			</h:form>
+		</p:tab>
+	</ui:define>
+</ui:composition>
