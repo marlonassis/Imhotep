@@ -174,7 +174,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		if(menu.getMenuPai() != null)
 			liberarPaisMenu(profissional, menu.getMenuPai());
 		String sql = "insert into tb_autoriza_menu_profissional (id_profissional, id_menu, id_profissional_insercao, dt_data_criacao) " +
-				"values ("+profissional.getIdProfissional()+", "+menu.getIdMenu()+", "+getProfissionalAtual().getIdProfissional() + ", '"+new SimpleDateFormat().format(new Date())+"')";
+				"values ("+profissional.getIdProfissional()+", "+menu.getIdMenu()+", "+getProfissionalAtual().getIdProfissional() + ", '"+new SimpleDateFormat("yyyy/MM/dd").format(new Date())+"')";
 		executarQuery(sql);
 		
 	}
@@ -339,27 +339,27 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		
 		
 		
-		//verifica se a diferen�a dos movimentos est� diferente do estoque atual
+		//verifica se a diferen�a dos movimentos est‡ diferente do estoque atual
 		movimentacoesDiferenteEstoqueAtualFarmacia(ip, dbBancoImhotep);
 		
-		//verifica se algum estoque n�o tem o primeiro movimento como entrada
+		//verifica se algum estoque n‹o tem o primeiro movimento como entrada
 		verificaEstoqueSemPrimeiroMovimentoEntradaFarmacia(ip, dbBancoImhotep);
 		
-		//verifica��o de movimento de medicamento vencido
+		//verifica�‹o de movimento de medicamento vencido
 //		verificarMovimentacaoMedicamentoVencidoFarmacia(ip, dbBancoImhotep);
 		
-		//script para verificar se algum estoque do ALMOXARIFADO n�o possui o primeiro movimento como entrada
+		//script para verificar se algum estoque do ALMOXARIFADO n‹o possui o primeiro movimento como entrada
 		verificarEstoqueSemPrimeiroMovimentoEntradaAlmoxarifado(ip, dbBancoImhotep);
 		
 		
-		//script para verificar se as movimenta�Ões do almoxarifado n�o correspondem � quantidade em estoque
+		//script para verificar se as movimenta�Ã•es do almoxarifado n‹o correspondem ˆ quantidade em estoque
 		verificarMovimentacoesNaoCorrespondemQuantidadeEstoqueAlmoxarifado(ip, dbBancoImhotep);
 		
 	}
 
 	private static void verificarMovimentacoesNaoCorrespondemQuantidadeEstoqueAlmoxarifado(String ip, String dbBancoImhotep) {
 		try {
-			System.out.println("Script para verificar se as movimenta��es do almoxarifado n�o correspondem � quantidade em estoque...");
+			System.out.println("Script para verificar se as movimenta�›es do almoxarifado n‹o correspondem ˆ quantidade em estoque...");
 			String sqlEstoque = "select id_estoque_almoxarifado from tb_estoque_almoxarifado";
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(dbBancoImhotep);
@@ -385,7 +385,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 					int entrada = rs2.getInt("entrada");
 					int saida = rs2.getInt("saida");
 					if((entrada-saida) != quantidade){
-						System.out.println("D - Estoque: "+idEstoque2+" - "+lote+"\nMaterial: "+material+"\nTotal: "+entrada+" - "+saida+" = "+(entrada-saida)+"//"+quantidade+"\n••••••••");
+						System.out.println("D - Estoque: "+idEstoque2+" - "+lote+"\nMaterial: "+material+"\nTotal: "+entrada+" - "+saida+" = "+(entrada-saida)+"//"+quantidade+"\nâ€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢");
 					}
 				}
 			}
@@ -397,7 +397,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 	
 	private static void verificarEstoqueSemPrimeiroMovimentoEntradaAlmoxarifado(String ip, String dbBancoImhotep) {
 		try {
-			System.out.println("Script para verificar se algum estoque do ALMOXARIFADO n�o possui o primeiro movimento como entrada...");
+			System.out.println("Script para verificar se algum estoque do ALMOXARIFADO n‹o possui o primeiro movimento como entrada...");
 			String sqlEstoque = "select * from tb_estoque_almoxarifado";
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(dbBancoImhotep);
@@ -430,7 +430,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 
 	private static void verificarMovimentacaoMedicamentoVencidoFarmacia(String ip, String dbBancoImhotep) {
 		try {
-			System.out.println("Script para verificar se algum estoque da FARM�CIA possui movimenta��o de estoque vencido...");
+			System.out.println("Script para verificar se algum estoque da FARMçCIA possui movimenta�‹o de estoque vencido...");
 			String sqlEstoque = "select a.id_movimento_livro, a.dt_data_movimento, b.dt_data_validade, b.id_estoque, b.cv_lote, a.cv_justificativa from tb_movimento_livro a "+
 								"inner join tb_estoque b on a.id_estoque = b.id_estoque "+
 								"where a.dt_data_movimento > b.dt_data_validade "+
@@ -464,7 +464,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 
 	private static void verificaEstoqueSemPrimeiroMovimentoEntradaFarmacia(String ip, String dbBancoImhotep) {
 		try {
-			System.out.println("Verifica se algum estoque n�o tem o primeiro movimento como entrada...");
+			System.out.println("Verifica se algum estoque n‹o tem o primeiro movimento como entrada...");
 			String sqlEstoque = "select * from tb_estoque";
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(dbBancoImhotep);
@@ -497,7 +497,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 
 	private static void movimentacoesDiferenteEstoqueAtualFarmacia(String ip, String dbBancoImhotep) {
 		try {
-			System.out.println("Verificando se a diferen�a dos movimentos est� diferente do estoque atual...");
+			System.out.println("Verificando se a diferen�a dos movimentos est‡ diferente do estoque atual...");
 			String sqlEstoque = "select id_estoque from tb_estoque";
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(dbBancoImhotep);
@@ -523,7 +523,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 					int entrada = rs2.getInt("entrada");
 					int saida = rs2.getInt("saida");
 					if((entrada-saida) != quantidade){
-						System.out.println("A - Estoque: "+idEstoque2+" - "+lote+"\nMaterial: "+material+"\nTotal: "+entrada+" - "+saida+" = "+(entrada-saida)+"//"+quantidade+"\n••••••••");
+						System.out.println("A - Estoque: "+idEstoque2+" - "+lote+"\nMaterial: "+material+"\nTotal: "+entrada+" - "+saida+" = "+(entrada-saida)+"//"+quantidade+"\nâ€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢");
 					}
 				}
 			}
