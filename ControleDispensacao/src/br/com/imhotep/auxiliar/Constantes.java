@@ -24,7 +24,9 @@ public class Constantes {
 	public static final String PAGINA_DEVOLUCAO_MEDICAMENTO = "/imhotep/PaginasWeb/Solicitacoes/DevolucaoMedicamento/devolucaoMedicamento.hu";
 	
 	public static final String PAINEL_MEDICAMENTO_VENCIDO = "Medicamentos Vencidos";
-	public static final String PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO = "Solicitações de Medicamento pelo Usuário";
+	public static final String PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO = "Solicita?ões de Medicamento pelo Usuário";
+	//TODO TAF 5
+	public static final String PAINEL_MATERIAL_ALMOXARIFADO_VENCIDO = "Materiais Vencidos";
 	
 	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
 	

@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templateLimpo.xhtml">
+<!-- TAF 5 -->
+	<ui:define name="conteudoPadrao">
+		<p:fieldset legend="Materiais a vencer ou vencidos"
+					collapsed="false" 
+					toggleable="false">
+			<p:dataTable id="tabelaEstoqueAlmoxarifadoVencido"
+						 value="#{estoqueAlmoxarifadoRaiz.estoqueVencido}" 
+						 var="linha"
+						 dblClickSelect="true" 
+						 emptyMessage="Não foi encontrado registros"
+						 rows="10" 
+						 paginator="true" 
+						 selectionMode="single"
+						 rowKey="#{linha.idEstoqueAlmoxarifado}">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Lote" />
+					</f:facet>
+					<h:outputText value="#{linha.lote}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Material" />
+					</f:facet>
+					<h:outputText value="#{linha.materialAlmoxarifado}" />
+				</p:column>
+				
+				<ui:param name="validade" value="${bloqueioLoteAlmoxarifadoRaiz.materialVencido(linha.dataValidade)}" />
+				<p:column headerText="Data de validade"
+						  style="#{(validade==0)? ('background-color:#FF0000;') : ( (validade==1)? ('background-color:#FF4D00;') : ((validade==2)? ('background-color:#FFFF00;'):('background-color:#00FF00;')) )}">
+					<h:outputText value="#{linha.dataValidade}" style="font-weight:bold;" >
+						<f:convertDateTime pattern="dd/MMMM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Quantidade" />
+					</f:facet>
+					<h:outputText value="#{linha.quantidadeAtual}" />
+				</p:column>
+		
+			</p:dataTable>
+			<h:graphicImage value="/Imagens/red-300x300.jpg" 
+							height="16px"
+							width="16px" />Materiais vencidos
+			<br/>
+			<h:graphicImage value="/Imagens/qradrado_laranja.png" 
+							height="16px"
+							width="16px" />Materiais que vencerão em 1 mês
+			<br/>
+			<h:graphicImage value="/Imagens/yellowsquare.png" 
+							height="16px"
+							width="16px" />Materiais que vencerão em 3 meses
+			<br/>
+			<h:graphicImage value="/Imagens/quadrado_verde.png" 
+							height="16px"
+							width="16px" />Materiais que vencerão em 6 meses
+		</p:fieldset>
+	</ui:define>
+</ui:composition>

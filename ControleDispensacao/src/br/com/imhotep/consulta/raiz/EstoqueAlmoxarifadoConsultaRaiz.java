@@ -79,6 +79,26 @@ public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<NotaFiscalEs
 		return list;
 	}
 	
+	//TODO TAF 5
+	public List<EstoqueAlmoxarifado> consultarEstoqueVencidoEVenceraSeisMeses(){
+		
+		Calendar hoje = Calendar.getInstance();
+		hoje.set(Calendar.MONTH, hoje.get(Calendar.MONTH) + 6);
+		String seisMeses = new SimpleDateFormat("yyyy-MM-dd").format(hoje.getTime());
+			
+		String hql =  "SELECT o "
+					+ "FROM EstoqueAlmoxarifado o "
+					+ "WHERE o.bloqueado = false "
+					+ 	"AND (date_trunc('month',o.dataValidade) BETWEEN date_trunc('day',CURRENT_DATE) AND date_trunc('day',cast('" +seisMeses+ "'as date)) "
+						+   "OR date_trunc('day',o.dataValidade) < date_trunc('day',CURRENT_DATE)) "
+					+   "AND o.quantidadeAtual>0 "
+					+ "ORDER BY o.dataValidade asc ";
+				
+		List<EstoqueAlmoxarifado> list = new ArrayList<EstoqueAlmoxarifado>(new ConsultaGeral<EstoqueAlmoxarifado>().consulta(new StringBuilder(hql), null));
+		
+		return list;
+	}
+	
 	public List<EstoqueAlmoxarifado> consultarEstoqueValido() {
 		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 		String hql = "select o from EstoqueAlmoxarifado o where o.bloqueado = false and (cast(o.dataValidade as date) >= cast('"+dataS+"' as date) or o.dataValidade is null) order by lower(to_ascii(o.materialAlmoxarifado.descricao))";

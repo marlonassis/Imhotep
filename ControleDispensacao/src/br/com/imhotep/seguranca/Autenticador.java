@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.consulta.raiz.EstoqueAlmoxarifadoConsultaRaiz;
 import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.controle.ControleInstancia;
@@ -34,6 +35,7 @@ import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.excecoes.ExcecaoUsuarioInativo;
 import br.com.imhotep.excecoes.ExcecaoUsuarioLogin;
 import br.com.imhotep.raiz.ConfiguracaoRaiz;
+import br.com.imhotep.raiz.EstoqueAlmoxarifadoRaiz;
 import br.com.imhotep.raiz.EstoqueRaiz;
 import br.com.imhotep.raiz.UsuarioAcessoLogRaiz;
 import br.com.imhotep.raiz.UsuarioRaiz;
@@ -268,6 +270,11 @@ public class Autenticador {
 		}
 		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO)){
 			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesProfissional();
+		}
+		
+		//TODO TAF 5
+		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_MATERIAL_ALMOXARIFADO_VENCIDO)){
+			EstoqueAlmoxarifadoRaiz.getInstanciaAtual().setEstoqueVencido(new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoqueVencidoEVenceraSeisMeses());
 		}
 	}
 	

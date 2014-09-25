@@ -45,6 +45,13 @@
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelPreCadastro.xhtml" />
 					</h:panelGroup>
+					
+					<!-- TAF 5 -->
+					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Materiais Vencidos')}" >
+						<ui:include
+							src="/PaginasWeb/Painel/Paineis/painelMateriaisAlmoxarifadoVencido.xhtml" />
+					</h:panelGroup>
+					
 					<h:panelGroup rendered="#{controlePainel.painelAutorizadoStringList.contains('Medicamentos Vencidos')}" >
 						<ui:include
 							src="/PaginasWeb/Painel/Paineis/painelMedicamentoVencimento.xhtml" />
