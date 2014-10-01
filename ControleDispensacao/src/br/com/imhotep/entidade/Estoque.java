@@ -197,7 +197,7 @@ public class Estoque implements Serializable{
 	}
 
 	@Transient
-	public String getDescricaoEstoqueCentroCirurgico(){
+	public String getDescricaoEstoque(){
 		if(getMaterial() != null){
 			String descricao = getMaterial().getDescricao();
 			descricao = descricao.concat("; Lote: ").concat(lote);

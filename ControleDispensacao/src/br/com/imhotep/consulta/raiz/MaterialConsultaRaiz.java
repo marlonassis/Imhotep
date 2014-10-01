@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -23,6 +24,37 @@ import br.com.remendo.ConsultaGeral;
 public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 	
 	private Material material;
+	
+	public List<Material> getMateriaisCadastrados(){
+		String hql = "select o from Material o order by lower(to_ascii(o.descricao))";
+		Collection<Material> lista = new ConsultaGeral<Material>().consulta(new StringBuilder(hql), null);
+		return new ArrayList<Material>(lista); 
+	}
+	
+	public List<Material> getMateriaisNegativos(){
+		String sql = "select distinct a.id_material from tb_material a "+
+						"inner join tb_estoque b on a.id_material = b.id_material "+ 
+						"inner join tb_movimento_livro c on c.id_estoque = b.id_estoque "+ 
+						"inner join tb_tipo_movimento d on d.id_tipo_movimento = c.id_tipo_movimento "+
+						"where (b.in_quantidade_atual < 0 or (c.in_quantidade_atual - c.in_quantidade_movimentacao < 0)) and "+
+						"d.tp_operacao != 'E'";
+		ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
+		try {
+			String ids = "";
+			while(rs.next()){
+				ids += "," + rs.getInt("id_material");
+			}
+			ids = ids.replaceFirst(",", "");
+			
+			String hql = "select o from Material o where o.idMaterial in ("+ids+") order by lower(to_ascii(o.descricao))";
+			Collection<Material> lista = new ConsultaGeral<Material>().consulta(new StringBuilder(hql), null);
+			return new ArrayList<Material>(lista); 
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Material>();
+	}
 	
 	public void atualizaMateriaisQuantidadeAbaixoPermitido() {
 		List<MaterialFaltaEstoque> list = consultarMateriaisAbaixoQuantidadeMinima();

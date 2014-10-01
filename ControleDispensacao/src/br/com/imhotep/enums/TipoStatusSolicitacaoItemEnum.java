@@ -5,6 +5,7 @@ package br.com.imhotep.enums;
  */
 
 public enum TipoStatusSolicitacaoItemEnum {
+	E("Estornado"),
 	P("Pendente"),
 	D("Dispensado"),
 	R("Recusado"),

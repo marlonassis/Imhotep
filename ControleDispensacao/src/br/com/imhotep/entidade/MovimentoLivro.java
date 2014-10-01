@@ -15,6 +15,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import br.com.imhotep.enums.TipoOperacaoEnum;
 
 @Entity
 @Table(name = "tb_movimento_livro")
@@ -109,6 +112,14 @@ public class MovimentoLivro implements Serializable {
 	
 	public void setJustificativa(String justificativa){
 		this.justificativa = justificativa;
+	}
+	
+	@Transient
+	public Integer getQuantidadeFinal(){
+		if(getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.E))
+			return getQuantidadeAtual().intValue() + getQuantidadeMovimentacao().intValue();
+		else
+			return getQuantidadeAtual().intValue() - getQuantidadeMovimentacao().intValue();
 	}
 	
 	@Override
