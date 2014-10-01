@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.AtendimentosRealizadosAGHU;
+import br.com.imhotep.enums.TipoImpressaoComprovanteConsultaEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanicaAGHU;
 
 @ManagedBean
@@ -29,17 +30,8 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 	private Date dataIni;
 	private Date dataFim;
 	private Integer quantidadeLinhasExtras;
+	private TipoImpressaoComprovanteConsultaEnum tipo = TipoImpressaoComprovanteConsultaEnum.E;
 	
-	private String consulta = new String();
-	
-	public String getConsulta() {
-		return consulta;
-	}
-
-	public void setConsulta(String consulta) {
-		this.consulta = consulta;
-	}
-
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioComprovanteAtendimentoRealizados.jasper";
 		String nomeRelatorio = "RelatorioComprovanteAtendimentoRealizado.pdf";
@@ -53,11 +45,7 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 		map.put("PROFISSIONAL_ESPECIALIDADE", array[1]);
 		map.put("DATA_INI", ini);
 		map.put("DATA_FIM", fim);
-		
-		if(Integer.parseInt(this.consulta)==1)
-			map.put("ConsultaExame", "Consulta MŽdica");
-		else
-			map.put("ConsultaExame", "Exame");
+		map.put("CONSULTA_EXAME", getTipo().getLabel());
 		
 		super.geraRelatorio(caminho, nomeRelatorio, lista, map );
 	}
@@ -148,6 +136,14 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 
 	public void setQuantidadeLinhasExtras(Integer quantidadeLinhasExtras) {
 		this.quantidadeLinhasExtras = quantidadeLinhasExtras;
+	}
+
+	public TipoImpressaoComprovanteConsultaEnum getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoImpressaoComprovanteConsultaEnum tipo) {
+		this.tipo = tipo;
 	}
 	
 }
