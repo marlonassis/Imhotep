@@ -55,7 +55,7 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 		map.put("DATA_FIM", fim);
 		
 		if(Integer.parseInt(this.consulta)==1)
-			map.put("ConsultaExame", "Consulta Médica");
+			map.put("ConsultaExame", "Consulta MŽdica");
 		else
 			map.put("ConsultaExame", "Exame");
 		
