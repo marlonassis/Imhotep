@@ -113,7 +113,7 @@
 									</h:panelGroup>
 									
 									<h:panelGroup rendered="#{item.statusItem != 'R'}" >
-										<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b>  
+										<b>#{item.material.codigoMaterial}#{' - '}#{item.material.descricaoUnidadeMaterial}</b><br/>  
 										<h:panelGroup rendered="#{item.justificativa != null and item.justificativa != ''}" >
 											Justificativa: <h:outputText value="#{item.justificativa}" escape="false" />
 											<br/>
