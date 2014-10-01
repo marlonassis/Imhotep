@@ -3,6 +3,7 @@ package br.com.imhotep.raiz;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,23 +13,22 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
-import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.MaterialConsultaRaiz;
 import br.com.imhotep.controle.ControlePainelAviso;
-import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
 import br.com.imhotep.entidade.UnidadeMaterial;
 import br.com.imhotep.entidade.extra.MaterialSolicitacaoMedicamento;
-import br.com.imhotep.enums.TipoConsultaMedicamentoSolicitacaoEnum;
 import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 import br.com.imhotep.excecoes.ExcecaoForaRedeHU;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoItemSemSaldo;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoSemItens;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoNaoFechada;
+import br.com.imhotep.excecoes.ExcecaoSolicitacaoSemUnidade;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.imhotep.temp.ExcecaoPadraoFluxo;
@@ -41,20 +41,80 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	
 	private List<MaterialSolicitacaoMedicamento> materiaisCadastrados = new ArrayList<MaterialSolicitacaoMedicamento>();
 	private List<MaterialSolicitacaoMedicamento> itensSelecionados = new ArrayList<MaterialSolicitacaoMedicamento>();
-	private TipoConsultaMedicamentoSolicitacaoEnum tipoConsulta;
-	private boolean exibirDialogConfirmacao;
+	private MaterialSolicitacaoMedicamento material = new MaterialSolicitacaoMedicamento();
 	
-	public SolicitacaoMedicamentoUnidadeSolicitacaoRaiz(){
-		super();
+	public SolicitacaoMedicamentoUnidadeSolicitacaoRaiz() {
+		carregarMateriais();
+	}
+	
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
 		prepararAmbienteSolicitacao();
 	}
 	
-	public void exibirDialogConfirmacao(){
-		setExibirDialogConfirmacao(true);
+	private void prepararAmbienteSolicitacao(){
+		setItensSelecionados(new ArrayList<MaterialSolicitacaoMedicamento>());
+		setMaterial(new MaterialSolicitacaoMedicamento());
 	}
 	
-	public void ocultarDialogConfirmacao(){
-		setExibirDialogConfirmacao(false);
+	public void addMedicamento(){
+			try {
+				if(!getMaterial().isComSaldo())
+					throw new ExcecaoSolicitacaoMedicamentoItemSemSaldo();
+				if(getMaterial().getQuantidadeSolicitada() == null)
+					throw new ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada();
+				if(getMaterial() != null){
+					getItensSelecionados().add(getMaterial());
+					setMaterial(new MaterialSolicitacaoMedicamento());
+				}
+			} catch (ExcecaoSolicitacaoMedicamentoItemSemSaldo e) {
+				e.printStackTrace();
+			} catch (ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public void remMedicamento(){
+		getItensSelecionados().remove(getMaterial());
+		setMaterial(new MaterialSolicitacaoMedicamento());
+	}
+	
+	public Collection<MaterialSolicitacaoMedicamento> autoCompleteMedicamento(String string){
+		string = string.trim();
+		Collection<MaterialSolicitacaoMedicamento> resultado = new ArrayList<MaterialSolicitacaoMedicamento>();
+		for(MaterialSolicitacaoMedicamento item : getMateriaisCadastrados()){
+			if(item.getMaterial().getDescricao().toLowerCase().contains(string)){
+				resultado.add(item);
+			}
+		}
+		return resultado;
+	}
+	
+	public void carregarMateriais(){
+		String sql = getSqlTodosMateriais();
+		ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
+		try {
+			while(rs.next()){
+				int saldo = rs.getInt("saldo");
+				int idMaterial = rs.getInt("id_material");
+				String sigla = rs.getString("cv_sigla");
+				String descricao = rs.getString("material");
+				
+				Material medicamento = new Material();
+				medicamento.setIdMaterial(idMaterial);
+				UnidadeMaterial unidade = new UnidadeMaterial();
+				unidade.setSigla(sigla);
+				medicamento.setUnidadeMaterial(unidade);
+				medicamento.setDescricao(descricao);
+				MaterialSolicitacaoMedicamento item = new MaterialSolicitacaoMedicamento();
+				item.setMaterial(medicamento);
+				item.setQuantidadeAtual(saldo);
+				getMateriaisCadastrados().add(item);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void carregarSaldoAtualItens() throws ExcecaoSolicitacaoNaoFechada {
@@ -94,10 +154,14 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	
 	public void fecharSolicitacao(){
 		try {
+			if(getInstancia().getUnidadeDestino() == null){
+				throw new ExcecaoSolicitacaoSemUnidade();
+			}
 			verificarSolicitacaoVazia();
 			setExibeMensagemAtualizacao(false);
 			carregarSaldoAtualItens();
 			validarSaldo();
+			verificarSolicitacaoNaoCadastrada();
 			salvarItens(getInstancia());
 			getInstancia().setDataFechamento(new Date());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
@@ -116,49 +180,14 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			e.printStackTrace();
 		} catch (ExcecaoSolicitacaoMedicamentoSemItens e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void removerItemSolicitacao(MaterialSolicitacaoMedicamento item){
-		getItensSelecionados().remove(item);
-	}
-	
-	@Override
-	public boolean atualizar() {
-		try {
-			atualizarListaMedicamento();
-			verificarSolicitacaoVazia();
-			exibirDialogConfirmacao();
-			return true;
-		} catch (ExcecaoSolicitacaoMedicamentoSemItens e) {
+		} catch (ExcecaoSolicitacaoSemUnidade e) {
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 	private void verificarSolicitacaoVazia() throws ExcecaoSolicitacaoMedicamentoSemItens {
 		if(getItensSelecionados() == null || getItensSelecionados().isEmpty()){
 			throw new ExcecaoSolicitacaoMedicamentoSemItens();
-		}
-	}
-	
-	private void prepararAmbienteSolicitacao() {
-		setTipoConsulta(TipoConsultaMedicamentoSolicitacaoEnum.UP);
-		itensSelecionados = new ArrayList<MaterialSolicitacaoMedicamento>();
-		materiaisCadastrados = new ArrayList<MaterialSolicitacaoMedicamento>();
-		ocultarDialogConfirmacao();
-	}
-	
-	public void atualizarListaMedicamento(){
-		setItensSelecionados(new ArrayList<MaterialSolicitacaoMedicamento>());
-		for(MaterialSolicitacaoMedicamento item : getMateriaisCadastrados()){
-			if(item.getQuantidadeSolicitada() != null && item.getQuantidadeSolicitada().intValue() != 0 && !getItensSelecionados().contains(item)){
-				getItensSelecionados().add(item);
-			}else{
-				if((item.getQuantidadeSolicitada() == null || item.getQuantidadeSolicitada().intValue() == 0 ) && getItensSelecionados().contains(item)){
-					getItensSelecionados().remove(item);
-				}
-			}
 		}
 	}
 	
@@ -171,11 +200,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			getInstancia().setDataInsercao(new Date());
 			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.A);
-			if(super.enviar()){
-				prepararAmbienteSolicitacao();
-				carregarListaItensSolicitacao();
-				return true;
-			}
+			return super.enviar();
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		} catch (ExcecaoForaRedeHU e) {
@@ -184,16 +209,25 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 		return false;
 	}
 
-	public void carregarListaItensSolicitacao() {
-		String sql = selecionarSql();
+	public void carregarListaItensUltimaSolicitacao() {
+		if(getInstancia().getUnidadeDestino() == null){
+			try {
+				throw new ExcecaoSolicitacaoSemUnidade();
+			} catch (ExcecaoSolicitacaoSemUnidade e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		verificarSolicitacaoNaoCadastrada();
 		
+		String sql = getSqlMateriaisUltimaSolicitacao();
 		ResultSet rs = new LinhaMecanica("db_imhotep").consultar(sql);
-		materiaisCadastrados = new ArrayList<MaterialSolicitacaoMedicamento>();
 		try {
 			while(rs.next()){
 				Integer idMaterial = rs.getInt("id_material");
 				String materialDescricao = rs.getString("material");
 				Integer saldo = rs.getInt("saldo");
+				Integer qtdSolicitado = rs.getInt("qtdSolicitado");
 				String unidadeMaterial = rs.getString("cv_sigla");
 				
 				Material material = new Material();
@@ -205,46 +239,42 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 				MaterialSolicitacaoMedicamento scm = new MaterialSolicitacaoMedicamento();
 				scm.setMaterial(material);
 				scm.setQuantidadeAtual(saldo);
+				scm.setQuantidadeSolicitada(qtdSolicitado);
 				
-				materiaisCadastrados.add(scm);
+				getItensSelecionados().add(scm);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private String selecionarSql() {
-		String sql;
-		if(getTipoConsulta().equals(TipoConsultaMedicamentoSolicitacaoEnum.UP))
-			sql = getSqlMateriaisUltimaSolicitacao();
-		else
-			if(getTipoConsulta().equals(TipoConsultaMedicamentoSolicitacaoEnum.TM))
-				sql = getSqlTodosMateriais();
-			else
-				sql = getSqlMateriaisMaisSolicitados();
-		return sql;
+	private void verificarSolicitacaoNaoCadastrada() {
+		if(!super.isEdicao()){
+			enviar();
+		}
 	}
-	
+
 	private String getSqlMateriaisUltimaSolicitacao() {
 		int idSMU = getInstancia().getIdSolicitacaoMedicamentoUnidade();
-		int idUnidade = getInstancia().getUnidadeDestino().getIdUnidade();
-		String sql = "select  a.id_solicitacao_medicamento_unidade, b.dt_data_fechamento, "+ 
-						"s.id_material, s.cv_descricao material, e.cv_sigla,  "+
-						"(coalesce((select sum(x.in_quantidade_atual) from tb_estoque x "+
-						"inner join tb_material b on x.id_material = b.id_material  "+
+		int idSolicitante = getInstancia().getProfissionalInsercao().getIdProfissional();
+		String sql = "select  a.id_solicitacao_medicamento_unidade, b.dt_data_fechamento,  "+
+						"s.id_material, s.cv_descricao material, e.cv_sigla,   "+
+						"(coalesce((select sum(x.in_quantidade_atual) from tb_estoque x "+ 
+						"inner join tb_material b on x.id_material = b.id_material   "+
 						"where x.bl_bloqueado = false and x.dt_data_validade >= cast(now() as date) and x.in_quantidade_atual > 0 "+ 
 						"and x.id_material = s.id_material), 0) -  "+
 						"coalesce((select sum(c.in_quantidade_solicitada) from tb_solicitacao_medicamento_unidade_item c "+ 
 						"inner join tb_solicitacao_medicamento_unidade d on d.id_solicitacao_medicamento_unidade = c.id_solicitacao_medicamento_unidade "+ 
-						"where d.tp_status_dispensacao = 'P' and d.id_solicitacao_medicamento_unidade != "+idSMU+" and c.id_material = s.id_material), 0)) saldo "+
-						"from tb_solicitacao_medicamento_unidade a "+
+						"where d.tp_status_dispensacao = 'P' and d.id_solicitacao_medicamento_unidade != "+idSMU+" and c.id_material = s.id_material), 0)) saldo, "+
+						"c.in_quantidade_solicitada qtdSolicitado "+
+						"from tb_solicitacao_medicamento_unidade a  "+
 						"inner join (select max(a.dt_data_fechamento) dt_data_fechamento from tb_solicitacao_medicamento_unidade a "+ 
-						"	    where a.id_unidade_destino = "+idUnidade+" and a.dt_data_fechamento is not null) b  "+
-						"		on a.dt_data_fechamento = b.dt_data_fechamento  "+
-						"inner join tb_solicitacao_medicamento_unidade_item c on c.id_solicitacao_medicamento_unidade = a.id_solicitacao_medicamento_unidade "+
-						"inner join tb_material s on s.id_material = c.id_material "+
+						"	    where a.id_profissional_insercao = "+idSolicitante+" and a.dt_data_fechamento is not null) b   "+
+						"		on a.dt_data_fechamento = b.dt_data_fechamento   "+
+						"inner join tb_solicitacao_medicamento_unidade_item c on c.id_solicitacao_medicamento_unidade = a.id_solicitacao_medicamento_unidade "+ 
+						"inner join tb_material s on s.id_material = c.id_material  "+
 						"inner join tb_unidade_material e on e.id_unidade_material = s.id_unidade_material "+ 
-						"where a.id_unidade_destino = "+idUnidade+" "+
+						"where a.id_profissional_insercao = "+idSolicitante+" "+
 						"order by to_ascii(lower(s.cv_descricao)) ";
 		return sql;
 	}
@@ -262,147 +292,27 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 						"a.id_material,  "+
 						"c.cv_sigla,  "+
 						"upper(a.cv_descricao) material from tb_material a "+ 
-						"inner join tb_unidade_material c on c.id_unidade_material = a.id_unidade_material "+ 
+						"inner join tb_unidade_material c on c.id_unidade_material = a.id_unidade_material "+
+						"where a.bl_bloqueado is false " +
 						"group by a.id_material, c.cv_sigla  "+
 						"order by to_ascii(lower(a.cv_descricao))";
 		return sql;
 	}
 	
-	private String getSqlMateriaisMaisSolicitados() {
-		int idSMU = getInstancia().getIdSolicitacaoMedicamentoUnidade();
-		int idUnidade = getInstancia().getUnidadeDestino().getIdUnidade();
-		String sql = "select a.id_material, j.cv_sigla, "+
-						"upper(a.cv_descricao) material, "+
-						"(coalesce((select sum(x.in_quantidade_atual) from tb_estoque x "+
-						"inner join tb_material b on x.id_material = b.id_material  "+
-						"where x.bl_bloqueado = false and x.dt_data_validade >= cast(now() as date) and x.in_quantidade_atual > 0 "+ 
-						"and x.id_material = a.id_material), 0) -  "+
-						"coalesce((select sum(c.in_quantidade_solicitada) from tb_solicitacao_medicamento_unidade_item c "+ 
-						"inner join tb_solicitacao_medicamento_unidade d on d.id_solicitacao_medicamento_unidade = c.id_solicitacao_medicamento_unidade "+ 
-						"where d.tp_status_dispensacao = 'P' and d.id_solicitacao_medicamento_unidade != "+idSMU+" and c.id_material = a.id_material), 0)) saldo "+
-						"from tb_material a  "+
-						"inner join tb_solicitacao_medicamento_unidade_item s on s.id_material = a.id_material "+
-						"inner join tb_solicitacao_medicamento_unidade t on t.id_solicitacao_medicamento_unidade = s.id_solicitacao_medicamento_unidade "+
-						"inner join tb_unidade_material j on j.id_unidade_material = a.id_unidade_material  "+
-						"where t.id_unidade_destino = "+idUnidade+" "+
-						"group by a.id_material, j.cv_sigla "+
-						"order by to_ascii(lower(a.cv_descricao))";
-		return sql;
-	}
-	
-	public void atribuirUltimoConsumoTresDias(){
-		MaterialConsultaRaiz mcr = new MaterialConsultaRaiz();
-		LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP);
-		try {
-			lm.criarConexao();
-			for(MaterialSolicitacaoMedicamento item : getMateriaisCadastrados()){
-				Integer qtd = mcr.quantidadeMaterialSolicitadoUltimaSolicitacao(item.getMaterial(), lm);
-				item.setQuantidadeSolicitada(qtd);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			lm.fecharConexoes();
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private SolicitacaoMedicamentoUnidade solicitacaoVizualizacao = new SolicitacaoMedicamentoUnidade();
-	private SolicitacaoMedicamentoUnidadeItem itemEdicao;
-	private SolicitacaoMedicamentoUnidadeItem itemSolicitacao = new SolicitacaoMedicamentoUnidadeItem();
-	
-	private boolean exibirDialogAlterarQuantidade;
-	
-	private Integer quantidadeAlterada;
-	
-	public int somaTotalQuantidadeLiberada(SolicitacaoMedicamentoUnidadeItem item){
-		int total = 0;
-		for(DispensacaoSimples obj : item.getDispensacoes()){
-			total += obj.getMovimentoLivro().getQuantidadeMovimentacao();
-		}
-		return total;
-	}
-	
-	public static SolicitacaoMedicamentoUnidadeSolicitacaoRaiz getInstanciaAtual(){
-		try {
-			return (SolicitacaoMedicamentoUnidadeSolicitacaoRaiz) Utilitarios.procuraInstancia(SolicitacaoMedicamentoUnidadeSolicitacaoRaiz.class);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	
-	
-	public void apagarItemSolicitacao(){
-		if(new SolicitacaoMedicamentoUnidadeItemRaiz(getItemEdicao()).apagar()){
-			getInstancia().getItens().remove(getItemEdicao());
-		}
-		setItemEdicao(new SolicitacaoMedicamentoUnidadeItem());
-	}
-	
-	public void exibirDialogAlteracaoQuantidade(){
-		setExibirDialogAlterarQuantidade(true);
-	}
-	
-	public void cancelarAjusteQuantidade(){
-		setExibirDialogAlterarQuantidade(false);
-		setItemEdicao(new SolicitacaoMedicamentoUnidadeItem());
+	public List<MaterialSolicitacaoMedicamento> getItensSelecionados() {
+		return itensSelecionados;
 	}
 
-	public boolean isExibirDialogAlterarQuantidade() {
-		return exibirDialogAlterarQuantidade;
+	public void setItensSelecionados(List<MaterialSolicitacaoMedicamento> itensSelecionados) {
+		this.itensSelecionados = itensSelecionados;
 	}
 
-	public void setExibirDialogAlterarQuantidade(boolean exibirDialogAlterarQuantidade) {
-		this.exibirDialogAlterarQuantidade = exibirDialogAlterarQuantidade;
+	public MaterialSolicitacaoMedicamento getMaterial() {
+		return material;
 	}
 
-	public SolicitacaoMedicamentoUnidadeItem getItemEdicao() {
-		return itemEdicao;
-	}
-
-	public void setItemEdicao(SolicitacaoMedicamentoUnidadeItem itemEdicao) {
-		this.itemEdicao = itemEdicao;
-	}
-
-	public Integer getQuantidadeAlterada() {
-		return quantidadeAlterada;
-	}
-
-	public void setQuantidadeAlterada(Integer quantidadeAlterada) {
-		this.quantidadeAlterada = quantidadeAlterada;
-	}
-
-	public SolicitacaoMedicamentoUnidadeItem getItemSolicitacao() {
-		return itemSolicitacao;
-	}
-
-	public void setItemSolicitacao(SolicitacaoMedicamentoUnidadeItem itemSolicitacao) {
-		this.itemSolicitacao = itemSolicitacao;
-	}
-
-	public SolicitacaoMedicamentoUnidade getSolicitacaoVizualizacao() {
-		return solicitacaoVizualizacao;
-	}
-
-	public void setSolicitacaoVizualizacao(SolicitacaoMedicamentoUnidade solicitacaoVizualizacao) {
-		this.solicitacaoVizualizacao = solicitacaoVizualizacao;
+	public void setMaterial(MaterialSolicitacaoMedicamento material) {
+		this.material = material;
 	}
 
 	public List<MaterialSolicitacaoMedicamento> getMateriaisCadastrados() {
@@ -412,29 +322,11 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	public void setMateriaisCadastrados(List<MaterialSolicitacaoMedicamento> materiaisCadastrados) {
 		this.materiaisCadastrados = materiaisCadastrados;
 	}
-
-	public TipoConsultaMedicamentoSolicitacaoEnum getTipoConsulta() {
-		return tipoConsulta;
-	}
-
-	public void setTipoConsulta(TipoConsultaMedicamentoSolicitacaoEnum tipoConsulta) {
-		this.tipoConsulta = tipoConsulta;
-	}
-
-	public List<MaterialSolicitacaoMedicamento> getItensSelecionados() {
-		return itensSelecionados;
-	}
-
-	public void setItensSelecionados(List<MaterialSolicitacaoMedicamento> itensSelecionados) {
-		this.itensSelecionados = itensSelecionados;
-	}
-
-	public boolean isExibirDialogConfirmacao() {
-		return exibirDialogConfirmacao;
-	}
-
-	public void setExibirDialogConfirmacao(boolean exibirDialogConfirmacao) {
-		this.exibirDialogConfirmacao = exibirDialogConfirmacao;
-	}
-
+	
+	
+	
+	
+	
+	
+	
 }

@@ -8,47 +8,99 @@
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
+		<style>
+		.ui-selectonelistbox {
+			width:250px;
+		}
+		</style>
 	</ui:define>
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab title="Solicitação de Medicamento por Unidade">
-			<p:growl id="growlMedicamentoUnidade" />
-			<rf:formularioEdicao id="solicitacaoMedicamentoUnidade"
-								 semPesquisa="true"
-								 fieldSetCollapsed="false"
-								 raiz="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz}"
-								 srcEditor="Solicitacoes/SolicitacaoMedicamentoUnidade/solicitacaoMedicamentoUnidadeEditor.xhtml" 
-								 valueSalvar="Abrir Solicitação" 
-								 valueGravar="Fechar Solicitação"
-								 actionNovo="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.apagar()}" 
-								 renderedNovo="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}" 
-								 updateAtualizar=":painelAvisosPanelGroup :#{p:component('dialogConfirmacaoPedidoPanelGroup')}" 
-								 updateSalvar=":#{p:component('growlMedicamentoUnidade')}" />
-			
-			<h:panelGroup id="dialogConfirmacaoPedidoPanelGroup" >
-				<p:dialog visible="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.exibirDialogConfirmacao}" 
-						  closable="false" 
-						  header="Resumo" 
-						  modal="true" 
-						  width="#{util.larguraTela * 0.9}" 
-						  height="#{util.alturaTela * 0.8}" >
+		<p:tab id="solicitacaoTab" 
+			   title="Solicitação de Medicamento por Unidade">
+			<h:form id="solicitacaoForm">
+				<p:growl id="growlMedicamentoUnidade"  />
+				<center>
+					<p:commandButton value="Carregar Última Solicitação" 
+									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarListaItensUltimaSolicitacao}" 
+									 update=":#{p:component('solicitacaoForm')}" />
+					<p:commandButton value="Atualizar Medicamentos" 
+									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarMateriais}" 
+									 update=":#{p:component('solicitacaoForm')} :#{p:component('growlMedicamentoUnidade')}" />
+				</center>
+				<br/>
+				
+				<h:panelGrid columns="2" styleClass="contentPanelGrid" width="100%" >
+					<h:panelGroup>
 					
-					<h:form>
-						<p:messages/>
+						<p:outputLabel for="unidades" value="Unidade:" />
+				        <p:selectOneListbox id="unidades" 
+				        					disabled="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}"
+				        					value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.instancia.unidadeDestino}"
+				        					converter="entidadeConversor">
+				             <f:selectItems value="#{unidadeConsultaRaiz.unidadesSaude}"
+										   var="unidade"
+										   itemLabel="#{unidade.nome}"
+										   itemValue="#{unidade}" />
+				        </p:selectOneListbox>
+					
+					</h:panelGroup>
+				
+					<h:panelGrid columns="1" styleClass="contentPanelGrid" width="100%" >
+						<h:panelGrid columns="3" styleClass="contentPanelGrid">
+							<h:panelGrid styleClass="mypanelgrid" >
+								<h:outputLabel for="medicamentos" value="Medicamento:" />
+								<p:autoComplete id="medicamentos" 
+												size="60"
+												value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.material}" 
+												completeMethod="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.autoCompleteMedicamento}"
+		                        				var="med" 
+		                        				itemLabel="#{med.material.descricaoUnidadeMaterial}" 
+		                        				itemValue="#{med}" 
+		                        				converter="materialSolicitacaoMedicamentoConversor" 
+		                        				forceSelection="true">
+						            <p:column>
+						                <h:graphicImage value="/Imagens/redBall-16.png" 
+									       				rendered="#{!med.comSaldo}" 
+									       				title="Item sem estoque" />
+								       	<h:graphicImage value="/Imagens/greenBall-16.png" 
+								       					rendered="#{med.comSaldo}" 
+								       					title="Item em estoque" />
+						            </p:column>
+						 
+						            <p:column>
+						                <h:outputText value="#{med.material.descricaoUnidadeMaterial}" />
+						            </p:column>
+						        </p:autoComplete>
+							</h:panelGrid>
+					        <h:panelGroup styleClass="contentPanelGrid">
+						        <ri:inputApenasNumero id="qtdSelecionado" 
+					    							  title="Informe a quantidade que você quer solicitar" 
+					    							  size="5"
+					    							  value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.material.quantidadeSolicitada}" 
+					    							  label="Quantidade"/>
+					        </h:panelGroup>
+					        <h:panelGrid styleClass="mypanelgrid" >
+						        <p:commandLink action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.addMedicamento}"
+											   update=":#{p:component('solicitacaoForm')}"
+											   title="Adicionar" style="padding-right:10px;">
+									<h:graphicImage value="/Imagens/add.png" />
+								</p:commandLink>
+					        </h:panelGrid>
+						</h:panelGrid>
 						<p:dataTable var="t" 
 									 value="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.itensSelecionados}"
 									 style="width: 90%;" 
 									 scrollable="true" 
-									 scrollHeight="400"
+									 scrollHeight="300"
 									 emptyMessage="Solicitação sem itens" >
 					        <p:column headerText="Quantidade" footerText="Quantidade" width="5%" >
-					            <ri:inputApenasNumero id="qtdSelecionado" 
-					    							  title="Informe a quantidade que você quer solicitar" 
-					    							  size="5"
-					    							  disabled="#{!t.comSaldo}"
-					    							  value="#{t.quantidadeSolicitada}" 
-					    							  exibirLabel="false" />
+					        	<p:inputText id="qtdSelecionado"
+											 value="#{t.quantidadeSolicitada}"
+											 onkeyup="apenasNumero(this);" 
+										 	 title="Quantidade a ser solicitada" 
+										 	 size="5" />
 					        </p:column>
 					        
 					        <p:column headerText="Saldo Atual" footerText="Saldo Atual" width="5%" >
@@ -70,42 +122,27 @@
 					        </p:column>
 					        
 					        <p:column width="5%" >
-					        	<p:commandLink action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.removerItemSolicitacao(t)}"
-											   update=":#{p:component('dialogConfirmacaoPedidoPanelGroup')}"
+					        	<p:commandLink action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.remMedicamento()}"
+											   update=":#{p:component('solicitacaoForm')}"
 											   title="Apagar" style="padding-right:10px;">
 									<h:graphicImage value="/Imagens/delete.png" />
+									<f:setPropertyActionListener value="#{t}" target="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.material}" />
 								</p:commandLink>
 							</p:column>
 					    </p:dataTable>
-						
-						
-						<p:commandButton value="Confirmar" 
-										 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.fecharSolicitacao}" 
-										 update=":#{p:component('dialogConfirmacaoPedidoPanelGroup')} :#{p:component('solicitacaoMedicamentoUnidadeEditorForm')}" 
-										 immediate="false" />
-					</h:form>
-					<br/>
-					<h:panelGrid columns="2" >
-						<h:graphicImage value="/Imagens/greenBall-16.png" 
-				       					title="Item em estoque" />
-				       	<h:outputText value="Item em estoque" />
-			            <h:graphicImage value="/Imagens/redBall-16.png" 
-					       				title="Item sem estoque" />
-					    <h:outputText value="Item sem estoque" />
-				       	<h:graphicImage value="/Imagens/yellowBall.png" 
-				       					title="Item em estoque" />
-						<h:outputText value="Item com estoque insuficiente" />
 					</h:panelGrid>
-					<br/>
-					<h:form>
-						<p:commandButton value="Fechar" 
-										 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.ocultarDialogConfirmacao}" 
-										 update=":#{p:component('dialogConfirmacaoPedidoPanelGroup')}" 
-										 immediate="false" />
-					</h:form>
-				</p:dialog>
-			</h:panelGroup>
-			
+				</h:panelGrid>
+				
+				<p:commandButton value="Fechar Solicitação" 
+								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.fecharSolicitacao}" 
+								 update=":#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" />
+				
+				<br/><br/>
+				
+				<p:commandButton value="Cancelar" 
+								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.novaInstancia}" 
+								 update=":#{p:component('solicitacaoForm')}" />
+			</h:form>
 		</p:tab>
 	</ui:define>
 </ui:composition>

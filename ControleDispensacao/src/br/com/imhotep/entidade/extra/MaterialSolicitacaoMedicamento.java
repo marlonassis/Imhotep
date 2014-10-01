@@ -12,7 +12,9 @@ public class MaterialSolicitacaoMedicamento {
 	
 	@Id
 	public int getIdMaterialSolicitacaoMedicamento(){
-		return getMaterial().getIdMaterial();
+		if(getMaterial() != null)
+			return getMaterial().getIdMaterial();
+		return 0;
 	}
 	
 	public Material getMaterial() {

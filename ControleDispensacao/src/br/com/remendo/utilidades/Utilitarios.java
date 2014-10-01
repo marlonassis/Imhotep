@@ -106,7 +106,14 @@ public class Utilitarios{
 		return enumConstants;
 	}
 	
+	public String primeiraLetraMaiuscula(String palavra) {    
+	      return palavra.substring(0,1).toUpperCase().concat(palavra.substring(1));    
+	} 
+	
 	public String pegarValor(String atributo, Object obj){
+		if(atributo != null){
+			atributo = primeiraLetraMaiuscula(atributo);
+		}
 		try {
 			Method meth = Class.forName(obj.getClass().getName()).getMethod("get".concat(atributo));
 			return (String) meth.invoke(obj);

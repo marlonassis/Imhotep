@@ -8,6 +8,12 @@ Released for free under a Creative Commons Attribution 2.5 License
 .colStyle2 { width: 50%; }
 .colStyle3 { width: 33%; }
 
+.linhaLaranja {
+    background-color: #fca752 !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
 .mypanelgrid td {
 	border-style: none !important;
 	padding: 2px 2px;

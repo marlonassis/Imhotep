@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Ajuste Conforme o Inventário">
+			<h:form id="ajusteGeralForm" >
+				<p:selectOneRadio id="operacao" 
+								  value="#{ajusteGeralEstoqueRaiz.tipoOperacao}"  
+								  layout="grid" 
+								  columns="3"
+								  disabled="#{ajusteGeralEstoqueRaiz.material != null}" >
+					<f:selectItems value="#{ajusteGeralEstoqueRaiz.tipoOperacaoItens}" var="c" itemLabel="#{c}" itemValue="#{c}"/>
+					<p:ajax event="change" update=":#{p:component('ajusteGeralForm')}" listener="#{ajusteGeralEstoqueRaiz.carregarMaterialConformeTipo}"  />
+				</p:selectOneRadio>
+				
+				<ri:inputEntidadeList id="materiais" 
+									  itemLabel="descricao" 
+									  value="#{ajusteGeralEstoqueRaiz.material}" 
+									  lista="#{ajusteGeralEstoqueRaiz.materiais}" 
+									  label="Medicamento" 
+									  updateChange=":#{p:component('ajusteGeralForm')}" 
+									  listener="#{ajusteGeralEstoqueRaiz.carregarLotes}" 
+									  disabled="#{ajusteGeralEstoqueRaiz.estoque != null}" />
+				
+				<ri:inputEntidadeList id="estoques" 
+									  itemLabel="descricaoEstoque" 
+									  value="#{ajusteGeralEstoqueRaiz.estoque}" 
+									  lista="#{ajusteGeralEstoqueRaiz.estoques}" 
+									  label="Estoque" 
+									  updateChange=":#{p:component('ajusteGeralForm')}" 
+									  listener="#{ajusteGeralEstoqueRaiz.carregarMovimentos}" />
+				
+				<p:dataTable id="movimentosDataTable" 
+							 var="mov" 
+							 scrollable="true" 
+							 scrollHeight="500"
+							 value="#{ajusteGeralEstoqueRaiz.movimentos}" 
+							 selection="#{ajusteGeralEstoqueRaiz.movimentosSelecionados}"
+							 rowKey="#{mov.idMovimentoLivro}" 
+							 style="margin-bottom:0"
+							 rowStyleClass="#{mov.quantidadeFinal lt 0 ? 'linhaLaranja' : null}"
+							 emptyMessage="Sem Movimentos" > 
+			        <f:facet name="header">
+			            Movimentos
+			        </f:facet>
+			        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+			        <p:column headerText="id">
+			            <h:outputText value="#{mov.idMovimentoLivro}" />
+			        </p:column>
+			        <p:column headerText="Data do Movimento">
+			            <h:outputText value="#{util.formatarDataHoraSegundoBrasil(mov.dataMovimento)}" />
+			        </p:column>
+			        <p:column headerText="Movimento">
+			            <h:outputText value="#{mov.tipoMovimento.descricao}" />
+			        </p:column>
+			        <p:column headerText="Tipo">
+			            <h:outputText value="#{mov.tipoMovimento.tipoOperacao.label}" />
+			        </p:column>
+			        <p:column headerText="Atual">
+			            <h:outputText value="#{mov.quantidadeAtual}" />
+			        </p:column>
+			        <p:column headerText="Movimentada">
+			            <h:outputText value="#{mov.quantidadeMovimentacao}" />
+			        </p:column>
+			        <p:column headerText="Final">
+			            <h:outputText value="#{mov.quantidadeFinal}" />
+			        </p:column>
+			        <p:column headerText="Justificativa">
+			            <h:outputText value="#{mov.justificativa}" />
+			        </p:column>
+			    </p:dataTable>
+			    
+			    <p:contextMenu for="movimentosDataTable">
+			        <p:menuitem value="Migrar para outro lote" 
+			        			update=":#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+			        			action="#{ajusteGeralEstoqueRaiz.exibirModalMigrarMovimento}" />
+			        <p:menuitem value="Apagar movimento" 
+			        			update=":#{p:component('dialogApagarMovimentoPanelGroup')}" 
+			        			action="#{ajusteGeralEstoqueRaiz.exibirModalApagarMovimento}" />
+			    </p:contextMenu>
+			    
+			</h:form>
+			
+			<h:panelGroup id="dialogMigrarMovimentoPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{ajusteGeralEstoqueRaiz.exibirModalMigrarMovimento}" 
+						  closable="false" 
+						  header="Migrar Movimentos - #{ajusteGeralEstoqueRaiz.estoque.loteMaterialDescricao}" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						<ri:inputEntidadeList id="estoques" 
+									  itemLabel="descricaoEstoque" 
+									  value="#{ajusteGeralEstoqueRaiz.estoqueDestino}" 
+									  lista="#{ajusteGeralEstoqueRaiz.estoques}" 
+									  label="Estoque Destino" />
+						
+						<p:dataTable id="movimentosDataTable" 
+									 var="mov" 
+									 scrollable="true" 
+									 scrollHeight="250"
+									 value="#{ajusteGeralEstoqueRaiz.movimentosSelecionados}" 
+									 rowKey="#{mov.idMovimentoLivro}" 
+									 style="margin-bottom:0"
+									 emptyMessage="Sem Movimentos" > 
+					        <f:facet name="header">
+					            Movimentos Selecionados
+					        </f:facet>
+					        <p:column headerText="id">
+					            <h:outputText value="#{mov.idMovimentoLivro}" />
+					        </p:column>
+					        <p:column headerText="Lote">
+					            <h:outputText value="#{mov.estoque.lote}" />
+					        </p:column>
+					        <p:column headerText="Data do Movimento">
+					            <h:outputText value="#{util.formatarDataHoraSegundoBrasil(mov.dataMovimento)}" />
+					        </p:column>
+					        <p:column headerText="Tipo">
+					            <h:outputText value="#{mov.tipoMovimento.tipoOperacao.label}" />
+					        </p:column>
+					        <p:column headerText="Final">
+					            <h:outputText value="#{mov.quantidadeFinal}" />
+					        </p:column>
+					    </p:dataTable>
+						<p:commandButton value="Mover" 
+										 action="#{ajusteGeralEstoqueRaiz.migrarMovimentos}" 
+										 update=":#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{ajusteGeralEstoqueRaiz.ocultarModalMigrarMovimento}" 
+										 update=":#{p:component('ajusteGeralForm')} :#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogApagarMovimentoPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{ajusteGeralEstoqueRaiz.exibirModalApagarMovimento}" 
+						  closable="false" 
+						  header="Apagar Movimentos - #{ajusteGeralEstoqueRaiz.estoque.loteMaterialDescricao}" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						
+						<p:dataTable id="movimentosDataTable" 
+									 var="mov" 
+									 scrollable="true" 
+									 scrollHeight="250"
+									 value="#{ajusteGeralEstoqueRaiz.movimentosSelecionados}" 
+									 rowKey="#{mov.idMovimentoLivro}" 
+									 style="margin-bottom:0"
+									 emptyMessage="Sem Movimentos" > 
+					        <f:facet name="header">
+					            Movimentos Selecionados
+					        </f:facet>
+					        <p:column headerText="id">
+					            <h:outputText value="#{mov.idMovimentoLivro}" />
+					        </p:column>
+					        <p:column headerText="Lote">
+					            <h:outputText value="#{mov.estoque.lote}" />
+					        </p:column>
+					        <p:column headerText="Data do Movimento">
+					            <h:outputText value="#{util.formatarDataHoraSegundoBrasil(mov.dataMovimento)}" />
+					        </p:column>
+					        <p:column headerText="Tipo">
+					            <h:outputText value="#{mov.tipoMovimento.tipoOperacao.label}" />
+					        </p:column>
+					        <p:column headerText="Final">
+					            <h:outputText value="#{mov.quantidadeFinal}" />
+					        </p:column>
+					    </p:dataTable>
+						<p:commandButton value="Apagar" 
+										 action="#{ajusteGeralEstoqueRaiz.apagarMovimentos}" 
+										 update=":#{p:component('ajusteGeralForm')} :#{p:component('dialogApagarMovimentoPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{ajusteGeralEstoqueRaiz.ocultarModalApagarMovimento}" 
+										 update=":#{p:component('ajusteGeralForm')} :#{p:component('dialogApagarMovimentoPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+				</p:dialog>
+			</h:panelGroup>
+			
+		</p:tab>
+	</ui:define>
+</ui:composition>
