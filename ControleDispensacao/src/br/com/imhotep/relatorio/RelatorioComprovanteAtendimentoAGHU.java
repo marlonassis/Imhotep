@@ -30,6 +30,16 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 	private Date dataFim;
 	private Integer quantidadeLinhasExtras;
 	
+	private String consulta = new String();
+	
+	public String getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(String consulta) {
+		this.consulta = consulta;
+	}
+
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioComprovanteAtendimentoRealizados.jasper";
 		String nomeRelatorio = "RelatorioComprovanteAtendimentoRealizado.pdf";
@@ -43,6 +53,12 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 		map.put("PROFISSIONAL_ESPECIALIDADE", array[1]);
 		map.put("DATA_INI", ini);
 		map.put("DATA_FIM", fim);
+		
+		if(Integer.parseInt(this.consulta)==1)
+			map.put("ConsultaExame", "Consulta Médica");
+		else
+			map.put("ConsultaExame", "Exame");
+		
 		super.geraRelatorio(caminho, nomeRelatorio, lista, map );
 	}
 

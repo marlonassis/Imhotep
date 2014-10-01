@@ -54,6 +54,13 @@
 											  required="false" />
 					</h:panelGrid>
 					
+					<h:panelGroup>
+						<h:selectOneRadio value="#{relatorioComprovanteAtendimentoAGHU.consulta}" required="true" >
+							<f:selectItem itemValue="1" itemLabel="Consulta" />
+							<f:selectItem itemValue="2" itemLabel="Exame"  />
+						</h:selectOneRadio>						
+					</h:panelGroup>
+										
 					<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" 
 								ajax="false"
