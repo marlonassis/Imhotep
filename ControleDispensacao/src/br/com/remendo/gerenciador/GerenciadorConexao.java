@@ -37,7 +37,8 @@ public class GerenciadorConexao {
 		if(session != null)
 			session.close();
 		if(factory != null)
-			factory.close();	}
+			factory.close();	
+	}
 	
 	protected void mensagem(String msg, String msg2, Severity tipoMensagem){
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipoMensagem,msg, msg2));

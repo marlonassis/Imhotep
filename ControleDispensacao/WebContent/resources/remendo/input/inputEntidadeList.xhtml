@@ -19,6 +19,7 @@
 		<co:attribute name="labelItemDefault" default="Selecione..." />
 		<co:attribute name="updateChange"  />
 		<co:attribute name="lista" required="true" />
+		<co:attribute name="listener" method-signature="void action()" />
 	</co:interface>
 	
 	<co:implementation>
@@ -59,7 +60,7 @@
 								   var="var" 
 								   itemLabel="#{util.pegarValor(cc.attrs.itemLabel, var)}"
 								   itemValue="#{var}" />
-					<p:ajax event="change" update="#{cc.attrs.updateChange}" />
+					<p:ajax event="change" update="#{cc.attrs.updateChange}" listener="#{cc.attrs.listener}" />
 				</p:selectOneMenu>
 			</h:panelGroup>
 		</h:panelGrid>

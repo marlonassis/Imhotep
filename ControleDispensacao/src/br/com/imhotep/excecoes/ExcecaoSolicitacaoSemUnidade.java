@@ -8,7 +8,7 @@ package br.com.imhotep.excecoes;
  * @author marlonassis
  *
  */
-public class ExcecaoSolicitacaoMedicamentoItemSemSaldo extends ExcecaoPadrao {
+public class ExcecaoSolicitacaoSemUnidade extends ExcecaoPadrao {
 
 	
 	/**
@@ -16,8 +16,8 @@ public class ExcecaoSolicitacaoMedicamentoItemSemSaldo extends ExcecaoPadrao {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExcecaoSolicitacaoMedicamentoItemSemSaldo(){
-		super.mensagem("Item sem saldo", "");
+	public ExcecaoSolicitacaoSemUnidade(){
+		super.mensagem("Informe a unidade de destino", "");
 	}
 	
 }
