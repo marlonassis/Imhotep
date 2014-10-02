@@ -15,6 +15,7 @@ import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
 import br.com.imhotep.consulta.raiz.MaterialConsultaRaiz;
 import br.com.imhotep.controle.ControlePainelAviso;
+import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
@@ -42,9 +43,18 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	private List<MaterialSolicitacaoMedicamento> materiaisCadastrados = new ArrayList<MaterialSolicitacaoMedicamento>();
 	private List<MaterialSolicitacaoMedicamento> itensSelecionados = new ArrayList<MaterialSolicitacaoMedicamento>();
 	private MaterialSolicitacaoMedicamento material = new MaterialSolicitacaoMedicamento();
-	
+	private SolicitacaoMedicamentoUnidade solicitacaoVizualizacao = new SolicitacaoMedicamentoUnidade();
+
 	public SolicitacaoMedicamentoUnidadeSolicitacaoRaiz() {
 		carregarMateriais();
+	}
+	
+	public int somaTotalQuantidadeLiberada(SolicitacaoMedicamentoUnidadeItem item){
+		int total = 0;
+		for(DispensacaoSimples obj : item.getDispensacoes()){
+			total += obj.getMovimentoLivro().getQuantidadeMovimentacao();
+		}
+		return total;
 	}
 	
 	@Override
@@ -321,6 +331,14 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 
 	public void setMateriaisCadastrados(List<MaterialSolicitacaoMedicamento> materiaisCadastrados) {
 		this.materiaisCadastrados = materiaisCadastrados;
+	}
+
+	public SolicitacaoMedicamentoUnidade getSolicitacaoVizualizacao() {
+		return solicitacaoVizualizacao;
+	}
+
+	public void setSolicitacaoVizualizacao(SolicitacaoMedicamentoUnidade solicitacaoVizualizacao) {
+		this.solicitacaoVizualizacao = solicitacaoVizualizacao;
 	}
 	
 	
