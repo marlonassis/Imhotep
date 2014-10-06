@@ -24,27 +24,42 @@ import br.com.imhotep.entidade.extra.EstoqueAlmoxarifadoMaterialGrupo;
 import br.com.imhotep.entidade.extra.EstoqueAlmoxarifadoMaterialLote;
 import br.com.imhotep.entidade.extra.EstoqueAlmoxarifadoMaterialSubGrupo;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.EstoqueAlmoxarifadoCompletoExcel;
+import br.com.imhotep.relatorio.excel.MaterialPorUnidadeAlmoxarifadoExcel;
 
 @ManagedBean
 @ViewScoped
 public class RelatorioEstoqueAlmoxarifadoCompleto extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
+	private boolean excel;
 	
 	public void gerarRalatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioEstoqueAlmoxarifado.jasper";
-		String nomeRelatorio = "RelatorioEstoqueAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("data", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
+		String nomeRelatorio;
 		
-		InputStream subInputStreamEstoque = this.getClass().getResourceAsStream("RelatorioEstoqueAlmoxarifadoMaterialEstoque.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ESTOQUE", subInputStreamEstoque);
-		InputStream subInputStreamMaterial = this.getClass().getResourceAsStream("RelatorioEstoqueAlmoxarifadoMaterial.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_MATERIAL", subInputStreamMaterial);
-		InputStream subInputStreamMovimentoSubGrupo = this.getClass().getResourceAsStream("RelatorioEstoqueAlmoxarifadoSubGrupo.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_SUB_GRUPO", subInputStreamMovimentoSubGrupo);
-		
-		super.geraRelatorio(caminho, nomeRelatorio, getLista(), map);
+		//Solicitação de Mudança #14
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioEstoqueAlmoxarifado.jasper";
+			nomeRelatorio = "RelatorioEstoqueAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("data", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
+			
+			InputStream subInputStreamEstoque = this.getClass().getResourceAsStream("RelatorioEstoqueAlmoxarifadoMaterialEstoque.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ESTOQUE", subInputStreamEstoque);
+			InputStream subInputStreamMaterial = this.getClass().getResourceAsStream("RelatorioEstoqueAlmoxarifadoMaterial.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_MATERIAL", subInputStreamMaterial);
+			InputStream subInputStreamMovimentoSubGrupo = this.getClass().getResourceAsStream("RelatorioEstoqueAlmoxarifadoSubGrupo.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_SUB_GRUPO", subInputStreamMovimentoSubGrupo);
+			
+			super.geraRelatorio(caminho, nomeRelatorio, getLista(), map);
+		}
+		else{
+			nomeRelatorio = "RelatorioEstoqueAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			EstoqueAlmoxarifadoCompletoExcel exc;
+	        exc = new EstoqueAlmoxarifadoCompletoExcel(getLista(), "Almoxarifado", null,5);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 	
 	private List<EstoqueAlmoxarifadoMaterialGrupo> getLista(){
@@ -136,6 +151,14 @@ public class RelatorioEstoqueAlmoxarifadoCompleto extends PadraoRelatorio{
 //				"where a.in_quantidade_atual > 0 and (cast(a.dt_data_validade as date) >= cast('"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+"' as date) or a.dt_data_validade is null) and a.bl_bloqueado is false "+
 				"group by grupo, subGrupo, material, idMaterial, fabricante, idEstoque, lote, dataValidade, quantidadeAtual, f.cv_nome "+
 				"order by grupo, subGrupo, lower(to_ascii(b.cv_descricao)), fabricante, lote, dataValidade, quantidadeAtual, f.cv_nome ";
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 	
 }
