@@ -27,6 +27,8 @@ import br.com.imhotep.entidade.relatorio.MovimentacoesGrupoAlmoxarifadoGrupo;
 import br.com.imhotep.entidade.relatorio.MovimentacoesGrupoAlmoxarifadoGrupoMaterial;
 import br.com.imhotep.entidade.relatorio.MovimentacoesGrupoAlmoxarifadoGrupoMaterialMovimentacoes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.RelatorioMaterialAlmoxarifadoCompletoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoGrupoMaterialPeriodoExcel;
 
 @ManagedBean
 @SessionScoped
@@ -39,6 +41,8 @@ public class RelatorioMovimentacaoGrupoMaterialPeriodo extends PadraoRelatorio{
 	private GrupoAlmoxarifado grupoAlmoxarifado;
 	private SubGrupoAlmoxarifado subGrupoAlmoxarifado;
 	private List<SubGrupoAlmoxarifado> subGrupoAlmoxarifadoList;
+	
+	private boolean excel;
 	
 	public void atualizaSubGrupoAmoxarifado(){
 		if(getGrupoAlmoxarifado() != null){
@@ -56,20 +60,36 @@ public class RelatorioMovimentacaoGrupoMaterialPeriodo extends PadraoRelatorio{
 	}
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupo.jasper";
-		String nomeRelatorio = "GrupoMaterialMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;
+		
+		String dataIni = new SimpleDateFormat("dd/MM/yyyy").format(this.dataIni);
 		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
+		String dataFim = new SimpleDateFormat("dd/MM/yyyy").format(this.dataFim);
 		
-		InputStream subInputStream0 = this.getClass().getResourceAsStream("RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupoMaterial.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_MATERIAIS", subInputStream0);
-		
-		InputStream subInputStream1 = this.getClass().getResourceAsStream("RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupoMaterialMovimentacao.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_MATERIAL_MOVIMENTACOES", subInputStream1);
-		
-		super.geraRelatorio(caminho, nomeRelatorio, getResultadoDetalhadoPorMaterial(), map);
+		//Requisito Funcional #18
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupo.jasper";
+			nomeRelatorio = "GrupoMaterialMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("dataIni", dataIni );
+			map.put("dataFim", dataFim );
+			
+			InputStream subInputStream0 = this.getClass().getResourceAsStream("RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupoMaterial.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_MATERIAIS", subInputStream0);
+			
+			InputStream subInputStream1 = this.getClass().getResourceAsStream("RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupoMaterialMovimentacao.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_MATERIAL_MOVIMENTACOES", subInputStream1);
+			
+			super.geraRelatorio(caminho, nomeRelatorio, getResultadoDetalhadoPorMaterial(), map);
+		}
+		else{
+			nomeRelatorio = "RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupo-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioMovimentacaoGrupoMaterialPeriodoExcel exc;
+	        exc = new RelatorioMovimentacaoGrupoMaterialPeriodoExcel(getResultadoDetalhadoPorMaterial(), "Almoxarifado", dataIni+" a "+dataFim,3);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 
 	private List<MovimentacoesGrupoAlmoxarifadoGrupo> getResultadoDetalhadoPorMaterial(){
@@ -192,6 +212,14 @@ public class RelatorioMovimentacaoGrupoMaterialPeriodo extends PadraoRelatorio{
 
 	public void setSubGrupoAlmoxarifadoList(List<SubGrupoAlmoxarifado> subGrupoAlmoxarifadoList) {
 		this.subGrupoAlmoxarifadoList = subGrupoAlmoxarifadoList;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 	
 }
