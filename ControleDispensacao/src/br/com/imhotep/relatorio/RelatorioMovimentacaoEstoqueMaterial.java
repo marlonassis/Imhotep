@@ -26,6 +26,7 @@ import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterial;
 import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.grafico.GraficoMaterialConsumo;
+import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoEstoqueMaterialExcel;
 
 @ManagedBean
 @ViewScoped
@@ -42,6 +43,7 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 	private boolean agruparPorLote;
 	private CartesianChartModel linearModel = new CartesianChartModel();
 	private boolean exibirGrafico;
+	private boolean excel;
 	
 	public void gerarGrafico(){
 		if(getMaterial() != null && getDataFim() != null && getDataIni() != null){
@@ -55,27 +57,43 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 	}
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueMaterial.jasper";
-		String nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
+		String nomeRelatorio;
 		List<MovimentacaoEstoqueMaterial> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterial().consultarResultados(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento(), getTipoOperacao(), getAgruparPorLote());
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
-		map.put("estoques", new EstoqueConsultaRaiz().consultarEstoquesMaterial(getMaterial()));
-		map.put("nomeMaterial", material.getDescricao());
-		map.put("totalEntrada", totalEntrada(lista));
-		int totalSaida = totalSaida(lista);
-		map.put("totalSaida", totalSaida);
-		int qtdDias = Utilitarios.qtdDias(getDataIni(), getDataFim());
-		map.put("totalDias", qtdDias);
-		NumberFormat nf = NumberFormat.getInstance(Constantes.LOCALE_BRASIL);
-		nf.setMaximumFractionDigits(2);
-		map.put("consumoMedio",  nf.format((float)totalSaida/qtdDias));
 		
-		InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioMovimentacaoEstoqueMaterialEstoques.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ESTOQUES", subInputStreamEstoques);
-		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
+		String dataI =  new SimpleDateFormat("MM/yyyy").format(dataIni);
+		String dataF = new SimpleDateFormat("MM/yyyy").format(dataFim);
+		
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueMaterial.jasper";
+			nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("dataIni", dataI );
+			map.put("dataFim",dataF );
+			map.put("estoques", new EstoqueConsultaRaiz().consultarEstoquesMaterial(getMaterial()));
+			map.put("nomeMaterial", material.getDescricao());
+			map.put("totalEntrada", totalEntrada(lista));
+			int totalSaida = totalSaida(lista);
+			map.put("totalSaida", totalSaida);
+			int qtdDias = Utilitarios.qtdDias(getDataIni(), getDataFim());
+			map.put("totalDias", qtdDias);
+			NumberFormat nf = NumberFormat.getInstance(Constantes.LOCALE_BRASIL);
+			nf.setMaximumFractionDigits(2);
+			map.put("consumoMedio",  nf.format((float)totalSaida/qtdDias));
+			
+			InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioMovimentacaoEstoqueMaterialEstoques.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ESTOQUES", subInputStreamEstoques);
+			super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		}
+		else{
+			nomeRelatorio = "EstoqueMovimentacao-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioMovimentacaoEstoqueMaterialExcel exc;
+	        exc = new RelatorioMovimentacaoEstoqueMaterialExcel(lista, "Farmácia",dataI+" a "+dataF,9, material.getDescricao());
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 
 	private int totalEntrada(List<MovimentacaoEstoqueMaterial> lista) {
@@ -182,6 +200,14 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 
 	public void setExibirGrafico(boolean exibirGrafico) {
 		this.exibirGrafico = exibirGrafico;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 	
 }

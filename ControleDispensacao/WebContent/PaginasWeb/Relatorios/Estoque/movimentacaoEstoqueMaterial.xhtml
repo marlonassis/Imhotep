@@ -82,6 +82,13 @@
 							value="#{relatorioMovimentacaoEstoqueMaterial.dataFim}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
+
+					<!-- EXCELL -->
+	 				<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioMovimentacaoEstoqueMaterial.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica " />
+					</h:panelGroup>
+
 				</h:panelGrid>
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
