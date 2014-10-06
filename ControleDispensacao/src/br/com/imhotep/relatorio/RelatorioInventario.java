@@ -17,6 +17,7 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.EstoqueInventario;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.RelatorioInventarioExcel;
 
 @ManagedBean
 @ViewScoped
@@ -25,6 +26,7 @@ public class RelatorioInventario extends PadraoRelatorio{
 	private static final String BANCO = Constantes.NOME_BANCO_IMHOTEP;
 	private static final String IP_CONSULTA = Constantes.IP_LOCAL;
 	private static final long serialVersionUID = 1L;
+	private boolean excel;
 	
 	public void gerarRelatorioAlmoxarifado() throws ClassNotFoundException, IOException, JRException, SQLException{
 		List<EstoqueInventario> listaInventariada = null;
@@ -35,7 +37,18 @@ public class RelatorioInventario extends PadraoRelatorio{
 	public void gerarRelatorioFarmacia() throws ClassNotFoundException, IOException, JRException, SQLException{
 		List<EstoqueInventario> listaInventariada = getListaInventariadaFarmacia();
 		List<EstoqueInventario> listaNaoInventariada = getListaNaoInventariadaFarmacia();
-		gerarRelatorio("Farm‡cia", listaInventariada, listaNaoInventariada);
+		
+		//Requisito Funcional #24
+		if(excel==false){
+			gerarRelatorio("Farm‡cia", listaInventariada, listaNaoInventariada);
+		}
+		else{
+			String nomeRelatorio = "IventarioFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioInventarioExcel exc;
+	        exc = new RelatorioInventarioExcel( listaInventariada, listaNaoInventariada, "Farmácia", null,5);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 	
 	private List<EstoqueInventario> getListaNaoInventariadaFarmacia(){
@@ -130,6 +143,14 @@ public class RelatorioInventario extends PadraoRelatorio{
 		ArrayList<EstoqueInventario> list = new ArrayList<EstoqueInventario>();
 		list.add(new EstoqueInventario());
 		super.geraRelatorio(caminho, nomeRelatorio, list, map);
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 }
