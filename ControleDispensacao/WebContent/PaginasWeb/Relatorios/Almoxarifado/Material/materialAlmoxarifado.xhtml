@@ -12,6 +12,13 @@
 			<h:form id="relatoriosForm"
 					target="_blank"
 					style="text-align: left;">
+					
+				<!-- EXCELL -->
+	 			<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioMaterialAlmoxarifadoCompleto.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica (beta)" />
+				</h:panelGroup>
+					
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" 
