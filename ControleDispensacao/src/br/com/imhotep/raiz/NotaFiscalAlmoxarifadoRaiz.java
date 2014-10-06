@@ -33,6 +33,13 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoRaiz<NotaFiscalAlmoxarifad
 	private Boolean achouLote = null;
 	private Integer quantidadeMovimentada;
 	
+	public void cadastrarLoteDuplicado(){
+		setAchouLote(false);
+		String lote = getItem().getEstoqueAlmoxarifado().getLote();
+		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
+		getItem().getEstoqueAlmoxarifado().setLote(lote);
+	}
+	
 	public NotaFiscalAlmoxarifadoRaiz(){
 		super();
 		novaInstancia();

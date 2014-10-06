@@ -94,6 +94,14 @@
 							 rendered="#{notaFiscalAlmoxarifadoRaiz.achouLote == null}"
 							 title="Procurar lote" />
 			<h:message />
+			
+			<p:commandButton value="Cadastrar Para Outro Lote"
+							 update=":#{p:component('notaFiscalAlmoxarifadoEditorForm')}"
+							 action="#{notaFiscalAlmoxarifadoRaiz.cadastrarLoteDuplicado}" 
+							 rendered="#{notaFiscalAlmoxarifadoRaiz.achouLote}"
+							 title="Cadastrar Para Outro Material"
+							 immediate="true" />
+			
 		</h:panelGrid>
 	</div>
 
