@@ -27,6 +27,12 @@
 				</h:panelGrid>
 				<script>$('.monthpicker').monthpicker();</script>
 					
+				<!-- EXCELL -->
+	 			<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioEntradaNotaFiscalAlmoxarifado.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica" />
+				</h:panelGroup>	
+					
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" ajax="false"
