@@ -16,6 +16,8 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.ConsumoAnualAlmoxarifado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.MaterialPorUnidadeAlmoxarifadoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioConsumoAnualAlmoxarifadoExcel;
 
 @ManagedBean
 @SessionScoped
@@ -23,17 +25,29 @@ public class RelatorioConsumoAnualAlmoxarifado extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
 	private String ano = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+	private boolean excel;
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException{
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioConsumoAnualAlmoxarifado.jasper";
-		String nomeRelatorio = "RelatorioConsumoAnual-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("ANO", getAno());
-		
+		String nomeRelatorio;
 		List<ConsumoAnualAlmoxarifado> listaConsumoAnualAlmoxarifado = listaMediaConsumoAlmoxarifado();
+			
+		//Solicitação de Mudança #12
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioConsumoAnualAlmoxarifado.jasper";
+			nomeRelatorio = "RelatorioConsumoAnual-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("ANO", getAno());
 		
-		super.geraRelatorio(caminho, nomeRelatorio, listaConsumoAnualAlmoxarifado, map);
+			super.geraRelatorio(caminho, nomeRelatorio, listaConsumoAnualAlmoxarifado, map);
+		}
+		else{
+			nomeRelatorio = "RelatorioConsumoAnual-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioConsumoAnualAlmoxarifadoExcel exc;
+	        exc = new RelatorioConsumoAnualAlmoxarifadoExcel(listaConsumoAnualAlmoxarifado, "Almoxarifado", getAno(),13);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 
 	private List<ConsumoAnualAlmoxarifado> listaMediaConsumoAlmoxarifado(){
@@ -97,6 +111,14 @@ public class RelatorioConsumoAnualAlmoxarifado extends PadraoRelatorio{
 
 	public void setAno(String ano) {
 		this.ano = ano;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 }
