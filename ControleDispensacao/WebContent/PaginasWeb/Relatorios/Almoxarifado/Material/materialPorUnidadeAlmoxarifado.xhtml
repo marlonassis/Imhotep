@@ -83,6 +83,12 @@
 						
 	 			</h:panelGrid>
 	 			
+	 			<!-- EXCELL -->
+	 			<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{materialPorUnidadeAlmoxarifadoBean.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica (beta)" />
+				</h:panelGroup>
+	 			
 	 			<div align="left">
 							<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" ajax="false"
