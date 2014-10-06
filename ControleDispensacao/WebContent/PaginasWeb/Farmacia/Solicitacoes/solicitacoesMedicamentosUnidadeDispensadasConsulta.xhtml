@@ -13,6 +13,11 @@
 							  value="#{solicitacaoMedicamentoUnidadeDispensadoConsulta.instancia.idSolicitacaoMedicamentoUnidade}" 
 							  label="Número da Requisição" />
 		
+		<ri:inputDataDiaMesAno id="dataSolicitacao" 
+							   title="Informe a data da solicitação" 
+							   value="#{solicitacaoMedicamentoUnidadeDispensadoConsulta.instancia.dataDispensacao}" 
+							   label="Data da Dispensação" />
+		
 		<ri:inputAutoComplete id="profissionalInsercaoConsulta" 
 							  completeMethod="#{profissionalAutoComplete.autoComplete}" 
 							  itemValue="#{profissional}" 

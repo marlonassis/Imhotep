@@ -24,10 +24,12 @@
 				<center>
 					<p:commandButton value="Carregar Última Solicitação" 
 									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarListaItensUltimaSolicitacao}" 
-									 update=":#{p:component('solicitacaoForm')}" />
+									 update=":#{p:component('solicitacaoForm')}" 
+									 title="Clique para trazer os medicamentos da última solicitação" />
 					<p:commandButton value="Atualizar Medicamentos" 
 									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarMateriais}" 
-									 update=":#{p:component('solicitacaoForm')} :#{p:component('growlMedicamentoUnidade')}" />
+									 update=":#{p:component('solicitacaoForm')} :#{p:component('growlMedicamentoUnidade')}" 
+									 title="Clique para atualizar o saldo dos medicamentos" />
 				</center>
 				<br/>
 				
@@ -59,7 +61,8 @@
 		                        				itemLabel="#{med.material.descricaoUnidadeMaterial}" 
 		                        				itemValue="#{med}" 
 		                        				converter="materialSolicitacaoMedicamentoConversor" 
-		                        				forceSelection="true">
+		                        				forceSelection="true"
+		                        				queryDelay="1000">
 						            <p:column>
 						                <h:graphicImage value="/Imagens/redBall-16.png" 
 									       				rendered="#{!med.comSaldo}" 
@@ -135,13 +138,19 @@
 				
 				<p:commandButton value="Fechar Solicitação" 
 								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.fecharSolicitacao}" 
-								 update=":#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" />
+								 update=":#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" 
+								 global="false" 
+	              			     onclick="statusDialog.show();" 
+	              			     onsuccess="statusDialog.hide();" />
 				
 				<br/><br/>
 				
 				<p:commandButton value="Cancelar" 
 								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.novaInstancia}" 
-								 update=":#{p:component('solicitacaoForm')}" />
+								 update=":#{p:component('solicitacaoForm')}" 
+								 global="false" 
+	              			     onclick="statusDialog.show();" 
+	              			     onsuccess="statusDialog.hide();" />
 			</h:form>
 		</p:tab>
 	</ui:define>

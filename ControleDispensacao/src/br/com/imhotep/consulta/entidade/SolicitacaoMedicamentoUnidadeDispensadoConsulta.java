@@ -15,6 +15,7 @@ public class SolicitacaoMedicamentoUnidadeDispensadoConsulta extends PadraoConsu
 		getCamposConsulta().put("o.unidadeDestino", IGUAL);
 		getCamposConsulta().put("o.profissionalInsercao", IGUAL);
 		getCamposConsulta().put("o.idSolicitacaoMedicamentoUnidade", IGUAL);
+		getCamposConsulta().put("o.dataDispensacao", IGUAL_DATA);
 		setOrderBy("o.dataDispensacao desc, o.unidadeDestino.nome, o.profissionalInsercao.nome");
 	}
 	

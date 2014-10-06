@@ -23,12 +23,12 @@
 	</co:interface>
 	
 	<co:implementation>
-		<h:panelGrid>
+		<h:panelGrid id="#{cc.attrs.id}" >
 			<h:panelGroup>
 				<c:if test="#{cc.attrs.required}">
 					<h:outputText value="*" style="color:red" />
 				</c:if>
-				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+				<h:outputLabel for="#{cc.attrs.id}SUC" value="#{cc.attrs.label}:" />
 			</h:panelGroup>
 			<h:panelGroup rendered="#{cc.attrs.updateChange == null}" >
 				<p:selectOneMenu id="#{cc.attrs.id}SemUC"
