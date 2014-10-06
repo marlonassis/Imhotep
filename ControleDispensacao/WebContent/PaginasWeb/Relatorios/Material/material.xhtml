@@ -12,12 +12,24 @@
 			<h:form id="relatoriosForm"
 					target="_blank"
 					style="text-align: left;">
+					
+					<!-- EXCELL -->
+	 			<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioMaterialCompleto.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica" />
+				</h:panelGroup>
+					<br />
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" 
 								ajax="false"
 								action="#{relatorioMaterialCompleto.gerarRalatorio}"/>
 					<br/><br/>
+					<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioMedicamentoControlado.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica" />
+				</h:panelGroup>
+				<BR />
 					<p:commandButton id="downloadRelatorioLista"
 								value="Gerar relatório dos materiais controlados" 
 								ajax="false"

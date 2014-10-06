@@ -23,25 +23,39 @@ import br.com.imhotep.entidade.extra.MedicamentoControladoLista;
 import br.com.imhotep.entidade.extra.MedicamentoControladoListaMedicamento;
 import br.com.imhotep.entidade.extra.MedicamentoControladoListaMedicamentoEstoque;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.RelatorioEstoqueVencimentoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioMedicamentoControladoExcel;
 
 @ManagedBean
 @ViewScoped
 public class RelatorioMedicamentoControlado extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
+	private boolean excel;
 	
 	public void gerarRalatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioMedicamentoControlado.jasper";
-		String nomeRelatorio = "RelatorioMedicamentoControlado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		HashMap<String, Object> map = new HashMap<String, Object>();
-
-		InputStream subInputStream = this.getClass().getResourceAsStream("RelatorioMedicamentoControladoMedicamento.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_MATERIAL", subInputStream);
+		String nomeRelatorio;
 		
-		InputStream subInputStream2 = this.getClass().getResourceAsStream("RelatorioMedicamentoControladoMedicamentoEstoque.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ESTOQUE", subInputStream2);
-		
-		super.geraRelatorio(caminho, nomeRelatorio, getLista(), map);
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioMedicamentoControlado.jasper";
+			nomeRelatorio = "RelatorioMedicamentoControlado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			HashMap<String, Object> map = new HashMap<String, Object>();
+	
+			InputStream subInputStream = this.getClass().getResourceAsStream("RelatorioMedicamentoControladoMedicamento.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_MATERIAL", subInputStream);
+			
+			InputStream subInputStream2 = this.getClass().getResourceAsStream("RelatorioMedicamentoControladoMedicamentoEstoque.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ESTOQUE", subInputStream2);
+			
+			super.geraRelatorio(caminho, nomeRelatorio, getLista(), map);
+		}
+		else{
+			nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioMedicamentoControladoExcel exc;
+	        exc = new RelatorioMedicamentoControladoExcel(  getLista(), "Farmácia", null,4);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 	
 	private List<MedicamentoControladoLista> getLista(){
@@ -101,6 +115,14 @@ public class RelatorioMedicamentoControlado extends PadraoRelatorio{
 				"where c.in_quantidade_atual > 0 and c.dt_data_validade >= '"+new SimpleDateFormat("yyyy-MM-dd").format(c.getTime())+"' and c.bl_bloqueado is false "+
 				"group by lista, descricaoLista, codigoMaterial, material, lote, fabricante, dataValidade, quantidadeAtual "+
 				"order by lista, descricaoLista, codigoMaterial, material, lote, fabricante, dataValidade, quantidadeAtual";
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 	
 }
