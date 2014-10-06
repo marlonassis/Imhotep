@@ -16,7 +16,6 @@ import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.ConsumoAnualAlmoxarifado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
-import br.com.imhotep.relatorio.excel.MaterialPorUnidadeAlmoxarifadoExcel;
 import br.com.imhotep.relatorio.excel.RelatorioConsumoAnualAlmoxarifadoExcel;
 
 @ManagedBean
