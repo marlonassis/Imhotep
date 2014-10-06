@@ -31,6 +31,7 @@ import br.com.imhotep.entidade.SubGrupo;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.extra.RelMaterialPorUnidade;
 import br.com.imhotep.relatorio.PadraoRelatorio;
+import br.com.imhotep.relatorio.excel.MaterialPorUnidadeFarmaciaExcel;
 
 @ManagedBean(name="materialPorUnidadeFarmaciaBean")
 @ViewScoped
@@ -45,27 +46,51 @@ public class MaterialPorUnidadeFarmaciaBean extends PadraoRelatorio{
 	private Familia familia;
 	private List<SubGrupo> subGrupoList;
 	private List<Familia> familiaList;
+	
+	private boolean excel;
 
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioAlmoxarifadoUnidade.jasper";
-		String nomeRelatorio = "MaterialUnidadeFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;
 		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
 		
 		ConsultaRelatorioMateriaisPorUnidade consulta = new ConsultaRelatorioMateriaisPorUnidade();
 		List<RelMaterialPorUnidade> lista = 
-			consulta.consultaFarmacia( unidade, grupo, subGrupo, dataIni, dataFim, familia );
+				consulta.consultaFarmacia( unidade, grupo, subGrupo, dataIni, dataFim, familia );
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
-		map.put("Setor", "Farmácia");
+		String dataIniString = new SimpleDateFormat("dd/MM/yyyy").format(dataIni);
+		String dataFimString = new SimpleDateFormat("dd/MM/yyyy").format(dataFim);
 		
-		InputStream subInputStreamNotaFiscal = this.getClass().getResourceAsStream("RelatorioAlmoxarifadoUnidadeSubreport.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ITENS", subInputStreamNotaFiscal);
-		
-		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		if (excel==false){						
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("dataIni", dataIniString );
+			map.put("dataFim", dataFimString );
+			map.put("Setor", "Farmácia");
+			
+			InputStream subInputStreamNotaFiscal = this.getClass().getResourceAsStream("RelatorioAlmoxarifadoUnidadeSubreport.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ITENS", subInputStreamNotaFiscal);
+			
+			nomeRelatorio = "MaterialUnidadeFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			
+			super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		}
+		else{			
+			nomeRelatorio = "MaterialSemConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			MaterialPorUnidadeFarmaciaExcel exc;
+	        exc = new MaterialPorUnidadeFarmaciaExcel(lista, "Farmácia", dataIniString+" a "+dataFimString,6);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook()); 
+		}
 	}
 	
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
+	}
+
 	public void atualizaSubGrupo(){
 		if(getGrupo() != null){
 			setSubGrupoList(new SubGrupoConsultaRaiz().consultarSubGrupoGrupo(getGrupo().getIdGrupo()));
