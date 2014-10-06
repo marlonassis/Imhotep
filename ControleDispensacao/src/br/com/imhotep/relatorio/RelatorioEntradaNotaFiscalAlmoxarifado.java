@@ -16,6 +16,8 @@ import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.consulta.relatorio.RelatorioNotaFiscalAlmoxarifado;
 import br.com.imhotep.entidade.extra.FinanceiroGrupoAlmoxarifado;
 import br.com.imhotep.entidade.extra.FinanceiroNotaFiscalAlmoxarifadoDesconto;
+import br.com.imhotep.relatorio.excel.MaterialSemConsumoAlmoxarixadoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioEntradaNotaFiscalAlmoxarifadoExcel;
 
 @ManagedBean
 @ViewScoped
@@ -25,28 +27,46 @@ public class RelatorioEntradaNotaFiscalAlmoxarifado extends PadraoRelatorio{
 	
 	private Date dataIni;
 	
+	//Solicitação de Mudança #13
+	private boolean excel;
+	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioNotaFiscalAlmoxarifadoPeriodo.jasper";
-		String nomeRelatorio = "RelatorioEntradaNotaFiscalAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;
 		List<FinanceiroGrupoAlmoxarifado> lista = new RelatorioNotaFiscalAlmoxarifado().consultarResultados(dataIni);
 		List<FinanceiroNotaFiscalAlmoxarifadoDesconto> listaNFDesconto = new RelatorioNotaFiscalAlmoxarifado().listaNFDesconto(dataIni);
 
 		double total = calcularTotal(lista);
 		double desconto = calcularTotalDesconto(listaNFDesconto);
 
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("MMMM/yyyy", Constantes.LOCALE_BRASIL).format(dataIni) );
-		map.put("total", total);
-		map.put("nfDescontoList", listaNFDesconto);
-		map.put("totalDesconto", desconto);
-		map.put("valorFinal", (total-desconto));
+		String data = new SimpleDateFormat("MMMM/yyyy", Constantes.LOCALE_BRASIL).format(dataIni);
 		
-		InputStream subInputStreamNotaFiscal = this.getClass().getResourceAsStream("RelatorioNotaFiscalAlmoxarifadoPeriodoItem.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_NOTAS_FISCAIS", subInputStreamNotaFiscal);
-		InputStream subInputStreamNotaFiscalDesconto = this.getClass().getResourceAsStream("RelatorioNotaFiscalAlmoxarifadoPeriodoItemDesconto.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_NOTAS_FISCAIS_DESCONTO", subInputStreamNotaFiscalDesconto);
-		
-		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		//Solicitação de Mudança #13
+		if(excel==false){
+			nomeRelatorio = "RelatorioEntradaNotaFiscalAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();			
+			map.put("dataIni", data );
+			map.put("total", total);
+			map.put("nfDescontoList", listaNFDesconto);
+			map.put("totalDesconto", desconto);
+			map.put("valorFinal", (total-desconto));
+			
+			InputStream subInputStreamNotaFiscal = this.getClass().getResourceAsStream("RelatorioNotaFiscalAlmoxarifadoPeriodoItem.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_NOTAS_FISCAIS", subInputStreamNotaFiscal);
+			InputStream subInputStreamNotaFiscalDesconto = this.getClass().getResourceAsStream("RelatorioNotaFiscalAlmoxarifadoPeriodoItemDesconto.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_NOTAS_FISCAIS_DESCONTO", subInputStreamNotaFiscalDesconto);
+			
+			super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		}
+		else{
+			nomeRelatorio = "RelatorioEntradaNotaFiscalAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			
+			RelatorioEntradaNotaFiscalAlmoxarifadoExcel exc;
+	        exc = new RelatorioEntradaNotaFiscalAlmoxarifadoExcel(lista,listaNFDesconto, "Almoxarifado", data,4);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 	
 	private double calcularTotalDesconto(List<FinanceiroNotaFiscalAlmoxarifadoDesconto> listaNFDesconto){
@@ -71,6 +91,14 @@ public class RelatorioEntradaNotaFiscalAlmoxarifado extends PadraoRelatorio{
 
 	public void setDataIni(Date dataIni) {
 		this.dataIni = dataIni;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 }
