@@ -71,13 +71,21 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	
 	public void addMedicamento(){
 			try {
+				validarUnidadeDestinoSelecionada();
 				if(!getMaterial().isComSaldo())
 					throw new ExcecaoSolicitacaoMedicamentoItemSemSaldo();
 				if(getMaterial().getQuantidadeSolicitada() == null)
 					throw new ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada();
 				if(getMaterial() != null){
 					verificarItemDuplicado();
+					setExibeMensagemInsercao(false);
+					verificarSolicitacaoNaoCadastrada();
 					getItensSelecionados().add(getMaterial());
+					Date dataAtual = new Date();
+					PadraoFluxoTemp.limparFluxo();
+					salvarItem(getInstancia(), dataAtual, 0, getMaterial());
+					PadraoFluxoTemp.finalizarFluxo();
+					PadraoFluxoTemp.limparFluxo();
 					setMaterial(new MaterialSolicitacaoMedicamento());
 				}
 			} catch (ExcecaoSolicitacaoMedicamentoItemSemSaldo e) {
@@ -85,6 +93,12 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			} catch (ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada e) {
 				e.printStackTrace();
 			} catch (ExcecaoSolicitacaoItemInseridaDuasVezes e) {
+				e.printStackTrace();
+			} catch (ExcecaoProfissionalLogado e) {
+				e.printStackTrace();
+			} catch (ExcecaoPadraoFluxo e) {
+				e.printStackTrace();
+			} catch (ExcecaoSolicitacaoSemUnidade e) {
 				e.printStackTrace();
 			}
 	}
@@ -98,12 +112,17 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	}
 	
 	public void remMedicamento(){
-		getItensSelecionados().remove(getMaterial());
-		setMaterial(new MaterialSolicitacaoMedicamento());
+		if(getItensSelecionados().remove(getMaterial())){
+			setMaterial(new MaterialSolicitacaoMedicamento());
+			String sql = "DELETE FROM tb_solicitacao_medicamento_unidade_item WHERE id_material = " 
+							+ getMaterial().getMaterial().getIdMaterial() 
+							+ " and id_solicitacao_medicamento_unidade = " + getInstancia().getIdSolicitacaoMedicamentoUnidade();
+			new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
+		}
 	}
 	
 	public Collection<MaterialSolicitacaoMedicamento> autoCompleteMedicamento(String string){
-		string = string.trim();
+		string = string.trim().toLowerCase();
 		Collection<MaterialSolicitacaoMedicamento> resultado = new ArrayList<MaterialSolicitacaoMedicamento>();
 		for(MaterialSolicitacaoMedicamento item : getMateriaisCadastrados()){
 			if(item.getMaterial().getDescricao().toLowerCase().contains(string)){
@@ -163,30 +182,34 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 		PadraoFluxoTemp.limparFluxo();
 		int cont = 0;
 		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
-			SolicitacaoMedicamentoUnidadeItem msmi = new SolicitacaoMedicamentoUnidadeItem();
-			msmi.setDataInsercao(dataAtual);
-			msmi.setMaterial(item.getMaterial());
-			msmi.setProfissionalInsercao(Autenticador.getProfissionalLogado());
-			msmi.setQuantidadeSolicitada(item.getQuantidadeSolicitada());
-			msmi.setSolicitacaoMedicamentoUnidade(instancia);
-			msmi.setStatusItem(TipoStatusSolicitacaoItemEnum.P);
-			PadraoFluxoTemp.getObjetoSalvar().put("Item-"+msmi.hashCode(), msmi);
-			System.out.println("ItemSolicitado - " + msmi.getMaterial().getIdMaterial() + " - " + cont + " - " + msmi.hashCode());
+			salvarItem(instancia, dataAtual, cont, item);
 		}
 		PadraoFluxoTemp.finalizarFluxo();
+	}
+
+	private void salvarItem(SolicitacaoMedicamentoUnidade instancia,
+			Date dataAtual, int cont, MaterialSolicitacaoMedicamento item)
+			throws ExcecaoProfissionalLogado {
+		SolicitacaoMedicamentoUnidadeItem msmi = new SolicitacaoMedicamentoUnidadeItem();
+		msmi.setDataInsercao(dataAtual);
+		msmi.setMaterial(item.getMaterial());
+		msmi.setProfissionalInsercao(Autenticador.getProfissionalLogado());
+		msmi.setQuantidadeSolicitada(item.getQuantidadeSolicitada());
+		msmi.setSolicitacaoMedicamentoUnidade(instancia);
+		msmi.setStatusItem(TipoStatusSolicitacaoItemEnum.P);
+		PadraoFluxoTemp.getObjetoSalvar().put("Item-"+msmi.hashCode(), msmi);
+		System.out.println("ItemSolicitado - " + msmi.getMaterial().getIdMaterial() + " - " + cont + " - " + msmi.hashCode());
 	}
 	
 	public void fecharSolicitacao(){
 		try {
-			if(getInstancia().getUnidadeDestino() == null){
-				throw new ExcecaoSolicitacaoSemUnidade();
-			}
+			validarUnidadeDestinoSelecionada();
 			verificarSolicitacaoVazia();
 			setExibeMensagemAtualizacao(false);
 			carregarSaldoAtualItens();
 			validarSaldo();
 			verificarSolicitacaoNaoCadastrada();
-			salvarItens(getInstancia());
+//			salvarItens(getInstancia());
 			getInstancia().setDataFechamento(new Date());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
 			if(super.atualizar()){
@@ -198,14 +221,16 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			e.printStackTrace();
 		} catch (ExcecaoSolicitacaoMedicamentoItemSemSaldo e) {
 			e.printStackTrace();
-		} catch (ExcecaoProfissionalLogado e) {
-			e.printStackTrace();
-		} catch (ExcecaoPadraoFluxo e) {
-			e.printStackTrace();
 		} catch (ExcecaoSolicitacaoMedicamentoSemItens e) {
 			e.printStackTrace();
 		} catch (ExcecaoSolicitacaoSemUnidade e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void validarUnidadeDestinoSelecionada() throws ExcecaoSolicitacaoSemUnidade {
+		if(getInstancia().getUnidadeDestino() == null){
+			throw new ExcecaoSolicitacaoSemUnidade();
 		}
 	}
 
