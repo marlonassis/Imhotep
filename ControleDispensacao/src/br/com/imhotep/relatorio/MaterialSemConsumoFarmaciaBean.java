@@ -28,6 +28,8 @@ import br.com.imhotep.entidade.Familia;
 import br.com.imhotep.entidade.Grupo;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.SubGrupo;
+import br.com.imhotep.relatorio.excel.MaterialSemConsumoAlmoxarixadoExcel;
+import br.com.imhotep.relatorio.excel.MaterialSemConsumoFarmaciaExcel;
 
 //TODO REL3 - FARMÁCIA
 @ManagedBean
@@ -42,21 +44,37 @@ public class MaterialSemConsumoFarmaciaBean extends PadraoRelatorio{
 	private Familia familia;
 	private List<SubGrupo> subGrupoList;
 	private List<Familia> familiaList;
+	private boolean excel;
 
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMateriaisSemConsumoFarmacia.jasper";
-		String nomeRelatorio = "MaterialSemConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;
 		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
 
 		ConsultaMateriaisSemConsumo consulta = new ConsultaMateriaisSemConsumo();
 		List<Material> lista = 
 			consulta.consultaFarmacia( grupo, subGrupo, dataIni, dataFim );
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
+		String dataIniString = new SimpleDateFormat("dd/MM/yyyy").format(dataIni);
+		String dataFimString = new SimpleDateFormat("dd/MM/yyyy").format(dataFim);
 		
-		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		//Requisito Funcional #26
+		if(excel==false){
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("dataIni", dataIniString );
+			map.put("dataFim", dataFimString );
+			
+			nomeRelatorio = "MaterialSemConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		
+			super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		}else{
+			nomeRelatorio = "MaterialSemConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			
+			MaterialSemConsumoFarmaciaExcel exc;
+	        exc = new MaterialSemConsumoFarmaciaExcel(lista, dataIniString+" a "+dataFimString,4);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 	
 	public void atualizaSubGrupo(){
@@ -149,6 +167,14 @@ public class MaterialSemConsumoFarmaciaBean extends PadraoRelatorio{
 
 	public void setFamiliaList(List<Familia> familiaList) {
 		this.familiaList = familiaList;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 }
