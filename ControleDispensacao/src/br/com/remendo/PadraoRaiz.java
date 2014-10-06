@@ -24,6 +24,7 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 	private boolean exibeMensagemInsercao = true;
 	private boolean exibeMensagemAtualizacao = true;
 
+	
 	public void exibirDialogPesquisa(){
 		setExibirDialogPesquisa(true);
 	}

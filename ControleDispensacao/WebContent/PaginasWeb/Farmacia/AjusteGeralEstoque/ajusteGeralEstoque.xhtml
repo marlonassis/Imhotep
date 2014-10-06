@@ -23,7 +23,7 @@
 					<p:ajax event="change" update=":#{p:component('ajusteGeralForm')}" listener="#{ajusteGeralEstoqueRaiz.carregarMaterialConformeTipo}"  />
 				</p:selectOneRadio>
 				
-				<ri:inputEntidadeList id="materiais" 
+				<ri:inputEntidadeList id="materiaisReferenciaInicial" 
 									  itemLabel="descricao" 
 									  value="#{ajusteGeralEstoqueRaiz.material}" 
 									  lista="#{ajusteGeralEstoqueRaiz.materiais}" 
@@ -32,14 +32,14 @@
 									  listener="#{ajusteGeralEstoqueRaiz.carregarLotes}" 
 									  disabled="#{ajusteGeralEstoqueRaiz.estoque != null}" />
 				
-				<ri:inputEntidadeList id="estoques" 
+				<ri:inputEntidadeList id="estoquesReferenciaInicial" 
 									  itemLabel="descricaoEstoque" 
 									  value="#{ajusteGeralEstoqueRaiz.estoque}" 
 									  lista="#{ajusteGeralEstoqueRaiz.estoques}" 
 									  label="Estoque" 
 									  updateChange=":#{p:component('ajusteGeralForm')}" 
 									  listener="#{ajusteGeralEstoqueRaiz.carregarMovimentos}" />
-				
+				#{ajusteGeralEstoqueRaiz.estoque.idEstoque}
 				<p:dataTable id="movimentosDataTable" 
 							 var="mov" 
 							 scrollable="true" 
@@ -54,9 +54,6 @@
 			            Movimentos
 			        </f:facet>
 			        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-			        <p:column headerText="id">
-			            <h:outputText value="#{mov.idMovimentoLivro}" />
-			        </p:column>
 			        <p:column headerText="Data do Movimento">
 			            <h:outputText value="#{util.formatarDataHoraSegundoBrasil(mov.dataMovimento)}" />
 			        </p:column>
@@ -101,11 +98,23 @@
 						  height="#{util.alturaTela / 2}"  >
 					
 					<h:form>
-						<ri:inputEntidadeList id="estoques" 
-									  itemLabel="descricaoEstoque" 
-									  value="#{ajusteGeralEstoqueRaiz.estoqueDestino}" 
-									  lista="#{ajusteGeralEstoqueRaiz.estoques}" 
-									  label="Estoque Destino" />
+						
+						<ri:inputEntidadeList id="materiaisReferenciaMigrar" 
+											  itemLabel="descricao" 
+											  value="#{ajusteGeralEstoqueRaiz.materialDestino}" 
+											  lista="#{ajusteGeralEstoqueRaiz.materiais}" 
+											  label="Medicamento" 
+											  updateChange=":#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+											  listener="#{ajusteGeralEstoqueRaiz.carregarLotesDestino}" 
+											  disabled="#{ajusteGeralEstoqueRaiz.estoqueDestino != null}" />
+						
+						<ri:inputEntidadeList id="estoquesReferenciaMigrar" 
+											  itemLabel="descricaoEstoque" 
+											  value="#{ajusteGeralEstoqueRaiz.estoqueDestino}" 
+											  lista="#{ajusteGeralEstoqueRaiz.estoquesDestino}" 
+											  listener="#{ajusteGeralEstoqueRaiz.exibirDialogPesquisa}"
+											  updateChange=":#{p:component('dialogMigrarMovimentoPanelGroup')}"
+											  label="Estoque Destino" />
 						
 						<p:dataTable id="movimentosDataTable" 
 									 var="mov" 
@@ -118,9 +127,6 @@
 					        <f:facet name="header">
 					            Movimentos Selecionados
 					        </f:facet>
-					        <p:column headerText="id">
-					            <h:outputText value="#{mov.idMovimentoLivro}" />
-					        </p:column>
 					        <p:column headerText="Lote">
 					            <h:outputText value="#{mov.estoque.lote}" />
 					        </p:column>
@@ -136,14 +142,14 @@
 					    </p:dataTable>
 						<p:commandButton value="Mover" 
 										 action="#{ajusteGeralEstoqueRaiz.migrarMovimentos}" 
-										 update=":#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+										 update=":#{p:component('estoquesReferenciaInicial')} :#{p:component('ajusteGeralForm')} :#{p:component('dialogMigrarMovimentoPanelGroup')} :#{p:component('estoquesReferenciaInicial')}" 
 										 immediate="false" />
 					</h:form>
 					
 					<h:form>
 						<p:commandButton value="Fechar" 
 										 action="#{ajusteGeralEstoqueRaiz.ocultarModalMigrarMovimento}" 
-										 update=":#{p:component('ajusteGeralForm')} :#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+										 update=":#{p:component('estoquesReferenciaInicial')} :#{p:component('ajusteGeralForm')} :#{p:component('dialogMigrarMovimentoPanelGroup')}" 
 										 immediate="false" />
 					</h:form>
 					
@@ -190,14 +196,14 @@
 					    </p:dataTable>
 						<p:commandButton value="Apagar" 
 										 action="#{ajusteGeralEstoqueRaiz.apagarMovimentos}" 
-										 update=":#{p:component('ajusteGeralForm')} :#{p:component('dialogApagarMovimentoPanelGroup')}" 
+										 update=":#{p:component('estoquesReferenciaInicial')} :#{p:component('ajusteGeralForm')} :#{p:component('dialogApagarMovimentoPanelGroup')} :#{p:component('estoquesReferenciaInicial')}" 
 										 immediate="false" />
 					</h:form>
 					
 					<h:form>
 						<p:commandButton value="Fechar" 
 										 action="#{ajusteGeralEstoqueRaiz.ocultarModalApagarMovimento}" 
-										 update=":#{p:component('ajusteGeralForm')} :#{p:component('dialogApagarMovimentoPanelGroup')}" 
+										 update=":#{p:component('estoquesReferenciaInicial')} :#{p:component('ajusteGeralForm')} :#{p:component('dialogApagarMovimentoPanelGroup')} :#{p:component('estoquesReferenciaInicial')}"
 										 immediate="false" />
 					</h:form>
 					

@@ -17,10 +17,13 @@ import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.InventarioFarmaciaControle;
 import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.MovimentoLivro;
+import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.enums.TipoOperacaoEnum;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.linhaMecanica.atualizador.AtualizadorMovimento;
+import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoRaiz;
 
@@ -29,10 +32,13 @@ import br.com.remendo.PadraoRaiz;
 public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControle>{
 	
 	private List<Material> materiais = new ArrayList<Material>();
+	private List<Material> materiaisDestino = new ArrayList<Material>();
 	private List<Estoque> estoques = new ArrayList<Estoque>();
+	private List<Estoque> estoquesDestino = new ArrayList<Estoque>();
 	private List<MovimentoLivro> movimentos = new ArrayList<MovimentoLivro>();
 	private List<MovimentoLivro> movimentosSelecionados = new ArrayList<MovimentoLivro>();
 	private Material material;
+	private Material materialDestino;
 	private Estoque estoque;
 	private Estoque estoqueDestino;
 	private String tipoOperacao;
@@ -51,11 +57,13 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 				ResultSet rs = lm.consultar(sql);
 				rs.next();
 				boolean dispensado = rs.getBoolean("dispensado");
+				Profissional profissionalLogado = Autenticador.getProfissionalLogado();
+				String nomeProfissional = profissionalLogado.getIdProfissional() + " - " + profissionalLogado.getNomeResumido();
 				if(dispensado){
 					int idItem = rs.getInt("item");
 					String data = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
 					String sql1 = "update tb_solicitacao_medicamento_unidade_item set tp_tipo_status_item = 'E', "+ 
-									"cv_justificativa = 'Item estornado em "+data+"' where "+
+									"cv_justificativa = 'Item estornado em "+data+" por "+nomeProfissional+" ' where "+
 									"id_solicitacao_medicamento_unidade_item = "+ idItem;
 					String sql2 = "delete from tb_dispensacao_simples where id_movimento_livro = " + mov.getIdMovimentoLivro();
 					
@@ -63,8 +71,32 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 					lm.executarCUD(sql2);
 				}
 				
+				
+				sql = "select (b.id_devolucao_medicamento_item_movimento is not null) devolvido, "+ 
+						"b.id_devolucao_medicamento_item item from tb_movimento_livro a "+
+						"left join tb_devolucao_medicamento_item_movimento b on a.id_movimento_livro = b.id_movimento_livro "+ 
+						"where a.id_movimento_livro = " + mov.getIdMovimentoLivro();
+				rs = lm.consultar(sql);
+				rs.next();
+				boolean devolucacao = rs.getBoolean("devolvido");
+				if(devolucacao){
+					int idItem = rs.getInt("item");
+					String data = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+					String sql1 = "update tb_devolucao_medicamento_item set tp_status = 'E', "+ 
+									"cv_justificativa = 'Item estornado em "+data+" por "+nomeProfissional+" ' where "+
+									"id_devolucao_medicamento_item = "+ idItem;
+					String sql2 = "delete from tb_devolucao_medicamento_item_movimento where id_movimento_livro = " + mov.getIdMovimentoLivro();
+					
+					lm.executarCUD(sql1);
+					lm.executarCUD(sql2);
+				}
+				
 				String sql3 = "delete from tb_movimento_livro where id_movimento_livro = "+mov.getIdMovimentoLivro();
 				lm.executarCUD(sql3);
+				
+				sql = "insert into farmacia.tb_log_movimento_livro_inventario (id_movimento_livro, tp_tipo_log) values(" 
+						+ mov.getIdMovimentoLivro() + ", 'A');";
+				lm.executarCUD(sql);
 			}
 			super.setExibeMensagemAtualizacao(true);
 			atualizarMovimentos(lm, getEstoque().getIdEstoque(), getEstoque().getLote());
@@ -72,20 +104,96 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 			ocultarModalApagarMovimento();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
 		}
+		limparDados();
 	}
 	
 	public void migrarMovimentos(){
 		super.setExibeMensagemAtualizacao(false);
-		for(MovimentoLivro mov : getMovimentosSelecionados()){
-			mov.setEstoque(getEstoqueDestino());
-			super.atualizarGenerico(mov);
+		try {
+			for(MovimentoLivro mov : getMovimentosSelecionados()){
+				LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, "127.0.0.1");
+				lm.executarCUD("update tb_movimento_livro set id_estoque  = " + getEstoqueDestino().getIdEstoque() + " where id_movimento_livro = " + mov.getIdMovimentoLivro());
+				
+					String sql = "select (b.id_dispensacao_simples is not null) dispensado, b.id_solicitacao_medicamento_unidade_item item from tb_movimento_livro a "+ 
+							"left join tb_dispensacao_simples b on a.id_movimento_livro = b.id_movimento_livro "+
+							"where a.id_movimento_livro = " + mov.getIdMovimentoLivro();
+					ResultSet rs = lm.consultar(sql);
+					rs.next();
+					boolean dispensado = rs.getBoolean("dispensado");
+					Profissional profissionalLogado = Autenticador.getProfissionalLogado();
+					String nomeProfissional = profissionalLogado.getIdProfissional() + " - " + profissionalLogado.getNomeResumido();
+					if(dispensado){
+						int idItem = rs.getInt("item");
+						String data = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+						String sql1 = "update tb_solicitacao_medicamento_unidade_item set tp_tipo_status_item = 'E', "+ 
+										"id_material = "+getMaterialDestino().getIdMaterial()+", "
+										+"cv_justificativa = 'Item alterado em "+data+" por "+nomeProfissional+". <br/>"
+										+ "Migrado do medicamento "+getMaterial().getDescricaoUnidadeMaterial()+" de lote "+getEstoque().getLote()+" para <br/>"
+										+ getMaterialDestino().getDescricaoUnidadeMaterial()+" de lote "+getEstoqueDestino().getLote()+"' where "+
+										"id_solicitacao_medicamento_unidade_item = "+ idItem;
+						
+						lm.executarCUD(sql1);
+					}
+					
+					
+					sql = "select (b.id_devolucao_medicamento_item_movimento is not null) devolvido, "+ 
+							"b.id_devolucao_medicamento_item item from tb_movimento_livro a "+
+							"left join tb_devolucao_medicamento_item_movimento b on a.id_movimento_livro = b.id_movimento_livro "+ 
+							"where a.id_movimento_livro = " + mov.getIdMovimentoLivro();
+					rs = lm.consultar(sql);
+					rs.next();
+					boolean devolucacao = rs.getBoolean("devolvido");
+					if(devolucacao){
+						int idItem = rs.getInt("item");
+						String data = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+						String sql1 = "update tb_devolucao_medicamento_item set tp_status = 'E', "+
+										"id_material = "+getMaterialDestino().getIdMaterial()+", "
+										+"cv_justificativa = 'Item alterado em "+data+" por "+nomeProfissional+". <br/>"
+										+ "Migrado do medicamento "+getMaterial().getDescricaoUnidadeMaterial()+" de lote "+getEstoque().getLote()+" para <br/>"
+										+ getMaterialDestino().getDescricaoUnidadeMaterial()+" de lote "+getEstoqueDestino().getLote()+"' where "+
+										"id_devolucao_medicamento_item = "+ idItem;
+						
+						lm.executarCUD(sql1);
+					}
+					
+					String data = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+					String sql1 = "update tb_movimento_livro set "
+									+" id_estoque = "+getEstoqueDestino().getIdEstoque()
+									+" cv_justificativa = 'Item alterado em "+data+" por "+nomeProfissional+". <br/>"
+									+"Migrado do medicamento "+getMaterial().getDescricaoUnidadeMaterial()+" de lote "+getEstoque().getLote()+" para <br/>"
+									+ getMaterialDestino().getDescricaoUnidadeMaterial()+" de lote "+getEstoqueDestino().getLote()+"' where "+
+									"id_movimento_livro = "+ mov.getIdMovimentoLivro();
+					
+					lm.executarCUD(sql1);
+					
+					sql = "insert into farmacia.tb_log_movimento_livro_inventario (id_movimento_livro, tp_tipo_log) values(" 
+							+ mov.getIdMovimentoLivro() + ", 'M');";
+					lm.executarCUD(sql);
+					
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
 		}
+			
 		super.setExibeMensagemAtualizacao(true);
 		LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, "127.0.0.1");
 		atualizarMovimentos(lm, getEstoque().getIdEstoque(), getEstoque().getLote());
 		atualizarMovimentos(lm, getEstoqueDestino().getIdEstoque(), getEstoqueDestino().getLote());
-		carregarMovimentos();
+		limparDados();
+		setExibirModalMigrarMovimento(false);
+	}
+
+	private void limparDados() {
+		setMaterial(null);
+		setEstoque(null);
+		setEstoques(new ArrayList<Estoque>());
+		setMovimentos(new ArrayList<MovimentoLivro>());
+		setMovimentosSelecionados(new ArrayList<MovimentoLivro>());
 	}
 	
 	private void atualizarMovimentos(LinhaMecanica lm, int idEstoque, String lote) {
@@ -111,8 +219,25 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 	}
 	
 	public void exibirModalMigrarMovimento(){
+		carrregarMaterialDestino();
+		carregarEstoqueDestino();
 		atualizarMovimentos();
+		setEstoqueDestino(null);
 		setExibirModalMigrarMovimento(true);
+	}
+
+	private void carrregarMaterialDestino() {
+		setMateriaisDestino(new ArrayList<Material>(getMateriais()));
+		setMaterialDestino(getMaterial());
+	}
+
+	private void carregarEstoqueDestino() {
+		setEstoquesDestino(new ArrayList<Estoque>());
+		for(Estoque estoq : getEstoques()){
+			if(!estoq.equals(getEstoque())){
+				getEstoquesDestino().add(estoq);
+			}
+		}
 	}
 
 	private void atualizarMovimentos() {
@@ -202,6 +327,32 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 				if(!ids.isEmpty()){
 					String hql = "select o from Estoque o where o.idEstoque in ("+ids+") order by upper(o.lote)";
 					setEstoques(new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null)));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void carregarLotesDestino(){
+		setEstoquesDestino(new ArrayList<Estoque>());
+		if(getMaterialDestino() != null){
+			String sqlEstoque = "select d.id_estoque from tb_estoque d "+
+					"where cast(d.dt_data_validade as timestamp) >= cast('2014-07-13 23:59:59' as timestamp) and "+  
+					"cast(d.dt_data_inclusao as timestamp) <= cast('2014-07-13 23:59:59' as timestamp) and "+ 
+					"d.id_material = " + getMaterialDestino().getIdMaterial() + " and d.id_estoque != "+getEstoque().getIdEstoque(); 
+			LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP);
+			ResultSet rs = lm.consultar(sqlEstoque);
+			try {
+				String ids = "";
+				while(rs.next()){
+					Integer idEstoque = rs.getInt("id_estoque");
+					ids += "," + idEstoque;
+				}
+				ids = ids.replaceFirst(",", "");
+				if(!ids.isEmpty()){
+					String hql = "select o from Estoque o where o.idEstoque in ("+ids+") order by upper(o.lote)";
+					setEstoquesDestino(new ArrayList<Estoque>(new ConsultaGeral<Estoque>().consulta(new StringBuilder(hql), null)));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -304,6 +455,30 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 
 	public void setEstoqueDestino(Estoque estoqueDestino) {
 		this.estoqueDestino = estoqueDestino;
+	}
+
+	public List<Estoque> getEstoquesDestino() {
+		return estoquesDestino;
+	}
+
+	public void setEstoquesDestino(List<Estoque> estoquesDestino) {
+		this.estoquesDestino = estoquesDestino;
+	}
+
+	public List<Material> getMateriaisDestino() {
+		return materiaisDestino;
+	}
+
+	public void setMateriaisDestino(List<Material> materiaisDestino) {
+		this.materiaisDestino = materiaisDestino;
+	}
+
+	public Material getMaterialDestino() {
+		return materialDestino;
+	}
+
+	public void setMaterialDestino(Material materialDestino) {
+		this.materialDestino = materialDestino;
 	} 
 	
 }

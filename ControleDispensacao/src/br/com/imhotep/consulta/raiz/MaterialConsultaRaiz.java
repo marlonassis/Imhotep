@@ -25,6 +25,12 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 	
 	private Material material;
 	
+	public Material getMaterial(int idMaterial){
+		String hql = "select o from Material o where o.idMaterial = " + idMaterial;
+		Material mat = new ConsultaGeral<Material>().consultaUnica(new StringBuilder(hql), null);
+		return mat; 
+	}
+	
 	public List<Material> getMateriaisCadastrados(){
 		String hql = "select o from Material o order by lower(to_ascii(o.descricao))";
 		Collection<Material> lista = new ConsultaGeral<Material>().consulta(new StringBuilder(hql), null);

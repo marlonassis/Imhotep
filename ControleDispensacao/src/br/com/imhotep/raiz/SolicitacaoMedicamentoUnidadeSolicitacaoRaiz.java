@@ -25,6 +25,7 @@ import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 import br.com.imhotep.excecoes.ExcecaoForaRedeHU;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.excecoes.ExcecaoSolicitacaoItemInseridaDuasVezes;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoItemSemSaldo;
 import br.com.imhotep.excecoes.ExcecaoSolicitacaoMedicamentoSemItens;
@@ -75,6 +76,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 				if(getMaterial().getQuantidadeSolicitada() == null)
 					throw new ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada();
 				if(getMaterial() != null){
+					verificarItemDuplicado();
 					getItensSelecionados().add(getMaterial());
 					setMaterial(new MaterialSolicitacaoMedicamento());
 				}
@@ -82,7 +84,17 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 				e.printStackTrace();
 			} catch (ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada e) {
 				e.printStackTrace();
+			} catch (ExcecaoSolicitacaoItemInseridaDuasVezes e) {
+				e.printStackTrace();
 			}
+	}
+
+	private void verificarItemDuplicado() throws ExcecaoSolicitacaoItemInseridaDuasVezes {
+		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
+			if(item.equals(getMaterial())){
+				throw new ExcecaoSolicitacaoItemInseridaDuasVezes();
+			}
+		}
 	}
 	
 	public void remMedicamento(){
@@ -149,6 +161,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	private void salvarItens(SolicitacaoMedicamentoUnidade instancia) throws ExcecaoProfissionalLogado, ExcecaoPadraoFluxo {
 		Date dataAtual = new Date();
 		PadraoFluxoTemp.limparFluxo();
+		int cont = 0;
 		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
 			SolicitacaoMedicamentoUnidadeItem msmi = new SolicitacaoMedicamentoUnidadeItem();
 			msmi.setDataInsercao(dataAtual);
@@ -158,6 +171,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			msmi.setSolicitacaoMedicamentoUnidade(instancia);
 			msmi.setStatusItem(TipoStatusSolicitacaoItemEnum.P);
 			PadraoFluxoTemp.getObjetoSalvar().put("Item-"+msmi.hashCode(), msmi);
+			System.out.println("ItemSolicitado - " + msmi.getMaterial().getIdMaterial() + " - " + cont + " - " + msmi.hashCode());
 		}
 		PadraoFluxoTemp.finalizarFluxo();
 	}
@@ -220,6 +234,8 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	}
 
 	public void carregarListaItensUltimaSolicitacao() {
+		setItensSelecionados(new ArrayList<MaterialSolicitacaoMedicamento>());
+		
 		if(getInstancia().getUnidadeDestino() == null){
 			try {
 				throw new ExcecaoSolicitacaoSemUnidade();
@@ -228,6 +244,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 				return;
 			}
 		}
+		setExibeMensagemInsercao(false);
 		verificarSolicitacaoNaoCadastrada();
 		
 		String sql = getSqlMateriaisUltimaSolicitacao();

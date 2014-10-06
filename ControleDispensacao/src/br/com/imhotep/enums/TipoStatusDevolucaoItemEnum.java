@@ -6,6 +6,7 @@ package br.com.imhotep.enums;
 
 public enum TipoStatusDevolucaoItemEnum {
 	A("Aberto"),
+	E("Estornado"),
 	P("Pendente"),
 	R("Recebido"),
 	RP("Recebido em Parte"),
