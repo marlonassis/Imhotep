@@ -27,6 +27,8 @@ import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterialAlmoxarifado;
 import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.grafico.GraficoMaterialAlmoxarifadoConsumo;
+import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoEstoqueMaterialAlmoxarifadoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoGrupoMaterialPeriodoExcel;
 
 @ManagedBean
 @ViewScoped
@@ -44,6 +46,8 @@ public class RelatorioMovimentacaoEstoqueMaterialAlmoxarifado extends PadraoRela
 	private CartesianChartModel linearModel = new CartesianChartModel();
 	private boolean exibirGrafico;
 	
+	private boolean excel;
+	
 	public void gerarGrafico(){
 		if(getMaterialAlmoxarifado() != null && getDataFim() != null && getDataIni() != null){
 			setLinearModel(new GraficoMaterialAlmoxarifadoConsumo().montarGrafico(getMaterialAlmoxarifado(), getDataIni(), getDataFim()));
@@ -56,27 +60,45 @@ public class RelatorioMovimentacaoEstoqueMaterialAlmoxarifado extends PadraoRela
 	}
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueMaterialAlmoxarifado.jasper";
-		String nomeRelatorio = "EstoqueMovimentacaoAmloxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
-		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
+		String nomeRelatorio;
 		List<MovimentacaoEstoqueMaterialAlmoxarifado> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterialAlmoxarifado().consultarResultados(getMaterialAlmoxarifado(), dataIni, dataFim, getUnidade(), getTipoMovimentoAlmoxarifado(), getTipoOperacao(), getAgruparPorLote());
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
-		map.put("estoques", new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoquesMaterial(getMaterialAlmoxarifado()));
-		map.put("nomeMaterial", materialAlmoxarifado.getIdMaterialAlmoxarifado() + " - " + materialAlmoxarifado.getDescricao());
-		map.put("totalEntrada", totalEntrada(lista));
-		int totalSaida = totalSaida(lista);
-		map.put("totalSaida", totalSaida);
-		int qtdDias = Utilitarios.qtdDias(getDataIni(), getDataFim());
-		map.put("totalDias", qtdDias);
-		NumberFormat nf = NumberFormat.getInstance(Constantes.LOCALE_BRASIL);
-		nf.setMaximumFractionDigits(2);
-		map.put("consumoMedio",  nf.format((float)totalSaida/qtdDias));
 		
-		InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioMovimentacaoEstoqueMaterialEstoques.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ESTOQUES", subInputStreamEstoques);
-		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		this.dataFim = new Utilitarios().ajustarUltimaHoraDia(this.dataFim);
+		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(this.dataIni);
+		String dataFim = new SimpleDateFormat("dd/MM/yyyy").format(this.dataFim);
+		
+		String nomeMaterial = materialAlmoxarifado.getIdMaterialAlmoxarifado() + " - " + materialAlmoxarifado.getDescricao();
+		int qtdDias = Utilitarios.qtdDias(getDataIni(), getDataFim());
+		
+		if(excel == false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioMovimentacaoEstoqueMaterialAlmoxarifado.jasper";
+			nomeRelatorio = "EstoqueMovimentacaoAmloxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";			
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("dataIni", dataInicio );
+			map.put("dataFim",  dataFim);
+			map.put("estoques", new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoquesMaterial(getMaterialAlmoxarifado()));
+			map.put("nomeMaterial", nomeMaterial);
+			map.put("totalEntrada", totalEntrada(lista));
+			int totalSaida = totalSaida(lista);
+			map.put("totalSaida", totalSaida);
+			
+			map.put("totalDias", qtdDias);
+			NumberFormat nf = NumberFormat.getInstance(Constantes.LOCALE_BRASIL);
+			nf.setMaximumFractionDigits(2);
+			map.put("consumoMedio",  nf.format((float)totalSaida/qtdDias));
+			
+			InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioMovimentacaoEstoqueMaterialEstoques.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ESTOQUES", subInputStreamEstoques);
+			super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		}
+		else{
+			nomeRelatorio = "RelatorioMovimentacaoDetalhadaEstoqueMaterialAlmoxarifadoGrupo-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioMovimentacaoEstoqueMaterialAlmoxarifadoExcel exc;
+	        exc = new RelatorioMovimentacaoEstoqueMaterialAlmoxarifadoExcel(lista, "Almoxarifado", dataInicio+" a "+dataFim,9, nomeMaterial);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 
 	private int totalEntrada(List<MovimentacaoEstoqueMaterialAlmoxarifado> lista) {
@@ -183,6 +205,14 @@ public class RelatorioMovimentacaoEstoqueMaterialAlmoxarifado extends PadraoRela
 
 	public void setExibirGrafico(boolean exibirGrafico) {
 		this.exibirGrafico = exibirGrafico;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 	
 }

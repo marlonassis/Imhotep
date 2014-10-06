@@ -82,6 +82,14 @@
 							value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.dataFim}" pattern="dd/MM/yyyy"
 							locale="pt" />
 					</h:panelGroup>
+					
+						<!-- EXCELL -->
+	 			<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica (beta)" />
+				</h:panelGroup>				
+	     				 
+					
 				</h:panelGrid>
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"
@@ -115,7 +123,7 @@
 									datatipFormat="#{util.datatipFormat}"
 	     							title="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.materialAlmoxarifado.descricao}" 
 	     							style="height:400px; width:800px;"/> 
-	     				 
+	     							
 	     				<p:commandButton value="Fechar" update=":#{p:component('grafico')}" action="#{relatorioMovimentacaoEstoqueMaterialAlmoxarifado.fecharModal}" />
 	     			</center>
 				</p:dialog>

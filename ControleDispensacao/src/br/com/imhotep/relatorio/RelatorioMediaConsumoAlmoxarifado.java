@@ -26,6 +26,8 @@ import br.com.imhotep.entidade.GrupoAlmoxarifado;
 import br.com.imhotep.entidade.SubGrupoAlmoxarifado;
 import br.com.imhotep.entidade.extra.MediaConsumoAlmoxarifado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.RelatorioMediaConsumoAlmoxarifadoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoGrupoMaterialPeriodoExcel;
 
 //TODO Rel 2
 
@@ -38,6 +40,7 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 	private GrupoAlmoxarifado grupoAlmoxarifado;
 	private SubGrupoAlmoxarifado subGrupoAlmoxarifado;
 	private List<SubGrupoAlmoxarifado> subGrupoAlmoxarifadoList;
+	private boolean excel;
 	
 	public void atualizaSubGrupoAmoxarifado(){
 		if(getGrupoAlmoxarifado() != null){
@@ -57,13 +60,15 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException{
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioMediaConsumoAlmoxarifado.jasper";
-		String nomeRelatorio = "RelatorioMediaConsumoAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeArquivoRelatorio;
 		
 		String grupo = montarDescricaoGrupo();
+		String dataI =  new SimpleDateFormat("MM/yyyy").format(dataIni);
+		String dataF = new SimpleDateFormat("MM/yyyy").format(getSeisMesesAnteriores());
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("DATA_INI", new SimpleDateFormat("MM/yyyy").format(dataIni));
-		map.put("DATA_FIM", new SimpleDateFormat("MM/yyyy").format(getSeisMesesAnteriores()));
+		map.put("DATA_INI",dataI);
+		map.put("DATA_FIM", dataF);
 		map.put("GRUPO", grupo);
 		map.put("Setor", "Almoxarifado");
 		
@@ -72,7 +77,17 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 		
 		List<MediaConsumoAlmoxarifado> listaMediaConsumoAlmoxarifado = listaMediaConsumoAlmoxarifado(idGrupo, idSubGrupo, map, 6);
 		
-		super.geraRelatorio(caminho, nomeRelatorio, listaMediaConsumoAlmoxarifado, map);
+		if (excel==false){
+			nomeArquivoRelatorio = "RelatorioMediaConsumoAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			super.geraRelatorio(caminho, nomeArquivoRelatorio, listaMediaConsumoAlmoxarifado, map);
+		}
+		else{
+			nomeArquivoRelatorio = "RelatorioMediaConsumoAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioMediaConsumoAlmoxarifadoExcel exc;
+	        exc = new RelatorioMediaConsumoAlmoxarifadoExcel(listaMediaConsumoAlmoxarifado, "Almoxarifado", dataI+" a "+dataF,10, dataIni);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeArquivoRelatorio, exc.getWorkbook());
+		}
 	}
 
 	private Date getSeisMesesAnteriores(){
@@ -230,6 +245,14 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 
 	public void setSubGrupoAlmoxarifadoList(List<SubGrupoAlmoxarifado> subGrupoAlmoxarifadoList) {
 		this.subGrupoAlmoxarifadoList = subGrupoAlmoxarifadoList;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 	

@@ -4,7 +4,7 @@ package br.com.imhotep.relatorio;
  * Criada por Asclepíades Neto 
  * Data: 02/09/2014
  * Funcionalidade: Relatório de materiais/medicamentos por unidade
- * XHTML: /PaginasWeb/Relatorios/Almoxarifado/Material/materialAlmoxarifado.xhtml
+ * XHTML: /PaginasWeb/Relatorios/Almoxarifado/Material/materialPorUnidadeAlmoxarifado.xhtml
  */
 
 import java.io.IOException;
@@ -29,11 +29,12 @@ import br.com.imhotep.entidade.SubGrupoAlmoxarifado;
 import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.extra.RelMaterialPorUnidade;
 import br.com.imhotep.relatorio.PadraoRelatorio;
+import br.com.imhotep.relatorio.excel.MaterialPorUnidadeAlmoxarifadoExcel;
+import br.com.imhotep.relatorio.excel.MaterialSemConsumoAlmoxarixadoExcel;
 
 @ManagedBean(name="materialPorUnidadeAlmoxarifadoBean")
 @ViewScoped
 public class MaterialPorUnidadeAlmoxarifadoBean extends PadraoRelatorio{
-//TODO Rel 1
 	private static final long serialVersionUID = 1L;
 	private Date dataIni;
 	private Date dataFim;
@@ -42,24 +43,40 @@ public class MaterialPorUnidadeAlmoxarifadoBean extends PadraoRelatorio{
 	private SubGrupoAlmoxarifado subGrupoAlmoxarifado;
 	private List<SubGrupoAlmoxarifado> subGrupoAlmoxarifadoList;
 	
+	private boolean excel;
+	
 	public void gerarRelatorioAloxarifado() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioAlmoxarifadoUnidade.jasper";
-		/**/String nomeRelatorio = "MaterialUnidadeAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;
 		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
 		
 		ConsultaRelatorioMateriaisPorUnidade consulta = new ConsultaRelatorioMateriaisPorUnidade();
 		List<RelMaterialPorUnidade> lista = 
 			consulta.consultaAlmoxarifado( unidade, grupoAlmoxarifado, subGrupoAlmoxarifado, dataIni, dataFim );
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("dataIni", new SimpleDateFormat("dd/MM/yyyy").format(dataIni) );
-		map.put("dataFim", new SimpleDateFormat("dd/MM/yyyy").format(dataFim) );
-		map.put("Setor", "Almoxarifado");
+		String dataIniString = new SimpleDateFormat("dd/MM/yyyy").format(dataIni);
+		String dataFimString = new SimpleDateFormat("dd/MM/yyyy").format(dataFim);
 		
-		InputStream subInputStreamNotaFiscal = this.getClass().getResourceAsStream("RelatorioAlmoxarifadoUnidadeSubreport.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ITENS", subInputStreamNotaFiscal);
-		
-		super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		//Solicitação de Mudança #15
+		if (excel==false){
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("dataIni", dataIniString );
+			map.put("dataFim", dataFimString );
+			map.put("Setor", "Almoxarifado");
+			
+			InputStream subInputStreamNotaFiscal = this.getClass().getResourceAsStream("RelatorioAlmoxarifadoUnidadeSubreport.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ITENS", subInputStreamNotaFiscal);
+			
+			nomeRelatorio = "MaterialSemConsumoAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			super.geraRelatorio(caminho, nomeRelatorio, lista, map);
+		}
+		else{			
+			nomeRelatorio = "MaterialSemConsumoAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			MaterialPorUnidadeAlmoxarifadoExcel exc;
+	        exc = new MaterialPorUnidadeAlmoxarifadoExcel(lista, "Almoxarifado", dataIniString+" a "+dataFimString,6);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 	
 	public void atualizaSubGrupoAmoxarifado(){
@@ -124,6 +141,14 @@ public class MaterialPorUnidadeAlmoxarifadoBean extends PadraoRelatorio{
 
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 }
