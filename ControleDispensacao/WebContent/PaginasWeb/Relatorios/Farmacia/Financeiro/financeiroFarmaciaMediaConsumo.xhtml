@@ -24,6 +24,12 @@
 					</p:inputText>
 				</h:panelGroup>
 				
+				<!-- EXCELL -->
+	 			<h:panelGroup>
+						<h:selectBooleanCheckbox value="#{relatorioMediaConsumoFarmacia.excel}" />
+						<h:outputLabel for="grupo" value="Planilha eletrônica (beta)" />
+				</h:panelGroup>
+				
 				<script>$('.monthpicker').monthpicker();</script>
 				<div align="left">
 					<p:commandButton id="downloadRelatorio"

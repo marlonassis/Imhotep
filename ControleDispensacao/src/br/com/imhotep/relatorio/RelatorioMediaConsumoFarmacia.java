@@ -26,25 +26,43 @@ import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.comparador.MediaConsumoFarmaciaComparador;
 import br.com.imhotep.entidade.extra.MediaConsumoFarmacia;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.RelatorioMediaConsumoAlmoxarifadoExcel;
+import br.com.imhotep.relatorio.excel.RelatorioMediaConsumoFarmaciaExcel;
 
 @ManagedBean
 @SessionScoped
 public class RelatorioMediaConsumoFarmacia extends PadraoRelatorio{
-//TODO REL 2	
+
 	private static final long serialVersionUID = 1L;
 	private Date dataIni = new Date();
+	private boolean excel;
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException{
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioMediaConsumoFarmacia.jasper";
-		String nomeRelatorio = "RelatorioMediaConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;		
+		String dataI =  new SimpleDateFormat("MM/yyyy").format(dataIni);
+		String dataF = new SimpleDateFormat("MM/yyyy").format(getSeisMesesAnteriores());
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("DATA_INI", new SimpleDateFormat("MM/yyyy").format(dataIni));
-		map.put("DATA_FIM", new SimpleDateFormat("MM/yyyy").format(getSeisMesesAnteriores()));
+		map.put("DATA_INI", dataI);
+		map.put("DATA_FIM",dataF);
 		
 		List<MediaConsumoFarmacia> listaMediaConsumoFarmacia = listaMediaConsumoFarmacia(map, 6);
-//		Collections.sort(listaMediaConsumoFarmacia, new MediaConsumoFarmaciaComparador());
-		super.geraRelatorio(caminho, nomeRelatorio, listaMediaConsumoFarmacia, map);
+		
+		//Requisito Funcional #22
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioMediaConsumoFarmacia.jasper";
+			nomeRelatorio = "RelatorioMediaConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		
+	//		Collections.sort(listaMediaConsumoFarmacia, new MediaConsumoFarmaciaComparador());
+			super.geraRelatorio(caminho, nomeRelatorio, listaMediaConsumoFarmacia, map);
+		}
+		else{
+			nomeRelatorio = "RelatorioMediaConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioMediaConsumoFarmaciaExcel exc;
+	        exc = new RelatorioMediaConsumoFarmaciaExcel(listaMediaConsumoFarmacia, "Farmácia", dataI+" a "+dataF,10, dataIni);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 
 	private Date getSeisMesesAnteriores(){
@@ -189,6 +207,14 @@ public class RelatorioMediaConsumoFarmacia extends PadraoRelatorio{
 
 	public void setDataIni(Date dataIni) {
 		this.dataIni = dataIni;
+	}
+
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
 	}
 
 }
