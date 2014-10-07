@@ -47,8 +47,9 @@ public class SolicitacoesDevolucoesProfissionalRaiz extends PadraoRaiz<Solicitac
 						new GerenciadorRequisicao().redirecionarPagina(Constantes.PAGINA_SOLICITACAO_MATERIAL);
 					}else{
 						if(getItemConsulta().getTipo().equals(SolicitacaoMedicamentoUnidadeConsultaRaiz.SIGLA_SOLICITACAO_FARMACIA)){
-							SolicitacaoMedicamentoUnidadeRaiz smu = (SolicitacaoMedicamentoUnidadeRaiz) new ControleInstancia().procuraInstancia(SolicitacaoMedicamentoUnidadeRaiz.class);
+							SolicitacaoMedicamentoUnidadeSolicitacaoRaiz smu = (SolicitacaoMedicamentoUnidadeSolicitacaoRaiz) new ControleInstancia().procuraInstancia(SolicitacaoMedicamentoUnidadeSolicitacaoRaiz.class);
 							smu.setInstancia(smu.getBusca("select o from SolicitacaoMedicamentoUnidade o where o.idSolicitacaoMedicamentoUnidade ="+getItemConsulta().getCodigo()).get(0));
+							smu.carregarItensRecuperacao();
 							new GerenciadorRequisicao().redirecionarPagina(Constantes.PAGINA_SOLICITACAO_MEDICAMENTO);
 						}else{
 							try {

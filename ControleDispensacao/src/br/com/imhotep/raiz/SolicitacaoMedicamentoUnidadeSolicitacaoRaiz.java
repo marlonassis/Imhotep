@@ -50,6 +50,69 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 		carregarMateriais();
 	}
 	
+	public void carregarItensRecuperacao(){
+		setItensSelecionados(new ArrayList<MaterialSolicitacaoMedicamento>());
+		
+		if(getInstancia().getUnidadeDestino() == null){
+			try {
+				throw new ExcecaoSolicitacaoSemUnidade();
+			} catch (ExcecaoSolicitacaoSemUnidade e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		setExibeMensagemInsercao(false);
+		verificarSolicitacaoNaoCadastrada();
+		
+		String sql = getSqlMateriaisRecuperacaoSolicitacao();
+		ResultSet rs = new LinhaMecanica("db_imhotep").consultar(sql);
+		try {
+			while(rs.next()){
+				Integer idMaterial = rs.getInt("id_material");
+				String materialDescricao = rs.getString("material");
+				Integer saldo = rs.getInt("saldo");
+				Integer qtdSolicitado = rs.getInt("qtdSolicitado");
+				String unidadeMaterial = rs.getString("cv_sigla");
+				
+				Material material = new Material();
+				material.setIdMaterial(idMaterial);
+				material.setDescricao(materialDescricao);
+				material.setUnidadeMaterial(new UnidadeMaterial());
+				material.getUnidadeMaterial().setSigla(unidadeMaterial);
+				
+				MaterialSolicitacaoMedicamento scm = new MaterialSolicitacaoMedicamento();
+				scm.setMaterial(material);
+				scm.setQuantidadeAtual(saldo);
+				scm.setQuantidadeSolicitada(qtdSolicitado);
+				
+				getItensSelecionados().add(scm);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String getSqlMateriaisRecuperacaoSolicitacao() {
+		int idSMU = getInstancia().getIdSolicitacaoMedicamentoUnidade();
+		String sql = "select  a.id_solicitacao_medicamento_unidade, "+
+						"s.id_material, s.cv_descricao material, e.cv_sigla, "+  
+						"(coalesce((select sum(x.in_quantidade_atual) from tb_estoque x "+ 
+						"inner join tb_material b on x.id_material = b.id_material "+
+						"where x.bl_bloqueado = false and x.dt_data_validade >= cast(now() as date) and x.in_quantidade_atual > 0 "+ 
+						"and x.id_material = s.id_material), 0) - "+
+						"coalesce((select sum(c.in_quantidade_solicitada) from tb_solicitacao_medicamento_unidade_item c "+ 
+						"inner join tb_solicitacao_medicamento_unidade d on d.id_solicitacao_medicamento_unidade = c.id_solicitacao_medicamento_unidade "+ 
+						"where d.tp_status_dispensacao = 'P' and d.id_solicitacao_medicamento_unidade != "+idSMU+" and c.id_material = s.id_material), 0)) saldo, "+ 
+						"c.in_quantidade_solicitada qtdSolicitado "+
+						"from tb_solicitacao_medicamento_unidade a "+
+						"inner join tb_solicitacao_medicamento_unidade_item c on c.id_solicitacao_medicamento_unidade = a.id_solicitacao_medicamento_unidade "+ 
+						"inner join tb_material s on s.id_material = c.id_material "+
+						"inner join tb_unidade_material e on e.id_unidade_material = s.id_unidade_material "+ 
+						"where a.id_solicitacao_medicamento_unidade = "+idSMU+
+						" order by to_ascii(lower(s.cv_descricao)) ";
+		return sql;
+	}
+	
 	public int somaTotalQuantidadeLiberada(SolicitacaoMedicamentoUnidadeItem item){
 		int total = 0;
 		for(DispensacaoSimples obj : item.getDispensacoes()){
