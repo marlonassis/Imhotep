@@ -15,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -26,6 +28,25 @@ public class PadraoRelatorio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
+    protected void geraRelatorioExcel( String nomeRelatorio, HSSFWorkbook wb)throws ClassNotFoundException, IOException, JRException, SQLException {
+		
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        
+        HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+		
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        
+        ctx.responseComplete();
+        response.addHeader("Content-disposition", "filename="+nomeRelatorio);        
+        
+        wb.write(servletOutputStream);
+      
+        response.setContentType("application/vnd.ms-excel");       
+        servletOutputStream.flush();
+        servletOutputStream.close();
+    }
+	
 	@SuppressWarnings("rawtypes")
     protected void geraRelatorio(String caminho, String nomeRelatorio, List list, Map<String, Object> map) throws ClassNotFoundException, IOException, JRException, SQLException {
 		if(map == null){
@@ -81,7 +102,7 @@ public class PadraoRelatorio implements Serializable {
         response.setContentType("application/pdf");
         response.addHeader("Content-disposition", "filename="+nomeRelatorio);
         
-		List list = new ArrayList();
+		List<Object> list = new ArrayList<Object>();
         list.add(obj);
 		JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, map, (JRDataSource) new JRBeanCollectionDataSource(list));
         
