@@ -19,11 +19,11 @@
 							  value="#{fornecedorRaiz.instancia.razaoSocial}" 
 							  label="Razão Social" />
 		
-		<ri:inputApenasNumero id="cadastroPessoaFisicaJuridica" 
-							  title="Informe o CPF ou CNPJ do fornecedor" 
-							  value="#{fornecedorRaiz.instancia.cadastroPessoaFisicaJuridica}" 
-							  required="true"
-							  label="CNPJ/CPF" />
+		<ri:inputCpfCnpj id="cpfCnpj" 
+						 title="Informe o CNPJ ou CPF"
+						 required="true" 
+						 value="#{fornecedorRaiz.instancia.cadastroPessoaFisicaJuridica}" 
+						 label="CPF/CNPJ" />
 		
 		<ri:inputTextoSimples id="inscricaoEstadual" 
 							  title="Informe a inscrição estadual do fornecedor"

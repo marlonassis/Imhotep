@@ -2,6 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 
@@ -24,14 +25,11 @@
 						 title="Informe a razão social do fornecedor" />
 		</h:panelGroup>
 
-		<h:panelGroup>
-			
-			<h:outputLabel for="cadastroPessoaFisicaJuridica" value="CNPJ/CPF:" />
-			<br />
-			<p:inputText id="cadastroPessoaFisicaJuridica" required="false"
-				value="#{fornecedorConsulta.instancia.cadastroPessoaFisicaJuridica}"
-				title="Informe o CPF ou CNPJ do fornecedor." />
-		</h:panelGroup>
+		<ri:inputCpfCnpj id="cpfCnpjConsulta" 
+						 title="Informe o CNPJ ou CPF"
+						 required="true" 
+						 value="#{fornecedorConsulta.instancia.cadastroPessoaFisicaJuridica}" 
+						 label="CPF/CNPJ" />
 
 		<h:panelGroup>
 			<h:outputLabel for="cidade" value="Cidade:" />
