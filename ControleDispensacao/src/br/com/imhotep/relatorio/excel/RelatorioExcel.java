@@ -334,6 +334,10 @@ public abstract  class RelatorioExcel {
         style.setWrapText(true);
         styles.put("cell_indented", style);
 
+        Font font4 = wb.createFont();
+         font4.setColor(IndexedColors.WHITE.getIndex());
+         font4.setBoldweight(Font.BOLDWEIGHT_BOLD);
+         style.setFont(font4);
         style = createBorderedStyle(wb);
         style.setFillForegroundColor(IndexedColors.BLUE.getIndex());
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
