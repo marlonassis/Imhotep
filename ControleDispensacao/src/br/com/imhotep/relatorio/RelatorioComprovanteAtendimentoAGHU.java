@@ -15,7 +15,6 @@ import javax.faces.bean.SessionScoped;
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.AtendimentosRealizadosAGHU;
-import br.com.imhotep.enums.TipoCondicaoAtendimentoEnum;
 import br.com.imhotep.enums.TipoImpressaoComprovanteConsultaEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanicaAGHU;
 
