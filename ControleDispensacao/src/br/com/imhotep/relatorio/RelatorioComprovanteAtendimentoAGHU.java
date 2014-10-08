@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.AtendimentosRealizadosAGHU;
+import br.com.imhotep.enums.TipoCondicaoAtendimentoEnum;
 import br.com.imhotep.enums.TipoImpressaoComprovanteConsultaEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanicaAGHU;
 
@@ -33,7 +34,13 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 	private TipoImpressaoComprovanteConsultaEnum tipo = TipoImpressaoComprovanteConsultaEnum.E;
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioComprovanteAtendimentoRealizados.jasper";
+		//Solicitação de Mudança #30
+		String caminho;
+		if(tipo.equals(TipoImpressaoComprovanteConsultaEnum.E))
+			caminho = Constantes.DIR_RELATORIO + "RelatorioComprovanteAtendimentoRealizadosExame.jasper";
+		else
+			caminho = Constantes.DIR_RELATORIO + "RelatorioComprovanteAtendimentoRealizados.jasper";
+		
 		String nomeRelatorio = "RelatorioComprovanteAtendimentoRealizado.pdf";
 		List<AtendimentosRealizadosAGHU> lista = getAtendimentos();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -51,7 +58,7 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 	}
 
 	private List<AtendimentosRealizadosAGHU> getAtendimentos(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String ini = sdf.format(dataIni);
 		String fim = sdf.format(dataFim);
 		String nomeProfissionalSemCrm = null;
@@ -60,19 +67,58 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 			array = profissional.split(CARACTER_SEPARACAO_NOME_PROFISSIONAL);
 			nomeProfissionalSemCrm = array[0].contains("-") ? array[0].split("-")[1] : array[0];
 		}
-		String sql = "select prontuario, pacienteNome, cartaosus, nascimento, logradouro, "
-						+ "numero, complemento, bairro, cep, municipio, crm, uf from agh.temp_compro_consul "
-						+"where "+
-						(nomeProfissionalSemCrm != null ? 
-						"lower(profissional) = lower('"+nomeProfissionalSemCrm+"') and lower(especialidade) = lower('"+array[1]+"') and "
-						: ""
-						)
-						+" cast(dataConsulta as date) between cast('"+ini+"' as date) and cast('"+fim+"' as date) "
-						+"order by lower(pacienteNome)";
 		
+		//Solicitação de Mudança #30
 		List<AtendimentosRealizadosAGHU> res = new ArrayList<AtendimentosRealizadosAGHU>();
 		LinhaMecanicaAGHU lma = new LinhaMecanicaAGHU();
-		List<Object[]> resultado = lma.getListaResultado(sql);
+		List<Object[]> resultado;
+		
+		String sql;
+		if( tipo.getLabel().equals(TipoImpressaoComprovanteConsultaEnum.E.getLabel()) ){
+			sql =  "SELECT DISTINCT paciente.prontuario, paciente.nome AS pacientenome, paciente.nro_cartao_saude AS cartaosus, paciente.dt_nascimento AS nascimento, "					
+					+ "endereco.logradouro, endereco.nro_logradouro AS numero, endereco.compl_logradouro AS complemento, endereco.bairro, endereco.cep, "
+					+ "cidade.nome AS municipio, qualificacao.nro_reg_conselho AS crm, cidade.uf_sigla AS uf, condatend.descricao as condicaoAtendimento, "
+					+ "con.dt_consulta AS dataconsulta, pessoa.nome AS profissional,  esp.nome_especialidade AS especialidade "+					
+				  "FROM agh.aac_consultas con "+
+				   "JOIN agh.aac_grade_agendamen_consultas grade ON con.grd_seq = grade.seq "+
+				   "JOIN agh.agh_especialidades esp ON grade.esp_seq = esp.seq "+
+				   "JOIN agh.agh_equipes eqp ON grade.eqp_seq = eqp.seq "+
+				   "JOIN agh.aip_pacientes paciente ON paciente.codigo = con.pac_codigo "+
+				   "LEFT JOIN agh.aip_enderecos_pacientes endereco ON paciente.codigo = endereco.pac_codigo "+
+				   "LEFT JOIN agh.aip_bairros bairro ON bairro.codigo = endereco.bcl_bai_codigo "+
+				   "LEFT JOIN agh.aip_logradouros logradouro ON logradouro.codigo = endereco.bcl_clo_lgr_codigo "+
+				   "LEFT JOIN agh.aip_cidades cidade ON logradouro.cdd_codigo = cidade.codigo AND endereco.bcl_clo_lgr_codigo IS NOT NULL OR endereco.cdd_codigo = cidade.codigo AND endereco.cdd_codigo IS NOT NULL "+
+				   "LEFT JOIN agh.rap_servidores serv ON grade.pre_ser_matricula = serv.matricula AND grade.pre_ser_vin_codigo = serv.vin_codigo "+
+				   "LEFT JOIN agh.rap_pessoas_fisicas pessoa ON serv.pes_codigo = pessoa.codigo "+
+				   "LEFT JOIN agh.rap_qualificacoes qualificacao ON qualificacao.pes_codigo = pessoa.codigo "+
+				   "LEFT JOIN agh.aac_forma_agendamentos formaagen on (con.fag_caa_seq = formaagen.caa_seq and con.fag_tag_seq = formaagen.tag_seq and  con.fag_pgd_seq = formaagen.pgd_seq ) "+
+				   "LEFT JOIN agh.aac_condicao_atendimentos condatend on (formaagen.caa_seq = condatend.seq) "+
+				  "WHERE con.ret_seq in (9, 10) and "+
+				  		(nomeProfissionalSemCrm != null ? 
+							"lower(pessoa.nome) = lower('"+nomeProfissionalSemCrm+"') and lower(esp.nome_especialidade) = lower('"+array[1]+"') and "
+							: ""
+							)
+							+" cast(con.dt_consulta as abstime) between cast('"+ini+"' as abstime) and cast('"+fim+"' as abstime) "+
+				  "ORDER BY paciente.nome, con.dt_consulta ";
+			
+			resultado = lma.getListaResultado(sql, 13);
+		}
+		else{
+			sql = "select prontuario, pacienteNome, cartaosus, nascimento, logradouro, "
+							+ "numero, complemento, bairro, cep, municipio, crm, uf from agh.temp_compro_consul "
+							+"where "+
+							(nomeProfissionalSemCrm != null ? 
+							"lower(profissional) = lower('"+nomeProfissionalSemCrm+"') and lower(especialidade) = lower('"+array[1]+"') and "
+							: ""
+							)
+							+" cast(dataConsulta as date) between cast('"+ini+"' as date) and cast('"+fim+"' as date) "
+							+"order by lower(pacienteNome)";
+			
+			resultado = lma.getListaResultado(sql);
+		}
+		
+		
+		
 		
 		for(Object[] o : resultado){
 			Integer prontuario = (Integer) o[0];
@@ -88,8 +134,11 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 			String crm = String.valueOf(o[10]);
 			String uf = String.valueOf(o[11]);
 			
+			//Solicitação de Mudança #30
+			String condicao = String.valueOf((tipo.getLabel().equals(TipoImpressaoComprovanteConsultaEnum.E.getLabel())?String.valueOf(o[12]):"[NULL]"));
+			
 			AtendimentosRealizadosAGHU atendimento = new AtendimentosRealizadosAGHU(prontuario, nome, cartaoSus, dataNascimento, logradouro, 
-																					numero, complemento, bairro, cep, municipio, crm, uf);
+																					numero, complemento, bairro, cep, municipio, crm, uf, condicao);
 			res.add(atendimento);
 		}
 		

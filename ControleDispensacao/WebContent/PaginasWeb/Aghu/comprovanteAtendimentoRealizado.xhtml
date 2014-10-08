@@ -34,7 +34,7 @@
 							<p:calendar id="dataIni"
 										required="true"
 										value="#{relatorioComprovanteAtendimentoAGHU.dataIni}" 
-										pattern="dd/MM/yyyy"
+										pattern="dd/MM/yyyy HH:mm"
 										locale="pt" />
 						</h:panelGroup>
 						<h:panelGroup>
@@ -44,7 +44,7 @@
 							<p:calendar id="dataFim"
 										required="true"
 										value="#{relatorioComprovanteAtendimentoAGHU.dataFim}" 
-										pattern="dd/MM/yyyy"
+										pattern="dd/MM/yyyy HH:mm"
 										locale="pt" />
 						</h:panelGroup>
 						<ri:inputApenasNumero id="quantidadeLinhasExtras" 
@@ -54,9 +54,13 @@
 											  required="false" />
 					</h:panelGrid>
 					
-					<ri:inputEnumRadio id="tipo" 
+					<h:panelGrid id="formularioRelatorioPanelGrid" columns="1">					
+						<ri:inputEnumRadio id="tipo" 
 									   value="#{relatorioComprovanteAtendimentoAGHU.tipo}" 
-									   label="Tipo" />
+									   label="Tipo"
+									    /> 
+						<br />				 									   
+					</h:panelGrid>			 
 					
 					<p:commandButton id="downloadRelatorio"
 								value="Gerar relatório" 

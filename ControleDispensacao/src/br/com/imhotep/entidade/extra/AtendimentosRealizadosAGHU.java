@@ -18,13 +18,16 @@ public class AtendimentosRealizadosAGHU {
 	private String crm;
 	private String uf;
 	
+	//Solicitação de Mudança #30
+	private String condicao;
+	
 	public AtendimentosRealizadosAGHU(){
 		super();
 	}
 	
 	public AtendimentosRealizadosAGHU(Integer prontuario, String nome,
 			Long cartaoSus, Date dataNascimento, String logradouro,
-			Integer numero, String complemento, String bairro, Integer cep, String municipio, String crm, String uf) {
+			Integer numero, String complemento, String bairro, Integer cep, String municipio, String crm, String uf, String condicao) {
 		super();
 		this.prontuario = prontuario;
 		this.nome = nome;
@@ -38,6 +41,9 @@ public class AtendimentosRealizadosAGHU {
 		this.municipio = municipio;
 		this.crm = crm;
 		this.uf = uf;
+		
+		//Solicitação de Mudança #30
+		this.condicao = condicao;
 	}
 	
 	public Integer getProntuario() {
@@ -206,6 +212,16 @@ public class AtendimentosRealizadosAGHU {
 
 	public void setUf(String uf) {
 		this.uf = uf;
+	}
+
+	//Solicitação de Mudança #30
+	public String getCondicao() {
+		return condicao;
+	}
+
+	//Solicitação de Mudança #30
+	public void setCondicao(String condicao) {
+		this.condicao = condicao;
 	}
 	
 	
