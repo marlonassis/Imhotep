@@ -18,6 +18,7 @@ import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.MaterialSaldoComparativo;
 import br.com.imhotep.entidade.extra.EstoqueApoio;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
+import br.com.imhotep.relatorio.excel.RelatorioComparativoExcel;
 
 @ManagedBean
 @ViewScoped
@@ -27,15 +28,30 @@ public class RelatorioComparativo extends PadraoRelatorio{
 	private static final String IP_CONSULTA = Constantes.IP_LOCAL;
 	private static final long serialVersionUID = 1L;
 	
+	private boolean excel;
+		
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
-		String caminho = Constantes.DIR_RELATORIO + "RelatorioComparativoEstoqueFarmacia.jasper";
-		String nomeRelatorio = "EstoqueComparativo-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+		String nomeRelatorio;
 		List<MaterialSaldoComparativo> list = getLista();
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioComparativoEstoqueFarmaciaLote.jasper");
-		map.put("SUBREPORT_INPUT_STREAM_ESTOQUES_INVENTARIADOS", subInputStreamEstoques);
-		map.put("SUBREPORT_INPUT_STREAM_ESTOQUES_SISTEMA", subInputStreamEstoques);
-		super.geraRelatorio(caminho, nomeRelatorio, list, map);
+		
+		//Requisito Funcional #31
+		if(excel==false){
+			String caminho = Constantes.DIR_RELATORIO + "RelatorioComparativoEstoqueFarmacia.jasper";
+			nomeRelatorio = "EstoqueComparativo-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			InputStream subInputStreamEstoques = this.getClass().getResourceAsStream("RelatorioComparativoEstoqueFarmaciaLote.jasper");
+			map.put("SUBREPORT_INPUT_STREAM_ESTOQUES_INVENTARIADOS", subInputStreamEstoques);
+			map.put("SUBREPORT_INPUT_STREAM_ESTOQUES_SISTEMA", subInputStreamEstoques);
+			super.geraRelatorio(caminho, nomeRelatorio, list, map);
+		}
+		else{
+			nomeRelatorio = "EstoqueComparativo-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
+			RelatorioComparativoExcel exc;
+	        exc = new RelatorioComparativoExcel(list, "Farmácia", null,5);
+	        exc.gerarPlanilha();
+			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
+		}
 	}
 
 	
@@ -135,4 +151,14 @@ public class RelatorioComparativo extends PadraoRelatorio{
 		}
 		return lista;
 	}
+	
+	public boolean isExcel() {
+		return excel;
+	}
+
+	public void setExcel(boolean excel) {
+		this.excel = excel;
+	}
+
+
 }
