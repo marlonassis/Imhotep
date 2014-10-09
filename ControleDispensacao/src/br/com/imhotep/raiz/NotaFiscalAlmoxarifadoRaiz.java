@@ -94,21 +94,15 @@ public class NotaFiscalAlmoxarifadoRaiz extends PadraoRaiz<NotaFiscalAlmoxarifad
 			return;
 		}
 		
-		String sql2 = "select a from NotaFiscalEstoqueAlmoxarifado a where a.estoqueAlmoxarifado.lote = '"+lote+"' and a.notaFiscalAlmoxarifado.idNotaFiscalAlmoxarifado="+getInstancia().getIdNotaFiscalAlmoxarifado();
-		List<EstoqueAlmoxarifado> busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql2);
+		String sql = "select o from EstoqueAlmoxarifado o where o.lote = '"+lote+"'";
+		List<EstoqueAlmoxarifado> busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql);
+		busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql);
 		if(busca != null && busca.size() > 0){
-			setAchouLote(null);
-			super.mensagem("Lote j‡ cadastrado para esta nota-fiscal", null, Constantes.ERROR);
+			getItem().setEstoqueAlmoxarifado(busca.get(0));
+			setAchouLote(true);
 		}else{
-			String sql = "select o from EstoqueAlmoxarifado o where o.lote = '"+lote+"'";
-			busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql);
-			if(busca != null && busca.size() > 0){
-				getItem().setEstoqueAlmoxarifado(busca.get(0));
-				setAchouLote(true);
-			}else{
-				super.mensagem("Lote n‹o encontrado", null, Constantes.WARN);
-				setAchouLote(false);
-			}
+			super.mensagem("Lote n‹o encontrado", null, Constantes.WARN);
+			setAchouLote(false);
 		}
 	}
 	
