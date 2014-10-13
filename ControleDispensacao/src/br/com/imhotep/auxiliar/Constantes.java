@@ -24,11 +24,11 @@ public class Constantes {
 	public static final String PAGINA_DEVOLUCAO_MEDICAMENTO = "/imhotep/PaginasWeb/Solicitacoes/DevolucaoMedicamento/devolucaoMedicamento.hu";
 	
 	public static final String PAINEL_MEDICAMENTO_VENCIDO = "Medicamentos Vencidos";
-	public static final String PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO = "Solicita?ões de Medicamento pelo Usuário";
+	public static final String PAINEL_SOLICITACOES_MEDICAMENTO_USUARIO = "Solicita?‚Ä∫es de Medicamento pelo Usu‚Ä°rio";
 	//TODO TAF 5
 	public static final String PAINEL_MATERIAL_ALMOXARIFADO_VENCIDO = "Materiais Vencidos";
 	
-	public static final String MATERIAL_ANTIBIOTICO = "ANTIBIÓTICO";
+	public static final String MATERIAL_ANTIBIOTICO = "ANTIBI√ÆTICO";
 	
 	public static final String PRESCRICAO_PACIENTE_TAB = "prescricaoPacienteTab";
 	public static final String PRESCRICAO_FARMACOLOGICA_TAB = "prescricaoFarmacologicaTab";
@@ -43,7 +43,8 @@ public class Constantes {
 	public static final String USUARIO_BANCO = "imhotep";
 	public static final String SENHA_BANCO = "##Imhotep09*123789!@#*()";
 	
-	public static final String IP_HU = "200.133.41.5";
+	// Requisito N√£o-Funcional #34
+	public static final String IP_HU = "200.133.41.3";
 	public static final String IP_IMHOTEP_REMOTO = "200.133.41.8";
 	public static final String IP_IMHOTEP_LINHA_MECANICA = "127.0.0.1";
 	public static final String IP_LOCAL = "127.0.0.1";
@@ -66,7 +67,7 @@ public class Constantes {
 	public static final Locale LOCALE_BRASIL = new Locale ("pt", "BR");
 	
 	public static final String JUSTIFICATIVA_ENTRADA_SEM_NOTA = "Entrada sem nota fiscal";
-	public static final String JUSTIFICATIVA_RECUSA_SOLICITACAO_ITEM = "Solicitação Recusada";
+	public static final String JUSTIFICATIVA_RECUSA_SOLICITACAO_ITEM = "SolicitaÔøΩ‚Äπo Recusada";
 	
 	public static final Integer QUANTIDADE_BLOQUEIO_USUARIO = 5;
 	public static final String SENHA_PADRAO = "123456";
