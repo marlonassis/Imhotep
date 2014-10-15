@@ -168,7 +168,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 
 	private void verificarItemDuplicado() throws ExcecaoSolicitacaoItemInseridaDuasVezes {
 		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
-			if(item.equals(getMaterial())){
+			if(item.getMaterial().getIdMaterial() == getMaterial().getMaterial().getIdMaterial()){
 				throw new ExcecaoSolicitacaoItemInseridaDuasVezes();
 			}
 		}
