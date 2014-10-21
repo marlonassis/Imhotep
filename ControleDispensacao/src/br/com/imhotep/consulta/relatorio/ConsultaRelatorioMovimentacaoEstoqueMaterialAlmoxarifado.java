@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.MaterialAlmoxarifado;
 import br.com.imhotep.entidade.TipoMovimentoAlmoxarifado;
 import br.com.imhotep.entidade.Unidade;
@@ -22,6 +23,8 @@ public class ConsultaRelatorioMovimentacaoEstoqueMaterialAlmoxarifado extends Co
 	private List<MovimentacaoEstoqueMaterialAlmoxarifado> consultaMovimentoPeriodo(MaterialAlmoxarifado materialAlmoxarifado, Date dataIni, Date dataFim, Unidade unidade, TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado, TipoOperacaoEnum tipoOperacao, boolean agruparPorLote) {
 		ConsultaGeral<MovimentacaoEstoqueMaterialAlmoxarifado> cg = new ConsultaGeral<MovimentacaoEstoqueMaterialAlmoxarifado>();
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		dataIni = Utilitarios.ajustarZeroHoraDia(dataIni);
+		dataFim = Utilitarios.ajustarUltimaHoraDia(dataFim);
 		map.put("dataIni", dataIni);
 		map.put("dataFim", dataFim);
 		String sql = "select new br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterialAlmoxarifado(o.tipoMovimentoAlmoxarifado, " +

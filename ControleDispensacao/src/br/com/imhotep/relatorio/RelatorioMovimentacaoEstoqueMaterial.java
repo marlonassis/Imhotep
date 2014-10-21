@@ -60,7 +60,7 @@ public class RelatorioMovimentacaoEstoqueMaterial extends PadraoRelatorio{
 		String nomeRelatorio;
 		List<MovimentacaoEstoqueMaterial> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterial().consultarResultados(getMaterial(), dataIni, dataFim, getUnidade(), getTipoMovimento(), getTipoOperacao(), getAgruparPorLote());
 		
-		dataFim = new Utilitarios().ajustarUltimaHoraDia(dataFim);
+		dataFim = Utilitarios.ajustarUltimaHoraDia(dataFim);
 		String dataI =  new SimpleDateFormat("MM/yyyy").format(dataIni);
 		String dataF = new SimpleDateFormat("MM/yyyy").format(dataFim);
 		

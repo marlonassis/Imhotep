@@ -267,7 +267,7 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 					ml.setQuantidadeAtual(ed.getEstoqueAlmoxarifado().getQuantidadeAtual());
 					ml.setProfissionalInsercao(Autenticador.getProfissionalLogado());
 					estoqueAlmoxarifadoLock.add(ed.getEstoqueAlmoxarifado());
-					new ControleEstoqueAlmoxarifadoTemp().liberarAjustarEstoqueAlmoxarifado(ed.getEstoqueAlmoxarifado(), ml.getQuantidadeMovimentacao(), ml.getTipoMovimentoAlmoxarifado()) ;
+					new ControleEstoqueAlmoxarifadoTemp().liberarAjusteEstoqueAlmoxarifado(ed.getEstoqueAlmoxarifado(), ml.getQuantidadeMovimentacao(), ml.getTipoMovimentoAlmoxarifado()) ;
 					
 					PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro"+ml.hashCode(), ml);
 					DevolucaoMaterialItemMovimento dmim = new DevolucaoMaterialItemMovimento();

@@ -20,7 +20,7 @@ public class AtualizadorEstoqueLM extends GerenciadorMecanico{
 			ResultSet rs = consultar("select bl_lock, dt_data_lock from tb_estoque where id_estoque = "+idEstoque);
 			while (rs.next()) { 
 				boolean lock = rs.getBoolean("bl_lock");
-				Date dataLock = rs.getDate("dt_data_lock");
+				Date dataLock = rs.getTimestamp("dt_data_lock");
 				if(lock){
 					Date data = new Date();     
 					long differenceMilliSeconds = data.getTime() - dataLock.getTime();     

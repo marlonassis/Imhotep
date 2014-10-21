@@ -25,12 +25,13 @@ public class EstoqueAlmoxarifadoLogRaiz extends PadraoRaiz<EstoqueAlmoxarifadoLo
 		if(estoqueAlmoxarifado.getDataValidade() != null)
 			dataValidade = new SimpleDateFormat("dd/MM/yyyy").format(estoqueAlmoxarifado.getDataValidade());
 		String codigoBarras = estoqueAlmoxarifado.getCodigoBarras();
-		return carregarLog(dataLog, lote, material, tipoLog, dataValidade, codigoBarras);
+		boolean bloqueado = estoqueAlmoxarifado.getBloqueado();
+		return carregarLog(dataLog, lote, material, tipoLog, dataValidade, codigoBarras, bloqueado);
 	}
 	
 	public EstoqueAlmoxarifadoLog carregarLog(Date data, String lote, 
 														String material, TipoEstoqueAlmoxarifadoLog tipoAlteracao, 
-														String dataValidade, String codigoBarras) {
+														String dataValidade, String codigoBarras, boolean bloqueado) {
 		EstoqueAlmoxarifadoLog estoqueLog = new EstoqueAlmoxarifadoLog();
 		try {
 			estoqueLog.setDataLog(data);
@@ -40,6 +41,7 @@ public class EstoqueAlmoxarifadoLogRaiz extends PadraoRaiz<EstoqueAlmoxarifadoLo
 			estoqueLog.setTipoAlteracao(tipoAlteracao);
 			estoqueLog.setDataValidade(dataValidade);
 			estoqueLog.setCodigoBarras(codigoBarras);
+			estoqueLog.setBloqueado(bloqueado);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -56,8 +58,8 @@ public class EstoqueAlmoxarifadoLogRaiz extends PadraoRaiz<EstoqueAlmoxarifadoLo
 		}
 	}
 	
-	public void gerarLog(Date data, String lote, String material, TipoEstoqueAlmoxarifadoLog tipoAlteracao, String dataValidade, String codigoBarras){
-		EstoqueAlmoxarifadoLog log = carregarLog(data, lote, material, tipoAlteracao, dataValidade, codigoBarras);
+	public void gerarLog(Date data, String lote, String material, TipoEstoqueAlmoxarifadoLog tipoAlteracao, String dataValidade, String codigoBarras, boolean bloqueado){
+		EstoqueAlmoxarifadoLog log = carregarLog(data, lote, material, tipoAlteracao, dataValidade, codigoBarras, bloqueado);
 		gerarLog(log);
 	}
 	

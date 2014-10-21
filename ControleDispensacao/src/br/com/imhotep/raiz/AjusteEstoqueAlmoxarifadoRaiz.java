@@ -66,7 +66,7 @@ public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmo
 			getInstancia().setTipoMovimentoAlmoxarifado(getTipoMovimentoAlmoxarifado());
 			getInstancia().setQuantidadeAtual(getInstancia().getEstoqueAlmoxarifado().getQuantidadeAtual());
 			getInstancia().setQuantidadeMovimentacao(getQuantidadeMovimentada());
-			new ControleEstoqueAlmoxarifadoTemp().liberarAjustarEstoqueAlmoxarifado(getInstancia().getEstoqueAlmoxarifado(), qtd, getTipoMovimentoAlmoxarifado());
+			new ControleEstoqueAlmoxarifadoTemp().liberarAjusteEstoqueAlmoxarifado(getInstancia().getEstoqueAlmoxarifado(), qtd, getTipoMovimentoAlmoxarifado());
 			PadraoFluxoTemp.getObjetoAtualizar().put("movimentoLivroAlmoxarifado", getInstancia());
 			PadraoFluxoTemp.getObjetoAtualizar().put("estoqueAlmoxarifado", getInstancia().getEstoqueAlmoxarifado());
 			processarFluxo();

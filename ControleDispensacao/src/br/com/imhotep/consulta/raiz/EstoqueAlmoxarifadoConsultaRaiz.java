@@ -123,7 +123,7 @@ public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<NotaFiscalEs
 	public int consultarQuantidadeEstoque(EstoqueAlmoxarifado estoque) {
 		String hql = "select o.quantidadeAtual from EstoqueAlmoxarifado o where o.idEstoqueAlmoxarifado = "+estoque.getIdEstoqueAlmoxarifado();
 		Integer quantidade = new ConsultaGeral<Integer>().consultaUnica(new StringBuilder(hql), null);
-		return quantidade;
+		return quantidade == null ? 0 : quantidade;
 	}
 	
 	public EstoqueAlmoxarifado consultaEstoque(int id){

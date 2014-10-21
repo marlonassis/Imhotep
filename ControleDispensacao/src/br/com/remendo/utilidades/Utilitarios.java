@@ -389,7 +389,7 @@ public class Utilitarios{
 		return df.getTime();
 	}
 	
-	public Date ajustarUltimaHoraDia(Date dataFim) {
+	public static Date ajustarUltimaHoraDia(Date dataFim) {
 		Calendar df = Calendar.getInstance(Constantes.LOCALE_BRASIL);
 		df.setTime(dataFim);
 		df.set(Calendar.HOUR_OF_DAY, 23);

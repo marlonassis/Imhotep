@@ -29,7 +29,8 @@
 					<p:commandButton value="Atualizar Medicamentos" 
 									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarMateriais}" 
 									 update=":#{p:component('solicitacaoForm')} :#{p:component('growlMedicamentoUnidade')}" 
-									 title="Clique para atualizar o saldo dos medicamentos" />
+									 title="Clique para atualizar o saldo dos medicamentos" 
+									 immediate="true" />
 				</center>
 				<br/>
 				
@@ -135,19 +136,21 @@
 					    </p:dataTable>
 					</h:panelGrid>
 				</h:panelGrid>
-				
+			</h:form>
+			<h:form id="formBotoes" >
 				<p:commandButton value="Fechar Solicitação" 
 								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.fecharSolicitacao}" 
-								 update=":#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" 
+								 update=":#{p:component('formBotoes')} :#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" 
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
-	              			     onsuccess="statusDialog.hide();" />
+	              			     onsuccess="statusDialog.hide();" 
+	              			     immediate="true" />
 				
 				<br/><br/>
 				
 				<p:commandButton value="Cancelar" 
 								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.novaInstancia}" 
-								 update=":#{p:component('solicitacaoForm')}" 
+								 update=":#{p:component('formBotoes')} :#{p:component('solicitacaoForm')}" 
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
 	              			     onsuccess="statusDialog.hide();" />

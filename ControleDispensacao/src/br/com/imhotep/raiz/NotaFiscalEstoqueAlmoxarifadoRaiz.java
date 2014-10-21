@@ -35,7 +35,7 @@ public class NotaFiscalEstoqueAlmoxarifadoRaiz extends PadraoRaiz<NotaFiscalEsto
 		int qtdMovimentada = quantidadeMovimentada == null ? 0 : quantidadeMovimentada;
 		TipoMovimentoAlmoxarifado tipoMovimento = Parametro.tipoMovimentoNotaFiscalEntradaAlmoxarifado();
 		int quantidadeAtual = notaFiscalEstoque.getEstoqueAlmoxarifado().getQuantidadeAtual();
-		new ControleEstoqueAlmoxarifadoTemp().liberarAjustarEstoqueAlmoxarifado(notaFiscalEstoque.getEstoqueAlmoxarifado(), qtdMovimentada, tipoMovimento);
+		new ControleEstoqueAlmoxarifadoTemp().liberarAjusteEstoqueAlmoxarifado(notaFiscalEstoque.getEstoqueAlmoxarifado(), qtdMovimentada, tipoMovimento);
 		MovimentoLivroAlmoxarifado mla = new MovimentoLivroAlmoxarifadoRaiz().criarNovoMovimento(notaFiscalEstoque.getEstoqueAlmoxarifado(), qtdMovimentada, quantidadeAtual, tipoMovimento);
 		mla.setJustificativa("NF: "+notaFiscalEstoque.getNotaFiscalAlmoxarifado().getIdentificacao());
 		notaFiscalEstoque.setMovimentoLivroAlmoxarifado(mla);

@@ -12,23 +12,23 @@
 			<p:inputText id="lote"
 						 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.lote}"
 						 title="Informe o lote" 
-						 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
+						 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.iniciarCadastro}"
 						 required="false"/>
 			<p:commandButton image="ui-icon ui-icon-search"
-							 update=":#{p:component('entradaSemNotaFiscalAlmoxarifadoEditorForm')}"
+							 update=":#{p:component('dialogEscolhaLotePanelGroup')} :#{p:component('entradaSemNotaFiscalAlmoxarifadoEditorForm')}"
 							 action="#{entradaSemNotaFiscalAlmoxarifadoRaiz.procurarLote}" 
-							 rendered="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado == null}"
+							 rendered="#{entradaSemNotaFiscalAlmoxarifadoRaiz.estoqueEscolhido == null}"
 							 title="Procurar lote." />
 		</h:panelGroup>
 	</h:panelGrid>
 	<h:panelGrid id="entradaMaterialPanelGrid"
-				 rendered="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}" 
+				 rendered="#{entradaSemNotaFiscalAlmoxarifadoRaiz.iniciarCadastro}" 
 				 columns="3" 
 				 width="100%">
 		
 		<ri:inputAutoComplete id="material" 
 							 label="Material"  
-							 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado}"
+							 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.estoqueEscolhido != null}"
 							 completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
 							 itemValue="#{material}" 
 							 itemLabel="#{material.descricaoUnidadeMaterial}" 
@@ -38,7 +38,7 @@
 		
 		<ri:inputAutoComplete id="fabricante" 
 							 label="Fabricante"  
-							 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado}"
+							 disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.estoqueEscolhido != null}"
 							 completeMethod="#{fabricanteAlmoxarifadoAutoComplete.autoComplete}" 
 							 itemValue="#{fabricante}" 
 							 itemLabel="#{fabricante.descricao}" 
@@ -48,7 +48,7 @@
 		
 		<ri:inputDataMesAnoValidadeAlmoxarifado id="dataValidade"
 											    label="Data de Validade"
-											    disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado}"
+											    disabled="#{entradaSemNotaFiscalAlmoxarifadoRaiz.estoqueEscolhido != null}"
 											    required="false" 
 											    value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.dataValidade}"
 											    title="Data de validade do lote"/>
@@ -56,20 +56,13 @@
 		<ri:inputApenasNumero id="quantidade" 
 							  required="true"
 							  title="Informe a quantidade informada na nota" 
-							  value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.quantidadeMovimentada}" 
+							  value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.quantidadeMovimentacao}" 
 							  label="Quantidade"/>
-
+		
 		<ri:inputTextoSimples id="codigoBarras" 
 							  title="Informe o código de barras" 
 							  value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.instancia.estoqueAlmoxarifado.codigoBarras}" 
 							  label="Código de Barras" />
-							  
-		<ri:inputValorFracionado id="precoMedio" 
-								 title="Preço Médio"
-								 required="false" 
-								 rendered="false"
-								 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.precoMedio}" 
-								 label="Preço Médio Transportado" />
 		
 	</h:panelGrid>
 </ui:composition>

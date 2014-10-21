@@ -9,7 +9,6 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
-import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EstoqueLoteConsultaRaiz;
 import br.com.imhotep.consulta.raiz.LoteExistenteNotaFiscalConsultaRaiz;
 import br.com.imhotep.controle.ControleEstoqueTemp;
@@ -31,6 +30,7 @@ public class NotaFiscalRaiz extends PadraoRaiz<NotaFiscal>{
 	
 	private NotaFiscalEstoque notaFiscalEstoque = new NotaFiscalEstoque();
 	private Boolean loteEncontrado;
+	private boolean exibirDialogConfirmacaoValorNota;
 	
 	
 	public NotaFiscalRaiz() {
@@ -59,24 +59,51 @@ public class NotaFiscalRaiz extends PadraoRaiz<NotaFiscal>{
 		super.preEnvio();
 	}
 	
-	@Override
-	public boolean enviar() {
+	public void finalizarCadastro(){
 		try {
+			ocultarDialogConfirmacaoValorNota();
 			validarDataContabil();
-			return super.enviar();
+			super.enviar();
 		} catch (ExcecaoDataContabil e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public boolean enviar() {
+		exibirDialogConfirmacaoValorNota();
 		return false;
+	}
+	
+	public void exibirDialogConfirmacaoValorNota(){
+		setExibirDialogConfirmacaoValorNota(true);
+	}
+	
+	public void ocultarDialogConfirmacaoValorNota(){
+		setExibirDialogConfirmacaoValorNota(false);
 	}
 	
 	private void validarDataContabil() throws ExcecaoDataContabil {
 		Calendar dataContabil = Calendar.getInstance();
-		dataContabil.setTime(Utilitarios.ajustarZeroHoraDia(getInstancia().getDataContabil()));
+		dataContabil.setTime(getInstancia().getDataContabil());
+		int mes = dataContabil.get(Calendar.MONTH);
+		int ano = dataContabil.get(Calendar.YEAR);
+		
+		dataContabil = Calendar.getInstance();
+		dataContabil.set(Calendar.HOUR_OF_DAY, 0);
+		dataContabil.set(Calendar.MINUTE, 0);
+		dataContabil.set(Calendar.SECOND, 0);
+		dataContabil.set(Calendar.DAY_OF_MONTH, 01);
+		dataContabil.set(Calendar.MONTH, mes);
+		dataContabil.set(Calendar.YEAR, ano);
+		
 		Calendar mesAtual = Calendar.getInstance();
+		mesAtual.set(Calendar.HOUR_OF_DAY, 0);
+		mesAtual.set(Calendar.MINUTE, 0);
+		mesAtual.set(Calendar.SECOND, 0);
 		mesAtual.set(Calendar.DAY_OF_MONTH, 01);
-		mesAtual.setTime(Utilitarios.ajustarZeroHoraDia(mesAtual.getTime()));
-		if(dataContabil.before(mesAtual)){
+		
+		if(dataContabil.getTime().before(mesAtual.getTime())){
 			throw new ExcecaoDataContabil();
 		}
 	}
@@ -163,6 +190,15 @@ public class NotaFiscalRaiz extends PadraoRaiz<NotaFiscal>{
 
 	public void setLoteEncontrado(Boolean loteEncontrado) {
 		this.loteEncontrado = loteEncontrado;
+	}
+
+	public boolean isExibirDialogConfirmacaoValorNota() {
+		return exibirDialogConfirmacaoValorNota;
+	}
+
+	public void setExibirDialogConfirmacaoValorNota(
+			boolean exibirDialogConfirmacaoValorNota) {
+		this.exibirDialogConfirmacaoValorNota = exibirDialogConfirmacaoValorNota;
 	}
 
 	

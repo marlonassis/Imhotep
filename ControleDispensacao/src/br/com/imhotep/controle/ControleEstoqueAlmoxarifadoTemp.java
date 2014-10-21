@@ -27,10 +27,23 @@ import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoQuantidadeZero;
 import br.com.imhotep.linhaMecanica.atualizador.AtualizadorEstoqueAlmoxarifadoLM;
 import br.com.imhotep.seguranca.Autenticador;
+import br.com.imhotep.temp.ExcecaoPadraoFluxo;
 import br.com.imhotep.temp.PadraoFluxoTemp;
+import br.com.remendo.PadraoRaiz;
 
-public class ControleEstoqueAlmoxarifadoTemp {
-
+public class ControleEstoqueAlmoxarifadoTemp extends PadraoRaiz<EstoqueAlmoxarifado>{
+	
+	public void entradaSemNota(MovimentoLivroAlmoxarifado movimento) throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado, ExcecaoPadraoFluxo{
+		PadraoFluxoTemp.limparFluxo();
+		int quantidadeAtual = new EstoqueAlmoxarifadoConsultaRaiz().consultarQuantidadeEstoque(movimento.getEstoqueAlmoxarifado());
+		movimento.setQuantidadeAtual(quantidadeAtual);
+		liberarAjusteEstoqueAlmoxarifado(movimento.getEstoqueAlmoxarifado(), 
+										 movimento.getQuantidadeMovimentacao(), 
+										 movimento.getTipoMovimentoAlmoxarifado());
+		PadraoFluxoTemp.getObjetoSalvar().put("Movimento", movimento);
+		PadraoFluxoTemp.finalizarFluxo();
+	}
+	
 	public void liberarSolicitacao(int quantidadeMovimentada, MaterialAlmoxarifado materialAlmoxarifado, SolicitacaoMaterialAlmoxarifadoUnidade sma) throws ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoQuantidadeZero, ExcecaoEstoqueAlmoxarifadoVazio{
 		validaQuantidadeMovimentada(quantidadeMovimentada);
 		Long quantidadeTotal = new EstoqueAlmoxarifadoConsultaRaiz().totalEmEstoqueValido(materialAlmoxarifado);
@@ -57,7 +70,7 @@ public class ControleEstoqueAlmoxarifadoTemp {
 		mla.setTipoMovimentoAlmoxarifado(tipoMovimento);
 	}
 
-	public void liberarAjustarEstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado, int quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado{
+	public void liberarAjusteEstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado, int quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado{
 		validaQuantidadeMovimentada(quantidadeMovimentada);
 		lockEstoque(estoqueAlmoxarifado);
 		estoqueVencido(estoqueAlmoxarifado.getDataValidade());

@@ -13,10 +13,56 @@
 			<rf:formularioEdicao id="entradaSemNotaFiscalAlmoxarifado"
 								 raiz="#{entradaSemNotaFiscalAlmoxarifadoRaiz}"
 								 semPesquisa="true"
-								 renderedNovo="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
-								 renderedSalvar="#{entradaSemNotaFiscalAlmoxarifadoRaiz.loteEncontrado != null}"
+								 renderedNovo="#{entradaSemNotaFiscalAlmoxarifadoRaiz.iniciarCadastro}"
+								 renderedSalvar="#{entradaSemNotaFiscalAlmoxarifadoRaiz.iniciarCadastro}"
 								 fieldSetCollapsed="false"
 								 srcEditor="Almoxarifado/NotaFiscal/EntradaMaterialSemNotaAlmoxarifado/entradaMaterialSemNotaEditor.xhtml" />
+			
+			
+			
+			
+			<h:panelGroup id="dialogEscolhaLotePanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{entradaSemNotaFiscalAlmoxarifadoRaiz.exibirDialogLoteEncontrado}" 
+						  closable="false" 
+						  header="Lotes Encontrados" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					<h:form>
+						<h:panelGrid columns="2" 
+										 width="#{util.larguraTela * 0.9}px">
+							<p:dataTable id="lotesDataTable"
+										 var="linha" 
+										 value="#{entradaSemNotaFiscalAlmoxarifadoRaiz.estoquesEncontrados}"
+										 scrollable="true" 
+										 scrollHeight="220"
+										 emptyMessage="Sem itens" >
+						        <p:column headerText="Lote" width="90%" >
+						            <h:outputText value="#{linha.descricaoResumidaMaterial}" />
+						        </p:column>
+						        <p:column headerText="Ações" width="10%" >
+						            <p:commandLink title="Escolher"
+						            			   action="#{entradaSemNotaFiscalAlmoxarifadoRaiz.usarLoteEncontrado}"
+												   update=":#{p:component('entradaSemNotaFiscalAlmoxarifadoEditorForm')} :#{p:component('dialogEscolhaLotePanelGroup')}"
+												   style="padding-right:10px;">
+										<f:setPropertyActionListener value="#{linha}" target="#{entradaSemNotaFiscalAlmoxarifadoRaiz.estoqueEscolhido}" />
+										<h:graphicImage value="/Imagens/edit.gif" height="16px" width="16px" />
+									</p:commandLink>
+						        </p:column>
+						    </p:dataTable>
+						</h:panelGrid>
+				    </h:form>
+				    <h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{entradaSemNotaFiscalAlmoxarifadoRaiz.ocultarDialogLoteEncontrado}" 
+										 update=":#{p:component('entradaSemNotaFiscalAlmoxarifadoEditorForm')} :#{p:component('dialogEscolhaLotePanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

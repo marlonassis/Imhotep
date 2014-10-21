@@ -207,7 +207,26 @@ public class EstoqueAlmoxarifado implements Serializable {
 	public void setCodigoBarras(String codigoBarras) {
 		this.codigoBarras = codigoBarras;
 	}
-
+	
+	@Transient
+	public String getDescricaoResumidaMaterial(){
+		String descricao = "";
+		descricao += getMaterialAlmoxarifado().getDescricaoUnidadeMaterial() + " - ";
+		
+		descricao += ((getLote() == null || getLote().isEmpty()) ? "(" + getIdEstoqueAlmoxarifado() + ")"  : getLote()) + " - ";
+		
+		if(getFabricanteAlmoxarifado() != null){
+			descricao += getFabricanteAlmoxarifado().getDescricao() + " - ";
+		}
+		if(getDataValidade() != null){
+			descricao += new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()) + " - ";
+		}
+		
+		descricao += getQuantidadeAtual();
+		
+		return descricao;
+	}
+	
 	@Transient
 	public String getDescricaoResumida(){
 		String descricao = "";

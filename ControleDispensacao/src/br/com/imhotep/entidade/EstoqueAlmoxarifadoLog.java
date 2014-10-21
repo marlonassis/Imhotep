@@ -32,7 +32,8 @@ public class EstoqueAlmoxarifadoLog implements Serializable {
 	private Date dataLog;
 	private TipoEstoqueAlmoxarifadoLog tipoAlteracao;
 	private String dataValidade;
-	  
+	private boolean bloqueado;
+	
 	@SequenceGenerator(name = "generator", sequenceName = "almoxarifado.tb_estoque_almoxarifado_log_id_estoque_almoxarifado_log_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
@@ -110,6 +111,15 @@ public class EstoqueAlmoxarifadoLog implements Serializable {
 		this.codigoBarras = codigoBarras;
 	}
 
+	@Column(name = "bl_bloqueado")
+	public boolean getBloqueado(){
+		return bloqueado;
+	}
+	
+	public void setBloqueado(boolean bloqueado){
+		this.bloqueado = bloqueado;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
