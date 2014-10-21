@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:co="http://java.sun.com/jsf/composite">
+      
+	<co:interface>
+		<co:attribute name="id" required="true" />
+		<co:attribute name="value" required="true" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="title" default="false" />
+		<co:attribute name="label" required="true" />
+	</co:interface>
+	
+	<co:implementation>
+		<h:panelGrid>
+			<h:panelGroup>
+				<c:if test="#{cc.attrs.required}">
+					<h:outputText value="*" style="color:red" />
+				</c:if>
+				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:inputText  id="#{cc.attrs.id}" 
+							  styleClass="monthpicker" 
+							  title="#{cc.attrs.title}"
+							  value="#{cc.attrs.value}">
+					<f:convertDateTime locale="pt_BR" timeZone="GMT-3" pattern="MM/yyyy"/>
+				</p:inputText>
+			</h:panelGroup>
+		</h:panelGrid>
+		<script>$('.monthpicker').monthpicker();</script>
+	</co:implementation>
+</html>

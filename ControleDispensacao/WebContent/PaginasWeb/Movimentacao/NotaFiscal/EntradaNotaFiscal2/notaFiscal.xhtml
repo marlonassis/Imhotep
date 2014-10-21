@@ -13,7 +13,8 @@
 		<p:tab title="Entrada Com Nota Fiscal">
 			<rf:formularioEdicao id="notaFiscal"
 								raiz="#{notaFiscalRaiz}"
-								srcEditor="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalEditor.xhtml" />
+								srcEditor="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalEditor.xhtml" 
+								updateSalvar=":#{p:component('dialogConfirmarValorPanelGroup')}" />
 			
 			<rf:formularioPesquisa id="notaFiscalPesquisa" 
 								  novoPadraoPesquisa="true"
@@ -21,6 +22,37 @@
 								  novoAction="#{notaFiscalConsulta.novaInstancia()}"
 								  srcTabela="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalTabela.xhtml"
 								  srcConsulta="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalConsulta.xhtml" />
+			
+			<h:panelGroup id="dialogConfirmarValorPanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{notaFiscalRaiz.exibirDialogConfirmacaoValorNota}" 
+						  closable="false" 
+						  header="Confirmação do valor da Nota-Fiscal" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.4}" 
+						  height="#{util.alturaTela * 0.1}"  >
+					
+					<h:form>
+						<h:panelGrid columns="2" >
+							<h:outputText value="O valor da nota é :" /> 
+							<h:outputText value="#{notaFiscalRaiz.instancia.valorTotal}" >
+								 <f:convertNumber currencySymbol="R$" type="currency"/>
+							</h:outputText>
+						</h:panelGrid>
+						<h:panelGrid columns="2" >
+							<p:commandButton value="Confirmar" 
+											 action="#{notaFiscalRaiz.finalizarCadastro}" 
+											 update=":#{p:component('notaFiscalEditorForm')} :#{p:component('dialogConfirmarValorPanelGroup')}" 
+											 immediate="false" />
+							<p:commandButton value="Cancelar" 
+											 action="#{notaFiscalRaiz.ocultarDialogConfirmacaoValorNota}" 
+											 update=":#{p:component('notaFiscal')} :#{p:component('dialogConfirmarValorPanelGroup')}"
+											 immediate="false" />
+						</h:panelGrid>
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>
