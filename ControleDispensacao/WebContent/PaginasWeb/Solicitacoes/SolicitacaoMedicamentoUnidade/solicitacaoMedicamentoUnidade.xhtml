@@ -89,6 +89,7 @@
 					        <h:panelGrid styleClass="mypanelgrid" >
 						        <p:commandLink action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.addMedicamento}"
 											   update=":#{p:component('solicitacaoForm')} :#{p:component('padraoTabView')}"
+											   oncomplete="window.location.reload();"
 											   title="Adicionar" style="padding-right:10px;">
 									<h:graphicImage value="/Imagens/add.png" />
 								</p:commandLink>
@@ -144,7 +145,8 @@
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
 	              			     onsuccess="statusDialog.hide();" 
-	              			     immediate="false" />
+	              			     immediate="false" 
+	              			     oncomplete="window.location.reload();" />
 				
 				<br/><br/>
 				

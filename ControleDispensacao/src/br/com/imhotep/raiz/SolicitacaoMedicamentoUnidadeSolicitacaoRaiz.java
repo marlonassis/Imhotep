@@ -161,15 +161,28 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 				e.printStackTrace();
 			} catch (ExcecaoSolicitacaoSemUnidade e) {
 				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 	}
 
-	private void validarItem(MaterialSolicitacaoMedicamento medicamento) throws ExcecaoSolicitacaoMedicamentoItemSemSaldo,
-			ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada {
-		if(!medicamento.isComSaldo())
+	private void validarItem(MaterialSolicitacaoMedicamento medicamento) throws ExcecaoSolicitacaoMedicamentoItemSemSaldo, ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada, SQLException {
+		atualizarSaldoMedicamento(medicamento);
+		
+		if(medicamento.getSaldoInsuficiente() || !medicamento.isComSaldo())
 			throw new ExcecaoSolicitacaoMedicamentoItemSemSaldo();
+		
 		if(medicamento.getQuantidadeSolicitada() == null)
 			throw new ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada();
+	}
+
+	private void atualizarSaldoMedicamento(MaterialSolicitacaoMedicamento medicamento)
+			throws SQLException {
+		String sql = getSqlSaldoMaterial(medicamento);
+		ResultSet rs = new LinhaMecanica("db_imhotep").consultar(sql);
+		rs.next();
+		int saldo = rs.getInt("saldo");
+		medicamento.setQuantidadeAtual(saldo);
 	}
 
 	private void verificarItemDuplicado() throws ExcecaoSolicitacaoItemInseridaDuasVezes {
@@ -234,35 +247,12 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 		}
 	}
 	
-	private void carregarSaldoAtualItens() throws ExcecaoSolicitacaoNaoFechada {
+	private void verificarSaldoAtualItens() throws ExcecaoSolicitacaoNaoFechada, ExcecaoSolicitacaoMedicamentoItemSemSaldo, ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada, SQLException {
 		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
-			try {
-				item.setQuantidadeAtual(new MaterialConsultaRaiz().quantidadeMaterialEstoqueSemReserva(item.getMaterial()));
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new ExcecaoSolicitacaoNaoFechada();
-			}
+			validarItem(item);
 		}
 	}
 	
-	private void validarSaldo() throws ExcecaoSolicitacaoMedicamentoItemSemSaldo {
-		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
-			if(item.getSaldoInsuficiente() || !item.isComSaldo()){
-				throw new ExcecaoSolicitacaoMedicamentoItemSemSaldo();
-			}
-		}
-	}
-	
-	private void salvarItens(SolicitacaoMedicamentoUnidade instancia) throws ExcecaoProfissionalLogado, ExcecaoPadraoFluxo {
-		Date dataAtual = new Date();
-		PadraoFluxoTemp.limparFluxo();
-		int cont = 0;
-		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
-			salvarItem(instancia, dataAtual, cont, item);
-		}
-		PadraoFluxoTemp.finalizarFluxo();
-	}
-
 	private void salvarItem(SolicitacaoMedicamentoUnidade instancia,
 			Date dataAtual, int cont, MaterialSolicitacaoMedicamento item)
 			throws ExcecaoProfissionalLogado {
@@ -283,8 +273,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			verificarSolicitacaoVazia();
 			atualizarItensFinal();
 			setExibeMensagemAtualizacao(false);
-			carregarSaldoAtualItens();
-			validarSaldo();
+			verificarSaldoAtualItens();
 			verificarSolicitacaoNaoCadastrada();
 			getInstancia().setDataFechamento(new Date());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
@@ -304,10 +293,12 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			e.printStackTrace();
 		} catch (ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada e) {
 			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	private void atualizarItensFinal() throws ExcecaoSolicitacaoMedicamentoItemSemSaldo, ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada {
+	private void atualizarItensFinal() throws ExcecaoSolicitacaoMedicamentoItemSemSaldo, ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada, SQLException {
 		LinhaMecanica mecanica = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP);
 		for(MaterialSolicitacaoMedicamento medicamento : getItensSelecionados()){
 			validarItem(medicamento);
@@ -444,6 +435,27 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 						"inner join tb_unidade_material c on c.id_unidade_material = a.id_unidade_material "+
 						"where a.bl_bloqueado is false " +
 						"group by a.id_material, c.cv_sigla  "+
+						"order by to_ascii(lower(a.cv_descricao))";
+		return sql;
+	}
+	
+	private String getSqlSaldoMaterial(MaterialSolicitacaoMedicamento medicamento) {
+		int idSMU = getInstancia().getIdSolicitacaoMedicamentoUnidade();
+		String sql = "select "+
+						"(coalesce((select sum(x.in_quantidade_atual) from tb_estoque x "+
+						"inner join tb_material b on x.id_material = b.id_material "+
+						"where x.bl_bloqueado = false and x.dt_data_validade >= cast(now() as date) and x.in_quantidade_atual > 0 "+ 
+						"and x.id_material = a.id_material), 0) - "+
+						"coalesce((select sum(c.in_quantidade_solicitada) from tb_solicitacao_medicamento_unidade_item c "+ 
+						"inner join tb_solicitacao_medicamento_unidade d on d.id_solicitacao_medicamento_unidade = c.id_solicitacao_medicamento_unidade "+ 
+						"where d.tp_status_dispensacao = 'P' and d.id_solicitacao_medicamento_unidade != "+ idSMU +" and c.id_material = a.id_material), 0)) saldo, "+ 
+						"a.id_material, "+
+						"c.cv_sigla, "+
+						"upper(a.cv_descricao) material from tb_material a "+ 
+						"inner join tb_unidade_material c on c.id_unidade_material = a.id_unidade_material "+ 
+						"where a.bl_bloqueado is false "+
+						"and a.id_material = "+ medicamento.getMaterial().getIdMaterial() +" "+
+						"group by a.id_material, c.cv_sigla "+  
 						"order by to_ascii(lower(a.cv_descricao))";
 		return sql;
 	}
