@@ -136,10 +136,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	public void addMedicamento(){
 			try {
 				validarUnidadeDestinoSelecionada();
-				if(!getMaterial().isComSaldo())
-					throw new ExcecaoSolicitacaoMedicamentoItemSemSaldo();
-				if(getMaterial().getQuantidadeSolicitada() == null)
-					throw new ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada();
+				validarItem(getMaterial());
 				if(getMaterial() != null){
 					verificarItemDuplicado();
 					setExibeMensagemInsercao(false);
@@ -165,6 +162,14 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			} catch (ExcecaoSolicitacaoSemUnidade e) {
 				e.printStackTrace();
 			}
+	}
+
+	private void validarItem(MaterialSolicitacaoMedicamento medicamento) throws ExcecaoSolicitacaoMedicamentoItemSemSaldo,
+			ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada {
+		if(!medicamento.isComSaldo())
+			throw new ExcecaoSolicitacaoMedicamentoItemSemSaldo();
+		if(medicamento.getQuantidadeSolicitada() == null)
+			throw new ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada();
 	}
 
 	private void verificarItemDuplicado() throws ExcecaoSolicitacaoItemInseridaDuasVezes {
@@ -276,6 +281,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 		try {
 			validarUnidadeDestinoSelecionada();
 			verificarSolicitacaoVazia();
+			atualizarItensFinal();
 			setExibeMensagemAtualizacao(false);
 			carregarSaldoAtualItens();
 			validarSaldo();
@@ -296,6 +302,19 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			e.printStackTrace();
 		} catch (ExcecaoSolicitacaoSemUnidade e) {
 			e.printStackTrace();
+		} catch (ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void atualizarItensFinal() throws ExcecaoSolicitacaoMedicamentoItemSemSaldo, ExcecaoSolicitacaoMedicamentoItemSemQuantidadeSolicitada {
+		LinhaMecanica mecanica = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP);
+		for(MaterialSolicitacaoMedicamento medicamento : getItensSelecionados()){
+			validarItem(medicamento);
+			String sql = "update tb_solicitacao_medicamento_unidade_item set in_quantidade_solicitada = "+medicamento.getQuantidadeSolicitada()+" WHERE id_material = " 
+					+ medicamento.getMaterial().getIdMaterial() 
+					+ " and id_solicitacao_medicamento_unidade = " + getInstancia().getIdSolicitacaoMedicamentoUnidade();
+			mecanica.executarCUD(sql);
 		}
 	}
 
@@ -364,11 +383,18 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 				scm.setQuantidadeAtual(saldo);
 				scm.setQuantidadeSolicitada(qtdSolicitado);
 				
+				Date dataAtual = new Date();
+				PadraoFluxoTemp.limparFluxo();
+				salvarItem(getInstancia(), dataAtual, 0, scm);
+				PadraoFluxoTemp.finalizarFluxo();
+				PadraoFluxoTemp.limparFluxo();
+				
 				getItensSelecionados().add(scm);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
+			setItensSelecionados(new ArrayList<MaterialSolicitacaoMedicamento>());
+		} 
 	}
 
 	private void verificarSolicitacaoNaoCadastrada() {

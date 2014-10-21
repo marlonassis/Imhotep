@@ -24,7 +24,8 @@
 				<center>
 					<p:commandButton value="Carregar Última Solicitação" 
 									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarListaItensUltimaSolicitacao}" 
-									 update=":#{p:component('solicitacaoForm')}" 
+									 update=":#{p:component('solicitacaoForm')}"
+									 disabled="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.edicao}" 
 									 title="Clique para trazer os medicamentos da última solicitação" />
 					<p:commandButton value="Atualizar Medicamentos" 
 									 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.carregarMateriais}" 
@@ -87,7 +88,7 @@
 					        </h:panelGroup>
 					        <h:panelGrid styleClass="mypanelgrid" >
 						        <p:commandLink action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.addMedicamento}"
-											   update=":#{p:component('solicitacaoForm')}"
+											   update=":#{p:component('solicitacaoForm')} :#{p:component('padraoTabView')}"
 											   title="Adicionar" style="padding-right:10px;">
 									<h:graphicImage value="/Imagens/add.png" />
 								</p:commandLink>
@@ -136,21 +137,20 @@
 					    </p:dataTable>
 					</h:panelGrid>
 				</h:panelGrid>
-			</h:form>
-			<h:form id="formBotoes" >
+			
 				<p:commandButton value="Fechar Solicitação" 
 								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.fecharSolicitacao}" 
-								 update=":#{p:component('formBotoes')} :#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" 
+								 update=":#{p:component('solicitacaoForm')} :#{p:component('painelAvisosPanelGroup')}" 
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
 	              			     onsuccess="statusDialog.hide();" 
-	              			     immediate="true" />
+	              			     immediate="false" />
 				
 				<br/><br/>
 				
 				<p:commandButton value="Cancelar" 
 								 action="#{solicitacaoMedicamentoUnidadeSolicitacaoRaiz.novaInstancia}" 
-								 update=":#{p:component('formBotoes')} :#{p:component('solicitacaoForm')}" 
+								 update=":#{p:component('solicitacaoForm')}" 
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
 	              			     onsuccess="statusDialog.hide();" />
