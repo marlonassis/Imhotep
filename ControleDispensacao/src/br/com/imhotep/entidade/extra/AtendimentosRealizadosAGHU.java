@@ -16,10 +16,11 @@ public class AtendimentosRealizadosAGHU {
 	private Integer cep;
 	private String municipio;
 	private String crm;
-	private String uf;
-	
+	private String uf;	
 	//Solicitação de Mudança #30
 	private String condicao;
+	//Requisito Funcional #39
+	private String tipoPaciente;
 	
 	public AtendimentosRealizadosAGHU(){
 		super();
@@ -27,7 +28,7 @@ public class AtendimentosRealizadosAGHU {
 	
 	public AtendimentosRealizadosAGHU(Integer prontuario, String nome,
 			Long cartaoSus, Date dataNascimento, String logradouro,
-			Integer numero, String complemento, String bairro, Integer cep, String municipio, String crm, String uf, String condicao) {
+			Integer numero, String complemento, String bairro, Integer cep, String municipio, String crm, String uf, String condicao, String tipoPaciente) {
 		super();
 		this.prontuario = prontuario;
 		this.nome = nome;
@@ -40,10 +41,12 @@ public class AtendimentosRealizadosAGHU {
 		this.cep = cep;
 		this.municipio = municipio;
 		this.crm = crm;
-		this.uf = uf;
-		
+		this.uf = uf;		
 		//Solicitação de Mudança #30
 		this.condicao = condicao;
+		//Requisito Funcional #39
+		this.tipoPaciente = tipoPaciente;
+
 	}
 	
 	public Integer getProntuario() {
@@ -222,6 +225,14 @@ public class AtendimentosRealizadosAGHU {
 	//Solicitação de Mudança #30
 	public void setCondicao(String condicao) {
 		this.condicao = condicao;
+	}
+
+	public String getTipoPaciente() {
+		return tipoPaciente;
+	}
+
+	public void setTipoPaciente(String tipoPaciente) {
+		this.tipoPaciente = tipoPaciente;
 	}
 	
 	
