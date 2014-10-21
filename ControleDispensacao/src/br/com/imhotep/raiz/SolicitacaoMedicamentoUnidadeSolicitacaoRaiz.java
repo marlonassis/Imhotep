@@ -14,6 +14,7 @@ import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
 import br.com.imhotep.consulta.raiz.MaterialConsultaRaiz;
+import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.controle.ControlePainelAviso;
 import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.Material;
@@ -167,20 +168,26 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	}
 
 	private void verificarItemDuplicado() throws ExcecaoSolicitacaoItemInseridaDuasVezes {
-		for(MaterialSolicitacaoMedicamento item : getItensSelecionados()){
-			if(item.getMaterial().getIdMaterial() == getMaterial().getMaterial().getIdMaterial()){
+		try {
+			String sql = "select id_solicitacao_medicamento_unidade_item from tb_solicitacao_medicamento_unidade_item WHERE id_material = " 
+					+ getMaterial().getMaterial().getIdMaterial() 
+					+ " and id_solicitacao_medicamento_unidade = " + getInstancia().getIdSolicitacaoMedicamentoUnidade();
+			ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
+			if(rs.next()){
 				throw new ExcecaoSolicitacaoItemInseridaDuasVezes();
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	public void remMedicamento(){
-		if(getItensSelecionados().remove(getMaterial())){
+		String sql = "DELETE FROM tb_solicitacao_medicamento_unidade_item WHERE id_material = " 
+				+ getMaterial().getMaterial().getIdMaterial() 
+				+ " and id_solicitacao_medicamento_unidade = " + getInstancia().getIdSolicitacaoMedicamentoUnidade();
+		if(new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).executarCUD(sql)){
+			getItensSelecionados().remove(getMaterial());
 			setMaterial(new MaterialSolicitacaoMedicamento());
-			String sql = "DELETE FROM tb_solicitacao_medicamento_unidade_item WHERE id_material = " 
-							+ getMaterial().getMaterial().getIdMaterial() 
-							+ " and id_solicitacao_medicamento_unidade = " + getInstancia().getIdSolicitacaoMedicamentoUnidade();
-			new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
 		}
 	}
 	
@@ -196,6 +203,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	}
 	
 	public void carregarMateriais(){
+		setMateriaisCadastrados(new ArrayList<MaterialSolicitacaoMedicamento>());
 		String sql = getSqlTodosMateriais();
 		ResultSet rs = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP).consultar(sql);
 		try {
@@ -272,13 +280,13 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			carregarSaldoAtualItens();
 			validarSaldo();
 			verificarSolicitacaoNaoCadastrada();
-//			salvarItens(getInstancia());
 			getInstancia().setDataFechamento(new Date());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.P);
 			if(super.atualizar()){
 				ControlePainelAviso.getInstancia().gerarAvisoRM(getInstancia().getIdSolicitacaoMedicamentoUnidade(), getInstancia().getUnidadeDestino());
 				super.novaInstancia();
 				prepararAmbienteSolicitacao();
+				new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesProfissional();
 			}
 		} catch (ExcecaoSolicitacaoNaoFechada e) {
 			e.printStackTrace();
