@@ -44,6 +44,15 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 	private String tipoOperacao;
 	private boolean exibirModalMigrarMovimento;
 	private boolean exibirModalApagarMovimento;
+	private boolean exibirModalMigrarEstoque;
+	
+	public void exibirModalMigrarEstoque(){
+		setExibirModalMigrarEstoque(true);
+	}
+	
+	public void ocultarModalMigrarEstoque(){
+		setExibirModalMigrarEstoque(false);
+	}
 	
 	public void apagarMovimentos(){
 		super.setExibeMensagemAtualizacao(false);
@@ -479,6 +488,14 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 
 	public void setMaterialDestino(Material materialDestino) {
 		this.materialDestino = materialDestino;
+	}
+
+	public boolean isExibirModalMigrarEstoque() {
+		return exibirModalMigrarEstoque;
+	}
+
+	public void setExibirModalMigrarEstoque(boolean exibirModalMigrarEstoque) {
+		this.exibirModalMigrarEstoque = exibirModalMigrarEstoque;
 	} 
 	
 }
