@@ -33,6 +33,7 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 	
 	private List<Material> materiais = new ArrayList<Material>();
 	private List<Material> materiaisDestino = new ArrayList<Material>();
+	private List<Material> materiaisTodos = new ArrayList<Material>();
 	private List<Estoque> estoques = new ArrayList<Estoque>();
 	private List<Estoque> estoquesDestino = new ArrayList<Estoque>();
 	private List<MovimentoLivro> movimentos = new ArrayList<MovimentoLivro>();
@@ -46,7 +47,24 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 	private boolean exibirModalApagarMovimento;
 	private boolean exibirModalMigrarEstoque;
 	
+	public void migrarEstoqueOutroMedicamento(){
+		setEstoqueDestino(getEstoque());
+		setMovimentosSelecionados(getMovimentos());
+		atualizarMovimentos();
+		migrarMovimentos();
+		setExibeMensagemAtualizacao(false);
+		getEstoqueDestino().setMaterial(getMaterialDestino());
+		super.atualizarGenerico(getEstoqueDestino());
+		setExibeMensagemAtualizacao(true);
+		setEstoque(null);
+		setEstoqueDestino(null);
+		setMaterial(null);
+		setMaterialDestino(null);
+		ocultarModalMigrarEstoque();
+	}
+	
 	public void exibirModalMigrarEstoque(){
+		setMateriaisTodos(new MaterialConsultaRaiz().getMateriaisCadastrados());
 		setExibirModalMigrarEstoque(true);
 	}
 	
@@ -137,11 +155,20 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 					if(dispensado){
 						int idItem = rs.getInt("item");
 						String data = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
-						String sql1 = "update tb_solicitacao_medicamento_unidade_item set tp_tipo_status_item = 'E', "+ 
+						
+						String sql1 = "select cv_justificativa from tb_solicitacao_medicamento_unidade_item "+ 
+										" where id_solicitacao_medicamento_unidade_item = "+ idItem;
+						
+						rs = lm.consultar(sql1);
+						rs.next();
+						String justificativa = rs.getString("cv_justificativa");
+						justificativa = (justificativa != null && !justificativa.isEmpty()) ? "<br/> <br/>".concat(justificativa) : "";
+						
+						sql1 = "update tb_solicitacao_medicamento_unidade_item set tp_tipo_status_item = 'E', "+ 
 										"id_material = "+getMaterialDestino().getIdMaterial()+", "
-										+"cv_justificativa = 'Item alterado em "+data+" por "+nomeProfissional+". <br/>"
+										+"cv_justificativa = '* Item alterado em "+data+" por "+nomeProfissional+". <br/>"
 										+ "Migrado do medicamento "+getMaterial().getDescricaoUnidadeMaterial()+" de lote "+getEstoque().getLote()+" para <br/>"
-										+ getMaterialDestino().getDescricaoUnidadeMaterial()+" de lote "+getEstoqueDestino().getLote()+"' where "+
+										+ getMaterialDestino().getDescricaoUnidadeMaterial()+" de lote "+getEstoqueDestino().getLote()+" "+justificativa+"' where "+
 										"id_solicitacao_medicamento_unidade_item = "+ idItem;
 						
 						lm.executarCUD(sql1);
@@ -496,6 +523,14 @@ public class AjusteGeralEstoqueRaiz extends PadraoRaiz<InventarioFarmaciaControl
 
 	public void setExibirModalMigrarEstoque(boolean exibirModalMigrarEstoque) {
 		this.exibirModalMigrarEstoque = exibirModalMigrarEstoque;
+	}
+
+	public List<Material> getMateriaisTodos() {
+		return materiaisTodos;
+	}
+
+	public void setMateriaisTodos(List<Material> materiaisTodos) {
+		this.materiaisTodos = materiaisTodos;
 	} 
 	
 }

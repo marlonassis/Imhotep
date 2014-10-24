@@ -39,7 +39,12 @@
 									  label="Estoque" 
 									  updateChange=":#{p:component('ajusteGeralForm')}" 
 									  listener="#{ajusteGeralEstoqueRaiz.carregarMovimentos}" />
-				#{ajusteGeralEstoqueRaiz.estoque.idEstoque}
+				
+				<p:commandButton value="Migrar Estoque" 
+								 disabled="#{ajusteGeralEstoqueRaiz.estoque == null}"
+								 action="#{ajusteGeralEstoqueRaiz.exibirModalMigrarEstoque}" 
+								 update=":#{p:component('dialogMigrarEstoquePanelGroup')}" />
+				
 				<p:dataTable id="movimentosDataTable" 
 							 var="mov" 
 							 scrollable="true" 
@@ -85,8 +90,38 @@
 			        			update=":#{p:component('dialogApagarMovimentoPanelGroup')}" 
 			        			action="#{ajusteGeralEstoqueRaiz.exibirModalApagarMovimento}" />
 			    </p:contextMenu>
-			    
 			</h:form>
+			
+			<h:panelGroup id="dialogMigrarEstoquePanelGroup" >
+				<p:growl/>
+				<p:dialog visible="#{ajusteGeralEstoqueRaiz.exibirModalMigrarEstoque}" 
+						  closable="false" 
+						  header="Migrar Estoque" 
+						  modal="true" 
+						  width="#{util.larguraTela}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						<ri:inputEntidadeList id="materiaisReferenciaMigrar" 
+											  itemLabel="descricao" 
+											  value="#{ajusteGeralEstoqueRaiz.materialDestino}" 
+											  lista="#{ajusteGeralEstoqueRaiz.materiaisTodos}" 
+											  label="Medicamento" />
+						<p:commandButton value="Mover" 
+										 action="#{ajusteGeralEstoqueRaiz.migrarEstoqueOutroMedicamento}" 
+										 update=":#{p:component('dialogMigrarEstoquePanelGroup')} :#{p:component('ajusteGeralForm')} :#{p:component('dialogMigrarMovimentoPanelGroup')} :#{p:component('estoquesReferenciaInicial')}" 
+										 immediate="false" />
+					</h:form>
+					<br/><br/>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{ajusteGeralEstoqueRaiz.ocultarModalMigrarEstoque}" 
+										 update=":#{p:component('dialogMigrarEstoquePanelGroup')} :#{p:component('ajusteGeralForm')} :#{p:component('dialogMigrarMovimentoPanelGroup')}" 
+										 immediate="false" />
+					</h:form>
+					
+				</p:dialog>
+			</h:panelGroup>
 			
 			<h:panelGroup id="dialogMigrarMovimentoPanelGroup" >
 				<p:growl/>
