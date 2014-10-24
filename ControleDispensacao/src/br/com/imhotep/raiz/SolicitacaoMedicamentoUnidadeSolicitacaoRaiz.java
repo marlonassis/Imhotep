@@ -135,6 +135,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	
 	public void addMedicamento(){
 			try {
+				validarSolicitacaoForaHU();
 				validarUnidadeDestinoSelecionada();
 				validarItem(getMaterial());
 				if(getMaterial() != null){
@@ -162,6 +163,8 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			} catch (ExcecaoSolicitacaoSemUnidade e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ExcecaoForaRedeHU e) {
 				e.printStackTrace();
 			}
 	}
@@ -324,9 +327,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 	@Override
 	public boolean enviar() {
 		try {
-			boolean liberadoGeral = Parametro.getLiberadoSolicitacaoMedicamentoForaHU();
-			if(!liberadoGeral)
-				new RestringirAcessoRedeHU().validarAcessoRedeHU();
+			validarSolicitacaoForaHU();
 			getInstancia().setDataInsercao(new Date());
 			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
 			getInstancia().setStatusDispensacao(TipoStatusDispensacaoEnum.A);
@@ -337,6 +338,12 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	private void validarSolicitacaoForaHU() throws ExcecaoForaRedeHU {
+		boolean liberadoGeral = Parametro.getLiberadoSolicitacaoMedicamentoForaHU();
+		if(!liberadoGeral)
+			new RestringirAcessoRedeHU().validarAcessoRedeHU();
 	}
 
 	public void carregarListaItensUltimaSolicitacao() {
