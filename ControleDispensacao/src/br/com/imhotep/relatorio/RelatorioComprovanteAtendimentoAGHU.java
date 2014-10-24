@@ -75,10 +75,10 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 		String sql;
 		if( tipo.getLabel().equals(TipoImpressaoComprovanteConsultaEnum.E.getLabel()) ){
 			sql =  "SELECT DISTINCT paciente.prontuario, paciente.nome AS pacientenome, paciente.nro_cartao_saude AS cartaosus, paciente.dt_nascimento AS nascimento, "					
-					+ "endereco.logradouro, endereco.nro_logradouro AS numero, endereco.compl_logradouro AS complemento, endereco.bairro, endereco.cep, "
-					+ "cidade.nome AS municipio, qualificacao.nro_reg_conselho AS crm, cidade.uf_sigla AS uf, condatend.descricao as condicaoAtendimento, "
-					+ "con.dt_consulta AS dataconsulta, pessoa.nome AS profissional,  esp.nome_especialidade AS especialidade,"
-					+ "case when condatend.descricao = 'RECONSULTA' then 'INTERNO' when condatend.descricao = 'PRIMEIRA CONSULTA' then 'NUCAR' else 'EXTERNO' end tipoPaciente "+					
+					+ "endereco.logradouro, endereco.nro_logradouro AS numero, endereco.compl_logradouro AS complemento, endereco.bairro, endereco.cep,"
+					+ "cidade.nome AS municipio,  qualificacao.nro_reg_conselho AS crm, cidade.uf_sigla AS uf, condatend.descricao as condicaoAtendimento, "
+					+ "case when condatend.descricao = 'RECONSULTA' then 'INTERNO' when condatend.descricao = 'PRIMEIRA CONSULTA' then 'NUCAR' else 'EXTERNO' end tipoPaciente, "
+					+ "con.dt_consulta AS dataconsulta, pessoa.nome AS profissional, esp.nome_especialidade AS especialidade "+
 				  "FROM agh.aac_consultas con "+
 				   "JOIN agh.aac_grade_agendamen_consultas grade ON con.grd_seq = grade.seq "+
 				   "JOIN agh.agh_especialidades esp ON grade.esp_seq = esp.seq "+
@@ -101,7 +101,7 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 							+" cast(con.dt_consulta as abstime) between cast('"+ini+"' as abstime) and cast('"+fim+"' as abstime) "+
 				  "ORDER BY paciente.nome, con.dt_consulta ";
 			
-			resultado = lma.getListaResultado(sql, 13);
+			resultado = lma.getListaResultado(sql, 14);
 		}
 		else{
 			sql = "select prontuario, pacienteNome, cartaosus, nascimento, logradouro, "
@@ -116,10 +116,7 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 			
 			resultado = lma.getListaResultado(sql);
 		}
-		
-		
-		
-		
+	
 		for(Object[] o : resultado){
 			Integer prontuario = (Integer) o[0];
 			String nome = String.valueOf(o[1]);
@@ -133,10 +130,11 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 			String municipio = String.valueOf(o[9]);
 			String crm = String.valueOf(o[10]);
 			String uf = String.valueOf(o[11]);
+			
 			//Solicitação de Mudança #30
 			String condicao = String.valueOf((tipo.getLabel().equals(TipoImpressaoComprovanteConsultaEnum.E.getLabel())?String.valueOf(o[12]):""));
 			//Requisito Funcional #39
-			String tipoPaciente = String.valueOf(o[12]);
+			String tipoPaciente = String.valueOf((tipo.getLabel().equals(TipoImpressaoComprovanteConsultaEnum.E.getLabel())?String.valueOf(o[13]):""));
 			
 			AtendimentosRealizadosAGHU atendimento = new AtendimentosRealizadosAGHU(prontuario, nome, cartaoSus, dataNascimento, logradouro, 
 																					numero, complemento, bairro, cep, municipio, crm, uf, condicao, tipoPaciente);
