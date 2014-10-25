@@ -106,7 +106,7 @@ public class RelatorioMedicamentoControlado extends PadraoRelatorio{
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
 		return "select "+
-				"b.cv_lista as lista, b.cv_descricao as descricaoLista, a.in_codigo_material as codigoMaterial, to_ascii(a.cv_descricao) material, "+ 
+				"b.cv_lista as lista, b.cv_descricao as descricaoLista, a.cv_codigo_material as codigoMaterial, to_ascii(a.cv_descricao) material, "+ 
 				"c.cv_lote as lote, d.cv_descricao as fabricante, c.dt_data_validade as dataValidade, c.in_quantidade_atual as quantidadeAtual "+
 				"from tb_material a  "+
 				"inner join tb_lista_especial b on b.id_lista_especial = a.id_lista_especial "+

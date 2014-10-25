@@ -26,7 +26,7 @@ public class RelatorioMedLynxTransportado extends PadraoRelatorio{
 	private List<MedLynxTransportado> getConteudo(){
 		List<MedLynxTransportado> lista = new ArrayList<MedLynxTransportado>();
 		try {
-			String sql = "select b.cv_descricao descricao, b.in_codigo_material codigoMaterial, a.* from tb_preco_medio_transportado_medlynx a  "+
+			String sql = "select b.cv_descricao descricao, b.cv_codigo_material codigoMaterial, a.* from tb_preco_medio_transportado_medlynx a  "+
 							"inner join tb_material b on a.id_material = b.id_material "+
 							"order by lower(to_ascii(b.cv_descricao))";
 			
@@ -36,7 +36,7 @@ public class RelatorioMedLynxTransportado extends PadraoRelatorio{
 			lm.setIp("127.0.0.1");
 			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 			while (rs.next()) { 
-				int codigoMaterial = rs.getInt("codigoMaterial");
+				String codigoMaterial = rs.getString("codigoMaterial");
 				String descricao = rs.getString("descricao");
 				int saldoTransportado = rs.getInt("in_saldo_transportado");
 				int saldoImhotep = rs.getInt("in_saldo_imhotep");

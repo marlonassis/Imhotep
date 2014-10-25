@@ -2,15 +2,15 @@ package br.com.imhotep.entidade.extra;
 
 
 
-public class MedLynxTransportado {
-	private String codigoMaterial;
+public class MedLynxTransportadoAlmoxarifado {
+	private int codigoMaterial;
 	private String descricao;
 	private int saldoTransportado;
 	private int saldoImhotep;
 	private double precoMedioTransportado;
 	private double precoMedioImhotep;
 	
-	public MedLynxTransportado(String codigoMaterial, String descricao,
+	public MedLynxTransportadoAlmoxarifado(int codigoMaterial, String descricao,
 			int saldoTransportado, int saldoImhotep,
 			double precoMedioTransportado, double precoMedioImhotep) {
 		super();
@@ -22,10 +22,10 @@ public class MedLynxTransportado {
 		this.precoMedioImhotep = precoMedioImhotep;
 	}
 	
-	public String getCodigoMaterial() {
+	public int getCodigoMaterial() {
 		return codigoMaterial;
 	}
-	public void setCodigoMaterial(String codigoMaterial) {
+	public void setCodigoMaterial(int codigoMaterial) {
 		this.codigoMaterial = codigoMaterial;
 	}
 	public String getDescricao() {

@@ -3,7 +3,7 @@ package br.com.imhotep.entidade.relatorio;
 import java.util.Date;
 
 public class EstoqueVencimento {
-	private Integer codigoMaterial;
+	private String codigoMaterial;
 	private String nomeMaterial;
 	private String lote;
 	private Date dataValidade;
@@ -16,7 +16,7 @@ public class EstoqueVencimento {
 		
 	}
 	
-	public EstoqueVencimento(Integer codigoMaterial, String nomeMaterial, String lote, Date dataValidade, Integer quantidade, String usuario, boolean bloqueado){
+	public EstoqueVencimento(String codigoMaterial, String nomeMaterial, String lote, Date dataValidade, Integer quantidade, String usuario, boolean bloqueado){
 		this.codigoMaterial = codigoMaterial;
 		this.nomeMaterial = nomeMaterial;
 		this.lote = lote;
@@ -70,11 +70,11 @@ public class EstoqueVencimento {
 		this.usuario = usuario;
 	}
 
-	public Integer getCodigoMaterial() {
+	public String getCodigoMaterial() {
 		return codigoMaterial;
 	}
 
-	public void setCodigoMaterial(Integer codigoMaterial) {
+	public void setCodigoMaterial(String codigoMaterial) {
 		this.codigoMaterial = codigoMaterial;
 	}
 

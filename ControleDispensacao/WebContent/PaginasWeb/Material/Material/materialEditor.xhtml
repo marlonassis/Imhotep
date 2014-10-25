@@ -6,19 +6,12 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="materialPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="codigo" value="Código:" />
-			<br />
-			<p:inputText id="codigo" 
-						 disabled="false"
-						 required="true"
-						 onkeyup="apenasNumero(this);"
-						 value="#{materialRaiz.instancia.codigoMaterial}"
-						 title="Informe o código do material" />
-		</h:panelGroup>
-
+		
+		<ri:inputTextoSimples id="codigoMaterial" 
+							  title="Informe o código do medicamento" 
+							  value="#{materialRaiz.instancia.codigoMaterial}" 
+							  label="Código" />
+		
 		<ri:inputAutoComplete id="descricao"
 							  desativarConversor="true"
 							  required="true" 

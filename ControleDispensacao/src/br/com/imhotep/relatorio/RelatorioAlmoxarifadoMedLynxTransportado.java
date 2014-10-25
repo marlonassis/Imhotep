@@ -14,7 +14,7 @@ import javax.faces.bean.ViewScoped;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.entidade.extra.MedLynxTransportado;
+import br.com.imhotep.entidade.extra.MedLynxTransportadoAlmoxarifado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 @ManagedBean
@@ -23,8 +23,8 @@ public class RelatorioAlmoxarifadoMedLynxTransportado extends PadraoRelatorio{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private List<MedLynxTransportado> getConteudo(){
-		List<MedLynxTransportado> lista = new ArrayList<MedLynxTransportado>();
+	private List<MedLynxTransportadoAlmoxarifado> getConteudo(){
+		List<MedLynxTransportadoAlmoxarifado> lista = new ArrayList<MedLynxTransportadoAlmoxarifado>();
 		try {
 			String sql = "select b.id_material_almoxarifado idMaterialAlmoxarifado, b.cv_descricao descricao, "+ 
 							"coalesce(a.in_saldo_transportado, 0) saldoTransportado, coalesce(a.db_preco_medio_transportado, 0) precoMedio "+ 
@@ -43,7 +43,7 @@ public class RelatorioAlmoxarifadoMedLynxTransportado extends PadraoRelatorio{
 				descricao = descricao == null ? null : descricao.trim().toUpperCase();
 				int saldoTransportado = rs.getInt("saldoTransportado");
 				double precoMedioTransportado = rs.getDouble("precoMedio");
-				MedLynxTransportado mlt = new MedLynxTransportado(idMaterialAlmoxarifado , descricao , saldoTransportado, 0 , precoMedioTransportado , 0);
+				MedLynxTransportadoAlmoxarifado mlt = new MedLynxTransportadoAlmoxarifado(idMaterialAlmoxarifado , descricao , saldoTransportado, 0 , precoMedioTransportado , 0);
 				lista.add(mlt);
 			}
 		} catch (SQLException e) {

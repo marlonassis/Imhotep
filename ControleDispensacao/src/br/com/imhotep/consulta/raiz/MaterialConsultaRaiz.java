@@ -68,19 +68,36 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 	}
 	
 	public List<MaterialFaltaEstoque> consultarMateriaisAbaixoQuantidadeMinima(){
-		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-		StringBuilder stringB = new StringBuilder("select new br.com.imhotep.entidade.extra.MaterialFaltaEstoque(o.idMaterial, o.codigoMaterial, o.descricao, o.quantidadeMinima, sum(a.quantidadeAtual)) ");
-		stringB.append("from Material o ");
-		stringB.append("join o.estoques a  ");
-		stringB.append("where o.quantidadeMinima is not null and o.quantidadeMinima != 0 and ");
-		stringB.append("o.quantidadeMinima >=  ");
-		stringB.append("(select sum(b.quantidadeAtual) from Estoque b where b.material.idMaterial = o.idMaterial ");
-		stringB.append("and b.bloqueado = false and b.dataValidade >= '"+dataS+"') ");
-		stringB.append("and a.bloqueado = false and a.dataValidade >= '"+dataS+"' ");
-		stringB.append("group by o.descricao, o.quantidadeMinima, o.idMaterial, o.codigoMaterial ");
-		stringB.append("order by to_ascii(o.descricao) ");
+		List<MaterialFaltaEstoque> list = new ArrayList<MaterialFaltaEstoque>();
+		String sql = "select  a.id_material, a.cv_codigo_material, "+
+					"	upper(a.cv_descricao) descricao, a.in_quantidade_minima, sum(b.in_quantidade_atual) saldo from tb_material a "+ 
+					"	inner join tb_estoque b on a.id_material = b.id_material "+
+					"		and b.dt_data_validade >= now() "+
+					"		and b.in_quantidade_atual > 0 "+
+					"		and b.bl_bloqueado is false "+
+					"where a.in_quantidade_minima is not null and a.in_quantidade_minima > 0 "+ 
+					"group by a.id_material, a.cv_codigo_material, "+
+					"	a.cv_descricao, a.in_quantidade_minima "+
+					"order by lower(to_ascii(a.cv_descricao))";
 		
-		List<MaterialFaltaEstoque> list = new ArrayList<MaterialFaltaEstoque>(new ConsultaGeral<MaterialFaltaEstoque>().consulta(stringB, null));
+		LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP);
+		ResultSet rs = lm.consultar(sql);
+		try {
+			while(rs.next()){
+				int idMaterial = rs.getInt("id_material");
+				String codigoMaterial = rs.getString("cv_codigo_material");
+				String descricao = rs.getString("descricao");
+				int quantidadeMinima = rs.getInt("in_quantidade_minima");
+				int saldo = rs.getInt("saldo");
+				MaterialFaltaEstoque obj = new MaterialFaltaEstoque(idMaterial, codigoMaterial, descricao, quantidadeMinima, Long.valueOf(saldo));
+				if(obj.getQuantidadeAtual().intValue() <= obj.getQuantidadeMinima().intValue())
+					list.add(obj);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 		return list;
 	}
 	
@@ -143,7 +160,7 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 	
 	public List<Material> getMateriaisLiberadosInventario(){
 		List<Material> materiais = new ArrayList<Material>();
-		String sql  = "select b.id_material, b.cv_descricao, b.in_codigo_material, c.id_unidade_material, c.cv_unidade, c.cv_sigla "+ 
+		String sql  = "select b.id_material, b.cv_descricao, b.cv_codigo_material, c.id_unidade_material, c.cv_unidade, c.cv_sigla "+ 
 						"from farmacia.tb_inventario_controle a "+
 						"inner join tb_material b on a.id_material = b.id_material "+
 						"inner join tb_unidade_material c on c.id_unidade_material = b.id_unidade_material "+
@@ -158,7 +175,7 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 				Material material = new Material();
 				material.setUnidadeMaterial(unidadeMaterial);
 				material.setIdMaterial(rs.getInt("id_material"));
-				material.setCodigoMaterial(rs.getInt("in_codigo_material"));
+				material.setCodigoMaterial(rs.getString("cv_codigo_material"));
 				material.setDescricao(rs.getString("cv_descricao"));
 				materiais.add(material);
 			}
@@ -170,7 +187,7 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 	
 	public List<Material> getMateriaisNaoLiberadosInventario(){
 		List<Material> materiais = new ArrayList<Material>();
-		String sql  = "select a.id_material, a.cv_descricao, a.in_codigo_material, c.id_unidade_material, c.cv_unidade, c.cv_sigla "+ 
+		String sql  = "select a.id_material, a.cv_descricao, a.cv_codigo_material, c.id_unidade_material, c.cv_unidade, c.cv_sigla "+ 
 						"from tb_material a "+
 						"left join farmacia.tb_inventario_controle b on a.id_material = b.id_material "+
 						"inner join tb_unidade_material c on c.id_unidade_material = a.id_unidade_material "+
@@ -186,7 +203,7 @@ public class MaterialConsultaRaiz  extends ConsultaGeral<Material>{
 				Material material = new Material();
 				material.setUnidadeMaterial(unidadeMaterial);
 				material.setIdMaterial(rs.getInt("id_material"));
-				material.setCodigoMaterial(rs.getInt("in_codigo_material"));
+				material.setCodigoMaterial(rs.getString("cv_codigo_material"));
 				material.setDescricao(rs.getString("cv_descricao"));
 				materiais.add(material);
 			}

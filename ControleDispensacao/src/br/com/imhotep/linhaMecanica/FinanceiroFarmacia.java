@@ -204,7 +204,7 @@ public class FinanceiroFarmacia {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return "select to_ascii(o.cv_descricao) as grupo, "+
 				"a.id_material as idMaterial, "+
-				"a.in_codigo_material as codigoMaterial, "+
+				"a.cv_codigo_material as codigoMaterial, "+
 				"to_ascii(a.cv_descricao) as material, "+ 
 				"a.id_material as idMaterial, "+
 				"extract(month from c.dt_data_movimento) as mes, "+

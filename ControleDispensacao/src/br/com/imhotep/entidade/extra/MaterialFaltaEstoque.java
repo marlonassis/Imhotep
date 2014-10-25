@@ -2,7 +2,7 @@ package br.com.imhotep.entidade.extra;
 
 public class MaterialFaltaEstoque {
 	private Integer idMaterial;
-	private Integer codigoMaterial;
+	private String codigoMaterial;
 	private String material;
 	private Integer quantidadeMinima;
 	private Long quantidadeAtual;
@@ -11,7 +11,7 @@ public class MaterialFaltaEstoque {
 		
 	}
 	
-	public MaterialFaltaEstoque(Integer idMaterial, Integer codigoMaterial, String material, Integer quantidadeMinima, Long quantidadeAtual) {
+	public MaterialFaltaEstoque(Integer idMaterial, String codigoMaterial, String material, Integer quantidadeMinima, Long quantidadeAtual) {
 		this.idMaterial = idMaterial;
 		this.codigoMaterial = codigoMaterial;
 		this.material = material;
@@ -46,11 +46,11 @@ public class MaterialFaltaEstoque {
 		this.idMaterial = idMaterial;
 	}
 
-	public Integer getCodigoMaterial() {
+	public String getCodigoMaterial() {
 		return codigoMaterial;
 	}
 
-	public void setCodigoMaterial(Integer codigoMaterial) {
+	public void setCodigoMaterial(String codigoMaterial) {
 		this.codigoMaterial = codigoMaterial;
 	}
 	

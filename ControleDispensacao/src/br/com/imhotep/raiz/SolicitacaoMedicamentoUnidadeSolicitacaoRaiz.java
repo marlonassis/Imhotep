@@ -13,7 +13,6 @@ import javax.faces.bean.SessionScoped;
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
-import br.com.imhotep.consulta.raiz.MaterialConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
 import br.com.imhotep.controle.ControlePainelAviso;
 import br.com.imhotep.entidade.DispensacaoSimples;

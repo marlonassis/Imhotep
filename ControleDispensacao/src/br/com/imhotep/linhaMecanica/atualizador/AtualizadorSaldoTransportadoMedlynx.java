@@ -14,7 +14,7 @@ public class AtualizadorSaldoTransportadoMedlynx{
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(DB_BANCO_IMHOTEP);
 			lm.setIp("127.0.0.1");
-			String sql = "select b.id_material, b.in_codigo_material as codigoMaterial, b.cv_descricao as descricao, a.in_saldo_transportado as saldoTransportado, "+
+			String sql = "select b.id_material, b.cv_codigo_material as codigoMaterial, b.cv_descricao as descricao, a.in_saldo_transportado as saldoTransportado, "+
 							"( "+
 							"	select  "+
 							"	coalesce(sum((select sum(m.in_quantidade_movimentacao) from tb_movimento_livro m "+
@@ -74,12 +74,12 @@ public class AtualizadorSaldoTransportadoMedlynx{
 							"), 0) else  a.db_preco_medio_transportado end as precoMedioFinal "+
 							"							from tb_preco_medio_transportado_medlynx a  "+
 							"							inner join tb_material b on a.id_material = b.id_material "+
-							"							group by  b.in_codigo_material, b.cv_descricao, a.in_saldo_transportado, a.db_preco_medio_transportado, b.id_material "+ 
+							"							group by  b.cv_codigo_material, b.cv_descricao, a.in_saldo_transportado, a.db_preco_medio_transportado, b.id_material "+ 
 							"							order by to_ascii(b.cv_descricao)";
 			ResultSet rs = lm.consultar(sql);
 			while (rs.next()) { 
 				int idMaterial = rs.getInt("id_material");
-//				int codigoMaterial = rs.getInt("codigoMaterial");
+//				String codigoMaterial = rs.getString("codigoMaterial");
 //				String descricao = rs.getString("descricao");
 //				int saldoTransportado = rs.getInt("saldoTransportado");
 				int saldoImhotep =  rs.getInt("saldoImhotep");

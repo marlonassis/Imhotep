@@ -2,7 +2,6 @@ package br.com.imhotep.entidade;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,7 +24,7 @@ import br.com.imhotep.enums.TipoEstadoFisicoMedicamentoEnum;
 @Entity
 @Table(name = "tb_material")
 public class Material implements Serializable {
-	private static final long serialVersionUID = -557390793038327695L;
+	private static final long serialVersionUID = 805595903462991506L;
 	
 	private int idMaterial;
 	private UnidadeMaterial unidadeMaterial;
@@ -34,14 +32,13 @@ public class Material implements Serializable {
 	private TipoEstadoFisicoMedicamentoEnum tipoEstadoFisico;
 	private Familia familia;
 	private ListaEspecial listaEspecial;
-	private Integer codigoMaterial;
+	private String codigoMaterial;
 	private String descricao;
 	private Date dataInclusao;
 	private Usuario usuarioInclusao;
 	private Integer quantidadeMinima;
 	private Boolean bloqueado;
 	private Boolean padronizado;
-	private Set<Estoque> estoques;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_id_material_seq")
 	@Id
@@ -113,12 +110,12 @@ public class Material implements Serializable {
 		this.listaEspecial = listaEspecial;
 	}
 	
-	@Column(name = "in_codigo_material")
-	public Integer getCodigoMaterial() {
+	@Column(name = "cv_codigo_material")
+	public String getCodigoMaterial() {
 		return this.codigoMaterial;
 	}
 
-	public void setCodigoMaterial(Integer codigoMaterial) {
+	public void setCodigoMaterial(String codigoMaterial) {
 		this.codigoMaterial = codigoMaterial;
 	}
 	
@@ -182,14 +179,6 @@ public class Material implements Serializable {
 		this.padronizado = padronizado;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "material")
-	public Set<Estoque> getEstoques() {
-		return estoques;
-	}
-	public void setEstoques(Set<Estoque> estoques) {
-		this.estoques = estoques;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -222,7 +211,7 @@ public class Material implements Serializable {
 				+ ((usuarioInclusao == null) ? 0 : usuarioInclusao.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -293,7 +282,7 @@ public class Material implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getDescricao();

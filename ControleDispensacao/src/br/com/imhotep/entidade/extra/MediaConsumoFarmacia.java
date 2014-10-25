@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MediaConsumoFarmacia {
 	private static final int MESES_PERIODO_CONSUMO = 6;
-	private Integer idMaterial;
+	private String idMaterial;
 	private Integer saldoAtual;
 	private String descricao;
 	private String sigla;
@@ -19,11 +19,11 @@ public class MediaConsumoFarmacia {
 	//MUDANCA #
 	private List<Long> prevEstoque;
 	
-	public MediaConsumoFarmacia(Integer idMaterial,
+	public MediaConsumoFarmacia(String codMaterial,
 			List<Integer> totalConsumoList, Integer saldoAtual, String descricao,
 			String sigla, List<Long> prevEstoque) {
 		super();
-		this.idMaterial = idMaterial;
+		this.idMaterial = codMaterial;
 		this.saldoAtual = saldoAtual;
 		this.descricao = descricao;
 		this.sigla = sigla;
@@ -32,7 +32,7 @@ public class MediaConsumoFarmacia {
 	}
 	
 	public String getDescricaoCompleta(){
-		return getIdMaterialAlmoxarfiado() + " - ".concat(getDescricao()).concat(" - ").concat(getSigla());
+		return getIdMaterial() + " - ".concat(getDescricao()).concat(" - ").concat(getSigla());
 	}
 	
 	public String getSigla() {
@@ -49,11 +49,11 @@ public class MediaConsumoFarmacia {
 		this.saldoAtual = saldoAtual;
 	}
 	
-	public Integer getIdMaterialAlmoxarfiado() {
+	public String getIdMaterial() {
 		return idMaterial;
 	}
-	public void setIdMaterialAlmoxarfiado(Integer idMaterialAlmoxarfiado) {
-		this.idMaterial = idMaterialAlmoxarfiado;
+	public void setIdMaterial(String idMaterial) {
+		this.idMaterial = idMaterial;
 	}
 	
 	public String getDescricao() {

@@ -14,7 +14,7 @@ import br.com.remendo.PadraoConsulta;
 public class MaterialConsulta extends PadraoConsulta<Material> {
 	public MaterialConsulta(){
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
-		getCamposConsulta().put("o.codigoMaterial", IGUAL);
+		getCamposConsulta().put("o.codigoMaterial", INCLUINDO_TUDO);
 		setOrderBy("to_ascii(o.descricao)");
 	}
 	
