@@ -14,7 +14,7 @@ import br.com.remendo.ConsultaGeral;
 public class TipoMovimentoAjusteEstoqueFarmaciaSelectOne extends ConsultaGeral<TipoMovimento> {
 	
 	public List<TipoMovimento> getItens(){
-		StringBuilder stringB = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 23 or o.idTipoMovimento = 24 or o.idTipoMovimento = 25");
+		StringBuilder stringB = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento in (23, 24, 25, 29,30) ");
 		return new ArrayList<TipoMovimento>(super.consulta(stringB, null));
 	}
 	

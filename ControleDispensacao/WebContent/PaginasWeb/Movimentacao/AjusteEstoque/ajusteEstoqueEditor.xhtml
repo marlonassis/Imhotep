@@ -110,24 +110,36 @@
 			<p:inputText id="quantidade"
 						 required="true"
 						 value="#{ajusteEstoqueRaiz.instancia.quantidadeMovimentacao}"
-						 onkeyup="apenasNumero(this);" 
+						 onkeyup="atualizarSaldoFinal();" 
 						 title="Informe a quantidade" />
+			
+			<p:remoteCommand name="atualizarSaldoFinal" 
+							 global="false"
+							 update=":#{p:component('saldoFinalPanelGroup')}" />
 		</h:panelGroup>
+		
 		<h:panelGroup>
 			<font color="red">*</font>
 			<h:outputLabel for="quantidadeAtual" value="Quantidade Atual:" />
 			<br />
 			<h:outputText id="quantidadeAtual" value="#{ajusteEstoqueRaiz.instancia.estoque.quantidadeAtual}" />
 		</h:panelGroup>
-		<h:panelGroup>
+		
+		<h:panelGroup id="saldoFinalPanelGroup" >
 			<font color="red">*</font>
-			<h:outputLabel for="justificativa" value="Justificava:" />
+			<h:outputLabel for="saldoFinal" value="Resultado:" />
 			<br />
-			<p:editor id="justificativa" 
-					  required="true" 
-					  value="#{ajusteEstoqueRaiz.instancia.justificativa}" />
+			<h:outputText value="#{ajusteEstoqueRaiz.saldoFinal}" />
 		</h:panelGroup>
-
+		
 	</h:panelGrid>
+	<h:panelGroup rendered="#{ajusteEstoqueRaiz.loteEncontrado}" >
+		<font color="red">*</font>
+		<h:outputLabel for="justificativa" value="Justificava:" />
+		<br />
+		<p:editor id="justificativa" 
+				  required="true" 
+				  value="#{ajusteEstoqueRaiz.instancia.justificativa}" />
+	</h:panelGroup>
 
 </ui:composition>

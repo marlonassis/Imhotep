@@ -10,6 +10,7 @@ import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
 import br.com.imhotep.controle.ControleEstoqueTemp;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
+import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
 import br.com.imhotep.temp.PadraoFluxoTemp;
 import br.com.remendo.PadraoRaiz;
@@ -24,6 +25,22 @@ public class AjusteEstoqueRaiz extends PadraoRaiz<MovimentoLivro>{
 		limpar();
 	}
 
+	public Integer getSaldoFinal(){
+		if(getInstancia().getTipoMovimento() == null){
+			return 0;
+		}
+		
+		if(getInstancia().getTipoMovimento().getTipoOperacao() == null){
+			return 0;
+		}
+		
+		if(getInstancia().getTipoMovimento().getTipoOperacao().equals(TipoOperacaoEnum.E)){
+			return getInstancia().getEstoque().getQuantidadeAtual() + (getInstancia().getQuantidadeMovimentacao() == null ? 0 : getInstancia().getQuantidadeMovimentacao());
+		}else{
+			return getInstancia().getEstoque().getQuantidadeAtual() - (getInstancia().getQuantidadeMovimentacao() == null ? 0 : getInstancia().getQuantidadeMovimentacao());
+		}
+	}
+	
 	private void limpar() {
 		super.novaInstancia();
 		getInstancia().setEstoque(new Estoque());
@@ -37,7 +54,7 @@ public class AjusteEstoqueRaiz extends PadraoRaiz<MovimentoLivro>{
 		if(loteEncontrado){
 			getInstancia().setEstoque(estoque);
 		}else{
-			mensagem("Lote n‹o encontrado.", lote, Constantes.WARN);
+			mensagem("Lote nï¿½o encontrado.", lote, Constantes.WARN);
 		}
 	}
 	
