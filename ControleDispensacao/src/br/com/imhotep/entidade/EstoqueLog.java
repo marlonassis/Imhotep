@@ -30,6 +30,7 @@ public class EstoqueLog {
 	private Date dataLog;
 	private TipoEstoqueLog tipoAlteracao;
 	private String dataValidade;
+	private String fabricante;
 	  
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_estoque_log_id_estoque_log_seq")
 	@Id
@@ -108,25 +109,88 @@ public class EstoqueLog {
 		this.codigoBarras = codigoBarras;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof EstoqueLog))
-			return false;
-		
-		return ((EstoqueLog)obj).getIdEstoqueLog() == this.idEstoqueLog;
+	@Column(name="cv_fabricante")
+	public String getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
 	}
 
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + lote.hashCode() + dataLog.hashCode() + tipoAlteracao.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((codigoBarras == null) ? 0 : codigoBarras.hashCode());
+		result = prime * result + ((dataLog == null) ? 0 : dataLog.hashCode());
+		result = prime * result
+				+ ((dataValidade == null) ? 0 : dataValidade.hashCode());
+		result = prime * result
+				+ ((fabricante == null) ? 0 : fabricante.hashCode());
+		result = prime * result + idEstoqueLog;
+		result = prime * result + ((lote == null) ? 0 : lote.hashCode());
+		result = prime * result
+				+ ((material == null) ? 0 : material.hashCode());
+		result = prime
+				* result
+				+ ((profissionalAlteracao == null) ? 0 : profissionalAlteracao
+						.hashCode());
+		result = prime * result
+				+ ((tipoAlteracao == null) ? 0 : tipoAlteracao.hashCode());
+		return result;
 	}
 
 	@Override
-	public String toString() {
-		return lote;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EstoqueLog other = (EstoqueLog) obj;
+		if (codigoBarras == null) {
+			if (other.codigoBarras != null)
+				return false;
+		} else if (!codigoBarras.equals(other.codigoBarras))
+			return false;
+		if (dataLog == null) {
+			if (other.dataLog != null)
+				return false;
+		} else if (!dataLog.equals(other.dataLog))
+			return false;
+		if (dataValidade == null) {
+			if (other.dataValidade != null)
+				return false;
+		} else if (!dataValidade.equals(other.dataValidade))
+			return false;
+		if (fabricante == null) {
+			if (other.fabricante != null)
+				return false;
+		} else if (!fabricante.equals(other.fabricante))
+			return false;
+		if (idEstoqueLog != other.idEstoqueLog)
+			return false;
+		if (lote == null) {
+			if (other.lote != null)
+				return false;
+		} else if (!lote.equals(other.lote))
+			return false;
+		if (material == null) {
+			if (other.material != null)
+				return false;
+		} else if (!material.equals(other.material))
+			return false;
+		if (profissionalAlteracao == null) {
+			if (other.profissionalAlteracao != null)
+				return false;
+		} else if (!profissionalAlteracao.equals(other.profissionalAlteracao))
+			return false;
+		if (tipoAlteracao != other.tipoAlteracao)
+			return false;
+		return true;
 	}
 	
 }

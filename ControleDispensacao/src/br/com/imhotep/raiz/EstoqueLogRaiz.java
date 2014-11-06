@@ -14,7 +14,7 @@ import br.com.remendo.PadraoRaiz;
 @SessionScoped
 public class EstoqueLogRaiz extends PadraoRaiz<EstoqueLog>{
 	
-	public static EstoqueLog carregarLog(Date data, String lote, String material, TipoEstoqueLog tipoAlteracao, String dataValidade, String codigoBarras) {
+	public static EstoqueLog carregarLog(Date data, String lote, String material, TipoEstoqueLog tipoAlteracao, String dataValidade, String codigoBarras, String fabricante) {
 		EstoqueLog estoqueLog = new EstoqueLog();
 		try {
 			estoqueLog.setDataLog(data);
@@ -24,6 +24,7 @@ public class EstoqueLogRaiz extends PadraoRaiz<EstoqueLog>{
 			estoqueLog.setTipoAlteracao(tipoAlteracao);
 			estoqueLog.setDataValidade(dataValidade);
 			estoqueLog.setCodigoBarras(codigoBarras);
+			estoqueLog.setFabricante(fabricante);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -40,8 +41,8 @@ public class EstoqueLogRaiz extends PadraoRaiz<EstoqueLog>{
 		}
 	}
 	
-	public void gerarLog(Date data, String lote, String material, TipoEstoqueLog tipoAlteracao, String dataValidade, String codigoBarras){
-		EstoqueLog log = EstoqueLogRaiz.carregarLog(data, lote, material, tipoAlteracao, dataValidade, codigoBarras);
+	public void gerarLog(Date data, String lote, String material, TipoEstoqueLog tipoAlteracao, String dataValidade, String codigoBarras, String fabricante){
+		EstoqueLog log = EstoqueLogRaiz.carregarLog(data, lote, material, tipoAlteracao, dataValidade, codigoBarras, fabricante);
 		gerarLog(log);
 	}
 	

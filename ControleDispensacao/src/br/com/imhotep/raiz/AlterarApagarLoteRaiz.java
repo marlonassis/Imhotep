@@ -32,6 +32,7 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 	private String loteAntigo;
 	private Date dataAntiga;
 	private String codigoBarrasAntigo;
+	private String fabricanteAntigo;
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 	
 	public void carregarEstoqueConsultaMaterial(Estoque estoque){
@@ -39,6 +40,8 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 		setInstancia(estoque);
 		setLoteAntigo(estoque.getLote());
 		setDataAntiga(estoque.getDataValidade());
+		setFabricanteAntigo(estoque.getFabricante().getDescricao());
+		setCodigoBarrasAntigo(estoque.getCodigoBarras());
 	}
 	
 	public void procurarLote(){
@@ -49,7 +52,7 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 			setDataAntiga(getInstancia().getDataValidade());
 			setCodigoBarrasAntigo(getInstancia().getCodigoBarras());
 		}else{
-			mensagem("Lote não encontrado.", loteAntigo, Constantes.WARN);
+			mensagem("Lote nÔøΩo encontrado.", loteAntigo, Constantes.WARN);
 		}
 	}
 	
@@ -90,15 +93,21 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 	private void tentarDeletarEstoque() {
 		if(new LinhaMecanica().apagarMovimentoLivroEstoque(getInstancia().getIdEstoque()))
 			if(new LinhaMecanica().apagarEstoque(getInstancia().getIdEstoque())){
-				super.mensagem("Deleção realizada com sucesso.", null, Constantes.INFO);
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.D, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
+				super.mensagem("DeleÔøΩÔøΩo realizada com sucesso.", null, Constantes.INFO);
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), 
+															getInstancia().getLote(), 
+															getInstancia().getMaterial().getDescricao(), 
+															TipoEstoqueLog.D, 
+															sdf.format(getInstancia().getDataValidade()), 
+															getInstancia().getCodigoBarras(),
+															getInstancia().getFabricante().getDescricao());
 				new EstoqueLogRaiz().gerarLog(log);
 				novaInstancia();
 			}
 			else
-				super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
+				super.mensagem("NÔøΩo foi possÔøΩvel deletar.", null, Constantes.WARN);
 		else
-			super.mensagem("Não foi possível deletar.", null, Constantes.WARN);
+			super.mensagem("NÔøΩo foi possÔøΩvel deletar.", null, Constantes.WARN);
 	}
 
 	public void fundirLotes(){
@@ -106,12 +115,25 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 		try{
 			lm.fluxoFusaoEstoque(getInstancia().getIdEstoque(), getEstoqueDuplicado().getIdEstoque());
 			Date data = new Date();
-			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.G, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras()),
-			EstoqueLogRaiz.carregarLog(data, getEstoqueDuplicado().getLote(), getEstoqueDuplicado().getMaterial().getDescricao(), TipoEstoqueLog.F, sdf.format(getInstancia().getDataValidade()), getEstoqueDuplicado().getCodigoBarras())};
+			EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, 
+														   getLoteAntigo(), 
+														   getInstancia().getMaterial().getDescricao(), 
+														   TipoEstoqueLog.G, 
+														   sdf.format(getInstancia().getDataValidade()), 
+														   getInstancia().getCodigoBarras(),
+														   getInstancia().getFabricante().getDescricao()),
+			EstoqueLogRaiz.carregarLog(data, 
+									   getEstoqueDuplicado().getLote(), 
+									   getEstoqueDuplicado().getMaterial().getDescricao(), 
+									   TipoEstoqueLog.F, 
+									   sdf.format(getInstancia().getDataValidade()), 
+									   getEstoqueDuplicado().getCodigoBarras(),
+									   getEstoqueDuplicado().getFabricante().getDescricao())};
 			new EstoqueLogRaiz().gerarLog(log);
-			mensagem("Fusão realizada com sucesso.", null, Constantes.INFO);
+			mensagem("FusÔøΩo realizada com sucesso.", null, Constantes.INFO);
 			setInstancia(getEstoqueDuplicado());
 			limparFusao();
+			novaInstancia();
 		}catch(ExcecaoEstoqueLock e){
 			e.printStackTrace();
 		}
@@ -124,6 +146,7 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 		loteAntigo=null;
 		dataAntiga=null;
 		codigoBarrasAntigo=null;
+		fabricanteAntigo=null;
 	}
 	
 	@Override
@@ -139,9 +162,23 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 		if(!isLoteDuplicado()){
 			if(super.atualizar()){
 				Date data = new Date();
-				EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.B, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras()),
-				EstoqueLogRaiz.carregarLog(data, getLoteAntigo(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.A, sdf.format(getDataAntiga()), getCodigoBarrasAntigo())};
+				EstoqueLog[] log = {EstoqueLogRaiz.carregarLog(data, 
+															   getInstancia().getLote(), 
+															   getInstancia().getMaterial().getDescricao(), 
+															   TipoEstoqueLog.B, 
+															   sdf.format(getInstancia().getDataValidade()), 
+															   getInstancia().getCodigoBarras(),
+															   getInstancia().getFabricante().getDescricao()),
+															   
+				EstoqueLogRaiz.carregarLog(data, 
+										   getLoteAntigo(), 
+										   getInstancia().getMaterial().getDescricao(), 
+										   TipoEstoqueLog.A, 
+										   sdf.format(getDataAntiga()), 
+										   getCodigoBarrasAntigo(),
+										   getFabricanteAntigo())};
 				new EstoqueLogRaiz().gerarLog(log);
+				novaInstancia();
 				return true;
 			}
 			else
@@ -196,6 +233,14 @@ public class AlterarApagarLoteRaiz extends PadraoRaiz<Estoque> {
 
 	public void setCodigoBarrasAntigo(String codigoBarrasAntigo) {
 		this.codigoBarrasAntigo = codigoBarrasAntigo;
+	}
+
+	public String getFabricanteAntigo() {
+		return fabricanteAntigo;
+	}
+
+	public void setFabricanteAntigo(String fabricanteAntigo) {
+		this.fabricanteAntigo = fabricanteAntigo;
 	}
 	
 }

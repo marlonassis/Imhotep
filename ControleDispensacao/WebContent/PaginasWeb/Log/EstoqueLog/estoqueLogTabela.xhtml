@@ -46,6 +46,13 @@
 		
 		<p:column>
 			<f:facet name="header">
+				<h:outputText value="Fabricante" />
+			</f:facet>
+			<h:outputText value="#{linha.fabricante}" />
+		</p:column>
+		
+		<p:column>
+			<f:facet name="header">
 				<h:outputText value="Tipo da Alteração" />
 			</f:facet>
 			<h:outputText value="#{linha.tipoAlteracao.label}" />

@@ -20,6 +20,7 @@
 					<ui:include src="alterarApagarLoteEditor.xhtml" />
 					<p:commandButton value="Gravar"
 									 rendered="#{alterarApagarLoteRaiz.loteEncontrado}"
+									 oncomplete="location.reload();"
 									 update=":#{p:component('loteDuplicadoForm')} :#{p:component('alterarApagarLoteEditorForm')}"
 									 action="#{alterarApagarLoteRaiz.atualizar}" />
 					<p:commandButton value="Apagar" 
