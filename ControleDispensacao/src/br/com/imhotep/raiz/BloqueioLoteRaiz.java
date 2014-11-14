@@ -44,13 +44,13 @@ public class BloqueioLoteRaiz extends PadraoRaiz<Estoque>{
 	
 	@Override
 	public boolean enviar() {
-		super.mensagem("Não é permitido inserir um estoque", "Inserção não autorizada.", Constantes.ERROR);
+		super.mensagem("NÔøΩo ÔøΩ permitido inserir um estoque", "InserÔøΩÔøΩo nÔøΩo autorizada.", Constantes.ERROR);
 		return false;
 	}
 	
 	@Override
 	public boolean apagar() {
-		super.mensagem("Não é permitido apagar um estoque", "Deleção não autorizada", Constantes.ERROR);
+		super.mensagem("NÔøΩo ÔøΩ permitido apagar um estoque", "DeleÔøΩÔøΩo nÔøΩo autorizada", Constantes.ERROR);
 		return false;
 	}
 	
@@ -73,7 +73,7 @@ public class BloqueioLoteRaiz extends PadraoRaiz<Estoque>{
 		if(loteEncontrado){
 			setInstancia(estoque);
 		}else{
-			mensagem("Lote não encontrado.", lote, Constantes.WARN);
+			mensagem("Lote nÔøΩo encontrado.", lote, Constantes.WARN);
 		}
 	}
 	
@@ -96,10 +96,22 @@ public class BloqueioLoteRaiz extends PadraoRaiz<Estoque>{
 		}
 		if(super.atualizar()){
 			if(getInstancia().getBloqueado()){
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.O, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), 
+															getInstancia().getLote(), 
+															getInstancia().getMaterial().getDescricao(), 
+															TipoEstoqueLog.O, 
+															sdf.format(getInstancia().getDataValidade()), 
+															getInstancia().getCodigoBarras(),
+															getInstancia().getFabricante().getDescricao());
 				new EstoqueLogRaiz().gerarLog(log);
 			}else{
-				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), getInstancia().getLote(), getInstancia().getMaterial().getDescricao(), TipoEstoqueLog.P, sdf.format(getInstancia().getDataValidade()), getInstancia().getCodigoBarras());
+				EstoqueLog log = EstoqueLogRaiz.carregarLog(new Date(), 
+															getInstancia().getLote(), 
+															getInstancia().getMaterial().getDescricao(), 
+															TipoEstoqueLog.P, 
+															sdf.format(getInstancia().getDataValidade()), 
+															getInstancia().getCodigoBarras(),
+															getInstancia().getFabricante().getDescricao());
 				new EstoqueLogRaiz().gerarLog(log);
 			}
 			return true;
