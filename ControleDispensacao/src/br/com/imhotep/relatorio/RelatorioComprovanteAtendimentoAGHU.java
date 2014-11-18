@@ -1,6 +1,9 @@
 package br.com.imhotep.relatorio;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.awt.image.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 
 import net.sf.jasperreports.engine.JRException;
 import br.com.imhotep.auxiliar.Constantes;
@@ -45,6 +50,14 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 		Map<String, Object> map = new HashMap<String, Object>();
 		String array[] = profissional.split(CARACTER_SEPARACAO_NOME_PROFISSIONAL);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		//Imagem do Logo da EBSERH
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		InputStream logoEBSERH = ctx.getExternalContext().getResourceAsStream("/Imagens/Logo/logo_ebserh.jpg");
+		
+		if (tipo.equals(TipoImpressaoComprovanteConsultaEnum.E))
+			sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
 		String ini = sdf.format(dataIni);
 		String fim = sdf.format(dataFim);
 		map.put("PROFISSIONAL_NOME", array[0]);
@@ -52,6 +65,7 @@ public class RelatorioComprovanteAtendimentoAGHU extends PadraoRelatorio{
 		map.put("DATA_INI", ini);
 		map.put("DATA_FIM", fim);
 		map.put("CONSULTA_EXAME", getTipo().getLabel());
+		map.put("LOGO_EBSERH",logoEBSERH);
 		
 		super.geraRelatorio(caminho, nomeRelatorio, lista, map );
 	}
