@@ -46,14 +46,14 @@ public class RelatorioNotaFiscalAlmoxarifado {
 	private List<FinanceiroGrupoAlmoxarifado> consultaMovimentoPeriodo(Date dataIni) {
 		String data = new SimpleDateFormat("yyyy-MM").format(dataIni);
 		String sql = "select  a.cv_descricao grupo, e.cv_identificacao notaFiscal, f.cv_razao_social fornecedor, "+
-				 	"f.cv_cadastro cadastro, sum((d.db_valor_unitario * d.in_quantidade_entrada)) total from tb_grupo_almoxarifado a "+ 
+				 	"f.cv_cadastro cadastro, e.db_valor_total total from tb_grupo_almoxarifado a "+ 
 					"inner join tb_material_almoxarifado b on b.id_grupo_almoxarifado = a.id_grupo_almoxarifado "+
 					"inner join tb_estoque_almoxarifado c on c.id_material_almoxarifado = b.id_material_almoxarifado "+
 					"inner join tb_nota_fiscal_estoque_almoxarifado d on d.id_estoque_almoxarifado = c.id_estoque_almoxarifado "+
 					"inner join tb_nota_fiscal_almoxarifado e on e.id_nota_fiscal_almoxarifado = d.id_nota_fiscal_almoxarifado "+
 					"inner join tb_fornecedor f on f.id_fornecedor = e.id_fornecedor "+
 					"where to_char(e.dt_data_contabil, 'YYYY-MM') = '"+data+"' and a.bl_sem_financeiro is false "+
-					"group by grupo, notaFiscal, fornecedor, cadastro "+
+					"group by grupo, notaFiscal, fornecedor, cadastro, e.db_valor_total "+
 					"order by grupo, e.cv_identificacao";
 		
 		List<FinanceiroGrupoAlmoxarifado> listGrupo = new ArrayList<FinanceiroGrupoAlmoxarifado>();
