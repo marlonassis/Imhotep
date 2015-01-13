@@ -2,6 +2,8 @@ package br.com.imhotep.linhaMecanica;
 
 import java.sql.ResultSet;
 
+import br.com.imhotep.auxiliar.Constantes;
+
 public class Almoxarifado {
 	public static void main(String[] args) {
 		
@@ -10,7 +12,7 @@ public class Almoxarifado {
 	private void apagaMovimentacoesAposNovembro(){
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		String sqlFinanceiroAlmoxarifadoFinal = "select a.id_movimento_livro_almoxarifado id, a.id_estoque_almoxarifado idEstoque, a.in_quantidade_movimentacao qtd, "
 				+ "b.tp_operacao operacao from tb_movimento_livro_almoxarifado a "+
 				"inner join tb_tipo_movimento_almoxarifado b on a.id_tipo_movimento_almoxarifado = b.id_tipo_movimento_almoxarifado "+

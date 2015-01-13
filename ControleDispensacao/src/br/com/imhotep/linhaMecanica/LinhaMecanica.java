@@ -4,13 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import br.com.imhotep.auxiliar.Utilitarios;
-import br.com.imhotep.entidade.Especialidade;
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.Estoque;
-import br.com.imhotep.entidade.Menu;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
 import br.com.imhotep.excecoes.ExcecaoFusaoNaoRealizada;
@@ -34,7 +33,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		setIp(ip);
 	}
 	
-	public static final String DB_BANCO_IMHOTEP = "db_imhotep";
+	public static final String DB_BANCO_IMHOTEP = Constantes.NOME_BANCO_IMHOTEP;
 	
 	public boolean fastExecutarCUD(String sql){
 		return super.fastExecutarQuery(sql);
@@ -44,6 +43,25 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		return super.executarQuery(sql);
 	}
 	
+	public String removeAcentos (String string){ 
+	      string = string.replaceAll("[ÂÀÁÄÃ]","A"); 
+	      string = string.replaceAll("[âãàáä]","a"); 
+	      string = string.replaceAll("[ÊÈÉË]","E"); 
+	      string = string.replaceAll("[êèéë]","e"); 
+	      string = string.replaceAll("ÎÍÌÏ","I"); 
+	      string = string.replaceAll("îíìï","i"); 
+	      string = string.replaceAll("[ÔÕÒÓÖ]","O"); 
+	      string = string.replaceAll("[ôõòóö]","o"); 
+	      string = string.replaceAll("[ÛÙÚÜ]","U"); 
+	      string = string.replaceAll("[ûúùü]","u"); 
+	      string = string.replaceAll("Ç","C"); 
+	      string = string.replaceAll("ç","c");  
+	      string = string.replaceAll("[ýÿ]","y"); 
+	      string = string.replaceAll("Ý","Y"); 
+	      string = string.replaceAll("ñ","n"); 
+	      string = string.replaceAll("Ñ","N"); 
+	      return string; 
+	}
 	
 	public List<Object[]> getListaResultadoFast(String sql){
 		String[] res = sql.substring(sql.indexOf("select")+6, sql.indexOf("from")-1).split(",");
@@ -73,7 +91,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 			while(rs.next()){
 				Object[] array=null;
 				for(int cont = 1;cont <= quantidadeColunas;cont++){
-					array = Utilitarios.addElemento(array, rs.getObject(cont));
+					array = addElemento(array, rs.getObject(cont));
 				}
 				res.add(array);
 			}
@@ -81,6 +99,15 @@ public class LinhaMecanica extends GerenciadorMecanico {
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	private Object[] addElemento(Object[] array, Object elemento) {
+		if(array==null){
+			return new Object[] {elemento};
+		}
+		Object[] result = Arrays.copyOf(array, array==null ? 1 : array.length+1);
+	    result[array.length] = elemento;
+	    return result;
 	}
 	
 	private Profissional getProfissionalAtual() throws ExcecaoProfissionalNaoEncontrado{
@@ -100,92 +127,6 @@ public class LinhaMecanica extends GerenciadorMecanico {
 		setNomeBanco(DB_BANCO_IMHOTEP);
 		String sql = "update tb_estoque_almoxarifado set dt_data_lock = null, bl_lock = false where id_estoque_almoxarifado = "+id;
 		executarQuery(sql);
-	}
-	
-	public void removerAutorizacaoMenu(Profissional profissional, Menu menu){
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		removerFilhos(profissional, menu.getMenusFilho());
-		String sql = "delete from tb_autoriza_menu_profissional where id_profissional = "+profissional.getIdProfissional()+" and " +
-				"id_menu = "+menu.getIdMenu();
-		executarQuery(sql);
-	}
-	
-	public void removerAutorizacaoMenu(Especialidade especialidade, Menu menu){
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		removerFilhos(especialidade, menu.getMenusFilho());
-		String sql = "delete from tb_autoriza_menu where id_especialidade = "+especialidade.getIdEspecialidade()+" and " +
-				"id_menu = "+menu.getIdMenu();
-		executarQuery(sql);
-	}
-	
-	private void removerFilhos(Profissional profissional, List<Menu> filhos) {
-		for(Menu filho : filhos){
-			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
-				removerFilhos(profissional, filho.getMenusFilho());
-			String sql = "delete from tb_autoriza_menu_profissional where id_profissional = "+profissional.getIdProfissional()+" and " +
-					"id_menu = "+filho.getIdMenu();
-			executarQuery(sql);
-		}
-	}
-	
-	private void removerFilhos(Especialidade especialidade, List<Menu> filhos) {
-		for(Menu filho : filhos){
-			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
-				removerFilhos(especialidade, filho.getMenusFilho());
-			String sql = "delete from tb_autoriza_menu where id_especialidade = "+especialidade.getIdEspecialidade()+" and " +
-					"id_menu = "+filho.getIdMenu();
-			executarQuery(sql);
-		}
-	}
-	
-	public void inserirAutorizacaoMenu(Profissional profissional, Menu menu) throws ExcecaoProfissionalNaoEncontrado{
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		liberarPaisMenu(profissional, menu);
-		liberarFilhosMenu(profissional, menu.getMenusFilho());
-	}
-	
-	public void inserirAutorizacaoMenu(Especialidade especialidade, Menu menu){
-		setNomeBanco(DB_BANCO_IMHOTEP);
-		liberarPaisMenu(especialidade, menu);
-		liberarFilhosMenu(especialidade, menu.getMenusFilho());
-	}
-	
-	private void liberarFilhosMenu(Profissional profissional, List<Menu> filhos) throws ExcecaoProfissionalNaoEncontrado {
-		for(Menu filho : filhos){
-			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
-				liberarFilhosMenu(profissional, filho.getMenusFilho());
-			String sql = "insert into tb_autoriza_menu_profissional (id_profissional, id_menu, id_profissional_insercao, dt_data_criacao) " +
-					"values ("+profissional.getIdProfissional()+", "+filho.getIdMenu()+", "+getProfissionalAtual().getIdProfissional() + ", '"+new SimpleDateFormat().format(new Date())+"')";
-			executarQuery(sql);
-		}
-	}
-	
-	private void liberarFilhosMenu(Especialidade especialidade, List<Menu> filhos) {
-		for(Menu filho : filhos){
-			if(filho.getMenusFilho() != null && !filho.getMenusFilho().isEmpty())
-				liberarFilhosMenu(especialidade, filho.getMenusFilho());
-			String sql = "insert into tb_autoriza_menu (id_especialidade, id_menu) " +
-					"values ("+especialidade.getIdEspecialidade()+", "+filho.getIdMenu()+")";
-			executarQuery(sql);
-		}
-	}
-	
-	private void liberarPaisMenu(Profissional profissional, Menu menu) throws ExcecaoProfissionalNaoEncontrado {
-		if(menu.getMenuPai() != null)
-			liberarPaisMenu(profissional, menu.getMenuPai());
-		String sql = "insert into tb_autoriza_menu_profissional (id_profissional, id_menu, id_profissional_insercao, dt_data_criacao) " +
-				"values ("+profissional.getIdProfissional()+", "+menu.getIdMenu()+", "+getProfissionalAtual().getIdProfissional() + ", '"+new SimpleDateFormat("yyyy/MM/dd").format(new Date())+"')";
-		executarQuery(sql);
-		
-	}
-	
-	private void liberarPaisMenu(Especialidade especialidade, Menu menu) {
-		if(menu.getMenuPai() != null)
-			liberarPaisMenu(especialidade, menu.getMenuPai());
-		String sql = "insert into tb_autoriza_menu (id_especialidade, id_menu) " +
-				"values ("+especialidade.getIdEspecialidade()+", "+menu.getIdMenu()+")";
-		executarQuery(sql);
-		
 	}
 	
 	public boolean apagarMovimentoLivroEstoque(int idEstoque){
@@ -359,7 +300,7 @@ public class LinhaMecanica extends GerenciadorMecanico {
 
 	private static void verificarMovimentacoesNaoCorrespondemQuantidadeEstoqueAlmoxarifado(String ip, String dbBancoImhotep) {
 		try {
-			System.out.println("Script para verificar se as movimenta�›es do almoxarifado n‹o correspondem ˆ quantidade em estoque...");
+			System.out.println("Script para verificar se as movimentações do almoxarifado n‹o correspondem à quantidade em estoque...");
 			String sqlEstoque = "select id_estoque_almoxarifado from tb_estoque_almoxarifado";
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(dbBancoImhotep);

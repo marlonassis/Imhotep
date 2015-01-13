@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
@@ -55,7 +56,7 @@ public class MigradorProcedimentoSus {
 					
 					LinhaMecanica lm = new LinhaMecanica();
 					lm.setNomeBanco("db_imhotep");
-					lm.setIp("127.0.0.1");
+					lm.setIp(Constantes.IP_LOCAL);
 					if(!lm.executarCUD(sql)){
 						File arquivo = new File(arquivoErro);
 						FileOutputStream arquivoOutput = new FileOutputStream(arquivo, true); 
@@ -73,7 +74,7 @@ public class MigradorProcedimentoSus {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("In’cio: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println("Inï¿½cio: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
 		System.out.println("Fim: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 		System.out.println("Qtd Encontrada: " + quantidadeEncontrada);
 		System.out.println("Qtd Persistida: " + quantidadePersistida);

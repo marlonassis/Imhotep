@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import br.com.imhotep.auxiliar.Constantes;
+
 public class FinanceiroAlmoxarifado {
 	
 	private static RoundingMode rouding = RoundingMode.HALF_EVEN;
@@ -100,7 +102,7 @@ public class FinanceiroAlmoxarifado {
 	private static void primeiroSqlParaTransporteFinanceiro() throws ParseException{
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		
 		String mesAtual = "2013-11-30"; 
 		String mesPassado = "2013-11-30";

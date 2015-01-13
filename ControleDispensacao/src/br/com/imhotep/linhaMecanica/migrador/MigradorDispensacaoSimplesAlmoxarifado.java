@@ -19,7 +19,7 @@ public class MigradorDispensacaoSimplesAlmoxarifado {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		String ipImhotepLinhaMecanica = "200.133.41.8";// Constantes.IP_IMHOTEP_LINHA_MECANICA;
+		String ipImhotepLinhaMecanica = "200.133.41.8";// Constantes.IP_LOCAL;
 		lm.setIp(ipImhotepLinhaMecanica);
 		try {
 			ResultSet rs = lm.consultar(sqlPes);

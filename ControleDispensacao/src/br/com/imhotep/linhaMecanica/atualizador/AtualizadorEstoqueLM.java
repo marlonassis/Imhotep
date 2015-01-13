@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.excecoes.ExcecaoEstoqueLock;
 import br.com.imhotep.excecoes.ExcecaoEstoqueLockAcimaUmMinuto;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
@@ -16,7 +17,7 @@ public class AtualizadorEstoqueLM extends GerenciadorMecanico{
 	public void lockEstoque(int idEstoque, String lote, int cont) throws ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock {
 		try {
 			setNomeBanco(DB_BANCO_IMHOTEP);
-			setIp("127.0.0.1");
+			setIp(Constantes.IP_LOCAL);
 			ResultSet rs = consultar("select bl_lock, dt_data_lock from tb_estoque where id_estoque = "+idEstoque);
 			while (rs.next()) { 
 				boolean lock = rs.getBoolean("bl_lock");
@@ -25,15 +26,15 @@ public class AtualizadorEstoqueLM extends GerenciadorMecanico{
 					Date data = new Date();     
 					long differenceMilliSeconds = data.getTime() - dataLock.getTime();     
 					long minutos = differenceMilliSeconds/1000/60;
-					//verifica se o estoque est‡ em lock por mais de um minuto 
+					//verifica se o estoque estï¿½ em lock por mais de um minuto 
 					if(minutos >= 1){
 						throw new ExcecaoEstoqueLockAcimaUmMinuto(lote);
 					}else{
-						//caso n‹o esteja em lock por mais de um minuto, verifica-se se j‡ houve 5 tentativas de lock
+						//caso nï¿½o esteja em lock por mais de um minuto, verifica-se se jï¿½ houve 5 tentativas de lock
 						if(cont < 5)
 							lockEstoque(idEstoque, lote, cont++);
 						else
-							//existindo 5 tentativas de lock, o sistema dispara a exce‹o para alertar ao usu‡rio que ele deve fazer o unlock manualmente
+							//existindo 5 tentativas de lock, o sistema dispara a exceï¿½ï¿½o para alertar ao usuï¿½rio que ele deve fazer o unlock manualmente
 							throw new ExcecaoEstoqueLock();
 					}
 				}else{
@@ -52,7 +53,7 @@ public class AtualizadorEstoqueLM extends GerenciadorMecanico{
 	
 	public void unLockEstoque(int idEstoque) throws ExcecaoEstoqueUnLock{
 		setNomeBanco(DB_BANCO_IMHOTEP);
-		setIp("127.0.0.1");
+		setIp(Constantes.IP_LOCAL);
 		String sqlUnLock = "update tb_estoque set bl_lock = false, dt_data_lock = null where id_estoque = "+idEstoque;
 		if(!executarQuery(sqlUnLock))
 			throw new ExcecaoEstoqueUnLock();

@@ -8,7 +8,7 @@ import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 /**
- * Classe para migrar as devoluções da classe tb_dispensacao_simples para tb_devolucao_medicamento_item_movimento
+ * Classe para migrar as devoluÔøΩÔøΩes da classe tb_dispensacao_simples para tb_devolucao_medicamento_item_movimento
  * @author marlonassis
  *
  */
@@ -22,7 +22,7 @@ public class MigradorDispensacaoDevolucao {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		String ipImhotepLinhaMecanica = Constantes.IP_IMHOTEP_LINHA_MECANICA;
+		String ipImhotepLinhaMecanica = Constantes.IP_LOCAL;
 		lm.setIp(ipImhotepLinhaMecanica);
 		try {
 			ResultSet rs = lm.consultar(sqlPes);

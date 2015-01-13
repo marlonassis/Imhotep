@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 public class MigradorFinanceiroAlmoxarifado {
@@ -30,7 +31,7 @@ public class MigradorFinanceiroAlmoxarifado {
 				+ "a.db_preco_medio "
 				+ "from tb_financeiro_mensal_almoxarifado a where a.cv_mes_referencia = '2013-11' order by a.id_material_almoxarifado";
 		
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica("db_imhotep", Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while (rs.next()) {
@@ -58,7 +59,7 @@ public class MigradorFinanceiroAlmoxarifado {
 	            str = in.readLine();
 	            LinhaMecanica lml = new LinhaMecanica();
 				lml.setNomeBanco("db_imhotep");
-				lml.setIp("127.0.0.1");
+				lml.setIp(Constantes.IP_LOCAL);
 				String[] linha = str.split(";");
 				String stringExecutar = "INSERT INTO tb_financeiro_mensal_almoxarifado( "+
 			            "id_material_almoxarifado, "+

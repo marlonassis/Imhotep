@@ -14,7 +14,7 @@ public class AtualizadorMovimento extends GerenciadorMecanico{
 		LinhaMecanica lm = new LinhaMecanica(DB_BANCO_IMHOTEP, "200.133.41.8");
 		try {
 			lm.criarConexao();
-			ResultSet rs = lm.fastConsulta("select id_estoque, cv_lote from tb_estoque where id_estoque = 1426 order by id_estoque");
+			ResultSet rs = lm.fastConsulta("select id_estoque, cv_lote from tb_estoque where id_estoque in (848) order by id_estoque");
 			while (rs.next()) { 
 				int idEstoque = rs.getInt(1);
 				String lote = rs.getString(2);

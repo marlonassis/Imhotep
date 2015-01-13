@@ -1,17 +1,16 @@
 package br.com.imhotep.linhaMecanica.migrador;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.linhaMecanica.atualizador.AtualizadorEstoqueAlmoxarifado;
 import br.com.imhotep.linhaMecanica.atualizador.AtualizadorMovimentoAlmoxarifado;
 
 public class MigradorEstornoMovimentoAlmoxarifado {
-	private static final String IP = "127.0.0.1";
+	private static final String IP = Constantes.IP_LOCAL;
 	private static final String BANCO = "db_imhotep";
 	
 	public static void main(String[] args) {

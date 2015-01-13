@@ -41,10 +41,11 @@ public class LinhaMecanicaAGHU extends GerenciadorMecanico {
 		ResultSet rs = super.consultar(sql);
 		List<Object[]> res = new ArrayList<Object[]>();
 		try {
+			Utilitarios util = new Utilitarios();
 			while(rs.next()){
 				Object[] array=null;
 				for(int cont = 1;cont <= quantidadeColunas;cont++){
-					array = Utilitarios.addElemento(array, rs.getObject(cont));
+					array = util.addElemento(array, rs.getObject(cont));
 				}
 				res.add(array);
 			}

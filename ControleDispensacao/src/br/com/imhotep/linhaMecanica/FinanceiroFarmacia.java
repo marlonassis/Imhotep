@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.auxiliar.Utilitarios;
 
 public class FinanceiroFarmacia {
@@ -17,12 +18,12 @@ public class FinanceiroFarmacia {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1("select id_estoque, dt_data_validade from tb_estoque_almoxarifado order by id_estoque"));
 		try {
 			while (rs.next()) {
 				
-				//add período
+				//add perÔøΩodo
 				int id = rs.getInt("id_estoque");
 				Date dataValidade = rs.getDate("dt_data_validade");
 				
@@ -43,7 +44,7 @@ public class FinanceiroFarmacia {
 		try {
 			while (rs.next()) {
 				
-				//add período
+				//add perÔøΩodo
 				int id = rs.getInt("id_estoque_almoxarifado");
 				Date dataValidade = rs.getDate("dt_data_validade");
 				
@@ -66,12 +67,12 @@ public class FinanceiroFarmacia {
 //		String sql = sqlRelatorioCustoEstoque();
 //		LinhaMecanica lm = new LinhaMecanica();
 //		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-//		lm.setIp("127.0.0.1");
+//		lm.setIp(Constantes.IP_LOCAL);
 //		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 //		try {
 //			while (rs.next()) {
 //				
-//				//add período
+//				//add perÔøΩodo
 //				int mes = rs.getInt("mes");
 //				int ano = rs.getInt("ano");
 //				int idMaterial = rs.getInt("idMaterial");
@@ -117,7 +118,7 @@ public class FinanceiroFarmacia {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while(rs.next())
@@ -140,7 +141,7 @@ public class FinanceiroFarmacia {
 				
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while(rs.next())
@@ -156,7 +157,7 @@ public class FinanceiroFarmacia {
 			return 0d;
 		}
 		
-		//ajustando a data para o último dia do mês
+		//ajustando a data para o ÔøΩltimo dia do mÔøΩs
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MONTH, mes-1);
 		c.set(Calendar.YEAR, ano);
@@ -181,7 +182,7 @@ public class FinanceiroFarmacia {
 				
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while(rs.next())

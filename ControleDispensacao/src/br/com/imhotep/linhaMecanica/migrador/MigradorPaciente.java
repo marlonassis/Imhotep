@@ -10,11 +10,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import br.com.imhotep.entidade.Paciente;
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.enums.TipoSanguineoEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
-import br.com.remendo.PadraoRaiz;
 
 /**
  * Classe para migrar os pacientes do medlynx
@@ -36,7 +35,7 @@ public class MigradorPaciente {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco("db_imhotep_temp");
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		int totalCadastrado = 0;
 		Calendar ini = Calendar.getInstance();
 		int total = 0;
@@ -54,7 +53,7 @@ public class MigradorPaciente {
 				System.out.println(sql);
 				LinhaMecanica lml = new LinhaMecanica();
 				lml.setNomeBanco("db_imhotep_temp");
-				lml.setIp("127.0.0.1");
+				lml.setIp(Constantes.IP_LOCAL);
 				if(lml.executarCUD(sql)){
 					totalCadastrado++;
 				}else{
@@ -77,17 +76,17 @@ public class MigradorPaciente {
 		}
 		System.out.println("Total Achado: "+total);
 		System.out.println("Total Cadastrado: "+totalCadastrado);
-		System.out.println("In’cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println("Inï¿½cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
 		System.out.println("Fim: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 	}
 	
 	private static void migrarPacientes() {
-		//cd_pessoa Ž o prontu‡rio e id do paciente (int)
-		//razao_social Ž o nome (string)
-		//remover os ceps que est‹o no formato 49000000 (int)
-		//compl_cep Ž a rua com o nœmero da casa, bairro, povoado, etc... (string) 
+		//cd_pessoa ï¿½ o prontuï¿½rio e id do paciente (int)
+		//razao_social ï¿½ o nome (string)
+		//remover os ceps que estï¿½o no formato 49000000 (int)
+		//compl_cep ï¿½ a rua com o nï¿½mero da casa, bairro, povoado, etc... (string) 
 		//sexo_pf (string)
-		//dt_nasc - tem que ter a hora tambŽm (date)
+		//dt_nasc - tem que ter a hora tambï¿½m (date)
 		//tp_sanguineo - tipo do sangue (string)
 		//nome_pai, nome_mae, cd_rg, orgao_rg (string)
 		//nacionalidade, naturalidade (string) 
@@ -158,7 +157,7 @@ public class MigradorPaciente {
 		}
 		System.out.println("Total Achado: "+totalAchado);
 		System.out.println("Total Cadastrado: "+totalCadastrado);
-		System.out.println("In’cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
+		System.out.println("Inï¿½cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(ini.getTime()));
 		System.out.println("Fim: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 	}
 

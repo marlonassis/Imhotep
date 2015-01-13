@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
   
@@ -23,7 +24,7 @@ public class MigradorProfissionais {
                 String sql = "insert into tb_especialidade (cv_descricao) values ('"+str.replace("MEDICO", "").trim()+"');";
                 LinhaMecanica lml = new LinhaMecanica();
 				lml.setNomeBanco("db_imhotep_temp");
-				lml.setIp("127.0.0.1");
+				lml.setIp(Constantes.IP_LOCAL);
 				lml.executarCUD(sql);
             }
             in.close();
@@ -35,7 +36,7 @@ public class MigradorProfissionais {
             	
             	LinhaMecanica lm = new LinhaMecanica();
         		lm.setNomeBanco("db_imhotep_temp");
-        		lm.setIp("127.0.0.1");
+        		lm.setIp(Constantes.IP_LOCAL);
     			String sql = "select id_especialidade from tb_especialidade where lower(to_ascii(cv_descricao)) = lower(to_ascii('"+str.split("::")[1].replace("MEDICO", "").trim()+"'))";
     			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
     			int idEspecialidade = 0;
@@ -46,7 +47,7 @@ public class MigradorProfissionais {
                 sql = "insert into tb_profissional (cv_nome, id_especialidade) values ('"+str.split("::")[0]+"', "+idEspecialidade+");";
                 LinhaMecanica lml = new LinhaMecanica();
 				lml.setNomeBanco("db_imhotep_temp");
-				lml.setIp("127.0.0.1");
+				lml.setIp(Constantes.IP_LOCAL);
 				lml.executarCUD(sql);
             }
             in.close();
@@ -67,7 +68,7 @@ public class MigradorProfissionais {
                 		"(select a.id_especialidade from tb_especialidade a where a.cv_descricao ='"+str.split("::")[1].replace("MEDICO", "").trim()+"') where cv_nome = ('"+str.split("::")[0].trim()+"');";
                 LinhaMecanica lml = new LinhaMecanica();
 				lml.setNomeBanco("db_imhotep_temp");
-				lml.setIp("127.0.0.1");
+				lml.setIp(Constantes.IP_LOCAL);
 				lml.executarCUD(sql);
             }
             in.close();
@@ -90,7 +91,7 @@ public class MigradorProfissionais {
 		InputStream is = new FileInputStream("/home/desenvolvimento/Desktop/Mod_Profissional.xls");  
 //        LeitorExcel leitor = null;  
 //  
-//        //Lista que irá guardar os dados da planilha  
+//        //Lista que irÔøΩ guardar os dados da planilha  
 //        final List<ProfissionalImportacao> listaDadosProfissionalImportacao = new LinkedList<ProfissionalImportacao>();  
 //  
 //        leitor = new LeitorExcel("[*,*]", 1, is, null,  
@@ -104,7 +105,7 @@ public class MigradorProfissionais {
 //                        throws ListenerException {  
 //                    LinhaColunaListenerVo voAtual = (LinhaColunaListenerVo) dadosColuna  
 //                            .get(ColunaListener.CHAVE_VO_COLUNA);  
-//                    if (linha > 5) { //Pula primeira linha pois é a linha que possui o título  
+//                    if (linha > 5) { //Pula primeira linha pois ÔøΩ a linha que possui o tÔøΩtulo  
 //                        switch (coluna) {  
 //                            case 1:// Coluna data  
 //                                if(dadosProfissionalImportacao == null){  
@@ -133,11 +134,11 @@ public class MigradorProfissionais {
 //          
 //        leitor.processarLeituraPlanilha();  
 //          
-////        //Agora faço o que quiser com os dados da planilha  
+////        //Agora faÔøΩo o que quiser com os dados da planilha  
 //        for(ProfissionalImportacao vo : listaDadosProfissionalImportacao) {  
 //        	LinhaMecanica lm = new LinhaMecanica();
 //    		lm.setNomeBanco("db_imhotep_temp");
-//    		lm.setIp("127.0.0.1");
+//    		lm.setIp(Constantes.IP_LOCAL);
 //			String str = "select id_especialidade from tb_especialidade where lower(to_ascii(cv_descricao)) = to_ascii('"+vo.getProfissao().toLowerCase().replace("medico", "").trim()+"')";
 //			ResultSet rs = lm.consultar(lm.utf8_to_latin1(str));
 //			int id = 0;
@@ -157,7 +158,7 @@ public class MigradorProfissionais {
 //        for(ProfissionalImportacao vo : listaDadosProfissionalImportacao) {  
 //        	LinhaMecanica lm = new LinhaMecanica();
 //    		lm.setNomeBanco("db_imhotep_temp");
-//    		lm.setIp("127.0.0.1");
+//    		lm.setIp(Constantes.IP_LOCAL);
 //			String str = "select id_profissional from tb_profissional where lower(to_ascii(cv_nome)) = to_ascii('"+vo.getNome().toLowerCase().trim()+"')";
 //			ResultSet rs = lm.consultar(lm.utf8_to_latin1(str));
 //			int id = 0;

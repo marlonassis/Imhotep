@@ -3,6 +3,7 @@ package br.com.imhotep.linhaMecanica.atualizador;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 public class AtualizadorSaldoTransportadoMedlynx{
@@ -13,7 +14,7 @@ public class AtualizadorSaldoTransportadoMedlynx{
 		try {
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(DB_BANCO_IMHOTEP);
-			lm.setIp("127.0.0.1");
+			lm.setIp(Constantes.IP_LOCAL);
 			String sql = "select b.id_material, b.cv_codigo_material as codigoMaterial, b.cv_descricao as descricao, a.in_saldo_transportado as saldoTransportado, "+
 							"( "+
 							"	select  "+

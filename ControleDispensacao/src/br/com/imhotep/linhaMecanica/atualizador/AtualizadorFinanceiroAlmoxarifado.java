@@ -5,6 +5,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 public class AtualizadorFinanceiroAlmoxarifado {
@@ -32,7 +33,7 @@ public class AtualizadorFinanceiroAlmoxarifado {
 				+ "a.db_preco_medio_atual "
 				+ "from tb_financeiro_mensal_almoxarifado a where a.id_grupo_almoxarifado in (21, 13, 15) and a.cv_mes_referencia = '2014-01' order by a.id_material_almoxarifado ";
 		
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica("db_imhotep", Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while (rs.next()) {
@@ -94,7 +95,7 @@ public class AtualizadorFinanceiroAlmoxarifado {
 				+ "and a.id_material_almoxarifado = b.id_material_almoxarifado) saldoFinalTransportado "
 				+ "from tb_financeiro_mensal_almoxarifado a where a.id_grupo_almoxarifado not in (21, 13, 15) and a.cv_mes_referencia = '2014-01' order by a.id_material_almoxarifado";
 		
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica("db_imhotep", Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while (rs.next()) {
@@ -147,7 +148,7 @@ public class AtualizadorFinanceiroAlmoxarifado {
 				+ "and a.id_material_almoxarifado = b.id_material_almoxarifado) saldoFinalTransportado "
 				+ "from tb_financeiro_mensal_almoxarifado a where a.cv_mes_referencia = '2013-12' order by a.id_material_almoxarifado";
 		
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica("db_imhotep", Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while (rs.next()) {
@@ -197,7 +198,7 @@ public class AtualizadorFinanceiroAlmoxarifado {
 				+ "a.db_preco_medio_atual "
 				+ "from tb_financeiro_mensal_almoxarifado a where a.cv_mes_referencia = '2013-11' order by a.id_material_almoxarifado ";
 		
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica("db_imhotep", Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while (rs.next()) {

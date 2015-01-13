@@ -3,6 +3,7 @@ package br.com.imhotep.linhaMecanica.atualizador;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.linhaMecanica.GerenciadorMecanico;
 
 public class AtualizadorMenu extends GerenciadorMecanico{
@@ -13,7 +14,7 @@ public class AtualizadorMenu extends GerenciadorMecanico{
 		try {
 			AtualizadorMenu am = new AtualizadorMenu();
 			am.setNomeBanco(DB_BANCO_IMHOTEP);
-			am.setIp("127.0.0.1");
+			am.setIp(Constantes.IP_LOCAL);
 			ResultSet rs = am.consultar("select * from tb_menu order by id_menu");
 			while (rs.next()) { 
 				int idMenuPai = rs.getInt("id_menu_pai");
