@@ -43,7 +43,7 @@ public class UsuarioAcessoLogRaiz extends PadraoRaiz<UsuarioAcessoLog>{
 		usuarioAcessoLog.setSessao(ControleInstancia.getIdSessao());
 		usuarioAcessoLog.setTempoSessao(ControleInstancia.getTempoInativacaoSessao());
 		usuarioAcessoLog.setLoginErro(erroLogin);
-		usuarioAcessoLog.setMac(Utilitarios.getMacFlag());
+		usuarioAcessoLog.setMac(null);
 		setInstancia(usuarioAcessoLog);
 		setExibeMensagemInsercao(false);
 		return super.enviar();

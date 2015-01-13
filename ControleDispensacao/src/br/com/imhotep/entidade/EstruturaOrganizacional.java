@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_estrutura_organizacional", schema="administrativo")
@@ -19,6 +20,7 @@ public class EstruturaOrganizacional  implements Serializable {
 	
 	private int idEstruturaOrganizacional;
 	private String nome;
+	private String descricao;
 	private EstruturaOrganizacional estruturaPai;
 	private boolean solicitacaMaterial;
 	private boolean solicitacaMedicamento;
@@ -27,12 +29,13 @@ public class EstruturaOrganizacional  implements Serializable {
 		super();
 	}
 	
-	public EstruturaOrganizacional(int idEstruturaOrganizacional, String nome,
+	public EstruturaOrganizacional(int idEstruturaOrganizacional, String nome, String descricao,
 			EstruturaOrganizacional estruturaPai, boolean solicitacaMaterial,
 			boolean solicitacaMedicamento) {
 		super();
 		this.idEstruturaOrganizacional = idEstruturaOrganizacional;
 		this.nome = nome;
+		this.descricao = descricao;
 		this.estruturaPai = estruturaPai;
 		this.solicitacaMaterial = solicitacaMaterial;
 		this.solicitacaMedicamento = solicitacaMedicamento;
@@ -66,6 +69,14 @@ public class EstruturaOrganizacional  implements Serializable {
 		this.nome = nome;
 	}
 	
+	@Column(name = "cv_descricao")
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
 	@Column(name = "bl_solicita_material")
 	public boolean getSolicitacaMaterial() {
 		return solicitacaMaterial;
@@ -80,6 +91,14 @@ public class EstruturaOrganizacional  implements Serializable {
 	}
 	public void setSolicitacaMedicamento(boolean solicitacaMedicamento) {
 		this.solicitacaMedicamento = solicitacaMedicamento;
+	}
+	
+	@Transient
+	public String getNomeComPai(){
+		if(getEstruturaPai() != null){
+			return getNome().concat(" (").concat(getEstruturaPai().getNome()).concat(")");
+		}
+		return getNome();
 	}
 	
 	@Override

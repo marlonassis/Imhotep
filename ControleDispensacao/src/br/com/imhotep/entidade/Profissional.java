@@ -1,10 +1,7 @@
 package br.com.imhotep.entidade;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,8 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -25,6 +20,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.imhotep.consulta.raiz.CargoConsultaRaiz;
 import br.com.imhotep.enums.TipoQualidadeDigitalEnum;
 import br.com.imhotep.enums.TipoSexoEnum;
 import br.com.imhotep.enums.TipoSituacaoEnum;
@@ -33,7 +29,7 @@ import br.com.imhotep.enums.TipoVinculoEnum;
 @Entity
 @Table(name = "tb_profissional")
 public class Profissional implements Serializable{
-	private static final long serialVersionUID = 1013702742197171400L;
+	private static final long serialVersionUID = -8680432489992482031L;
 	
 	private int idProfissional;
 	private String nome;
@@ -51,7 +47,6 @@ public class Profissional implements Serializable{
 	private TipoSexoEnum sexo;
 	private TipoQualidadeDigitalEnum qualidadeDigital;
 	private TipoVinculoEnum vinculo;
-	private Set<Especialidade> especialidades;
 	
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_profissional_id_profissional_seq")
@@ -214,23 +209,21 @@ public class Profissional implements Serializable{
 		this.cpf = cpf;
 	}
 	
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch=FetchType.EAGER)
-	@JoinTable(name="tb_profissional_especialidade",
-				joinColumns={@JoinColumn(name="id_profissional")}, 
-				inverseJoinColumns={@JoinColumn(name="id_especialidade")})
-	public Set<Especialidade> getEspecialidades() {
-		return especialidades;
-	}
-	public void setEspecialidades(Set<Especialidade> especialidades) {
-		this.especialidades = especialidades;
+	@Transient
+	public String getCpfFormatado(){
+		if(getCpf() != null && !getCpf().isEmpty())
+			return new Utilitarios().formatarValorMascara(getCpf(), "###.###.###-##");
+		return "";
 	}
 	
 	@Transient
-	public List<Especialidade> getEspecialidadesList(){
-		if(getEspecialidades() != null){
-			return new ArrayList<Especialidade>(getEspecialidades());
-		}
-		return new ArrayList<Especialidade>();
+	public String getNomeCpf(){
+		return getNome().concat(" / ").concat(getCpfFormatado());
+	}
+	
+	@Transient
+	public String getNomeCpfCargo(){
+		return new CargoConsultaRaiz().getNomeCpfCargo(getIdProfissional(), getNomeCpf());
 	}
 
 	@Override

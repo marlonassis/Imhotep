@@ -8,6 +8,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -15,7 +17,9 @@ import org.primefaces.model.menu.MenuModel;
 
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.comparador.MenuComparador;
+import br.com.imhotep.consulta.raiz.MenuConsultaRaiz;
 import br.com.imhotep.entidade.Menu;
+import br.com.imhotep.entidade.Variavel;
 
 @ManagedBean
 @SessionScoped
@@ -26,7 +30,40 @@ public class ControleMenu implements Serializable {
 	private List<String> menuAutorizadoString = new ArrayList<String>();
 	private MenuModel menuModel;
 	
-	public void montarMenu(){
+	public boolean menuBloqueado(Object obj){
+		if(!(obj instanceof String) && !(obj instanceof Variavel)){
+			Menu menu = (Menu) obj;
+			return menu.getBloqueado();
+		}
+		return false;
+	}
+	
+	public boolean menuConstrucao(Object obj){
+		if(!(obj instanceof String) && !(obj instanceof Variavel)){
+			Menu menu = (Menu) obj;
+			return menu.getConstrucao();
+		}
+		return false;
+	}
+	
+	public TreeNode carregarMenu(){
+		TreeNode root = new DefaultTreeNode("Menu", null);
+		root.setSelectable(false);
+		root.setExpanded(true);
+		List<Menu> menusPai = new MenuConsultaRaiz().getMenusPai();
+		montarMenuTree(root, menusPai);
+		return root;
+	}
+	
+	private void montarMenuTree(TreeNode root, List<Menu> menusPai) {
+		for(Menu menu : menusPai){
+			DefaultTreeNode node = new DefaultTreeNode(menu, root);
+			List<Menu> menusFilho = new MenuConsultaRaiz().getMenusFilho(menu);
+			montarMenuTree(node, menusFilho);
+		}
+	}
+	
+	public void montarMenuModel(){
 		menuModel = new DefaultMenuModel();
 		Collections.sort(menuAutorizadoList, new MenuComparador());
 		adicionarHome();
@@ -91,7 +128,7 @@ public class ControleMenu implements Serializable {
 	private List<Menu> filhosMenuPai(Menu menu){
 		List<Menu> filhos = new ArrayList<Menu>();
 		for(Menu item : menuAutorizadoList){
-			if(menu.equals(item.getMenuPai())){
+			if(item.getMenuPai() != null && menu.getIdMenu() == item.getMenuPai().getIdMenu()){
 				filhos.add(item);
 			}
 		}

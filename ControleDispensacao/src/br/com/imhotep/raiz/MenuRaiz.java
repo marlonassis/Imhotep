@@ -9,5 +9,5 @@ import br.com.remendo.PadraoRaiz;
 @ManagedBean
 @SessionScoped
 public class MenuRaiz extends PadraoRaiz<Menu>{
-	
+
 }

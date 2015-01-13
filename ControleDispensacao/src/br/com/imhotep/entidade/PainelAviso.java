@@ -1,10 +1,7 @@
 package br.com.imhotep.entidade;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,18 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_painel_aviso")
 public class PainelAviso implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6414539374951565275L;
 	
 	private int idPainelAviso;
 	private String descricao;
@@ -33,8 +27,6 @@ public class PainelAviso implements Serializable {
 	private Date dataInicio;
 	private Date dataFim;
 	private boolean liberado;
-
-	private Set<PainelAvisoEspecialidade> especialidades;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_painel_aviso_id_painel_aviso_seq")
 	@Id
@@ -91,14 +83,6 @@ public class PainelAviso implements Serializable {
 		this.dataFim = dataFim;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "painelAviso")
-	public Set<PainelAvisoEspecialidade> getEspecialidades() {
-		return especialidades;
-	}
-	public void setEspecialidades(Set<PainelAvisoEspecialidade> especialidades) {
-		this.especialidades = especialidades;
-	}
-	
 	@Column(name="bl_liberado")
 	public boolean getLiberado(){
 		return liberado;
@@ -108,30 +92,67 @@ public class PainelAviso implements Serializable {
 		this.liberado = liberado;
 	}
 	
-	@Transient
-	public List<PainelAvisoEspecialidade> getEspecialidadesList(){
-		if(getEspecialidades() != null){
-			return new ArrayList<PainelAvisoEspecialidade>(getEspecialidades());
-		}
-		return new ArrayList<PainelAvisoEspecialidade>();
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dataFim == null) ? 0 : dataFim.hashCode());
+		result = prime * result
+				+ ((dataInicio == null) ? 0 : dataInicio.hashCode());
+		result = prime * result
+				+ ((dataInsercao == null) ? 0 : dataInsercao.hashCode());
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idPainelAviso;
+		result = prime * result + (liberado ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
+						.hashCode());
+		return result;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null)
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		if(!(obj instanceof PainelAviso))
+		if (getClass() != obj.getClass())
 			return false;
-		
-		return ((PainelAviso)obj).getIdPainelAviso() == this.idPainelAviso;
+		PainelAviso other = (PainelAviso) obj;
+		if (dataFim == null) {
+			if (other.dataFim != null)
+				return false;
+		} else if (!dataFim.equals(other.dataFim))
+			return false;
+		if (dataInicio == null) {
+			if (other.dataInicio != null)
+				return false;
+		} else if (!dataInicio.equals(other.dataInicio))
+			return false;
+		if (dataInsercao == null) {
+			if (other.dataInsercao != null)
+				return false;
+		} else if (!dataInsercao.equals(other.dataInsercao))
+			return false;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (idPainelAviso != other.idPainelAviso)
+			return false;
+		if (liberado != other.liberado)
+			return false;
+		if (profissionalInsercao == null) {
+			if (other.profissionalInsercao != null)
+				return false;
+		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		return true;
 	}
-
-	@Override
-	public int hashCode() {
-	    int hash = 1;
-	    return hash * 31 + dataInsercao.hashCode() + profissionalInsercao.hashCode();
-	}
-
+	
 	@Override
 	public String toString() {
 		return descricao;

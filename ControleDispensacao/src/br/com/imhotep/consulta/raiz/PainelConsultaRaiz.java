@@ -14,8 +14,8 @@ import br.com.remendo.ConsultaGeral;
 @RequestScoped
 public class PainelConsultaRaiz  extends ConsultaGeral<Painel>{
 
-	public List<Painel> todosPaineis(){
-		return new ArrayList<Painel>(new ConsultaGeral<Painel>(new StringBuilder("select o from Painel o")).consulta());
+	public List<Painel> getTodosPaineis(){
+		return new ArrayList<Painel>(new ConsultaGeral<Painel>(new StringBuilder("select o from Painel o order by to_ascii(lower(o.descricao))")).consulta());
 	}
 	
 	public List<Painel> todosPaineis(Profissional profissional){

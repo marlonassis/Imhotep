@@ -1,0 +1,231 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/Templates/templatePadrao.xhtml">
+
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="conteudoPadrao">
+		<p:tab title="Controle de Acesso">
+				<p:tabView style= "width:#{util.larguraTela * 0.99}px" >
+					<p:tab title="Acesso">
+			<h:form id="controleAcessoLocalForm" >
+						<h:panelGrid columns="2" 
+									 styleClass="contentTopPanelGrid" 
+									 width="100%" >
+							<h:panelGrid columns="1" styleClass="contentTopPanelGrid" >
+									<p:selectOneMenu id="setor"
+													 value="#{acessoLotacaoRaiz.estruturaOrganizacional}"
+													 effect="fade" 
+													 converter="entidadeConversor" 
+													 required="true">
+										<f:selectItem itemLabel="Setor..." itemValue="" />
+										<f:selectItems value="#{estruturaOrganizacionalConsultaRaiz.setoresProfissional}"
+													   var="setor" 
+													   itemLabel="#{setor.nome}"
+													   itemValue="#{setor}" />
+										<p:ajax event="change" 
+												listener="#{acessoLotacaoRaiz.atualizarDados}" 
+												update=":#{p:component('profissional')} :#{p:component('funcao')} :#{p:component('menu')} :#{p:component('painelPanelGrid')}" />
+									</p:selectOneMenu>
+							
+									<p:selectOneMenu id="profissional"
+													 disabled="#{acessoLotacaoRaiz.funcao != null or acessoLotacaoRaiz.estruturaOrganizacional == null}"
+													 value="#{acessoLotacaoRaiz.lotacaoProfissional}" 
+													 effect="fade" 
+													 converter="entidadeConversor" >
+										<f:selectItem itemLabel="Profissional..." itemValue="#{null}" />
+										<f:selectItems value="#{acessoLotacaoRaiz.profissionaisLotados}"
+													   var="lotado"
+													   itemLabel="#{lotado.profissional.nomeCpf}"
+													   itemValue="#{lotado}" />
+										<p:ajax event="change" 
+												listener="#{acessoLotacaoRaiz.carregarMenuPainel}" 
+												update=":#{p:component('menu')} :#{p:component('funcao')} :#{p:component('painelPanelGrid')}" />
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="funcao"
+													 disabled="#{acessoLotacaoRaiz.lotacaoProfissional != null or acessoLotacaoRaiz.estruturaOrganizacional == null}"
+													 value="#{acessoLotacaoRaiz.funcao}"
+													 effect="fade" 
+													 converter="entidadeConversor" >
+										<f:selectItem itemLabel="Função..." itemValue="#{null}" />
+										<f:selectItems value="#{acessoLotacaoRaiz.funcoesLotadas}"
+													   var="funcao"
+													   itemLabel="#{funcao.funcao.nomeChefia}"
+													   itemValue="#{funcao}" />
+										<p:ajax event="change" 
+												listener="#{acessoLotacaoRaiz.carregarMenuPainel}" 
+												update=":#{p:component('menu')} :#{p:component('profissional')} :#{p:component('painelPanelGrid')}" />
+									</p:selectOneMenu>
+							</h:panelGrid>
+					
+							<p:tabView style= "width:#{util.larguraTela * 0.5}px" >
+								<p:tab title="Menu">
+									<h:panelGrid id="menu"
+												 columns="1" 
+												 styleClass="contentBottomPanelGrid" >
+							            <p:tree value="#{acessoLotacaoRaiz.root}" 
+							            		var="node"
+							            		orientation="vertical" 
+							            		selectionMode="checkbox" 
+					                			selection="#{acessoLotacaoRaiz.selectedNode}" >
+					                		<p:treeNode>
+												<h:outputText value="#{node}" />
+												<h:outputText value="(Bloqueado)" style="color-text:#FF0000;" rendered="#{controleMenuLocal.menuBloqueado(node)}" />
+												<h:outputText value="(Construção)" style="color-text:#FF0000;" rendered="#{controleMenuLocal.menuConstrucao(node)}" />
+											</p:treeNode>
+									    </p:tree>
+										<p:commandButton value="Atualizar2" 
+							            				 action="#{acessoLotacaoRaiz.alterarAcessoMenu}" 
+							            				 update=":#{p:component('controleAcessoLocalForm')}"
+							            				 rendered="#{acessoLotacaoRaiz.root != null}" />
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Painel">
+									<h:panelGrid id="painelPanelGrid"
+												 columns="1" 
+												 styleClass="contentBottomPanelGrid" >
+						            	<h:panelGroup>
+												<h:outputText value="Painel:" /><br/>
+												<p:selectOneMenu id="painel"
+																 label="Painel"
+																 value="#{acessoLotacaoRaiz.estruturaOrganizacionalPainel}"
+																 effect="fade"
+																 converter="entidadeConversor"
+																 required="false" >
+													<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+													<f:selectItems value="#{acessoLotacaoRaiz.paineisLotados}"
+																   var="var"
+																   itemLabel="#{var.painel.descricao}"
+																   itemValue="#{var}" />
+													<p:ajax event="change" 
+															listener="#{acessoLotacaoRaiz.cadastrarPainel}" 
+															update=":#{p:component('painelPanelGrid')}" />
+												</p:selectOneMenu>
+											</h:panelGroup>
+							            	<p:dataTable value="#{acessoLotacaoRaiz.paineisLiberados}" 
+														var="linha" 
+														emptyMessage="Sem registro(s)" >
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="Painel" />
+														</f:facet>
+														<h:outputText value="#{linha.painel.descricao}" />
+													</p:column>
+													
+													<p:column style="width:20px; text-align: center;">
+														<p:commandLink action="#{acessoLotacaoRaiz.apagarPainel}"
+																	   update=":#{p:component('painelPanelGrid')}"
+																	   title="Apagar" 
+																	   immediate="false"
+																	   style="padding-right:10px;">
+															<f:setPropertyActionListener value="#{linha}" target="#{acessoLotacaoRaiz.estruturaOrganizacionalPainel}" />
+															<h:graphicImage value="/Imagens/delete.png" />
+														</p:commandLink>
+													</p:column>
+											</p:dataTable>
+										</h:panelGrid>
+									</p:tab>
+							</p:tabView>
+						</h:panelGrid>
+					</h:form>
+					</p:tab>
+				
+					<p:tab title="Lotação">
+					<h:form>
+						<h:panelGrid id="lotadosSupervisionados" columns="1" width="100%" >
+							<h:panelGroup>
+								<h:outputText value="Profissional:" /> <br/>
+								<p:selectOneMenu id="profissionalLotado"
+												 value="#{lotacaoProfissionalRaiz.profissionalLotado}" 
+												 effect="fade" 
+												 converter="entidadeConversor" >
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItems value="#{profissionalConsultaRaiz.profissionaisLotacao}"
+												   var="lotado"
+												   itemLabel="#{lotado.nomeCpfCargo}"
+												   itemValue="#{lotado}" />
+									<p:ajax event="change" 
+											update=":#{p:component('funcaoPanelGroup')} :#{p:component('setorPanelGroup')} :#{p:component('lotacoesDataTable')}" 
+											listener="#{lotacaoProfissionalRaiz.limparDadosChangeProfissionalLotado}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+							<h:panelGroup id="setorPanelGroup" >
+								<h:outputText value="Setor:" /> <br/>
+								<p:selectOneMenu id="setorLotacao"
+												 value="#{lotacaoProfissionalRaiz.estruturaLotado}"
+												 effect="fade" 
+												 converter="entidadeConversor" 
+												 required="false">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItems value="#{estruturaOrganizacionalConsultaRaiz.setoresProfissional}"
+												   var="setor" 
+												   itemLabel="#{setor.nome}"
+												   itemValue="#{setor}" />
+									<p:ajax event="change" update=":#{p:component('funcaoPanelGroup')}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+							<h:panelGroup id="funcaoPanelGroup" >
+								<h:outputText value="Função:" /> <br/>
+								<p:selectOneMenu id="funcaoLotacao"
+												 value="#{lotacaoProfissionalRaiz.funcaoLotada}"
+												 effect="fade" 
+												 converter="entidadeConversor" 
+												 required="false">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItems value="#{lotacaoProfissionalRaiz.funcoesEstrutura}"
+												   var="funcao" 
+												   itemLabel="#{funcao.funcao.nomeChefia}"
+												   itemValue="#{funcao}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+							
+							<p:commandButton value="Cadastrar" 
+											 action="#{lotacaoProfissionalRaiz.lotarProfissionalFuncao}" 
+											 update=":#{p:component('funcaoPanelGroup')} 
+											 			:#{p:component('setorPanelGroup')} 
+											 			:#{p:component('lotacoesDataTable')} 
+											 			:#{p:component('profissionalLotado')}" />
+							
+							<p:dataTable id="lotacoesDataTable"
+										 value="#{lotacaoProfissionalRaiz.lotacoesProfissional}" 
+										 var="linha" 
+										 emptyMessage="Sem registro(s)" >
+									
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Setor" />
+										</f:facet>
+										<h:outputText value="#{linha.estruturaOrganizacionalFuncao.estruturaOrganizacional.nome}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Função" />
+										</f:facet>
+										<h:outputText value="#{linha.estruturaOrganizacionalFuncao.funcao.nomeChefia}" />
+									</p:column>
+									
+									<p:column style="width:20px; text-align: center;">
+										<p:commandLink action="#{lotacaoProfissionalRaiz.apagarFuncaoLotada}"
+													   update=":#{p:component('lotacoesDataTable')}"
+													   title="Apagar" 
+													   immediate="false"
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{linha}" target="#{lotacaoProfissionalRaiz.funcaoDelecao}" />
+											<h:graphicImage value="/Imagens/delete.png" />
+										</p:commandLink>
+									</p:column>
+							</p:dataTable>
+						</h:panelGrid>
+			</h:form>
+					</p:tab>
+				</p:tabView>
+		</p:tab>
+	</ui:define>
+</ui:composition>

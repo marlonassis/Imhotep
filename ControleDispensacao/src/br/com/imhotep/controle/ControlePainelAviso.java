@@ -59,7 +59,7 @@ public class ControlePainelAviso implements Serializable{
 		} catch (ExcecaoProfissionalLogado e) {
 			e.printStackTrace();
 		}
-		setAvisos(new HashSet<PainelAviso>(new ConsultaGeral<PainelAviso>(sb).consulta()));
+		setAvisos(new HashSet<PainelAviso>());
 		carregarAvisosAutomaticos();
 		getAvisos().addAll(getAvisosNaoMonitorado());
 	}
@@ -72,7 +72,7 @@ public class ControlePainelAviso implements Serializable{
 	}
 
 	public void gerarAvisoRE(Integer idSolicitacao){
-		String aviso = "Nº da RE: "+idSolicitacao;
+		String aviso = "NÔøΩ da RE: "+idSolicitacao;
 		PainelAviso pa = gerarAvisoAutomatico(aviso);
 //		setAvisosNaoMonitorado(new ArrayList<PainelAviso>());
 		getAvisosNaoMonitorado().add(pa);
@@ -80,7 +80,7 @@ public class ControlePainelAviso implements Serializable{
 	}
 	
 	public void gerarAvisoRM(Integer idSolicitacao, Unidade unidade){
-		String aviso = "Nº da RM: "+idSolicitacao+" - "+unidade.getSigla();
+		String aviso = "NÔøΩ da RM: "+idSolicitacao+" - "+unidade.getSigla();
 		PainelAviso pa = gerarAvisoAutomatico(aviso);
 //		setAvisosNaoMonitorado(new ArrayList<PainelAviso>());
 		getAvisosNaoMonitorado().add(pa);
@@ -88,7 +88,7 @@ public class ControlePainelAviso implements Serializable{
 	}
 	
 	public void gerarAvisoRD(Integer idDevolucao, Unidade unidade){
-		String aviso = "Nº da RD: "+idDevolucao+" - "+unidade.getSigla();
+		String aviso = "NÔøΩ da RD: "+idDevolucao+" - "+unidade.getSigla();
 		PainelAviso pa = gerarAvisoAutomatico(aviso);
 //		setAvisosNaoMonitorado(new ArrayList<PainelAviso>());
 		getAvisosNaoMonitorado().add(pa);
@@ -104,7 +104,7 @@ public class ControlePainelAviso implements Serializable{
 		EstoqueRaiz.getInstanciaAtual().setEstoqueVencido(new EstoqueConsultaRaiz().consultarEstoqueVencidoLimiteSeteDias());
 		Long quantidadeDevolucoesPendentes = quantidadeDevolucoesPendentes();
 		if(quantidadeDevolucoesPendentes > 0){
-			String avisoQuantidadeDevolucoesPendentes = quantidadeDevolucoesPendentes + " devolução(ões) pendente(s)";
+			String avisoQuantidadeDevolucoesPendentes = quantidadeDevolucoesPendentes + " devoluÔøΩÔøΩo(ÔøΩes) pendente(s)";
 			PainelAviso pa = gerarAvisoAutomatico(avisoQuantidadeDevolucoesPendentes);
 			getAvisos().add(pa);
 		}
@@ -113,7 +113,7 @@ public class ControlePainelAviso implements Serializable{
 	private void carregarAvisoSolicitacoesPendentes() {
 		Long quantidadeSolicitacoesPendentes = quantidadeSolicitacoesPendentes();
 		if(quantidadeSolicitacoesPendentes > 0){
-			String avisoQuantidadeSolicitacoesPendentes = quantidadeSolicitacoesPendentes + " solicitação(ões) pendente(s)";
+			String avisoQuantidadeSolicitacoesPendentes = quantidadeSolicitacoesPendentes + " solicitaÔøΩÔøΩo(ÔøΩes) pendente(s)";
 			PainelAviso pa = gerarAvisoAutomatico(avisoQuantidadeSolicitacoesPendentes);
 			getAvisos().add(pa);
 		}

@@ -1,10 +1,12 @@
 package br.com.imhotep.seguranca;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
@@ -26,14 +28,13 @@ import br.com.imhotep.controle.ControleSenha;
 import br.com.imhotep.entidade.Menu;
 import br.com.imhotep.entidade.Painel;
 import br.com.imhotep.entidade.Profissional;
-import br.com.imhotep.entidade.Unidade;
 import br.com.imhotep.entidade.Usuario;
 import br.com.imhotep.enums.TipoSituacaoEnum;
 import br.com.imhotep.enums.TipoUsuarioLogEnum;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
-import br.com.imhotep.excecoes.ExcecaoUnidadeAtual;
 import br.com.imhotep.excecoes.ExcecaoUsuarioInativo;
 import br.com.imhotep.excecoes.ExcecaoUsuarioLogin;
+import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.raiz.ConfiguracaoRaiz;
 import br.com.imhotep.raiz.EstoqueAlmoxarifadoRaiz;
 import br.com.imhotep.raiz.EstoqueRaiz;
@@ -47,14 +48,279 @@ public class Autenticador {
 	
 	private Usuario usuarioAtual;
 	private Usuario usuario = new Usuario();
-	private Unidade unidadeAtual;
 	private Profissional profissionalAtual;
-	private boolean mostraComboUnidade;
-	private Collection<Unidade> unidades;
 	private Profissional profissionalRecuperacao = new Profissional();
 	private boolean exibirFormularioAtual=true;
 	private boolean exibirMensagemUsuarioBloqueado;
+	
+	private String getSqlCarregarPainel(){
+		int idProfissional = getProfissionalAtual().getIdProfissional();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(sqlPainelPorLotacao(idProfissional));
+		stringBuilder.append(" union ");
+		stringBuilder.append(getPainelPorFuncao(idProfissional));
+		return stringBuilder.toString();
+	}
 
+	private String getPainelPorFuncao(int idProfissional) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select a.id_painel, a.cv_url, a.cv_descricao from controle.tb_painel a ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_painel b ");
+		stringBuilder.append("	on a.id_painel = b.id_painel ");
+		stringBuilder.append("inner join controle.tb_acesso_funcao_painel c ");
+		stringBuilder.append("	on c.id_estrutura_organizacional_painel = b.id_estrutura_organizacional_painel ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_funcao d ");
+		stringBuilder.append("	on d.id_estrutura_organizacional_funcao = c.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional_funcao e ");
+		stringBuilder.append("	on e.id_estrutura_organizacional_funcao = d.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional f ");
+		stringBuilder.append("	on f.id_lotacao_profissional = e.id_lotacao_profissional ");
+		stringBuilder.append("where f.id_profissional = ");
+		stringBuilder.append(idProfissional);
+		return stringBuilder.toString();
+	}
+
+	private String sqlPainelPorLotacao(int idProfissional) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select a.id_painel, a.cv_url, a.cv_descricao from controle.tb_painel a ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_painel b ");
+		stringBuilder.append("	on a.id_painel = b.id_painel ");
+		stringBuilder.append("inner join controle.tb_acesso_lotacao_painel c ");
+		stringBuilder.append("	on c.id_estrutura_organizacional_painel = b.id_estrutura_organizacional_painel ");
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional d ");
+		stringBuilder.append("	on d.id_lotacao_profissional = c.id_lotacao_profissional ");
+		stringBuilder.append("where d.id_profissional = ");
+		stringBuilder.append(idProfissional);
+		return stringBuilder.toString();
+	}
+	
+	private ArrayList<Painel> carregarPainelLotacao() {
+		String sql = getSqlCarregarPainel();
+		LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, Constantes.IP_LOCAL);
+		List<Object[]> listaResultado = lm.getListaResultado(sql, 3);
+		ArrayList<Painel> paineis = new ArrayList<Painel>();
+		for(Object[] obj : listaResultado){
+			int idPainel = Integer.valueOf(String.valueOf(obj[0]));
+			String url = String.valueOf(obj[1]);
+			String descricao = String.valueOf(obj[2]);
+			Painel painel = new Painel();
+			painel.setIdPainel(idPainel);
+			painel.setDescricao(descricao);
+			painel.setUrl(url);
+			paineis.add(painel);
+		}
+		return paineis;
+	}
+	
+	private void carregaPaineis() {
+		try {
+			//carrega os paineis que pertencem ao profissional
+			ArrayList<Painel> painelAutorizadoList = carregarPainelLotacao();
+			ControlePainel controlePainel = new ControlePainel();
+			controlePainel.setPainelAutorizadoList(painelAutorizadoList);
+			//ap√≥s carregar o menu, √© chamado o m√©todo converteMenuString para converter todo o menu em uma lista de string
+			controlePainel.convertePainelString();
+			Utilitarios.atualizaInstancia(controlePainel);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private String getSqlCarregarMenu(){
+		int idProfissional = getProfissionalAtual().getIdProfissional();
+		StringBuilder stringBuilder = getSqlMenuPorFuncao(idProfissional);
+		stringBuilder.append(" union ");
+		getSqlMenuPorLotacao(idProfissional, stringBuilder);
+		stringBuilder.append(" union ");
+		getSqlMenuAdministrador(idProfissional, stringBuilder);
+		stringBuilder.append(" union ");
+		getSqlMenuControleAcessoChefia(idProfissional, stringBuilder);
+		stringBuilder.append(" union ");
+		getSqlMenuChefia(idProfissional, stringBuilder);
+		return stringBuilder.toString();
+	}
+
+	private void getSqlMenuChefia(int idProfissional, StringBuilder stringBuilder) {
+		stringBuilder.append("select distinct a.id_menu, a.id_menu_pai from controle.tb_menu a ");
+		stringBuilder.append("	inner join administrativo.tb_estrutura_organizacional_menu b ");
+		stringBuilder.append("		on a.id_menu = b.id_menu ");
+		stringBuilder.append("	inner join administrativo.tb_lotacao_profissional c ");
+		stringBuilder.append("		on c.id_estrutura_organizacional = b.id_estrutura_organizacional ");
+		stringBuilder.append("	inner join administrativo.tb_estrutura_organizacional_funcao e ");
+		stringBuilder.append("		on e.id_estrutura_organizacional = b.id_estrutura_organizacional ");
+		stringBuilder.append("	inner join administrativo.tb_funcao f ");
+		stringBuilder.append("		on f.id_funcao = e.id_funcao ");
+		stringBuilder.append("	inner join administrativo.tb_lotacao_profissional_funcao d ");
+		stringBuilder.append("		on d.id_lotacao_profissional = c.id_lotacao_profissional ");
+		stringBuilder.append("		and d.id_estrutura_organizacional_funcao = e.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("where a.bl_bloqueado is false and f.bl_chefia is true and c.id_profissional = ");
+		stringBuilder.append(idProfissional);
+	}
+	
+	private void getSqlMenuControleAcessoChefia(int idProfissional, StringBuilder stringBuilder) {
+		stringBuilder.append("select distinct a.id_menu, a.id_menu_pai from controle.tb_menu a ");
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional f ");
+		stringBuilder.append("	on f.id_profissional = ");
+		stringBuilder.append(idProfissional);
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional_funcao g ");
+		stringBuilder.append("	on g.id_lotacao_profissional = f.id_lotacao_profissional ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_funcao h ");
+		stringBuilder.append("	on h.id_estrutura_organizacional_funcao = g.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("inner join administrativo.tb_funcao i ");
+		stringBuilder.append("	on i.id_funcao = h.id_funcao ");
+		stringBuilder.append("where a.bl_bloqueado is false and i.bl_chefia is true and a.id_menu in (");
+		stringBuilder.append(Constantes.IDS_MENU_CHEFIA);
+		stringBuilder.append(")");
+	}
+	
+	private void getSqlMenuAdministrador(int idProfissional, StringBuilder stringBuilder) {
+		stringBuilder.append("select distinct a.id_menu, a.id_menu_pai from controle.tb_menu a "); 
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional f ");
+		stringBuilder.append("	on f.id_profissional = ");
+		stringBuilder.append(idProfissional);
+		stringBuilder.append(" inner join administrativo.tb_lotacao_profissional_funcao g ");
+		stringBuilder.append("	on g.id_lotacao_profissional = f.id_lotacao_profissional ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_funcao h ");
+		stringBuilder.append("	on h.id_estrutura_organizacional_funcao = g.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("where h.id_funcao = ");
+		stringBuilder.append(Constantes.ID_FUNCAO_ADMINISTRADOR);
+	}
+	
+	private void getSqlMenuPorLotacao(int idProfissional, StringBuilder stringBuilder) {
+		stringBuilder.append("select distinct e.id_menu, e.id_menu_pai from controle.tb_acesso_lotacao a ");
+		stringBuilder.append("	inner join administrativo.tb_estrutura_organizacional_menu b ");
+		stringBuilder.append("		on a.id_estrutura_organizacional_menu = b.id_estrutura_organizacional_menu ");
+		stringBuilder.append("	inner join administrativo.tb_estrutura_organizacional c ");
+		stringBuilder.append("		on b.id_estrutura_organizacional = c.id_estrutura_organizacional ");
+		stringBuilder.append("	inner join administrativo.tb_lotacao_profissional d ");
+		stringBuilder.append("		on d.id_estrutura_organizacional = c.id_estrutura_organizacional ");
+		stringBuilder.append("		and d.id_lotacao_profissional = d.id_lotacao_profissional ");
+		stringBuilder.append("	inner join controle.tb_acesso_lotacao f ");
+		stringBuilder.append("		on f.id_lotacao_profissional = d.id_lotacao_profissional ");
+		stringBuilder.append("		and f.id_estrutura_organizacional_menu = b.id_estrutura_organizacional_menu ");
+		stringBuilder.append("	inner join controle.tb_menu e on e.id_menu = b.id_menu ");
+		stringBuilder.append("where e.bl_bloqueado is false and d.id_profissional = ");
+		stringBuilder.append(idProfissional);
+	}
+
+	private StringBuilder getSqlMenuPorFuncao(int idProfissional) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select distinct a.id_menu, a.id_menu_pai from controle.tb_menu a ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_menu b ");
+		stringBuilder.append("	on a.id_menu = b.id_menu ");
+		stringBuilder.append("inner join controle.tb_acesso_funcao c ");
+		stringBuilder.append("	on c.id_estrutura_organizacional_menu = b.id_estrutura_organizacional_menu ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_funcao d ");
+		stringBuilder.append("	on d.id_estrutura_organizacional_funcao = c.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("inner join administrativo.tb_estrutura_organizacional e ");
+		stringBuilder.append("	on e.id_estrutura_organizacional = d.id_estrutura_organizacional ");
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional f ");
+		stringBuilder.append("	on f.id_estrutura_organizacional = e.id_estrutura_organizacional ");
+		stringBuilder.append("inner join administrativo.tb_lotacao_profissional_funcao g ");
+		stringBuilder.append("	on g.id_lotacao_profissional = f.id_lotacao_profissional ");
+		stringBuilder.append("	and d.id_estrutura_organizacional_funcao = g.id_estrutura_organizacional_funcao ");
+		stringBuilder.append("where a.bl_bloqueado is false and f.id_profissional = ");
+		stringBuilder.append(idProfissional);
+		return stringBuilder;
+	}
+	
+	private void carregaToolBarMenu() {
+		try {
+			Set<Menu> menuAutorizadoSet = new HashSet<Menu>(carregarMenuLotacao());
+			ControleMenu controleMenu = new ControleMenu();
+			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(menuAutorizadoSet));
+			controleMenu.montarMenuModel();
+			controleMenu.montarMenuPlanoString();
+			Utilitarios.atualizaInstancia(controleMenu);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private ArrayList<Menu> carregarMenuLotacao() {
+		String sql = getSqlCarregarMenu();
+		
+		LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, Constantes.IP_LOCAL);
+		List<Object[]> listaResultado = lm.getListaResultado(sql);
+		ArrayList<Menu> menus = new ArrayList<Menu>();
+		for(Object[] obj : listaResultado){
+			int idMenu = Integer.valueOf(String.valueOf(obj[0]));
+			int idMenuPai = obj[1] == null ? 0 : Integer.valueOf(String.valueOf(obj[1]));
+			
+			Menu menu = carregarMenu(idMenu);
+			menu.setMenuPai(carregarMenu(idMenuPai));
+			
+			menus.add(menu);
+		}
+		return menus;
+	}
+
+	private Menu carregarMenu(int idMenu){
+		String sql = "select * from controle.tb_menu where id_menu = "+idMenu;
+		LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, Constantes.IP_LOCAL);
+		ResultSet rs = lm.consultar(sql);
+		try {
+			if(rs.next()){
+				int id = rs.getInt("id_menu");
+				String descricao = rs.getString("cv_descricao");
+				String url = rs.getString("cv_url");
+				String urlAjuda = rs.getString("cv_url_ajuda");
+				Boolean bloqueado = rs.getBoolean("bl_bloqueado");
+				Boolean interno = rs.getBoolean("bl_interno");
+				Boolean construcao = rs.getBoolean("bl_construcao");
+				Menu menu = new Menu();
+				menu.setIdMenu(id);
+				menu.setBloqueado(bloqueado);
+				menu.setConstrucao(construcao);
+				menu.setDescricao(descricao);
+				menu.setInterno(interno);
+				menu.setUrl(url);
+				menu.setUrlAjuda(urlAjuda);
+				return menu;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void logarUsuario(){
+		setExibirMensagemUsuarioBloqueado(false);
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		try{
+			if(!getUsuario().getLogin().isEmpty()){
+				Usuario usuarioLogado = procurarUsuario(getUsuario().getLogin());
+				if(usuarioLogado != null && usuarioLogado.getIdUsuario() != 0){
+	    			if(verificaSenha(usuarioLogado, getUsuario().getSenha())){
+	    				setUsuarioAtual(usuarioLogado);
+	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
+	    				setUsuarioAtual(usuarioLogado);
+	    				new UsuarioAcessoLogRaiz().gerarLogLogin();
+	    				carregaProfissional();
+	    				carregaToolBarMenu();
+	    				carregaPaineis();
+	    				atualizarPaineis();
+	    				ControlePainelAviso.getInstancia().atualizarAvisos();
+	    			}
+	    		}
+	    	}
+		} catch (Exception e) {
+			e.printStackTrace();
+			new UsuarioAcessoLogRaiz().gerarLog(TipoUsuarioLogEnum.E, getUsuario().getLogin());
+		}
+		
+		setUsuario(new Usuario());
+	}
+	
 	public void fecharFormularioAtual(){
 		setExibirFormularioAtual(false);
 	}
@@ -71,20 +337,6 @@ public class Autenticador {
 		}
 		
 		throw new ExcecaoProfissionalLogado();
-	}
-	
-	public static Unidade getUnidadeProfissional() throws ExcecaoUnidadeAtual {
-		try {
-			return Autenticador.getInstancia().getUnidadeAtual();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		throw new ExcecaoUnidadeAtual();
 	}
 	
 	public static Autenticador getInstancia() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
@@ -115,27 +367,9 @@ public class Autenticador {
 				e.printStackTrace();
 			}
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Dados não conferem", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Dados n√£o conferem", ""));
 		}
 	}
-	
-	private void carregaUnidadesUsuario(){
-		ConsultaGeral<Unidade> cg = new ConsultaGeral<Unidade>();
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idUsuario", usuarioAtual.getIdUsuario());
-		unidades = cg.consulta(new StringBuilder("select a.unidade from AutorizaUnidadeProfissional a where a.profissional.usuario.idUsuario = :idUsuario"), hm);
-		carregaUnidadeAtual();
-	}
-
-	private void carregaUnidadeAtual() {
-		if(unidades.size() == 1){
-			unidadeAtual = unidades.iterator().next();
-		}else{
-			mostraComboUnidade = true;
-		}
-	}
-
-	//////////////////////////////////////Nova forma de pesquisar o usuario. A busca deve ser feita apenas para trazer o profissional e não o usuário
 	
 	private Object buscaGenerica(String sql, HashMap<Object, Object> hm){
 		ConsultaGeral<Object> cg = new ConsultaGeral<Object>();
@@ -177,12 +411,10 @@ public class Autenticador {
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);  
 			session.invalidate();
 			setUsuarioAtual(null);
-			setUnidadeAtual(null);
-			unidades = null;
 		}catch (Exception e) {
 			e.printStackTrace();
 			if(getUsuarioAtual() != null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Logout não realizado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro ao tentar sair! Tente sair novamente.", "Logout n√£o realizado!"));
 			}
 		}
 	}
@@ -207,19 +439,11 @@ public class Autenticador {
 		}
 	}
 
-	public void continuaLogin() throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-		if(unidadeAtual != null){
-			mostraComboUnidade = false;
-		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informe uma unidade.", ""));
-		}
-	}
-	
 	public boolean verificaSenha(Usuario usuarioLogado, String senha){
 		if(usuarioLogado.getSenha().equals(Utilitarios.encriptaParaMd5(senha))){
 			return true;
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário e/ou senha não confere!", "Login não realizado!"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"UsuÔøΩrio e/ou senha nÔøΩo confere!", "Login nÔøΩo realizado!"));
 			String sql = "update Usuario set quantidadeErroLogin = quantidadeErroLogin + 1 where login = '"+usuarioLogado.getLogin()+"'";
 			new UsuarioRaiz().executa(sql);
 			if(usuarioLogado.getQuantidadeErroLogin() == Constantes.QUANTIDADE_BLOQUEIO_USUARIO.intValue()){
@@ -227,40 +451,6 @@ public class Autenticador {
 			}
 			return false;
 		}
-	}
-	
-	public void logarUsuario(){
-		setExibirMensagemUsuarioBloqueado(false);
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		try{
-			if(!getUsuario().getLogin().isEmpty()){
-	    		Usuario usuarioLogado = procurarUsuario(getUsuario().getLogin());
-	    		if(usuarioLogado != null && usuarioLogado.getIdUsuario() != 0){
-//	    			if(usuarioLogado.getQuantidadeErroLogin() > Constantes.QUANTIDADE_BLOQUEIO_USUARIO){
-//	    				FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_RECUPERACAO_SENHA);
-//	    				setExibirMensagemUsuarioBloqueado(true);
-//	    				return;
-//	    			}
-	    			if(verificaSenha(usuarioLogado, getUsuario().getSenha())){
-	    				setUsuarioAtual(usuarioLogado);
-	    				facesContext.getExternalContext().getSessionMap().put("usuario", usuarioLogado);
-	    				setUsuarioAtual(usuarioLogado);
-	    				new UsuarioAcessoLogRaiz().gerarLogLogin();
-	    				carregaUnidadesUsuario();
-	    				carregaProfissional();
-	    				carregaToolBarMenu();
-	    				carregaPaineis();
-	    				atualizarPaineis();
-	    				ControlePainelAviso.getInstancia().atualizarAvisos();
-	    			}
-	    		}
-	    	}
-		} catch (Exception e) {
-			e.printStackTrace();
-			new UsuarioAcessoLogRaiz().gerarLog(TipoUsuarioLogEnum.E, getUsuario().getLogin());
-		}
-		
-		setUsuario(new Usuario());
 	}
 	
 	private void atualizarPaineis(){
@@ -272,93 +462,11 @@ public class Autenticador {
 			new SolicitacaoMedicamentoUnidadeConsultaRaiz().consultarSolicitacoesProfissional();
 		}
 		
-		//TODO TAF 5
 		if(cp.getPainelAutorizadoStringList().contains(Constantes.PAINEL_MATERIAL_ALMOXARIFADO_VENCIDO)){
 			EstoqueAlmoxarifadoRaiz.getInstanciaAtual().setEstoqueVencido(new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoqueVencidoEVenceraSeisMeses());
 		}
 	}
 	
-	private void carregaPaineis() {
-		try {
-			//carrega os paineis que pertencem à especialidade do profissional
-			ArrayList<Painel> painelAutorizadoList = carregaPaineisEspecialidade();
-			//carrega os paineis que pertencem ao profissional
-			painelAutorizadoList.addAll(carregaPaineisProfissional());
-			
-			ControlePainel controlePainel = new ControlePainel();
-			controlePainel.setPainelAutorizadoList(painelAutorizadoList);
-			//após carregar o menu é chamado o método converteMenuString para converter todo o menu em uma lista de string
-			controlePainel.convertePainelString();
-			Utilitarios.atualizaInstancia(controlePainel);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
-
-	private ArrayList<Painel> carregaPaineisProfissional() throws InstantiationException,IllegalAccessException, ClassNotFoundException {
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("idProfissional", Autenticador.getInstancia().getProfissionalAtual().getIdProfissional());
-		StringBuilder hql = new StringBuilder("select o.painel from AutorizaPainelProfissional o where o.profissional.idProfissional = :idProfissional");
-		ArrayList<Painel> painelAutorizadoList = new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap));
-		return painelAutorizadoList;
-	}
-	
-	private ArrayList<Painel> carregaPaineisEspecialidade() throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException {
-		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("idProfissional", Autenticador.getInstancia().getProfissionalAtual().getIdProfissional());
-		StringBuilder hql = new StringBuilder("select b.painel from Profissional o  join o.especialidades a join a.paineis b where o.idProfissional = :idProfissional");
-		ArrayList<Painel> painelAutorizadoList = new ArrayList<Painel>(new ConsultaGeral<Painel>().consulta(new StringBuilder(hql), hashMap));
-		return painelAutorizadoList;
-	}
-
-	/**
-	 * Monta o menu de acordo com as permissões de cada usuário
-	 */
-	private void carregaToolBarMenu() {
-		try {
-			Set<Menu> menuAutorizadoSet = new HashSet<Menu>(carregarMenuEspecialidade());
-			menuAutorizadoSet.addAll(carregarMenuProfissional());
-			ControleMenu controleMenu = new ControleMenu();
-			controleMenu.setMenuAutorizadoList(new ArrayList<Menu>(menuAutorizadoSet));
-			controleMenu.montarMenu();
-			controleMenu.montarMenuPlanoString();
-			Utilitarios.atualizaInstancia(controleMenu);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private ArrayList<Menu> carregarMenuProfissional() {
-		//carrega o menu que pertence ao profissional
-		String hql = "select o.menu from AutorizaMenuProfissional o where "
-				+ "o.profissional.idProfissional = :idProfissional "
-				+ "and o.menu.bloqueado = false "
-				+ "order by to_ascii(o.menu.descricao)";
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
-		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));
-		return menuAutorizadoList;
-	}
-	
-	private ArrayList<Menu> carregarMenuEspecialidade() {
-		//carrega o menu que pertence à especialidade do usuário
-		String hql = "select b.menu from Profissional o join o.especialidades a join a.menus b where o.idProfissional = :idProfissional and b.menu.bloqueado = false";
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("idProfissional", getProfissionalAtual().getIdProfissional());
-		ArrayList<Menu> menuAutorizadoList = new ArrayList<Menu>(new ConsultaGeral<Menu>().consulta(new StringBuilder(hql), hm));
-		return menuAutorizadoList;
-	}
-
 	public void sairManutencao(){
 		StringBuilder sb = new StringBuilder("update Configuracao set valor = 'false' where ");
 		sb.append("nome = 'Manutencao'");
@@ -414,14 +522,6 @@ public class Autenticador {
 		this.usuarioAtual = usuarioAtual;
 	}
 
-	public Unidade getUnidadeAtual() {
-		return unidadeAtual;
-	}
-
-	public void setUnidadeAtual(Unidade unidadeAtual) {
-		this.unidadeAtual = unidadeAtual;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -430,24 +530,12 @@ public class Autenticador {
 		this.usuario = usuario;
 	}
 
-	public Collection<Unidade> getUnidades() {
-		return unidades;
-	}
-
 	public Profissional getProfissionalAtual() {
 		return profissionalAtual;
 	}
 
 	public void setProfissionalAtual(Profissional profissionalAtual) {
 		this.profissionalAtual = profissionalAtual;
-	}
-
-	public boolean isMostraComboUnidade() {
-		return mostraComboUnidade;
-	}
-
-	public void setMostraComboUnidade(boolean mostraComboUnidade) {
-		this.mostraComboUnidade = mostraComboUnidade;
 	}
 
 	public Profissional getProfissionalRecuperacao() {
