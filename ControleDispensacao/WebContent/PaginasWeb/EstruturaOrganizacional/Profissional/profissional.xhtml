@@ -19,6 +19,65 @@
 								 raiz="#{profissionalRaiz}" 
 								 srcEditor="EstruturaOrganizacional/Profissional/profissionalEditor.xhtml" 
 								 srcTabela="EstruturaOrganizacional/Profissional/profissionalTabela.xhtml" />
+			
+			
+			
+			
+			
+			
+			
+			<h:panelGroup id="dialogLogAlteracoesPanelGroup" >
+				<p:dialog visible="#{alteracaoLocacaoLogRaiz.exibirDialogLog}" 
+						  closable="false" 
+						  header="Log de Locação" 
+						  modal="true" 
+						  width="#{util.larguraTela / 1.5}" 
+						  height="#{util.alturaTela / 2}"  >
+					<h:form>
+						<p:dataTable value="#{alteracaoLocacaoLogRaiz.logList}" 
+									 var="linha" 
+									 emptyMessage="Sem registro(s)" >
+							<f:facet name="header"> Log </f:facet>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Tipo" />
+								</f:facet>
+								<h:outputText value="#{linha.tipo.label}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Estrutura" />
+								</f:facet>
+								<h:outputText value="#{linha.estrutura}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Responsável" />
+								</f:facet>
+								<h:outputText value="#{linha.profissionalCadastro.nomeCpf}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Data da Alteração" />
+								</f:facet>
+								<h:outputText value="#{util.formatarDataHoraSegundoBrasil(linha.dataCadastro)}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Justificativa/Observação" />
+								</f:facet>
+								<h:outputText value="#{linha.justificativa}" />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{alteracaoLocacaoLogRaiz.ocultarDialogLog}" 
+										 update=":#{p:component('dialogLogAlteracoesPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

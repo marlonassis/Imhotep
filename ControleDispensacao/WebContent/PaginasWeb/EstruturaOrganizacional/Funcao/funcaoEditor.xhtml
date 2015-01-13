@@ -5,18 +5,22 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="funcaoPanelGrid" columns="3" width="100%">
+	<h:panelGrid id="funcaoPanelGrid" columns="3">
 		
 		<ri:inputTextoSimples id="funcao" 
 							  title="Informe a função principal" 
 							  value="#{funcaoRaiz.instancia.nome}" 
 							  label="Função Principal" />
 		
+		<ri:inputCheckBoolean id="chefiaEditor" 
+							  label="Chefia" 
+							  value="#{funcaoRaiz.instancia.chefia}" />
+		
 		<h:panelGroup rendered="#{funcaoRaiz.edicao}" >
 			<h:panelGrid columns="1" >
 				<h:panelGrid columns="2" >
 					<ri:inputTextoSimples id="funcaoFilho" 
-										  title="Informe a função secundária" 
+										  title="Informe a função secundária"
 										  value="#{funcaoRaiz.funcaoFilho}"
 										  label="Função Secundária" />
 					<p:commandButton icon="ui-icon-disk"

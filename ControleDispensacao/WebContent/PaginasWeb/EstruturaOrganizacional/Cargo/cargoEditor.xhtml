@@ -18,13 +18,13 @@
 					<ri:inputTextoSimples id="cargoFilho" 
 										  title="Informe o cargo secundária" 
 										  value="#{cargoRaiz.cargoFilho}"
-										  label="Função Secundária" />
+										  label="Cargo Secundário" />
 					<p:commandButton icon="ui-icon-disk"
 									 action="#{cargoRaiz.cadastrarCargoFilho}" 
 									 update=":#{p:component('cargoPanelGrid')}" />
 				</h:panelGrid>
 			
-				<p:dataList id="tabelaFuncoesFilho" 
+				<p:dataList id="tabelaCargosFilho" 
 						 value="#{cargoRaiz.cargosFilho}"
 						 var="linha" 
 						 dblClickSelect="true"

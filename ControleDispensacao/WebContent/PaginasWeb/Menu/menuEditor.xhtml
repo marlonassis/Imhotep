@@ -5,8 +5,16 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="menuPanelGrid" columns="3" width="100%">
+	<p:commandButton value="Variáveis" 
+					 action="#{menuVariavelRaiz.exibirDialogVariavel}" 
+					 immediate="true"
+					 update=":#{p:component('dialogVariaveisPanelGroup')}" 
+					 disabled="#{!menuRaiz.edicao}">
+		<f:setPropertyActionListener value="#{menuRaiz.instancia}" target="#{menuVariavelRaiz.menu}" />
+	</p:commandButton>
 
+	<h:panelGrid id="menuPanelGrid" columns="3" width="100%">
+		
 		<ri:inputTextoSimples id="descricao" 
 							  title="Nome do menu" 
 							  value="#{menuRaiz.instancia.descricao}" 

@@ -53,7 +53,7 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{profissionalRaiz.apagar()}"
-						   update=":#{p:component('profissionalFormulario')}"
+						   oncomplete="window.location.reload()"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" 
 						   style="padding-right:10px;">

@@ -1,6 +1,7 @@
 package br.com.imhotep.raiz;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,7 +12,14 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import br.com.imhotep.auxiliar.Constantes;
+import br.com.imhotep.controle.ControleInstancia;
+import br.com.imhotep.entidade.AlteracaoEstruturaLog;
 import br.com.imhotep.entidade.EstruturaOrganizacional;
+import br.com.imhotep.entidade.GrupoAdm;
+import br.com.imhotep.entidade.GrupoEstrutura;
+import br.com.imhotep.enums.TipoCrudEnum;
+import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
+import br.com.imhotep.temp.ConsultaGeral;
 import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
@@ -24,10 +32,129 @@ public class EstruturaOrganizacionalRaiz extends PadraoRaiz<EstruturaOrganizacio
 	private boolean exibirDialogDeslocarNo;
 	private EstruturaOrganizacional origemDeslocar;
 	private EstruturaOrganizacional destinoDeslocar;
+	private GrupoAdm grupoAdm;
     
 	public EstruturaOrganizacionalRaiz(){
 		super();
 		carrregarEstrutura();
+	}
+	
+	public List<GrupoAdm> getGrupos(){
+		String hql = "select o from GrupoAdm o order by to_ascii(lower(o.nome))";
+		Collection<GrupoAdm> consulta = new ConsultaGeral<GrupoAdm>(new StringBuilder(hql)).consulta();
+		return new ArrayList<GrupoAdm>(consulta);
+	}
+	
+	public void configurarNode(){
+		if(getSelectedNode() != null){
+			EstruturaOrganizacional estruturaOrganizacional = (EstruturaOrganizacional) getSelectedNode().getData();
+			carregarInformacoesBasicas(estruturaOrganizacional);
+			carregarLotados();
+			carregarFuncoesLotadas(estruturaOrganizacional);
+			carregarProfissionaisFuncoesLotadas(estruturaOrganizacional);
+			carregarFuncoesMenu(estruturaOrganizacional);
+			carregarPaineis(estruturaOrganizacional);
+			carregarLogAlteracoes(estruturaOrganizacional);
+		}
+	}
+	
+	private void carregarLogAlteracoes(EstruturaOrganizacional estruturaOrganizacional) {
+		try {
+			AlteracaoEstruturaLogRaiz logs = 
+					(AlteracaoEstruturaLogRaiz) new ControleInstancia().procuraInstancia(AlteracaoEstruturaLogRaiz.class);
+			logs.carregarDados(estruturaOrganizacional);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void carregarPaineis(EstruturaOrganizacional estruturaOrganizacional) {
+		try {
+			EstruturaOrganizacionalPainelRaiz paineis = 
+					(EstruturaOrganizacionalPainelRaiz) new ControleInstancia().procuraInstancia(EstruturaOrganizacionalPainelRaiz.class);
+			paineis.carregarDados(estruturaOrganizacional);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void carregarFuncoesLotadas(EstruturaOrganizacional estruturaOrganizacional) {
+		try {
+			EstruturaOrganizacionalFuncaoRaiz funcoes = 
+					(EstruturaOrganizacionalFuncaoRaiz) new ControleInstancia().procuraInstancia(EstruturaOrganizacionalFuncaoRaiz.class);
+			funcoes.carregarDados(estruturaOrganizacional);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void carregarInformacoesBasicas(EstruturaOrganizacional estruturaOrganizacional) {
+		try {
+			EstruturaOrganizacionalInformacoesBasicas informacoesBasicas = 
+					(EstruturaOrganizacionalInformacoesBasicas) new ControleInstancia().procuraInstancia(EstruturaOrganizacionalInformacoesBasicas.class);
+			informacoesBasicas.carregarEstruturaBasica(estruturaOrganizacional);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void carregarFuncoesMenu(EstruturaOrganizacional eo) {
+		try {
+			EstruturaOrganizacionalMenuRaiz lotacaoMenu = 
+					(EstruturaOrganizacionalMenuRaiz) new ControleInstancia().procuraInstancia(EstruturaOrganizacionalMenuRaiz.class);
+			lotacaoMenu.iniciarEdicao(eo);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void carregarProfissionaisFuncoesLotadas(EstruturaOrganizacional estruturaOrganizacional) {
+		try {
+			LotacaoProfissionalFuncaoRaiz lotacaoFuncao = 
+					(LotacaoProfissionalFuncaoRaiz) new ControleInstancia().procuraInstancia(LotacaoProfissionalFuncaoRaiz.class);
+			lotacaoFuncao.carregarDadosLotacaoFuncao(estruturaOrganizacional);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void carregarLotados() {
+		try {
+			LotacaoProfissionalRaiz lotacao = 
+					(LotacaoProfissionalRaiz) new ControleInstancia().procuraInstancia(LotacaoProfissionalRaiz.class);
+			lotacao.setEstruturaOrganizacional((EstruturaOrganizacional) getSelectedNode().getData());
+			lotacao.exibirDialogLotacao();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void desmarcarNo(){
@@ -50,9 +177,15 @@ public class EstruturaOrganizacionalRaiz extends PadraoRaiz<EstruturaOrganizacio
 	}
 	
 	public void deslocarNo(){
+		String justificativa = "Migrado de " + getOrigemDeslocar().getEstruturaPai().getNome() + " para " + getDestinoDeslocar().getNome();
 		getOrigemDeslocar().setEstruturaPai(getDestinoDeslocar());
 		if(super.atualizarGenerico(getOrigemDeslocar()) != null){
 			carrregarEstrutura();
+			try {
+				gerarLog(TipoCrudEnum.M, grupoAdm, getOrigemDeslocar(), justificativa);
+			} catch (ExcecaoProfissionalLogado e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -73,14 +206,24 @@ public class EstruturaOrganizacionalRaiz extends PadraoRaiz<EstruturaOrganizacio
 			EstruturaOrganizacional no = (EstruturaOrganizacional) getSelectedNode().getData();
 			setInstancia(no);
 			setExibirDialogEstrutura(true);
+			carregarGrupo();
 		}else{
-			super.mensagem("Selecione algum n�vel da estrutura para poder atualiz�-la", null, Constantes.WARN);
+			super.mensagem("Selecione algum nível da estrutura para poder atualizá-la", null, Constantes.WARN);
 		}
 	}
 	
 	public void exibirDialogAddEstrutura(){
 		super.novaInstancia();
 		setExibirDialogEstrutura(true);
+	}
+
+	private void carregarGrupo() {
+		if(getSelectedNode() != null){
+			int id = getInstancia().getIdEstruturaOrganizacional();
+			String hql = "select o.grupoAdm from GrupoEstrutura o where o.estruturaOrganizacional.idEstruturaOrganizacional = " + id;
+			GrupoAdm obj = new ConsultaGeral<GrupoAdm>(new StringBuilder(hql)).consultaUnica();
+			setGrupoAdm(obj);
+		}
 	}
 	
 	public void ocultarDialogAddEstrutura(){
@@ -90,34 +233,100 @@ public class EstruturaOrganizacionalRaiz extends PadraoRaiz<EstruturaOrganizacio
 	}
 	
 	public void enviarAtualizar(){
+		try {
+			super.desativarMensagensCrud();
+			atualizarGravarNoEstrutura();
+			atualizarGravarGrupo();
+			super.mensagem("Atualização realizada com sucesso", null, Constantes.INFO);
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+			super.mensagem("Ocorreu uma falha", null, Constantes.ERROR);
+		}finally{
+			super.ativarMensagensCrud();
+		}
+	}
+
+	private void atualizarGravarNoEstrutura() throws ExcecaoProfissionalLogado {
 		TreeNode noSelecionado = getSelectedNode();
 		if(super.isEdicao()){
-			if(super.atualizar()){
-				if(noSelecionado != null){
-					noSelecionado.setExpanded(true);
-				}
+			atualizarEstrutura(noSelecionado);
+		}else{
+			cadastrarEstrutura(noSelecionado);
+		}
+	}
+
+	private void cadastrarEstrutura(TreeNode noSelecionado) throws ExcecaoProfissionalLogado {
+		if(noSelecionado != null){
+			EstruturaOrganizacional objSelecionado = (EstruturaOrganizacional) noSelecionado.getData();
+			getInstancia().setEstruturaPai(objSelecionado);
+			if(super.enviar()){
+				noSelecionado.setExpanded(true);
+				DefaultTreeNode node = new DefaultTreeNode(getInstancia(), noSelecionado);
+				noSelecionado.getChildren().add(node);
+				gerarLog(TipoCrudEnum.I, getGrupoAdm(), getInstancia());
 			}
 		}else{
-			if(noSelecionado != null){
-				EstruturaOrganizacional objSelecionado = (EstruturaOrganizacional) noSelecionado.getData();
-				getInstancia().setEstruturaPai(objSelecionado);
-				if(super.enviar()){
-					noSelecionado.setExpanded(true);
-					DefaultTreeNode node = new DefaultTreeNode(getInstancia(), noSelecionado);
-					noSelecionado.getChildren().add(node);
-				}
-			}else{
-				if(super.enviar()){
-					new DefaultTreeNode(getInstancia(), root);
-				}
+			if(super.enviar()){
+				new DefaultTreeNode(getInstancia(), root);
+				gerarLog(TipoCrudEnum.I, getGrupoAdm(), getInstancia());
 			}
 		}
+	}
+
+	private void atualizarEstrutura(TreeNode noSelecionado)
+			throws ExcecaoProfissionalLogado {
+		if(super.atualizar()){
+			gerarLog(TipoCrudEnum.A, getGrupoAdm(), getInstancia());
+			if(noSelecionado != null){
+				noSelecionado.setExpanded(true);
+			}
+		}
+	}
+
+	private void gerarLog(TipoCrudEnum tipo, GrupoAdm grupoAdm, EstruturaOrganizacional estruturaOrganizacional, String justificativa) throws ExcecaoProfissionalLogado {
+		AteracaoEstruturaLogRaiz aelr = new AteracaoEstruturaLogRaiz();
+		AlteracaoEstruturaLog log = aelr.montarLog(justificativa, grupoAdm, tipo, estruturaOrganizacional);
+		aelr.setInstancia(log);
+		aelr.enviar();
+	}
+	
+	private void gerarLog(TipoCrudEnum tipo, GrupoAdm grupoAdm, EstruturaOrganizacional estruturaOrganizacional) throws ExcecaoProfissionalLogado {
+		gerarLog(tipo, grupoAdm, estruturaOrganizacional, null);
+	}
+
+	private void atualizarGravarGrupo() {
+		GrupoEstrutura ge = getGrupoAtual();
+		ge = ge == null ? new GrupoEstrutura() : ge;
+		
+		if(getGrupoAdm() == null && ge != null){
+			super.apagarGenerico(ge);
+		}else{
+			ge.setGrupoAdm(getGrupoAdm());
+			ge.setEstruturaOrganizacional(getInstancia());
+			if(ge.getIdGrupoEstrutura() != 0)
+				super.atualizarGenerico(ge);
+			else
+				super.enviarGenerico(ge);
+		}
+	}
+
+	private GrupoEstrutura getGrupoAtual() {
+		int id = getInstancia().getIdEstruturaOrganizacional();
+		String hql = "select o from GrupoEstrutura o where o.estruturaOrganizacional.idEstruturaOrganizacional = " + id;
+		GrupoEstrutura obj = new ConsultaGeral<GrupoEstrutura>(new StringBuilder(hql)).consultaUnica();
+		return obj;
 	}
 	
 	public void deleteNode(){
 		EstruturaOrganizacional no = (EstruturaOrganizacional) getSelectedNode().getData();
-		super.apagarGenerico(no);
-		carrregarEstrutura();
+		if(super.apagarGenerico(no)){
+			try {
+				carrregarEstrutura();
+				gerarLog(TipoCrudEnum.D, null, no);
+			} catch (ExcecaoProfissionalLogado e) {
+				e.printStackTrace();
+			} 
+		}
 	}
 	
     public void carrregarEstrutura() {
@@ -198,6 +407,14 @@ public class EstruturaOrganizacionalRaiz extends PadraoRaiz<EstruturaOrganizacio
 
 	public void setDestinoDeslocar(EstruturaOrganizacional destinoDeslocar) {
 		this.destinoDeslocar = destinoDeslocar;
+	}
+
+	public GrupoAdm getGrupoAdm() {
+		return grupoAdm;
+	}
+
+	public void setGrupoAdm(GrupoAdm grupoAdm) {
+		this.grupoAdm = grupoAdm;
 	}
 
 }

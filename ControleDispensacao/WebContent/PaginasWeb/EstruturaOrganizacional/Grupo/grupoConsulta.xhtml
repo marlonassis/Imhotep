@@ -6,16 +6,11 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="cargoPanelGridConsulta" columns="3" width="100%">
-		
-		<ri:inputEntidade id="cargo" 
-						  itemLabel="Nome" 
-						  value="#{cargoConsulta.instancia.cargoPai}" 
-						  label="Cargo Pai" />
+	<h:panelGrid id="grupoAdmPanelGridConsulta" columns="3" width="100%">
 		
 		<ri:inputTextoSimples id="nome" 
-							  title="Informe o nome do cargo" 
-							  value="#{cargoConsulta.instancia.nome}" 
+							  title="Informe o nome do grupo" 
+							  value="#{grupoAdmConsulta.instancia.nome}" 
 							  label="Nome" />
 		
 	</h:panelGrid>

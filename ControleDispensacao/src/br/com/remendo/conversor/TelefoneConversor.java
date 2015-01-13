@@ -16,7 +16,7 @@ public class TelefoneConversor implements Converter {
 			arg2 = arg2.replace("(", "");
 			arg2 = arg2.replace(")", "");
 			arg2 = arg2.replace("-", "");
-			return Long.parseLong(arg2);
+			return arg2;
 		}
 		return arg2;
 	}

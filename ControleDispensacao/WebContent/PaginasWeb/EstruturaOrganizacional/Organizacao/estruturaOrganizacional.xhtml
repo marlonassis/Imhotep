@@ -19,6 +19,9 @@
 				<p:commandButton value="Desmarcar" 
 								 action="#{estruturaOrganizacionalRaiz.desmarcarNo}"
 								 update=":#{p:component('estruturaOrganizacionalTree')}" />
+				<p:commandButton value="Atualizar" 
+								 action="#{estruturaOrganizacionalRaiz.carrregarEstrutura}"
+								 update=":#{p:component('estruturaOrganizacionalTree')}" />
 				<p:tree id="estruturaOrganizacionalTree"
 						draggable="true" 
 						droppable="true" 
@@ -29,7 +32,9 @@
 		                selection="#{estruturaOrganizacionalRaiz.selectedNode}"
 		                orientation="horizontal" 
 		                animate="true" >
-		            <p:ajax event="dragdrop" listener="#{estruturaOrganizacionalRaiz.onDragDrop}" update=":#{p:component('estruturaOrganizacionalTree')}" />
+		            <p:ajax event="dragdrop" 
+		            		listener="#{estruturaOrganizacionalRaiz.onDragDrop}" 
+		            		update=":#{p:component('estruturaOrganizacionalTree')}" />
 			        <p:treeNode>
 			            <h:outputText value="#{node}" />
 			        </p:treeNode>
@@ -44,9 +49,16 @@
 			        			actionListener="#{estruturaOrganizacionalRaiz.exibirDialogAtualizarEstrutura}" 
 			        			icon="ui-icon-pencil" /> 
 			        <p:menuitem value="Apagar" 
+			        			rendered="#{parametro.profissionalAdministrador}"
 			        			update=":#{p:component('estruturaOrganizacionalForm')}" 
+			        			onclick="return alert('Deseja realmente apagar?')"
 			        			actionListener="#{estruturaOrganizacionalRaiz.deleteNode}" 
 			        			icon="ui-icon-closethick"/> 
+			        
+			        <p:menuitem value="Configurações" 
+			        			update=":#{p:component('dialogConfiguracaoEstrutura')}" 
+			        			actionListener="#{estruturaOrganizacionalRaiz.configurarNode}" 
+			        			icon="ui-icon-gear"/> 
 			    </p:contextMenu> 
 				
 			</h:form>
@@ -59,7 +71,18 @@
 						  modal="true" >
 					<p:growl/>
 					<h:form>
-						<p:inputText size="60" value="#{estruturaOrganizacionalRaiz.instancia.nome}" />
+						<h:panelGrid columns="1" >
+							<ri:inputTextoSimples id="nome" 
+												  label="Nome" 
+												  title="Informe o nome do nó" 
+												  value="#{estruturaOrganizacionalRaiz.instancia.nome}" 
+												  size="60" />
+							<ri:inputEntidadeList id="grupos" 
+												  lista="#{estruturaOrganizacionalRaiz.grupos}" 
+												  label="Grupo" 
+												  value="#{estruturaOrganizacionalRaiz.grupoAdm}" 
+												  itemLabel="Nome" />
+						</h:panelGrid>
 						<br/>
 						<br/>
 						<br/>
@@ -124,6 +147,588 @@
 						</h:form>
 					</p:dialog>
 				</h:panelGroup>
+			</h:panelGroup>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<h:panelGroup id="dialogConfiguracaoEstrutura" >
+				<p:dialog visible="#{lotacaoProfissionalRaiz.exibirDialogLotacao}" 
+						  closable="false" 
+						  width="#{util.larguraTela * 0.9}px"
+						  height="#{util.alturaTela * 0.7}px"
+						  header="Configuração - #{lotacaoProfissionalRaiz.estruturaOrganizacional.nome}" 
+						  modal="true" >
+					<p:growl/>
+					<p:tabView>
+						
+						<p:tab title="Informações Básicas">
+						
+							<h:form id="sobreForm" >
+								<h:panelGrid columns="1" >
+									<h:outputText value="Sobre o Setor:" />
+									<p:editor value="#{estruturaOrganizacionalInformacoesBasicas.instancia.descricao}" 
+											  width="#{util.larguraTela * 0.6}" 
+											  height="200" />
+									<p:commandButton action="#{estruturaOrganizacionalInformacoesBasicas.atualizar}" 
+													 value="Atualizar" 
+													 update=":#{p:component('sobreForm')}" />
+								</h:panelGrid>
+							</h:form>
+							
+							<h:panelGrid columns="2" styleClass="contentTopPanelGrid" >
+								<h:form id="telefoneCadastroForm" >
+									<h:panelGrid columns="1" >
+										<h:panelGrid columns="2" styleClass="contentBottomPanelGrid" >
+											<ri:inputTelefone label="Telefone" 
+															  id="telefoneUnidade" 
+															  title="Informe o telefone do setor" 
+															  value="#{estruturaOrganizacionalInformacoesBasicas.telefone.telefone}" />
+											
+											<p:commandButton action="#{estruturaOrganizacionalInformacoesBasicas.cadastrarTelefone}" 
+															 value="Cadastrar Telefone" 
+															 update=":#{p:component('telefoneCadastroForm')} :#{p:component('telefoneTabela')}" />
+										</h:panelGrid>
+										<p:dataTable id="telefoneTabela"
+													 value="#{estruturaOrganizacionalInformacoesBasicas.telefones}" 
+													 var="linha" 
+													 emptyMessage="Sem registro(s)" >
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="Telefone" />
+													</f:facet>
+													<h:outputText value="#{util.formatarValorMascara(linha.telefone, '(##)####-####')}" />
+												</p:column>
+												
+												<p:column style="width:20px; text-align: center;">
+													<p:commandLink action="#{estruturaOrganizacionalInformacoesBasicas.apagarTelefone()}"
+																   update=":#{p:component('telefoneCadastroForm')} :#{p:component('telefoneTabela')}"
+																   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+																   title="Apagar" 
+																   immediate="true"
+																   style="padding-right:10px;">
+														<f:setPropertyActionListener value="#{linha}" target="#{estruturaOrganizacionalInformacoesBasicas.telefone}" />
+														<h:graphicImage value="/Imagens/delete.png" />
+													</p:commandLink>
+												</p:column>
+										</p:dataTable>
+									</h:panelGrid>
+								</h:form>
+								<h:form id="emailCadastroForm" >
+									<h:panelGrid columns="1" >
+										<h:panelGrid columns="2" styleClass="contentBottomPanelGrid" >
+											<ri:inputTextoSimples label="e-Mail (Correio Eletrônico)" 
+															  id="emailSetor" 
+															  title="Informe o e-mail do setor" 
+															  value="#{estruturaOrganizacionalInformacoesBasicas.email.email}" />
+											
+											<p:commandButton action="#{estruturaOrganizacionalInformacoesBasicas.cadastrarEmail}" 
+															 value="Cadastrar e-Mail" 
+															 update=":#{p:component('emailCadastroForm')} :#{p:component('emailTabela')}" />
+										</h:panelGrid>
+										<p:dataTable id="emailTabela"
+													 value="#{estruturaOrganizacionalInformacoesBasicas.emails}" 
+													 var="linha" 
+													 emptyMessage="Sem registro(s)" >
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="e-Mail" />
+													</f:facet>
+													<h:outputText value="#{linha.email}" />
+												</p:column>
+												
+												<p:column style="width:20px; text-align: center;">
+													<p:commandLink action="#{estruturaOrganizacionalInformacoesBasicas.apagarEmail()}"
+																   update=":#{p:component('emailCadastroForm')} :#{p:component('emailTabela')}"
+																   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+																   title="Apagar" 
+																   immediate="true"
+																   style="padding-right:10px;">
+														<f:setPropertyActionListener value="#{linha}" target="#{estruturaOrganizacionalInformacoesBasicas.email}" />
+														<h:graphicImage value="/Imagens/delete.png" />
+													</p:commandLink>
+												</p:column>
+										</p:dataTable>
+									</h:panelGrid>
+								</h:form>
+							</h:panelGrid>
+				        </p:tab>
+						
+						<p:tab title="Lotação do Profissional">
+				            <h:form id="lotacaoCadastroForm" >
+								<h:panelGrid columns="2" >
+									<ri:inputAutoComplete id="profissionalLotacao" 
+														  completeMethod="#{profissionalAutoComplete.autoCompleteNomeCPF}" 
+														  itemValue="#{profLot}" 
+														  itemLabel="#{profLot.nomeCpf}" 
+														  required="true"
+														  var="profLot" 
+														  value="#{lotacaoProfissionalRaiz.instancia.profissional}" 
+														  label="Profissional"/>
+									
+									<ri:inputEnum id="tipoLotacao" 
+												  label="Tipo de Lotação" 
+												  required="true" 
+												  value="#{lotacaoProfissionalRaiz.instancia.tipoLotacao}" />
+									
+									<p:commandButton action="#{lotacaoProfissionalRaiz.lotarProfissionalSetor}" 
+													 value="Inserir Profissional ao Setor" 
+													 update=":#{p:component('lotacaoTabelaForm')} :#{p:component('lotacaoCadastroForm')} :#{p:component('funcaoForm')}" />
+								</h:panelGrid>
+							</h:form>
+							<h:form  id="lotacaoTabelaForm"  >
+								<p:dataTable value="#{lotacaoProfissionalRaiz.profissionaisLotados}" 
+											 var="linha" 
+											 emptyMessage="Sem registro(s)" >
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="Tipo de Lotação" />
+												</f:facet>
+												<h:outputText value="#{linha.tipoLotacao.label}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="Nome" />
+												</f:facet>
+												<h:outputText value="#{linha.profissional.nome}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="CPF" />
+												</f:facet>
+												<h:outputText value="#{linha.profissional.cpfFormatado}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="Matrícula" />
+												</f:facet>
+												<h:outputText value="#{linha.profissional.matricula}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="Cargo(s)" />
+												</f:facet>
+												<h:outputText value="#{cargoConsultaRaiz.cargosProfissional(linha.profissional)}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="Função(ões)" />
+												</f:facet>
+												<h:outputText value="#{funcaoConsultaRaiz.funcoesProfissional(linha)}" />
+											</p:column>
+											
+											<p:column style="width:20px; text-align: center;">
+												<p:commandLink action="#{lotacaoProfissionalRaiz.apagarRegistroTabela()}"
+															   update=":#{p:component('lotacaoTabelaForm')}"
+															   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+															   title="Apagar" 
+															   immediate="true"
+															   style="padding-right:10px;">
+													<f:setPropertyActionListener value="#{linha}" target="#{lotacaoProfissionalRaiz.instanciaDelecao}" />
+													<h:graphicImage value="/Imagens/delete.png" />
+												</p:commandLink>
+											</p:column>
+								</p:dataTable>
+							</h:form>
+						</p:tab>
+						
+						<p:tab title="Funções Lotadas">
+				            <h:form id="funcoesCadastroForm" >
+				            	<h:panelGroup>
+										<h:outputText value="Função:" /><br/>
+										<p:selectOneMenu id="func"
+														 label="Função"
+														 value="#{estruturaOrganizacionalFuncaoRaiz.instancia.funcao}"
+														 effect="fade"
+														 converter="entidadeConversor"
+														 required="false" >
+											<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+											<f:selectItems value="#{funcaoConsultaRaiz.funcoesLista}"
+														   var="var"
+														   itemLabel="#{var.nomeChefia}"
+														   itemValue="#{var}" />
+											<p:ajax event="change" 
+													listener="#{estruturaOrganizacionalFuncaoRaiz.cadastrarFuncao}" 
+													update=":#{p:component('funcoesCadastroForm')} :#{p:component('funcoesLotadasTabelaForm')} :#{p:component('funcaoForm')}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+				            </h:form>
+				            <h:form id="funcoesLotadasTabelaForm" >
+				            	<p:dataTable value="#{estruturaOrganizacionalFuncaoRaiz.funcoes}" 
+											var="linha" 
+											emptyMessage="Sem registro(s)" >
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Função" />
+											</f:facet>
+											<h:outputText value="#{linha.funcao.nomeChefia}" />
+										</p:column>
+										
+										<p:column style="width:20px; text-align: center;">
+											<p:commandLink action="#{estruturaOrganizacionalFuncaoRaiz.apagarInstancia()}"
+														   update=":#{p:component('funcoesLotadasTabelaForm')} :#{p:component('funcaoForm')}"
+														   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+														   title="Apagar" 
+														   immediate="false"
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{linha}" target="#{estruturaOrganizacionalFuncaoRaiz.instanciaDelecao}" />
+												<h:graphicImage value="/Imagens/delete.png" />
+											</p:commandLink>
+										</p:column>
+								</p:dataTable>
+				            </h:form>
+				       	</p:tab>
+						
+				        <p:tab title="Lotação por Função" id="funcaoTab" >
+				        	<h:form id="funcaoForm" >
+				        		<p:messages closable="true" />
+					            <h:panelGrid columns="2" cellpadding="10">
+					            	
+					            	<h:panelGroup>
+										<h:outputText value="*" style="color:red" /><h:outputText value="Função:" /><br/>
+										<p:selectOneMenu id="func"
+														 label="Função"
+														 value="#{lotacaoProfissionalFuncaoRaiz.instancia.estruturaOrganizacionalFuncao}"
+														 effect="fade"
+														 converter="entidadeConversor"
+														 required="true" >
+											<f:selectItem itemLabel="Selecione..." noSelectionOption="true" />
+											<f:selectItems value="#{lotacaoProfissionalFuncaoRaiz.funcoesEstruturaList}"
+														   var="var"
+														   itemLabel="#{var.funcao.nomeChefia}"
+														   itemValue="#{var}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+					            	
+									<h:panelGroup>
+										<h:outputText value="*" style="color:red" /><h:outputText value="Profissional:" /><br/>
+										<p:selectOneMenu id="profissionalLotacao"
+														 label="Profissional"
+														 value="#{lotacaoProfissionalFuncaoRaiz.instancia.lotacaoProfissional}"
+														 effect="fade"
+														 converter="entidadeConversor"
+														 required="true" >
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+											<f:selectItems value="#{lotacaoProfissionalFuncaoRaiz.profissionaisNaoLotados}"
+														   var="var"
+														   itemLabel="#{var.profissional.nomeCpfCargo}"
+														   itemValue="#{var}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+									
+									<ri:inputDataDiaMesAno id="dataPosse" 
+														   label="Data da Portaria" 
+														   required="false"
+														   title="Informe a data da posse desta função" 
+														   value="#{lotacaoProfissionalFuncaoRaiz.instancia.dataPosse}" />
+									
+									<ri:inputTextoSimples id="portaria" 
+														  label="Portaria" 
+														  title="Informe a portaria que o nomeou" 
+														  required="false"
+														  value="#{lotacaoProfissionalFuncaoRaiz.instancia.portaria}" />
+									
+					            </h:panelGrid>
+					            <p:commandButton value="Cadastrar" 
+					            				 rendered="#{!lotacaoProfissionalFuncaoRaiz.edicao}" 
+					            				 action="#{lotacaoProfissionalFuncaoRaiz.lotarProfissionalFuncao}" 
+					            				 update=":#{p:component('funcaoForm')} :#{p:component('funcaoLotadaProfissionalTabelaForm')} 
+					            				 		 :#{p:component('lotacaoTabelaForm')} :#{p:component('historicoChefiaForm')} :#{p:component('dialogExoneracaoPanelGroup')}" />
+					            <p:commandButton value="Atualizar" 
+					            				 rendered="#{lotacaoProfissionalFuncaoRaiz.edicao}" 
+					            				 update=":#{p:component('funcaoForm')}" />
+					            <p:commandButton value="Cancelar" 
+					            				 rendered="#{lotacaoProfissionalFuncaoRaiz.edicao}" 
+					            				 action="#{lotacaoProfissionalFuncaoRaiz.novaInstancia}" 
+					            				 update=":#{p:component('funcaoForm')}" />
+							</h:form>
+							<br/>
+							<h:form id="funcaoLotadaProfissionalTabelaForm" >
+								<p:dataTable value="#{lotacaoProfissionalFuncaoRaiz.lotacoesFuncao}" 
+											var="linha" 
+											emptyMessage="Sem registro(s)" >
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Nome" />
+											</f:facet>
+											<h:outputText value="#{linha.lotacaoProfissional.profissional.nomeCpf}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Função" />
+											</f:facet>
+											<h:outputText value="#{linha.estruturaOrganizacionalFuncao.funcao.nomeChefia}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Posse" />
+											</f:facet>
+											<h:outputText value="#{linha.dataPosse}" >
+												<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
+											</h:outputText>
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Portaria" />
+											</f:facet>
+											<h:outputText value="#{linha.portaria}" />
+										</p:column>
+										
+										<p:commandLink title="Editar"
+													   update=":#{p:component('funcaoTab')}"
+													   style="padding-right:10px;">
+											<f:setPropertyActionListener value="#{linha}" target="#{lotacaoProfissionalFuncaoRaiz.instancia}" />
+											<h:graphicImage value="/Imagens/edit.gif" />
+										</p:commandLink>
+										
+										<p:column style="width:20px; text-align: center;">
+											<p:commandLink action="#{lotacaoProfissionalFuncaoRaiz.apagarLotacaoFuncao()}"
+														   update=":#{p:component('funcaoLotadaProfissionalTabelaForm')} :#{p:component('funcaoForm')} :#{p:component('dialogExoneracaoPanelGroup')}"
+														   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+														   title="Apagar" 
+														   immediate="false"
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{linha}" target="#{lotacaoProfissionalFuncaoRaiz.instanciaDelecao}" />
+												<h:graphicImage value="/Imagens/delete.png" />
+											</p:commandLink>
+										</p:column>
+								</p:dataTable>
+							</h:form>
+				        </p:tab>
+				        
+				        <p:tab title="Menu" id="menuTab" >
+				        	<h:form id="menuEstruturaForm" >
+				        		<h:panelGrid columns="1" styleClass="contentBottomPanelGrid" >
+						            <p:tree value="#{estruturaOrganizacionalMenuRaiz.root}" 
+						            		var="node" 
+						            		orientation="vertical" 
+						            		selectionMode="multiple" 
+				                			selection="#{estruturaOrganizacionalMenuRaiz.selectedNode}" >
+				                		<p:treeNode>
+											<h:outputText value="#{node}" />
+											<h:graphicImage value="/Imagens/feito16.png"
+															rendered="#{estruturaOrganizacionalMenuRaiz.menuAutorizadoEstrutura.contains(node)}"
+															height="12px"
+															width="12px"/>
+											<h:outputText value="(Bloqueado)" style="color-text:#FF0000;" rendered="#{controleMenu.menuBloqueado(node)}" />
+											<h:outputText value="(Construção)" style="color-text:#FF0000;" rendered="#{controleMenu.menuConstrucao(node)}" />
+										</p:treeNode>
+								    </p:tree>
+								</h:panelGrid>
+								<p:commandButton value="Atualizar" 
+					            				 action="#{estruturaOrganizacionalMenuRaiz.alterarAcessoMenu}" 
+					            				 update=":#{p:component('menuEstruturaForm')}" />
+					    	</h:form>
+				        </p:tab>
+				        
+				        <p:tab title="Painéis">
+				            <h:form id="paineisCadastroForm" >
+				            	<h:panelGroup>
+										<h:outputText value="Painel:" /><br/>
+										<p:selectOneMenu id="painel"
+														 label="Painel"
+														 value="#{estruturaOrganizacionalPainelRaiz.instancia.painel}"
+														 effect="fade"
+														 converter="entidadeConversor"
+														 required="false" >
+											<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+											<f:selectItems value="#{painelConsultaRaiz.todosPaineis}"
+														   var="var"
+														   itemLabel="#{var.descricao}"
+														   itemValue="#{var}" />
+											<p:ajax event="change" 
+													listener="#{estruturaOrganizacionalPainelRaiz.cadastrarPainel}" 
+													update=":#{p:component('paineisCadastroForm')} :#{p:component('panieisLotadosTabelaForm')}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+				            </h:form>
+				            <h:form id="panieisLotadosTabelaForm" >
+				            	<p:dataTable value="#{estruturaOrganizacionalPainelRaiz.paineis}" 
+											var="linha" 
+											emptyMessage="Sem registro(s)" >
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Painel" />
+											</f:facet>
+											<h:outputText value="#{linha.painel.descricao}" />
+										</p:column>
+										
+										<p:column style="width:20px; text-align: center;">
+											<p:commandLink action="#{estruturaOrganizacionalPainelRaiz.apagarInstancia()}"
+														   update=":#{p:component('panieisLotadosTabelaForm')}"
+														   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+														   title="Apagar" 
+														   immediate="false"
+														   style="padding-right:10px;">
+												<f:setPropertyActionListener value="#{linha}" target="#{estruturaOrganizacionalPainelRaiz.instanciaDelecao}" />
+												<h:graphicImage value="/Imagens/delete.png" />
+											</p:commandLink>
+										</p:column>
+								</p:dataTable>
+				            </h:form>
+				       	</p:tab>
+				       	
+				       	<p:tab title="Histórico de Chefia" id="historicoChefiaTab" >
+				        	<h:form id="historicoChefiaForm" >
+				        		<p:dataTable value="#{lotacaoProfissionalFuncaoRaiz.historicoChefiaList}" 
+											var="linha" 
+											emptyMessage="Sem registro(s)" >
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Nome" />
+											</f:facet>
+											<h:outputText value="#{linha.profissionalChefe.nomeCpf}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Portaria" />
+											</f:facet>
+											<h:outputText value="#{linha.portaria}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Data da Posse/Exoneração" />
+											</f:facet>
+											<h:outputText value="#{util.formatarDataBrasil(linha.dataPortaria)}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Tipo" />
+											</f:facet>
+											<h:outputText value="#{linha.tipo.label}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Responsável" />
+											</f:facet>
+											<h:outputText value="#{linha.profissionalCadastro.nomeCpf}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Data da Alteração" />
+											</f:facet>
+											<h:outputText value="#{util.formatarDataHoraSegundoBrasil(linha.dataCadastro)}" />
+										</p:column>
+										
+								</p:dataTable>
+					    	</h:form>
+				        </p:tab>
+				       	
+				       	<p:tab title="Log de Alteração" id="logAlteracaoTab" >
+				        	<h:form id="logAlteracaoForm" >
+				        		<p:dataTable value="#{alteracaoEstruturaLogRaiz.logList}" 
+											 var="linha" 
+											 emptyMessage="Sem registro(s)" >
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Grupo" />
+											</f:facet>
+											<h:outputText value="#{linha.grupo}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Tipo" />
+											</f:facet>
+											<h:outputText value="#{linha.tipo.label}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Responsável" />
+											</f:facet>
+											<h:outputText value="#{linha.profissionalCadastro.nomeCpf}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Data da Alteração" />
+											</f:facet>
+											<h:outputText value="#{util.formatarDataHoraSegundoBrasil(linha.dataCadastro)}" />
+										</p:column>
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Justificativa" />
+											</f:facet>
+											<h:outputText value="#{linha.justificativa}" />
+										</p:column>
+										
+								</p:dataTable>
+					    	</h:form>
+				        </p:tab>
+				       	
+				    </p:tabView>
+					
+					
+					<br/>
+					
+					
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{lotacaoProfissionalRaiz.ocultarDialogLotacao}"
+										 update=":#{p:component('dialogConfiguracaoEstrutura')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogExoneracaoPanelGroup" >
+				<p:dialog visible="#{lotacaoProfissionalFuncaoRaiz.exibirDialogExoneracao}" 
+						  closable="false" 
+						  header="Exoneração" 
+						  modal="true" 
+						  width="#{util.larguraTela / 1.5}" 
+						  height="#{util.alturaTela / 2}"  >
+					
+					<h:form>
+						<h:panelGrid columns="1" >
+							<ri:inputDataDiaMesAno id="dataExoneracao" 
+												   label="Data da Exoneração" 
+												   required="true"
+												   title="Informe a data da exoneração" 
+												   value="#{lotacaoProfissionalFuncaoRaiz.instanciaDelecao.dataPosse}" />
+						
+							<ri:inputTextoSimples id="portaria" 
+												  label="Portaria" 
+												  title="Informe a portaria que o exonerou" 
+												  required="true"
+												  value="#{lotacaoProfissionalFuncaoRaiz.instanciaDelecao.portaria}" />
+												  
+							<p:commandButton value="Exonerar" 
+											 action="#{lotacaoProfissionalFuncaoRaiz.exonerarChefe}" 
+											 update=":#{p:component('dialogExoneracaoPanelGroup')} :#{p:component('funcaoLotadaProfissionalTabelaForm')} :#{p:component('historicoChefiaForm')}" />
+						</h:panelGrid>
+					</h:form>
+					
+					<br/>
+					<br/>
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{lotacaoProfissionalFuncaoRaiz.ocultarDialogExoneracao}" 
+										 update=":#{p:component('dialogExoneracaoPanelGroup')}" />
+					</h:form>
+				</p:dialog>
 			</h:panelGroup>
 		</p:tab>
 	</ui:define>

@@ -5,6 +5,14 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
+	<p:commandButton value="Log de Locação" 
+					 action="#{alteracaoLocacaoLogRaiz.exibirDialogLog}" 
+					 immediate="true"
+					 update=":#{p:component('dialogLogAlteracoesPanelGroup')}" 
+					 disabled="#{!profissionalRaiz.edicao}">
+		<f:setPropertyActionListener value="#{profissionalRaiz.instancia}" target="#{alteracaoLocacaoLogRaiz.profissional}" />
+	</p:commandButton>
+
 	<h:panelGrid id="profissionalPanelGrid" columns="3" width="100%">
 		
 		<ri:inputApenasNumero id="matricula" 
@@ -21,11 +29,13 @@
 		<ri:inputTextoSimples id="login" 
 							  title="Informe o nome de usuário para este profissional" 
 							  value="#{profissionalRaiz.instancia.usuario.login}"
-							  disabled="#{profissionalRaiz.instancia.usuario.idUsuario != 0}" 
+							  disabled="#{profissionalRaiz.edicao}"
+							  required="true" 
 							  label="Login" />
 		
 		<ri:inputDataDiaMesAno id="dataNascimento" 
-							   title="Informe a data de nascimento do profissional" 
+							   title="Informe a data de nascimento do profissional"
+							   required="false" 
 							   value="#{profissionalRaiz.instancia.dataNascimento}" 
 							   label="Data de Nascimento" />
 		
@@ -36,10 +46,12 @@
 		
 		<ri:inputCpf id="cpf" 
 					 title="Informe o seu CPF" 
+					 required="false"
 					 value="#{profissionalRaiz.instancia.cpf}" 
 					 label="CPF" />
 		
 		<ri:inputEnum id="sexo" 
+					  required="true"
 					  value="#{profissionalRaiz.instancia.sexo}" 
 					  label="Sexo" />
 		
@@ -48,49 +60,13 @@
 					  label="Vínculo" />
 		
 		<ri:inputEnum id="situacao" 
+					  required="true"
 					  value="#{profissionalRaiz.instancia.situacao}" 
 					  label="Situação" />
 		
-		<h:panelGrid id="funcoesPanelGroup" columns="1" rendered="#{profissionalRaiz.edicao}" >
-		
-			<h:panelGroup id="funcaoPanelGroup">
-				<h:outputLabel for="funcao" value="Função" />
-				<br />
-				<p:selectOneMenu id="funcao"
-								 value="#{profissionalRaiz.funcao}" 
-								 effect="fade"
-								 converter="entidadeConversor">
-					<f:selectItem itemLabel="Selecione..." itemValue="" />
-					<f:selectItems value="#{funcaoConsultaRaiz.funcoesGroup}" 
-								   var="funcao" 
-								   itemLabel="#{funcao.nomeFilhoSeta}"
-								   itemValue="#{funcao}" />
-					<p:ajax event="change" 
-							listener="#{profissionalRaiz.addFuncaoProfissional}" 
-							update=":#{p:component('funcoesPanelGroup')}" />
-				</p:selectOneMenu>
-			</h:panelGroup>
-		
-			<h:panelGroup id="funcoesProfissional" >		
-				<p:dataList value="#{funcaoConsultaRaiz.funcoesProfissionalLista(profissionalRaiz.instancia)}" 
-							var="e" 
-							type="ordered"
-							emptyMessage="Sem Função" >  
-				    #{e.nome}#{' - '}
-				   	<p:commandLink action="#{profissionalRaiz.removeFuncaoProfissional(e)}"
-				    			   update=":#{p:component('funcoesProfissional')}" >
-				    	<h:graphicImage value="/Imagens/delete32.png" 
-				    					width="12" 
-				    					height="12"
-				    					title="Apagar #{e.nome}" />
-				    </p:commandLink>
-				</p:dataList>
-			</h:panelGroup>
-		</h:panelGrid>
-		
 		<h:panelGrid id="cargosPanelGroup" columns="1" rendered="#{profissionalRaiz.edicao}" >
 			<h:panelGroup id="cargoPanelGroup">
-				<h:outputLabel for="cargo" value="Cargo" />
+				<h:outputLabel for="cargo" value="Cargo:" />
 				<br />
 				<p:selectOneMenu id="cargo"
 								 value="#{profissionalRaiz.cargo}" 
@@ -107,21 +83,82 @@
 				</p:selectOneMenu>
 			</h:panelGroup>
 		
-			<h:panelGroup id="cargosProfissional" >		
-				<p:dataList value="#{cargoConsultaRaiz.cargosProfissionalLista(profissionalRaiz.instancia)}" 
-							var="e" 
-							type="ordered"
-							emptyMessage="Sem Cargo" >  
-				    #{e.nome}#{' - '}
-				    <p:commandLink action="#{profissionalRaiz.removeCargoProfissional(e)}"
-				    			   update=":#{p:component('cargosProfissional')}" >
-				    	<h:graphicImage value="/Imagens/delete32.png" 
-				    					width="12" 
-				    					height="12"
-				    					title="Apagar #{e.nome}" />
-				    </p:commandLink>
-				</p:dataList>
+			<h:panelGroup id="cargosProfissional" >
+				<p:dataTable value="#{cargoConsultaRaiz.cargosProfissionalLista(profissionalRaiz.instancia)}" 
+							var="linha" 
+							emptyMessage="Sem registro(s)" >
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Cargo" />
+							</f:facet>
+							<h:outputText value="#{linha.nome}" />
+						</p:column>
+						
+						<p:column style="width:20px; text-align: center;">
+							<p:commandLink action="#{profissionalRaiz.removeCargoProfissional(linha)}"
+										   update=":#{p:component('cargosProfissional')}"
+										   title="Apagar" 
+										   immediate="false"
+										   style="padding-right:10px;">
+								<h:graphicImage value="/Imagens/delete.png" />
+							</p:commandLink>
+						</p:column>
+				</p:dataTable>
 			</h:panelGroup>
 		</h:panelGrid>
+		
+		
+		
+		
+		
+		
+		
+		
+		<h:panelGrid id="lotacaoPanelGroup" columns="1" rendered="#{profissionalRaiz.edicao}" >
+			<h:panelGroup id="estruturaOrganizacionalPanelGroup">
+				<h:outputLabel for="setor" value="Setor:" />
+				<br />
+				<p:selectOneMenu id="setor"
+								 value="#{profissionalRaiz.estruturaOrganizacional}" 
+								 effect="fade" 
+								 converter="entidadeConversor">
+					<f:selectItem itemLabel="Selecione..." itemValue="" />
+					<f:selectItems value="#{estruturaOrganizacionalConsultaRaiz.setores}" 
+								   var="eo" 
+								   itemLabel="#{eo.nomeComPai}"
+								   itemValue="#{eo}"  />
+					<p:ajax event="change" 
+							listener="#{profissionalRaiz.addLotacao}" 
+							update=":#{p:component('lotacaoPanelGroup')}" />
+				</p:selectOneMenu>
+			</h:panelGroup>
+		
+			<h:panelGroup id="lotacoesProfissional" >
+				<p:dataTable value="#{lotacaoProfissionalConsultaRaiz.lotacoesProfissional(profissionalRaiz.instancia)}" 
+							var="linha" 
+							emptyMessage="Sem registro(s)" >
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Setor" />
+							</f:facet>
+							<h:outputText value="#{linha.estruturaOrganizacional.nomeComPai}" />
+						</p:column>
+						
+						<p:column style="width:20px; text-align: center;">
+							<p:commandLink action="#{lotacaoProfissionalRaiz.apagarInstancia()}"
+										   update=":#{p:component('lotacoesProfissional')}"
+										   title="Apagar" 
+										   immediate="false"
+										   style="padding-right:10px;">
+								<f:setPropertyActionListener value="#{linha}" target="#{lotacaoProfissionalRaiz.instanciaDelecao}" />
+								<h:graphicImage value="/Imagens/delete.png" />
+							</p:commandLink>
+						</p:column>
+				</p:dataTable>	
+			</h:panelGroup>
+		</h:panelGrid>
+		
+		
+		
 	</h:panelGrid>
 </ui:composition>
