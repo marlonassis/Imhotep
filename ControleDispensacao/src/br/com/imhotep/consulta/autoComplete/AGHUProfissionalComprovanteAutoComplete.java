@@ -1,4 +1,3 @@
-@@ -1,43 +0,0 @@
 package br.com.imhotep.consulta.autoComplete;
 
 import java.util.ArrayList;
@@ -41,4 +40,4 @@ public class AGHUProfissionalComprovanteAutoComplete  extends ConsultaGeral<Stri
 		}
 	}
 	
-} 
+}
