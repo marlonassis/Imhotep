@@ -17,7 +17,7 @@ public class AGHUProfissionalComprovanteAutoComplete  extends ConsultaGeral<Stri
 	public Collection<String> autoComplete(String nome) {
 		nome = nome.trim();
 		String sql = "select profissional, especialidade, crm from agh.temp_compro_consul "+
-				"where lower(profissional) ilike lower('%"+nome+"%') "+
+				"where lower(profissional) ilike lower('%" + nome + "%') "+
 				"group by profissional, especialidade, crm "
 				+ "order by profissional, especialidade, crm";
 		LinhaMecanicaAGHU lma = new LinhaMecanicaAGHU();
@@ -35,7 +35,7 @@ public class AGHUProfissionalComprovanteAutoComplete  extends ConsultaGeral<Stri
 			return res;
 		else{
 			List<String> l = new ArrayList<String>();
-			l.add("N‹o encontrado");
+			l.add("NÃ£o encontrado");
 			return l;
 		}
 	}

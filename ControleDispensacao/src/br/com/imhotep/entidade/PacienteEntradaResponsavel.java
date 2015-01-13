@@ -155,22 +155,22 @@ public class PacienteEntradaResponsavel {
 	
 	@Transient
 	public String getTelefone1Formatado(){
-		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(telefone1, "(##)####-####");
+		return new br.com.imhotep.auxiliar.Utilitarios().formatarValorMascara(telefone1, "(##)####-####");
 	}
 	
 	@Transient
 	public String getTelefone2Formatado(){
-		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(telefone2, "(##)####-####");
+		return new br.com.imhotep.auxiliar.Utilitarios().formatarValorMascara(telefone2, "(##)####-####");
 	}
 	
 	@Transient
 	public String getCpfFormatado(){
-		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(cpf, "###.###.###-##");
+		return new br.com.imhotep.auxiliar.Utilitarios().formatarValorMascara(cpf, "###.###.###-##");
 	}
 	
 	@Transient
 	public String getCepFormatado(){
-		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(cep, "##.###-###");
+		return new br.com.imhotep.auxiliar.Utilitarios().formatarValorMascara(cep, "##.###-###");
 	}
 	
 	public PacienteEntradaResponsavel clone(){

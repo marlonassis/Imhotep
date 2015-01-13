@@ -14,6 +14,7 @@
 		<co:attribute name="value" required="true" />
 		<co:attribute name="required" default="false" />
 		<co:attribute name="title" default="false" />
+		<co:attribute name="disabled" default="false" />
 		<co:attribute name="label" required="true" />
 	</co:interface>
 	
@@ -28,6 +29,7 @@
 			<h:panelGroup>
 				<p:inputText  id="#{cc.attrs.id}" 
 							  styleClass="monthpicker" 
+							  disabled="#{cc.attrs.disabled}"
 							  title="#{cc.attrs.title}"
 							  value="#{cc.attrs.value}">
 					<f:convertDateTime locale="pt_BR" timeZone="GMT-3" pattern="MM/yyyy"/>

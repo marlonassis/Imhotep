@@ -11,7 +11,7 @@ public class AjustadorDispensacaoItemFalha {
 //						"where c.id_dispensacao_simples is null and b.tp_status_dispensacao = 'D' and a.tp_tipo_status_item != 'R' "+
 //						"order by b.dt_data_dispensacao";
 //		
-//		LinhaMecanica lm = new LinhaMecanica("db_temp", "127.0.0.1");
+//		LinhaMecanica lm = new LinhaMecanica("db_temp", Constantes.IP_LOCAL);
 //		try{
 //			TipoMovimento tipoMovimentoDS = Parametro.tipoMovimentoDispensacaoSimples();
 //			ResultSet rs = lm.fastConsulta(sql);

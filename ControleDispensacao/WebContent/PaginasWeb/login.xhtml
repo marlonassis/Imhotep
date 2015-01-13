@@ -1,18 +1,58 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
-	xmlns:p="http://primefaces.org/ui"
-	template="/Templates/templatePadrao.xhtml">
+	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="conteudoPadrao">
-		<p:tab title="Controle de Acesso">
-			<p:fieldset legend="Login" 
-						collapsed="false" 
-						toggleable="true"
-						toggleSpeed="500">
-				
+<f:view contentType="text/html" locale="pt_BR">
+
+	<h:head>
+		<title>Imhotep</title>
+		<ui:insert name="head"></ui:insert>
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/basico.js" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/js/concentrador.js" />
+		<style type="text/css" > 
+			.ui-widget { font-size: 10px !important; } 
+			body { 
+				background: url("#{request.contextPath}/Imagens/Logo/lmhotep_novo.gif") no-repeat center center fixed;
+				-webkit-background-size: 100% 100%;
+				-moz-background-size: 100% 100%;
+				-o-background-size: 100% 100%;
+				background-size: 100% 100%;
+			}
+			#fieldLogin { 
+			  	width: 20%; 
+			  	margin: 0px auto;
+			  	position: absolute;
+				left: 76%;
+				top: 40%;
+				margin-top: -40px;
+			}
+			#footer {
+			  position: fixed;
+			  vertical-align: 50%;
+			}
+		</style> 
+	</h:head>
+
+
+	<h:body id="body" >
+		
+		<div id="conteudoPadrao" align="center" >
+			<p:fieldset
+					id="fieldLogin" 
+					legend="Login" 
+					collapsed="false" 
+					toggleable="true"
+					toggleSpeed="500">
+			
 				<script>
 					setTimeout("window.location.reload(true);", 5 * 60 * 1000);
 				</script>
@@ -20,58 +60,33 @@
 				<h:form id="loginForm">
 					<p:growl />
 					<h:panelGrid columns="1">
-						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}">
-							<ri:inputApenasLetrasNumeros id="loginNovo" 
-												 title="Informe seu novo usuário" 
-												 value="#{autenticador.usuario.login}" 
-												 autocomplete="false"
-												 size="30"
-												 required="true"
-												 label="Usuário"/>
-						</h:panelGroup>
-						<h:panelGroup rendered="#{!autenticador.mostraComboUnidade}">
-							<ri:inputSenha id="senha" 
-										   title="Informe sua senha" 
-										   value="#{autenticador.usuario.senha}" 
-										   label="Senha"
-										   size="30"
-										   required="true" 
-										   autocomplete="false" />
-						</h:panelGroup>
-						<h:panelGroup rendered="#{autenticador.mostraComboUnidade}">
-							<font color="red">*</font>
-							<h:outputText for="unidadeParaLogar" value="Informe uma unidade:" />
-							<br />
-							<p:selectOneMenu id="unidadeParaLogar"
-								value="#{autenticador.unidadeAtual}" effect="fade"
-								converter="unidadeConversor">
-								<f:selectItem itemLabel="Selecione..." value="" />
-								<f:selectItems value="#{autenticador.unidades}" var="unidade"
-									itemLabel="#{unidade.nome}" itemValue="#{unidade}" />
-							</p:selectOneMenu>
-						</h:panelGroup>
+						<ri:inputApenasLetrasNumeros id="loginNovo" 
+											 title="Informe seu novo usuário" 
+											 value="#{autenticador.usuario.login}" 
+											 autocomplete="false"
+											 size="30"
+											 required="true"
+											 label="Usuário"/>
+						<ri:inputSenha id="senha" 
+									   title="Informe sua senha" 
+									   value="#{autenticador.usuario.senha}" 
+									   label="Senha"
+									   size="30"
+									   required="true" 
+									   autocomplete="false" />
 					</h:panelGrid>
 					<p:commandButton value="Login"
 									 action="#{autenticador.logarUsuario}" 
 									 update="loginForm"
 									 ajax="false"
-									 rendered="#{!autenticador.mostraComboUnidade}"
 									 image="ui-icon ui-icon-locked"
 									 title="Click para entrar na sua conta" />
 
 					<p:commandButton value="Limpar"
 									 image="ui-icon ui-icon-arrowrefresh-1-s"
-									 rendered="#{!autenticador.mostraComboUnidade}"
 									 title="Limpar os campos" 
 									 type="reset" />
 
-					<p:commandButton value="Continuar"
-									 action="#{autenticador.continuaLogin}"
-									 rendered="#{autenticador.mostraComboUnidade}" 
-									 update="loginForm"
-									 image="ui-icon ui-icon-arrowreturnthick-1-n"
-									 title="Click para continuar seu Login" />
-					
 					<br/>
 					<br/>
 					<br/>
@@ -86,10 +101,20 @@
 					</p:commandLink>
 					<br />
 					<br />
-					<p:commandButton rendered="false" value="atualizar" action="#{solicitacaoMedicamentoUnidadeItemRaiz.iniciarAtualizacao}" />
 				</h:form>
 
 			</p:fieldset>
-		</p:tab>
-	</ui:define>
-</ui:composition>
+		</div>
+	
+        <ui:insert name="status">
+        	<p:ajaxStatus rendered="true" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+			<p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..."   
+			        draggable="false" closable="false">  
+			    <p:graphicImage value="/Imagens/ajaxloadingbar.gif" />  
+			</p:dialog>  
+        
+        </ui:insert>
+	</h:body>
+
+</f:view>
+</html>

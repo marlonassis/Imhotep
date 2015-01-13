@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.imhotep.comparador.DoseDataComparador;
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.controle.ControlePrescricaoItem;
 import br.com.imhotep.controle.ControlePrescricaoItemDose;
 import br.com.imhotep.entidade.Material;
@@ -77,19 +77,19 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 	
 	private void liberaDose(Material material, Dose dose) throws ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoReservaVazia{
 		int quantidadeDose = dose.getQuantidadeDoses() * dose.getQuantidadePorDose();
-		ControleEstoqueTemp ce = new ControleEstoqueTemp();
+		ControleEstoque ce = new ControleEstoque();
 		ce.liberarReserva(quantidadeDose, material);
 	}
 	
 	private void formularioDoseVazio(Dose dose) throws ExcecaoFormularioNaoPreenchido {
 		if(dose.getDataInicio().before(Calendar.getInstance().getTime()))
-			throw new ExcecaoFormularioNaoPreenchido("A data de início da dose deve ser maior que a data atual.");
+			throw new ExcecaoFormularioNaoPreenchido("A data de inÔøΩcio da dose deve ser maior que a data atual.");
 		
 		if(dose.getPrescricaoItem().getMaterial() == null)
 			throw new ExcecaoFormularioNaoPreenchido("Informe o material.");
 		
 		if(dose.getQuantidadeDoses() == null || dose.getQuantidadeDoses() == 0)
-			throw new ExcecaoFormularioNaoPreenchido("Informe a quantidade de doses diárias.");
+			throw new ExcecaoFormularioNaoPreenchido("Informe a quantidade de doses diÔøΩrias.");
 		
 		if(dose.getQuantidadePorDose() == null || dose.getQuantidadePorDose() == 0)
 			throw new ExcecaoFormularioNaoPreenchido("Informe a quantidade do medicamento por dose.");
@@ -98,13 +98,13 @@ public class FluxoPrescricaoMedicamento extends PadraoFluxo{
 			throw new ExcecaoFormularioNaoPreenchido("Informe o intervalo de tempo entre as doses.");
 		
 		if(dose.getDataInicio() == null)
-			throw new ExcecaoFormularioNaoPreenchido("Informe a hora de início da dosagem.");
+			throw new ExcecaoFormularioNaoPreenchido("Informe a hora de inÔøΩcio da dosagem.");
 		
 		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() == null)
 			throw new ExcecaoFormularioNaoPreenchido("Informe o tipo da via que o medicamento deve ser adminsitrado.");
 		
 		if(dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento() != null && dose.getPrescricaoItem().getTipoViaAdministracaoMedicamento().equals(TipoViaAdministracaoMedicamentoEnum.OT) && dose.getPrescricaoItem().getOutraVia() == null)
-			throw new ExcecaoFormularioNaoPreenchido("Informe a outra via de administração do medicamento.");
+			throw new ExcecaoFormularioNaoPreenchido("Informe a outra via de administraÔøΩÔøΩo do medicamento.");
 	}
 	
 	public List<PrescricaoItemDose> getPrescricaoItemDoseList(){

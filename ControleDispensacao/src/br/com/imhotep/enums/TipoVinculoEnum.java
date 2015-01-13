@@ -6,8 +6,10 @@ package br.com.imhotep.enums;
 
 public enum TipoVinculoEnum {
 	EB("EBSERH"),
-	ES("Estatutario"),
-	TE("Terceirizado");
+	MS("Ministério da Saúde"),
+	SM("Secretária Municipal da Saúde"),
+	TE("Terceirizado"),
+	ES("UFS");
 	
 	TipoVinculoEnum(String label){
 		this.label = label;

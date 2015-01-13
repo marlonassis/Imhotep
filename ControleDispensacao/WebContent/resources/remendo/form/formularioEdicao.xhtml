@@ -58,16 +58,18 @@
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
 	              			     onsuccess="statusDialog.hide();"/>
-				<p:commandButton id="novoButtonEdicao"
-								 value="Novo" 
-								 immediate="true"
+	            
+	            <p:commandButton id="novoButtonEdicao"
+	            				 value="Limpar" 
 								 update=":#{p:component('padraoTabView')}"
 								 action="#{cc.attrs.actionNovo}" 
-								 oncomplete="window.location.reload(true);" 
-								 rendered="#{cc.attrs.renderedNovo}" 
+								 process="@this" 
 								 global="false" 
 	              			     onclick="statusDialog.show();" 
-	              			     onsuccess="statusDialog.hide();" />
+	              			     onsuccess="statusDialog.hide();" >
+	                <p:resetInput target="#{idFormulario}" />
+	            </p:commandButton>
+	            
 			</p:fieldset>
 		</h:form>
 	</co:implementation>

@@ -29,7 +29,7 @@ public class EstornoMovimentacaoAlmoxarifadoConsultaRaiz  extends ConsultaGeral<
 						"inner join tb_tipo_movimento_almoxarifado b on a.id_tipo_movimento_almoxarifado = b.id_tipo_movimento_almoxarifado "+
 						"where b.tp_operacao != 'E' and a.id_estoque_almoxarifado = "+idEA+"), 0) as qtd";
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {
@@ -55,7 +55,7 @@ public class EstornoMovimentacaoAlmoxarifadoConsultaRaiz  extends ConsultaGeral<
 					 "(select min(b.dt_data_movimento) from tb_movimento_livro_almoxarifado b where b.id_estoque_almoxarifado = "+idEstoque+") "+
 					 "and a.id_estoque_almoxarifado = "+idEstoque+"";
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {
@@ -77,7 +77,7 @@ public class EstornoMovimentacaoAlmoxarifadoConsultaRaiz  extends ConsultaGeral<
 					 "where cast(to_char(a.dt_data_movimento, 'YYYY-MM-DD HH24:MI:SS') as timestamp) > '"+dataFormat+"' "+
 					 "and a.id_estoque_almoxarifado = "+idEstoque+" and b.tp_operacao != 'E'"; 
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {
@@ -103,7 +103,7 @@ public class EstornoMovimentacaoAlmoxarifadoConsultaRaiz  extends ConsultaGeral<
 					 "order by a.dt_data_movimento  "+
 					 "limit 1"; 
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {

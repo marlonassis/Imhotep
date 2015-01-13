@@ -2,7 +2,7 @@ package br.com.imhotep.fluxo;
 
 import java.util.Date;
 
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.excecoes.ExcecaoEstoqueBloqueado;
@@ -46,7 +46,7 @@ public class FluxoSemNotaFiscal extends PadraoFluxoTemp{
 	}
 
 	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws InstantiationException, IllegalAccessException,ClassNotFoundException, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock {
-		ControleEstoqueTemp controleEstoque = new ControleEstoqueTemp();
+		ControleEstoque controleEstoque = new ControleEstoque();
 		controleEstoque.liberarAjuste(dataAtual, movimentoLivro);
 	}
 	

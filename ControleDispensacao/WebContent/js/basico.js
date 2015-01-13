@@ -246,6 +246,16 @@ function apenasNumeroComVirgula(obj){
 	obj.value = v;
 }
 
+function apenasNumeroComVirgulaQuatroCasas(obj){
+	v = obj.value;
+	v=v.replace(/\D/g,""); //permite digitar apenas números
+	v=v.replace(/[0-9]{12}/,v.substr(0,13)); //limita pra máximo 999.999.999,9999
+	v=v.replace(/(\d{1})(\d{10})$/,"$1.$2"); //coloca ponto antes dos últimos 10 digitos
+	v=v.replace(/(\d{1})(\d{7})$/,"$1.$2"); //coloca ponto antes dos últimos 7 digitos
+	v=v.replace(/(\d{1})(\d{1,4})$/,"$1,$2"); //coloca virgula antes dos últimos 2 digitos
+	obj.value = v;
+}
+
 /**
  * valida se o dia informado é maior que 31
  */

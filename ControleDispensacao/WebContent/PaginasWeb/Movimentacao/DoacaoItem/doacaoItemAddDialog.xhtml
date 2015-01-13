@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="itemDForm" rendered="#{!doacaoRaiz.instancia.liberado}" >
+		<div align="left" > 
+			<h:panelGrid id="buscaLote"
+						 columns="2" >
+				<ri:inputTextoSimples id="lote" 
+								  title="Informe o lote" 
+								  disabled="#{doacaoItemRaiz.achouLote != null}"
+								  value="#{doacaoItemRaiz.lote}" 
+								  label="Lote"
+								  required="false" />
+				<p:commandButton image="ui-icon ui-icon-search"
+								 update=":#{p:component('itemDForm')}"
+								 action="#{doacaoItemRaiz.procurarLote}" 
+								 rendered="#{doacaoItemRaiz.achouLote == null}"
+								 title="Procurar lote" />
+			</h:panelGrid>
+		</div>
+	
+		<h:panelGrid id="itensDoacaoPanelGrid"
+					 width="100%" 
+					 columns="3" 
+					 rendered="#{doacaoItemRaiz.achouLote != null}" >
+			
+			<ri:inputAutoComplete id="material" 
+								 label="Material"  
+								 disabled="#{doacaoItemRaiz.achouLote}"
+								 completeMethod="#{materialAutoComplete.autoComplete}" 
+								 itemValue="#{material}" 
+								 itemLabel="#{material.descricaoUnidadeMaterial}" 
+								 var="material"
+								 value="#{doacaoItemRaiz.instancia.estoque.material}" 
+								 required="true"/>
+			
+			<ri:inputAutoComplete id="fabricante" 
+								 label="Fabricante"  
+								 disabled="#{doacaoItemRaiz.achouLote}"
+								 completeMethod="#{fabricanteAutoComplete.autoComplete}" 
+								 itemValue="#{fabricante}" 
+								 itemLabel="#{fabricante.descricao}" 
+								 var="fabricante"
+								 value="#{doacaoItemRaiz.instancia.estoque.fabricante}" 
+								 required="true"/>
+			
+			<ri:inputDataMesAnoMedicamento id="dataValidade"
+							   label="Data de Validade"
+							   disabled="#{doacaoItemRaiz.achouLote}"
+							   required="true" 
+							   value="#{doacaoItemRaiz.instancia.estoque.dataValidade}"
+							   title="Data de validade do lote"/>
+			
+			<ri:inputApenasNumero id="quantidade" 
+								  title="Informe a quantidade informada na nota" 
+								  value="#{doacaoItemRaiz.instancia.quantidade}"
+								  required="true" 
+								  label="Quantidade"/>
+			
+			<ri:inputValorFracionadoQuatroDigitos 
+									 id="valorUnitario" 
+									 title="Informe o valor unitário do medicamento" 
+									 value="#{doacaoItemRaiz.instancia.valorUnitario}"
+									 required="false" 
+									 label="Valor Unitário" />
+			
+			<ri:inputTextoSimples id="codigoBarras" 
+								  title="Informe o código de barras"
+								  disabled="#{doacaoItemRaiz.achouLote}" 
+								  value="#{doacaoItemRaiz.instancia.estoque.codigoBarras}" 
+								  label="Código de Barras" />
+		</h:panelGrid>
+		<h:panelGrid id="botoesNotaFiscalPanelGrid"
+					 width="100%" 
+					 columns="3" 
+					 rendered="#{doacaoItemRaiz.achouLote != null}" >
+			<h:panelGroup>
+				<p:commandButton value="#{doacaoItemRaiz.edicao ? 'Atualizar' : 'Adicionar'}" 
+								 action="#{doacaoItemRaiz.gravarItemDoacao}" 
+								 rendered="#{doacaoItemRaiz.achouLote != null}" 
+								 update=":#{p:component('itemDForm')} :#{p:component('listaItensDForm')}" />
+				<p:commandButton value="Limpar" 
+								 update=":#{p:component('itemDForm')}"
+								 action="#{doacaoItemRaiz.novaInstancia}" 
+								 process="@this" >
+	                <p:resetInput target="itemDForm" />
+	            </p:commandButton>
+			</h:panelGroup>
+		</h:panelGrid>
+	</h:form>
+	
+	<p:separator />
+	
+	<h:form id="listaItensDForm" >
+		<p:dataTable id="itensEstoqueDataGrid"
+					var="linha" 
+					emptyMessage="Não foram encontrados registros"
+					value="#{doacaoItemRaiz.itens}"
+					rows="1000">
+			
+		    <p:column headerText="Lote">
+				<h:outputText value="#{linha.estoque.lote}" />
+		    </p:column>
+			<p:column headerText="Medicamento">
+				<h:outputText value=" #{linha.estoque.material.descricao}"/>
+			</p:column>
+			<p:column headerText="Fabricante">
+				<h:outputText value="#{linha.estoque.fabricante.descricao}" />
+			</p:column>
+			<p:column headerText="Validade">
+				<h:outputText value="#{linha.estoque.dataValidade}" style="margin-left:10px">
+	            	<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3"  />
+	            </h:outputText>
+			</p:column>
+			<p:column headerText="Quantidade">
+				<h:outputText value="#{linha.quantidade}"/>
+			</p:column>
+			<p:column headerText="Valor Unitário">
+				<h:outputText id="balance" value="#{linha.valorUnitario}">
+				    <f:convertNumber currencySymbol="R$" 
+				    				 groupingUsed="true"
+				                     maxFractionDigits="4" 
+				                     type="currency" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="">
+				<h:panelGroup rendered="#{!doacaoItemRaiz.doacao.liberado}" >
+					<p:commandLink  update=":#{p:component('itemDForm')}"
+									title="Apagar" style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{doacaoItemRaiz.editarLinha}" />
+						<h:graphicImage value="/Imagens/edit.gif" />
+					</p:commandLink>
+					<p:commandLink  action="#{doacaoItemRaiz.removerItem(linha)}"
+									update=":#{p:component('itemDForm')} :#{p:component('listaItensDForm')}"
+									onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+									title="Apagar" style="padding-right:10px;">
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+				</h:panelGroup>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+</ui:composition>

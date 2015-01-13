@@ -180,7 +180,7 @@ public class EstornoMovimentacaoFarmaciaRaiz extends PadraoRaiz<MovimentoLivro>{
 						getItem().getQuantidadeMovimentacao()+";"+
 						new SimpleDateFormat("yyyy-MM-dd HH:mm").format(getItem().getDataMovimento())+";"+
 						getItem().getEstoque().getIdEstoque()+";"+
-						getItem().getUsuarioMovimentacao().getProfissional().getIdProfissional()+";"+
+						getItem().getProfissionalMovimentacao().getIdProfissional()+";"+
 						getItem().getTipoMovimento().getIdTipoMovimento();
 		ema.setMovimentoCompleto(resumo);
 		ema.setEstoque(getItem().getEstoque());
@@ -191,7 +191,7 @@ public class EstornoMovimentacaoFarmaciaRaiz extends PadraoRaiz<MovimentoLivro>{
 	private void deletarEstoqueSemMovimento(int idEstoque) throws SQLException {
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs2 = lm.consultar("select coalesce(count(a.id_movimento_livro), 0) total from tb_movimento_livro a "
 					+ "where a.id_estoque = " + idEstoque);
 		while (rs2.next()) {
@@ -230,7 +230,7 @@ public class EstornoMovimentacaoFarmaciaRaiz extends PadraoRaiz<MovimentoLivro>{
 	private void atualizarMovimentoFarmacia(int idEstoque) throws SQLException, ExcecaoEstornoFarmaciaMovimentoLivroAtualizarMovimentos{
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs2 = lm.consultar("select a.id_movimento_livro, b.tp_operacao, a.in_quantidade_movimentacao from tb_movimento_livro a "
 					+ "inner join tb_tipo_movimento b on a.id_tipo_movimento = b.id_tipo_movimento "
 					+ "where a.id_estoque = " + idEstoque + " order by a.dt_data_movimento");
@@ -260,7 +260,7 @@ public class EstornoMovimentacaoFarmaciaRaiz extends PadraoRaiz<MovimentoLivro>{
 	private void atualizarEstoque(int idEstoque) throws SQLException, ExcecaoEstornoFarmaciaMovimentoLivroAtualizarEstoque{
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs2 = lm.consultar("select coalesce((select sum(a.in_quantidade_movimentacao) from tb_movimento_livro a "+
 										"inner join tb_tipo_movimento b on a.id_tipo_movimento = b.id_tipo_movimento "+
 										"where b.tp_operacao = 'E' and a.id_estoque = "+idEstoque+"), 0) "+

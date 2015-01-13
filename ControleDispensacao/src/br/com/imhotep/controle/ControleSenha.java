@@ -54,11 +54,11 @@ public class ControleSenha {
 	
 	public void verificaSenhaPadrao(Autenticador autenticador) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		if(autenticador != null && autenticador.getUsuarioAtual() != null){
-			if(senhaIgualMatricula() && autenticador.getUnidadeAtual() != null){
+			if(senhaIgualMatricula()){
 				boolean paginaTrocaSenha = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI().indexOf(Constantes.PAGINA_TROCA_SENHA) == 0;
 				if(!paginaTrocaSenha){
 					FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Você ainda não trocou sua senha. Para sua segurança troque agora a sua senha.", ""));
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Voc√™ ainda n√£o trocou sua senha. Para sua seguran√ßa troque agora a sua senha.", ""));
 				}
 			}
 		}

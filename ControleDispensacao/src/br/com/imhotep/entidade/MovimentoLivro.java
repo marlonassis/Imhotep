@@ -22,13 +22,13 @@ import br.com.imhotep.enums.TipoOperacaoEnum;
 @Entity
 @Table(name = "tb_movimento_livro")
 public class MovimentoLivro implements Serializable {
-	private static final long serialVersionUID = -6772557323992726612L;
+	private static final long serialVersionUID = -8679712826884538984L;
 	
 	private int idMovimentoLivro;
 	private TipoMovimento tipoMovimento;
 	private Integer quantidadeMovimentacao;
 	private Date dataMovimento;
-	private Usuario usuarioMovimentacao;
+	private Profissional profissionalMovimentacao;
 	private Estoque estoque;
 	private DispensacaoSimples dispensacaoSimples;
 	private Integer quantidadeAtual;
@@ -46,12 +46,12 @@ public class MovimentoLivro implements Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario_movimentacao")
-	public Usuario getUsuarioMovimentacao() {
-		return usuarioMovimentacao;
+	@JoinColumn(name = "id_profissional_movimentacao")
+	public Profissional getProfissionalMovimentacao() {
+		return profissionalMovimentacao;
 	}
-	public void setUsuarioMovimentacao(Usuario usuarioMovimentacao) {
-		this.usuarioMovimentacao = usuarioMovimentacao;
+	public void setProfissionalMovimentacao(Profissional profissionalMovimentacao) {
+		this.profissionalMovimentacao = profissionalMovimentacao;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -142,7 +142,7 @@ public class MovimentoLivro implements Serializable {
 				+ ((tipoMovimento == null) ? 0 : tipoMovimento.hashCode());
 		result = prime
 				* result
-				+ ((usuarioMovimentacao == null) ? 0 : usuarioMovimentacao
+				+ ((profissionalMovimentacao == null) ? 0 : profissionalMovimentacao
 						.hashCode());
 		return result;
 	}
@@ -187,10 +187,10 @@ public class MovimentoLivro implements Serializable {
 				return false;
 		} else if (!tipoMovimento.equals(other.tipoMovimento))
 			return false;
-		if (usuarioMovimentacao == null) {
-			if (other.usuarioMovimentacao != null)
+		if (profissionalMovimentacao == null) {
+			if (other.profissionalMovimentacao != null)
 				return false;
-		} else if (!usuarioMovimentacao.equals(other.usuarioMovimentacao))
+		} else if (!profissionalMovimentacao.equals(other.profissionalMovimentacao))
 			return false;
 		return true;
 	}

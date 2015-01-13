@@ -35,7 +35,9 @@ public class GerenciadorRequisicao implements PhaseListener{
 	
 	private void acessoPaginaNaoAutorizado(String pagina) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, ExcecaoAcessoNaoAutorizado{
 		ControleMenu controleMenu = (ControleMenu) Utilitarios.procuraInstancia(ControleMenu.class);
-		if(existeUsuarioLogado() && !paginaAcessoGeral(pagina) && !controleMenu.urlAutorizada(pagina)){
+		boolean administrador = new Parametro().isProfissionalAdministrador();
+		if(!administrador && existeUsuarioLogado() && !paginaAcessoGeral(pagina) && !controleMenu.urlAutorizada(pagina)){
+			controleMenu.urlAutorizada(pagina);
 			FacesContext.getCurrentInstance().getExternalContext().redirect(Constantes.PAGINA_HOME);
 			throw new ExcecaoAcessoNaoAutorizado(pagina);
 		}

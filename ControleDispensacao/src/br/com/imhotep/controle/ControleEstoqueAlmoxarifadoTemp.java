@@ -22,7 +22,6 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
-import br.com.imhotep.excecoes.ExcecaoMovimentoLivroNaoCadastrado;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoQuantidadeZero;
 import br.com.imhotep.linhaMecanica.atualizador.AtualizadorEstoqueAlmoxarifadoLM;
@@ -32,10 +31,72 @@ import br.com.imhotep.temp.PadraoFluxoTemp;
 import br.com.remendo.PadraoRaiz;
 
 public class ControleEstoqueAlmoxarifadoTemp extends PadraoRaiz<EstoqueAlmoxarifado>{
+	private static final TipoOperacaoEnum TIPO_ENTRADA = TipoOperacaoEnum.E;
 	
-	public void entradaSemNota(MovimentoLivroAlmoxarifado movimento) throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado, ExcecaoPadraoFluxo{
+	public MovimentoLivroAlmoxarifado getMovimentoLivroPronto(Date dataMovimento, EstoqueAlmoxarifado estoqueAlmoxarifado, TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado, 
+																String justificativa, Double quantidadeMovimentada) 
+				throws ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoProfissionalLogado, ExcecaoEstoqueBloqueado, 
+						ExcecaoEstoqueVencido, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueAlmoxarifadoVazio {
+		lockEstoque(estoqueAlmoxarifado);
+		MovimentoLivroAlmoxarifado movimentoLivro = prepararMovimentoLivroAlmoxarifado(dataMovimento, estoqueAlmoxarifado, tipoMovimentoAlmoxarifado, 
+																						justificativa, quantidadeMovimentada);
+		prepararEstoque(estoqueAlmoxarifado, tipoMovimentoAlmoxarifado, movimentoLivro);
+		return movimentoLivro;
+	}
+
+	private void prepararEstoque(EstoqueAlmoxarifado estoqueAlmoxarifado, TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado,
+			MovimentoLivroAlmoxarifado movimentoLivroAlmoxarifado) throws ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueAlmoxarifadoVazio{
+		validarManipulacaoLote(estoqueAlmoxarifado);
+		double saldoAtual = estoqueAlmoxarifado.getQuantidadeAtual();
+		if(tipoMovimentoAlmoxarifado.getTipoOperacao().equals(TIPO_ENTRADA)){
+			saldoAtual += movimentoLivroAlmoxarifado.getQuantidadeMovimentacao();
+		}else{
+			validarManipulacaoSaidaLote(movimentoLivroAlmoxarifado);
+			saldoAtual -= movimentoLivroAlmoxarifado.getQuantidadeMovimentacao();
+		}
+		 estoqueAlmoxarifado.setQuantidadeAtual(saldoAtual);
+	}
+
+	private MovimentoLivroAlmoxarifado prepararMovimentoLivroAlmoxarifado(Date dataMovimento, EstoqueAlmoxarifado estoqueAlmoxarifado,
+			TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado, String justificativa, Double quantidadeMovimentada)
+			throws ExcecaoProfissionalLogado {
+		MovimentoLivroAlmoxarifado movimentoLivroAlmoxarifado = new MovimentoLivroAlmoxarifado();
+		movimentoLivroAlmoxarifado.setDataMovimento(dataMovimento);
+		movimentoLivroAlmoxarifado.setEstoqueAlmoxarifado(estoqueAlmoxarifado);
+		movimentoLivroAlmoxarifado.setJustificativa(justificativa);
+		movimentoLivroAlmoxarifado.setProfissionalInsercao(Autenticador.getProfissionalLogado());
+		movimentoLivroAlmoxarifado.setQuantidadeAtual(estoqueAlmoxarifado.getQuantidadeAtual());
+		movimentoLivroAlmoxarifado.setTipoMovimentoAlmoxarifado(tipoMovimentoAlmoxarifado);
+		movimentoLivroAlmoxarifado.setQuantidadeMovimentacao(quantidadeMovimentada);
+		return movimentoLivroAlmoxarifado;
+	}
+	
+	public void validarManipulacaoSaidaLote(MovimentoLivroAlmoxarifado movimentoLivroAlmoxarifado) 
+			throws ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueAlmoxarifadoVazio{
+		estoqueInsuficiente(movimentoLivroAlmoxarifado);
+		estoqueVazio(movimentoLivroAlmoxarifado.getEstoqueAlmoxarifado());
+	}
+	
+	public void validarManipulacaoLote(EstoqueAlmoxarifado estoqueAlmoxarifado) throws ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido{
+		estoqueBloqueado(estoqueAlmoxarifado);
+		estoqueVencido(estoqueAlmoxarifado);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void entradaSemNota(MovimentoLivroAlmoxarifado movimento) 
+			throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, 
+				ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, 
+				ExcecaoEstoqueNaoAtualizado, ExcecaoPadraoFluxo {
 		PadraoFluxoTemp.limparFluxo();
-		int quantidadeAtual = new EstoqueAlmoxarifadoConsultaRaiz().consultarQuantidadeEstoque(movimento.getEstoqueAlmoxarifado());
+		Double quantidadeAtual = new EstoqueAlmoxarifadoConsultaRaiz().consultarQuantidadeEstoque(movimento.getEstoqueAlmoxarifado());
 		movimento.setQuantidadeAtual(quantidadeAtual);
 		liberarAjusteEstoqueAlmoxarifado(movimento.getEstoqueAlmoxarifado(), 
 										 movimento.getQuantidadeMovimentacao(), 
@@ -44,54 +105,59 @@ public class ControleEstoqueAlmoxarifadoTemp extends PadraoRaiz<EstoqueAlmoxarif
 		PadraoFluxoTemp.finalizarFluxo();
 	}
 	
-	public void liberarSolicitacao(int quantidadeMovimentada, MaterialAlmoxarifado materialAlmoxarifado, SolicitacaoMaterialAlmoxarifadoUnidade sma) throws ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoQuantidadeZero, ExcecaoEstoqueAlmoxarifadoVazio{
+	public void liberarSolicitacao(Double quantidadeMovimentada, MaterialAlmoxarifado materialAlmoxarifado, SolicitacaoMaterialAlmoxarifadoUnidade sma) 
+			throws ExcecaoQuantidadeZero, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado {
 		validaQuantidadeMovimentada(quantidadeMovimentada);
-		Long quantidadeTotal = new EstoqueAlmoxarifadoConsultaRaiz().totalEmEstoqueValido(materialAlmoxarifado);
-		estoqueVazio(quantidadeTotal == null ? 0 : quantidadeTotal.intValue());
-		Long quantidadeReservada = new SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz().totalReservardo(materialAlmoxarifado, sma);
-		estoqueInsuficiente(quantidadeTotal == null ? 0 : quantidadeTotal.intValue(), quantidadeMovimentada, quantidadeReservada == null ? 0 : quantidadeReservada.intValue());
+		Double quantidadeTotal = new EstoqueAlmoxarifadoConsultaRaiz().totalEmEstoqueValido(materialAlmoxarifado);
+		estoqueVazio(quantidadeTotal == null ? 0 : quantidadeTotal);
+		Double quantidadeReservada = new SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz().totalReservardo(materialAlmoxarifado, sma);
+		estoqueInsuficiente(quantidadeTotal == null ? 0 : quantidadeTotal, quantidadeMovimentada, quantidadeReservada == null ? 0 : quantidadeReservada);
 	}
 	
-	public void liberarDispensacao(MovimentoLivroAlmoxarifado mla, int quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado{
+	public void liberarDispensacao(MovimentoLivroAlmoxarifado mla, Double quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) 
+			throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, 
+					ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		validaQuantidadeMovimentada(quantidadeMovimentada);
 		lockEstoque(mla.getEstoqueAlmoxarifado());
-		estoqueVencido(mla.getEstoqueAlmoxarifado().getDataValidade());
-		estoqueBloqueado(mla.getEstoqueAlmoxarifado().getBloqueado());
-		estoqueVazio(mla.getEstoqueAlmoxarifado().getQuantidadeAtual());
-		estoqueInsuficiente(mla.getEstoqueAlmoxarifado().getQuantidadeAtual(), quantidadeMovimentada);
+		estoqueVencido(mla.getEstoqueAlmoxarifado());
+		estoqueBloqueado(mla.getEstoqueAlmoxarifado());
+		estoqueVazio(mla.getEstoqueAlmoxarifado());
+		estoqueInsuficiente(mla);
 		atuaizarMovimento(mla, quantidadeMovimentada, tipoMovimento);
 		atualizarEstoque(mla.getEstoqueAlmoxarifado(), quantidadeMovimentada, tipoMovimento);
 	}
 
-	private void atuaizarMovimento(MovimentoLivroAlmoxarifado mla, int quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoProfissionalLogado {
+	private void atuaizarMovimento(MovimentoLivroAlmoxarifado mla, Double quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoProfissionalLogado {
 		mla.setProfissionalInsercao(Autenticador.getProfissionalLogado());
 		mla.setQuantidadeAtual(mla.getEstoqueAlmoxarifado().getQuantidadeAtual());
 		mla.setQuantidadeMovimentacao(quantidadeMovimentada);
 		mla.setTipoMovimentoAlmoxarifado(tipoMovimento);
 	}
 
-	public void liberarAjusteEstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado, int quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado{
+	public void liberarAjusteEstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado, Double quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) 
+			throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, 
+			ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado{
 		validaQuantidadeMovimentada(quantidadeMovimentada);
 		lockEstoque(estoqueAlmoxarifado);
-		estoqueVencido(estoqueAlmoxarifado.getDataValidade());
-		estoqueBloqueado(estoqueAlmoxarifado.getBloqueado());
+		estoqueVencido(estoqueAlmoxarifado);
+		estoqueBloqueado(estoqueAlmoxarifado);
 		
 		if(!tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.E)){
-			estoqueVazio(estoqueAlmoxarifado.getQuantidadeAtual());
-			Long quantidadeReservada = new SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz().totalReservardo(estoqueAlmoxarifado.getMaterialAlmoxarifado());
-			estoqueInsuficiente(estoqueAlmoxarifado.getQuantidadeAtual(), quantidadeMovimentada, quantidadeReservada == null ? 0 : quantidadeReservada.intValue());
+			estoqueVazio(estoqueAlmoxarifado);
+			Double quantidadeReservada = new SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz().totalReservardo(estoqueAlmoxarifado.getMaterialAlmoxarifado());
+			estoqueInsuficiente(estoqueAlmoxarifado.getQuantidadeAtual(), quantidadeMovimentada, quantidadeReservada == null ? 0 : quantidadeReservada);
 		}
 		
 		atualizarEstoque(estoqueAlmoxarifado, quantidadeMovimentada, tipoMovimento);
 	}
 	
-	private void atualizarEstoque(EstoqueAlmoxarifado estoqueAlmoxarifado, int quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
+	private void atualizarEstoque(EstoqueAlmoxarifado estoqueAlmoxarifado, Double quantidadeMovimentada, TipoMovimentoAlmoxarifado tipoMovimento) throws ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
 		if(estoqueAlmoxarifado.getIdEstoqueAlmoxarifado() == 0){
 			estoqueAlmoxarifado.setDataInclusao(new Date());
 			estoqueAlmoxarifado.setProfissionalInclusao(Autenticador.getProfissionalLogado());
 			estoqueAlmoxarifado.setQuantidadeAtual(quantidadeMovimentada);
 		}else{
-			int quantidadeAtual = new EstoqueAlmoxarifadoConsultaRaiz().consultarQuantidadeEstoque(estoqueAlmoxarifado);
+			Double quantidadeAtual = new EstoqueAlmoxarifadoConsultaRaiz().consultarQuantidadeEstoque(estoqueAlmoxarifado);
 			if(tipoMovimento.getTipoOperacao().equals(TipoOperacaoEnum.E)){
 				estoqueAlmoxarifado.setQuantidadeAtual(quantidadeAtual + quantidadeMovimentada);
 			}else{
@@ -108,38 +174,44 @@ public class ControleEstoqueAlmoxarifadoTemp extends PadraoRaiz<EstoqueAlmoxarif
 			PadraoFluxoTemp.getObjetoSalvar().put("estoqueAlmoxarifado"+estoqueAlmoxarifado.hashCode(), estoqueAlmoxarifado);
 	}
 	
-	private void validaQuantidadeMovimentada(int quantidadeMovimentada) throws ExcecaoQuantidadeZero {
+	private void validaQuantidadeMovimentada(Double quantidadeMovimentada) throws ExcecaoQuantidadeZero {
 		if(quantidadeMovimentada == 0)
 			throw new ExcecaoQuantidadeZero();
 	}
 
-	private void estoqueInsuficiente(int quantidadeAtual, int quantidadeMovimentada, int quantidadeReservada) throws ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado {
+	private void estoqueInsuficiente(Double quantidadeAtual, Double quantidadeMovimentada, Double quantidadeReservada) throws ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado {
 //		if(quantidadeAtual < quantidadeMovimentada)
 //			throw new ExcecaoEstoqueSaldoInsuficiente(quantidadeAtual);
 //		else{
-			long quantidadeVirtual = quantidadeAtual - quantidadeReservada;
+			Double quantidadeVirtual = quantidadeAtual - quantidadeReservada;
 			if(quantidadeVirtual < quantidadeMovimentada)
 				throw new ExcecaoEstoqueReservado(quantidadeReservada, quantidadeVirtual);
 //		}
 			
 	}
 
-	private void estoqueInsuficiente(int quantidadeAtual, int quantidadeMovimentada) throws ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado {
-		if(quantidadeAtual < quantidadeMovimentada)
-			throw new ExcecaoEstoqueSaldoInsuficiente(quantidadeAtual);			
-	}
-	
-	private void estoqueVazio(int quantidadeAtual) throws ExcecaoEstoqueAlmoxarifadoVazio {
-		if(quantidadeAtual == 0)
-			throw new ExcecaoEstoqueAlmoxarifadoVazio();
+	private void estoqueInsuficiente(MovimentoLivroAlmoxarifado movimentoLivro) throws ExcecaoEstoqueSaldoInsuficiente {
+		double saldoAtual = movimentoLivro.getEstoqueAlmoxarifado().getQuantidadeAtual();
+		if(movimentoLivro.getQuantidadeMovimentacao() > saldoAtual)
+			throw new ExcecaoEstoqueSaldoInsuficiente(saldoAtual);
 	}
 
-	private void estoqueBloqueado(boolean bloqueado) throws ExcecaoEstoqueBloqueado {
-		if(bloqueado)
+	private void estoqueVazio(EstoqueAlmoxarifado estoque) throws ExcecaoEstoqueAlmoxarifadoVazio {
+		estoqueVazio(estoque.getQuantidadeAtual().doubleValue());
+	}
+	
+	private void estoqueVazio(double saldoAtual) throws ExcecaoEstoqueAlmoxarifadoVazio {
+		if(saldoAtual == 0d)
+			throw new ExcecaoEstoqueAlmoxarifadoVazio();
+	}
+	
+	private void estoqueBloqueado(EstoqueAlmoxarifado estoqueAlmoxarifado) throws ExcecaoEstoqueBloqueado {
+		if(estoqueAlmoxarifado.getBloqueado())
 			throw new ExcecaoEstoqueBloqueado();
 	}
 
-	private void estoqueVencido(Date dataValidade) throws ExcecaoEstoqueVencido {
+	private void estoqueVencido(EstoqueAlmoxarifado estoqueAlmoxarifado) throws ExcecaoEstoqueVencido {
+		Date dataValidade = estoqueAlmoxarifado.getDataValidade();
 		if(dataValidade == null){
 			return;
 		}

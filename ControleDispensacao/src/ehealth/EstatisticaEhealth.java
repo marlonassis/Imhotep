@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.enums.TipoEhealthNaturezaEnum;
 import br.com.imhotep.enums.TipoEhealthRedeSocialEnum;
 import br.com.imhotep.enums.TipoEhealthTipoTecnologiaEnum;
@@ -28,7 +29,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 public class EstatisticaEhealth {
 
-	private static final String ip = "127.0.0.1";
+	private static final String ip = Constantes.IP_LOCAL;
 	static List<String> estadosSigla = new ArrayList<String>(Arrays.asList(
     		"AC","AL","AM","AP","BA","CE","DF","ES",
     		"GO","MA","MT","MS","MG","PA","PB","PR","PE",
@@ -114,10 +115,10 @@ public class EstatisticaEhealth {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("In’cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-		System.out.println("Gerando relat—rio geral");
+		System.out.println("Inï¿½cio: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+		System.out.println("Gerando relatï¿½rio geral");
 //		gerarRelatorioGenerico();
-		System.out.println("Gerando relat—rios por estado");
+		System.out.println("Gerando relatï¿½rios por estado");
 		gerarRelatorioEstabelecimentoEstado();
 		System.out.println("Fim: "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 	}
@@ -144,7 +145,7 @@ public class EstatisticaEhealth {
 			try {
 				while (rs.next()) {
 					Row dados = sheet.createRow((short)i);
-					//Nas cŽlulas a seguir vc substitui pelas getText dos seus JTextFields e JLabels
+					//Nas cï¿½lulas a seguir vc substitui pelas getText dos seus JTextFields e JLabels
 					dados.createCell(0).setCellValue(rs.getString("regiao"));
 					dados.createCell(1).setCellValue(rs.getString("estado"));
 					dados.createCell(2).setCellValue(rs.getInt("qtdHospitais"));
@@ -215,7 +216,7 @@ public class EstatisticaEhealth {
 //						dados.createCell(2).setCellValue(rs.getString("profissisonal"));
 					//////
 					Row dados = sheet.createRow((short)i);
-					//Nas cŽlulas a seguir vc substitui pelas getText dos seus JTextFields e JLabels
+					//Nas cï¿½lulas a seguir vc substitui pelas getText dos seus JTextFields e JLabels
 //						int id = rs.getInt("id");
 //						dados.createCell(0).setCellValue(id);
 					dados.createCell(0).setCellValue(rs.getString("estab"));
@@ -228,7 +229,7 @@ public class EstatisticaEhealth {
 					String presenca = rs.getString("presenca");
 					
 					int idForm = rs.getInt("idForm");
-					dados.createCell(6).setCellValue(presenca == null ? "N/A" : presenca.equals("H") ? "Hospedado" : presenca.equals("P") ? "Pr—prio" : "");
+					dados.createCell(6).setCellValue(presenca == null ? "N/A" : presenca.equals("H") ? "Hospedado" : presenca.equals("P") ? "Prï¿½prio" : "");
 					dados.createCell(7).setCellValue(EstatisticaEhealth.tecnologias(idForm, lm));
 					
 					dados.createCell(8).setCellValue(EstatisticaEhealth.converteResultadoBooleano(rs.getBoolean("infoInst")));
@@ -269,7 +270,7 @@ public class EstatisticaEhealth {
 		if(valor){
 			return "Sim";
 		}else{
-			return "N‹o";
+			return "Nï¿½o";
 		}
 	}
 	
@@ -281,7 +282,7 @@ public class EstatisticaEhealth {
 				tipo.getLabel();
 			}
 		}
-		return "Pœblico";
+		return "Pï¿½blico";
 	}
 	
 	private static String tecnologias(Integer id, LinhaMecanica lm){

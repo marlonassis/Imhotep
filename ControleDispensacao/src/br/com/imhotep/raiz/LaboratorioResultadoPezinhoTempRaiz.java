@@ -87,7 +87,7 @@ public class LaboratorioResultadoPezinhoTempRaiz extends PadraoRaiz<LaboratorioR
 	@Override
 	public boolean atualizar() {
 		String sql = "delete from tb_laboratorio_resultado_pezinho_temp where in_exame_identificacao = "+getInstancia().getExameIdentificacao();
-		new LinhaMecanica("db_imhotep", "127.0.0.1").executarCUD(sql);
+		new LinhaMecanica().executarCUD(sql);
 		getInstancia().setIdLaboratorioResultadoPezinhoTemp(0);
 		return enviar();
 	}

@@ -2,7 +2,6 @@ package br.com.imhotep.raiz;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,15 +10,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.imhotep.auxiliar.Utilitarios;
-import br.com.imhotep.consulta.raiz.EspecialidadeConsultaRaiz;
+import br.com.imhotep.entidade.AlteracaoLocacaoLog;
 import br.com.imhotep.entidade.Cargo;
 import br.com.imhotep.entidade.CargoProfissional;
-import br.com.imhotep.entidade.Especialidade;
+import br.com.imhotep.entidade.EstruturaOrganizacional;
 import br.com.imhotep.entidade.Funcao;
-import br.com.imhotep.entidade.FuncaoProfissional;
+import br.com.imhotep.entidade.LotacaoProfissional;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.TipoConselho;
 import br.com.imhotep.entidade.Usuario;
+import br.com.imhotep.enums.TipoCrudEnum;
+import br.com.imhotep.enums.TipoLotacaoProfissionalEnum;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
 import br.com.remendo.PadraoRaiz;
@@ -33,18 +34,35 @@ public class ProfissionalRaiz extends PadraoRaiz<Profissional>{
 	private List<Funcao> funcoes = new ArrayList<Funcao>();
 	private List<Cargo> cargos = new ArrayList<Cargo>();
 	private TipoConselho tipoConselho;
-	private Especialidade especialidade;
+	private EstruturaOrganizacional estruturaOrganizacional;
+	
+	
+	public void addLotacao(){
+		LotacaoProfissional lotacaoProfissional = new LotacaoProfissional();
+		lotacaoProfissional.setEstruturaOrganizacional(getEstruturaOrganizacional());
+		lotacaoProfissional.setProfissional(getInstancia());
+		lotacaoProfissional.setTipoLotacao(TipoLotacaoProfissionalEnum.E);
+		if(super.enviarGenerico(lotacaoProfissional)){
+			gerarLogLotacao(TipoCrudEnum.I, null, lotacaoProfissional.getEstruturaOrganizacional(), lotacaoProfissional.getProfissional());
+		}
+		setEstruturaOrganizacional(new EstruturaOrganizacional());
+	}
+	
+	private void gerarLogLotacao(TipoCrudEnum tipo, String justificativa, EstruturaOrganizacional eo, Profissional profissional) {
+		AlteracaoLocacaoLogRaiz allr = new AlteracaoLocacaoLogRaiz();
+		AlteracaoLocacaoLog log = allr.montarLog(eo.getNome(), justificativa , profissional, tipo);
+		allr.setInstancia(log);
+		allr.enviar();
+	}
 	
 	public ProfissionalRaiz() {
 		novaInstancia();
 	}
 	
-	public void addFuncaoProfissional(){
-		FuncaoProfissional fp = new FuncaoProfissional();
-		fp.setFuncao(getFuncao());
-		fp.setProfissional(getInstancia());
-		super.enviarGenerico(fp);
-		setFuncao(null);
+	@Override
+	public void novaInstancia() {
+		super.novaInstancia();
+		getInstancia().setUsuario(new Usuario());
 	}
 	
 	public void addCargoProfissional(){
@@ -78,52 +96,15 @@ public class ProfissionalRaiz extends PadraoRaiz<Profissional>{
 		}
 	}
 
-	@Override
-	public void novaInstancia() {
-		super.novaInstancia();
-		getInstancia().setUsuario(new Usuario());
-		setEspecialidade(new Especialidade());
-	}
-	
-	public List<Especialidade> getListaEspecialidade(){
-		if(getTipoConselho() != null){
-			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(getTipoConselho().getIdTipoConselho());
-		}else{
-			return new EspecialidadeConsultaRaiz().listaEspecialidadePorTipoConselho(null);
-		}
-	}
-	
 	public boolean atualizar(Profissional profissional) {
 		setInstancia(profissional);
 		return super.atualizar();
-	}
-	
-	public void addEspecialidadeProfissional(){
-		if(new ProfissionalEspecialidadeRaiz().enviar(getEspecialidade(), getInstancia())){
-			if(getInstancia().getEspecialidades() == null){
-				getInstancia().setEspecialidades(new HashSet<Especialidade>());
-			}
-			getInstancia().getEspecialidades().add(getEspecialidade());
-			setEspecialidade(null);
-		}
-	}
-	
-	public void removeFuncaoProfissional(Funcao funcao){
-		String hql = "delete from FuncaoProfissional where profissional.idProfissional = "+getInstancia().getIdProfissional() +
-						" and funcao.idFuncao = "+funcao.getIdFuncao();
-		super.executa(hql);
 	}
 	
 	public void removeCargoProfissional(Cargo cargo){
 		String hql = "delete from CargoProfissional where profissional.idProfissional = "+getInstancia().getIdProfissional() +
 						" and cargo.idCargo = "+cargo.getIdCargo();
 		super.executa(hql);
-	}
-	
-	public void remEspecialidadeProfissional(Especialidade linha){
-		if(new ProfissionalEspecialidadeRaiz().executa("delete from ProfissionalEspecialidade where especialidade.idEspecialidade = "+linha.getIdEspecialidade()+" and profissional.idProfissional = "+getInstancia().getIdProfissional()).equals(1)){
-			getInstancia().getEspecialidades().remove(linha);
-		}
 	}
 	
 	@Override
@@ -147,7 +128,7 @@ public class ProfissionalRaiz extends PadraoRaiz<Profissional>{
 				return true;
 			}
 		}else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este usuário já foi escolhido. informe outro login.", "Inserção não efetuada."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Este usuÔøΩrio jÔøΩ foi escolhido. informe outro login.", "InserÔøΩÔøΩo nÔøΩo efetuada."));
 		}
 		return false;
 	}
@@ -158,14 +139,6 @@ public class ProfissionalRaiz extends PadraoRaiz<Profissional>{
 
 	public void setTipoConselho(TipoConselho tipoConselho) {
 		this.tipoConselho = tipoConselho;
-	}
-
-	public Especialidade getEspecialidade() {
-		return especialidade;
-	}
-
-	public void setEspecialidade(Especialidade especialidade) {
-		this.especialidade = especialidade;
 	}
 
 	public Funcao getFuncao() {
@@ -198,6 +171,14 @@ public class ProfissionalRaiz extends PadraoRaiz<Profissional>{
 
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
+	}
+
+	public EstruturaOrganizacional getEstruturaOrganizacional() {
+		return estruturaOrganizacional;
+	}
+
+	public void setEstruturaOrganizacional(EstruturaOrganizacional estruturaOrganizacional) {
+		this.estruturaOrganizacional = estruturaOrganizacional;
 	}
 
 }

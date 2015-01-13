@@ -26,7 +26,7 @@ public class EstornoMovimentoAlmoxarifado  implements Serializable {
 	private Date dataEstorno;
 	private String justificativa;
 	private String movimentoCompleto;
-	private Integer quantidadeEstornada;
+	private Double quantidadeEstornada;
 	private EstoqueAlmoxarifado estoqueAlmoxarifado;
 	private TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado;
 	
@@ -77,10 +77,10 @@ public class EstornoMovimentoAlmoxarifado  implements Serializable {
 	}
 	
 	@Column(name="in_quantidade_estornada")
-	public Integer getQuantidadeEstornada() {
+	public Double getQuantidadeEstornada() {
 		return quantidadeEstornada;
 	}
-	public void setQuantidadeEstornada(Integer quantidadeEstornada) {
+	public void setQuantidadeEstornada(Double quantidadeEstornada) {
 		this.quantidadeEstornada = quantidadeEstornada;
 	}
 	

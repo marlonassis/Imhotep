@@ -10,7 +10,6 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.imhotep.entidade.Especialidade;
 import br.com.imhotep.entidade.Profissional;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.entidade.TipoMovimentoAlmoxarifado;
@@ -27,13 +26,50 @@ public class Parametro implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static boolean verificaEspecialidade(String especialidade){
+	public boolean isProfissionalAdministrador(){
+		try {
+			Profissional profissionalLogado = Autenticador.getProfissionalLogado();
+			if(profissionalLogado == null){
+				return false;
+			}
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("select exists (select g.id_lotacao_profissional_funcao from administrativo.tb_lotacao_profissional_funcao g ");
+			stringBuilder.append("inner join administrativo.tb_lotacao_profissional f ");
+			stringBuilder.append("on f.id_profissional = ");
+			stringBuilder.append(profissionalLogado.getIdProfissional());
+			stringBuilder.append("inner join administrativo.tb_estrutura_organizacional_funcao h ");
+			stringBuilder.append("on h.id_estrutura_organizacional_funcao = g.id_estrutura_organizacional_funcao ");
+			stringBuilder.append("where g.id_lotacao_profissional = f.id_lotacao_profissional and h.id_funcao = ");
+			stringBuilder.append(Constantes.ID_FUNCAO_ADMINISTRADOR);
+			stringBuilder.append(" ) as adm ");
+			LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, Constantes.IP_LOCAL);
+			ResultSet rs = lm.consultar(stringBuilder.toString());
+			rs.next();
+			return rs.getBoolean("adm");
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+			
+			
+	
+	private static boolean verificaCargo(String cargo){
 		try{
 			Autenticador autenticador = Autenticador.getInstancia();
-			Profissional profissionaAtual =  autenticador == null ? null : autenticador.getProfissionalAtual();
-			if(profissionaAtual != null){
-				for(Especialidade espe : profissionaAtual.getEspecialidades()){
-					if(espe.getDescricao().equalsIgnoreCase(especialidade)){
+			Profissional profissionalAtual =  autenticador == null ? null : autenticador.getProfissionalAtual();
+			if(profissionalAtual != null){
+				String sql = "select b.cv_nome from administrativo.tb_cargo_profissional a "+
+								"inner join administrativo.tb_cargo b on a.id_cargo = b.id_cargo "+
+								"inner join tb_profissional c on a.id_profissional = c.id_profissional "+
+								"where c.id_profissional = "+profissionalAtual.getIdProfissional();
+				LinhaMecanica lm = new LinhaMecanica(Constantes.NOME_BANCO_IMHOTEP, Constantes.IP_LOCAL);
+				List<Object[]> listaResultado = lm.getListaResultado(sql);
+				for(Object[] obj : listaResultado){
+					String c = String.valueOf(obj[0]);
+					if(c.equalsIgnoreCase(cargo)){
 						return true;
 					}
 				}
@@ -45,11 +81,11 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean isUsuarioTeste(){
-		return verificaEspecialidade("Teste");
+		return verificaCargo("Teste");
 	}
 	
 	public static boolean isUsuarioFarmaceutico(){
-		return verificaEspecialidade("Farmac");
+		return verificaCargo("Farmac");
 	}
 	
 	public boolean getUsuarioFarmaceutico(){
@@ -61,7 +97,7 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean isUsuarioEngenheiro(){
-		return verificaEspecialidade("Engenharia");
+		return verificaCargo("Engenharia");
 	}
 	
 	public boolean getUsuarioEngenheiro(){
@@ -69,36 +105,21 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean isUsuarioMedico(){
-		return verificaEspecialidade("Médico");
+		return verificaCargo("M√©dico");
 	}
 	
 	public boolean getUsuarioMedico(){
 		return isUsuarioMedico();
 	}
 
-	public boolean isEspecialidade(String especialidade){
-		Profissional p;
-		try {
-			p = Autenticador.getProfissionalLogado();
-			for(Especialidade e : p.getEspecialidades()){
-				if(e.getDescricao().equals(especialidade)){
-					return true;
-				}
-			}
-		} catch (ExcecaoProfissionalLogado e1) {
-			e1.printStackTrace();
-		}
-		return false;
-	}
-	
 	public static boolean isEngenharia(){
-		return new Parametro().isEspecialidade("Engenharia");
+		return verificaCargo("Engenharia");
 	}
 	
 	public static TipoMovimento tipoMovimentoDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-		hashMap.put("tipoMovimento", "Dispensação".toLowerCase());
+		hashMap.put("tipoMovimento", "Dispensa√ß√£o".toLowerCase());
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
 		sb.append(" lower(to_ascii(o.descricao)) = to_ascii(:tipoMovimento)");
 		return cg.consultaUnica(sb, hashMap);
@@ -187,6 +208,16 @@ public class Parametro implements Serializable {
 		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
 	}
 	
+	public static TipoMovimentoAlmoxarifado tipoMovimentoInventarioEntradaAlmoxarifado(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 10");
+		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
+	}
+	
+	public static TipoMovimentoAlmoxarifado tipoMovimentoInventarioSaidaAlmoxarifado(){
+		StringBuilder sb = new StringBuilder("select o from TipoMovimentoAlmoxarifado o where o.idTipoMovimentoAlmoxarifado = 11");
+		return new ConsultaGeral<TipoMovimentoAlmoxarifado>().consultaUnica(sb, null);
+	}
+	
 	public static TipoMovimento tipoMovimentoInventarioEntrada(){
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where o.idTipoMovimento = 30");
 		return new ConsultaGeral<TipoMovimento>().consultaUnica(sb, null);
@@ -255,14 +286,14 @@ public class Parametro implements Serializable {
 	public static List<TipoMovimento> tiposMovimentoAjusteDispensacao(){
 		ConsultaGeral<TipoMovimento> cg = new ConsultaGeral<TipoMovimento>();
 		StringBuilder sb = new StringBuilder("select o from TipoMovimento o where");
-		sb.append(" lower(to_ascii(o.descricao)) = lower(to_ascii('Devolução de medicamento dispensado'))");
-		sb.append(" or lower(to_ascii(o.descricao)) = lower(to_ascii('Saída de medicamento dispensado'))");
+		sb.append(" lower(to_ascii(o.descricao)) = lower(to_ascii('DevoluÔøΩÔøΩo de medicamento dispensado'))");
+		sb.append(" or lower(to_ascii(o.descricao)) = lower(to_ascii('SaÔøΩda de medicamento dispensado'))");
 		return new ArrayList<TipoMovimento>(cg.consulta(sb, null));
 	}
 	
 	public static boolean usuarioEnfermeiroMedico(Usuario usuario){
 		String usuarioEspecialidade = usuarioEspecialidade(usuario);
-		return usuarioEspecialidade.equalsIgnoreCase("Enfermagem") || usuarioEspecialidade.equalsIgnoreCase("Médico");
+		return usuarioEspecialidade.equalsIgnoreCase("Enfermagem") || usuarioEspecialidade.equalsIgnoreCase("MÔøΩdico");
 	}
 	
 	public static boolean usuarioEnfermeiro(Usuario usuario){
@@ -270,7 +301,7 @@ public class Parametro implements Serializable {
 	}
 	
 	public static boolean usuarioMedico(Usuario usuario){
-		return usuarioEspecialidade(usuario).equalsIgnoreCase("Médico");
+		return usuarioEspecialidade(usuario).equalsIgnoreCase("MÔøΩdico");
 	}
 	
 	private static String usuarioEspecialidade(Usuario usuario){

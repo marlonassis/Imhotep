@@ -23,7 +23,6 @@ public class ChamadoRaiz extends PadraoRaiz<Chamado>{
 			getInstancia().setProfissionalSolicitante(Autenticador.getInstancia().getProfissionalAtual());
 			getInstancia().setDataSolicitacao(new Date());
 			getInstancia().setTipoChamadoStatus(TipoChamadoStatusEnum.A);
-			getInstancia().setUnidadeSolicitante(Autenticador.getInstancia().getUnidadeAtual());
 			getInstancia().setUnidadeReceptora(Parametro.unidadeCPD());
 			if(super.enviar()){
 				super.novaInstancia();
@@ -59,7 +58,7 @@ public class ChamadoRaiz extends PadraoRaiz<Chamado>{
 				e.printStackTrace();
 			}
 		}else{
-			mensagem("Esste chamado n‹o est‡ mais dispon’vel.", null, Constantes.INFO);
+			mensagem("Esste chamado nï¿½o estï¿½ mais disponï¿½vel.", null, Constantes.INFO);
 		}
 		return false;
 	}

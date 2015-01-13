@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:co="http://java.sun.com/jsf/composite">
+	
+	<co:interface>
+		<co:attribute name="label" required="true" />
+		<co:attribute name="id" required="true"/>
+		<co:attribute name="value" required="true" />
+		<co:attribute name="title" required="true" />
+		<co:attribute name="required" default="false" />
+		<co:attribute name="disabled" default="false"/>
+	</co:interface>
+	
+	<co:implementation>
+		<h:panelGrid>
+			<h:panelGroup>
+				<c:if test="#{cc.attrs.required}">
+					<h:outputText value="*" style="color:red" />
+				</c:if>
+				<h:outputLabel for="#{cc.attrs.id}" value="#{cc.attrs.label}:" />
+			</h:panelGroup>
+			<h:panelGroup>
+				<p:inputText id="#{cc.attrs.id}"
+							 disabled="#{cc.attrs.disabled}"
+							 required="#{cc.attrs.required}"
+							 value="#{cc.attrs.value}"
+							 onkeyup="apenasNumeroComVirgulaQuatroCasas(this);" 
+						 	 title="#{cc.attrs.title}" 
+						 	 converter="monetarioQuatroCasasConversor"
+						 	 label="#{cc.attrs.label}">
+					<co:insertChildren/>
+			</p:inputText>
+			</h:panelGroup>
+		</h:panelGrid>
+	</co:implementation>
+	
+</html>

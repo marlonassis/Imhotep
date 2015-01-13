@@ -4,7 +4,7 @@ public enum TipoStatusSolicitacaoExameEnum {
 	AA("Aberto"), 
 	AB("Liberado"),
 	AC("Recusado"),
-	AD("Resultados Lançados"),
+	AD("Resultados Lan√ßados"),
 	AE("Verificado"),
 	AF("Impresso");
 	

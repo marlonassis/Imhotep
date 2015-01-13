@@ -23,5 +23,9 @@ public class Utilitarios extends br.com.remendo.utilidades.Utilitarios {
 		valor = valor.replace("{dataNascimento}", new SimpleDateFormat("dd/MM/yyyy").format(profissional.getDataNascimento()));
 		return valor;
 	}
+	
+	public String getNomeAplicacao(){
+		return Constantes.NOME_APLICACAO;
+	}
 
 }

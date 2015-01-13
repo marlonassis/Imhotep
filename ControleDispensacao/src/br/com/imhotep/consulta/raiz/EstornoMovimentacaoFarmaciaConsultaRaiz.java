@@ -29,7 +29,7 @@ public class EstornoMovimentacaoFarmaciaConsultaRaiz  extends ConsultaGeral<Devo
 						"inner join tb_tipo_movimento b on a.id_tipo_movimento = b.id_tipo_movimento "+
 						"where b.tp_operacao != 'E' and a.id_estoque = "+idE+"), 0) as qtd";
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {
@@ -55,7 +55,7 @@ public class EstornoMovimentacaoFarmaciaConsultaRaiz  extends ConsultaGeral<Devo
 					 "(select min(b.dt_data_movimento) from tb_movimento_livro b where b.id_estoque = "+idEstoque+") "+
 					 "and a.id_estoque = "+idEstoque+"";
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {
@@ -77,7 +77,7 @@ public class EstornoMovimentacaoFarmaciaConsultaRaiz  extends ConsultaGeral<Devo
 					 "where cast(to_char(a.dt_data_movimento, 'YYYY-MM-DD HH24:MI:SS') as timestamp) > '"+dataFormat+"' "+
 					 "and a.id_estoque = "+idEstoque+" and b.tp_operacao != 'E'"; 
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {
@@ -103,7 +103,7 @@ public class EstornoMovimentacaoFarmaciaConsultaRaiz  extends ConsultaGeral<Devo
 					 "order by a.dt_data_movimento  "+
 					 "limit 1"; 
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
 		ResultSet rs = lm.consultar(sql);
 		try {

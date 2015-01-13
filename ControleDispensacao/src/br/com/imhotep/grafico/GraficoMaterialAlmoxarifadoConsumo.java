@@ -14,6 +14,7 @@ import java.util.Map;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.comparador.DataMesAnoComparador;
 import br.com.imhotep.entidade.MaterialAlmoxarifado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
@@ -25,7 +26,7 @@ public class GraficoMaterialAlmoxarifadoConsumo {
 	public CartesianChartModel montarGrafico(MaterialAlmoxarifado materialAlmoxarifado, Date dataIni, Date dataFim){
 		linearModel = new CartesianChartModel();  
         LineChartSeries series1 = new LineChartSeries();  
-        series1.setLabel("Dispensações Simples");
+        series1.setLabel("Dispensa√ß√µes Simples");
         Map<String, Integer> mapGra = consultaQuantidades(materialAlmoxarifado, dataIni, dataFim);
         List<String> keys = new ArrayList<String>(mapGra.keySet());
         Collections.sort(keys, new DataMesAnoComparador());
@@ -52,7 +53,7 @@ public class GraficoMaterialAlmoxarifadoConsumo {
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		

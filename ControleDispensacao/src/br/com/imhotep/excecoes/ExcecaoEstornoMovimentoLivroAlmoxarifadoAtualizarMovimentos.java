@@ -1,5 +1,5 @@
 /**
- * Criado por M‡rlon Assis
+ * Criado por Mï¿½rlon Assis
  */
 package br.com.imhotep.excecoes;
 
@@ -12,7 +12,7 @@ public class ExcecaoEstornoMovimentoLivroAlmoxarifadoAtualizarMovimentos extends
 	private static final long serialVersionUID = 5257983742915090342L;
 
 	public ExcecaoEstornoMovimentoLivroAlmoxarifadoAtualizarMovimentos(){
-		super.mensagem("N‹o foi poss’vel reordenar o movimento", "");
+		super.mensagem("NÃ£o foi possÃ­vel reordenar o movimento", "");
 	}
 	
 }

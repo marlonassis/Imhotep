@@ -54,9 +54,9 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	}
 	
 	/**
-	 * método que verifica se existe algum valor na propriedade a ser procurada
+	 * mÔøΩtodo que verifica se existe algum valor na propriedade a ser procurada
 	 * @param Object arg0
-	 * @return true se o campo não for nulo
+	 * @return true se o campo nÔøΩo for nulo
 	 */
 	protected boolean campoNaoNulo(Object valor){
 		if(valor instanceof Integer || valor instanceof Float || valor instanceof Double || valor instanceof Number || valor instanceof String){
@@ -69,7 +69,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	protected boolean isPesquisaValorada(){
 		if(!camposConsulta.isEmpty()){
     		Set<String> campos = camposConsulta.keySet();
-    		//laço para pecorrer todos itens da pesquisa que o programador informou no consulta.java
+    		//laÔøΩo para pecorrer todos itens da pesquisa que o programador informou no consulta.java
     		for(String campo : campos){
 				try {
 					Object obj = getValorPropriedadePesquisada(campo);
@@ -85,7 +85,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 	}
 	
 	/**
-	 * método que adiciona o cast para alguns tipos de valor
+	 * mÔøΩtodo que adiciona o cast para alguns tipos de valor
 	 * @param String arg0 Object arg1
 	 * @return String com o cast
 	 */
@@ -105,10 +105,11 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 		Object obj = instancia;
 		//criando array com todos os itens da pesquisa. ex.: o.usuario.pessoa -> [o] [usuario] [pessoa]
 		String[] campoConsultaDesmembrado = campo.split("\\.");
-		//a variável campoSubS recebe o nome do item do campoConsultaDesmenbrado alterado para o padrão de um método get no camelcase. ex.: getUsuario ou getPessoa 
-		//laço que pecorre todos os níveis do hql para para poder pegar o valor que será consultado. ex.: o.usuario.pessoa -> primeiro vai pegar o getUsuario para depois pegar o getPessoa
+		//a variÔøΩvel campoSubS recebe o nome do item do campoConsultaDesmenbrado alterado para o padrÔøΩo de um mÔøΩtodo get no camelcase. ex.: getUsuario ou getPessoa 
+		//laÔøΩo que pecorre todos os nÔøΩveis do hql para para poder pegar o valor que serÔøΩ consultado. ex.: o.usuario.pessoa -> primeiro vai pegar o getUsuario para depois pegar o getPessoa
 		for(int i = 1 ; i < campoConsultaDesmembrado.length; i++){
 			String campoConsulta = campoConsultaDesmembrado[i];
+			campoConsulta = campoConsulta.replace(")", "");
 			campoSubS = "get".concat(campoConsulta.substring(0,1).toUpperCase().trim().concat(campoConsulta.substring(1).trim()));
 			if(obj != null){
 	            Class cls = Class.forName(obj.getClass().getName());  
@@ -119,15 +120,43 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 		return obj;
 	}
 	
+	public boolean isTodosCamposVazios(){
+		if(!camposConsulta.isEmpty()){
+			try {
+	    		Set<String> campos = camposConsulta.keySet();
+	    		for(String campo : campos){
+	    			Object obj = getValorPropriedadePesquisada(campo);
+					if(campoNaoNulo(obj)){
+						return false;
+					}
+	    		}
+	    		return true;
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
 	public List<T> getList(){
 		List<T> resultadoBuscaList = null;
         try{
         	boolean achouCampoPreenchidoPeloUsuario = false;
         	boolean adicionadoWhere=false;
-        	//insere a clausula 'where' caso não exista ainda
+        	//insere a clausula 'where' caso nÔøΩo exista ainda
         	if(!camposConsulta.isEmpty()){
 	    		Set<String> campos = camposConsulta.keySet();
-	    		//laço para pecorrer todos itens da pesquisa que o programador informou no consulta.java
+	    		//laÔøΩo para pecorrer todos itens da pesquisa que o programador informou no consulta.java
 	    		for(String campo : campos){
 	    			Object obj = getValorPropriedadePesquisada(campo);
     				if(campoNaoNulo(obj)){
@@ -137,7 +166,7 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
 						consultaGeral.getAddValorConsulta().put(parametro, (operador.contains("like") ? "%" + obj.toString().toLowerCase() + "%" : obj));
 		    			String campo2 = addCast(parametro, obj);
 		    			
-		    			//se o usuário já adicionou a cláusula 'where' apenas é adicionado o campo de pesquisa e é colocado false para a varíavel 'adicionaWhere' para que insira o operado a partir dos próximos campos
+		    			//se o usuÔøΩrio jÔøΩ adicionou a clÔøΩusula 'where' apenas ÔøΩ adicionado o campo de pesquisa e ÔøΩ colocado false para a varÔøΩavel 'adicionaWhere' para que insira o operado a partir dos prÔøΩximos campos
 		    			String clausula = " "+ (operador.contains(INCLUINDO_TUDO.trim()) ? "lower(to_ascii(" + campo + "))" : 
 		    									(operador.contains(IGUAL_DATA.trim()) ? IGUAL_DATA.replaceAll("DATA", campo) : campo)) + " "+ (operador.equals(IGUAL_DATA) ? " = " : operador) + campo2;//.replaceAll("valor", campo2);
 		    			if(adicionadoWhere){
@@ -163,8 +192,8 @@ public abstract class PadraoConsulta<T> extends GerenciadorConexao implements IP
         	if(achouCampoPreenchidoPeloUsuario || isPesquisaCamposDespadronizado()){
         		resultadoBuscaList = (List<T>) consultaGeral.resultadoBuscaList();
         	}else{
-        		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que não existe algum campo de pesquisa
-        		//essa restrição foi criada para evitar que entidades com muitos itens estourem o heap do java
+        		//verifica se a pesquisa deve ser guiada pelo usuario para os casos em que nÔøΩo existe algum campo de pesquisa
+        		//essa restriÔøΩÔøΩo foi criada para evitar que entidades com muitos itens estourem o heap do java
         		if(isPesquisaGuiada()){
         			return null;
         		}else{

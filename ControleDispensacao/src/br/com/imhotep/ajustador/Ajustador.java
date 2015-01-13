@@ -1,5 +1,5 @@
 /**
- * Criado por M‡rlon Assis
+ * Criado por Mï¿½rlon Assis
  */
 package br.com.imhotep.ajustador;
 
@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,7 @@ import br.com.imhotep.temp.PadraoFluxoTemp;
 
 /**
  * @author marlonassis
- * Classe usada para criar mŽtodos que tenham por objetivo 
+ * Classe usada para criar mï¿½todos que tenham por objetivo 
  * fazer algum tipo de ajuste no sistema que causado por algum bug.
  */
 public class Ajustador {
@@ -58,7 +57,7 @@ public class Ajustador {
 	
 	public void iniciarAtualizacao() {
 		try{
-			System.out.println("In’cio");
+			System.out.println("Inï¿½cio");
 			System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
 			TipoMovimento tipoMovimentoDS = Parametro.tipoMovimentoDispensacaoSimples();
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -123,7 +122,7 @@ public class Ajustador {
 					ml.setQuantidadeMovimentacao(Integer.valueOf(lotes.get(l)));
 					ml.setDataMovimento(item.getSolicitacaoMedicamentoUnidade().getDataDispensacao());
 					ml.setQuantidadeAtual(0);
-					ml.setUsuarioMovimentacao(item.getSolicitacaoMedicamentoUnidade().getProfissionalDispensacao().getUsuario());
+					ml.setProfissionalMovimentacao(item.getSolicitacaoMedicamentoUnidade().getProfissionalDispensacao());
 					
 					DispensacaoSimples ds = new DispensacaoSimples();
 					ds.setSolicitacaoMedicamentoUnidadeItem(item);
@@ -149,7 +148,7 @@ public class Ajustador {
 	
 	public static void main(String[] args) {
 		try{
-			System.out.println("In’cio");
+			System.out.println("Inï¿½cio");
 			System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
 			String sql = "select id_solicitacao_medicamento_unidade_item from tb_solicitacao_medicamento_unidade_item order by id_solicitacao_medicamento_unidade_item"; 
 			LinhaMecanica lm = new LinhaMecanica();

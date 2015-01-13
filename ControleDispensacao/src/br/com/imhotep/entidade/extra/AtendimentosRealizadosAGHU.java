@@ -17,7 +17,7 @@ public class AtendimentosRealizadosAGHU {
 	private String municipio;
 	private String crm;
 	private String uf;	
-	//Solicitação de Mudança #30
+	//Solicitaï¿½ï¿½o de Mudanï¿½a #30
 	private String condicao;
 	//Requisito Funcional #39
 	private String tipoPaciente;
@@ -42,7 +42,7 @@ public class AtendimentosRealizadosAGHU {
 		this.municipio = municipio;
 		this.crm = crm;
 		this.uf = uf;		
-		//Solicitação de Mudança #30
+		//Solicitaï¿½ï¿½o de Mudanï¿½a #30
 		this.condicao = condicao;
 		//Requisito Funcional #39
 		this.tipoPaciente = tipoPaciente;
@@ -124,20 +124,21 @@ public class AtendimentosRealizadosAGHU {
 	
 	public String getEndereco(){
 		Object[] array = null;
+		Utilitarios util = new Utilitarios();
 		if(getLogradouro() != null && !getLogradouro().isEmpty() && !getLogradouro().equals("null"))
-			array = Utilitarios.addElemento(array, getLogradouro());
+			array = util.addElemento(array, getLogradouro());
 		
 		if(getNumero() != null)
-			array = Utilitarios.addElemento(array, String.valueOf(getNumero()));
+			array = util.addElemento(array, String.valueOf(getNumero()));
 			
 		if(getBairro() != null && !getBairro().isEmpty() && !getBairro().equals("null"))
-			array = Utilitarios.addElemento(array, getBairro());
+			array = util.addElemento(array, getBairro());
 
 		if(getCep() != null)
-			array = Utilitarios.addElemento(array, String.valueOf(getCep()));
+			array = util.addElemento(array, String.valueOf(getCep()));
 		
 		if(getMunicipio() != null && !getMunicipio().isEmpty() && !getMunicipio().equals("null"))
-			array = Utilitarios.addElemento(array, getMunicipio().concat(" - ").concat(getUf()));
+			array = util.addElemento(array, getMunicipio().concat(" - ").concat(getUf()));
 		
 		String res = "";
 		if(array == null){
@@ -217,12 +218,12 @@ public class AtendimentosRealizadosAGHU {
 		this.uf = uf;
 	}
 
-	//Solicitação de Mudança #30
+	//Solicitaï¿½ï¿½o de Mudanï¿½a #30
 	public String getCondicao() {
 		return condicao;
 	}
 
-	//Solicitação de Mudança #30
+	//Solicitaï¿½ï¿½o de Mudanï¿½a #30
 	public void setCondicao(String condicao) {
 		this.condicao = condicao;
 	}

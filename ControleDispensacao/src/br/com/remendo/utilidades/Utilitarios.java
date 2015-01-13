@@ -133,7 +133,7 @@ public class Utilitarios{
 	return "";
 }  
 	
-	/* Método extraído do link
+	/* MÔøΩtodo extraÔøΩdo do link
 	 * http://stackoverflow.com/questions/14378437/find-component-by-id-in-jsf
 	 */
 	public UIComponent findComponent(final String id){
@@ -291,7 +291,7 @@ public class Utilitarios{
 		return logoTipoHUInput;
 	}
 	
-	public static Object[][] addElemento(Object[][] matriz, int pos, Object elemento) {
+	public Object[][] addElemento(Object[][] matriz, int pos, Object elemento) {
 		if(matriz==null){
 			return new Object[][] { {elemento} };
 		}
@@ -317,7 +317,7 @@ public class Utilitarios{
 	
 	
 	
-	public static Object[] addElemento(Object[] array, Object elemento) {
+	public Object[] addElemento(Object[] array, Object elemento) {
 		if(array==null){
 			return new Object[] {elemento};
 		}
@@ -365,6 +365,12 @@ public class Utilitarios{
 				e.printStackTrace();
 			}
 		}
+		return null;
+	}
+	
+	public String formatarDataBrasil(Date date){
+		if(date != null)
+			return new SimpleDateFormat("dd/MM/yyyy").format(date);
 		return null;
 	}
 	
@@ -457,13 +463,13 @@ public class Utilitarios{
 	
 
 	/**
-	 * Esse método retornará o valor formatado de acordo com a máscara informada. Cada caracter a 
-	 * ser substituído na máscara deve ser simbolizado por '#'.
+	 * Esse mÔøΩtodo retornarÔøΩ o valor formatado de acordo com a mÔøΩscara informada. Cada caracter a 
+	 * ser substituÔøΩdo na mÔøΩscara deve ser simbolizado por '#'.
 	 * @param valor
 	 * @param mascara
-	 * @return String com o valor formatado de acordo com a máscara
+	 * @return String com o valor formatado de acordo com a mÔøΩscara
 	 */
-	public static String formatarValorMascara(String valor, String mascara){
+	public String formatarValorMascara(String valor, String mascara){
 		if(valor != null && !valor.isEmpty()){
 			for(char c : valor.toCharArray()){
 				mascara = mascara.replaceFirst("#", String.valueOf(c));
@@ -598,9 +604,9 @@ public class Utilitarios{
 	}
 	
 	/**
-	 * Método que retorna o nome do Mês de acordo com o valor repassado por argumento
+	 * MÔøΩtodo que retorna o nome do MÔøΩs de acordo com o valor repassado por argumento
 	 * @param int arg0
-	 * @return nome do mês
+	 * @return nome do mÔøΩs
 	 */
 	public static String mes(int arg0){
 		String[] meses = DateFormatSymbols.getInstance().getMonths();
@@ -615,9 +621,9 @@ public class Utilitarios{
 	}
 
 	/**
-	 * Método que retorna a posição do Mês de acordo com o valor repassado por argumento
+	 * MÔøΩtodo que retorna a posiÔøΩÔøΩo do MÔøΩs de acordo com o valor repassado por argumento
 	 * @param int arg0
-	 * @return número do mês
+	 * @return nÔøΩmero do mÔøΩs
 	 */
 	public static Integer posMes(String arg0){
 		String[] meses = DateFormatSymbols.getInstance().getMonths();

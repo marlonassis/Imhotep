@@ -7,7 +7,7 @@ package br.com.imhotep.enums;
 public enum TipoProximoEstadoRecursoEnum {
 	A("Aberto"),
 	F("Fechado"), 
-	N("N‹o Resolvido");
+	N("NÃ£o Resolvido");
 	
 	private String label;
 	

@@ -204,7 +204,7 @@ public class EstornoMovimentacaoAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLiv
 	private void atualizarMovimentoAlmoxarifado(int idEstoqueAlmoxarifado) throws SQLException, ExcecaoEstornoMovimentoLivroAlmoxarifadoAtualizarMovimentos{
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs2 = lm.consultar("select a.id_movimento_livro_almoxarifado, b.tp_operacao, a.in_quantidade_movimentacao from tb_movimento_livro_almoxarifado a "
 					+ "inner join tb_tipo_movimento_almoxarifado b on a.id_tipo_movimento_almoxarifado = b.id_tipo_movimento_almoxarifado "
 					+ "where a.id_estoque_almoxarifado = " + idEstoqueAlmoxarifado + " order by a.dt_data_movimento");
@@ -234,7 +234,7 @@ public class EstornoMovimentacaoAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLiv
 	private void atualizarEstoqueAlmoxarifado(int idEstoque) throws SQLException, ExcecaoEstornoMovimentoLivroAlmoxarifadoAtualizarEstoque{
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs2 = lm.consultar("select coalesce((select sum(a.in_quantidade_movimentacao) from tb_movimento_livro_almoxarifado a "+
 										"inner join tb_tipo_movimento_almoxarifado b on a.id_tipo_movimento_almoxarifado = b.id_tipo_movimento_almoxarifado "+
 										"where b.tp_operacao = 'E' and a.id_estoque_almoxarifado = "+idEstoque+"), 0) "+

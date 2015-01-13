@@ -37,7 +37,7 @@ public class MaterialAlmoxarifadoPrecoMedioTransportadoMedLynxRaiz extends Padra
 		List<MaterialAlmoxarifadoPrecoMedioTransportadoMedLynx> busca = super.getBusca("select o from MaterialAlmoxarifadoPrecoMedioTransportadoMedLynx o where o.materialAlmoxarifado.idMaterialAlmoxarifado = "+idMaterialAlmoxarifado);
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		if(busca != null && !busca.isEmpty())
 			return atualizarPrecoMedioSaldo(saldo, precoMedio, update, idMaterialAlmoxarifado, lm);
 		else{
@@ -70,7 +70,7 @@ public class MaterialAlmoxarifadoPrecoMedioTransportadoMedLynxRaiz extends Padra
 					update = "update tb_material_almoxarifado_preco_medio_transportado_medlynx set db_preco_medio_transportado = "+precoMedio+" where id_material_almoxarifado = "+idMaterialAlmoxarifado;
 		boolean executarCUD = lm.executarCUD(update);
 		if(executarCUD){
-			super.mensagem("Atualização realizada com suscesso", null, Constantes.INFO);
+			super.mensagem("AtualizaÔøΩÔøΩo realizada com suscesso", null, Constantes.INFO);
 			novaInstancia();
 		}else
 			super.mensagem("Erro ao cadastrar", null, Constantes.ERROR);

@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.enums.TipoEhealthNaturezaEnum;
 import br.com.imhotep.enums.TipoEstadoEnum;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
@@ -126,7 +127,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 		private static void atualizarTipoUnidade(String linkDataSus) {
 			LinhaMecanica lm = new LinhaMecanica();
     		lm.setNomeBanco("db_imhotep");
-    		lm.setIp("127.0.0.1");
+    		lm.setIp(Constantes.IP_LOCAL);
 			String sql = "select * from tb_ehealth_estabelecimento where cv_tipo_unidade is null "+ 
 						 "order by id_ehealth_estabelecimento ";
 			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
@@ -193,7 +194,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 		private static void migrarEstado(){
 			LinhaMecanica lm = new LinhaMecanica();
     		lm.setNomeBanco("db_imhotep");
-    		lm.setIp("127.0.0.1");
+    		lm.setIp(Constantes.IP_LOCAL);
 			String sql = "select a.id_ehealth_municipio, b.cv_nome as estado from tb_ehealth_municipio a " + 
 						"inner join tb_ehealth_estado b on b.id_ehealth_estado = a.id_ehealth_estado order by a.id_ehealth_municipio";
 			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
@@ -205,7 +206,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 					System.out.println(sql);
 					LinhaMecanica lml = new LinhaMecanica();
 					lml.setNomeBanco("db_imhotep");
-					lml.setIp("127.0.0.1");
+					lml.setIp(Constantes.IP_LOCAL);
 					lml.executarCUD(sql);
 				}
 			} catch (SQLException e) {
@@ -225,7 +226,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 		private static void migrarNatureza(){
 			LinhaMecanica lm = new LinhaMecanica();
     		lm.setNomeBanco("db_imhotep");
-    		lm.setIp("127.0.0.1");
+    		lm.setIp(Constantes.IP_LOCAL);
 			String sql = "select id_ehealth_estabelecimento, cv_natureza from tb_ehealth_estabelecimento order by id_ehealth_estabelecimento";
 			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 			try {
@@ -236,7 +237,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 					System.out.println(sql);
 					LinhaMecanica lml = new LinhaMecanica();
 					lml.setNomeBanco("db_imhotep");
-					lml.setIp("127.0.0.1");
+					lml.setIp(Constantes.IP_LOCAL);
 					lml.executarCUD(sql);
 				}
 			} catch (SQLException e) {
@@ -292,7 +293,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 					
 					todos.append(sb.toString());
 				} catch (Exception e) {
-					erro.append("Município:").append(municipio.getLink()).append(" - id:").append(municipio.getIdMunicipio()).append("\n");
+					erro.append("MunicÔøΩpio:").append(municipio.getLink()).append(" - id:").append(municipio.getIdMunicipio()).append("\n");
 				}
 			}
 			
@@ -342,7 +343,7 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 				int i = 0;
 				boolean achouNatureza = false;
 				while ((line = reader.readLine()) != null) {
-					if(achouNatureza || line.contains("Natureza da Organização")){
+					if(achouNatureza || line.contains("Natureza da OrganizaÔøΩÔøΩo")){
 						achouNatureza = true;
 						if(achouNatureza){
 							i++;

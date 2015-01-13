@@ -19,16 +19,15 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "tb_movimento_livro_almoxarifado")
 public class MovimentoLivroAlmoxarifado implements Serializable {
-	
-	private static final long serialVersionUID = 8967836589200619134L;
+	private static final long serialVersionUID = 3514665185879536756L;
 	
 	private int idMovimentoLivroAlmoxarifado;
 	private TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado;
-	private Integer quantidadeMovimentacao;
+	private Double quantidadeMovimentacao;
 	private Date dataMovimento;
 	private Profissional profissionalInsercao;
 	private EstoqueAlmoxarifado estoqueAlmoxarifado;
-	private Integer quantidadeAtual;
+	private Double quantidadeAtual;
 	private DispensacaoSimplesAlmoxarifado dispensacaoSimplesAlmoxarifado;
 	private String justificativa;
 
@@ -81,18 +80,18 @@ public class MovimentoLivroAlmoxarifado implements Serializable {
 	}
 	
 	@Column(name = "in_quantidade_movimentacao")
-	public Integer getQuantidadeMovimentacao() {
+	public Double getQuantidadeMovimentacao() {
 		return quantidadeMovimentacao;
 	}
-	public void setQuantidadeMovimentacao(Integer quantidadeMovimentacao) {
+	public void setQuantidadeMovimentacao(Double quantidadeMovimentacao) {
 		this.quantidadeMovimentacao = quantidadeMovimentacao;
 	}
 	
 	@Column(name = "in_quantidade_atual")
-	public Integer getQuantidadeAtual() {
+	public Double getQuantidadeAtual() {
 		return quantidadeAtual;
 	}
-	public void setQuantidadeAtual(Integer quantidadeAtual) {
+	public void setQuantidadeAtual(Double quantidadeAtual) {
 		this.quantidadeAtual = quantidadeAtual;
 	}
 	
@@ -117,7 +116,6 @@ public class MovimentoLivroAlmoxarifado implements Serializable {
 	public String toString() {
 		return tipoMovimentoAlmoxarifado.getDescricao().concat(" - ").concat(estoqueAlmoxarifado.getMaterialAlmoxarifado().getDescricao());
 	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,17 +127,24 @@ public class MovimentoLivroAlmoxarifado implements Serializable {
 				+ ((estoqueAlmoxarifado == null) ? 0 : estoqueAlmoxarifado
 						.hashCode());
 		result = prime * result + idMovimentoLivroAlmoxarifado;
+		result = prime * result
+				+ ((justificativa == null) ? 0 : justificativa.hashCode());
 		result = prime
 				* result
 				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
 						.hashCode());
+		result = prime * result
+				+ ((quantidadeAtual == null) ? 0 : quantidadeAtual.hashCode());
+		result = prime
+				* result
+				+ ((quantidadeMovimentacao == null) ? 0
+						: quantidadeMovimentacao.hashCode());
 		result = prime
 				* result
 				+ ((tipoMovimentoAlmoxarifado == null) ? 0
 						: tipoMovimentoAlmoxarifado.hashCode());
 		return result;
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -154,6 +159,12 @@ public class MovimentoLivroAlmoxarifado implements Serializable {
 				return false;
 		} else if (!dataMovimento.equals(other.dataMovimento))
 			return false;
+		if (dispensacaoSimplesAlmoxarifado == null) {
+			if (other.dispensacaoSimplesAlmoxarifado != null)
+				return false;
+		} else if (!dispensacaoSimplesAlmoxarifado
+				.equals(other.dispensacaoSimplesAlmoxarifado))
+			return false;
 		if (estoqueAlmoxarifado == null) {
 			if (other.estoqueAlmoxarifado != null)
 				return false;
@@ -161,10 +172,25 @@ public class MovimentoLivroAlmoxarifado implements Serializable {
 			return false;
 		if (idMovimentoLivroAlmoxarifado != other.idMovimentoLivroAlmoxarifado)
 			return false;
+		if (justificativa == null) {
+			if (other.justificativa != null)
+				return false;
+		} else if (!justificativa.equals(other.justificativa))
+			return false;
 		if (profissionalInsercao == null) {
 			if (other.profissionalInsercao != null)
 				return false;
 		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		if (quantidadeAtual == null) {
+			if (other.quantidadeAtual != null)
+				return false;
+		} else if (!quantidadeAtual.equals(other.quantidadeAtual))
+			return false;
+		if (quantidadeMovimentacao == null) {
+			if (other.quantidadeMovimentacao != null)
+				return false;
+		} else if (!quantidadeMovimentacao.equals(other.quantidadeMovimentacao))
 			return false;
 		if (tipoMovimentoAlmoxarifado == null) {
 			if (other.tipoMovimentoAlmoxarifado != null)
@@ -174,8 +200,5 @@ public class MovimentoLivroAlmoxarifado implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
 	
 }

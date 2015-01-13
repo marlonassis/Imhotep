@@ -2,7 +2,7 @@ package br.com.imhotep.entidade.extra;
 
 /**
  * Data: 05/09/2014
- * Funcionalidade: Relatório de média de consumo e previsão de estoque
+ * Funcionalidade: Relatï¿½rio de mï¿½dia de consumo e previsï¿½o de estoque
  * JASPER: RelatorioMediaConsumoAlmoxarifado.jasper 
  */
 
@@ -13,16 +13,16 @@ import java.util.List;
 public class MediaConsumoAlmoxarifado {
 	private static final int MESES_PERIODO_CONSUMO = 6;
 	private Integer idMaterialAlmoxarfiado;
-	private Integer saldoAtual;
+	private Double saldoAtual;
 	private String descricao;
 	private String sigla;
-	private List<Integer> totalConsumoList;
+	private List<Double> totalConsumoList;
 	
 	//MUDANCA #
 	private List<Long> prevEstoque;
 	
 	public MediaConsumoAlmoxarifado(Integer idMaterialAlmoxarfiado,
-			List<Integer> totalConsumoList, Integer saldoAtual, String descricao,
+			List<Double> totalConsumoList, Double saldoAtual, String descricao,
 			String sigla, List<Long> prevEstoque) {
 		super();
 		this.idMaterialAlmoxarfiado = idMaterialAlmoxarfiado;
@@ -44,10 +44,10 @@ public class MediaConsumoAlmoxarifado {
 		this.sigla = sigla;
 	}
 	
-	public Integer getSaldoAtual() {
+	public Double getSaldoAtual() {
 		return saldoAtual;
 	}
-	public void setSaldoAtual(Integer saldoAtual) {
+	public void setSaldoAtual(Double saldoAtual) {
 		this.saldoAtual = saldoAtual;
 	}
 	
@@ -67,11 +67,12 @@ public class MediaConsumoAlmoxarifado {
 
 	//TODO MUDANCA 2: Calculo da media de consumo
 	public Integer getMediaConsumo(){
-		Integer total = 0;
+		Double total = 0d;
 		if(getTotalConsumoList() != null)
-			for(Integer item : getTotalConsumoList()){
+			for(Double item : getTotalConsumoList()){
 				total += item;
 			}
+		
 		return (int) Math.round(total.doubleValue()/MESES_PERIODO_CONSUMO);
 		
 	}
@@ -113,11 +114,11 @@ public class MediaConsumoAlmoxarifado {
 		return true;
 	}
 
-	public List<Integer> getTotalConsumoList() {
+	public List<Double> getTotalConsumoList() {
 		return totalConsumoList;
 	}
 
-	public void setTotalConsumoList(List<Integer> totalConsumoList) {
+	public void setTotalConsumoList(List<Double> totalConsumoList) {
 		this.totalConsumoList = totalConsumoList;
 	}
 

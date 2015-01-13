@@ -23,7 +23,7 @@ import br.com.imhotep.auxiliar.Constantes;
 
 public class GerenciadorMecanico {
 	private String driver = "org.postgresql.Driver";
-	private String ip = "127.0.0.1";
+	private String ip = Constantes.IP_LOCAL;
 	private String url = "jdbc:postgresql://{ip}:5432/{banco}";
 	private String nomeBanco;
 
@@ -136,7 +136,7 @@ public class GerenciadorMecanico {
         		s.executeUpdate(getFluxo().get(chave));
         	}
         } catch (SQLException sqle) {
-        	System.out.println("Erro durante a execução do fluxo: "+chaveAtual);
+        	System.out.println("Erro durante a execuÔøΩÔøΩo do fluxo: "+chaveAtual);
             System.out.println("Database processing has failed.");
             System.out.println("Reason: " + sqle.getMessage());
             ret = false;

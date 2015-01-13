@@ -8,6 +8,11 @@ Released for free under a Creative Commons Attribution 2.5 License
 .colStyle2 { width: 50%; }
 .colStyle3 { width: 33%; }
 
+.panelGridSemBorda td {
+	border-style: none !important;
+	padding: 2px 2px;
+}
+
 .linhaLaranja {
     background-color: #fca752 !important;
     background-image: none !important;
@@ -19,8 +24,11 @@ Released for free under a Creative Commons Attribution 2.5 License
 	padding: 2px 2px;
 }
 
-.contentPanelGrid td { text-align: left; 
+.contentTopPanelGrid td { text-align: left; 
 					   vertical-align: top; }
+
+.contentBottomPanelGrid td { text-align: left; 
+					   vertical-align: bottom; }
 
 .panelAvisos { height:125px; }
 

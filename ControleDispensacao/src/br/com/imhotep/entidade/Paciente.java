@@ -237,7 +237,7 @@ public class Paciente implements Serializable {
 	
 	@Transient
 	public String getCpfFormatado(){
-		return br.com.imhotep.auxiliar.Utilitarios.formatarValorMascara(cpf, "###.###.###-##");
+		return new br.com.imhotep.auxiliar.Utilitarios().formatarValorMascara(cpf, "###.###.###-##");
 	}
 	
 	@Transient

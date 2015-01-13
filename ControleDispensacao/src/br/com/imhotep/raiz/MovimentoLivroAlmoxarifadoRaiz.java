@@ -17,7 +17,7 @@ import br.com.remendo.PadraoRaiz;
 @SessionScoped
 public class MovimentoLivroAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmoxarifado>{
 	
-	public MovimentoLivroAlmoxarifado criarNovoMovimento(EstoqueAlmoxarifado estoqueAlmoxarifado, int qtdMovimentacao, int qtdAtual, TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado) throws ExcecaoProfissionalLogado{
+	public MovimentoLivroAlmoxarifado criarNovoMovimento(EstoqueAlmoxarifado estoqueAlmoxarifado, Double qtdMovimentacao, Double qtdAtual, TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado) throws ExcecaoProfissionalLogado{
 		getInstancia().setDataMovimento(new Date());
 		getInstancia().setEstoqueAlmoxarifado(estoqueAlmoxarifado);
 		getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());

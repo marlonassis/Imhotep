@@ -52,16 +52,16 @@ public class ControleAcessoFaseExameRaiz extends PadraoRaiz<LaboratorioExameAuto
 	public void removerProfissionalLaboratorio(){
 		String sql = "delete from tb_autoriza_unidade_profissional where id_profissional = " + getProfissionalUnidade().getIdProfissional() + 
 				" and id_unidade = " + Constantes.ID_UNIDADE_LABORATORIO;
-		new LinhaMecanica("db_imhotep").executarCUD(sql);
+		new LinhaMecanica().executarCUD(sql);
 		setProfissionalUnidade(null);
 	}
 	
 	public void adicionarProfissionalLaboratorio(){
 		Unidade unidade = new Unidade();
 		unidade.setIdUnidade(Constantes.ID_UNIDADE_LABORATORIO);
-		if(new AutorizaUnidadeProfissionalRaiz().enviar(getProfissionalUnidade(), unidade , true)){
-			setProfissionalUnidade(null);
-		}
+//		if(new AutorizaUnidadeProfissionalRaiz().enviar(getProfissionalUnidade(), unidade , true)){
+//			setProfissionalUnidade(null);
+//		}
 	}
 	
 	public String getFaseString(TipoStatusAutorizaExameAcaoEnum[] fases){
@@ -91,7 +91,7 @@ public class ControleAcessoFaseExameRaiz extends PadraoRaiz<LaboratorioExameAuto
 		adicionarAutorizacaoSolicitacao(lm);
 		adicionarAutorizacaoSolicitacaoItem(lm);
 		setProfissional(null);
-		super.mensagem("Autoriza‹o realizada com sucesso", null, Constantes.INFO);
+		super.mensagem("Autorizaï¿½ï¿½o realizada com sucesso", null, Constantes.INFO);
 		return true;
 	}
 

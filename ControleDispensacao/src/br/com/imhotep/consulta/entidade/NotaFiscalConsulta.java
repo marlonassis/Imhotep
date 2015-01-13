@@ -31,10 +31,15 @@ public class NotaFiscalConsulta extends PadraoConsulta<NotaFiscal> {
 		setPesquisaCamposDespadronizado(true);
 		setConsultaGeral(new ConsultaGeral<NotaFiscal>());
 		String sql = null;
-		if(getMaterial() == null || getMaterial().getIdMaterial() == 0)
-			sql = "select o from NotaFiscal o where 1=1";
-		else
-			sql = "select o from NotaFiscal o join o.itens a where a.estoque.material.idMaterial = "+getMaterial().getIdMaterial();
+		
+		if(super.isTodosCamposVazios() && (getMaterial() == null || getMaterial().getIdMaterial() == 0)){
+			sql = "select o from NotaFiscal o where o.liberada is false"; 
+		}else{
+			if(getMaterial() == null || getMaterial().getIdMaterial() == 0)
+				sql = "select o from NotaFiscal o where 1=1";
+			else
+				sql = "select o from NotaFiscal o join o.itens a where a.estoque.material.idMaterial = "+getMaterial().getIdMaterial();
+		}
 		
 		getConsultaGeral().setSqlConsultaSB(new StringBuilder(sql));
 		super.carregarResultado();

@@ -25,6 +25,18 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 	private boolean exibeMensagemAtualizacao = true;
 
 	
+	public void ativarMensagensCrud(){
+		setExibeMensagemAtualizacao(true);
+		setExibeMensagemDelecao(true);
+		setExibeMensagemInsercao(true);
+	}
+	
+	public void desativarMensagensCrud(){
+		setExibeMensagemAtualizacao(false);
+		setExibeMensagemDelecao(false);
+		setExibeMensagemInsercao(false);
+	}
+	
 	public void exibirDialogPesquisa(){
 		setExibirDialogPesquisa(true);
 	}
@@ -116,7 +128,7 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 		try{
 			iniciarTransacao();
 			session.save(o);  
-			session.flush();  
+			session.flush();
 			tx.commit();  
 			ret = true;
 			if(isExibeMensagemInsercao()){
@@ -127,7 +139,7 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 			session.getTransaction().rollback();
 			e.printStackTrace();
 			if(isExibeMensagemInsercao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Operação não permitida!!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro j√° cadastrado.","Opera√ß√£o n√£o permitida!!"));
 			}
 		}
 		catch (Exception e) {
@@ -146,7 +158,7 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 
 
 	/**
-	 * Método que seta 0 ao ID da entidade para evitar que o registro entre em edição ao tentar gravar o registro sem sucesso
+	 * MÔøΩtodo que seta 0 ao ID da entidade para evitar que o registro entre em ediÔøΩÔøΩo ao tentar gravar o registro sem sucesso
 	 */
 	private void zeraId(){
 		try {
@@ -196,11 +208,11 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 		boolean ret = false;
 		try{
 			iniciarTransacao();
-			session.delete(instancia); // Realiza persistência
-			tx.commit(); // Finaliza transação
+			session.delete(instancia); // Realiza persistÔøΩncia
+			tx.commit(); // Finaliza transaÔøΩÔøΩo
 			ret = true;
 			if(isExibeMensagemDelecao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Deleção realizada com sucesso", "Registro apagado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"DeleÔøΩÔøΩo realizada com sucesso", "Registro apagado!"));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -224,16 +236,16 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 		Object o = null;
 		try{
 			iniciarTransacao();
-			session.merge(obj); // Realiza persistência
-			tx.commit(); // Finaliza transação
+			session.merge(obj); // Realiza persistÔøΩncia
+			tx.commit(); // Finaliza transaÔøΩÔøΩo
 			o = obj;
 			if(isExibeMensagemAtualizacao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Atualização realizada com sucesso", "Registro atualizado!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"AtualizaÔøΩÔøΩo realizada com sucesso", "Registro atualizado!"));
 			}
 		}catch (org.hibernate.exception.ConstraintViolationException e) {
 			session.getTransaction().rollback();
 			if(isExibeMensagemAtualizacao()){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro já cadastrado.","Operação não permitida!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro jÔøΩ cadastrado.","OperaÔøΩÔøΩo nÔøΩo permitida!"));
 			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();
@@ -248,9 +260,9 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 	}
 		
 	/**
-	 * Método que retorna todos os registros do tipo genérico a partir de uma consulta guiada
+	 * MÔøΩtodo que retorna todos os registros do tipo genÔøΩrico a partir de uma consulta guiada
 	 * @param String arg0
-	 * @return Coleção de objetos
+	 * @return ColeÔøΩÔøΩo de objetos
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getBusca(String sql) {
@@ -306,9 +318,9 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 	}
 	
 	/**
-	 * Método que retorna todos os registros do tipo genérico
+	 * MÔøΩtodo que retorna todos os registros do tipo genÔøΩrico
 	 * @param String arg0
-	 * @return Coleção de objetos
+	 * @return ColeÔøΩÔøΩo de objetos
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getBusca(){
@@ -384,7 +396,7 @@ public abstract class PadraoRaiz<T> extends GerenciadorConexao implements IPadra
 	}
 	
 	/**
-	 * Método que retorna a sessão da classe desejada
+	 * MÔøΩtodo que retorna a sessÔøΩo da classe desejada
 	 * @param Nome da classe arg0
 	 * @return 
 	 * @return classe do tipo escolhido
