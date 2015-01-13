@@ -2,6 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
 
@@ -10,43 +11,15 @@
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab title="Hospital">
-			<h:form id="hospitalEditorForm">
-				<p:fieldset legend="Novo Hospital"
-					collapsed="#{!hospitalRaiz.edicao}" toggleable="true"
-					toggleSpeed="500">
-					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="hospitalEditor.xhtml" />
-					<p:commandButton value="Salvar" rendered="#{!hospitalRaiz.edicao}"
-						update=":#{p:component('hospitalEditorForm')} :#{p:component('hospitalPesquisaForm')}"
-						action="#{hospitalRaiz.enviar}" />
-					<p:commandButton value="Gravar" rendered="#{hospitalRaiz.edicao}"
-						update=":#{p:component('hospitalEditorForm')} :#{p:component('hospitalPesquisaForm')}"
-						action="#{hospitalRaiz.atualizar}" />
-					<p:commandButton value="Novo" rendered="#{hospitalRaiz.edicao}"
-						 update="@parent"
-						 action="#{hospitalRaiz.novaInstancia()}" />
-				</p:fieldset>
-			</h:form>
-
-			<h:form id="hospitalPesquisaForm">
-				<p:growl />
-				<p:fieldset legend="Pesquisa"
-					collapsed="true" toggleable="true" toggleSpeed="500">
-					<ui:include src="hospitalConsulta.xhtml" />
-
-					<p:commandButton value="Pesquisar" 
-						image="ui-icon ui-icon-search" 
-						update=":#{p:component('hospitalPesquisaForm')}"/>
-
-					<p:commandButton value="Limpar"
-						action="#{hospitalConsulta.novaInstancia()}"
-						image="ui-icon ui-icon-arrowrefresh-1-s" title="Limpar os campos"
-						update=":#{p:component('hospitalPesquisaForm')}" />
-
-				</p:fieldset>
-				<ui:include src="hospitalTabela.xhtml" />
-			</h:form>
+		<p:tab title="Estabelecimento">
+			
+			<rf:formularioPadrao idFormPadrao="estabelecimento"
+								 srcTabela="Hospital/hospitalTabela.xhtml" 
+								 srcConsulta="Hospital/hospitalConsulta.xhtml" 
+								 raiz="#{hospitalRaiz}" 
+								 raizConsulta="#{hospitalConsulta}" 
+								 srcEditor="Hospital/hospitalEditor.xhtml" />
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -4,17 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaHospital" value="#{hospitalConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idHospital}">
-
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Descrição" />
-			</f:facet>
-			<h:outputText value="#{linha.descricao}" />
-		</p:column>
+	<p:dataTable id="tabelaHospital" 
+				 value="#{hospitalConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idHospital}">
 
 		<p:column>
 			<f:facet name="header">
@@ -23,11 +21,16 @@
 			<h:outputText value="#{linha.nome}" />
 		</p:column>
 
-
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="Descrição" />
+			</f:facet>
+			<h:outputText value="#{linha.descricao}" />
+		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('hospitalEditorForm')}"
+				update=":#{p:component('estabelecimento')}"
 				style="padding-right:10px;">
 				<f:setPropertyActionListener value="#{linha}"
 					target="#{hospitalRaiz.instancia}" />
@@ -35,11 +38,10 @@
 			</p:commandLink>
 
 			<p:commandLink action="#{hospitalRaiz.apagar()}"
-				update=":#{p:component('hospitalEditorForm')} :#{p:component('hospitalPesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{hospitalRaiz.instancia}" />
+						   update=":#{p:component('estabelecimento')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{hospitalRaiz.instancia}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

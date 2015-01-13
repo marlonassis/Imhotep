@@ -8,12 +8,13 @@ import javax.faces.bean.RequestScoped;
 import br.com.imhotep.entidade.Hospital;
 import br.com.remendo.ConsultaGeral;
 
-@ManagedBean(name="hospitalAutoComplete")
+@ManagedBean
 @RequestScoped
 public class HospitalAutoComplete extends ConsultaGeral<Hospital> {
 	
 	public Collection<Hospital> autoComplete(String string){
-		StringBuilder stringB = new StringBuilder("select o from Hospital as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+string+"%'))");
+		string = string.trim();
+		StringBuilder stringB = new StringBuilder("select o from Hospital as o where lower(to_ascii(o.nome)) like lower(to_ascii('%"+string+"%')) order by lower(to_ascii(o.nome))");
 		return super.consulta(stringB, null);
 	}
 	

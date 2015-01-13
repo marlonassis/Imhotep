@@ -1,84 +1,68 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	template="/Templates/templatePadrao.xhtml">
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+				xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 
 
 	<ui:define name="conteudoPadrao">
-		<p:tab title="Doação">
-			<h:form id="doacaoEditorForm">
-				<p:fieldset legend="Nova Doação"
-					collapsed="false" toggleable="true"
-					toggleSpeed="500">
-					<p:growl id="formGrowl" showDetail="true" />
-					<ui:include src="doacaoEditor.xhtml" />
-					<p:commandButton value="Salvar" 
-									 rendered="#{!doacaoRaiz.edicao and doacaoRaiz.loteEncontrado != null}"
-									 update=":#{p:component('doacaoEditorForm')}"
-									 action="#{doacaoRaiz.enviar}" />
-					<p:commandButton value="Gravar" 
-									 rendered="#{doacaoRaiz.edicao}"
-									 update=":#{p:component('doacaoEditorForm')}"
-									 action="#{doacaoRaiz.atualizar}" />
-					<p:commandButton value="Novo"
-									 rendered="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}"
-									 update=":#{p:component('doacaoEditorForm')}"
-									 action="#{doacaoRaiz.novaInstancia()}" 
-									 immediate="true" 
-									 oncomplete="location.reload();"/>
-				</p:fieldset>
-			</h:form>
-
-			<br/><br/>
-			<h:form id="buscaEstoqueMaterialForm"
-					rendered="#{!doacaoRaiz.loteEncontrado}" style="text-align: left;" >
-				<p:fieldset legend="Busca de Lote por Material">  
-					<h:panelGroup>
-						<ri:inputAutoComplete id="material" 
-											  label="Material"  
-											  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
-											  itemValue="#{material}" 
-											  itemLabel="#{material.descricaoUnidadeMaterial}" 
-											  var="material"
-											  value="#{estoqueMaterialConsultaRaiz.material}"/>
-						<p:commandButton image="ui-icon ui-icon-search"
-										 update=":#{p:component('buscaEstoqueMaterialForm')}"
-										 action="#{estoqueMaterialConsultaRaiz.consultar}" 
-										 rendered="#{!ajusteEstoqueRaiz.loteEncontrado}"
-										 title="Procurar lote." />
-					</h:panelGroup>
-					<br/>
-					<h:panelGroup rendered="#{estoqueMaterialConsultaRaiz.listaEstoque.size() != 0}" >
-						<h3>Estoques encontrados</h3>  
-						<p:dataList value="#{estoqueMaterialConsultaRaiz.listaEstoque}" 
-									var="linha" 
-									type="ordered">  
-							<p:commandLink value="#{linha.lote}" 
-										   action="#{doacaoRaiz.carregarEstoqueConsultaMaterial(linha)}" 
-										   oncomplete="location.reload();" />
-							#{' - '} 
-							<h:outputText value="#{linha.dataValidade}">
-								<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
-							</h:outputText>
-							#{' - '} 
-							<h:outputText value="#{linha.quantidadeAtual}"/>
-							#{' '} 
-							<p:commandLink action="#{doacaoRaiz.carregarEstoqueConsultaMaterial(linha)}" 
-										   oncomplete="location.reload();">
-								<h:graphicImage value="/Imagens/Arrow-up-icon.png" 
-												title="Clique aqui para editar o lote" />
-							</p:commandLink>
-						</p:dataList>
-					</h:panelGroup>
-				</p:fieldset>
-			</h:form>
+		<p:tab title="Doação/Empréstimo">
 			
+			<rf:formularioPadrao idFormPadrao="doacao"
+								 srcTabela="Movimentacao/Doacao/doacaoTabela.xhtml" 
+								 srcConsulta="Movimentacao/Doacao/doacaoConsulta.xhtml" 
+								 raiz="#{doacaoRaiz}" 
+								 raizConsulta="#{doacaoConsulta}" 
+								 srcEditor="Movimentacao/Doacao/doacaoEditor.xhtml" />
+			
+			<h:panelGrid id="botoesExtrasPanelGrid" rendered="#{doacaoRaiz.edicao}" columns="3" >
+				<p:commandButton value="Liberar/Autorizar" 
+								 rendered="#{!doacaoRaiz.instancia.liberado and variavel.variavelAutorizada('LiberarDoacaoFarmacia')}"
+								 action="#{doacaoConfirmacaoRaiz.exibirDialogConfirmacaoLiberacao}" 
+								 update=":#{p:component('dialogConfirmacaoLiberacaoDoacaoPanelGroup')}" >
+					<f:setPropertyActionListener value="#{doacaoRaiz.instancia}" target="#{doacaoConfirmacaoRaiz.doacao}" />
+				</p:commandButton>
+			</h:panelGrid>
+			
+			<h:panelGroup id="dialogConfirmacaoLiberacaoDoacaoPanelGroup" >
+				<p:dialog header="Confirmação - Doação nº #{doacaoRaiz.instancia.idDoacao}" 
+						  visible="#{doacaoConfirmacaoRaiz.exibirDialogConfirmacaoLiberacao}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Movimentacao/Doacao/doacaoConfirmacaoAddDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{doacaoConfirmacaoRaiz.ocultarDialogConfirmacaoLiberacao}" 
+										 update=":#{p:component('dialogConfirmacaoLiberacaoDoacaoPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogItensDoacaoPanelGroup" >
+				<p:dialog header="Itens da Doação/Empréstimo" 
+						  visible="#{doacaoItemRaiz.exibirDilogItens}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Movimentacao/DoacaoItem/doacaoItemAddDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{doacaoItemRaiz.ocultarDilogItens}" 
+										 update=":#{p:component('dialogItensDoacaoPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
 			
 		</p:tab>
 	</ui:define>

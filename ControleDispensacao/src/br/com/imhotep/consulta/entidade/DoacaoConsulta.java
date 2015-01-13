@@ -14,13 +14,18 @@ import br.com.remendo.PadraoConsulta;
 public class DoacaoConsulta extends PadraoConsulta<Doacao> {
 	public DoacaoConsulta(){
 		getCamposConsulta().put("o.hospital", IGUAL);
+		getCamposConsulta().put("date(o.dataDoacao)", IGUAL);
+		getCamposConsulta().put("o.tipoMovimento", IGUAL);
 		setOrderBy("o.dataDoacao desc");
 	}
 	
 	@Override
 	public List<Doacao> getList() {
 		setConsultaGeral(new ConsultaGeral<Doacao>());
-		getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Doacao o where 1=1"));
+		if(super.isTodosCamposVazios())
+			getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Doacao o where o.liberado is false"));
+		else
+			getConsultaGeral().setSqlConsultaSB(new StringBuilder("select o from Doacao o where 1=1"));
 		return super.getList();
 	}
 }

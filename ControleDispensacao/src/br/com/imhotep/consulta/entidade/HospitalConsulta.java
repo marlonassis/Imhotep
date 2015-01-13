@@ -9,7 +9,7 @@ import br.com.imhotep.entidade.Hospital;
 import br.com.remendo.ConsultaGeral;
 import br.com.remendo.PadraoConsulta;
 
-@ManagedBean(name="hospitalConsulta")
+@ManagedBean
 @SessionScoped
 public class HospitalConsulta extends PadraoConsulta<Hospital> {
 	public HospitalConsulta(){

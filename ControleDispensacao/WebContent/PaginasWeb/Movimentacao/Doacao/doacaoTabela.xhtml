@@ -4,10 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-	<p:dataTable id="tabelaDoacao" value="#{doacaoConsulta.list}"
-		var="linha" dblClickSelect="true"
-		emptyMessage="Não foi encontrado registros" rows="10" paginator="true"
-		selectionMode="single" rowKey="#{linha.idDoacao}">
+	<p:dataTable id="tabelaDoacao" 
+				 value="#{doacaoConsulta.list}"
+				 var="linha" 
+				 dblClickSelect="true"
+				 emptyMessage="Não foi encontrado registros" 
+				 rows="10" 
+				 paginator="true"
+				 selectionMode="single" 
+				 rowKey="#{linha.idDoacao}">
 
 		<p:column>
 			<f:facet name="header">
@@ -20,47 +25,36 @@
 			<f:facet name="header">
 				<h:outputText value="Tipo do Movimento" />
 			</f:facet>
-			<h:outputText value="#{linha.movimentoLivro.tipoMovimento.descricao}" />
+			<h:outputText value="#{linha.tipoMovimento.descricao}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
 				<h:outputText value="Data da Doação" />
 			</f:facet>
-			<h:outputText value="#{linha.dataDoacao}">
-				<f:convertDateTime pattern="dd/MM/yyyy"/>
-			</h:outputText>
+			<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataDoacao)}" />
 		</p:column>
 
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Lote" />
+				<h:outputText value="Liberada" />
 			</f:facet>
-			<h:outputText value="#{linha.movimentoLivro.estoque.lote}"/>
-		</p:column>
-		
-		<p:column>
-			<f:facet name="header">
-				<h:outputText value="Material" />
-			</f:facet>
-			<h:outputText value="#{linha.movimentoLivro.estoque.material}"/>
+			<h:outputText value="#{linha.liberado ? 'Sim' : 'Não'}"/>
 		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
-			<p:commandLink title="Editar"
-				update=":#{p:component('doacaoEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{doacaoRaiz.instancia}" />
+			<p:commandLink  title="Editar"
+							update=":#{p:component('doacao')} :#{p:component('padraoTabView')}"
+							style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{doacaoRaiz.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{doacaoRaiz.apagar()}"
-				update=":#{p:component('doacaoEditorForm')} :#{p:component('doacaoPesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-				title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{doacaoRaiz.instancia}" />
+			<p:commandLink  action="#{doacaoRaiz.apagarInstancia()}"
+							update=":#{p:component('doacao')}"
+							onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+							title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{doacaoRaiz.instanciaDelecao}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

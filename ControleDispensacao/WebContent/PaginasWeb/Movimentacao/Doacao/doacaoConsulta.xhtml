@@ -2,21 +2,32 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="tipoMovimentoPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="doacaoPanelGridConsulta" columns="3" width="100%">
 
-		<h:panelGroup>
-			
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" required="false"
-				value="#{tipoMovimentoConsulta.instancia.descricao}"
-				title="Descreva o tipo de movimento." />
-		</h:panelGroup>
-
-
+		<ri:inputAutoComplete 
+							  id="hospital" 
+							  completeMethod="#{hospitalAutoComplete.autoComplete}" 
+							  var="hospital" 
+							  itemValue="#{hospital}" 
+							  itemLabel="#{hospital.nome}" 
+							  label="Estabelecimento" 
+							  value="#{doacaoConsulta.instancia.hospital}" />
+		
+		<ri:inputDataHora id="dataDoacao" 
+						  label="Data da Doação" 
+						  title="Informe a data da doação" 
+						  value="#{doacaoConsulta.instancia.dataDoacao}" />
+		
+		<ri:inputEntidadeList 
+							  id="tipoMovimentoDoacao" 
+							  lista="#{tipoMovimentoDoacaoSelectOne.itens}" 
+							  label="Tipo do Movimento" 
+							  value="#{doacaoConsulta.instancia.tipoMovimento}" 
+							  itemLabel="Descricao" />
 
 	</h:panelGrid>
 </ui:composition>

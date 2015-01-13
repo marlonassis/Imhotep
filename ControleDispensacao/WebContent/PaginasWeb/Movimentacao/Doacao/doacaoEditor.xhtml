@@ -1,160 +1,59 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:r="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid columns="2" width="100%">
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="lote" value="Lote:" />
-			<br />
-			<p:inputText id="lote"
-						 value="#{doacaoRaiz.instancia.movimentoLivro.estoque.lote}"
-						 title="Informe o lote" 
-						 disabled="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}"
-						 required="true"/>
-			<p:commandButton image="ui-icon ui-icon-search"
-							 update=":#{p:component('doacaoEditorForm')}"
-							 action="#{doacaoRaiz.procurarLote}" 
-							 rendered="#{doacaoRaiz.loteEncontrado == null or doacaoRaiz.edicao}"
-							 title="Procurar lote." />
+	<p:commandButton value="Itens" 
+					 action="#{doacaoItemRaiz.exibirDilogItens}" 
+					 immediate="true"
+					 update=":#{p:component('dialogItensDoacaoPanelGroup')}" 
+					 disabled="#{!doacaoRaiz.edicao}">
+		<f:setPropertyActionListener value="#{doacaoRaiz.instancia}" target="#{doacaoItemRaiz.doacao}" />
+	</p:commandButton>
+
+	<h:panelGrid columns="3" width="100%">
+		<ri:inputAutoComplete 
+							  id="hospital" 
+							  required="true"
+							  completeMethod="#{hospitalAutoComplete.autoComplete}" 
+							  var="hospital" 
+							  itemValue="#{hospital}" 
+							  itemLabel="#{hospital.nome}" 
+							  label="Estabelecimento" 
+							  value="#{doacaoRaiz.instancia.hospital}" />
+		
+		<ri:inputDataHora id="dataDoacao" 
+						  label="Data da Doação" 
+						  required="true"
+						  title="Informe a data da doação" 
+						  value="#{doacaoRaiz.instancia.dataDoacao}" />
+		
+		<ri:inputEntidadeList 
+							  id="tipoMovimentoDoacao" 
+							  lista="#{tipoMovimentoDoacaoSelectOne.itens}" 
+							  label="Tipo do Movimento" 
+							  required="true"
+							  value="#{doacaoRaiz.instancia.tipoMovimento}" 
+							  itemLabel="Descricao" />
+		
+		<h:panelGroup rendered="#{doacaoRaiz.instancia.profissionalCadastro != null}" >
+			<h:outputText value="Responsável Pelo Cadastro:" /> <br/>
+			<h:outputText value="#{doacaoRaiz.instancia.profissionalCadastro.nomeCpfCargo}" />
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{doacaoRaiz.instancia.profissionalAutorizacao != null}" >
+			<h:outputText value="Responsável Pela Liberação:" /> <br/>
+			<h:outputText value="#{doacaoRaiz.instancia.profissionalAutorizacao.nomeCpfCargo}" />
 		</h:panelGroup>
 	</h:panelGrid>
-
-	<h:panelGrid id="doacaoPanelGrid" 
-				 columns="3" 
-				 width="100%" 
-				 rendered="#{doacaoRaiz.loteEncontrado != null or doacaoRaiz.edicao}" >
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="tipoOperacao" value="Tipo da Operação" />
-			<br />
-			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.tipoMovimento.descricao}" 
-						  rendered="#{doacaoRaiz.edicao or !doacaoRaiz.loteEncontrado}" />
-			<p:selectOneMenu id="tipoOperacao"
-							 rendered="#{!doacaoRaiz.edicao and doacaoRaiz.loteEncontrado}"
-							 value="#{doacaoRaiz.instancia.movimentoLivro.tipoMovimento}"
-							 effect="fade" 
-							 converter="tipoMovimentoConversor" 
-							 required="true">
-				<f:selectItem itemLabel="Selecione..." itemValue="" />
-				<f:selectItems value="#{tipoMovimentoDoacaoSelectOne.itens}"
-							   var="tipoMovimento" 
-							   itemLabel="#{tipoMovimento.descricao}"
-							   itemValue="#{tipoMovimento}" />
-			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="hospital" value="Informe o Hospital:" />
-			<br />
-			<p:autoComplete id="hospital"
-							value="#{doacaoRaiz.instancia.hospital}"
-							minQueryLength="4"
-							required="true"
-							scrollHeight="300"
-							completeMethod="#{hospitalAutoComplete.autoComplete}"
-							var="hospital" 
-							forceSelection="true"
-							title="Informe o nome do hospital"
-							itemLabel="#{hospital.nome}" 
-							itemValue="#{hospital}"
-							converter="hospitalConversor" />
-		</h:panelGroup>
+	
+	<br/><br/>
+	
+	<h:panelGroup>
+		<h:outputLabel for="observacao" value="Observação:" /> <br/>
+		<p:editor id="observacao" width="450" height="250" value="#{doacaoRaiz.instancia.observacao}" />
+	</h:panelGroup>
 		
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="dataDoacao" value="Data da Doação:" />
-			<br />
-			<p:calendar id="dataDoacao"
-						required="true"
-						value="#{doacaoRaiz.instancia.dataDoacao}" 
-						pattern="dd/MM/yyyy"
-						locale="pt" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="material" value="Informe o nome ou o código do material:" />
-			<br />
-			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.material.descricao}" 
-						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}" />
-			<p:autoComplete id="material"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							size="35"
-							value="#{doacaoRaiz.instancia.movimentoLivro.estoque.material}"
-							minQueryLength="4"
-							required="true"
-							scrollHeight="300"
-							completeMethod="#{materialCodigoDescricaoAutoComplete.autoComplete}"
-							var="material" 
-							forceSelection="true"
-							title="Informe o nome ou o código do material"
-							itemLabel="#{material.descricao}" 
-							itemValue="#{material}"
-							converter="materialConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
-		
-		<h:panelGroup style="align:left;">
-			<font color="red">*</font>
-			<h:outputLabel for="fabricante" value="Fabricante:" />
-			<br />
-			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.fabricante.descricao}" 
-						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}" />
-			<p:autoComplete id="fabricante"
-							required="true"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							value="#{doacaoRaiz.instancia.movimentoLivro.estoque.fabricante}"
-							completeMethod="#{fabricanteAutoComplete.autoComplete}"
-							var="fabricante" 
-							minQueryLength="3" 
-							forceSelection="true"
-							title="Informe o fabricante" 
-							itemLabel="#{fabricante.descricao}"
-							itemValue="#{fabricante}" 
-							converter="fabricanteConversor" />
-			<h:graphicImage value="/Imagens/list16.png"
-							rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							title="Ao digitar aparecerá algumas sugestões"
-							style="padding-top:8px" />
-		</h:panelGroup>
-		
-		<h:panelGroup>
-			<h:outputText value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}" 
-						  rendered="#{doacaoRaiz.loteEncontrado or doacaoRaiz.edicao}">
-				<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3" />
-			</h:outputText>
-			
-			
-			<r:inputDataMesAnoMedicamento id="dataValidade"
-							   label="Data de Validade"
-							   required="true"
-							   rendered="#{!doacaoRaiz.loteEncontrado and !doacaoRaiz.edicao}"
-							   disabled="#{entradaMaterialSemNotaRaiz.loteEncontrado}"
-							   value="#{doacaoRaiz.instancia.movimentoLivro.estoque.dataValidade}"
-							   title="Data de validade do lote"/>
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="quantidade" value="Quantidade:" />
-			<br />
-			<p:inputText id="quantidade"
-						 disabled="#{doacaoRaiz.edicao}"
-						 required="true"
-						 value="#{doacaoRaiz.instancia.movimentoLivro.quantidadeMovimentacao}"
-						 onkeyup="apenasNumero(this);" 
-						 title="Informe a quantidade" />
-		</h:panelGroup>
-
-	</h:panelGrid>
-
 </ui:composition>

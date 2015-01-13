@@ -2,30 +2,23 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGrid id="hospitalPanelGrid" columns="3" width="100%">
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="descricao" value="Descrição:" />
-			<br />
-			<p:inputText id="descricao" required="true"
-				value="#{hospitalRaiz.instancia.descricao}"
-				title="Descreva o hospital" />
-		</h:panelGroup>
-
-		<h:panelGroup>
-			<font color="red">*</font>
-			<h:outputLabel for="nome" value="Nome:" />
-			<br />
-			<p:inputText id="nome" required="true"
-				value="#{hospitalRaiz.instancia.nome}"
-				title="Informe o nome do hospital." />
-		</h:panelGroup>
-
-
-
+		
+		<ri:inputTextoSimples id="nome" 
+							  required="true"
+							  title="Informe o nome do estabelecimento"
+							  disabled="#{hospitalRaiz.edicao}" 
+							  value="#{hospitalRaiz.instancia.nome}" 
+							  label="Nome" />
+		
+		<ri:inputTextArea id="descricao" 
+						  label="Descrição" 
+						  title="Descreva o estabelecimento" 
+						  value="#{hospitalRaiz.instancia.descricao}" />
+		
 	</h:panelGrid>
 
 </ui:composition>
