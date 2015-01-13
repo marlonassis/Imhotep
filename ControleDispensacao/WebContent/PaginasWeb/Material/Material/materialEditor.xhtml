@@ -5,6 +5,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
+	<p:commandButton value="Preço Médio" 
+					 action="#{medicamentoPrecoMedioLogRaiz.exibirDialogPrecoMedio}" 
+					 immediate="true"
+					 update=":#{p:component('dialogPrecoMedioPanelGroup')}" 
+					 disabled="#{!materialRaiz.edicao}">
+		<f:setPropertyActionListener value="#{materialRaiz.instancia}" target="#{medicamentoPrecoMedioLogRaiz.medicamento}" />
+	</p:commandButton>
+
 	<h:panelGrid id="materialPanelGrid" columns="3" width="100%">
 		
 		<ri:inputTextoSimples id="codigoMaterial" 

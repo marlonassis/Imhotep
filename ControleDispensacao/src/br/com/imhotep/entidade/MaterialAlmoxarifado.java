@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "tb_material_almoxarifado")
 public class MaterialAlmoxarifado implements Serializable {
-	private static final long serialVersionUID = 4181799696054317901L;
+	private static final long serialVersionUID = 6153098254771445434L;
 	
 	private int idMaterialAlmoxarifado;
 	private String descricao;
@@ -30,6 +30,7 @@ public class MaterialAlmoxarifado implements Serializable {
 	private Profissional profissionalInclusao;
 	private Integer quantidadeMinima;
 	private Boolean bloqueado;
+	private Double precoMedio;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_almoxarifado_id_material_almoxarifado_seq")
 	@Id
@@ -120,6 +121,15 @@ public class MaterialAlmoxarifado implements Serializable {
 		this.bloqueado = bloqueado;
 	}
 	
+	@Column(name = "db_preco_medio")
+	public Double getPrecoMedio() {
+		return this.precoMedio;
+	}
+
+	public void setPrecoMedio(Double precoMedio) {
+		this.precoMedio = precoMedio;
+	}
+	
 	@Transient
 	public String getDescricaoReduzida(){
 		if(getDescricao() != null){
@@ -172,16 +182,25 @@ public class MaterialAlmoxarifado implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
+				+ ((bloqueado == null) ? 0 : bloqueado.hashCode());
+		result = prime * result
+				+ ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
+		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime
 				* result
 				+ ((grupoAlmoxarifado == null) ? 0 : grupoAlmoxarifado
 						.hashCode());
 		result = prime * result + idMaterialAlmoxarifado;
+		result = prime * result
+				+ ((precoMedio == null) ? 0 : precoMedio.hashCode());
 		result = prime
 				* result
 				+ ((profissionalInclusao == null) ? 0 : profissionalInclusao
 						.hashCode());
+		result = prime
+				* result
+				+ ((quantidadeMinima == null) ? 0 : quantidadeMinima.hashCode());
 		result = prime
 				* result
 				+ ((subGrupoAlmoxarifado == null) ? 0 : subGrupoAlmoxarifado
@@ -202,6 +221,16 @@ public class MaterialAlmoxarifado implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MaterialAlmoxarifado other = (MaterialAlmoxarifado) obj;
+		if (bloqueado == null) {
+			if (other.bloqueado != null)
+				return false;
+		} else if (!bloqueado.equals(other.bloqueado))
+			return false;
+		if (dataInclusao == null) {
+			if (other.dataInclusao != null)
+				return false;
+		} else if (!dataInclusao.equals(other.dataInclusao))
+			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
@@ -214,10 +243,20 @@ public class MaterialAlmoxarifado implements Serializable {
 			return false;
 		if (idMaterialAlmoxarifado != other.idMaterialAlmoxarifado)
 			return false;
+		if (precoMedio == null) {
+			if (other.precoMedio != null)
+				return false;
+		} else if (!precoMedio.equals(other.precoMedio))
+			return false;
 		if (profissionalInclusao == null) {
 			if (other.profissionalInclusao != null)
 				return false;
 		} else if (!profissionalInclusao.equals(other.profissionalInclusao))
+			return false;
+		if (quantidadeMinima == null) {
+			if (other.quantidadeMinima != null)
+				return false;
+		} else if (!quantidadeMinima.equals(other.quantidadeMinima))
 			return false;
 		if (subGrupoAlmoxarifado == null) {
 			if (other.subGrupoAlmoxarifado != null)
@@ -232,6 +271,5 @@ public class MaterialAlmoxarifado implements Serializable {
 			return false;
 		return true;
 	}
-	
 	
 }

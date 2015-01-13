@@ -18,19 +18,31 @@ public class MaterialAlmoxarifadoAutoComplete extends ConsultaGeral<MaterialAlmo
 		StringBuilder stringB = new StringBuilder("select o from MaterialAlmoxarifado o where ");
 		
 		if(Utilitarios.isNumero(string)){
-			stringB.append(" o.idMaterialAlmoxarifado = "+string);
+			stringB.append(" o.idMaterialAlmoxarifado = ");
+			stringB.append(string);
 		}else{
-			stringB.append("lower(to_ascii(o.descricao)) like lower(to_ascii('%"+string+"%'))");
+			stringB.append("lower(to_ascii(o.descricao)) like lower(to_ascii('%");
+			stringB.append(string);
+			stringB.append("%'))");
 		}
 		
-		stringB.append(" and o.bloqueado = false order by o.descricao");
+		stringB.append(" and o.bloqueado = false order by to_ascii(lower(o.descricao))");
 		
 		return super.consulta(stringB, null);
 	}
 	
 	public Collection<MaterialAlmoxarifado> autoComplete(String string){
 		string = string.trim();
-		StringBuilder stringB = new StringBuilder("select o from MaterialAlmoxarifado as o where lower(to_ascii(o.descricao)) like lower(to_ascii('%"+string+"%')) and o.bloqueado = false");
+		StringBuilder stringB = new StringBuilder("select o from MaterialAlmoxarifado as o where ");
+		if(Utilitarios.isNumero(string)){
+			stringB.append(" o.idMaterialAlmoxarifado = ");
+			stringB.append(string);
+		}else{
+			stringB.append("lower(to_ascii(o.descricao)) like lower(to_ascii('%");
+			stringB.append(string);
+			stringB.append("%'))");
+		}
+		stringB.append(" and o.bloqueado = false order by to_ascii(lower(o.descricao))");
 		return super.consulta(stringB, null);
 	}
 	

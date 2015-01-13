@@ -44,17 +44,18 @@
 
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-						   update=":padraoTabView:materialAlmoxarifado:materialAlmoxarifadoEditorForm"
+						   update=":#{p:component('materialAlmoxarifado')}"
 						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{materialAlmoxarifadoRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{materialAlmoxarifadoRaiz.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{materialAlmoxarifadoRaiz.apagar()}"
-						   update=":padraoTabView:materialAlmoxarifadoPesquisa:materialAlmoxarifadoPesquisaForm :padraoTabView:materialAlmoxarifado:materialAlmoxarifadoEditorForm"
+			<p:commandLink action="#{materialAlmoxarifadoRaiz.apagarInstancia}"
+						   oncomplete="atualizarTabela();"
+						   update=":#{p:component('materialAlmoxarifado')}"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 						   title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{materialAlmoxarifadoRaiz.instancia}" />
+				<f:setPropertyActionListener value="#{linha}" target="#{materialAlmoxarifadoRaiz.instanciaDelecao}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

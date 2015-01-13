@@ -11,6 +11,7 @@ import br.com.remendo.PadraoConsulta;
 @SessionScoped
 public class MaterialAlmoxarifadoConsulta extends PadraoConsulta<MaterialAlmoxarifado> {
 	public MaterialAlmoxarifadoConsulta(){
+		getCamposConsulta().put("o.idMaterialAlmoxarifado", IGUAL);
 		getCamposConsulta().put("o.descricao", INCLUINDO_TUDO);
 		setOrderBy("to_ascii(o.descricao)");
 	}

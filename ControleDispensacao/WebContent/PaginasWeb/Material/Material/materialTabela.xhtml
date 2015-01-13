@@ -51,11 +51,12 @@
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{materialRaiz.apagar()}"
+			<p:commandLink action="#{materialRaiz.apagarInstancia}"
 						   update=":#{p:component('materialCadastro')}"
 						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
-						   title="Apagar" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.instancia}" />
+						   title="Apagar" 
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{materialRaiz.instanciaDelecao}" />
 				<h:graphicImage value="/Imagens/delete.png" />
 			</p:commandLink>
 		</p:column>

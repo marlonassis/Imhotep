@@ -4,7 +4,15 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-
+	
+	<p:commandButton value="Preço Médio" 
+					 action="#{materialPrecoMedioLogRaiz.exibirDialogPrecoMedio}" 
+					 immediate="true"
+					 update=":#{p:component('dialogPrecoMedioPanelGroup')}" 
+					 disabled="#{!materialAlmoxarifadoRaiz.edicao}">
+		<f:setPropertyActionListener value="#{materialAlmoxarifadoRaiz.instancia}" target="#{materialPrecoMedioLogRaiz.material}" />
+	</p:commandButton>
+	
 	<h:panelGrid id="materialPanelGrid" columns="3" width="100%">
 
 		<ri:inputTextoSimples id="descricao" 
@@ -23,6 +31,7 @@
 					<p:selectOneMenu value="#{materialAlmoxarifadoRaiz.instancia.grupoAlmoxarifado}"
 									 effect="fade" 
 									 required="true" 
+									 disabled="#{materialAlmoxarifadoRaiz.edicao}"
 									 converter="entidadeConversor">
 						<p:ajax update=":#{p:component('agrupamento')}" 
 								listener="#{materialAlmoxarifadoRaiz.atualizaSubGrupoAmoxarifado()}" />
@@ -35,6 +44,7 @@
 				</h:panelGroup>
 				
 				<ri:inputSelectOneMenuEntidade id="subGrupo"
+											   disabled="#{materialAlmoxarifadoRaiz.edicao}"
 											   required="true"
 											   rendered="#{materialAlmoxarifadoRaiz.exibirComboSubGrupo}"
 											   itemLabel="#{subGrupoAlmoxarifadoInput.descricao}"

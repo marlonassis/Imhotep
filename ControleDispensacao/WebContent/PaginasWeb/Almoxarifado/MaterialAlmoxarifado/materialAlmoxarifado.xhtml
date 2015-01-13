@@ -12,16 +12,30 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Material">
-			<rf:formularioEdicao id="materialAlmoxarifado"
-								raiz="#{materialAlmoxarifadoRaiz}"
-								srcEditor="Almoxarifado/MaterialAlmoxarifado/materialAlmoxarifadoEditor.xhtml" />
-								
-			<rf:formularioPesquisa id="materialAlmoxarifadoPesquisa" 
-								   raizConsulta="#{materialAlmoxarifadoConsulta}"
-								   novoPadraoPesquisa="true"
-								   novoAction="#{materialAlmoxarifadoConsulta.novaInstancia()}"
-								   srcTabela="Almoxarifado/MaterialAlmoxarifado/materialAlmoxarifadoTabela.xhtml"
-								   srcConsulta="Almoxarifado/MaterialAlmoxarifado/materialAlmoxarifadoConsulta.xhtml" />
+			<rf:formularioPadrao idFormPadrao="materialAlmoxarifado" 
+								 srcConsulta="Almoxarifado/MaterialAlmoxarifado/materialAlmoxarifadoConsulta.xhtml" 
+								 raizConsulta="#{materialAlmoxarifadoConsulta}" 
+								 raiz="#{materialAlmoxarifadoRaiz}" 
+								 srcEditor="Almoxarifado/MaterialAlmoxarifado/materialAlmoxarifadoEditor.xhtml" 
+								 srcTabela="Almoxarifado/MaterialAlmoxarifado/materialAlmoxarifadoTabela.xhtml" />
+		
+			<h:panelGroup id="dialogPrecoMedioPanelGroup" >
+				<p:dialog header="Preço Médio" 
+						  visible="#{materialPrecoMedioLogRaiz.exibirDialogPrecoMedio}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.5}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Almoxarifado/MaterialAlmoxarifado/precoMedioAddDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{materialPrecoMedioLogRaiz.ocultarDialogPrecoMedio}" 
+										 update=":#{p:component('dialogPrecoMedioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+		
 		</p:tab>
 	</ui:define>
 </ui:composition>

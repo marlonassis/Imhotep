@@ -10,18 +10,31 @@
 	<ui:define name="head">
 	</ui:define>
 
-
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Material">
-		
 			<rf:formularioPadrao idFormPadrao="materialCadastro" 
 								 srcConsulta="Material/Material/materialConsulta.xhtml" 
 								 raizConsulta="#{materialConsulta}" 
 								 raiz="#{materialRaiz}" 
 								 srcEditor="Material/Material/materialEditor.xhtml" 
 								 srcTabela="Material/Material/materialTabela.xhtml" />
-		
 			
+			<h:panelGroup id="dialogPrecoMedioPanelGroup" >
+				<p:dialog header="Preço Médio" 
+						  visible="#{medicamentoPrecoMedioLogRaiz.exibirDialogPrecoMedio}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.5}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Material/Material/precoMedioAddDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{medicamentoPrecoMedioLogRaiz.ocultarDialogPrecoMedio}" 
+										 update=":#{p:component('dialogPrecoMedioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
 		</p:tab>
 	</ui:define>
 </ui:composition>

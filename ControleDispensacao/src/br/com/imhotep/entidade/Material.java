@@ -24,7 +24,7 @@ import br.com.imhotep.enums.TipoEstadoFisicoMedicamentoEnum;
 @Entity
 @Table(name = "tb_material")
 public class Material implements Serializable {
-	private static final long serialVersionUID = 805595903462991506L;
+	private static final long serialVersionUID = -702478247737632275L;
 	
 	private int idMaterial;
 	private UnidadeMaterial unidadeMaterial;
@@ -39,6 +39,7 @@ public class Material implements Serializable {
 	private Integer quantidadeMinima;
 	private Boolean bloqueado;
 	private Boolean padronizado;
+	private Double precoMedio;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_material_id_material_seq")
 	@Id
@@ -179,6 +180,15 @@ public class Material implements Serializable {
 		this.padronizado = padronizado;
 	}
 	
+	@Column(name = "db_preco_medio")
+	public Double getPrecoMedio() {
+		return this.precoMedio;
+	}
+
+	public void setPrecoMedio(Double precoMedio) {
+		this.precoMedio = precoMedio;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -197,6 +207,8 @@ public class Material implements Serializable {
 				+ ((listaEspecial == null) ? 0 : listaEspecial.hashCode());
 		result = prime * result
 				+ ((padronizado == null) ? 0 : padronizado.hashCode());
+		result = prime * result
+				+ ((precoMedio == null) ? 0 : precoMedio.hashCode());
 		result = prime
 				* result
 				+ ((quantidadeMinima == null) ? 0 : quantidadeMinima.hashCode());
@@ -257,6 +269,11 @@ public class Material implements Serializable {
 			if (other.padronizado != null)
 				return false;
 		} else if (!padronizado.equals(other.padronizado))
+			return false;
+		if (precoMedio == null) {
+			if (other.precoMedio != null)
+				return false;
+		} else if (!precoMedio.equals(other.precoMedio))
 			return false;
 		if (quantidadeMinima == null) {
 			if (other.quantidadeMinima != null)

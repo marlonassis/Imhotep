@@ -6,7 +6,12 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="materialPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="materialAlmoxarifadoPanelGridConsulta" columns="3" width="100%">
+		
+		<ri:inputApenasNumero id="codigo" 
+							  label="Código" 
+							  title="Informe o código do material" 
+							  value="#{materialAlmoxarifadoConsulta.instancia.idMaterialAlmoxarifado}" />
 		
 		<ri:inputTextoSimples id="descricao" 
 							  title="Descreva o material" 
