@@ -21,7 +21,8 @@ public class RelatorioNotaFiscalAlmoxarifadoImpressa extends PadraoRelatorio{
 	
 	public void gerarRelatorio(String id){
 		try {
-			NotaFiscalAlmoxarifado nf = new NotaFiscalAlmoxarifadoConsultaRaiz().consultar(Integer.valueOf(id));
+			NotaFiscalAlmoxarifado nf = new NotaFiscalAlmoxarifadoConsultaRaiz().consultarNotaFiscal(Integer.valueOf(id));
+			nf.setItens(new NotaFiscalAlmoxarifadoConsultaRaiz().getItensNotaFiscal(nf));
 			gerar(nf);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -40,7 +41,7 @@ public class RelatorioNotaFiscalAlmoxarifadoImpressa extends PadraoRelatorio{
 		String caminho = Constantes.DIR_RELATORIO + "RelatorioNotaFiscalAlmoxarifadoImpressa.jasper";
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		//injetando o relat—rio de materiais
+		//injetando o relatï¿½rio de materiais
 		InputStream subInputStreamNotaFiscalItens = this.getClass().getResourceAsStream("RelatorioNotaFiscalAlmoxarifadoItens.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_MATERIAIS", subInputStreamNotaFiscalItens);
 		

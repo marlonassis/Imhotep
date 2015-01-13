@@ -2,6 +2,8 @@ package br.com.imhotep.relatorio;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -29,7 +31,9 @@ import br.com.imhotep.linhaMecanica.LinhaMecanica;
 @ViewScoped
 public class RelatorioFinanceiroGrupoAlmoxarifado extends PadraoRelatorio {
 	private static final String DB_BANCO_IMHOTEP = LinhaMecanica.DB_BANCO_IMHOTEP;
-
+	private static RoundingMode ROUDING = RoundingMode.HALF_EVEN;
+	private static int SCALE = 4;
+	
 	private static final long serialVersionUID = 1L;
 	
 	private Date dataReferencia;
@@ -66,7 +70,7 @@ public class RelatorioFinanceiroGrupoAlmoxarifado extends PadraoRelatorio {
 	private List<FinanceiroGrupoAlmoxarifadoGrupo> getResultadoDetalhadoPorMaterial(){
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		String dataString = new SimpleDateFormat("yyyy-MM").format(getDataReferencia());
 		String sqlFinanceiroAlmoxarifado = "SELECT a.id_material_almoxarifado idMaterial, "+
 										       "c.cv_descricao material, "+
@@ -124,34 +128,71 @@ public class RelatorioFinanceiroGrupoAlmoxarifado extends PadraoRelatorio {
 	
 	private List<FinanceiroGrupoAlmoxarifado> getResultadoConsultaRelatorioFinal(){
 		LinhaMecanica lm = new LinhaMecanica();
-		lm.setNomeBanco(DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-		
-		String sqlFinanceiroAlmoxarifadoFinal = "select b.cv_descricao grupo, a.db_saldo_transportado, "
-												+ "db_valor_entrada, "
-												+ "db_valor_saida, "
-												+ "db_valor_final "
-												+ "from tb_financeiro_mensal_grupo_almoxarifado a "
-												+ "inner join tb_grupo_almoxarifado b on a.id_grupo_almoxarifado = b.id_grupo_almoxarifado "
-												+ "where a.cv_mes_referencia = '"+sdf.format(getDataReferencia())+"'";
-		
+		String dataReferencia = sdf.format(getDataReferencia());
 		List<FinanceiroGrupoAlmoxarifado> resultado = new ArrayList<FinanceiroGrupoAlmoxarifado>();
-		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sqlFinanceiroAlmoxarifadoFinal));
+		carregarItensAlmoxarifado(lm, dataReferencia, resultado);
+		carregarItemFarmacia(lm, dataReferencia, resultado);
+		Collections.sort(resultado, new FinanceiroGrupoAlmoxarifadoComparador());
+		return resultado;
+	}
+
+	private void carregarItemFarmacia(LinhaMecanica lm, String dataReferencia, List<FinanceiroGrupoAlmoxarifado> resultado) {
+		StringBuilder sqlFarmacia = getSqlFarmacia(dataReferencia);
+		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sqlFarmacia.toString()));
 		try {
 			while (rs.next()) {
-				String grupo = rs.getString("grupo");
-				Double saldoTransportado = rs.getDouble("db_saldo_transportado");
-				Double totalEntrada = rs.getDouble("db_valor_entrada");
-				Double totalSaida = rs.getDouble("db_valor_saida");
-				Double saldoFinal = rs.getDouble("db_valor_final");
-				resultado.add(new FinanceiroGrupoAlmoxarifado(grupo , saldoTransportado , totalEntrada , totalSaida , saldoFinal ));
+				String grupo = "MEDICAMENTOS";
+				BigDecimal saldoTransportado = new BigDecimal(rs.getDouble("transportado")).setScale(SCALE, ROUDING);
+				BigDecimal totalEntrada = new BigDecimal(rs.getDouble("entrada")).setScale(SCALE, ROUDING);
+				BigDecimal totalSaida = new BigDecimal(rs.getDouble("saida")).setScale(SCALE, ROUDING);
+				Double saldoFinal = saldoTransportado.doubleValue() + totalEntrada.doubleValue() - totalSaida.doubleValue();
+				resultado.add(new FinanceiroGrupoAlmoxarifado(grupo , saldoTransportado.doubleValue(), totalEntrada.doubleValue(), totalSaida.doubleValue(), saldoFinal ));
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		Collections.sort(resultado, new FinanceiroGrupoAlmoxarifadoComparador());
-		return resultado;
+	}
+
+	private StringBuilder getSqlFarmacia(String dataReferencia) {
+		StringBuilder sqlFarmacia = new StringBuilder();
+		sqlFarmacia.append("select sum(a.db_valor_transportado) transportado, sum(a.db_valor_entrada) entrada, sum(a.db_valor_saida) saida "); 
+		sqlFarmacia.append("from farmacia.tb_financeiro_mensal a ");
+		sqlFarmacia.append("where a.cv_mes_referencia = '");
+		sqlFarmacia.append(dataReferencia);
+		sqlFarmacia.append("'");
+		return sqlFarmacia;
+	}
+	
+	private void carregarItensAlmoxarifado(LinhaMecanica lm, String dataReferencia, List<FinanceiroGrupoAlmoxarifado> resultado) {
+		StringBuilder sqlAlmoxarifado = getSqlAlmoxarifado(dataReferencia);
+		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sqlAlmoxarifado.toString()));
+		try {
+			while (rs.next()) {
+				String grupo = rs.getString("grupo");
+				BigDecimal saldoTransportado = new BigDecimal(rs.getDouble("transportado")).setScale(SCALE, ROUDING);
+				BigDecimal totalEntrada = new BigDecimal(rs.getDouble("entrada")).setScale(SCALE, ROUDING);
+				BigDecimal totalSaida = new BigDecimal(rs.getDouble("saida")).setScale(SCALE, ROUDING);
+				Double saldoFinal = saldoTransportado.doubleValue() + totalEntrada.doubleValue() - totalSaida.doubleValue();
+				resultado.add(new FinanceiroGrupoAlmoxarifado(grupo , saldoTransportado.doubleValue() , totalEntrada.doubleValue() , totalSaida.doubleValue() , saldoFinal));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	private StringBuilder getSqlAlmoxarifado(String dataReferencia) {
+		StringBuilder sqlAlmoxarifado = new StringBuilder();
+		sqlAlmoxarifado.append("select a.cv_descricao grupo, sum(b.db_valor_transportado) transportado, ");
+		sqlAlmoxarifado.append("sum(b.db_valor_entrada) entrada, sum(b.db_valor_saida) saida ");
+		sqlAlmoxarifado.append("from tb_grupo_almoxarifado a ");
+		sqlAlmoxarifado.append("inner join tb_financeiro_mensal_almoxarifado b on a.id_grupo_almoxarifado = b.id_grupo_almoxarifado ");
+		sqlAlmoxarifado.append("where b.cv_mes_referencia = '");
+		sqlAlmoxarifado.append(dataReferencia);
+		sqlAlmoxarifado.append("' ");
+		sqlAlmoxarifado.append("group by a.cv_descricao ");
+		sqlAlmoxarifado.append("order by a.cv_descricao");
+		return sqlAlmoxarifado;
 	}
 	
 	public Date getDataReferencia() {

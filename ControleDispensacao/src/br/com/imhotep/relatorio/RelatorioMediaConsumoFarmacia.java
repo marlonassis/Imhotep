@@ -1,7 +1,7 @@
 package br.com.imhotep.relatorio;
 
 /**
- * Funcionalidade: Relatório de média de consumo e previsão de estoque
+ * Funcionalidade: Relatï¿½rio de mï¿½dia de consumo e previsï¿½o de estoque
  * XHTML: /PaginasWeb/Relatorios/Farmacia/Financeiro/financeiroFarmaciaMediaConsumo.xhtml
  */
 
@@ -56,7 +56,7 @@ public class RelatorioMediaConsumoFarmacia extends PadraoRelatorio{
 		else{
 			nomeRelatorio = "RelatorioMediaConsumoFarmacia-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
 			RelatorioMediaConsumoFarmaciaExcel exc;
-	        exc = new RelatorioMediaConsumoFarmaciaExcel(listaMediaConsumoFarmacia, "Farmácia", dataI+" a "+dataF,10, dataIni);
+	        exc = new RelatorioMediaConsumoFarmaciaExcel(listaMediaConsumoFarmacia, "Farmï¿½cia", dataI+" a "+dataF,10, dataIni);
 	        exc.gerarPlanilha();
 			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
 		}
@@ -116,35 +116,43 @@ public class RelatorioMediaConsumoFarmacia extends PadraoRelatorio{
 				}
 				MediaConsumoFarmacia mediaConsumoFarmacia = new MediaConsumoFarmacia(codigoMaterial, totalConsumo , saldoAtual, descricao, sigla, null);
 				
-				//Inicio: Previsão de estoque
+				//Inicio: Previsï¿½o de estoque
 				SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 				Calendar c = Calendar.getInstance();
 				c.setTime(new Date());
-				long saldoPrev = saldoAtual.longValue();				
+				long saldoPrev = saldoAtual.longValue();	
+				
+				//Bug #75
+				Calendar ultimoDiaDoMes = Calendar.getInstance();
+				ultimoDiaDoMes.set(Calendar.DAY_OF_MONTH, ultimoDiaDoMes.getActualMaximum( Calendar.DAY_OF_MONTH ));
+				Long venc= getQtdVencimentoPeriodo(format.format(c.getTime()).toString(), 
+						format.format(ultimoDiaDoMes.getTime()).toString(), 
+						mediaConsumoFarmacia.getIdMaterial());
 				
 				List<Long> previsao = new ArrayList<Long>();
 				for(int j=0; j<qtdPrevisaoMeses;j++){
 					c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
 					
-					Long venc = getQtdVencimentoMes( format.format(c.getTime()).toString(), mediaConsumoFarmacia.getIdMaterial() );
+					venc += getQtdVencimentoMes( format.format(c.getTime()).toString(), mediaConsumoFarmacia.getIdMaterial() );
 					saldoPrev = saldoPrev - (venc.longValue() + mediaConsumoFarmacia.getMediaConsumo());
 					previsao.add( new Long(saldoPrev) );
+					venc = 0L;
 				}
 				
 				mediaConsumoFarmacia.setPrevEstoque(previsao);
-				//Fim: Previsão de estoque
+				//Fim: Previsï¿½o de estoque
 				
 				res.add(mediaConsumoFarmacia);
 			}
 			
-			//Inicio: Previsão de estoque
+			//Inicio: Previsï¿½o de estoque
 			Calendar dataReferencia = Calendar.getInstance(Constantes.LOCALE_BRASIL);
 			dataReferencia.setTime(getDataIni());
 			for(int i = 5; i <= 11; i++){
 				map.put("MES_"+i, Utilitarios.mesAnoDescricaoResumido(dataReferencia.getTime()));
 				dataReferencia.add(Calendar.MONTH, 1);
 			}
-			//Fim: Previsão de estoque
+			//Fim: Previsï¿½o de estoque
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
@@ -153,6 +161,32 @@ public class RelatorioMediaConsumoFarmacia extends PadraoRelatorio{
 
 		return res;
 	}
+	
+		//Bug #75
+		private Long getQtdVencimentoPeriodo( String dataInicio, String dataFim, String id_material )throws SQLException{
+			String sql = 
+					"SELECT SUM(est.in_quantidade_atual) "+
+					"FROM tb_material mat "+
+						"LEFT JOIN tb_estoque est ON est.id_material = mat.id_material "+
+							"WHERE mat.cv_codigo_material= '"+id_material+"' "+
+								"AND est.bl_bloqueado IS FALSE "+
+								"AND est.dt_data_validade IS NOT NULL "+
+								"AND date_trunc('day',dt_data_validade) >= date_trunc('day',(TIMESTAMP '" + dataInicio +"')) "+
+								"AND date_trunc('day',dt_data_validade) <= date_trunc('day', (TIMESTAMP '" + dataFim + "')) "+
+								"AND est.in_quantidade_atual > 0 "+
+						"GROUP BY mat.cv_codigo_material ";
+				
+				LinhaMecanica lm = new LinhaMecanica();
+				lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
+				lm.setIp(Constantes.IP_LOCAL);
+				ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql.toString()));
+							
+				if (rs.next()) { 
+					return rs.getLong(1);
+				}
+				
+				return 0l;
+		}
 	
 	private Long getQtdVencimentoMes( String data, String codigo_material )throws SQLException{		
 		String sql = 
@@ -169,7 +203,8 @@ public class RelatorioMediaConsumoFarmacia extends PadraoRelatorio{
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		//Requisito Nï¿½o-Funcional #63
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql.toString()));
 					
 		if (rs.next()) { 

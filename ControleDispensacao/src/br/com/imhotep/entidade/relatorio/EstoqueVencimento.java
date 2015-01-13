@@ -2,6 +2,8 @@ package br.com.imhotep.entidade.relatorio;
 
 import java.util.Date;
 
+import br.com.imhotep.auxiliar.Utilitarios;
+
 public class EstoqueVencimento {
 	private String codigoMaterial;
 	private String nomeMaterial;
@@ -63,7 +65,7 @@ public class EstoqueVencimento {
 	}
 
 	public String getUsuario() {
-		return usuario;
+		return new Utilitarios().nomeResumido(usuario);
 	}
 
 	public void setUsuario(String usuario) {

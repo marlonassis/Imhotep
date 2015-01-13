@@ -11,8 +11,8 @@ public class MovimentacaoEstoqueMaterialAlmoxarifado {
 	private TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado;
 	private Integer idLote;
 	private String lote;
-	private Integer quantidade;
-	private Integer quantidadeAtual;
+	private Double quantidade;
+	private Double quantidadeAtual;
 	private Date dataMovimento;
 	private String usuario;
 	private String nomeUnidade;
@@ -24,7 +24,7 @@ public class MovimentacaoEstoqueMaterialAlmoxarifado {
 	}
 	
 	public MovimentacaoEstoqueMaterialAlmoxarifado(TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado, String nomeUnidade, 
-			String lote, Integer idLote, Integer quantidade, Integer quantidadeAtual, Date dataMovimento, 
+			String lote, Integer idLote, Double quantidade, Double quantidadeAtual, Date dataMovimento, 
 			Profissional profissinal, String nomeMaterial, String justificativa){
 		this.tipoMovimentoAlmoxarifado = tipoMovimentoAlmoxarifado;
 		this.nomeUnidade = nomeUnidade;
@@ -68,11 +68,11 @@ public class MovimentacaoEstoqueMaterialAlmoxarifado {
 		this.lote = lote;
 	}
 
-	public Integer getQuantidade() {
+	public Double getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(Double quantidade) {
 		this.quantidade = quantidade;
 	}
 
@@ -108,14 +108,14 @@ public class MovimentacaoEstoqueMaterialAlmoxarifado {
 		this.nomeMaterial = nomeMaterial;
 	}
 	
-	public Integer getSaldoRestante(){
+	public Double getSaldoRestante(){
 		if(getTipoMovimentoAlmoxarifado() == null){
-			return 0;
+			return 0d;
 		}
 		if(getTipoMovimentoAlmoxarifado().getTipoOperacao().equals(TipoOperacaoEnum.E))
-			return getQuantidadeAtual() + getQuantidade();
+			return getQuantidadeAtual().doubleValue() + getQuantidade().doubleValue();
 		else
-			return getQuantidadeAtual() - getQuantidade();
+			return getQuantidadeAtual().doubleValue() - getQuantidade().doubleValue();
 	}
 	
 	@Override
@@ -129,11 +129,11 @@ public class MovimentacaoEstoqueMaterialAlmoxarifado {
 		this.nomeMaterial;
 	}
 
-	public Integer getQuantidadeAtual() {
+	public Double getQuantidadeAtual() {
 		return quantidadeAtual;
 	}
 
-	public void setQuantidadeAtual(Integer quantidadeAtual) {
+	public void setQuantidadeAtual(Double quantidadeAtual) {
 		this.quantidadeAtual = quantidadeAtual;
 	}
 

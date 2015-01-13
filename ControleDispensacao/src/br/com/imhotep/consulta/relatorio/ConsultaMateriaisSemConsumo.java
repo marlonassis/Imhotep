@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.Familia;
 import br.com.imhotep.entidade.Grupo;
 import br.com.imhotep.entidade.GrupoAlmoxarifado;
@@ -13,15 +14,13 @@ import br.com.imhotep.entidade.Material;
 import br.com.imhotep.entidade.MaterialAlmoxarifado;
 import br.com.imhotep.entidade.SubGrupo;
 import br.com.imhotep.entidade.SubGrupoAlmoxarifado;
-import br.com.imhotep.entidade.Unidade;
-import br.com.imhotep.entidade.extra.RelMaterialPorUnidade;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.remendo.ConsultaGeral;
 
 /**
- * Criada por Asclepíades Neto 
+ * Criada por Asclepï¿½ades Neto 
  * Data: 09/09/2014
- * Funcionalidade: Relatório de materiais do almoxarifado/farmácia sem consumo.
+ * Funcionalidade: Relatï¿½rio de materiais do almoxarifado/farmï¿½cia sem consumo.
  */
 //TODO REL3 - ALMOXARIFADO
 public class ConsultaMateriaisSemConsumo extends ConsultaGeral<Object[]> {
@@ -52,7 +51,7 @@ public class ConsultaMateriaisSemConsumo extends ConsultaGeral<Object[]> {
 			
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql.toString()));
 		
 		List<MaterialAlmoxarifado> lista = new ArrayList<MaterialAlmoxarifado>();
@@ -108,7 +107,7 @@ public class ConsultaMateriaisSemConsumo extends ConsultaGeral<Object[]> {
 			
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql.toString()));
 		
 		List<Material> lista = new ArrayList<Material>();

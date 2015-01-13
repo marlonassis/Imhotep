@@ -51,7 +51,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 		map.put("dataIni", new SimpleDateFormat("MMM/yyyy", Constantes.LOCALE_BRASIL).format(dataIni) );
 		map.put("dataFim", new SimpleDateFormat("MMM/yyyy", Constantes.LOCALE_BRASIL).format(dataFim) );
 		map.put("OPERACAO_ENTRADA", "Entrada");
-		map.put("OPERACAO_SAIDA", "Saída");
+		map.put("OPERACAO_SAIDA", "SaÔøΩda");
 		
 		InputStream subInputStreamMaterial = this.getClass().getResourceAsStream("RelatorioFinanceiroFarmaciaMaterial.jasper");
 		map.put("SUBREPORT_INPUT_STREAM_MATERIAIS", subInputStreamMaterial);
@@ -69,7 +69,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 		String sql = sqlRelatorioCustoEstoque();
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		List<FinanceiroGrupo> lista = new ArrayList<FinanceiroGrupo>();
 		try {
@@ -88,7 +88,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 					mapGrupo.get(grupo).getMapMaterial().put(material, new FinanceiroGrupoMaterial(material, materialCodigo));
 				}
 				
-				//add período
+				//add perÔøΩodo
 				int mes = rs.getInt("mes");
 				int ano = rs.getInt("ano");
 				if(mes != 0 && ano != 0){
@@ -139,7 +139,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 				
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while(rs.next())
@@ -163,7 +163,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while(rs.next())
@@ -179,7 +179,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 			return 0d;
 		}
 		
-		//ajustando a data para o último dia do mês
+		//ajustando a data para o ÔøΩltimo dia do mÔøΩs
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MONTH, mes-1);
 		c.set(Calendar.YEAR, ano);
@@ -204,7 +204,7 @@ public class RelatorioFinanceiroFarmacia extends PadraoRelatorio{
 				
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		try {
 			while(rs.next())

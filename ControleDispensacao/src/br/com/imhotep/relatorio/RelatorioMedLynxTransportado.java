@@ -33,7 +33,7 @@ public class RelatorioMedLynxTransportado extends PadraoRelatorio{
 			
 			LinhaMecanica lm = new LinhaMecanica();
 			lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-			lm.setIp("127.0.0.1");
+			lm.setIp(Constantes.IP_LOCAL);
 			ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 			while (rs.next()) { 
 				String codigoMaterial = rs.getString("codigoMaterial");

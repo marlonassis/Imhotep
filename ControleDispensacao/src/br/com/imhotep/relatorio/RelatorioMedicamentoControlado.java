@@ -52,7 +52,7 @@ public class RelatorioMedicamentoControlado extends PadraoRelatorio{
 		else{
 			nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
 			RelatorioMedicamentoControladoExcel exc;
-	        exc = new RelatorioMedicamentoControladoExcel(  getLista(), "Farmácia", null,4);
+	        exc = new RelatorioMedicamentoControladoExcel(  getLista(), "Farmï¿½cia", null,4);
 	        exc.gerarPlanilha();
 			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
 		}
@@ -62,7 +62,7 @@ public class RelatorioMedicamentoControlado extends PadraoRelatorio{
 		String sql = getSqlControlado();
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		List<MedicamentoControladoLista> lista = new ArrayList<MedicamentoControladoLista>();
 		try {

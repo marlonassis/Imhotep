@@ -17,7 +17,7 @@ public class RelatorioMediaConsumoFarmaciaExcel extends RelatorioExcel{
 	Date dataIni;
 	
 	public RelatorioMediaConsumoFarmaciaExcel( List<MediaConsumoFarmacia> list, String setor, String periodo, int qtdColunas, Date dataIni ){
-		super("Média de Consumo", setor, periodo, qtdColunas);
+		super("Mï¿½dia de Consumo", setor, periodo, qtdColunas);
 		this.list = list;
 		this.dataIni = dataIni;
 	}
@@ -27,19 +27,24 @@ public class RelatorioMediaConsumoFarmaciaExcel extends RelatorioExcel{
 		criarCabecalho();		
 		criarLinha("", (short)10);
 		
+		//Bug #75
 		Calendar dataReferencia = Calendar.getInstance(Constantes.LOCALE_BRASIL);
 		dataReferencia.setTime(dataIni);
+		dataReferencia.add(Calendar.MONTH, dataReferencia.get(Calendar.MONTH) + 6);
+		
 		List<String> meses = new ArrayList<String>();
 		for(int i = 11; i >= 0; i--){
 			meses.add(Utilitarios.mesAnoDescricaoResumido(dataReferencia.getTime()));
 			dataReferencia.add(Calendar.MONTH, -1);
 		}
 		
+		//Bug #75
 		int[] qtdCaracteresMov = {80,13, 13, 13, 13, 13, 13, 15, 20};		
-		String[] headerMov = { "Material",meses.get(5), meses.get(4), meses.get(3), meses.get(2), meses.get(1), meses.get(0), "Saldo Atual", 
-				"Média de consumo", "Previsão de Duração (meses)"};		
-		
-		String[] header2 = {"", meses.get(11),meses.get(10),meses.get(9),meses.get(8),meses.get(7),meses.get(6),"","",""};
+		String[] headerMov = { "Material",meses.get(11), meses.get(10), meses.get(9), meses.get(8), meses.get(7), meses.get(6), "Saldo Atual", 
+				"Mï¿½dia de consumo", "Previsï¿½o de Duraï¿½ï¿½o (meses)"};		
+				
+		//Bug #75
+		String[] header2 = {"", meses.get(5),meses.get(4),meses.get(3),meses.get(2),meses.get(1),meses.get(0),"","",""};
 		
 		
 		criarColunasComNome(headerMov, qtdCaracteresMov);

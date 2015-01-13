@@ -1,7 +1,7 @@
 package br.com.imhotep.relatorio;
 
 /**
- * Funcionalidade: Relatório de média de consumo e previsão de estoque
+ * Funcionalidade: Relatï¿½rio de mï¿½dia de consumo e previsï¿½o de estoque
  * XHTML: /PaginasWeb/Relatorios/Almoxarifado/Financeiro/financeiroAlmoxarifadoMediaConsumo.xhtml
  */
 
@@ -27,9 +27,7 @@ import br.com.imhotep.entidade.SubGrupoAlmoxarifado;
 import br.com.imhotep.entidade.extra.MediaConsumoAlmoxarifado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.relatorio.excel.RelatorioMediaConsumoAlmoxarifadoExcel;
-import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoGrupoMaterialPeriodoExcel;
 
-//TODO Rel 2
 
 @ManagedBean
 @SessionScoped
@@ -125,8 +123,8 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 				Integer idMaterialAlmoxarfiado = (Integer) material[0];
 				String descricao = String.valueOf(material[1]).toUpperCase();
 				String sigla = String.valueOf(material[2]);
-				Integer saldoAtual = ((Long) material[3]).intValue();
-				List<Integer> totalConsumo=new ArrayList<Integer>();
+				Double saldoAtual = ((Double) material[3]).doubleValue();
+				List<Double> totalConsumo=new ArrayList<Double>();
 				
 				Calendar dataReferencia = Calendar.getInstance(Constantes.LOCALE_BRASIL);
 				dataReferencia.setTime(getDataIni());
@@ -142,7 +140,7 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 								+" where a.id_material_almoxarifado = "+idMaterialAlmoxarfiado;
 						List<Object[]> listaResultado2 = lm.getListaResultadoFast(sqlConsumo, 1);
 						for(Object[] consumo : listaResultado2){
-							totalConsumo.add(((Long) consumo[0]).intValue());
+							totalConsumo.add(((Double) consumo[0]).doubleValue());
 						}
 
 						dataReferencia.add(Calendar.MONTH, -1);
@@ -150,35 +148,43 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 				
 				MediaConsumoAlmoxarifado mediaConsumoAlmoxarifado = new MediaConsumoAlmoxarifado(idMaterialAlmoxarfiado, totalConsumo , saldoAtual, descricao, sigla, null);
 				
-				//Inicio: Previsão de estoque
+				//Inicio: Previsï¿½o de estoque
 				SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 				Calendar c = Calendar.getInstance();
 				c.setTime(new Date());
 				long saldoPrev = saldoAtual.longValue();
-								
+					
+				//Bug #75
+				Calendar ultimoDiaDoMes = Calendar.getInstance();
+				ultimoDiaDoMes.set(Calendar.DAY_OF_MONTH, ultimoDiaDoMes.getActualMaximum( Calendar.DAY_OF_MONTH ));
+				Long venc= getQtdVencimentoPeriodo(format.format(c.getTime()).toString(), 
+						format.format(ultimoDiaDoMes.getTime()).toString(), 
+						mediaConsumoAlmoxarifado.getIdMaterialAlmoxarfiado());
+				
 				List<Long> previsao = new ArrayList<Long>();
 				for(int j=0; j<qtdPrevisaoMeses;j++){
 					c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
 					
-					Long venc = getQtdVencimentoMes( format.format(c.getTime()).toString(), mediaConsumoAlmoxarifado.getIdMaterialAlmoxarfiado());
+					venc += getQtdVencimentoMes( format.format(c.getTime()).toString(), mediaConsumoAlmoxarifado.getIdMaterialAlmoxarfiado());
 					saldoPrev = saldoPrev - (venc.longValue() + mediaConsumoAlmoxarifado.getMediaConsumo());
 					previsao.add( new Long(saldoPrev) );
+					venc = 0L;
 				}
 				
 		 		mediaConsumoAlmoxarifado.setPrevEstoque(previsao);
-				//Fim: Previsão de estoque
+				//Fim: Previsï¿½o de estoque
 				
 				res.add(mediaConsumoAlmoxarifado);
 			}
 			
-			//Inicio: Previsão de estoque
+			//Inicio: Previsï¿½o de estoque
 			Calendar dataReferencia = Calendar.getInstance(Constantes.LOCALE_BRASIL);
 			dataReferencia.setTime(getDataIni());
 			for(int i = 5; i <= 11; i++){
 				map.put("MES_"+i, Utilitarios.mesAnoDescricaoResumido(dataReferencia.getTime()));
 				dataReferencia.add(Calendar.MONTH, 1);
 			}
-			//Fim: Previsão de estoque
+			//Fim: Previsï¿½o de estoque
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -205,7 +211,36 @@ public class RelatorioMediaConsumoAlmoxarifado extends PadraoRelatorio{
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		//Requisito Nï¿½o-Funcional #63
+		lm.setIp(Constantes.IP_LOCAL);
+		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql.toString()));
+					
+		if (rs.next()) { 
+			return rs.getLong(1);
+		}
+		
+		return 0l;
+	}
+	
+	//Bug #75
+	private Long getQtdVencimentoPeriodo( String dataInicio, String dataFim, int id_material )throws SQLException{
+		
+		String sql = 
+			"SELECT SUM(est.in_quantidade_atual) "+
+			"FROM tb_material_almoxarifado mat "+
+				"LEFT JOIN tb_estoque_almoxarifado est ON est.id_material_almoxarifado = mat.id_material_almoxarifado "+
+					"WHERE mat.id_material_almoxarifado= "+id_material+" "+
+						"AND est.bl_bloqueado IS FALSE "+
+						"AND est.dt_data_validade IS NOT NULL "+
+						"AND date_trunc('day',dt_data_validade) >= date_trunc('day',(TIMESTAMP '" + dataInicio +"')) "+
+						"AND date_trunc('day',dt_data_validade) <= date_trunc('day', (TIMESTAMP '" + dataFim + "')) "+
+						"AND est.in_quantidade_atual > 0 "+
+				"GROUP BY mat.id_material_almoxarifado ";
+		
+		LinhaMecanica lm = new LinhaMecanica();
+		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
+		//Requisito Nï¿½o-Funcional #63
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql.toString()));
 					
 		if (rs.next()) { 

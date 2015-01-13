@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.entidade.extra.FinanceiroGrupoAlmoxarifado;
 import br.com.imhotep.entidade.extra.FinanceiroGrupoNotaFiscalAlmoxarifado;
 import br.com.imhotep.entidade.extra.FinanceiroNotaFiscalAlmoxarifadoDesconto;
@@ -25,7 +26,7 @@ public class RelatorioNotaFiscalAlmoxarifado {
 								"where to_char(a.dt_data_contabil, 'YYYY-MM') = '"+data+"' and a.bl_doacao is false and a.db_valor_desconto > 0 "+
 								"order by a.cv_identificacao ";
 		List<FinanceiroNotaFiscalAlmoxarifadoDesconto> lista = new ArrayList<FinanceiroNotaFiscalAlmoxarifadoDesconto>();
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica();
 		ResultSet rs = lm.consultar(sqlDescontoNFs);
 		try {
 			while(rs.next()){
@@ -59,7 +60,7 @@ public class RelatorioNotaFiscalAlmoxarifado {
 		List<FinanceiroGrupoAlmoxarifado> listGrupo = new ArrayList<FinanceiroGrupoAlmoxarifado>();
 		List<FinanceiroGrupoNotaFiscalAlmoxarifado> listItens = new ArrayList<FinanceiroGrupoNotaFiscalAlmoxarifado>();
 		String grupoTemp="";
-		LinhaMecanica lm = new LinhaMecanica("db_imhotep", "127.0.0.1");
+		LinhaMecanica lm = new LinhaMecanica();
 		for(Object[] obj : lm.getListaResultado(sql)){
 			String grupo = String.valueOf(obj[0]);
 			String notaFiscal = String.valueOf(obj[1]);

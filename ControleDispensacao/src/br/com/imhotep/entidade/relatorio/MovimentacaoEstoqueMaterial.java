@@ -2,6 +2,7 @@ package br.com.imhotep.entidade.relatorio;
 
 import java.util.Date;
 
+import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.entidade.TipoMovimento;
 import br.com.imhotep.enums.TipoOperacaoEnum;
 
@@ -80,7 +81,7 @@ public class MovimentacaoEstoqueMaterial {
 	}
 
 	public String getUsuario() {
-		return usuario;
+		return new Utilitarios().nomeResumido(usuario);
 	}
 
 	public void setUsuario(String usuario) {

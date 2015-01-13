@@ -28,7 +28,6 @@ import br.com.imhotep.entidade.relatorio.MovimentacaoEstoqueMaterialAlmoxarifado
 import br.com.imhotep.enums.TipoOperacaoEnum;
 import br.com.imhotep.grafico.GraficoMaterialAlmoxarifadoConsumo;
 import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoEstoqueMaterialAlmoxarifadoExcel;
-import br.com.imhotep.relatorio.excel.RelatorioMovimentacaoGrupoMaterialPeriodoExcel;
 
 @ManagedBean
 @ViewScoped
@@ -63,7 +62,7 @@ public class RelatorioMovimentacaoEstoqueMaterialAlmoxarifado extends PadraoRela
 		String nomeRelatorio;
 		List<MovimentacaoEstoqueMaterialAlmoxarifado> lista = new ConsultaRelatorioMovimentacaoEstoqueMaterialAlmoxarifado().consultarResultados(getMaterialAlmoxarifado(), dataIni, dataFim, getUnidade(), getTipoMovimentoAlmoxarifado(), getTipoOperacao(), getAgruparPorLote());
 		
-		this.dataFim = new Utilitarios().ajustarUltimaHoraDia(this.dataFim);
+		this.dataFim = Utilitarios.ajustarUltimaHoraDia(this.dataFim);
 		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(this.dataIni);
 		String dataFim = new SimpleDateFormat("dd/MM/yyyy").format(this.dataFim);
 		

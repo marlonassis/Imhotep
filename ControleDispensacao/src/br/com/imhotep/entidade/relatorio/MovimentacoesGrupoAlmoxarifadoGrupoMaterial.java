@@ -9,8 +9,8 @@ import br.com.imhotep.comparador.MovimentacoesMaterialAlmoxarifadoGrupoMaterialM
 public class MovimentacoesGrupoAlmoxarifadoGrupoMaterial {
 	private Integer idMaterial;
 	private String material;
-	private Integer consumo;
-	private Integer saldoEstoque;
+	private Double consumo;
+	private Double saldoEstoque;
 	private List<MovimentacoesGrupoAlmoxarifadoGrupoMaterialMovimentacoes> movimentacoes = new ArrayList<MovimentacoesGrupoAlmoxarifadoGrupoMaterialMovimentacoes>();
 	
 	public MovimentacoesGrupoAlmoxarifadoGrupoMaterial(){
@@ -22,7 +22,7 @@ public class MovimentacoesGrupoAlmoxarifadoGrupoMaterial {
 		this.material = material;
 	}
 	
-	public MovimentacoesGrupoAlmoxarifadoGrupoMaterial(Integer idMaterial, String material, Integer consumo, Integer saldoEstoque, List<MovimentacoesGrupoAlmoxarifadoGrupoMaterialMovimentacoes> movimentacoes){
+	public MovimentacoesGrupoAlmoxarifadoGrupoMaterial(Integer idMaterial, String material, Double consumo, Double saldoEstoque, List<MovimentacoesGrupoAlmoxarifadoGrupoMaterialMovimentacoes> movimentacoes){
 		super();
 		this.idMaterial = idMaterial;
 		this.material = material;
@@ -58,19 +58,19 @@ public class MovimentacoesGrupoAlmoxarifadoGrupoMaterial {
 		this.movimentacoes = movimentacoes;
 	}
 
-	public Integer getConsumo() {
+	public Double getConsumo() {
 		return consumo;
 	}
 
-	public void setConsumo(Integer consumo) {
+	public void setConsumo(Double consumo) {
 		this.consumo = consumo;
 	}
 
-	public Integer getSaldoEstoque() {
+	public Double getSaldoEstoque() {
 		return saldoEstoque;
 	}
 
-	public void setSaldoEstoque(Integer saldoEstoque) {
+	public void setSaldoEstoque(Double saldoEstoque) {
 		this.saldoEstoque = saldoEstoque;
 	}
 

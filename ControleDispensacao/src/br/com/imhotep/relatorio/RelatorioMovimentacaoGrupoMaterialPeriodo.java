@@ -148,8 +148,8 @@ public class RelatorioMovimentacaoGrupoMaterialPeriodo extends PadraoRelatorio{
 					grupoMap.put(grupo, new MovimentacoesGrupoAlmoxarifadoGrupo(grupo, subGrupo, materiais));
 				}
 				
-				Integer saldoEstoque = new MaterialAlmoxarifadoConsultaRaiz().saldoTotalEstoque(idMaterial);
-				Integer consumo = new MaterialAlmoxarifadoConsultaRaiz().consumoMaterialPeriodo(idMaterial, dataIni, dataFim);
+				Double saldoEstoque = new MaterialAlmoxarifadoConsultaRaiz().saldoTotalEstoque(idMaterial);
+				Double consumo = new MaterialAlmoxarifadoConsultaRaiz().consumoMaterialPeriodo(idMaterial, dataIni, dataFim);
 				MovimentacoesGrupoAlmoxarifadoGrupoMaterial magm = new MovimentacoesGrupoAlmoxarifadoGrupoMaterial(idMaterial, material, consumo, saldoEstoque, null);
 				List<MovimentacoesGrupoAlmoxarifadoGrupoMaterial> materiais = grupoMap.get(grupo).getMateriais();
 				if(!materiais.contains(magm)){
