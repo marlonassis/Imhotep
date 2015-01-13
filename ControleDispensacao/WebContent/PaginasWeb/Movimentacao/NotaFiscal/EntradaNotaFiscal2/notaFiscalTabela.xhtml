@@ -30,9 +30,9 @@
 		
 		<p:column>
 			<f:facet name="header">
-				<h:outputText value="Fechada" />
+				<h:outputText value="Liberada" />
 			</f:facet>
-			<h:outputText value="#{linha.fechada ? 'Sim' : 'Não'}" />
+			<h:outputText value="#{linha.liberada ? 'Sim' : 'Não'}" />
 		</p:column>
 
 		<p:column>
@@ -46,22 +46,12 @@
 		
 		<p:column style="width:120px; text-align: center;">
 			<p:commandLink title="Editar"
-				update=":#{p:component('notaFiscalEditorForm')}"
-				style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{notaFiscalRaiz.instancia}" />
+						   update=":#{p:component('notaFiscal')} :#{p:component('padraoTabView')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalRaiz.carregarInstancia}" />
 				<h:graphicImage value="/Imagens/edit.gif" />
 			</p:commandLink>
 
-			<p:commandLink action="#{notaFiscalRaiz.bloquearNotaFiscal()}"
-				update=":#{p:component('notaFiscalEditorForm')} :#{p:component('notaFiscalPesquisaForm')}"
-				onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
-				title="Bloquear" style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}"
-					target="#{notaFiscalRaiz.instancia}" />
-				<h:graphicImage value="/Imagens/delete.png" />
-			</p:commandLink>
-			
 			<p:commandLink title="Visualizar"
 						   onclick="window.open('notaFiscalImpressa.hu?id=#{linha.idNotaFiscal}', 'notaFiscalImpressa');"
 						   target="notaFiscalImpressa"

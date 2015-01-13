@@ -34,7 +34,7 @@
 			<f:facet name="header">
 				<h:outputText value="Fechada" />
 			</f:facet>
-			<h:outputText value="#{linha.fechada ? 'Sim' : 'Não'}" />
+			<h:outputText value="#{linha.liberada ? 'Sim' : 'Não'}" />
 		</p:column>
 
 		<p:column>
@@ -45,22 +45,6 @@
 		</p:column>
 		
 		<p:column style="width:120px; text-align: center;">
-			<p:commandLink title="Editar"
-						   ajax="false"
-						   update=":#{p:component('notaFiscalAlmoxarifadoEditorForm')}"
-						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalAlmoxarifadoRaiz.instancia}" />
-				<h:graphicImage value="/Imagens/edit.gif" />
-			</p:commandLink>
-
-			<p:commandLink action="#{notaFiscalAlmoxarifadoRaiz.bloquearNotaFiscal()}"
-						   update=":#{p:component('notaFiscalAlmoxarifadoEditorForm')} :#{p:component('notaFiscalAlmoxarifadoPesquisaForm')}"
-						   onclick="if(!confirm('Deseja realmente bloquear?')) return false;"
-						   title="Bloquear" 
-						   style="padding-right:10px;">
-				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalAlmoxarifadoRaiz.instancia}" />
-				<h:graphicImage value="/Imagens/delete.png" />
-			</p:commandLink>
 			
 			<p:commandLink title="Visualizar"
 						   onclick="window.open('notaFiscalAlmoxarifadoImpressa.hu?id=#{linha.idNotaFiscalAlmoxarifado}', 'notaFiscalAlmoxarifadoImpressa');"
@@ -70,6 +54,24 @@
 								width="16px" 
 								value="/Imagens/PDF-icon.png" />
 			</p:commandLink>
+			
+			<p:commandLink title="Editar"
+						   update=":#{p:component('padraoTabView')}"
+						   style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalAlmoxarifadoRaiz.carregarInstancia}" />
+				<h:graphicImage value="/Imagens/edit.gif" />
+			</p:commandLink>
+			
+			<p:commandLink action="#{notaFiscalAlmoxarifadoRaiz.apagar()}"
+						   rendered="false"
+						   oncomplete="atualizarTabela();"
+						   update=":#{p:component('notaFiscal')}"
+						   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
+						   title="Apagar" style="padding-right:10px;">
+				<f:setPropertyActionListener value="#{linha}" target="#{notaFiscalAlmoxarifadoRaiz.instanciaDelecao}" />
+				<h:graphicImage value="/Imagens/delete.png" />
+			</p:commandLink>
+			
 		</p:column>
 	</p:dataTable>
 

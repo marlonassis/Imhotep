@@ -3,28 +3,30 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:rf="http://java.sun.com/jsf/composite/remendo/form"
 	template="/Templates/templatePadrao.xhtml">
 
 	<ui:define name="head">
 	</ui:define>
 
+
 	<ui:define name="conteudoPadrao">
-		<p:tab title="Entrada Com Nota Fiscal">
+		<p:tab title="Nota Fiscal">
+			
 			<rf:formularioPadrao idFormPadrao="notaFiscal"
-								 srcTabela="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalTabela.xhtml" 
-								 srcConsulta="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalConsulta.xhtml" 
-								 raiz="#{notaFiscalRaiz}" 
-								 raizConsulta="#{notaFiscalConsulta}" 
-								 srcEditor="Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalEditor.xhtml" />
+								 srcTabela="Almoxarifado/NotaFiscal/EntradaNotaFiscal/entradaNotaFiscalTabela.xhtml" 
+								 srcConsulta="Almoxarifado/NotaFiscal/EntradaNotaFiscal/entradaNotaFiscalConsulta.xhtml" 
+								 srcEditor="Almoxarifado/NotaFiscal/EntradaNotaFiscal/entradaNotaFiscalEditor.xhtml" 
+								 raiz="#{notaFiscalAlmoxarifadoRaiz}" 
+								 raizConsulta="#{notaFiscalAlmoxarifadoConsulta}" />
 			
 			
 			
-			
-			<h:panelGrid id="botoesExtrasPanelGrid" rendered="#{notaFiscalRaiz.edicao}" columns="3" >
-				<p:commandButton value="#{notaFiscalRaiz.instancia.bloqueada ? 'Desbloquear' : 'Bloquear'}" 
-								 action="#{notaFiscalRaiz.bloquearDesbloquear}"
-								 rendered="#{variavel.variavelAutorizada('BloquearNotaFiscalFarmacia')}" 
+			<h:panelGrid id="botoesExtrasPanelGrid" rendered="#{notaFiscalAlmoxarifadoRaiz.edicao}" columns="3" >
+				<p:commandButton value="#{notaFiscalAlmoxarifadoRaiz.instancia.bloqueada ? 'Desbloquear' : 'Bloquear'}" 
+								 action="#{notaFiscalAlmoxarifadoRaiz.bloquearDesbloquear}"
+								 rendered="#{variavel.variavelAutorizada('BloquearNotaFiscalAlmoxarifado')}" 
 								 update=":#{p:component('notaFiscal')} :#{p:component('botoesExtrasPanelGrid')}" />
 								 
 				<p:commandButton value="Estornar" 
@@ -32,10 +34,10 @@
 								 update=":#{p:component('notaFiscal')} :#{p:component('botoesExtrasPanelGrid')}" />
 								 
 				<p:commandButton value="Liberar/Autorizar" 
-								 rendered="#{!notaFiscalRaiz.instancia.liberada and variavel.variavelAutorizada('LiberarNotaFiscalFarmacia')}"
-								 action="#{notaFiscalConfirmacaoRaiz.exibirDialogConfirmacaoLiberacao}" 
+								 rendered="#{!notaFiscalAlmoxarifadoRaiz.instancia.liberada and variavel.variavelAutorizada('LiberarNotaFiscalAlmoxarifado')}"
+								 action="#{notaFiscalAlmoxarifadoConfirmacaoRaiz.exibirDialogConfirmacaoLiberacao}" 
 								 update=":#{p:component('dialogConfirmacaoLiberacaoNotaFiscalPanelGroup')}" >
-					<f:setPropertyActionListener value="#{notaFiscalRaiz.instancia}" target="#{notaFiscalConfirmacaoRaiz.notaFiscal}" />
+					<f:setPropertyActionListener value="#{notaFiscalAlmoxarifadoRaiz.instancia}" target="#{notaFiscalAlmoxarifadoConfirmacaoRaiz.notaFiscal}" />
 				</p:commandButton>
 			</h:panelGrid>
 			
@@ -43,17 +45,17 @@
 			
 			
 			<h:panelGroup id="dialogConfirmacaoLiberacaoNotaFiscalPanelGroup" >
-				<p:dialog header="Confirmação - NF nº #{notaFiscalRaiz.instancia.identificacaoNotaFiscal} (#{notaFiscalRaiz.instancia.valorDescontadoFormatado})" 
-						  visible="#{notaFiscalConfirmacaoRaiz.exibirDialogConfirmacaoLiberacao}"
+				<p:dialog header="Confirmação - NF nº #{notaFiscalAlmoxarifadoRaiz.instancia.identificacao} (#{notaFiscalAlmoxarifadoRaiz.instancia.valorDescontadoFormatado})" 
+						  visible="#{notaFiscalAlmoxarifadoConfirmacaoRaiz.exibirDialogConfirmacaoLiberacao}"
 						  closable="false" 
 						  modal="true" 
 						  width="#{util.larguraTela * 0.9}" 
 						  height="#{util.alturaTela * 0.7}" >
 					<p:messages />
-					<ui:include src="/PaginasWeb/Movimentacao/NotaFiscal/EntradaNotaFiscal2/notaFiscalConfirmacaoAddDialog.xhtml" />
+					<ui:include src="/PaginasWeb/Almoxarifado/NotaFiscal/EntradaNotaFiscal/notaFiscalConfirmacaoAddDialog.xhtml" />
 					<h:form>
 						<p:commandButton value="Fechar" 
-										 action="#{notaFiscalConfirmacaoRaiz.ocultarDialogConfirmacaoLiberacao}" 
+										 action="#{notaFiscalAlmoxarifadoConfirmacaoRaiz.ocultarDialogConfirmacaoLiberacao}" 
 										 update=":#{p:component('dialogConfirmacaoLiberacaoNotaFiscalPanelGroup')}" />
 					</h:form>
 				</p:dialog>
@@ -61,19 +63,18 @@
 			
 			
 			
-			
 			<h:panelGroup id="dialogItensNotaFiscalPanelGroup" >
-				<p:dialog header="Itens da Nota Fiscal - #{notaFiscalRaiz.instancia.identificacaoNotaFiscal} (#{notaFiscalRaiz.instancia.valorDescontadoFormatado})" 
-						  visible="#{notaFiscalEstoqueRaiz.exibirDialogItens}"
+				<p:dialog header="Itens da Nota Fiscal - #{notaFiscalAlmoxarifadoRaiz.instancia.identificacao} (#{notaFiscalAlmoxarifadoRaiz.instancia.valorDescontadoFormatado})" 
+						  visible="#{notaFiscalEstoqueAlmoxarifadoRaiz.exibirDialogItens}"
 						  closable="false" 
 						  modal="true" 
 						  width="#{util.larguraTela * 0.9}" 
 						  height="#{util.alturaTela * 0.7}" >
 					<p:messages />
-					<ui:include src="/PaginasWeb/Movimentacao/NotaFiscal/NotaFiscalEstoque/notaFiscalEstoqueAddDialog.xhtml" />
+					<ui:include src="/PaginasWeb/Almoxarifado/NotaFiscal/NotaFiscalEstoqueAlmoxarifado/notaFiscalEstoqueAlmoxarifadoAddDialog.xhtml" />
 					<h:form>
 						<p:commandButton value="Fechar" 
-										 action="#{notaFiscalEstoqueRaiz.ocultarDialogItens}" 
+										 action="#{notaFiscalEstoqueAlmoxarifadoRaiz.ocultarDialogItens}" 
 										 update=":#{p:component('dialogItensNotaFiscalPanelGroup')}" />
 					</h:form>
 				</p:dialog>
@@ -81,11 +82,8 @@
 			
 			
 			
-			
-			
-			
 			<h:panelGroup id="dialogConfirmarValorPanelGroup" >
-				<p:dialog visible="#{notaFiscalRaiz.exibirDialogConfirmacaoValorNota}" 
+				<p:dialog visible="#{notaFiscalAlmoxarifadoRaiz.exibirDialogConfirmacaoValorNota}" 
 						  closable="false" 
 						  header="Confirmação do valor da Nota-Fiscal" 
 						  modal="true" 
@@ -95,17 +93,17 @@
 					<h:form>
 						<h:panelGrid columns="2" >
 							<h:outputText value="O valor da nota é :" /> 
-							<h:outputText value="#{notaFiscalRaiz.instancia.valorTotal}" >
+							<h:outputText value="#{notaFiscalAlmoxarifadoRaiz.instancia.valorTotal}" >
 								 <f:convertNumber currencySymbol="R$" type="currency"/>
 							</h:outputText>
 						</h:panelGrid>
 						<h:panelGrid columns="2" >
 							<p:commandButton value="Confirmar" 
-											 action="#{notaFiscalRaiz.finalizarCadastro}" 
+											 action="#{notaFiscalAlmoxarifadoRaiz.finalizarCadastro}" 
 											 update=":#{p:component('padraoTabView')}" 
 											 immediate="false" />
 							<p:commandButton value="Cancelar" 
-											 action="#{notaFiscalRaiz.ocultarDialogConfirmacaoValorNota}" 
+											 action="#{notaFiscalAlmoxarifadoRaiz.ocultarDialogConfirmacaoValorNota}" 
 											 update=":#{p:component('notaFiscal')} :#{p:component('dialogConfirmarValorPanelGroup')}"
 											 immediate="false" />
 						</h:panelGrid>

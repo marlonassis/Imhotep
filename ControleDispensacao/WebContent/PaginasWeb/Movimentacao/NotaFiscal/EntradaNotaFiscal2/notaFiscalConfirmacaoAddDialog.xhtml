@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="listaItensNFConfirmacaoForm" >
+		<p:dataTable id="itensEstoqueDataGrid"
+					var="linha" 
+					emptyMessage="Não foram encontrados registros"
+					value="#{notaFiscalConfirmacaoRaiz.itensNotaFiscal}"
+					rows="1000">
+			
+			<f:facet name="header">
+				Total do Itens: 
+				<h:outputText value="#{notaFiscalConfirmacaoRaiz.valorTotalItens}">
+					<f:convertNumber currencySymbol="R$" 
+									 groupingUsed="true"
+									 maxFractionDigits="2" 
+									 type="currency" />
+				</h:outputText>
+			</f:facet>
+			
+		    <p:column headerText="Lote">
+				<h:outputText value="#{linha.estoque.lote}" />
+		    </p:column>
+			<p:column headerText="Medicamento">
+				<h:outputText value=" #{linha.estoque.material.descricao}"/>
+			</p:column>
+			<p:column headerText="Fabricante">
+				<h:outputText value="#{linha.estoque.fabricante.descricao}" />
+			</p:column>
+			<p:column headerText="Validade">
+				<h:outputText value="#{linha.estoque.dataValidade}" style="margin-left:10px">
+	            	<f:convertDateTime pattern="MM/yyyy" locale="pt_BR" timeZone="GMT-3"  />
+	            </h:outputText>
+			</p:column>
+			<p:column headerText="Quantidade">
+				<h:outputText value="#{linha.quantidadeEntrada}"/>
+			</p:column>
+			<p:column headerText="Valor Unitário">
+				<h:outputText id="balance" value="#{linha.valorUnitario}">
+				    <f:convertNumber currencySymbol="R$" 
+				    				 groupingUsed="true"
+				                     maxFractionDigits="4" 
+				                     type="currency" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Total">
+				<h:outputText value="#{linha.total}">
+					<f:convertNumber currencySymbol="R$" 
+									 groupingUsed="true"
+									 maxFractionDigits="2" 
+									 type="currency" />
+				</h:outputText>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<br/>
+	<br/>
+	
+	<h:form>
+		<script>
+			function confirmarLiberacao(){
+				statusDialog.show();
+				var res = confirm('ATENÇÃO #{autenticador.profissionalAtual.nomeResumido}: Você confirma que estes dados estão corretos?');
+				if(!res){
+					statusDialog.hide();
+				}
+				return res;
+			}
+		</script>
+		<p:commandButton value="Liberar" 
+						 action="#{notaFiscalConfirmacaoRaiz.liberarNotaFiscal}" 
+						 update=":#{p:component('dialogConfirmacaoLiberacaoNotaFiscalPanelGroup')} :#{p:component('padraoTabView')}" 
+           			     onclick="return confirmarLiberacao();" 
+						 global="false" 
+           			     onsuccess="statusDialog.hide();"/>
+	</h:form>
+	
+	<br/>
+	<br/>
+</ui:composition>

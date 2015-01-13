@@ -27,7 +27,6 @@ public class RelatorioEntradaNotaFiscalAlmoxarifado extends PadraoRelatorio{
 	
 	private Date dataIni;
 	
-	//Solicitação de Mudança #13
 	private boolean excel;
 	
 	public void gerarRelatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
@@ -41,7 +40,6 @@ public class RelatorioEntradaNotaFiscalAlmoxarifado extends PadraoRelatorio{
 
 		String data = new SimpleDateFormat("MMMM/yyyy", Constantes.LOCALE_BRASIL).format(dataIni);
 		
-		//Solicitação de Mudança #13
 		if(excel==false){
 			nomeRelatorio = "RelatorioEntradaNotaFiscalAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
 			

@@ -28,7 +28,7 @@ public class NotaFiscalEstoqueAlmoxarifado implements Serializable {
 	private Profissional profissionalInsercao;
 	private Date dataInsercao;
 	private Double valorUnitario;
-	private int quantidadeEntrada;
+	private Double quantidadeEntrada;
 	private MovimentoLivroAlmoxarifado movimentoLivroAlmoxarifado;
 
 	
@@ -93,10 +93,10 @@ public class NotaFiscalEstoqueAlmoxarifado implements Serializable {
 	}
 	
 	@Column(name = "in_quantidade_entrada")
-	public int getQuantidadeEntrada() {
+	public Double getQuantidadeEntrada() {
 		return quantidadeEntrada;
 	}
-	public void setQuantidadeEntrada(int quantidadeEntrada) {
+	public void setQuantidadeEntrada(Double quantidadeEntrada) {
 		this.quantidadeEntrada = quantidadeEntrada;
 	}
 	

@@ -1,40 +1,40 @@
 package br.com.imhotep.entidade;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.OneToMany;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.entidade.Fornecedor;
-import br.com.imhotep.entidade.Profissional;
-
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
+import br.com.imhotep.enums.TipoStatusNotaFiscalEnum;
 
 
 @Entity
 @Table(name = "tb_nota_fiscal_almoxarifado")
 public class NotaFiscalAlmoxarifado implements Serializable {
-	private static final long serialVersionUID = 6762795517462827188L;
+	private static final long serialVersionUID = 8809823514707090957L;
 	
 	private int idNotaFiscalAlmoxarifado;
-	private boolean fechada;
+	private boolean liberada;
 	private boolean bloqueada;
+	private TipoStatusNotaFiscalEnum statusNF;
 	private Profissional profissionalInsercao;
+	private Profissional profissionalAutorizacao;
 	private Fornecedor fornecedor;
 	private String identificacao;
 	private Date dataEntrega;
@@ -44,9 +44,9 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 	private Date dataContabil;
 	private Double valorDesconto;
 	private String serie;
-	private List<NotaFiscalEstoqueAlmoxarifado> itens;
 	private boolean doacao;
 	private String chaveAcesso;
+	private List<NotaFiscalEstoqueAlmoxarifado> itens;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_nota_fiscal_almoxarifado_id_nota_fiscal_almoxarifado_seq")
 	@Id
@@ -60,13 +60,13 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 		this.idNotaFiscalAlmoxarifado = idNotaFiscalAlmoxarifado;
 	}
 
-	@Column(name="bl_fechada", nullable=false) 	
-	public Boolean getFechada() {
-		return fechada;
+	@Column(name="bl_liberada", nullable=false) 	
+	public Boolean getLiberada() {
+		return liberada;
 	}
 
-	public void setFechada(Boolean fechada) {
-		this.fechada = fechada;
+	public void setLiberada(Boolean liberada) {
+		this.liberada = liberada;
 	}
 
 	@Column(name="bl_bloqueada", nullable=false) 	
@@ -88,6 +88,16 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 		this.profissionalInsercao = profissionalInsercao;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_profissional_autorizacao")	
+	public Profissional getProfissionalAutorizacao() {
+		return profissionalAutorizacao;
+	}
+
+	public void setProfissionalAutorizacao(Profissional profissionalAutorizacao) {
+		this.profissionalAutorizacao = profissionalAutorizacao;
+	}
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_fornecedor")	
 	public Fornecedor getFornecedor() {
@@ -174,14 +184,6 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 		this.serie = serie;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "notaFiscalAlmoxarifado")
-	public List<NotaFiscalEstoqueAlmoxarifado> getItens() {
-		return itens;
-	}
-	public void setItens(List<NotaFiscalEstoqueAlmoxarifado> itens) {
-		this.itens = itens;
-	}
-	
 	@Column(name="bl_doacao") 	
 	public Boolean getDoacao() {
 		return doacao;
@@ -199,7 +201,15 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 	public void setChaveAcesso(String chaveAcesso) {
 		this.chaveAcesso = chaveAcesso;
 	}
-
+	
+	@Column(name = "tp_status_nf")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusNotaFiscalEnum getStatusNF() {
+		return statusNF;
+	}
+	public void setStatusNF(TipoStatusNotaFiscalEnum statusNF) {
+		this.statusNF = statusNF;
+	}
 	
 	@Transient
 	public Double getValorDescontado(){
@@ -217,6 +227,15 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 		return "";
 	}
 
+	@Transient
+	public List<NotaFiscalEstoqueAlmoxarifado> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<NotaFiscalEstoqueAlmoxarifado> itens) {
+		this.itens = itens;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -233,25 +252,31 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 		result = prime * result
 				+ ((dataInsercao == null) ? 0 : dataInsercao.hashCode());
 		result = prime * result + (doacao ? 1231 : 1237);
-		result = prime * result + (fechada ? 1231 : 1237);
 		result = prime * result
 				+ ((fornecedor == null) ? 0 : fornecedor.hashCode());
 		result = prime * result + idNotaFiscalAlmoxarifado;
 		result = prime * result
 				+ ((identificacao == null) ? 0 : identificacao.hashCode());
 		result = prime * result + ((itens == null) ? 0 : itens.hashCode());
+		result = prime * result + (liberada ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((profissionalAutorizacao == null) ? 0
+						: profissionalAutorizacao.hashCode());
 		result = prime
 				* result
 				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
 						.hashCode());
 		result = prime * result + ((serie == null) ? 0 : serie.hashCode());
 		result = prime * result
+				+ ((statusNF == null) ? 0 : statusNF.hashCode());
+		result = prime * result
 				+ ((valorDesconto == null) ? 0 : valorDesconto.hashCode());
 		result = prime * result
 				+ ((valorTotal == null) ? 0 : valorTotal.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -290,8 +315,6 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 			return false;
 		if (doacao != other.doacao)
 			return false;
-		if (fechada != other.fechada)
-			return false;
 		if (fornecedor == null) {
 			if (other.fornecedor != null)
 				return false;
@@ -309,6 +332,14 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 				return false;
 		} else if (!itens.equals(other.itens))
 			return false;
+		if (liberada != other.liberada)
+			return false;
+		if (profissionalAutorizacao == null) {
+			if (other.profissionalAutorizacao != null)
+				return false;
+		} else if (!profissionalAutorizacao
+				.equals(other.profissionalAutorizacao))
+			return false;
 		if (profissionalInsercao == null) {
 			if (other.profissionalInsercao != null)
 				return false;
@@ -318,6 +349,8 @@ public class NotaFiscalAlmoxarifado implements Serializable {
 			if (other.serie != null)
 				return false;
 		} else if (!serie.equals(other.serie))
+			return false;
+		if (statusNF != other.statusNF)
 			return false;
 		if (valorDesconto == null) {
 			if (other.valorDesconto != null)

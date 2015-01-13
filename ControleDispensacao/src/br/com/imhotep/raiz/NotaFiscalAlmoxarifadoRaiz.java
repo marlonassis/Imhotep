@@ -1,214 +1,103 @@
 package br.com.imhotep.raiz;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Utilitarios;
-import br.com.imhotep.controle.ControleEstoqueAlmoxarifadoTemp;
-import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.entidade.NotaFiscalAlmoxarifado;
-import br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado;
 import br.com.imhotep.excecoes.ExcecaoDataContabil;
-import br.com.imhotep.excecoes.ExcecaoEstoqueRepetidoNotaFiscal;
-import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
-import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.seguranca.Autenticador;
-import br.com.imhotep.temp.ConsultaGeral;
-import br.com.imhotep.temp.ExcecaoPadraoFluxo;
-import br.com.imhotep.temp.PadraoFluxoTemp;
 import br.com.remendo.PadraoRaiz;
 
 @ManagedBean
 @SessionScoped
-public class NotaFiscalAlmoxarifadoRaiz extends PadraoRaiz<NotaFiscalAlmoxarifado>{	
-	private NotaFiscalEstoqueAlmoxarifado item = new NotaFiscalEstoqueAlmoxarifado();
-	private Boolean achouLote = null;
-	private Integer quantidadeMovimentada;
+public class NotaFiscalAlmoxarifadoRaiz extends PadraoRaiz<NotaFiscalAlmoxarifado>{
+	private boolean exibirDialogConfirmacaoValorNota;
 	
-	public void cadastrarLoteDuplicado(){
-		setAchouLote(false);
-		String lote = getItem().getEstoqueAlmoxarifado().getLote();
-		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
-		getItem().getEstoqueAlmoxarifado().setLote(lote);
-	}
-	
-	public NotaFiscalAlmoxarifadoRaiz(){
-		super();
-		novaInstancia();
+	public void bloquearDesbloquear(){
+		Boolean bloqueada = getInstancia().getBloqueada();
+		getInstancia().setBloqueada(!bloqueada);
+		super.atualizar();
 	}
 	
 	@Override
 	protected void preEnvio() {
 		try {
-			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
-		} catch (ExcecaoProfissionalLogado e) {
+			getInstancia().setProfissionalInsercao(Autenticador.getInstancia().getProfissionalAtual());
+			getInstancia().setDataInsercao(new Date());
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		getInstancia().setDataInsercao(new Date());
 		super.preEnvio();
+	}
+	
+	public void finalizarCadastro(){
+		try {
+			ocultarDialogConfirmacaoValorNota();
+			validarDataContabil();
+			super.enviar();
+		} catch (ExcecaoDataContabil e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public boolean enviar() {
-		try {
-			validarDataContabil();
-			return super.enviar();
-		} catch (ExcecaoDataContabil e) {
-			e.printStackTrace();
-		}
+		exibirDialogConfirmacaoValorNota();
 		return false;
+	}
+	
+	public void exibirDialogConfirmacaoValorNota(){
+		setExibirDialogConfirmacaoValorNota(true);
+	}
+	
+	public void ocultarDialogConfirmacaoValorNota(){
+		setExibirDialogConfirmacaoValorNota(false);
 	}
 	
 	private void validarDataContabil() throws ExcecaoDataContabil {
 		Calendar dataContabil = Calendar.getInstance();
-		dataContabil.setTime(Utilitarios.ajustarZeroHoraDia(getInstancia().getDataContabil()));
+		dataContabil.setTime(getInstancia().getDataContabil());
+		int mes = dataContabil.get(Calendar.MONTH);
+		int ano = dataContabil.get(Calendar.YEAR);
+		
+		dataContabil = Calendar.getInstance();
+		dataContabil.set(Calendar.HOUR_OF_DAY, 0);
+		dataContabil.set(Calendar.MINUTE, 0);
+		dataContabil.set(Calendar.SECOND, 0);
+		dataContabil.set(Calendar.DAY_OF_MONTH, 01);
+		dataContabil.set(Calendar.MONTH, mes);
+		dataContabil.set(Calendar.YEAR, ano);
+		
 		Calendar mesAtual = Calendar.getInstance();
+		mesAtual.set(Calendar.HOUR_OF_DAY, 0);
+		mesAtual.set(Calendar.MINUTE, 0);
+		mesAtual.set(Calendar.SECOND, 0);
 		mesAtual.set(Calendar.DAY_OF_MONTH, 01);
-		mesAtual.setTime(Utilitarios.ajustarZeroHoraDia(mesAtual.getTime()));
-		if(dataContabil.before(mesAtual)){
+		
+		if(dataContabil.getTime().before(mesAtual.getTime())){
 			throw new ExcecaoDataContabil();
 		}
 	}
-
-	@Override
-	public void novaInstancia() {
-		super.novaInstancia();
-		setItem(new NotaFiscalEstoqueAlmoxarifado());
-		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
-		setAchouLote(null);
-	}
 	
-	public void procurarLote(){
-		String lote = getItem().getEstoqueAlmoxarifado().getLote();
-		if(lote == null || lote.trim().equals("")){
-			super.mensagem("Lote n‹o informado", null, Constantes.INFO);
-			setAchouLote(false);
-			return;
-		}
-		
-		String sql = "select o from EstoqueAlmoxarifado o where o.lote = '"+lote+"'";
-		List<EstoqueAlmoxarifado> busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql);
-		busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql);
-		if(busca != null && busca.size() > 0){
-			getItem().setEstoqueAlmoxarifado(busca.get(0));
-			setAchouLote(true);
-		}else{
-			super.mensagem("Lote n‹o encontrado", null, Constantes.WARN);
-			setAchouLote(false);
-		}
-	}
-	
-	public void addItemNotaFiscal(){
-		try {
-			varificaItemSemLote();
-			getItem().setNotaFiscalAlmoxarifado(getInstancia());
-			getItem().setQuantidadeEntrada(getQuantidadeMovimentada());
-			new NotaFiscalEstoqueAlmoxarifadoRaiz().salvarItem(getItem(), getQuantidadeMovimentada());
-			processarFluxo();
-			limparFluxo();
-			finalizarAddItemNotaFiscal();
-		} catch (Exception e){
-			e.printStackTrace();
-		}finally{
-			unlockEstoque();
-		}
-	}
-
-	private void unlockEstoque() {
-		try {
-			new ControleEstoqueAlmoxarifadoTemp().unLockEstoque(getItem().getEstoqueAlmoxarifado());
-		} catch (ExcecaoEstoqueUnLock e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	private void processarFluxo() throws ExcecaoPadraoFluxo {
-		new PadraoFluxoTemp().processarFluxo();
-	}
-
-	private void limparFluxo() {
-		PadraoFluxoTemp.limparFluxo();
-	}
-	
-	private void finalizarAddItemNotaFiscal() {
-		unlockEstoque();
-		if(getInstancia().getItens() == null){
-			getInstancia().setItens(new ArrayList<NotaFiscalEstoqueAlmoxarifado>());
-		}
-		getInstancia().getItens().add(getItem());
-		setItem(new NotaFiscalEstoqueAlmoxarifado());
-		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
-		setAchouLote(null);
-		setQuantidadeMovimentada(null);
-	}
-	
-	private void varificaItemSemLote() throws ExcecaoEstoqueRepetidoNotaFiscal {
-		String lote = getItem().getEstoqueAlmoxarifado().getLote();
-		if(lote == null || lote.trim().equals("")){
-			HashMap<Object, Object> hm = new HashMap<Object, Object>();
-			hm.put("idMaterial", getItem().getEstoqueAlmoxarifado().getMaterialAlmoxarifado().getIdMaterialAlmoxarifado());
-			hm.put("idFabricante", getItem().getEstoqueAlmoxarifado().getFabricanteAlmoxarifado().getIdFabricanteAlmoxarifado());
-			hm.put("dataValidade", new SimpleDateFormat("yyyy-MM-dd").format(getItem().getEstoqueAlmoxarifado().getDataValidade()));
-			hm.put("codigoBarras", getItem().getEstoqueAlmoxarifado().getCodigoBarras());
-			String hql = "select o from EstoqueAlmoxarifado o where o.fabricanteAlmoxarifado.idFabricanteAlmoxarifado = :idFabricante and "
-					+ "o.materialAlmoxarifado.idMaterialAlmoxarifado = :idMaterial and "
-					+ "to_char(o.dataValidade, 'yyyy-MM-dd') = :dataValidade and "
-					+ "o.codigoBarras = :codigoBarras";
-			EstoqueAlmoxarifado ea = new ConsultaGeral<EstoqueAlmoxarifado>(new StringBuilder(hql), hm).consultaUnica();
-			if(ea != null && ea.getIdEstoqueAlmoxarifado() != 0){
-				String sql2 = "select a from NotaFiscalEstoqueAlmoxarifado a where a.estoqueAlmoxarifado.idEstoqueAlmoxarifado = "+ea.getIdEstoqueAlmoxarifado()+" and a.notaFiscalAlmoxarifado.idNotaFiscalAlmoxarifado="+getInstancia().getIdNotaFiscalAlmoxarifado();
-				List<EstoqueAlmoxarifado> busca = new EstoqueAlmoxarifadoRaiz().getBusca(sql2);
-				if(busca != null && busca.size() > 0){
-					throw new ExcecaoEstoqueRepetidoNotaFiscal();
-				}else					
-					getItem().setEstoqueAlmoxarifado(ea);
-			}
-		}
-	}
-
 	public void bloquearNotaFiscal(){
-		getInstancia().setBloqueada(false);
+		getInstancia().setBloqueada(true);
 		super.atualizar();
-		super.novaInstancia();
+		novaInstancia();
 	}
 	
-	public void cancelarItem(){
-		setItem(new NotaFiscalEstoqueAlmoxarifado());
-		getItem().setEstoqueAlmoxarifado(new EstoqueAlmoxarifado());
-		setAchouLote(null);
-	}
-	
-	public NotaFiscalEstoqueAlmoxarifado getItem() {
-		return item;
+	public boolean isExibirDialogConfirmacaoValorNota() {
+		return exibirDialogConfirmacaoValorNota;
 	}
 
-	public void setItem(NotaFiscalEstoqueAlmoxarifado item) {
-		this.item = item;
+	public void setExibirDialogConfirmacaoValorNota(
+			boolean exibirDialogConfirmacaoValorNota) {
+		this.exibirDialogConfirmacaoValorNota = exibirDialogConfirmacaoValorNota;
 	}
-
-	public Boolean getAchouLote() {
-		return achouLote;
-	}
-
-	public void setAchouLote(Boolean achouLote) {
-		this.achouLote = achouLote;
-	}
-
-	public Integer getQuantidadeMovimentada() {
-		return quantidadeMovimentada;
-	}
-
-	public void setQuantidadeMovimentada(Integer quantidadeMovimentada) {
-		this.quantidadeMovimentada = quantidadeMovimentada;
-	}
-		
-	
 }

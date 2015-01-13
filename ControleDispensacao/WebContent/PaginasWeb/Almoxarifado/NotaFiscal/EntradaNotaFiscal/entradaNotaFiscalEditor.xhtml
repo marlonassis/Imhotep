@@ -1,93 +1,92 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 	
 	<p:commandButton value="Itens" 
-					 action="#{notaFiscalEstoqueRaiz.exibirDialogItens}" 
+					 action="#{notaFiscalEstoqueAlmoxarifadoRaiz.exibirDialogItens}" 
 					 immediate="true"
 					 update=":#{p:component('dialogItensNotaFiscalPanelGroup')}" 
-					 disabled="#{!notaFiscalRaiz.edicao}">
-		<f:setPropertyActionListener value="#{notaFiscalRaiz.instancia}" target="#{notaFiscalEstoqueRaiz.notaFiscal}" />
+					 disabled="#{!notaFiscalAlmoxarifadoRaiz.edicao}">
+		<f:setPropertyActionListener value="#{notaFiscalAlmoxarifadoRaiz.instancia}" target="#{notaFiscalEstoqueAlmoxarifadoRaiz.notaFiscal}" />
 	</p:commandButton>
 	
-	<h:panelGrid id="notaFiscalPanelGrid" columns="3" width="100%">
+	<h:panelGrid id="notaFiscalAlmoxarifadoPanelGrid" columns="3" width="100%">
 		<ri:inputAutoComplete id="fornecedor" 
-							 label="Fornecedor (CNPJ)"
-							 completeMethod="#{fornecedorAutoComplete.autoCompleteCnpj}" 
-							 itemValue="#{fornecedor}" 
-							 itemLabel="#{fornecedor.nome}" 
-							 var="fornecedor"
-							 value="#{notaFiscalRaiz.instancia.fornecedor}" 
-							 required="true"/>
+							  label="Fornecedor (CNPJ)" 
+							  completeMethod="#{fornecedorAutoComplete.autoCompleteCnpj}" 
+							  itemValue="#{fornecedor}" 
+							  itemLabel="#{fornecedor.nome}"
+							  title="Informe o CNPJ" 
+							  var="fornecedor" 
+							  value="#{notaFiscalAlmoxarifadoRaiz.instancia.fornecedor}" 
+							  required="true"/>
 		
 		<ri:inputApenasNumeroSemZeroEsquerda 
 							 id="identificacaoNotaFiscal" 
 							 title="Informe o número da nota fiscal" 
-							 value="#{notaFiscalRaiz.instancia.identificacaoNotaFiscal}" 
+							 value="#{notaFiscalAlmoxarifadoRaiz.instancia.identificacao}" 
 							 label="Identificação da Nota"
 							 required="true" />
 		
 		<ri:inputApenasNumeroSemZeroEsquerda 
 							 id="serieNotaFiscal" 
 							 title="Informe o número de série da nota fiscal" 
-							 value="#{notaFiscalRaiz.instancia.serie}" 
+							 value="#{notaFiscalAlmoxarifadoRaiz.instancia.serie}" 
 							 label="Série"
 							 required="true" />
 		
 		<ri:inputDataHora id="dataEmissao"
 						  required="true" 
 						  title="Informe a data de emissão da nota" 
-						  value="#{notaFiscalRaiz.instancia.dataEmissao}" 
+						  value="#{notaFiscalAlmoxarifadoRaiz.instancia.dataEmissao}" 
 						  label="Data de Emissão" />
 						  
 		<ri:inputDataHora id="dataEntrega"
 						  required="true" 
 						  title="Informe a data de entrega da nota" 
-						  value="#{notaFiscalRaiz.instancia.dataEntrega}" 
+						  value="#{notaFiscalAlmoxarifadoRaiz.instancia.dataEntrega}" 
 						  label="Data de Entrega" />
 		
 		<ri:mesAno id="dataContabil"
 				   required="true" 
-				   disabled="#{notaFiscalRaiz.instancia.liberada}"
+				   disabled="#{notaFiscalAlmoxarifadoRaiz.instancia.liberada}"
 				   title="Informe a data em que o financeiro irá computar a nota-fiscal" 
-				   value="#{notaFiscalRaiz.instancia.dataContabil}" 
+				   value="#{notaFiscalAlmoxarifadoRaiz.instancia.dataContabil}" 
 				   label="Data Contábil" />
 		
 		<ri:inputValorFracionado id="valorTotal" 
 								 required="true"
-								 disabled="#{notaFiscalRaiz.instancia.liberada}"
 								 title="Informe o valor total da nota fiscal" 
-								 value="#{notaFiscalRaiz.instancia.valorTotal}" 
+								 value="#{notaFiscalAlmoxarifadoRaiz.instancia.valorTotal}" 
 								 label="Valor Total" />
 		
 		<ri:inputValorFracionado id="valorDesconto" 
-								 title="Informe o valor do desconto"
-								 disabled="#{notaFiscalRaiz.instancia.liberada}" 
-								 value="#{notaFiscalRaiz.instancia.valorDesconto}" 
+								 title="Informe o valor do desconto" 
+								 value="#{notaFiscalAlmoxarifadoRaiz.instancia.valorDesconto}" 
 								 label="Valor do Desconto" />
 		
-		<ri:inputApenasNumero id="chaveAcesso" 
-							  required="true" 
-							  label="Chave"
-							  title="Informe a chave da NF" 
-							  value="#{notaFiscalRaiz.instancia.chaveAcesso}" />
+		<ri:inputApenasNumero id="codigo" 
+							  title="Informe a chave de validação da nota fiscal" 
+							  required="true"
+							  value="#{notaFiscalAlmoxarifadoRaiz.instancia.chaveAcesso}" 
+							  label="Chave" />
 		
 		<ri:inputSelectOneRadioBoolean id="doacao" 
-									   value="#{notaFiscalRaiz.instancia.doacao}" 
+									   value="#{notaFiscalAlmoxarifadoRaiz.instancia.doacao}" 
 									   label="Doação" />
 		
 		<h:panelGroup>
 			<h:outputText value="Responsável Pelo Cadastro:" /> <br/>
-			<h:outputText value="#{notaFiscalRaiz.instancia.profissionalInsercao.nomeCpfCargo}" />
+			<h:outputText value="#{notaFiscalAlmoxarifadoRaiz.instancia.profissionalInsercao.nomeCpfCargo}" />
 		</h:panelGroup>
 		
 		<h:panelGroup>
 			<h:outputText value="Responsável Pela Liberação:" /> <br/>
-			<h:outputText value="#{notaFiscalRaiz.instancia.profissionalAutorizacao.nomeCpfCargo}" />
+			<h:outputText value="#{notaFiscalAlmoxarifadoRaiz.instancia.profissionalAutorizacao.nomeCpfCargo}" />
 		</h:panelGroup>
-		
 	</h:panelGrid>
+
 </ui:composition>

@@ -3,6 +3,7 @@ package br.com.imhotep.entidade;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Temporal;
@@ -24,7 +25,9 @@ import javax.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "tb_nota_fiscal_estoque")
-public class NotaFiscalEstoque {
+public class NotaFiscalEstoque implements Serializable {
+	private static final long serialVersionUID = -3211584641495242393L;
+	
 	private Estoque estoque;
 	private NotaFiscal notaFiscal;
 	private Profissional profissionalInsercao;
@@ -120,14 +123,73 @@ public class NotaFiscalEstoque {
 		}
 		return 0d;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataInsercao == null) ? 0 : dataInsercao.hashCode());
+		result = prime * result + ((estoque == null) ? 0 : estoque.hashCode());
+		result = prime * result + idNotaFiscalEstoque;
+		result = prime * result
+				+ ((movimentoLivro == null) ? 0 : movimentoLivro.hashCode());
+		result = prime * result
+				+ ((notaFiscal == null) ? 0 : notaFiscal.hashCode());
+		result = prime
+				* result
+				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
+						.hashCode());
+		result = prime * result + quantidadeEntrada;
+		result = prime * result
+				+ ((valorUnitario == null) ? 0 : valorUnitario.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null)
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		if(!(obj instanceof NotaFiscalEstoque))
+		if (getClass() != obj.getClass())
 			return false;
-		
-		return ((NotaFiscalEstoque)obj).getIdNotaFiscalEstoque() == this.idNotaFiscalEstoque;
+		NotaFiscalEstoque other = (NotaFiscalEstoque) obj;
+		if (dataInsercao == null) {
+			if (other.dataInsercao != null)
+				return false;
+		} else if (!dataInsercao.equals(other.dataInsercao))
+			return false;
+		if (estoque == null) {
+			if (other.estoque != null)
+				return false;
+		} else if (!estoque.equals(other.estoque))
+			return false;
+		if (idNotaFiscalEstoque != other.idNotaFiscalEstoque)
+			return false;
+		if (movimentoLivro == null) {
+			if (other.movimentoLivro != null)
+				return false;
+		} else if (!movimentoLivro.equals(other.movimentoLivro))
+			return false;
+		if (notaFiscal == null) {
+			if (other.notaFiscal != null)
+				return false;
+		} else if (!notaFiscal.equals(other.notaFiscal))
+			return false;
+		if (profissionalInsercao == null) {
+			if (other.profissionalInsercao != null)
+				return false;
+		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		if (quantidadeEntrada != other.quantidadeEntrada)
+			return false;
+		if (valorUnitario == null) {
+			if (other.valorUnitario != null)
+				return false;
+		} else if (!valorUnitario.equals(other.valorUnitario))
+			return false;
+		return true;
 	}
+	
 }
