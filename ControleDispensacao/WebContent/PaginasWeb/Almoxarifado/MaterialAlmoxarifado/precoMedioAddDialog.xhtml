@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="precoMedioForm" >
+		<p:tabView>
+			<p:tab title="Preço Médio">
+				<h:panelGrid columns="1" >
+					<ri:inputValorFracionado id="precoMedio" 
+											 label="Preço Médio" 
+											 required="true"
+											 title="Informe o preço médio do medicamento" 
+											 value="#{materialPrecoMedioLogRaiz.material.precoMedio}" />
+					
+					<ri:inputTextArea id="justificativa" 
+									  label="Justificativa" 
+									  title="Informe o motivo da alteração"
+									  required="true" 
+									  value="#{materialPrecoMedioLogRaiz.instancia.justificativa}" />
+					
+					<p:commandButton value="Atualizar" 
+									 action="#{materialPrecoMedioLogRaiz.atualizarPrecoMedio}" 
+									 update=":#{p:component('dialogPrecoMedioPanelGroup')}" />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Histórico">
+				<p:dataTable id="historicoDataTable"
+								var="linha" 
+								emptyMessage="Não foram encontrados registros"
+								value="#{materialPrecoMedioLogRaiz.listaLog}"
+								rows="1000">
+					<f:facet name="header">
+						<h:outputText value="Histórico" />
+					</f:facet>
+						
+					<p:column headerText="Preço Médio">
+						<h:outputText value="#{linha.precoMedio}" />
+					</p:column>
+					
+					<p:column headerText="Responsável">
+						<h:outputText value="#{linha.profissionalResponsavel.nomeResumido}" />
+					</p:column>
+					
+					<p:column headerText="Data">
+						<h:outputText value="#{util.formatarDataHoraBrasil(linha.dataCadastro)}" />
+					</p:column>
+					
+					<p:column headerText="Justificativa">
+						<h:outputText value="#{linha.justificativa}" />
+					</p:column>
+					
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+	</h:form>
+	
+</ui:composition>
