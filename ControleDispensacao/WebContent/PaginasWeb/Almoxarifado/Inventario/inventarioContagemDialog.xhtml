@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="listaItensContagemForm" >
+		<p:dataTable id="itensContagemDataGrid"
+					var="linha" 
+					emptyMessage="Não foram encontrados registros"
+					value="#{inventarioAlmoxarifadoContagemRaiz.materials}"
+					rows="1000">
+			
+		    <p:column headerText="Material">
+				<h:outputText value="#{linha.material.descricaoUnidadeMaterial}" />
+		    </p:column>
+		    
+		    
+			<p:column headerText="Ações">
+				<h:panelGroup>
+					<p:commandLink  action="#{inventarioAlmoxarifadoContagemRaiz.exibirDialogContagemItem}"
+									update=":#{p:component('dialogContagemItemInventarioPanelGroup')}"
+									title="Contar" style="padding-right:10px;">
+						<f:setPropertyActionListener value="#{linha}" target="#{inventarioAlmoxarifadoContagemRaiz.inventarioMaterial}" />
+						<h:graphicImage value="/Imagens/text-list-bullets-icon.png" />
+					</p:commandLink>
+				</h:panelGroup>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>

@@ -12,11 +12,104 @@
 
 	<ui:define name="conteudoPadrao">
 		<p:tab title="Inventário - Almoxarifado">
-			<rf:formularioEdicao id="inventarioAlmoxarifado"
-								raiz="#{inventarioAlmoxarifadoRaiz}"
-								fieldSetCollapsed="false"
-								semPesquisa="true"
-								srcEditor="Almoxarifado/Inventario/inventarioEditor.xhtml" />
+			<rf:formularioPadrao idFormPadrao="inventarioAlmoxarifado" 
+								 raizConsulta="#{inventarioAlmoxarifadoConsulta}" 
+								 raiz="#{inventarioAlmoxarifadoRaiz}" 
+								 srcConsulta="Almoxarifado/Inventario/inventarioConsulta.xhtml" 
+								 srcEditor="Almoxarifado/Inventario/inventarioEditor.xhtml" 
+								 srcTabela="Almoxarifado/Inventario/inventarioTabela.xhtml" />
+			
+			<h:panelGrid id="botoesExtrasPanelGrid" columns="3" >
+				<p:commandButton value="Liberar/Autorizar" 
+								 rendered="#{inventarioAlmoxarifadoRaiz.edicao and !inventarioAlmoxarifadoRaiz.instancia.fechado and variavel.variavelAutorizada('FinalizacaoInventarioAlmoxarifado')}"
+								 action="#{inventarioAlmoxarifadoFinalizacaoRaiz.preInicioLiberacao}" 
+								 update=":#{p:component('dialogCorrecaoItemContadoVariasVezesPanelGroup')} :#{p:component('dialogConferenciaPanelGroup')}" >
+					<f:setPropertyActionListener value="#{inventarioAlmoxarifadoRaiz.instancia}" target="#{inventarioAlmoxarifadoFinalizacaoRaiz.inventarioAlmoxarifado}" />
+				</p:commandButton>
+			</h:panelGrid>
+			
+			<h:panelGroup id="dialogItensinventarioPanelGroup" >
+				<p:dialog header="Itens do Inventário" 
+						  visible="#{inventarioMaterialRaiz.exibirDialogAddItens}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Almoxarifado/Inventario/inventarioItemAddDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioMaterialRaiz.ocultarDialogAddItens}" 
+										 update=":#{p:component('dialogItensinventarioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogContagemInventarioPanelGroup" >
+				<p:dialog header="Contagem" 
+						  visible="#{inventarioAlmoxarifadoContagemRaiz.exibirDialogContagem}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Almoxarifado/Inventario/inventarioContagemDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioAlmoxarifadoContagemRaiz.ocultarDialogContagem}" 
+										 update=":#{p:component('dialogContagemInventarioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogContagemItemInventarioPanelGroup" >
+				<p:dialog header="#{inventarioAlmoxarifadoContagemRaiz.inventarioMaterial.material.descricaoUnidadeMaterial}" 
+						  visible="#{inventarioAlmoxarifadoContagemRaiz.exibirDialogContagemItem}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.7}" 
+						  height="#{util.alturaTela * 0.5}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Almoxarifado/Inventario/inventarioContagemItemDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioAlmoxarifadoContagemRaiz.ocultarDialogContagemItem}" 
+										 update=":#{p:component('dialogContagemItemInventarioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogCorrecaoItemContadoVariasVezesPanelGroup" >
+				<p:dialog header="Item contado mais de uma vez" 
+						  visible="#{inventarioAlmoxarifadoFinalizacaoRaiz.exibirDialogCorrecaoItemContadoVariasVezes}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.7}" 
+						  height="#{util.alturaTela * 0.5}" >
+					<ui:include src="/PaginasWeb/Almoxarifado/Inventario/inventarioItemContadoMaisDeUmaVezDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioAlmoxarifadoFinalizacaoRaiz.ocultarDialogCorrecaoItemContadoVariasVezes}" 
+										 update=":#{p:component('dialogCorrecaoItemContadoVariasVezesPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogConferenciaPanelGroup" >
+				<p:dialog header="Finalização do Inventário" 
+						  visible="#{inventarioAlmoxarifadoFinalizacaoRaiz.exibirDialogConferencia}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.7}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<ui:include src="/PaginasWeb/Almoxarifado/Inventario/inventarioFinalizacaoDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioAlmoxarifadoFinalizacaoRaiz.ocultarDialogConferencia}" 
+										 update=":#{p:component('dialogConferenciaPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
 		</p:tab>
 	</ui:define>
 </ui:composition>

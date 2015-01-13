@@ -16,11 +16,12 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "tb_funcao", schema="administrativo")
 public class Funcao implements Serializable {
-	private static final long serialVersionUID = -5214294578054650936L;
+	private static final long serialVersionUID = -8001728067928107947L;
 	
 	private int idFuncao;
 	private Funcao funcaoPai;
 	private String nome;
+	private boolean chefia;
 
 	@SequenceGenerator(name = "generator", sequenceName = "administrativo.tb_funcao_id_funcao_seq")
 	@Id
@@ -53,6 +54,23 @@ public class Funcao implements Serializable {
 		this.nome = nome;
 	}
 	
+	@Column(name = "bl_chefia")
+	public boolean getChefia() {
+		return chefia;
+	}
+	
+	public void setChefia(boolean chefia) {
+		this.chefia = chefia;
+	}
+	
+	@Transient
+	public String getNomeChefia(){
+		if(getChefia()){
+			return nome + " (Chefia)";
+		}
+		return nome;
+	}
+	
 	@Transient
 	public String getNomeFilhoSeta(){
 		if(getFuncaoPai() != null)
@@ -64,6 +82,7 @@ public class Funcao implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (chefia ? 1231 : 1237);
 		result = prime * result
 				+ ((funcaoPai == null) ? 0 : funcaoPai.hashCode());
 		result = prime * result + idFuncao;
@@ -80,6 +99,8 @@ public class Funcao implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Funcao other = (Funcao) obj;
+		if (chefia != other.chefia)
+			return false;
 		if (funcaoPai == null) {
 			if (other.funcaoPai != null)
 				return false;
@@ -94,5 +115,4 @@ public class Funcao implements Serializable {
 			return false;
 		return true;
 	}
-	
 }

@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="itemDForm" >
+		<h:panelGrid columns="3" width="100%" >
+			<p:commandButton value="Adicionar todos os medicamentos" 
+							 action="#{inventarioMedicamentoRaiz.addTodosMedicamentos()}" 
+							 update=":#{p:component('listaItensForm')}" />
+			
+			<p:commandButton value="Adicionar controlados" 
+							 action="#{inventarioMedicamentoRaiz.addMedicamentosControlados()}" 
+							 update=":#{p:component('listaItensForm')}" />
+			
+			<h:panelGroup>
+				<ri:inputTextoSimples id="letra" 
+									  label="Letra" 
+									  title="Informe a(s) letra(s)" 
+									  value="#{inventarioMedicamentoRaiz.letra}" />
+				<p:commandButton value="Adicionar medicamentos por letras" 
+								 action="#{inventarioMedicamentoRaiz.addMedicamentosLetra}" 
+								 update=":#{p:component('listaItensForm')}" />
+			</h:panelGroup>
+			
+		</h:panelGrid>
+	</h:form>
+	
+	<p:separator />
+	
+	<h:form id="listaItensForm" >
+		<p:commandButton value="Remover todos os medicamento" 
+						 action="#{inventarioMedicamentoRaiz.remTodosMedicamentos()}" 
+						 update=":#{p:component('listaItensForm')}" />
+		<p:dataTable id="itensDataGrid"
+					var="linha" 
+					emptyMessage="Não foram encontrados registros"
+					value="#{inventarioMedicamentoRaiz.medicamentos}"
+					rows="1000">
+			
+		    <p:column headerText="Medicamento">
+				<h:outputText value="#{linha.medicamento.descricaoUnidadeMaterial}" />
+		    </p:column>
+			<p:column headerText="Remover">
+				<h:panelGroup>
+					<p:commandLink  action="#{inventarioMedicamentoRaiz.remMedicamentoInventario(linha)}"
+									update=":#{p:component('listaItensForm')}"
+									title="Apagar" style="padding-right:10px;">
+						<h:graphicImage value="/Imagens/delete.png" />
+					</p:commandLink>
+				</h:panelGroup>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+</ui:composition>

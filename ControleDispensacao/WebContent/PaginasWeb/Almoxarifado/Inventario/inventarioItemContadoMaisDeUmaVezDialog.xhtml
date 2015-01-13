@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="listaItensContagemMaisDeUmaVezForm" >
+		<p:dataTable id="itensContagemMaisDeUmaVezDataGrid"
+					var="linha" 
+					emptyMessage="Não foram encontrados registros"
+					value="#{inventarioAlmoxarifadoFinalizacaoRaiz.itensContadosMaisUmaVez}"
+					rows="1000">
+			<f:facet name="header">
+				<h:outputText value="#{inventarioAlmoxarifadoFinalizacaoRaiz.materialCorrecao.descricaoUnidadeMaterial}" />
+			</f:facet>
+			
+		    <p:column headerText="Lote">
+				<h:outputText value="#{linha.inventarioMaterialEstoque.estoque.descricaoResumida}" />
+		    </p:column>
+		    
+		    <p:column headerText="Quantidade Contada">
+				<h:outputText value="#{linha.quantidadeContada}" />
+		    </p:column>
+		    
+		    <p:column headerText="Responsável">
+				<h:outputText value="#{linha.profissionalContagem.nomeResumido}" />
+		    </p:column>
+		    
+			<p:column headerText="Ações">
+				<h:panelGroup>
+					<p:commandLink  action="#{inventarioAlmoxarifadoFinalizacaoRaiz.removerItemContado(linha)}"
+									update=":#{p:component('dialogCorrecaoItemContadoVariasVezesPanelGroup')} :#{p:component('dialogConferenciaPanelGroup')}"
+									title="Contar" style="padding-right:10px;">
+						<h:graphicImage value="/Imagens/Close-icon.png" />
+					</p:commandLink>
+				</h:panelGroup>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>

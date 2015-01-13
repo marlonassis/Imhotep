@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input" >
+	
+	<h:form id="contagemLoteForm" >
+		<h:panelGrid columns="2" >
+			<ri:inputEntidadeList 
+								  id="estoquesValidos" 
+								  required="true" 
+								  lista="#{inventarioAlmoxarifadoContagemRaiz.estoqueAlmoxarifadosValidos}" 
+								  label="Lote(s)" 
+								  value="#{inventarioAlmoxarifadoContagemRaiz.estoqueAlmoxarifadoAferido}" 
+								  itemLabel="DescricaoResumida" />
+			
+			<ri:inputApenasNumero id="quantidadeContada"
+								  required="true" 
+								  label="Quantidade" 
+								  title="Informe a quantidade contada" 
+								  value="#{inventarioAlmoxarifadoContagemRaiz.quantidadeContada}" />
+		</h:panelGrid>
+		
+		<p:commandButton value="Cadastrar" 
+						 action="#{inventarioAlmoxarifadoContagemRaiz.cadastrarContagem}" 
+						 update=":#{p:component('contagemItensForm')} :#{p:component('contagemLoteForm')}" />
+		
+	</h:form>
+	<h:form id="contagemItensForm" >
+		<p:dataTable id="itensContagemDataGrid"
+					var="linha" 
+					emptyMessage="Não foram encontrados registros"
+					value="#{inventarioAlmoxarifadoContagemRaiz.estoqueAlmoxarifadoContagem}"
+					rows="1000">
+			
+		    <p:column headerText="Lote">
+				<h:outputText value="#{linha.estoque.descricaoResumida}" />
+		    </p:column>
+			
+			<p:column headerText="Quantidade Aferida">
+				<ui:repeat value="#{inventarioAlmoxarifadoContagemRaiz.listaContagensAferidas(linha)}" var="item" >
+					<h:outputText value="#{item.profissionalContagem.nomeResumido}" />
+					<h:outputText value=" - " />
+					<h:outputText value="#{item.quantidadeContada}" />
+					<h:outputText value=" - " />
+					<p:commandLink  action="#{inventarioAlmoxarifadoContagemRaiz.apagarAfericao(item)}"
+									update=":#{p:component('contagemItensForm')}"
+									title="Remover Aferição" 
+									style="padding-right:10px;">
+						<h:graphicImage value="/Imagens/Close-icon.png" 
+										height="10" 
+										width="10"/>
+					</p:commandLink>
+					<br/>
+				</ui:repeat>
+		    </p:column>
+			
+			<p:column headerText="Ações">
+				<h:panelGroup>
+					<p:commandLink  action="#{inventarioAlmoxarifadoContagemRaiz.apagarItemLote(linha)}"
+									update=":#{p:component('contagemItensForm')}"
+									title="Remover a Contagem" 
+									style="padding-right:10px;">
+						<h:graphicImage value="/Imagens/Close-icon.png" 
+										height="16" 
+										width="16"/>
+					</p:commandLink>
+				</h:panelGroup>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>

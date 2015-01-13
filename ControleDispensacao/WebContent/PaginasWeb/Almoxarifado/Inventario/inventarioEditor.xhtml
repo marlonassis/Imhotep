@@ -5,27 +5,50 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="inventarioAlmoxarifadoPanelGrid" columns="3" width="100%">
+	<p:commandButton value="Itens" 
+					 rendered="#{!inventarioAlmoxarifadoRaiz.instancia.fechado}"
+					 action="#{inventarioMaterialRaiz.exibirDialogAddItens}" 
+					 immediate="true"
+					 update=":#{p:component('dialogItensinventarioPanelGroup')}" 
+					 disabled="#{!inventarioAlmoxarifadoRaiz.edicao}">
+		<f:setPropertyActionListener value="#{inventarioAlmoxarifadoRaiz.instancia}" target="#{inventarioMaterialRaiz.inventarioAlmoxarifado}" />
+	</p:commandButton>
 
-		<ri:inputAutoComplete id="material" 
-							  completeMethod="#{materialAlmoxarifadoAutoComplete.autoCompleteDescricaoCodigo}" 
-							  itemValue="#{material}" 
-							  itemLabel="#{material.descricaoUnidadeMaterial}" 
-							  var="material" 
-							  required="true"
-							  value="#{inventarioAlmoxarifadoRaiz.instancia.material}" 
-							  label="Material"/>
+	<p:commandButton value="Contagem" 
+					 action="#{inventarioAlmoxarifadoContagemRaiz.exibirDialogContagem}"
+					 rendered="#{!inventarioAlmoxarifadoRaiz.instancia.fechado}" 
+					 immediate="true"
+					 update=":#{p:component('dialogContagemInventarioPanelGroup')}" 
+					 disabled="#{!inventarioAlmoxarifadoRaiz.edicao}">
+		<f:setPropertyActionListener value="#{inventarioAlmoxarifadoRaiz.instancia}" target="#{inventarioAlmoxarifadoContagemRaiz.inventarioAlmoxarifado}" />
+	</p:commandButton>
+	
+	<p:commandButton value="Relatório" 
+					 action="#{inventarioAlmoxarifadoContagemRaiz.exibirDialogContagem}"
+					 rendered="#{inventarioAlmoxarifadoRaiz.instancia.fechado}" 
+					 immediate="true">
+		<f:setPropertyActionListener value="#{inventarioAlmoxarifadoRaiz.instancia}" target="#{inventarioAlmoxarifadoContagemRaiz.inventarioAlmoxarifado}" />
+	</p:commandButton>
+	
+	<h:panelGrid id="inventarioAlmoxarifadoPanelGrid" columns="4" width="100%">
 		
-		<ri:inputTextoSimples id="lote" 
-							  title="Informe o lote" 
-							  value="#{inventarioAlmoxarifadoRaiz.instancia.lote}" 
-							  label="Lote" />
-		
-		<ri:inputApenasNumero id="saldo" 
-							  title="Informe a quantidade contada"
+		<ri:inputTextoSimples id="descricao" 
+							  label="Descrição"
 							  required="true" 
-							  value="#{inventarioAlmoxarifadoRaiz.instancia.quantidadeContada}" 
-							  label="Quantidade Contada"/>
+							  title="Descreva sucintamente o motivo deste inventário" 
+							  value="#{inventarioAlmoxarifadoRaiz.instancia.descricao}" />
+		
+		<ri:inputDataHora id="dataInicio" 
+						  label="Início" 
+						  required="true"
+						  title="Indica quando deve começar o inventário" 
+						  value="#{inventarioAlmoxarifadoRaiz.instancia.dataInicio}" />
+		
+		<ri:inputDataHora id="dataFinalizacao" 
+						  label="Fim"
+						  required="true" 
+						  title="Indica quando deve terminar o inventário" 
+						  value="#{inventarioAlmoxarifadoRaiz.instancia.dataFinalizacao}" />
 		
 	</h:panelGrid>
 

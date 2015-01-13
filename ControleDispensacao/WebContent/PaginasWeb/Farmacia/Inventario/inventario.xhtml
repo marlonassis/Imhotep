@@ -18,6 +18,59 @@
 								 srcConsulta="Farmacia/Inventario/inventarioConsulta.xhtml" 
 								 srcEditor="Farmacia/Inventario/inventarioEditor.xhtml" 
 								 srcTabela="Farmacia/Inventario/inventarioTabela.xhtml" />
+			
+			
+			<h:panelGroup id="dialogItensinventarioPanelGroup" >
+				<p:dialog header="Itens do Inventário" 
+						  visible="#{inventarioMedicamentoRaiz.exibirDialogAddItens}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Farmacia/Inventario/inventarioItemAddDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioMedicamentoRaiz.ocultarDialogAddItens}" 
+										 update=":#{p:component('dialogItensinventarioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogContagemInventarioPanelGroup" >
+				<p:dialog header="Contagem" 
+						  visible="#{inventarioFarmaciaContagemRaiz.exibirDialogContagem}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.9}" 
+						  height="#{util.alturaTela * 0.7}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Farmacia/Inventario/inventarioContagemDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioFarmaciaContagemRaiz.ocultarDialogContagem}" 
+										 update=":#{p:component('dialogContagemInventarioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dialogContagemItemInventarioPanelGroup" >
+				<p:dialog header="#{inventarioFarmaciaContagemRaiz.inventarioMedicamento.medicamento.descricaoUnidadeMaterial}" 
+						  visible="#{inventarioFarmaciaContagemRaiz.exibirDialogContagemItem}"
+						  closable="false" 
+						  modal="true" 
+						  width="#{util.larguraTela * 0.7}" 
+						  height="#{util.alturaTela * 0.5}" >
+					<p:messages />
+					<ui:include src="/PaginasWeb/Farmacia/Inventario/inventarioContagemItemDialog.xhtml" />
+					<h:form>
+						<p:commandButton value="Fechar" 
+										 action="#{inventarioFarmaciaContagemRaiz.ocultarDialogContagemItem}" 
+										 update=":#{p:component('dialogContagemItemInventarioPanelGroup')}" />
+					</h:form>
+				</p:dialog>
+			</h:panelGroup>
+			
 		</p:tab>
 	</ui:define>
 </ui:composition>

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,114 +16,122 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import br.com.imhotep.enums.TipoStatusInventarioEnum;
 
 @Entity
 @Table(name = "tb_inventario", schema="almoxarifado")
 public class InventarioAlmoxarifado implements Serializable {
-	private static final long serialVersionUID = 5929937705302460137L;
+	private static final long serialVersionUID = 4358138004161846856L;
 	
 	private int idInventarioAlmoxarifado;
-	private Integer quantidadeContada;
-	private MaterialAlmoxarifado material;
-	private String lote;
-	private Integer quantidadeAtualEstoque;
-	private Date dataCadastro;
-	private Profissional profisionalCadastro;
+	private TipoStatusInventarioEnum tipoStatus;
+	private String descricao;
+	private Profissional profissionalFinalizacao;
+	private Profissional profissionalCadastro;
+	private Date dataInicio;
+	private Date dataFinalizacao;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "almoxarifado.tb_inventario_id_inventario_seq")
 	@Id
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id_inventario", unique = true, nullable = false)
 	public int getIdInventarioAlmoxarifado() {
-		return this.idInventarioAlmoxarifado;
+		return idInventarioAlmoxarifado;
 	}
-	
-	public void setIdInventarioAlmoxarifado(int idInventarioAlmoxarifado){
+	public void setIdInventarioAlmoxarifado(int idInventarioAlmoxarifado) {
 		this.idInventarioAlmoxarifado = idInventarioAlmoxarifado;
 	}
 	
-	@Column(name = "cv_lote")
-	public String getLote() {
-		return this.lote;
-	}
-
-	public void setLote(String lote) {
-		this.lote = lote;
+	@Column(name = "cv_descricao")
+	public String getDescricao() {
+		return descricao;
 	}
 	
-	@Column(name = "in_quantidade_atual_estoque")
-	public Integer getQuantidadeAtualEstoque() {
-		return this.quantidadeAtualEstoque;
-	}
-
-	public void setQuantidadeAtualEstoque(Integer quantidadeAtualEstoque) {
-		this.quantidadeAtualEstoque = quantidadeAtualEstoque;
-	}
-	
-	@Column(name = "in_quantidade_contada")
-	public Integer getQuantidadeContada() {
-		return this.quantidadeContada;
-	}
-
-	public void setQuantidadeContada(Integer quantidadeContada) {
-		this.quantidadeContada = quantidadeContada;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_data_cadastro")
-	public Date getDataCadastro() {
-		return this.dataCadastro;
+	@Column(name = "dt_data_inicio")
+	public Date getDataInicio() {
+		return dataInicio;
 	}
-
-	public void setDataCadastro(Date dataCadastro) {
-		this.dataCadastro = dataCadastro;
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_data_finalizacao")
+	public Date getDataFinalizacao() {
+		return dataFinalizacao;
+	}
+	public void setDataFinalizacao(Date dataFinalizacao) {
+		this.dataFinalizacao = dataFinalizacao;
+	}
+	
+	@Column(name = "tp_status")
+	@Enumerated(EnumType.STRING)
+	public TipoStatusInventarioEnum getTipoStatus() {
+		return tipoStatus;
+	}
+	
+	public void setTipoStatus(TipoStatusInventarioEnum tipoStatus) {
+		this.tipoStatus = tipoStatus;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_material")
-	public MaterialAlmoxarifado getMaterial() {
-		return this.material;
+	@JoinColumn(name = "id_profissional_cadastro")
+	public Profissional getProfissionalCadastro() {
+		return profissionalCadastro;
 	}
-	
-	public void setMaterial(MaterialAlmoxarifado material) {
-		this.material = material;
+	public void setProfissionalCadastro(Profissional profissionalCadastro) {
+		this.profissionalCadastro = profissionalCadastro;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_profisional_cadastro")
-	public Profissional getProfisionalCadastro() {
-		return this.profisionalCadastro;
+	@JoinColumn(name = "id_profissional_finalizacao")
+	public Profissional getProfissionalFinalizacao() {
+		return profissionalFinalizacao;
+	}
+	public void setProfissionalFinalizacao(Profissional profissionalFinalizacao) {
+		this.profissionalFinalizacao = profissionalFinalizacao;
 	}
 	
-	public void setProfisionalCadastro(Profissional profisionalCadastro) {
-		this.profisionalCadastro = profisionalCadastro;
+	@Transient
+	public boolean getFechado(){
+		if(getTipoStatus() != null && getTipoStatus().equals(TipoStatusInventarioEnum.F)){
+			return true;
+		}else{
+			return false;
+		}
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((dataCadastro == null) ? 0 : dataCadastro.hashCode());
-		result = prime * result + idInventarioAlmoxarifado;
-		result = prime * result + ((lote == null) ? 0 : lote.hashCode());
+				+ ((dataFinalizacao == null) ? 0 : dataFinalizacao.hashCode());
 		result = prime * result
-				+ ((material == null) ? 0 : material.hashCode());
+				+ ((dataInicio == null) ? 0 : dataInicio.hashCode());
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + idInventarioAlmoxarifado;
 		result = prime
 				* result
-				+ ((profisionalCadastro == null) ? 0 : profisionalCadastro
+				+ ((profissionalCadastro == null) ? 0 : profissionalCadastro
 						.hashCode());
 		result = prime
 				* result
-				+ ((quantidadeAtualEstoque == null) ? 0
-						: quantidadeAtualEstoque.hashCode());
-		result = prime
-				* result
-				+ ((quantidadeContada == null) ? 0 : quantidadeContada
-						.hashCode());
+				+ ((profissionalFinalizacao == null) ? 0
+						: profissionalFinalizacao.hashCode());
+		result = prime * result
+				+ ((tipoStatus == null) ? 0 : tipoStatus.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -131,37 +141,35 @@ public class InventarioAlmoxarifado implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		InventarioAlmoxarifado other = (InventarioAlmoxarifado) obj;
-		if (dataCadastro == null) {
-			if (other.dataCadastro != null)
+		if (dataFinalizacao == null) {
+			if (other.dataFinalizacao != null)
 				return false;
-		} else if (!dataCadastro.equals(other.dataCadastro))
+		} else if (!dataFinalizacao.equals(other.dataFinalizacao))
+			return false;
+		if (dataInicio == null) {
+			if (other.dataInicio != null)
+				return false;
+		} else if (!dataInicio.equals(other.dataInicio))
+			return false;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
 			return false;
 		if (idInventarioAlmoxarifado != other.idInventarioAlmoxarifado)
 			return false;
-		if (lote == null) {
-			if (other.lote != null)
+		if (profissionalCadastro == null) {
+			if (other.profissionalCadastro != null)
 				return false;
-		} else if (!lote.equals(other.lote))
+		} else if (!profissionalCadastro.equals(other.profissionalCadastro))
 			return false;
-		if (material == null) {
-			if (other.material != null)
+		if (profissionalFinalizacao == null) {
+			if (other.profissionalFinalizacao != null)
 				return false;
-		} else if (!material.equals(other.material))
+		} else if (!profissionalFinalizacao
+				.equals(other.profissionalFinalizacao))
 			return false;
-		if (profisionalCadastro == null) {
-			if (other.profisionalCadastro != null)
-				return false;
-		} else if (!profisionalCadastro.equals(other.profisionalCadastro))
-			return false;
-		if (quantidadeAtualEstoque == null) {
-			if (other.quantidadeAtualEstoque != null)
-				return false;
-		} else if (!quantidadeAtualEstoque.equals(other.quantidadeAtualEstoque))
-			return false;
-		if (quantidadeContada == null) {
-			if (other.quantidadeContada != null)
-				return false;
-		} else if (!quantidadeContada.equals(other.quantidadeContada))
+		if (tipoStatus != other.tipoStatus)
 			return false;
 		return true;
 	}

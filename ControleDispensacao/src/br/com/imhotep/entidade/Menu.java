@@ -1,8 +1,6 @@
 package br.com.imhotep.entidade;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,17 +9,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import br.com.imhotep.comparador.MenuComparador;
-
 @Entity
-@Table(name = "tb_menu")
+@Table(name = "tb_menu", schema="controle")
 public class Menu implements Serializable {
-	private static final long serialVersionUID = 7307010015392256068L;
+	private static final long serialVersionUID = 262858560671429046L;
 	
 	private int idMenu;
 	private Menu menuPai;
@@ -31,7 +26,6 @@ public class Menu implements Serializable {
 	private boolean interno;
 	private String url;
 	private String urlAjuda;
-	private List<Menu> menusFilho;
 	
 	@SequenceGenerator(name = "generator", sequenceName = "public.tb_menu_id_menu_seq")
 	@Id
@@ -109,16 +103,6 @@ public class Menu implements Serializable {
 		this.construcao = construcao;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "menuPai")
-	public List<Menu> getMenusFilho() {
-		if(menusFilho != null)
-			Collections.sort(menusFilho, new MenuComparador());
-		return menusFilho;
-	}
-	public void setMenusFilho(List<Menu> menusFilho) {
-		this.menusFilho = menusFilho;
-	}
-	
 	@Transient
 	public String getCaminhoMenu(){
 		return caminho(this, "-> ");
@@ -134,16 +118,20 @@ public class Menu implements Serializable {
 		return path;
 	}
 	
-	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (bloqueado ? 1231 : 1237);
+		result = prime * result + (construcao ? 1231 : 1237);
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + idMenu;
+		result = prime * result + (interno ? 1231 : 1237);
+		result = prime * result + ((menuPai == null) ? 0 : menuPai.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		result = prime * result
+				+ ((urlAjuda == null) ? 0 : urlAjuda.hashCode());
 		return result;
 	}
 
@@ -156,6 +144,10 @@ public class Menu implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Menu other = (Menu) obj;
+		if (bloqueado != other.bloqueado)
+			return false;
+		if (construcao != other.construcao)
+			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
@@ -163,10 +155,22 @@ public class Menu implements Serializable {
 			return false;
 		if (idMenu != other.idMenu)
 			return false;
+		if (interno != other.interno)
+			return false;
+		if (menuPai == null) {
+			if (other.menuPai != null)
+				return false;
+		} else if (!menuPai.equals(other.menuPai))
+			return false;
 		if (url == null) {
 			if (other.url != null)
 				return false;
 		} else if (!url.equals(other.url))
+			return false;
+		if (urlAjuda == null) {
+			if (other.urlAjuda != null)
+				return false;
+		} else if (!urlAjuda.equals(other.urlAjuda))
 			return false;
 		return true;
 	}

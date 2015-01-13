@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,14 +14,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import br.com.imhotep.enums.TipoLotacaoProfissionalEnum;
+
 @Entity
 @Table(name = "tb_lotacao_profissional", schema="administrativo")
 public class LotacaoProfissional  implements Serializable {
-	private static final long serialVersionUID = -4926946768243029207L;
+	private static final long serialVersionUID = -1182891254213741916L;
 	
 	private int idLotacaoProfissional;
 	private EstruturaOrganizacional estruturaOrganizacional;
 	private Profissional profissional;
+	private TipoLotacaoProfissionalEnum tipoLotacao;
 	
 	@Id
 	@SequenceGenerator(name = "generator", sequenceName = "administrativo.tb_lotacao_profissional_id_lotacao_profissional_seq")
@@ -50,6 +55,16 @@ public class LotacaoProfissional  implements Serializable {
 		this.profissional = profissional;
 	}
 	
+	@Column(name = "tp_tipo_lotacao")
+	@Enumerated(EnumType.STRING)
+	public TipoLotacaoProfissionalEnum getTipoLotacao() {
+		return this.tipoLotacao;
+	}
+
+	public void setTipoLotacao(TipoLotacaoProfissionalEnum tipoLotacao) {
+		this.tipoLotacao = tipoLotacao;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -61,6 +76,8 @@ public class LotacaoProfissional  implements Serializable {
 		result = prime * result + idLotacaoProfissional;
 		result = prime * result
 				+ ((profissional == null) ? 0 : profissional.hashCode());
+		result = prime * result
+				+ ((tipoLotacao == null) ? 0 : tipoLotacao.hashCode());
 		return result;
 	}
 	
@@ -85,6 +102,8 @@ public class LotacaoProfissional  implements Serializable {
 			if (other.profissional != null)
 				return false;
 		} else if (!profissional.equals(other.profissional))
+			return false;
+		if (tipoLotacao != other.tipoLotacao)
 			return false;
 		return true;
 	}

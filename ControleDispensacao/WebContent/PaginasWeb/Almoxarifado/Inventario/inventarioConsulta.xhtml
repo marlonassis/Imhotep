@@ -6,18 +6,18 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:panelGrid id="inventarioFarmaciaPanelGridConsulta" columns="3" width="100%">
+	<h:panelGrid id="inventarioAlmoxarifadoPanelGridConsulta" columns="3" width="100%">
 
 		<ri:inputTextoSimples id="descricaoConsulta" 
 							  title="Informe o lote" 
-							  value="#{inventarioFarmaciaConsulta.instancia.descricao}" 
+							  value="#{inventarioAlmoxarifadoConsulta.instancia.descricao}" 
 							  label="Descrição" />
 		
 		<ri:inputDataHora id="dataInicioConsulta" 
 						  label="Início" 
 						  required="false"
 						  title="Indica quando deve ter começado o inventário" 
-						  value="#{inventarioFarmaciaConsulta.instancia.dataInicio}" />
+						  value="#{inventarioAlmoxarifadoConsulta.instancia.dataInicio}" />
 		
 	</h:panelGrid>
 </ui:composition>

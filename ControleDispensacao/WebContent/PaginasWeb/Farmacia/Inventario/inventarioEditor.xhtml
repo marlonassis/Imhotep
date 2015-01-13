@@ -5,34 +5,41 @@
 	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGrid id="inventarioFarmaciaPanelGrid" columns="4" width="100%">
+	<p:commandButton value="Itens" 
+					 action="#{inventarioMedicamentoRaiz.exibirDialogAddItens}" 
+					 immediate="true"
+					 update=":#{p:component('dialogItensinventarioPanelGroup')}" 
+					 disabled="#{!inventarioFarmaciaRaiz.edicao}">
+		<f:setPropertyActionListener value="#{inventarioFarmaciaRaiz.instancia}" target="#{inventarioMedicamentoRaiz.inventarioFarmacia}" />
+	</p:commandButton>
 
-		<ri:inputAutoComplete id="material" 
-							  completeMethod="#{materialAutoComplete.autoCompleteDescricaoCodigo}" 
-							  itemValue="#{material}" 
-							  itemLabel="#{material.descricaoUnidadeMaterial}" 
-							  var="material" 
-							  required="true"
-							  value="#{inventarioFarmaciaRaiz.instancia.material}" 
-							  label="Material"/>
+	<p:commandButton value="Contagem" 
+					 action="#{inventarioFarmaciaContagemRaiz.exibirDialogContagem}" 
+					 immediate="true"
+					 update=":#{p:component('dialogContagemInventarioPanelGroup')}" 
+					 disabled="#{!inventarioFarmaciaRaiz.edicao}">
+		<f:setPropertyActionListener value="#{inventarioFarmaciaRaiz.instancia}" target="#{inventarioFarmaciaContagemRaiz.inventarioFarmacia}" />
+	</p:commandButton>
+	
+	<h:panelGrid id="inventarioFarmaciaPanelGrid" columns="4" width="100%">
 		
-		<ri:inputTextoSimples id="lote" 
-							  required="true"
-							  title="Informe o lote" 
-							  value="#{inventarioFarmaciaRaiz.instancia.lote}" 
-							  label="Lote" />
-		
-		<ri:inputDataMesAnoMedicamento id="validade" 
-									   required="true"
-									   title="Informe a Data de Validade" 
-									   value="#{inventarioFarmaciaRaiz.instancia.dataValidade}" 
-									   label="Validade" />
-		
-		<ri:inputApenasNumero id="saldo" 
-							  title="Informe a quantidade contada"
+		<ri:inputTextoSimples id="descricao" 
+							  label="Descrição"
 							  required="true" 
-							  value="#{inventarioFarmaciaRaiz.instancia.quantidadeContada}" 
-							  label="Quantidade Contada"/>
+							  title="Descreva sucintamente o motivo deste inventário" 
+							  value="#{inventarioFarmaciaRaiz.instancia.descricao}" />
+		
+		<ri:inputDataHora id="dataInicio" 
+						  label="Início" 
+						  required="true"
+						  title="Indica quando deve começar o inventário" 
+						  value="#{inventarioFarmaciaRaiz.instancia.dataInicio}" />
+		
+		<ri:inputDataHora id="dataFinalizacao" 
+						  label="Fim"
+						  required="true" 
+						  title="Indica quando deve terminar o inventário" 
+						  value="#{inventarioFarmaciaRaiz.instancia.dataFinalizacao}" />
 		
 	</h:panelGrid>
 
