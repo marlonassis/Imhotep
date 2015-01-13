@@ -33,7 +33,7 @@ public class BloqueioLoteRaiz extends PadraoRaiz<Estoque>{
 		if(validade != null){
 			Calendar atual = Calendar.getInstance();
 			Calendar vali = Calendar.getInstance();
-			vali.setTime(new Utilitarios().ajustarUltimaHoraDia(validade));
+			vali.setTime(Utilitarios.ajustarUltimaHoraDia(validade));
 			vali.set(Calendar.DAY_OF_MONTH, vali.getActualMaximum(Calendar.DAY_OF_MONTH));
 			if(vali.after(atual)){
 				return false;

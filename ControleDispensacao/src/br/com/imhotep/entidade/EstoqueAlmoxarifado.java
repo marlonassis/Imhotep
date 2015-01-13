@@ -31,7 +31,7 @@ public class EstoqueAlmoxarifado implements Serializable {
 	private MaterialAlmoxarifado materialAlmoxarifado;
 	private String lote;
 	private Date dataValidade;
-	private int quantidadeAtual;
+	private Double quantidadeAtual;
 	private boolean bloqueado;
 	private String motivoBloqueio;
 	private Date dataInclusao;
@@ -115,10 +115,10 @@ public class EstoqueAlmoxarifado implements Serializable {
 	}
 	
 	@Column(name = "in_quantidade_atual")
-	public int getQuantidadeAtual() {
+	public Double getQuantidadeAtual() {
 		return quantidadeAtual;
 	}
-	public void setQuantidadeAtual(int quantidadeAtual) {
+	public void setQuantidadeAtual(Double quantidadeAtual) {
 		this.quantidadeAtual = quantidadeAtual;
 	}
 	
@@ -231,7 +231,11 @@ public class EstoqueAlmoxarifado implements Serializable {
 	public String getDescricaoResumida(){
 		String descricao = "";
 		if(getLote() != null){
-			descricao += getLote() + " - ";
+			if(getLote().isEmpty()){
+				descricao += "(".concat(String.valueOf(getIdEstoqueAlmoxarifado())).concat(") - ");
+			}else{
+				descricao += getLote().concat(" - ");
+			}
 		}
 		if(getFabricanteAlmoxarifado() != null){
 			descricao += getFabricanteAlmoxarifado().getDescricao() + " - ";

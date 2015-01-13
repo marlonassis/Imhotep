@@ -24,19 +24,18 @@ import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 @Entity
 @Table(name = "tb_estoque")
 public class Estoque implements Serializable{
-	private static final long serialVersionUID = -6495593978691300777L;
+	private static final long serialVersionUID = -5077848794666424031L;
 	
 	private int idEstoque;
 	private Fabricante fabricante; 
 	private Material material;
-	private Unidade unidade;
 	private String lote;
 	private Date dataValidade;
 	private int quantidadeAtual;
 	private boolean bloqueado;
 	private String motivoBloqueio;
 	private Date dataInclusao;
-	private Usuario usuarioInclusao;
+	private Profissional profissionalInclusao;
 	private Date dataBloqueio;
 	private Usuario usuarioBloqueio;
 	private TipoBloqueioLoteEnum tipoBloqueio;
@@ -70,15 +69,6 @@ public class Estoque implements Serializable{
 	}
 	public void setMaterial(Material material) {
 		this.material = material;
-	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_unidade")
-	public Unidade getUnidade() {
-		return unidade;
-	}
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
 	}
 	
 	@Column(name = "cv_lote")
@@ -145,12 +135,12 @@ public class Estoque implements Serializable{
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario_inclusao")
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
+	@JoinColumn(name = "id_profissional_inclusao")
+	public Profissional getProfissionalInclusao() {
+		return profissionalInclusao;
 	}
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
+	public void setProfissionalInclusao(Profissional profissionalInclusao) {
+		this.profissionalInclusao = profissionalInclusao;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -208,7 +198,6 @@ public class Estoque implements Serializable{
 		return null;
 	}
 	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -225,22 +214,17 @@ public class Estoque implements Serializable{
 		result = prime * result
 				+ ((fabricante == null) ? 0 : fabricante.hashCode());
 		result = prime * result + idEstoque;
-		result = prime * result + (lock ? 1231 : 1237);
 		result = prime * result + ((lote == null) ? 0 : lote.hashCode());
 		result = prime * result
 				+ ((material == null) ? 0 : material.hashCode());
-		result = prime * result
-				+ ((motivoBloqueio == null) ? 0 : motivoBloqueio.hashCode());
 		result = prime * result + quantidadeAtual;
 		result = prime * result
 				+ ((tipoBloqueio == null) ? 0 : tipoBloqueio.hashCode());
-		result = prime * result + ((unidade == null) ? 0 : unidade.hashCode());
 		result = prime * result
-				+ ((usuarioBloqueio == null) ? 0 : usuarioBloqueio.hashCode());
-		result = prime * result
-				+ ((usuarioInclusao == null) ? 0 : usuarioInclusao.hashCode());
+				+ ((profissionalInclusao == null) ? 0 : profissionalInclusao.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -279,8 +263,6 @@ public class Estoque implements Serializable{
 			return false;
 		if (idEstoque != other.idEstoque)
 			return false;
-		if (lock != other.lock)
-			return false;
 		if (lote == null) {
 			if (other.lote != null)
 				return false;
@@ -291,32 +273,18 @@ public class Estoque implements Serializable{
 				return false;
 		} else if (!material.equals(other.material))
 			return false;
-		if (motivoBloqueio == null) {
-			if (other.motivoBloqueio != null)
-				return false;
-		} else if (!motivoBloqueio.equals(other.motivoBloqueio))
-			return false;
 		if (quantidadeAtual != other.quantidadeAtual)
 			return false;
 		if (tipoBloqueio != other.tipoBloqueio)
 			return false;
-		if (unidade == null) {
-			if (other.unidade != null)
+		if (profissionalInclusao == null) {
+			if (other.profissionalInclusao != null)
 				return false;
-		} else if (!unidade.equals(other.unidade))
-			return false;
-		if (usuarioBloqueio == null) {
-			if (other.usuarioBloqueio != null)
-				return false;
-		} else if (!usuarioBloqueio.equals(other.usuarioBloqueio))
-			return false;
-		if (usuarioInclusao == null) {
-			if (other.usuarioInclusao != null)
-				return false;
-		} else if (!usuarioInclusao.equals(other.usuarioInclusao))
+		} else if (!profissionalInclusao.equals(other.profissionalInclusao))
 			return false;
 		return true;
 	}
+	
 	@Override
 	public String toString() {
 		return "Lote: ".concat(lote).concat(" - Quantidade: ").concat(Integer.valueOf(quantidadeAtual).toString()).concat(" - Validade: ").concat(new SimpleDateFormat("dd/MM/yyyy").format(getDataValidade()));

@@ -1,6 +1,5 @@
 package br.com.imhotep.raiz;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,9 +11,8 @@ import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.enums.TipoBloqueioLoteEnum;
 import br.com.remendo.PadraoRaiz;
 
-//TODO TAF 5
 /**
- * Criada por Asclepíades Neto 
+ * Criada por AsclepÃ­ades Neto 
  * Data: 18/09/2014
  * Funcionalidade: Sinal alertando a validade do produto
  * XHTML: /PaginasWeb/Painel/Paineis/painelMateriaisAlmoxarifadoVencido.xhtml
@@ -24,7 +22,6 @@ import br.com.remendo.PadraoRaiz;
 @SessionScoped
 public class BloqueioLoteAlmoxarifadoRaiz extends PadraoRaiz<EstoqueAlmoxarifado> {
 	private boolean loteEncontrado;
-	private SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 	
 	public void carregarEstoqueConsultaMaterial(EstoqueAlmoxarifado estoque){
 		setLoteEncontrado(true);
@@ -36,16 +33,16 @@ public class BloqueioLoteAlmoxarifadoRaiz extends PadraoRaiz<EstoqueAlmoxarifado
 			Calendar hoje = Calendar.getInstance();
 			Calendar vali = Calendar.getInstance();
 
-			vali.setTime(new Utilitarios().ajustarUltimaHoraDia(validade));
+			vali.setTime(Utilitarios.ajustarUltimaHoraDia(validade));
 			
 			if(vali.before(hoje)){
-				// o material está vencido
+				// o material estÃ¡ vencido
 				return 0;
 			}
 	        else{
 	        	hoje.set(Calendar.MONTH, hoje.get(Calendar.MONTH) + 1);
 	            if(vali.before(hoje)){
-	            	// o material vence no prazo de trê mes
+	            	// o material vence no prazo de trÃªs mes
 	    		    return 1;
 			    }
 	            else{
@@ -58,7 +55,7 @@ public class BloqueioLoteAlmoxarifadoRaiz extends PadraoRaiz<EstoqueAlmoxarifado
 	            }
 	        }
 		}
-		//TODO se a data é nula, logo ele não vence?
+		//se a data Ã© nula, logo ele nÃ£o vence?
 		return 3;
 	}
 
@@ -75,8 +72,5 @@ public class BloqueioLoteAlmoxarifadoRaiz extends PadraoRaiz<EstoqueAlmoxarifado
 	public void setLoteEncontrado(boolean loteEncontrado) {
 		this.loteEncontrado = loteEncontrado;
 	}
-	
-
-	
 	
 }

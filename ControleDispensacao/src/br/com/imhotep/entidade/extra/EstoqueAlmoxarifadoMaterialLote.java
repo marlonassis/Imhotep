@@ -9,12 +9,16 @@ public class EstoqueAlmoxarifadoMaterialLote {
 	private Date dataValidade;
 	private int quantidadeAtual;
 	private String responsavel;
+	private String bloqueado;
 	
 	public EstoqueAlmoxarifadoMaterialLote(){
 		super();
 	}
 	
-	public EstoqueAlmoxarifadoMaterialLote(int idLote, String lote, String fabricante, Date dataValidade, int quantidadeAtual, String responsavel){
+	public EstoqueAlmoxarifadoMaterialLote(int idLote, String lote, 
+										   String fabricante, Date dataValidade, 
+										   int quantidadeAtual, String responsavel,
+										   String bloqueado){
 		super();
 		this.lote = lote;
 		this.idLote = idLote;
@@ -22,6 +26,7 @@ public class EstoqueAlmoxarifadoMaterialLote {
 		this.dataValidade = dataValidade;
 		this.quantidadeAtual = quantidadeAtual;
 		this.responsavel = responsavel;
+		this.bloqueado = bloqueado;
 	}
 	
 	public String getLote() {
@@ -63,5 +68,13 @@ public class EstoqueAlmoxarifadoMaterialLote {
 
 	public void setResponsavel(String responsavel) {
 		this.responsavel = responsavel;
+	}
+
+	public String getBloqueado() {
+		return bloqueado;
+	}
+
+	public void setBloqueado(String bloqueado) {
+		this.bloqueado = bloqueado;
 	}
 }

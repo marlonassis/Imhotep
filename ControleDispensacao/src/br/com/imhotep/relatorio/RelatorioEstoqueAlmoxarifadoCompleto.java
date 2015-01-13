@@ -25,7 +25,6 @@ import br.com.imhotep.entidade.extra.EstoqueAlmoxarifadoMaterialLote;
 import br.com.imhotep.entidade.extra.EstoqueAlmoxarifadoMaterialSubGrupo;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.imhotep.relatorio.excel.EstoqueAlmoxarifadoCompletoExcel;
-import br.com.imhotep.relatorio.excel.MaterialPorUnidadeAlmoxarifadoExcel;
 
 @ManagedBean
 @ViewScoped
@@ -37,7 +36,7 @@ public class RelatorioEstoqueAlmoxarifadoCompleto extends PadraoRelatorio{
 	public void gerarRalatorio() throws ClassNotFoundException, IOException, JRException, SQLException {
 		String nomeRelatorio;
 		
-		//Solicitação de Mudança #14
+		//Solicitaï¿½ï¿½o de Mudanï¿½a #14
 		if(excel==false){
 			String caminho = Constantes.DIR_RELATORIO + "RelatorioEstoqueAlmoxarifado.jasper";
 			nomeRelatorio = "RelatorioEstoqueAlmoxarifado-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".pdf";
@@ -66,7 +65,7 @@ public class RelatorioEstoqueAlmoxarifadoCompleto extends PadraoRelatorio{
 		String sql = getSqlEstoqueAlmoxarifado();
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(LinhaMecanica.DB_BANCO_IMHOTEP);
-		lm.setIp("127.0.0.1");
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(lm.utf8_to_latin1(sql));
 		List<EstoqueAlmoxarifadoMaterialGrupo> lista = new ArrayList<EstoqueAlmoxarifadoMaterialGrupo>();
 		try {
@@ -102,23 +101,27 @@ public class RelatorioEstoqueAlmoxarifadoCompleto extends PadraoRelatorio{
 				if(subGrupo != null){
 					if(!mapGrupo.get(grupo).getMapSubGrupo().get(subGrupo).getMapMaterial().get(material).getMapLote().containsKey(idEstoque)){
 						String responsavel = new Utilitarios().nomeResumido(rs.getString("responsavel"));
+						String bloqueado = rs.getBoolean("bloqueado") ? "Sim" : "NÃ£o";
 						EstoqueAlmoxarifadoMaterialLote estoqueAlmoxarifadoMaterialLote = new EstoqueAlmoxarifadoMaterialLote(idEstoque, 
 																															rs.getString("lote"), 
 																															rs.getString("fabricante"), 
 																															rs.getDate("dataValidade"), 
 																															rs.getInt("quantidadeAtual"), 
-																															responsavel);
+																															responsavel,
+																															bloqueado);
 						mapGrupo.get(grupo).getMapSubGrupo().get(subGrupo).getMapMaterial().get(material).getMapLote().put(idEstoque, estoqueAlmoxarifadoMaterialLote);
 					}
 				}else{
 					if(!mapGrupo.get(grupo).getMapMaterial().get(material).getMapLote().containsKey(idEstoque)){
 						String responsavel = new Utilitarios().nomeResumido(rs.getString("responsavel"));
+						String bloqueado = rs.getBoolean("bloqueado") ? "Sim" : "NÃ£o";
 						EstoqueAlmoxarifadoMaterialLote estoqueAlmoxarifadoMaterialLote = new EstoqueAlmoxarifadoMaterialLote(idEstoque, 
 																															  rs.getString("lote"), 
 																															  rs.getString("fabricante"), 
 																															  rs.getDate("dataValidade"), 
 																															  rs.getInt("quantidadeAtual"),
-																															  responsavel);
+																															  responsavel,
+																															  bloqueado);
 						mapGrupo.get(grupo).getMapMaterial().get(material).getMapLote().put(idEstoque, estoqueAlmoxarifadoMaterialLote);
 					}
 				}
@@ -141,7 +144,7 @@ public class RelatorioEstoqueAlmoxarifadoCompleto extends PadraoRelatorio{
 		return "select to_ascii(c.cv_descricao) as grupo, to_ascii(d.cv_descricao) as subGrupo, "+
 				"to_ascii(b.cv_descricao) material, b.id_material_almoxarifado as idMaterial, e.cv_descricao as fabricante, "+ 
 				"a.id_estoque_almoxarifado idEstoque, a.cv_lote lote, a.dt_data_validade as dataValidade, a.in_quantidade_atual as quantidadeAtual, " +
-				"f.cv_nome responsavel "+ 
+				"f.cv_nome responsavel, a.bl_bloqueado bloqueado "+ 
 				"from tb_estoque_almoxarifado a "+
 				"left join tb_fabricante_almoxarifado e on e.id_fabricante_almoxarifado = a.id_fabricante_almoxarifado "+
 				"inner join tb_material_almoxarifado b on b.id_material_almoxarifado = a.id_material_almoxarifado "+

@@ -1,9 +1,12 @@
 package br.com.imhotep.consulta.raiz;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -14,11 +17,41 @@ import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 import br.com.imhotep.entidade.MaterialAlmoxarifado;
 import br.com.imhotep.entidade.MovimentoLivroAlmoxarifado;
 import br.com.imhotep.entidade.NotaFiscalEstoqueAlmoxarifado;
+import br.com.imhotep.linhaMecanica.LinhaMecanica;
 import br.com.remendo.ConsultaGeral;
 
 @ManagedBean
 @RequestScoped
 public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<NotaFiscalEstoqueAlmoxarifado>{
+	
+	public double saldoRetroativo(EstoqueAlmoxarifado estoque, Date data) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String sql = "select  ( "+
+						"(select sum(b.in_quantidade_movimentacao) from tb_movimento_livro_almoxarifado b  "+
+						"	inner join tb_tipo_movimento_almoxarifado c on b.id_tipo_movimento_almoxarifado = c.id_tipo_movimento_almoxarifado  "+
+						"	where c.tp_operacao = 'E' and b.id_estoque_almoxarifado = a.id_estoque_almoxarifado  "+
+						"	and b.dt_data_movimento <= to_timestamp('2015-01-02 15:00:00', 'YYYY-MM-DD HH24:MI:SS')) "+ 
+						"	-   "+
+						"(select sum(f.in_quantidade_movimentacao) from tb_movimento_livro_almoxarifado f "+
+						"	inner join tb_tipo_movimento_almoxarifado c on f.id_tipo_movimento_almoxarifado = c.id_tipo_movimento_almoxarifado "+ 
+						"	where c.tp_operacao != 'E' and f.id_estoque_almoxarifado = a.id_estoque_almoxarifado  "+
+						"	and f.dt_data_movimento <= to_timestamp('2015-01-02 15:00:00', 'YYYY-MM-DD HH24:MI:SS')) "+
+						") as total  "+
+						"from tb_estoque_almoxarifado a where a.id_estoque_almoxarifado = "+estoque.getIdEstoqueAlmoxarifado();
+		
+		LinhaMecanica lm = new LinhaMecanica();
+		ResultSet rs = lm.consultar(sql);
+		
+		try {
+			rs.next();
+			return rs.getDouble("total");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return -999999d;
+	}
 	
 	public NotaFiscalEstoqueAlmoxarifado itemEstoqueNotaFiscalAlmoxarifado(EstoqueAlmoxarifado estoque) {
 		String hql = "select o from NotaFiscalEstoqueAlmoxarifado o where o.estoqueAlmoxarifado.idEstoqueAlmoxarifado = "+estoque.getIdEstoqueAlmoxarifado();
@@ -32,10 +65,10 @@ public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<NotaFiscalEs
 		return item;
 	}
 	
-	public Long totalEmEstoqueValido(MaterialAlmoxarifado material) {
+	public Double totalEmEstoqueValido(MaterialAlmoxarifado material) {
 		String dataS = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 		String hql = "select sum(o.quantidadeAtual) from EstoqueAlmoxarifado o where o.quantidadeAtual > 0 and o.bloqueado = false and (o.dataValidade = null or cast(o.dataValidade as date) >= cast('"+dataS+"' as date)) and o.materialAlmoxarifado.idMaterialAlmoxarifado = "+material.getIdMaterialAlmoxarifado();
-		Long total = new ConsultaGeral<Long>().consultaUnica(new StringBuilder(hql), null);
+		Double total = new ConsultaGeral<Double>().consultaUnica(new StringBuilder(hql), null);
 		return total;
 	}
 	
@@ -120,9 +153,9 @@ public class EstoqueAlmoxarifadoConsultaRaiz  extends ConsultaGeral<NotaFiscalEs
 		return list;
 	}
 	
-	public int consultarQuantidadeEstoque(EstoqueAlmoxarifado estoque) {
+	public Double consultarQuantidadeEstoque(EstoqueAlmoxarifado estoque) {
 		String hql = "select o.quantidadeAtual from EstoqueAlmoxarifado o where o.idEstoqueAlmoxarifado = "+estoque.getIdEstoqueAlmoxarifado();
-		Integer quantidade = new ConsultaGeral<Integer>().consultaUnica(new StringBuilder(hql), null);
+		Double quantidade = new ConsultaGeral<Double>().consultaUnica(new StringBuilder(hql), null);
 		return quantidade == null ? 0 : quantidade;
 	}
 	

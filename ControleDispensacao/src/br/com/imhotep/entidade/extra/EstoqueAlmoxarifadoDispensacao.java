@@ -4,12 +4,12 @@ import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 
 public class EstoqueAlmoxarifadoDispensacao {
 	private EstoqueAlmoxarifado estoqueAlmoxarifado;
-	private Integer quantidadeDispensada;
+	private Double quantidadeDispensada;
 	
 	public EstoqueAlmoxarifadoDispensacao(){
 	}
 	
-	public EstoqueAlmoxarifadoDispensacao(EstoqueAlmoxarifado estoqueAlmoxarifado, Integer quantidadeDispensada){
+	public EstoqueAlmoxarifadoDispensacao(EstoqueAlmoxarifado estoqueAlmoxarifado, Double quantidadeDispensada){
 		this.estoqueAlmoxarifado = estoqueAlmoxarifado;
 		this.quantidadeDispensada = quantidadeDispensada;
 	}
@@ -20,13 +20,13 @@ public class EstoqueAlmoxarifadoDispensacao {
 	public void setEstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado) {
 		this.estoqueAlmoxarifado = estoqueAlmoxarifado;
 	}
-	public Integer getQuantidadeDispensada() {
+	public Double getQuantidadeDispensada() {
 		return quantidadeDispensada;
 	}
-	public void setQuantidadeDispensada(Integer quantidadeDispensada) {
+	public void setQuantidadeDispensada(Double quantidadeDispensada) {
 		this.quantidadeDispensada = quantidadeDispensada;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -41,7 +41,7 @@ public class EstoqueAlmoxarifadoDispensacao {
 						.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -63,7 +63,5 @@ public class EstoqueAlmoxarifadoDispensacao {
 			return false;
 		return true;
 	}
-
-	
 	
 }

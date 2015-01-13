@@ -49,7 +49,7 @@ public class RelatorioEstoqueVencimento extends PadraoRelatorio{
 		else{
 			nomeRelatorio = "RelatorioEstoqueVencido-"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".xls";
 			RelatorioEstoqueVencimentoExcel exc;
-	        exc = new RelatorioEstoqueVencimentoExcel( lista, "Farm·cia", dIni+" a "+dfim,7);
+	        exc = new RelatorioEstoqueVencimentoExcel( lista, "Farm√°cia", dIni+" a "+dfim,7);
 	        exc.gerarPlanilha();
 			super.geraRelatorioExcel(nomeRelatorio, exc.getWorkbook());
 		}

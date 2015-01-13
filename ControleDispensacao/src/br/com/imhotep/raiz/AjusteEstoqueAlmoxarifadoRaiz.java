@@ -22,7 +22,7 @@ import br.com.remendo.PadraoRaiz;
 public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmoxarifado>{
 	
 	private Boolean loteEncontrado;
-	private Integer quantidadeMovimentada;
+	private Double quantidadeMovimentada;
 	private TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifado;
 	
 	public AjusteEstoqueAlmoxarifadoRaiz() {
@@ -60,7 +60,7 @@ public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmo
 	@Override
 	public boolean enviar(){
 		try {
-			int qtd = getQuantidadeMovimentada() == null ? 0 : getQuantidadeMovimentada();
+			Double qtd = getQuantidadeMovimentada() == null ? 0 : getQuantidadeMovimentada();
 			getInstancia().setDataMovimento(new Date());
 			getInstancia().setProfissionalInsercao(Autenticador.getProfissionalLogado());
 			getInstancia().setTipoMovimentoAlmoxarifado(getTipoMovimentoAlmoxarifado());
@@ -111,11 +111,11 @@ public class AjusteEstoqueAlmoxarifadoRaiz extends PadraoRaiz<MovimentoLivroAlmo
 		this.loteEncontrado = loteEncontrado;
 	}
 
-	public Integer getQuantidadeMovimentada() {
+	public Double getQuantidadeMovimentada() {
 		return quantidadeMovimentada;
 	}
 
-	public void setQuantidadeMovimentada(Integer quantidadeMovimentada) {
+	public void setQuantidadeMovimentada(Double quantidadeMovimentada) {
 		this.quantidadeMovimentada = quantidadeMovimentada;
 	}
 

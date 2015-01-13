@@ -7,7 +7,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.imhotep.auxiliar.Constantes;
 import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.entidade.Estoque;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.enums.TipoOperacaoEnum;
@@ -63,7 +63,7 @@ public class AjusteEstoqueRaiz extends PadraoRaiz<MovimentoLivro>{
 		boolean r = false;
 		try {
 			PadraoFluxoTemp.limparFluxo();
-			new ControleEstoqueTemp().liberarAjuste(new Date(), getInstancia());
+			new ControleEstoque().liberarAjuste(new Date(), getInstancia());
 			PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro-"+getInstancia().hashCode(), getInstancia());
 			PadraoFluxoTemp.getObjetoAtualizar().put("Estoque-"+getInstancia().getEstoque().hashCode(), getInstancia());
 			PadraoFluxoTemp.finalizarFluxo();
@@ -73,7 +73,7 @@ public class AjusteEstoqueRaiz extends PadraoRaiz<MovimentoLivro>{
 			e.printStackTrace();
 		}finally{
 			try {
-				new ControleEstoqueTemp().unLockEstoque(getInstancia().getEstoque());
+				new ControleEstoque().unLockEstoque(getInstancia().getEstoque());
 			} catch (ExcecaoEstoqueUnLock e) {
 				e.printStackTrace();
 			}

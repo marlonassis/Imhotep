@@ -10,13 +10,13 @@ package br.com.imhotep.excecoes;
  */
 public class ExcecaoEstoqueReservado extends ExcecaoPadrao {
 
-	private static final long serialVersionUID = 1783207019548721738L;
-	
+	private static final long serialVersionUID = -7864856216170986066L;
+
 	public ExcecaoEstoqueReservado(){
 		super();
 	}
 	
-	public ExcecaoEstoqueReservado(long quantidadeReservada, long sobra){
+	public ExcecaoEstoqueReservado(Double quantidadeReservada, Double sobra){
 		super.mensagem("Este estoque possui "+sobra+" unidade(s), pois "+quantidadeReservada+" unidade(s) fora(m) reservada(s)", "");
 	}
 	

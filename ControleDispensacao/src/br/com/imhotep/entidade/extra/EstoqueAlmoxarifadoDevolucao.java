@@ -4,14 +4,14 @@ import br.com.imhotep.entidade.EstoqueAlmoxarifado;
 
 public class EstoqueAlmoxarifadoDevolucao {
 	private EstoqueAlmoxarifado estoqueAlmoxarifado;
-	private Integer quantidadeDevolvida;
+	private Double quantidadeDevolvida;
 	private String lote;
 	
 	public EstoqueAlmoxarifadoDevolucao(){
 		super();
 	}
 	
-	public EstoqueAlmoxarifadoDevolucao(EstoqueAlmoxarifado estoqueAlmoxarifado, Integer quantidadeDevolvida, String lote){
+	public EstoqueAlmoxarifadoDevolucao(EstoqueAlmoxarifado estoqueAlmoxarifado, Double quantidadeDevolvida, String lote){
 		super();
 		this.estoqueAlmoxarifado = estoqueAlmoxarifado;
 		this.quantidadeDevolvida = quantidadeDevolvida;
@@ -24,10 +24,10 @@ public class EstoqueAlmoxarifadoDevolucao {
 	public void setEstoqueAlmoxarifado(EstoqueAlmoxarifado estoqueAlmoxarifado) {
 		this.estoqueAlmoxarifado = estoqueAlmoxarifado;
 	}
-	public Integer getQuantidadeDevolvida() {
+	public Double getQuantidadeDevolvida() {
 		return quantidadeDevolvida;
 	}
-	public void setQuantidadeDevolvida(Integer quantidadeDevolvida) {
+	public void setQuantidadeDevolvida(Double quantidadeDevolvida) {
 		this.quantidadeDevolvida = quantidadeDevolvida;
 	}
 	public String getLote() {

@@ -16,11 +16,11 @@ public class ExcecaoEstoqueSaldoInsuficiente extends ExcecaoPadrao {
 		
 	}
 	
-	public ExcecaoEstoqueSaldoInsuficiente(long quantidadeAtual){
+	public ExcecaoEstoqueSaldoInsuficiente(Double quantidadeAtual){
 		super.mensagem("N‹o h‡ quantidade suficiente no estoque. O m‡ximo dispon’vel Ž de " + quantidadeAtual + " unidade(s)", "");
 	}
 	
-	public ExcecaoEstoqueSaldoInsuficiente(int quantidadeAtual){
+	public ExcecaoEstoqueSaldoInsuficiente(long quantidadeAtual){
 		super.mensagem("N‹o h‡ quantidade suficiente no estoque. O m‡ximo dispon’vel Ž de " + quantidadeAtual + " unidade(s)", "");
 	}
 	

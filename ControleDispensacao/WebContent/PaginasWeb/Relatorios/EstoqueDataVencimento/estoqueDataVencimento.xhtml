@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ri="http://java.sun.com/jsf/composite/remendo/input"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	template="/Templates/templatePadrao.xhtml">
@@ -13,25 +14,16 @@
 			<h:form id="relatoriosForm"
 					target="_blank" 
 					style="text-align: left;">
-				<h:panelGrid id="materialPanelGrid" columns="2" width="100%">
-					<h:panelGroup>
-						<font color="red">*</font>
-						<h:outputLabel for="dataIni" value="Início:" />
-						<br />
-						<p:calendar id="dataIni"
-									maxlength="7"
-									value="#{relatorioEstoqueVencimento.dataIni}" pattern="MM/yyyy"
-									locale="pt" />
-					</h:panelGroup>
-					<h:panelGroup>
-						<font color="red">*</font>
-						<h:outputLabel for="dataFim" value="Fim:" />
-						<br />
-						<p:calendar id="dataFim"
-									maxlength="7"
-									value="#{relatorioEstoqueVencimento.dataFim}" pattern="MM/yyyy"
-									locale="pt" />
-					</h:panelGroup>
+				<h:panelGrid id="estoqueVencimentoPanelGrid" columns="2" width="100%">
+					<ri:mesAno id="dataIni"
+							   required="true" 
+							   value="#{relatorioEstoqueVencimento.dataIni}" 
+							   label="Início" />
+					
+					<ri:mesAno id="dataFim"
+							   required="true" 
+							   value="#{relatorioEstoqueVencimento.dataFim}" 
+							   label="Fim" />
 				</h:panelGrid>
 				
 				<!-- EXCELL -->
