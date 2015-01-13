@@ -1,16 +1,10 @@
 package br.com.imhotep.testes;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import br.com.imhotep.excecoes.ExcecaoEstoqueNaoAtualizado;
 import br.com.imhotep.linhaMecanica.LinhaMecanica;
 
 
@@ -40,8 +34,7 @@ public class Teste {
 									"   SET db_preco_medio= "+ bd.doubleValue() + 
 									" WHERE id_material = "+id+";";
 					
-					if(!lm.executarCUD(update))
-						throw new ExcecaoEstoqueNaoAtualizado();
+					lm.executarCUD(update);
 					
 					String justificativa = null;
 				    if(bd.doubleValue() != precoMedio.doubleValue()){
@@ -60,11 +53,10 @@ public class Teste {
 //					System.out.println(bd.doubleValue() + " - " + precoMedio.doubleValue());
 					
 					System.out.println(id);
-					if(!lm.executarCUD(sqlLog))
-						throw new ExcecaoEstoqueNaoAtualizado();
+					lm.executarCUD(sqlLog);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

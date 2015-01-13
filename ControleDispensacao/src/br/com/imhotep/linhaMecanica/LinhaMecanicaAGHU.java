@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.imhotep.auxiliar.Constantes;
-import br.com.imhotep.auxiliar.Utilitarios;
+import br.com.remendo.utilidades.Utilitarios;
 
 public class LinhaMecanicaAGHU extends GerenciadorMecanico {
 	
