@@ -88,7 +88,7 @@
 														   global="false" 
 				                						   onclick="statusDialog.show();" 
 				                						   onsuccess="statusDialog.hide();"
-														   update=":#{p:component('devolucaoMedicamentoItemPanelGrid')} :#{p:component('recusarDevolucaoItemDialog')}"
+														   update=":#{p:component('devolucaoMedicamentoItemPanelGrid')} :#{p:component('recusarDevolucaoItemDialog')} :#{p:component('devolucaoDialog')}"
 														   rendered="#{item.status != 'RE' and !devolucaoMedicamentoItemRaiz.edicao}" 
 														   title="Recusar #{item.material.descricaoUnidadeMaterial}" 
 														   style="padding-right:10px;">
@@ -109,7 +109,7 @@
 								            <h:outputText rendered="#{item.status != 'RE'}" value="#{devolucaoMedicamentoRaiz.quantidadeTotalRecebida(item)}" />  
 								        </p:column> 
 								        
-								        <p:column headerText="Estoques">  
+								        <p:column headerText="Lotes">  
 											<ui:repeat rendered="#{item.status != 'RE'}" 
 													   value="#{devolucaoMedicamentoRaiz.mapDevolucao.get(item.idDevolucaoMedicamentoItem)}" 
 													   var="e" >
@@ -123,7 +123,7 @@
 				                						   onclick="statusDialog.show();" 
 				                						   onsuccess="statusDialog.hide();"
 														   update=":#{p:component('detalhesDevolucao')}"
-														   rendered="#{item.status == 'RE' and devolucaoMedicamentoRaiz.itemRecusado.idDevolucaoMedicamentoItem == 0}" 
+														   rendered="#{item.status == 'RE'}" 
 														   title="Recuperar #{item.material.descricaoUnidadeMaterial}" 
 														   style="padding-right:10px;">
 												<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoRaiz.itemRecusado}" />

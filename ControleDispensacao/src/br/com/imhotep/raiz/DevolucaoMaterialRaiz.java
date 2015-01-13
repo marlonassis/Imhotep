@@ -36,7 +36,6 @@ import br.com.imhotep.excecoes.ExcecaoEstoqueReservado;
 import br.com.imhotep.excecoes.ExcecaoEstoqueSaldoInsuficiente;
 import br.com.imhotep.excecoes.ExcecaoEstoqueUnLock;
 import br.com.imhotep.excecoes.ExcecaoEstoqueVencido;
-import br.com.imhotep.excecoes.ExcecaoMovimentoLivroNaoCadastrado;
 import br.com.imhotep.excecoes.ExcecaoProfissionalLogado;
 import br.com.imhotep.excecoes.ExcecaoQuantidadeZero;
 import br.com.imhotep.excecoes.ExcecaoSemJustificativa;
@@ -252,7 +251,10 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 		}
 	}
 	
-	private void processarDevolucao() throws ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVencido, ExcecaoEstoqueUnLock, ExcecaoProfissionalLogado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoMovimentoLivroNaoCadastrado{
+	private void processarDevolucao() 
+			throws ExcecaoProfissionalLogado, ExcecaoQuantidadeZero, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock, 
+			ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueAlmoxarifadoVazio, ExcecaoEstoqueSaldoInsuficiente, 
+			ExcecaoEstoqueReservado, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado {
 		Date dataPadrao = new Date();
 		TipoMovimentoAlmoxarifado tipoMovimentoAlmoxarifadoDevolucaoDispensacao = Parametro.tipoMovimentoAlmoxarifadoDevolucaoDispensacao();
 		for(DevolucaoMaterialItem item : getInstancia().getItens()){
@@ -298,7 +300,7 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 	}
 
 	public void validarCodigos(){
-		Map<String, Integer> lotes = prepararLotes();
+		Map<String, Double> lotes = prepararLotes();
 		try {
 			carregaLotesValidos(lotes);
 		} catch (ExcecaoDevolucaoMaterialValidacaoCodigo e) {
@@ -306,9 +308,9 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 		}
 	}
 
-	private Map<String, Integer> prepararLotes() {
+	private Map<String, Double> prepararLotes() {
 		String[] codigosArray = codigos.split("\r");
-		Map<String, Integer> lotes = new HashMap<String, Integer>();
+		Map<String, Double> lotes = new HashMap<String, Double>();
 		for(String codigo : codigosArray){
 			codigo = codigo.replace("\n", "").replace("\r", "");
 			if(codigo.isEmpty()){
@@ -316,7 +318,7 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 			}
 			String[] item = separarLoteQuantidade(codigo);
 			String lote = item[0];
-			Integer quantidade = Integer.valueOf(item[1]);
+			Double quantidade = Double.valueOf(item[1]);
 
 			if(lotes.containsKey(lote)){
 				quantidade =+ lotes.get(lote);
@@ -327,7 +329,7 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 		return lotes;
 	}
 
-	private void carregaLotesValidos(Map<String, Integer> lotes) throws ExcecaoDevolucaoMaterialValidacaoCodigo {
+	private void carregaLotesValidos(Map<String, Double> lotes) throws ExcecaoDevolucaoMaterialValidacaoCodigo {
 		String codigosNaoEncontrados = "";
 		for(String lote : lotes.keySet()){
 			EstoqueAlmoxarifado estoqueAlmoxarifado = new EstoqueMaterialAlmoxarifadoConsultaRaiz().consultarEstoqueMaterialLoteCodigoBarras(lote);
@@ -375,7 +377,7 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 	}
 	
 	private String[] separarLoteQuantidade(String codigo) {
-		//quando houve uma interrogaçao, está indicado que existe uma quantidade informada
+		//quando houve uma interrogaÔøΩao, estÔøΩ indicado que existe uma quantidade informada
 		if(codigo.contains("?"))
 			return codigo.split("\\?");
 		else
@@ -388,9 +390,9 @@ public class DevolucaoMaterialRaiz extends PadraoRaiz<DevolucaoMaterial>{
 		setJustificativaItemRecusado(null);
 	}
 	
-	public Integer quantidadeTotalRecebida(DevolucaoMaterialItem item){
+	public Double quantidadeTotalRecebida(DevolucaoMaterialItem item){
 		List<EstoqueAlmoxarifadoDevolucao> list = getMapDevolucao().get(item.getIdDevolucaoMaterialItem());
-		Integer qtd = 0;
+		Double qtd = 0d;
 		if(list != null){
 			for(EstoqueAlmoxarifadoDevolucao e : list){
 				qtd += e.getQuantidadeDevolvida();

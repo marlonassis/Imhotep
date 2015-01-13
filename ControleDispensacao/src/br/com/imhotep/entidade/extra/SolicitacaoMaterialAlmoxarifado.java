@@ -10,16 +10,16 @@ import br.com.imhotep.entidade.SolicitacaoMaterialAlmoxarifadoUnidadeItem;
 public class SolicitacaoMaterialAlmoxarifado {
 	private SolicitacaoMaterialAlmoxarifadoUnidadeItem item;
 	private Integer cota;
-	private Integer quantidadeRecebidaMes;
-	private Integer totalEstoque;
-	private Map<EstoqueAlmoxarifado, Integer> estoqueReservado = new HashMap<EstoqueAlmoxarifado, Integer>(); 
+	private Double quantidadeRecebidaMes;
+	private Double totalEstoque;
+	private Map<EstoqueAlmoxarifado, Double> estoqueReservado = new HashMap<EstoqueAlmoxarifado, Double>(); 
 	
-	public Integer quantidadeLiberada(){
+	public Double quantidadeLiberada(){
 		Set<EstoqueAlmoxarifado> keys = getEstoqueReservado().keySet();
-		Integer total = 0;
+		Double total = 0d;
 		for(EstoqueAlmoxarifado key : keys){
-			Integer qtd = getEstoqueReservado().get(key);
-			total += qtd == null ? 0 : qtd;
+			Double qtd = getEstoqueReservado().get(key);
+			total += qtd == null ? 0d : qtd;
 		}
 		return total;
 	}
@@ -37,11 +37,11 @@ public class SolicitacaoMaterialAlmoxarifado {
 		this.item = item;
 	}
 
-	public Map<EstoqueAlmoxarifado, Integer> getEstoqueReservado() {
+	public Map<EstoqueAlmoxarifado, Double> getEstoqueReservado() {
 		return estoqueReservado;
 	}
 
-	public void setEstoqueReservado(Map<EstoqueAlmoxarifado, Integer> estoqueReservado) {
+	public void setEstoqueReservado(Map<EstoqueAlmoxarifado, Double> estoqueReservado) {
 		this.estoqueReservado = estoqueReservado;
 	}
 
@@ -53,19 +53,19 @@ public class SolicitacaoMaterialAlmoxarifado {
 		this.cota = cota;
 	}
 
-	public Integer getTotalEstoque() {
+	public Double getTotalEstoque() {
 		return totalEstoque;
 	}
 
-	public void setTotalEstoque(Integer totalEstoque) {
+	public void setTotalEstoque(Double totalEstoque) {
 		this.totalEstoque = totalEstoque;
 	}
 
-	public Integer getQuantidadeRecebidaMes() {
+	public Double getQuantidadeRecebidaMes() {
 		return quantidadeRecebidaMes;
 	}
 
-	public void setQuantidadeRecebidaMes(Integer quantidadeRecebidaMes) {
+	public void setQuantidadeRecebidaMes(Double quantidadeRecebidaMes) {
 		this.quantidadeRecebidaMes = quantidadeRecebidaMes;
 	}
 	
@@ -73,7 +73,7 @@ public class SolicitacaoMaterialAlmoxarifado {
 		String res = "";
 		Set<EstoqueAlmoxarifado> keySet = getEstoqueReservado().keySet();
 		for(EstoqueAlmoxarifado key : keySet){
-			Integer qtd = getEstoqueReservado().get(key);
+			Double qtd = getEstoqueReservado().get(key);
 			res += ((key.getLote() == null || key.getLote().isEmpty()) ? "<b>[Sem Lote]</b>" : "<b>"+key.getLote()+"</b>") + " - " + qtd + " <br/>";
 		}
 		return res;

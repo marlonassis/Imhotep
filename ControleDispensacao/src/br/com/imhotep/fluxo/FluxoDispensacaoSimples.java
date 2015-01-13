@@ -2,7 +2,7 @@ package br.com.imhotep.fluxo;
 
 import java.util.Date;
 
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.MovimentoLivro;
 import br.com.imhotep.excecoes.ExcecaoEstoqueBloqueado;
@@ -20,11 +20,11 @@ import br.com.imhotep.temp.PadraoFluxoTemp;
 public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 	
 	public FluxoDispensacaoSimples() {
-		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
+		super("Erro ao salvar a dispensaÔøΩÔøΩo simplificada.", "DispensaÔøΩÔøΩo simplificada salva com sucesso.");
 	}
 	
 	public FluxoDispensacaoSimples(boolean exibirMensagem) {
-		super("Erro ao salvar a dispensação simplificada.", "Dispensação simplificada salva com sucesso.");
+		super("Erro ao salvar a dispensaÔøΩÔøΩo simplificada.", "DispensaÔøΩÔøΩo simplificada salva com sucesso.");
 		if(!exibirMensagem){
 			setExibeMensagemAtualizacao(false);
 			setExibeMensagemDelecao(false);
@@ -45,7 +45,7 @@ public class FluxoDispensacaoSimples extends PadraoFluxoTemp{
 	}
 	
 	private void ativarControladoraEstoque(Date dataAtual, MovimentoLivro movimentoLivro) throws ExcecaoEstoqueVencido, ExcecaoEstoqueBloqueado, ExcecaoEstoqueVazio, ExcecaoEstoqueSaldoInsuficiente, ExcecaoEstoqueReservado, InstantiationException, IllegalAccessException, ClassNotFoundException, ExcecaoEstoqueNaoCadastrado, ExcecaoEstoqueNaoAtualizado, ExcecaoEstoqueLockAcimaUmMinuto, ExcecaoEstoqueLock{
-		ControleEstoqueTemp controleEstoque = new ControleEstoqueTemp();
+		ControleEstoque controleEstoque = new ControleEstoque();
 		controleEstoque.liberarAjuste(dataAtual, movimentoLivro);
 	}
 	

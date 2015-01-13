@@ -13,7 +13,7 @@ import br.com.imhotep.auxiliar.RestringirAcessoRedeHU;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
 import br.com.imhotep.consulta.raiz.SolicitacaoMedicamentoUnidadeConsultaRaiz;
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.controle.ControlePainelAviso;
 import br.com.imhotep.entidade.DispensacaoSimples;
 import br.com.imhotep.entidade.Estoque;
@@ -99,7 +99,7 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoRaiz<SolicitacaoMed
 						ml.setTipoMovimento(tipoMovimentoDS);
 						ml.setQuantidadeMovimentacao(ed.getQuantidadeDispensada());
 						ml.setJustificativa("RM: "+getInstancia().getIdSolicitacaoMedicamentoUnidade());
-						new ControleEstoqueTemp().liberarAjuste(date, ml);
+						new ControleEstoque().liberarAjuste(date, ml);
 						
 						PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro"+ml.hashCode(), ml);
 						
@@ -134,7 +134,7 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoRaiz<SolicitacaoMed
 		for(ItemDispensacao item : getItensDispensacao()){
 			for(EstoqueDispensacao ed : item.getEstoques()){
 				try {
-					new ControleEstoqueTemp().unLockEstoque(ed.getEstoque());
+					new ControleEstoque().unLockEstoque(ed.getEstoque());
 				} catch (ExcecaoEstoqueUnLock e) {
 					e.printStackTrace();
 				}
@@ -424,7 +424,7 @@ public class SolicitacaoMedicamentoUnidadeRaiz extends PadraoRaiz<SolicitacaoMed
 		}
 		if(estoques == null || estoques.isEmpty()){
 			id.getItem().setStatusItem(TipoStatusSolicitacaoItemEnum.R);
-			id.getItem().setJustificativa("Item recusado por n‹o possuir algum lote com saldo");
+			id.getItem().setJustificativa("Item recusado por nï¿½o possuir algum lote com saldo");
 		}
 		getItensDispensacao().add(id);
 	}

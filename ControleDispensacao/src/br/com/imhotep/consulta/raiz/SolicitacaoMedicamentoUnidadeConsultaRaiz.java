@@ -30,10 +30,10 @@ import br.com.remendo.gerenciador.ControleInstancia;
 @RequestScoped
 public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<SolicitacaoMedicamentoUnidade>{
 
-	public static final String SIGLA_SOLICITACAO_ALMOXARIFADO = "Solicitação ao Almoxarifado";
-	public static final String SIGLA_SOLICITACAO_FARMACIA = "Solicitação à Farmácia";
-	public static final String SIGLA_DEVOLUCAO_ALMOXARIFADO = "Devolução ao Almoxarifado";
-	public static final String SIGLA_DEVOLUCAO_FARMACIA = "Devolução para à Farmácia";
+	public static final String SIGLA_SOLICITACAO_ALMOXARIFADO = "SolicitaÔøΩÔøΩo ao Almoxarifado";
+	public static final String SIGLA_SOLICITACAO_FARMACIA = "SolicitaÔøΩÔøΩo ÔøΩ FarmÔøΩcia";
+	public static final String SIGLA_DEVOLUCAO_ALMOXARIFADO = "DevoluÔøΩÔøΩo ao Almoxarifado";
+	public static final String SIGLA_DEVOLUCAO_FARMACIA = "DevoluÔøΩÔøΩo para ÔøΩ FarmÔøΩcia";
 
 	public static SolicitacaoMedicamentoUnidadeConsultaRaiz getInstanciaAtual(){
 		try {
@@ -146,7 +146,7 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(sqlSolicitacoesAlmoxarifado);
 		int cont=0;
 		while (rs.next()) {
@@ -200,7 +200,7 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(sqlDevolucoesAlmoxarifado);
 		int cont=0;
 		while (rs.next()) {
@@ -255,7 +255,7 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(sqlSolicitacoesMedicamento);
 		int cont=0;
 		while (rs.next()) {
@@ -310,7 +310,7 @@ public class SolicitacaoMedicamentoUnidadeConsultaRaiz  extends ConsultaGeral<So
 		
 		LinhaMecanica lm = new LinhaMecanica();
 		lm.setNomeBanco(Constantes.NOME_BANCO_IMHOTEP);
-		lm.setIp(Constantes.IP_IMHOTEP_LINHA_MECANICA);
+		lm.setIp(Constantes.IP_LOCAL);
 		ResultSet rs = lm.consultar(sqlSolicitacoesAlmoxarifado);
 		int cont=0;
 		while (rs.next()) {

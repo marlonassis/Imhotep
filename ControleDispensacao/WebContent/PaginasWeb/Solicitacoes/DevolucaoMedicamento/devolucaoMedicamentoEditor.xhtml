@@ -75,12 +75,11 @@
 						<h:graphicImage value="/Imagens/edit.gif" />
 					</p:commandLink>
 		        
-					<p:commandLink action="#{devolucaoMedicamentoItemRaiz.apagar()}"
+					<p:commandLink action="#{devolucaoMedicamentoItemRaiz.apagarInstancia}"
 								   update=":#{p:component('listaItensPanelGrid')}"
-								   onclick="if(!confirm('Deseja realmente excluir?')) return false;"
 								   title="Apagar #{item.material.descricaoUnidadeMaterial}" 
-								   style="padding-right:10px;">
-						<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoItemRaiz.instancia}" />
+								   style="padding-right:10px;" >
+						<f:setPropertyActionListener value="#{item}" target="#{devolucaoMedicamentoItemRaiz.instanciaDelecao}" />
 						<h:graphicImage value="/Imagens/delete.png" />
 					</p:commandLink>
 				</p:column> 

@@ -65,7 +65,7 @@ public class SolicitacaoMedicamentoUnidadeSolicitacaoRaiz extends PadraoRaiz<Sol
 		verificarSolicitacaoNaoCadastrada();
 		
 		String sql = getSqlMateriaisRecuperacaoSolicitacao();
-		ResultSet rs = new LinhaMecanica("db_imhotep").consultar(sql);
+		ResultSet rs = new LinhaMecanica().consultar(sql);
 		try {
 			while(rs.next()){
 				Integer idMaterial = rs.getInt("id_material");

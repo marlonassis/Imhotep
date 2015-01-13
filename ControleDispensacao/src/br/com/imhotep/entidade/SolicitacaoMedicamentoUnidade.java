@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.imhotep.comparador.MaterialGrupoSolicitacaoMedicamentoItemComparador;
+import br.com.imhotep.comparador.MedicamentoSolicitacaoMedicamentoItemComparador;
 import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 
 @Entity
@@ -111,7 +111,7 @@ public class SolicitacaoMedicamentoUnidade implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacaoMedicamentoUnidade")
 	public List<SolicitacaoMedicamentoUnidadeItem> getItens() {
 		if(itens != null)
-			Collections.sort(itens, new MaterialGrupoSolicitacaoMedicamentoItemComparador());
+			Collections.sort(itens, new MedicamentoSolicitacaoMedicamentoItemComparador());
 		return itens;
 	}
 	

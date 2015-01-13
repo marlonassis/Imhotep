@@ -12,17 +12,17 @@ import br.com.remendo.ConsultaGeral;
 @RequestScoped
 public class SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz  extends ConsultaGeral<SolicitacaoMaterialAlmoxarifadoUnidadeItem>{
 
-	public Long totalReservardo(MaterialAlmoxarifado material) {
+	public Double totalReservardo(MaterialAlmoxarifado material) {
 		String hql = "select coalesce(sum(o.quantidadeSolicitada), 0) from SolicitacaoMaterialAlmoxarifadoUnidadeItem o where "
 				+ "(o.solicitacaoMaterialAlmoxarifadoUnidade.statusDispensacao = 'P' or o.solicitacaoMaterialAlmoxarifadoUnidade.statusDispensacao = 'A') and o.materialAlmoxarifado.idMaterialAlmoxarifado = "+material.getIdMaterialAlmoxarifado();
-		Long total = new ConsultaGeral<Long>().consultaUnica(new StringBuilder(hql), null);
+		Double total = new ConsultaGeral<Double>().consultaUnica(new StringBuilder(hql), null);
 		return total;
 	}
 	
-	public Long totalReservardo(MaterialAlmoxarifado material, SolicitacaoMaterialAlmoxarifadoUnidade sma) {
+	public Double totalReservardo(MaterialAlmoxarifado material, SolicitacaoMaterialAlmoxarifadoUnidade sma) {
 		String hql = "select coalesce(sum(o.quantidadeSolicitada), 0) from SolicitacaoMaterialAlmoxarifadoUnidadeItem o where "
 				+ "(o.solicitacaoMaterialAlmoxarifadoUnidade.statusDispensacao = 'P' or o.solicitacaoMaterialAlmoxarifadoUnidade.statusDispensacao = 'A') and o.solicitacaoMaterialAlmoxarifadoUnidade.idSolicitacaoMaterialAlmoxarifadoUnidade != "+sma.getIdSolicitacaoMaterialAlmoxarifadoUnidade()+" and o.materialAlmoxarifado.idMaterialAlmoxarifado = "+material.getIdMaterialAlmoxarifado();
-		Long total = new ConsultaGeral<Long>().consultaUnica(new StringBuilder(hql), null);
+		Double total = new ConsultaGeral<Double>().consultaUnica(new StringBuilder(hql), null);
 		return total;
 	}
 	

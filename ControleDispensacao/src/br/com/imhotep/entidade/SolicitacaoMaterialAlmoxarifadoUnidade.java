@@ -26,8 +26,7 @@ import br.com.imhotep.enums.TipoStatusDispensacaoEnum;
 @Entity
 @Table(name = "tb_solicitacao_material_almoxarifado_unidade")
 public class SolicitacaoMaterialAlmoxarifadoUnidade implements Serializable {
-	
-	private static final long serialVersionUID = -6049214174553048996L;
+	private static final long serialVersionUID = 4442060897106193327L;
 	
 	private int idSolicitacaoMaterialAlmoxarifadoUnidade;
 	private Unidade unidadeDestino;
@@ -175,15 +174,44 @@ public class SolicitacaoMaterialAlmoxarifadoUnidade implements Serializable {
 		this.dataFechamento = dataFechamento;
 	}
 	
-	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
+				+ ((dataDispensacao == null) ? 0 : dataDispensacao.hashCode());
+		result = prime * result
+				+ ((dataFechamento == null) ? 0 : dataFechamento.hashCode());
+		result = prime * result
 				+ ((dataInsercao == null) ? 0 : dataInsercao.hashCode());
 		result = prime * result + idSolicitacaoMaterialAlmoxarifadoUnidade;
+		result = prime * result
+				+ ((justificativa == null) ? 0 : justificativa.hashCode());
+		result = prime
+				* result
+				+ ((profissionalDispensacao == null) ? 0
+						: profissionalDispensacao.hashCode());
+		result = prime
+				* result
+				+ ((profissionalInsercao == null) ? 0 : profissionalInsercao
+						.hashCode());
+		result = prime
+				* result
+				+ ((profissionalLock == null) ? 0 : profissionalLock.hashCode());
+		result = prime
+				* result
+				+ ((profissionalReceptor == null) ? 0 : profissionalReceptor
+						.hashCode());
+		result = prime
+				* result
+				+ ((statusDispensacao == null) ? 0 : statusDispensacao
+						.hashCode());
+		result = prime * result
+				+ ((unidadeDestino == null) ? 0 : unidadeDestino.hashCode());
+		result = prime
+				* result
+				+ ((unidadeProfissionalInsercao == null) ? 0
+						: unidadeProfissionalInsercao.hashCode());
 		return result;
 	}
 
@@ -196,12 +224,61 @@ public class SolicitacaoMaterialAlmoxarifadoUnidade implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		SolicitacaoMaterialAlmoxarifadoUnidade other = (SolicitacaoMaterialAlmoxarifadoUnidade) obj;
+		if (dataDispensacao == null) {
+			if (other.dataDispensacao != null)
+				return false;
+		} else if (!dataDispensacao.equals(other.dataDispensacao))
+			return false;
+		if (dataFechamento == null) {
+			if (other.dataFechamento != null)
+				return false;
+		} else if (!dataFechamento.equals(other.dataFechamento))
+			return false;
 		if (dataInsercao == null) {
 			if (other.dataInsercao != null)
 				return false;
 		} else if (!dataInsercao.equals(other.dataInsercao))
 			return false;
 		if (idSolicitacaoMaterialAlmoxarifadoUnidade != other.idSolicitacaoMaterialAlmoxarifadoUnidade)
+			return false;
+		if (justificativa == null) {
+			if (other.justificativa != null)
+				return false;
+		} else if (!justificativa.equals(other.justificativa))
+			return false;
+		if (profissionalDispensacao == null) {
+			if (other.profissionalDispensacao != null)
+				return false;
+		} else if (!profissionalDispensacao
+				.equals(other.profissionalDispensacao))
+			return false;
+		if (profissionalInsercao == null) {
+			if (other.profissionalInsercao != null)
+				return false;
+		} else if (!profissionalInsercao.equals(other.profissionalInsercao))
+			return false;
+		if (profissionalLock == null) {
+			if (other.profissionalLock != null)
+				return false;
+		} else if (!profissionalLock.equals(other.profissionalLock))
+			return false;
+		if (profissionalReceptor == null) {
+			if (other.profissionalReceptor != null)
+				return false;
+		} else if (!profissionalReceptor.equals(other.profissionalReceptor))
+			return false;
+		if (statusDispensacao != other.statusDispensacao)
+			return false;
+		if (unidadeDestino == null) {
+			if (other.unidadeDestino != null)
+				return false;
+		} else if (!unidadeDestino.equals(other.unidadeDestino))
+			return false;
+		if (unidadeProfissionalInsercao == null) {
+			if (other.unidadeProfissionalInsercao != null)
+				return false;
+		} else if (!unidadeProfissionalInsercao
+				.equals(other.unidadeProfissionalInsercao))
 			return false;
 		return true;
 	}

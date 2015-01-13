@@ -27,10 +27,10 @@ import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
 @Entity
 @Table(name = "tb_solicitacao_material_almoxarifado_unidade_item")
 public class SolicitacaoMaterialAlmoxarifadoUnidadeItem implements Serializable {
-	private static final long serialVersionUID = -8306866038521345515L;
+	private static final long serialVersionUID = 5649144355320179672L;
 	
 	private int idSolicitacaoMaterialAlmoxarifadoUnidadeItem;
-	private Integer quantidadeSolicitada;
+	private Double quantidadeSolicitada;
 	private MaterialAlmoxarifado materialAlmoxarifado;
 	private Profissional profissionalInsercao;
 	private Date dataInsercao;
@@ -74,11 +74,11 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeItem implements Serializable 
 	}
 	
 	@Column(name = "in_quantidade_solicitada")
-	public Integer getQuantidadeSolicitada(){
+	public Double getQuantidadeSolicitada(){
 		return quantidadeSolicitada;
 	}
 	
-	public void setQuantidadeSolicitada(Integer quantidadeSolicitada){
+	public void setQuantidadeSolicitada(Double quantidadeSolicitada){
 		this.quantidadeSolicitada = quantidadeSolicitada;
 	}
 	
@@ -155,10 +155,10 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeItem implements Serializable 
 	}
 	
 	@Transient
-	public Integer getQuantidadeDispensada(){
-		Integer total = 0;
+	public Double getQuantidadeDispensada(){
+		Double total = 0d;
 		for(DispensacaoSimplesAlmoxarifado ds : getDispensacoes()){
-			Integer quantidadeMovimentacao = ds.getMovimentoLivroAlmoxarifado().getQuantidadeMovimentacao();
+			Double quantidadeMovimentacao = ds.getMovimentoLivroAlmoxarifado().getQuantidadeMovimentacao();
 			total += quantidadeMovimentacao == null ? 0 : quantidadeMovimentacao;
 		}
 		return total;

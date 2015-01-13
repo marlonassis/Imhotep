@@ -75,8 +75,8 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 	private SolicitacaoMaterialAlmoxarifado itemSolicitado = new SolicitacaoMaterialAlmoxarifado();
 	private SolicitacaoMaterialAlmoxarifadoUnidadeItem itemSolicitacao = new SolicitacaoMaterialAlmoxarifadoUnidadeItem();
 	private EstoqueAlmoxarifadoDispensacao estoqueAlmoxarifadoDispensacao = new EstoqueAlmoxarifadoDispensacao();
-	private Integer quantidadeAlteracaoItem;
-	private Integer quantidadeDispensada;
+	private Double quantidadeAlteracaoItem;
+	private Double quantidadeDispensada;
 	private String justificativaRecusaSolicitacaoItem;
 	private String justificativaQuantidadeDiferenteSolicitada;
 	
@@ -144,14 +144,14 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 	}
 	
 	public void preLiberacaoEstoquesItem(){
-		Integer quantidadeSolicitada = getItemSolicitado().getItem().getQuantidadeSolicitada();
+		Double quantidadeSolicitada = getItemSolicitado().getItem().getQuantidadeSolicitada();
 		int qtdTotal = somaQuantidadeSolicitadaEstoques();
 		if(qtdTotal != quantidadeSolicitada.intValue() && qtdTotal != 0){
 			exibirModalJustificativaQuantidadeDiferente = true;
 			exibirModalInicializacaoDispensacao = false;
 		}else{
 			if(qtdTotal == 0){
-				super.mensagem("A quantidade total n‹o pode ser zero", "", Constantes.ERROR);
+				super.mensagem("A quantidade total nï¿½o pode ser zero", "", Constantes.ERROR);
 			}else{
 				cancelarLiberacaoEstoquesItem();
 			}
@@ -159,7 +159,7 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 	}
 	
 	private void atualizaEstoquesSolicitados() {
-		getItemSolicitado().setEstoqueReservado(new HashMap<EstoqueAlmoxarifado, Integer>());
+		getItemSolicitado().setEstoqueReservado(new HashMap<EstoqueAlmoxarifado, Double>());
 		for(EstoqueAlmoxarifadoDispensacao obj : getEstoquesEdicao()){
 			if(obj.getQuantidadeDispensada() > 0)
 				getItemSolicitado().getEstoqueReservado().put(obj.getEstoqueAlmoxarifado(), obj.getQuantidadeDispensada());
@@ -169,7 +169,7 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 	private int somaQuantidadeSolicitadaEstoques() {
 		int qtdTotal = 0;
 		for(EstoqueAlmoxarifadoDispensacao obj : getEstoquesEdicao()){
-			Integer quantidadeDispensada2 = obj.getQuantidadeDispensada();
+			Double quantidadeDispensada2 = obj.getQuantidadeDispensada();
 			qtdTotal += quantidadeDispensada2 == null ? 0 : quantidadeDispensada2;
 		}
 		return qtdTotal;
@@ -177,9 +177,9 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 	
 	public void atualizarEstoqueDispensacaoEdicao(){
 		try {
-			Long quantidadeReservada = new SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz().totalReservardo(getItemSolicitado().getItem().getMaterialAlmoxarifado(), getInstancia());
-			int quantidadeAtual = getEstoqueAlmoxarifadoDispensacao().getEstoqueAlmoxarifado().getQuantidadeAtual();
-			long quantidadeVirtual = quantidadeAtual - quantidadeReservada;
+			Double quantidadeReservada = new SolicitacaoMaterialAlmoxarifadoUnidadeItemConsultaRaiz().totalReservardo(getItemSolicitado().getItem().getMaterialAlmoxarifado(), getInstancia());
+			Double quantidadeAtual = getEstoqueAlmoxarifadoDispensacao().getEstoqueAlmoxarifado().getQuantidadeAtual();
+			Double quantidadeVirtual = quantidadeAtual - quantidadeReservada;
 			
 			if(quantidadeVirtual < getQuantidadeDispensada().intValue())
 				throw new ExcecaoEstoqueReservado(quantidadeReservada, quantidadeVirtual);
@@ -206,14 +206,14 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 		for(EstoqueAlmoxarifado obj : consultarEstoquesMaterial){
 			EstoqueAlmoxarifadoDispensacao ead = new EstoqueAlmoxarifadoDispensacao();
 			ead.setEstoqueAlmoxarifado(obj);
-			int quantidade = buscaQuantidadeExistente(ead);
+			Double quantidade = buscaQuantidadeExistente(ead);
 			ead.setQuantidadeDispensada(quantidade);
 			getEstoquesEdicao().add(ead);
 		}
 	}
 
-	private int buscaQuantidadeExistente(EstoqueAlmoxarifadoDispensacao ead) {
-		int quantidade = 0;
+	private Double buscaQuantidadeExistente(EstoqueAlmoxarifadoDispensacao ead) {
+		Double quantidade = 0d;
 		Set<EstoqueAlmoxarifado> keys = getItemSolicitado().getEstoqueReservado().keySet();
 		for(EstoqueAlmoxarifado key : keys){
 			if(key.getIdEstoqueAlmoxarifado() == ead.getEstoqueAlmoxarifado().getIdEstoqueAlmoxarifado()){
@@ -320,11 +320,12 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 			if(!obj.getItem().getStatusItem().equals(TipoStatusSolicitacaoItemEnum.R)){
 				Set<EstoqueAlmoxarifado> keys = obj.getEstoqueReservado().keySet();
 				for(EstoqueAlmoxarifado estoque : keys){
-					int quantidadeMovimentada = obj.getEstoqueReservado().get(estoque);
+					Double quantidadeMovimentada = obj.getEstoqueReservado().get(estoque);
 					MovimentoLivroAlmoxarifado mla = new MovimentoLivroAlmoxarifado();
 					mla.setDataMovimento(dataDispensacao);
 					mla.setEstoqueAlmoxarifado(estoque);
 					mla.setJustificativa("RM: " + getInstancia().getIdSolicitacaoMaterialAlmoxarifadoUnidade());
+					mla.setQuantidadeMovimentacao(quantidadeMovimentada);
 					new ControleEstoqueAlmoxarifadoTemp().liberarDispensacao(mla, quantidadeMovimentada, tipoMovimentoDispensacaoSimplesAlmoxarifado);
 					getIdEstoqueLock().add(estoque.getIdEstoqueAlmoxarifado());
 					DispensacaoSimplesAlmoxarifado ds = new DispensacaoSimplesAlmoxarifado();
@@ -424,10 +425,10 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 		setItensAtuais(new ArrayList<SolicitacaoMaterialAlmoxarifado>());
 		for(SolicitacaoMaterialAlmoxarifadoUnidadeItem item : getInstancia().getItens()){
 			List<EstoqueAlmoxarifado> estoquesMaterial = new EstoqueAlmoxarifadoConsultaRaiz().consultarEstoquesMaterial(item.getMaterialAlmoxarifado());
-			Map<EstoqueAlmoxarifado, Integer> estoqueReservado = new HashMap<EstoqueAlmoxarifado, Integer>();
-			int quantidadeSolicitada = item.getQuantidadeSolicitada().intValue();
+			Map<EstoqueAlmoxarifado, Double> estoqueReservado = new HashMap<EstoqueAlmoxarifado, Double>();
+			Double quantidadeSolicitada = item.getQuantidadeSolicitada().doubleValue();
 			for(EstoqueAlmoxarifado estoque : estoquesMaterial){
-				int qtdAtual = estoque.getQuantidadeAtual();
+				Double qtdAtual = estoque.getQuantidadeAtual();
 				if(quantidadeSolicitada == qtdAtual || quantidadeSolicitada < qtdAtual){
 					estoqueReservado.put(estoque, quantidadeSolicitada);
 					break;
@@ -584,11 +585,11 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 		this.exibirModalAlterarQuantidadeItem = exibirModalAlterarQuantidadeItem;
 	}
 
-	public Integer getQuantidadeAlteracaoItem() {
+	public Double getQuantidadeAlteracaoItem() {
 		return quantidadeAlteracaoItem;
 	}
 
-	public void setQuantidadeAlteracaoItem(Integer quantidadeAlteracaoItem) {
+	public void setQuantidadeAlteracaoItem(Double quantidadeAlteracaoItem) {
 		this.quantidadeAlteracaoItem = quantidadeAlteracaoItem;
 	}
 
@@ -654,11 +655,11 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeRaiz extends PadraoRaiz<Solic
 		this.estoqueAlmoxarifadoDispensacao = estoqueAlmoxarifadoDispensacao;
 	}
 
-	public Integer getQuantidadeDispensada() {
+	public Double getQuantidadeDispensada() {
 		return quantidadeDispensada;
 	}
 
-	public void setQuantidadeDispensada(Integer quantidadeDispensada) {
+	public void setQuantidadeDispensada(Double quantidadeDispensada) {
 		this.quantidadeDispensada = quantidadeDispensada;
 	}
 

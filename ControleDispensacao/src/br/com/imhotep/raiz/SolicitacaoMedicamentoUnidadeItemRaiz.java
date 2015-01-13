@@ -6,7 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidade;
 import br.com.imhotep.entidade.SolicitacaoMedicamentoUnidadeItem;
 import br.com.imhotep.enums.TipoStatusSolicitacaoItemEnum;
@@ -37,7 +37,7 @@ public class SolicitacaoMedicamentoUnidadeItemRaiz extends PadraoRaiz<Solicitaca
 			if(item.getMaterial().equals(getInstancia().getMaterial())){
 				Integer total = item.getQuantidadeSolicitada();
 				total += getInstancia().getQuantidadeSolicitada();
-				ControleEstoqueTemp ce = new ControleEstoqueTemp();
+				ControleEstoque ce = new ControleEstoque();
 				ce.liberarReserva(total, item.getMaterial());
 				item.setQuantidadeSolicitada(total);
 				if(new SolicitacaoMedicamentoUnidadeItemRaiz(item).atualizar()){

@@ -30,7 +30,7 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz extends Padra
 	
 	private Boolean exibirModalAlterarQuantidadeItem = false;
 	private SolicitacaoMaterialAlmoxarifadoUnidadeItem itemSolicitacao = new SolicitacaoMaterialAlmoxarifadoUnidadeItem();
-	private Integer quantidadeAlteracaoItem;
+	private Double quantidadeAlteracaoItem;
 	
 	@Override
 	protected void preEnvio() {
@@ -164,11 +164,11 @@ public class SolicitacaoMaterialAlmoxarifadoUnidadeSolicitacaoRaiz extends Padra
 		this.exibirModalAlterarQuantidadeItem = exibirModalAlterarQuantidadeItem;
 	}
 
-	public Integer getQuantidadeAlteracaoItem() {
+	public Double getQuantidadeAlteracaoItem() {
 		return quantidadeAlteracaoItem;
 	}
 
-	public void setQuantidadeAlteracaoItem(Integer quantidadeAlteracaoItem) {
+	public void setQuantidadeAlteracaoItem(Double quantidadeAlteracaoItem) {
 		this.quantidadeAlteracaoItem = quantidadeAlteracaoItem;
 	}
 

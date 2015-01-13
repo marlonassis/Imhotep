@@ -15,15 +15,15 @@ import br.com.remendo.ConsultaGeral;
 @RequestScoped
 public class DispensacaoSimplesAlmoxarifadoConsultaRaiz  extends ConsultaGeral<DispensacaoSimplesAlmoxarifado>{
 
-	public Integer saldoTotalLiberadoMes(MaterialAlmoxarifado ma, Unidade un) {
-		String sql = "select coalesce(sum(o.movimentoLivroAlmoxarifado.quantidadeMovimentacao), 0) from DispensacaoSimplesAlmoxarifado o where "
+	public Double saldoTotalLiberadoMes(MaterialAlmoxarifado ma, Unidade un) {
+		String sql = "select sum(o.movimentoLivroAlmoxarifado.quantidadeMovimentacao) from DispensacaoSimplesAlmoxarifado o where "
 				+ "o.movimentoLivroAlmoxarifado.estoqueAlmoxarifado.materialAlmoxarifado.idMaterialAlmoxarifado = "+ma.getIdMaterialAlmoxarifado()
 				+" and o.unidadeDispensada.idUnidade = " + un.getIdUnidade()
 				+" and to_char(o.movimentoLivroAlmoxarifado.dataMovimento, 'YYYY-MM') = '"+new SimpleDateFormat("yyyy-MM").format(new Date())+"'";
 		StringBuilder sb = new StringBuilder(sql);
-		ConsultaGeral<Long> cg = new ConsultaGeral<Long>();
-		Long total = cg.consultaUnica(sb, null);
-		return total.intValue();
+		ConsultaGeral<Double> cg = new ConsultaGeral<Double>();
+		Double total = cg.consultaUnica(sb, null);
+		return total == null ? 0d : total.doubleValue();
 	}
 	
 }

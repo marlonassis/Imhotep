@@ -109,9 +109,9 @@ public class DevolucaoMedicamentoItemRaiz extends PadraoRaiz<DevolucaoMedicament
 	}
 
 	@Override
-	public boolean apagar() {
-		DevolucaoMedicamentoItem instancia = getInstancia();
-		if(super.apagar()){
+	public boolean apagarInstancia() {
+		DevolucaoMedicamentoItem instancia = getInstanciaDelecao();
+		if(super.apagarInstancia()){
 			getItens().remove(instancia);
 			return true;
 		}

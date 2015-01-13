@@ -13,7 +13,7 @@ import br.com.imhotep.auxiliar.Parametro;
 import br.com.imhotep.auxiliar.Utilitarios;
 import br.com.imhotep.consulta.raiz.DevolucaoMedicamentoConsultaRaiz;
 import br.com.imhotep.consulta.raiz.EstoqueConsultaRaiz;
-import br.com.imhotep.controle.ControleEstoqueTemp;
+import br.com.imhotep.controle.ControleEstoque;
 import br.com.imhotep.controle.ControlePainelAviso;
 import br.com.imhotep.entidade.DevolucaoMedicamento;
 import br.com.imhotep.entidade.DevolucaoMedicamentoItem;
@@ -131,40 +131,44 @@ public class DevolucaoMedicamentoRaiz extends PadraoRaiz<DevolucaoMedicamento>{
 	}
 	
 	public void recusarItemDevolvido(){
-		if(getJustificativaItemRecusado() == null || getJustificativaItemRecusado().isEmpty()){
-			try{
-				throw new ExcecaoSemJustificativa();
-			}catch(ExcecaoSemJustificativa e){
-				e.printStackTrace();
-			}
-		}else{
-			getMapDevolucao().remove(getItemRecusado().getIdDevolucaoMedicamentoItem());
+		try{
+			validarJustificativa();
 			getItemRecusado().setStatus(TipoStatusDevolucaoItemEnum.RE);
 			getItemRecusado().setJustificativa(getJustificativaItemRecusado());
+			setStatusDialogDevolucao(true);
+			setStatusDialogJustificativaRecusaItem(false);
+		}catch(ExcecaoSemJustificativa e){
+			e.printStackTrace();
 		}
+	}
+
+	private void validarJustificativa() throws ExcecaoSemJustificativa {
+		if(getJustificativaItemRecusado() == null || getJustificativaItemRecusado().isEmpty())
+			throw new ExcecaoSemJustificativa();
 	}
 	
 	public void recusarDevolucao(){
-		if(getJustificativaDevolucaoRecusada() == null || getJustificativaDevolucaoRecusada().isEmpty()){
-			try{
-				throw new ExcecaoSemJustificativa();
-			}catch(ExcecaoSemJustificativa e){
-				e.printStackTrace();
-			}
-		}else{
-			try {
-				getInstancia().setJustificativa(getJustificativaDevolucaoRecusada());
-				getInstancia().setDataRecebimento(new Date());
-				getInstancia().setProfissionalConfirmacao(Autenticador.getProfissionalLogado());
-				getInstancia().setStatus(TipoStatusDevolucaoItemEnum.RE);
-				super.atualizar();
-				super.novaInstancia();
-				setStatusDialogJustificativaRecusaDevolucao(false);
-				setJustificativaDevolucaoRecusada(null);
-				new DevolucaoMedicamentoConsultaRaiz().consultarDevolucoesPendentes();
-			} catch (ExcecaoProfissionalLogado e) {
-				e.printStackTrace();
-			}
+		try {
+			validarJustificativaDevolucaoRecusada();
+			getInstancia().setJustificativa(getJustificativaDevolucaoRecusada());
+			getInstancia().setDataRecebimento(new Date());
+			getInstancia().setProfissionalConfirmacao(Autenticador.getProfissionalLogado());
+			getInstancia().setStatus(TipoStatusDevolucaoItemEnum.RE);
+			super.atualizar();
+			super.novaInstancia();
+			setStatusDialogJustificativaRecusaDevolucao(false);
+			setJustificativaDevolucaoRecusada(null);
+			new DevolucaoMedicamentoConsultaRaiz().consultarDevolucoesPendentes();
+		} catch (ExcecaoProfissionalLogado e) {
+			e.printStackTrace();
+		}catch(ExcecaoSemJustificativa e){
+			e.printStackTrace();
+		}
+	}
+
+	private void validarJustificativaDevolucaoRecusada() throws ExcecaoSemJustificativa {
+		if(getJustificativaDevolucaoRecusada() == null || getJustificativaDevolucaoRecusada().isEmpty()) {
+			throw new ExcecaoSemJustificativa();
 		}
 	}
 	
@@ -238,7 +242,7 @@ public class DevolucaoMedicamentoRaiz extends PadraoRaiz<DevolucaoMedicamento>{
 	private void unlockEstoques() {
 		for(Estoque e : estoqueLock){
 			try {
-				new ControleEstoqueTemp().unLockEstoque(e);
+				new ControleEstoque().unLockEstoque(e);
 			} catch (ExcecaoEstoqueUnLock e1) {
 				e1.printStackTrace();
 			}
@@ -250,7 +254,9 @@ public class DevolucaoMedicamentoRaiz extends PadraoRaiz<DevolucaoMedicamento>{
 		TipoMovimento tipoMovimentoDevolucaoDispensacao = Parametro.tipoMovimentoDevolucaoDispensacao();
 		for(DevolucaoMedicamentoItem item : getInstancia().getItens()){
 			if(!item.getStatus().equals(TipoStatusDevolucaoItemEnum.RE)){
-				for(EstoqueDevolucao ed : getMapDevolucao().get(item.getIdDevolucaoMedicamentoItem())){
+				List<EstoqueDevolucao> list = getMapDevolucao().get(item.getIdDevolucaoMedicamentoItem());
+				list = list == null ? new ArrayList<EstoqueDevolucao>() : list;
+				for(EstoqueDevolucao ed : list){
 					MovimentoLivro ml = new MovimentoLivro();
 					ml.setEstoque(ed.getEstoque());
 					ml.setJustificativa("RD: "+getInstancia().getIdDevolucaoMedicamento());
@@ -258,7 +264,7 @@ public class DevolucaoMedicamentoRaiz extends PadraoRaiz<DevolucaoMedicamento>{
 					ml.setTipoMovimento(tipoMovimentoDevolucaoDispensacao);
 					
 					estoqueLock.add(ed.getEstoque());
-					new ControleEstoqueTemp().liberarAjuste(dataPadrao, ml);
+					new ControleEstoque().liberarAjuste(dataPadrao, ml);
 					
 					PadraoFluxoTemp.getObjetoSalvar().put("MovimentoLivro"+ml.hashCode(), ml);
 					DevolucaoMedicamentoItemMovimento dmim = new DevolucaoMedicamentoItemMovimento();
@@ -364,7 +370,7 @@ public class DevolucaoMedicamentoRaiz extends PadraoRaiz<DevolucaoMedicamento>{
 	}
 	
 	private String[] separarLoteQuantidade(String codigo) {
-		//quando houve uma interrogaçao, está indicado que existe uma quantidade informada
+		//quando houve uma interrogacao, esta indicado que existe uma quantidade informada
 		if(codigo.contains("?"))
 			return codigo.split("\\?");
 		else

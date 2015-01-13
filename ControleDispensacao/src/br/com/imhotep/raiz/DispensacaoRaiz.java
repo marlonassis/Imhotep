@@ -101,7 +101,7 @@ public class DispensacaoRaiz extends PadraoRaiz<PrescricaoItem> {
 	public void carregaEstoqueEdicao(){
 		setListPrescricaoItemEstoqueSaida(pesquisaPrescricaoItemEstoqueSaida());
 		if(getListPrescricaoItemEstoqueSaida() == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Não foi encontrado a prescrição.", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"NÔøΩo foi encontrado a prescriÔøΩÔøΩo.", ""));
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class DispensacaoRaiz extends PadraoRaiz<PrescricaoItem> {
 		boolean b = sobra >= 0;
 		
 		if(!b){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Quantidade insufiente em estoque.", "A quantidade disponível em estoque é de ".concat(String.valueOf(estoqueAtual))));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Quantidade insufiente em estoque.", "A quantidade disponÔøΩvel em estoque ÔøΩ de ".concat(String.valueOf(estoqueAtual))));
 			prescricaoItem.setQuantidadeLiberada(null);
 		}
 		
@@ -184,10 +184,10 @@ public class DispensacaoRaiz extends PadraoRaiz<PrescricaoItem> {
 					atualizaEstoque(prescricaoItem);
 					
 					geraMovimentoLivro(saldoAnterior, prescricaoItem.getQuantidadeLiberada(), prescricaoItem.getMaterial());
-					String msg = "Dispensação realizada com sucesso.";
+					String msg = "DispensaÔøΩÔøΩo realizada com sucesso.";
 					finalizaTransacao(msg);
 				}catch(Exception e){
-					String msg = "Ocorreu um erro ao fazer a dispensação.";
+					String msg = "Ocorreu um erro ao fazer a dispensaÔøΩÔøΩo.";
 					catchTransacao(msg, e);
 				}finally{
 					finallyTransacao();
@@ -200,7 +200,7 @@ public class DispensacaoRaiz extends PadraoRaiz<PrescricaoItem> {
 		MovimentoLivro movimentoLivroAtual = new MovimentoLivro();
 		movimentoLivroAtual.setDataMovimento(new Date());
 		try{
-			movimentoLivroAtual.setUsuarioMovimentacao(Autenticador.getInstancia().getUsuarioAtual());
+			movimentoLivroAtual.setProfissionalMovimentacao(Autenticador.getInstancia().getProfissionalAtual());
 		} catch (Exception e) {
 			e.printStackTrace();
 			super.mensagem("Erro ao acessar o autenticator.", null, FacesMessage.SEVERITY_ERROR);
